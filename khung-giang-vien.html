@@ -30,20 +30,33 @@
             </li>
 
             <li class="main-nav__item">
-              <a class="main-nav__link" href="de-tai-cua-toi-giang-vien.html">
-                Đề tài của tôi
-              </a>
+              <span class="main-nav__label" id="topic-management-label">
+                Quản lý đề tài
+              </span>
+              <ul
+                class="main-nav__sublist"
+                aria-labelledby="topic-management-label"
+              >
+                <li class="main-nav__subitem">
+                  <a
+                    class="main-nav__link"
+                    href="de-tai-cua-toi-giang-vien.html"
+                  >
+                    Đề tài đã tạo
+                  </a>
+                </li>
+                <li class="main-nav__subitem">
+                  <a class="main-nav__link" href="de-tai-huong-dan.html">
+                    Đề tài đang hướng dẫn
+                  </a>
+                </li>
+              </ul>
             </li>
 
             <li class="main-nav__item">
+              <!-- Trang này gồm Danh sách yêu cầu và Danh sách đề xuất. -->
               <a class="main-nav__link" href="yeu-cau-cho-duyet.html">
                 Yêu cầu chờ duyệt
-              </a>
-            </li>
-
-            <li class="main-nav__item">
-              <a class="main-nav__link" href="de-tai-huong-dan.html">
-                Đề tài hướng dẫn
               </a>
             </li>
           </ul>
@@ -89,5 +102,23 @@
         --></div>
       </div>
     </main>
+
+    <!-- CHÂN TRANG CHUNG -->
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN</p>
+          <p>Trường Đại học Công nghệ Thông tin</p>
+        </div>
+        <ul class="site-footer__information" aria-label="Thông tin và quy định">
+          <li><span>Điều khoản sử dụng (đang cập nhật)</span></li>
+          <li><span>Quy chế đồ án / khóa luận (đang cập nhật)</span></li>
+          <li><span>Chính sách bảo mật (đang cập nhật)</span></li>
+        </ul>
+        <p class="site-footer__copyright">
+          © 2026 · Hệ thống quản lý đồ án / khóa luận
+        </p>
+      </div>
+    </footer>
   </body>
 </html>

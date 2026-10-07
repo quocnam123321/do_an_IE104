@@ -20,7 +20,7 @@
           QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN
         </a>
 
-        <nav class="main-nav">
+        <nav class="main-nav" aria-label="Điều hướng sinh viên">
           <ul class="main-nav__list">
             <li class="main-nav__item">
               <a class="main-nav__link" href="tong-quan-sinh-vien.html">
@@ -31,16 +31,10 @@
             <li class="main-nav__item">
               <a
                 class="main-nav__link"
-                href="de-tai-mo-dang-ky.html"
-                aria-current="page"
+                href="dang-ky-de-tai.html"
+                aria-current="location"
               >
-                Đề tài mở đăng ký
-              </a>
-            </li>
-
-            <li class="main-nav__item">
-              <a class="main-nav__link" href="yeu-cau-de-xuat.html">
-                Yêu cầu &amp; Đề xuất
+                Đăng ký đề tài
               </a>
             </li>
 
@@ -79,14 +73,24 @@
             </li>
 
             <li class="breadcrumb__item">
+              <a href="dang-ky-de-tai.html">Đăng ký đề tài</a>
+            </li>
+
+            <li class="breadcrumb__item">
               <span aria-current="page">Chi tiết đề tài DT001</span>
             </li>
           </ol>
         </nav>
 
+        <p class="page-back">
+          <a class="page-back__link" href="dang-ky-de-tai.html">
+            ← Quay lại danh sách đề tài
+          </a>
+        </p>
+
         <!-- Tiêu đề và mô tả -->
         <header class="page-header">
-          <h1 class="page-header__title">Chi tiết đề tài mở đăng ký</h1>
+          <h1 class="page-header__title">Chi tiết đề tài</h1>
 
           <p class="page-header__description">
             Xem thông tin, yêu cầu thực hiện và đăng ký đề tài phù hợp với nhóm
@@ -97,207 +101,321 @@
         <div class="page-content">
           <!-- Dữ liệu minh họa cho một đề tài đang mở đăng ký. -->
           <article class="topic-detail">
-            <header class="topic-detail__header">
-              <h2>Website quản lý thư viện</h2>
-              <p class="topic-detail__status">Trạng thái: Mở đăng ký</p>
-              <p>
-                Tra cứu tài liệu và hỗ trợ quản lý việc mượn, trả sách trong thư
-                viện đại học.
-              </p>
-              <a href="#topic-registration">Đến phần đăng ký đề tài</a>
-            </header>
-
-            <section class="topic-detail__section">
-              <h3>Thông tin chung</h3>
-              <dl class="topic-detail__meta">
-                <dt>Mã đề tài</dt>
-                <dd>DT001</dd>
-                <dt>Giảng viên hướng dẫn</dt>
-                <dd>Nguyễn Văn A</dd>
-                <dt>Lĩnh vực</dt>
-                <dd>Hệ thống thông tin</dd>
-                <dt>Loại đề tài</dt>
-                <dd>Đồ án môn học</dd>
-                <dt>Số sinh viên mỗi nhóm</dt>
-                <dd>2–3 sinh viên</dd>
-                <dt>Yêu cầu</dt>
-                <dd>Chăm chỉ, nhiệt tình</dd>
-                <dt>Hạn chót đăng ký</dt>
-                <dd><time datetime="2026-10-20">20/10/2026</time></dd>
-              </dl>
-            </section>
-
-            <section class="topic-detail__section">
-              <h3>Mô tả và mục tiêu đề tài</h3>
-              <p>
-                Xây dựng hệ thống tập trung thông tin sách, độc giả và lịch sử
-                mượn trả, giúp hạn chế sai sót khi quản lý thủ công.
-              </p>
-              <ul>
-                <li>Giúp sinh viên tìm kiếm sách và xem tình trạng sẵn có.</li>
-                <li>Giúp thủ thư quản lý phiếu mượn, trả và sách quá hạn.</li>
-                <li>
-                  Vận dụng kiến thức lập trình web và thiết kế cơ sở dữ liệu.
-                </li>
-              </ul>
-            </section>
-
-            <section class="topic-detail__section">
-              <h3>Phạm vi và chức năng cần thực hiện</h3>
-              <ul>
-                <li>
-                  Đăng nhập và phân quyền sinh viên, thủ thư, quản trị viên.
-                </li>
-                <li>Tra cứu sách theo tên, tác giả và thể loại.</li>
-                <li>Quản lý danh mục sách, số lượng và hồ sơ độc giả.</li>
-                <li>Lập phiếu mượn, ghi nhận trả sách và theo dõi hạn trả.</li>
-                <li>Thống kê sách đang mượn và các phiếu quá hạn.</li>
-              </ul>
-            </section>
-
-            <section class="topic-detail__section">
-              <h3>Yêu cầu kiến thức và kỹ năng</h3>
-              <ul>
-                <li>Nắm kiến thức HTML, CSS và JavaScript cơ bản.</li>
-                <li>Biết thiết kế cơ sở dữ liệu quan hệ và truy vấn SQL.</li>
-                <li>Có khả năng xây dựng chức năng phía máy chủ.</li>
-                <li>Biết sử dụng Git và phân chia công việc trong nhóm.</li>
-              </ul>
-            </section>
-
-            <section class="topic-detail__section">
-              <h3>Sản phẩm cần bàn giao</h3>
-              <ul>
-                <li>
-                  Website đáp ứng các chức năng đã thống nhất với giảng viên.
-                </li>
-                <li>Mã nguồn, cơ sở dữ liệu mẫu và hướng dẫn cài đặt.</li>
-                <li>Báo cáo phân tích, thiết kế và kết quả kiểm thử.</li>
-                <li>Hướng dẫn sử dụng và tài liệu thuyết trình sản phẩm.</li>
-              </ul>
-            </section>
-
-            <section class="topic-detail__section">
-              <h3>Các bước thực hiện dự kiến</h3>
-              <ol>
-                <li>
-                  Trao đổi với giảng viên để thống nhất yêu cầu và kế hoạch.
-                </li>
-                <li>
-                  Phân tích nghiệp vụ, thiết kế giao diện và cơ sở dữ liệu.
-                </li>
-                <li>Xây dựng chức năng và báo cáo tiến độ.</li>
-                <li>Kiểm thử, hoàn thiện báo cáo và trình bày sản phẩm.</li>
-              </ol>
-              <p>
-                Lịch thực hiện cụ thể sẽ được thống nhất sau khi nhóm được
-                duyệt.
-              </p>
-            </section>
-          </article>
-
-          <section
-            id="topic-registration"
-            class="topic-registration"
-            tabindex="-1"
-          >
-            <h2>Đăng ký đề tài</h2>
-            <p>
-              Nhóm gồm 2–3 sinh viên. Gửi thông tin thành viên và nguyện vọng
-              trước hạn đăng ký. Yêu cầu cần được giảng viên xét duyệt.
-            </p>
-            <p id="registration-notice">
-              Đây là đề tài minh họa. Biểu mẫu chưa tiếp nhận hoặc lưu yêu cầu
-              đăng ký.
-            </p>
-            <!-- Bổ sung xử lý dữ liệu trước khi bật nút gửi. -->
-            <form
-              class="registration-form"
-              aria-describedby="registration-notice"
-            >
-              <fieldset>
-                <legend>Thông tin người đại diện nhóm</legend>
-                <div class="registration-form__field">
-                  <label for="student-name">Họ và tên (bắt buộc)</label>
-                  <input
-                    id="student-name"
-                    name="ho-ten"
-                    type="text"
-                    autocomplete="name"
-                    required
-                  />
-                </div>
-                <div class="registration-form__field">
-                  <label for="student-code">Mã số sinh viên (bắt buộc)</label>
-                  <input
-                    id="student-code"
-                    name="ma-sinh-vien"
-                    type="text"
-                    required
-                  />
-                </div>
-                <div class="registration-form__field">
-                  <label for="student-email">Email liên hệ (bắt buộc)</label>
-                  <input
-                    id="student-email"
-                    name="email"
-                    type="email"
-                    autocomplete="email"
-                    required
-                  />
-                </div>
-              </fieldset>
-              <fieldset>
-                <legend>Thông tin nhóm đăng ký</legend>
-                <div class="registration-form__field">
-                  <label for="group-members"
-                    >Danh sách thành viên (bắt buộc)</label
-                  >
-                  <p id="group-members-help">
-                    Nhập họ tên và mã số sinh viên, mỗi người một dòng, bao gồm
-                    cả người đại diện nhóm.
-                  </p>
-                  <!-- ô mẫu chỉ điền được 4 thành viên-->
-                  <textarea
-                    id="group-members"
-                    name="thanh-vien"
-                    rows="4"
-                    aria-describedby="group-members-help"
-                    required
-                  ></textarea>
-                </div>
-                <div class="registration-form__field">
-                  <label for="registration-message"
-                    >Nguyện vọng và kinh nghiệm của nhóm</label
-                  >
-                  <textarea
-                    id="registration-message"
-                    name="loi-nhan"
-                    rows="4"
-                    placeholder="Lý do chọn đề tài và kiến thức của nhóm"
-                  ></textarea>
-                </div>
-                <div class="registration-form__field">
-                  <input
-                    id="registration-confirm"
-                    name="xac-nhan"
-                    type="checkbox"
-                    required
-                  />
-                  <label for="registration-confirm"
-                    >Tôi đã đọc yêu cầu đề tài và xác nhận thông tin nhóm là
-                    chính xác (bắt buộc).</label
-                  >
-                </div>
-              </fieldset>
-              <div class="registration-form__actions">
-                <button type="button" disabled>Gửi yêu cầu đăng ký</button>
-                <button type="reset">Nhập lại</button>
+            <div class="topic-detail__overview">
+              <div
+                class="topic-image-placeholder topic-detail__image"
+                role="img"
+                aria-label="Chưa có ảnh minh họa cho đề tài Website quản lý thư viện"
+              >
+                <span aria-hidden="true">Ảnh đồ án / khóa luận</span>
               </div>
-            </form>
-          </section>
+
+              <div class="topic-detail__summary">
+                <header class="topic-detail__header">
+                  <h2>Website quản lý thư viện</h2>
+                  <p class="topic-detail__status">Trạng thái: Mở đăng ký</p>
+                  <p>
+                    Tra cứu tài liệu và hỗ trợ quản lý việc mượn, trả sách trong
+                    thư viện đại học.
+                  </p>
+                  <a href="#topic-registration">Đến phần đăng ký đề tài</a>
+                </header>
+
+                <section class="topic-detail__section">
+                  <h3>Thông tin chung</h3>
+                  <dl class="topic-detail__meta">
+                    <dt>Mã đề tài</dt>
+                    <dd>DT001</dd>
+                    <dt>Loại đề tài</dt>
+                    <dd>Đồ án môn học</dd>
+                    <dt>Môn học</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Học kỳ</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Năm học</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Lĩnh vực</dt>
+                    <dd>Hệ thống thông tin</dd>
+                    <dt>Giảng viên hướng dẫn</dt>
+                    <dd>Nguyễn Văn A</dd>
+                    <dt>Khoa / Bộ môn</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Email giảng viên</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Số sinh viên mỗi nhóm</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Yêu cầu</dt>
+                    <dd>Chăm chỉ, nhiệt tình</dd>
+                    <dt>Hạn đăng ký</dt>
+                    <dd><time datetime="2026-10-20">20/10/2026</time></dd>
+                  </dl>
+                </section>
+              </div>
+            </div>
+
+            <div class="topic-detail__layout">
+              <div class="topic-detail__body">
+                <section class="topic-detail__section">
+                  <h3>Mô tả đề tài</h3>
+                  <p>
+                    Xây dựng hệ thống tập trung thông tin sách, độc giả và lịch sử
+                    mượn trả, giúp hạn chế sai sót khi quản lý thủ công.
+                  </p>
+                </section>
+
+                <section class="topic-detail__section">
+                  <h3>Mục tiêu đề tài</h3>
+                  <ul>
+                    <li>Giúp sinh viên tìm kiếm sách và xem tình trạng sẵn có.</li>
+                    <li>Giúp thủ thư quản lý phiếu mượn, trả và sách quá hạn.</li>
+                    <li>
+                      Vận dụng kiến thức lập trình web và thiết kế cơ sở dữ liệu.
+                    </li>
+                  </ul>
+                </section>
+
+                <section class="topic-detail__section">
+                  <h3>Yêu cầu thực hiện</h3>
+
+                  <section class="topic-detail__requirement-group">
+                    <h4>Phạm vi và chức năng cần thực hiện</h4>
+                    <ul>
+                      <li>
+                        Đăng nhập và phân quyền sinh viên, thủ thư, quản trị viên.
+                      </li>
+                      <li>Tra cứu sách theo tên, tác giả và thể loại.</li>
+                      <li>Quản lý danh mục sách, số lượng và hồ sơ độc giả.</li>
+                      <li>Lập phiếu mượn, ghi nhận trả sách và theo dõi hạn trả.</li>
+                      <li>Thống kê sách đang mượn và các phiếu quá hạn.</li>
+                    </ul>
+                  </section>
+
+                  <section class="topic-detail__requirement-group">
+                    <h4>Yêu cầu kiến thức và kỹ năng</h4>
+                    <ul>
+                      <li>Nắm kiến thức HTML, CSS và JavaScript cơ bản.</li>
+                      <li>Biết thiết kế cơ sở dữ liệu quan hệ và truy vấn SQL.</li>
+                      <li>Có khả năng xây dựng chức năng phía máy chủ.</li>
+                      <li>Biết sử dụng Git và phân chia công việc trong nhóm.</li>
+                    </ul>
+                  </section>
+
+                  <section class="topic-detail__requirement-group">
+                    <h4>Sản phẩm cần bàn giao</h4>
+                    <ul>
+                      <li>
+                        Website đáp ứng các chức năng đã thống nhất với giảng viên.
+                      </li>
+                      <li>Mã nguồn, cơ sở dữ liệu mẫu và hướng dẫn cài đặt.</li>
+                      <li>Báo cáo phân tích, thiết kế và kết quả kiểm thử.</li>
+                      <li>Hướng dẫn sử dụng và tài liệu thuyết trình sản phẩm.</li>
+                    </ul>
+                  </section>
+
+                  <section class="topic-detail__requirement-group">
+                    <h4>Các bước thực hiện dự kiến</h4>
+                    <ol>
+                      <li>
+                        Trao đổi với giảng viên để thống nhất yêu cầu và kế hoạch.
+                      </li>
+                      <li>
+                        Phân tích nghiệp vụ, thiết kế giao diện và cơ sở dữ liệu.
+                      </li>
+                      <li>Xây dựng chức năng và báo cáo tiến độ.</li>
+                      <li>Kiểm thử, hoàn thiện báo cáo và trình bày sản phẩm.</li>
+                    </ol>
+                    <p>
+                      Lịch thực hiện cụ thể sẽ được thống nhất sau khi nhóm được
+                      duyệt.
+                    </p>
+                  </section>
+                </section>
+              </div>
+
+              <section
+                id="topic-registration"
+                class="topic-registration"
+                aria-labelledby="registration-title"
+                tabindex="-1"
+              >
+                <h3 id="registration-title">Thông tin đăng ký</h3>
+                <p>
+                  Gửi thông tin thành viên và nguyện vọng trước hạn đăng ký.
+                  Yêu cầu cần được giảng viên xét duyệt.
+                </p>
+                <p id="registration-notice">
+                  Đây là đề tài minh họa. Biểu mẫu chưa tiếp nhận hoặc lưu yêu cầu
+                  đăng ký.
+                </p>
+                <!-- Bổ sung xử lý dữ liệu trước khi bật các nút thao tác. -->
+                <form
+                  class="registration-form"
+                  aria-label="Đăng ký đề tài Website quản lý thư viện"
+                  aria-describedby="registration-notice"
+                >
+                  <fieldset>
+                    <legend>Thông tin nhóm đăng ký</legend>
+                    <div class="registration-form__field">
+                      <label for="group-name">Tên nhóm</label>
+                      <input
+                        id="group-name"
+                        name="ten-nhom"
+                        type="text"
+                        placeholder="Nhập tên nhóm"
+                      />
+                    </div>
+                  </fieldset>
+
+                  <fieldset
+                    class="registration-form__members"
+                    aria-describedby="group-members-help member-actions-notice"
+                  >
+                    <legend>Danh sách thành viên</legend>
+                    <p id="group-members-help">
+                      Điền mã số sinh viên và họ tên của người đăng ký cùng
+                      các thành viên trong nhóm.
+                    </p>
+
+                    <fieldset class="registration-form__member">
+                      <legend>Người đăng ký</legend>
+                      <!-- Chưa có phiên đăng nhập để tự điền thông tin. -->
+                      <div class="registration-form__field">
+                        <label for="student-code">Mã số sinh viên (bắt buộc)</label>
+                        <input
+                          id="student-code"
+                          name="ma-sinh-vien"
+                          type="text"
+                          required
+                        />
+                      </div>
+                      <div class="registration-form__field">
+                        <label for="student-name">Họ và tên (bắt buộc)</label>
+                        <input
+                          id="student-name"
+                          name="ho-ten"
+                          type="text"
+                          autocomplete="name"
+                          required
+                        />
+                      </div>
+                      <div class="registration-form__field">
+                        <label for="student-email">Email liên hệ (bắt buộc)</label>
+                        <input
+                          id="student-email"
+                          name="email"
+                          type="email"
+                          autocomplete="email"
+                          required
+                        />
+                      </div>
+                    </fieldset>
+
+                    <!-- Hàng minh họa, không quy định số thành viên tối thiểu/tối đa. -->
+                    <fieldset class="registration-form__member">
+                      <legend>Thành viên</legend>
+                      <div class="registration-form__field">
+                        <label for="member-code-2">Mã số sinh viên</label>
+                        <input
+                          id="member-code-2"
+                          name="thanh-vien-2-mssv"
+                          type="text"
+                          placeholder="Nhập mã số sinh viên"
+                        />
+                      </div>
+                      <div class="registration-form__field">
+                        <label for="member-name-2">Họ và tên</label>
+                        <input
+                          id="member-name-2"
+                          name="thanh-vien-2-ho-ten"
+                          type="text"
+                          autocomplete="off"
+                          placeholder="Nhập họ tên"
+                        />
+                      </div>
+                      <button
+                        class="registration-form__remove-member"
+                        type="button"
+                        aria-describedby="member-actions-notice"
+                        disabled
+                      >
+                        Xóa thành viên
+                      </button>
+                    </fieldset>
+
+                    <button
+                      class="registration-form__add-member"
+                      type="button"
+                      aria-describedby="member-actions-notice"
+                      disabled
+                    >
+                      + Thêm thành viên
+                    </button>
+                    <p class="registration-form__member-count">
+                      Số thành viên:
+                      <output
+                        id="member-count"
+                        for="student-code student-name member-code-2 member-name-2"
+                        aria-describedby="member-actions-notice"
+                      >
+                        Chưa tính
+                      </output>
+                    </p>
+                    <p id="member-actions-notice">
+                      Thêm, xóa và đếm thành viên chưa được xử lý.
+                    </p>
+                  </fieldset>
+
+                  <div class="registration-form__field">
+                    <label for="registration-message">
+                      Lời nhắn cho giảng viên (không bắt buộc)
+                    </label>
+                    <textarea
+                      id="registration-message"
+                      name="loi-nhan"
+                      rows="4"
+                      placeholder="Lý do chọn đề tài và kiến thức của nhóm"
+                    ></textarea>
+                  </div>
+                  <div class="registration-form__field">
+                    <input
+                      id="registration-confirm"
+                      name="xac-nhan"
+                      type="checkbox"
+                      required
+                    />
+                    <label for="registration-confirm">
+                      Tôi đã đọc yêu cầu đề tài và xác nhận thông tin nhóm là
+                      chính xác (bắt buộc).
+                    </label>
+                  </div>
+                  <div class="registration-form__actions">
+                    <button type="button" disabled>Gửi yêu cầu đăng ký</button>
+                    <button type="reset">Nhập lại</button>
+                  </div>
+                </form>
+              </section>
+            </div>
+          </article>
         </div>
       </div>
     </main>
+
+    <!-- CHÂN TRANG CHUNG -->
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN</p>
+          <p>Trường Đại học Công nghệ Thông tin</p>
+        </div>
+        <ul class="site-footer__information" aria-label="Thông tin và quy định">
+          <li><span>Điều khoản sử dụng (đang cập nhật)</span></li>
+          <li><span>Quy chế đồ án / khóa luận (đang cập nhật)</span></li>
+          <li><span>Chính sách bảo mật (đang cập nhật)</span></li>
+        </ul>
+        <p class="site-footer__copyright">
+          © 2026 · Hệ thống quản lý đồ án / khóa luận
+        </p>
+      </div>
+    </footer>
   </body>
 </html>

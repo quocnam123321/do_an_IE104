@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Tìm kiếm và xem các đề tài đồ án, khóa luận đang mở đăng ký."
+    />
+    <title>Đăng ký đề tài | Quản lý đồ án</title>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
+
+    <!-- ĐẦU TRANG CHUNG CHO SINH VIÊN -->
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-sinh-vien.html">
+          QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN
+        </a>
+
+        <nav class="main-nav" aria-label="Điều hướng sinh viên">
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html">
+                Tổng quan
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <a
+                class="main-nav__link"
+                href="dang-ky-de-tai.html"
+                aria-current="page"
+              >
+                Đăng ký đề tài
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html">
+                Đề tài của tôi
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="lich-han-nop.html">
+                Lịch hạn nộp
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="account-menu">
+          <a class="account-menu__profile" href="ho-so-ca-nhan.html">
+            <span class="account-menu__label">Hồ sơ cá nhân</span>
+
+            <span class="account-menu__avatar" aria-hidden="true"> SV </span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- NỘI DUNG RIÊNG CỦA TRANG -->
+    <main id="main-content" class="main-content" tabindex="-1">
+      <div class="page-container">
+        <!-- Đường dẫn -->
+        <nav class="breadcrumb" aria-label="Đường dẫn">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item">
+              <a href="tong-quan-sinh-vien.html">Sinh viên</a>
+            </li>
+
+            <li class="breadcrumb__item">
+              <span aria-current="page">Đăng ký đề tài</span>
+            </li>
+          </ol>
+        </nav>
+
+        <!-- Tiêu đề và mô tả -->
+        <header class="page-header">
+          <h1 class="page-header__title">Đăng ký đề tài</h1>
+
+          <p class="page-header__description">
+            Khám phá các đề tài đang nhận đăng ký và xem thông tin chi tiết.
+          </p>
+        </header>
+
+        <div class="page-content">
+          <!--
+          Khung tìm kiếm và lọc.
+          Chưa có JavaScript xử lý: gửi form chỉ đưa giá trị lên URL,
+          chưa làm thay đổi danh sách đề tài.
+        -->
+          <form
+            class="topic-filters"
+            role="search"
+            aria-label="Tìm kiếm đề tài"
+            action="dang-ky-de-tai.html"
+            method="get"
+          >
+            <div class="topic-filters__field">
+              <label for="topic-search">Tìm theo tên hoặc mã đề tài</label>
+
+              <input
+                type="search"
+                id="topic-search"
+                name="tu-khoa"
+                placeholder="Nhập tên hoặc mã đề tài"
+              />
+            </div>
+
+            <div class="topic-filters__field">
+              <label for="topic-sort">Sắp xếp</label>
+              <select id="topic-sort" name="sap-xep">
+                <option value="moi-nhat">Mới nhất</option>
+                <option value="cu-nhat">Cũ nhất</option>
+                <option value="ten-a-z">Tên A–Z</option>
+              </select>
+            </div>
+
+            <div class="topic-filters__field">
+              <label for="topic-type-filter">Loại đề tài</label>
+              <select id="topic-type-filter" name="loai-de-tai">
+                <option value="">Tất cả loại đề tài</option>
+                <option value="do-an-mon-hoc">Đồ án môn học</option>
+                <option value="khoa-luan">Khóa luận tốt nghiệp</option>
+              </select>
+            </div>
+
+            <div class="topic-filters__field">
+              <label for="lecturer-filter">Giảng viên</label>
+
+              <select id="lecturer-filter" name="giang-vien">
+                <option value="">Tất cả giảng viên</option>
+                <option value="GV001">Nguyễn Văn A</option>
+                <option value="GV002">Trần Thị B</option>
+                <option value="GV003">Lê Văn C</option>
+              </select>
+            </div>
+
+            <div class="topic-filters__field">
+              <label for="course-filter">Môn học</label>
+              <select id="course-filter" name="mon-hoc">
+                <option value="">Tất cả môn học</option>
+                <option value="IE104">IE104 — Internet và Công nghệ Web</option>
+              </select>
+            </div>
+
+            <div class="topic-filters__actions">
+              <button type="submit">Tìm kiếm</button>
+              <a class="topic-filters__clear" href="dang-ky-de-tai.html">
+                Xóa bộ lọc
+              </a>
+            </div>
+          </form>
+
+          <!-- Dữ liệu đề tài và giảng viên dưới đây là dữ liệu mẫu -->
+          <section class="topics" aria-labelledby="topic-list-title">
+            <header class="topics__header">
+              <h2 id="topic-list-title" class="topics__title">
+                Danh sách đề tài
+              </h2>
+              <p class="topics__count">4 đề tài mẫu</p>
+            </header>
+
+            <ul class="topic-list">
+              <!-- Đề tài 1 -->
+              <li class="topic-list__item">
+                <article class="topic-card" aria-labelledby="topic-title-001">
+                  <div
+                    class="topic-image-placeholder topic-card__image"
+                    role="img"
+                    aria-label="Chưa có ảnh minh họa cho đề tài Website quản lý thư viện"
+                  >
+                    <span aria-hidden="true">Ảnh đồ án / khóa luận</span>
+                  </div>
+                  <header class="topic-card__header">
+                    <h3 id="topic-title-001" class="topic-card__title">
+                      Website quản lý thư viện
+                    </h3>
+
+                    <span class="topic-card__status">Mở đăng ký</span>
+                  </header>
+
+                  <p class="topic-card__description">
+                    Tra cứu tài liệu và hỗ trợ quản lý việc mượn, trả sách trong
+                    thư viện đại học.
+                  </p>
+
+                  <p class="topic-card__lecturer">Giảng viên: Nguyễn Văn A</p>
+
+                  <dl class="topic-card__meta">
+                    <dt>Mã đề tài</dt>
+                    <dd>DT001</dd>
+                    <dt>Loại đề tài</dt>
+                    <dd>Đồ án môn học</dd>
+                    <dt>Môn học</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Học kỳ</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Số sinh viên mỗi nhóm</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Hạn đăng ký</dt>
+                    <dd><time datetime="2026-10-20">20/10/2026</time></dd>
+                  </dl>
+
+                  <footer class="topic-card__footer">
+                    <a
+                      class="topic-card__link"
+                      href="Chi-tiet-de-tai-mo-dang-ky.html"
+                      aria-label="Xem chi tiết đề tài Website quản lý thư viện"
+                    >
+                      Xem chi tiết <span aria-hidden="true">→</span>
+                    </a>
+                  </footer>
+                </article>
+              </li>
+
+              <!-- DT002–DT004 chưa có nội dung chi tiết; bổ sung liên kết khi có trang tương ứng. -->
+              <!-- Đề tài 2 -->
+              <li class="topic-list__item">
+                <article class="topic-card" aria-labelledby="topic-title-002">
+                  <div
+                    class="topic-image-placeholder topic-card__image"
+                    role="img"
+                    aria-label="Chưa có ảnh minh họa cho đề tài Website quản lý câu lạc bộ sinh viên"
+                  >
+                    <span aria-hidden="true">Ảnh đồ án / khóa luận</span>
+                  </div>
+                  <header class="topic-card__header">
+                    <h3 id="topic-title-002" class="topic-card__title">
+                      Website quản lý câu lạc bộ sinh viên
+                    </h3>
+
+                    <span class="topic-card__status">Mở đăng ký</span>
+                  </header>
+
+                  <p class="topic-card__description">
+                    Quản lý thành viên, giới thiệu hoạt động và hỗ trợ sinh viên
+                    đăng ký tham gia câu lạc bộ.
+                  </p>
+
+                  <p class="topic-card__lecturer">Giảng viên: Trần Thị B</p>
+
+                  <dl class="topic-card__meta">
+                    <dt>Mã đề tài</dt>
+                    <dd>DT002</dd>
+                    <dt>Loại đề tài</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Môn học</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Học kỳ</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Số sinh viên mỗi nhóm</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Hạn đăng ký</dt>
+                    <dd>Chưa có thông tin</dd>
+                  </dl>
+
+                  <footer class="topic-card__footer">
+                    <span class="topic-card__link">Chi tiết đang cập nhật</span>
+                  </footer>
+                </article>
+              </li>
+
+              <!-- Đề tài 3 -->
+              <li class="topic-list__item">
+                <article class="topic-card" aria-labelledby="topic-title-003">
+                  <div
+                    class="topic-image-placeholder topic-card__image"
+                    role="img"
+                    aria-label="Chưa có ảnh minh họa cho đề tài Website đăng ký sự kiện"
+                  >
+                    <span aria-hidden="true">Ảnh đồ án / khóa luận</span>
+                  </div>
+                  <header class="topic-card__header">
+                    <h3 id="topic-title-003" class="topic-card__title">
+                      Website đăng ký sự kiện
+                    </h3>
+
+                    <span class="topic-card__status">Mở đăng ký</span>
+                  </header>
+
+                  <p class="topic-card__description">
+                    Giới thiệu các sự kiện trong trường, hỗ trợ đăng ký tham dự
+                    và theo dõi thông tin sự kiện.
+                  </p>
+
+                  <p class="topic-card__lecturer">Giảng viên: Lê Văn C</p>
+
+                  <dl class="topic-card__meta">
+                    <dt>Mã đề tài</dt>
+                    <dd>DT003</dd>
+                    <dt>Loại đề tài</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Môn học</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Học kỳ</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Số sinh viên mỗi nhóm</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Hạn đăng ký</dt>
+                    <dd>Chưa có thông tin</dd>
+                  </dl>
+
+                  <footer class="topic-card__footer">
+                    <span class="topic-card__link">Chi tiết đang cập nhật</span>
+                  </footer>
+                </article>
+              </li>
+
+              <!-- Đề tài 4 -->
+              <li class="topic-list__item">
+                <article class="topic-card" aria-labelledby="topic-title-004">
+                  <div
+                    class="topic-image-placeholder topic-card__image"
+                    role="img"
+                    aria-label="Chưa có ảnh minh họa cho đề tài Website quản lý công việc nhóm"
+                  >
+                    <span aria-hidden="true">Ảnh đồ án / khóa luận</span>
+                  </div>
+                  <header class="topic-card__header">
+                    <h3 id="topic-title-004" class="topic-card__title">
+                      Website quản lý công việc nhóm
+                    </h3>
+
+                    <span class="topic-card__status">Mở đăng ký</span>
+                  </header>
+
+                  <p class="topic-card__description">
+                    Hỗ trợ phân công nhiệm vụ, theo dõi tiến độ và quản lý thời
+                    hạn hoàn thành công việc nhóm.
+                  </p>
+
+                  <p class="topic-card__lecturer">Giảng viên: Nguyễn Văn A</p>
+
+                  <dl class="topic-card__meta">
+                    <dt>Mã đề tài</dt>
+                    <dd>DT004</dd>
+                    <dt>Loại đề tài</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Môn học</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Học kỳ</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Số sinh viên mỗi nhóm</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Hạn đăng ký</dt>
+                    <dd>Chưa có thông tin</dd>
+                  </dl>
+
+                  <footer class="topic-card__footer">
+                    <span class="topic-card__link">Chi tiết đang cập nhật</span>
+                  </footer>
+                </article>
+              </li>
+            </ul>
+
+            <div class="topics__results">
+              <p class="topics__summary">Hiển thị 4 đề tài mẫu trên 1 trang.</p>
+              <!-- Chưa có dữ liệu trang khác hoặc JavaScript xử lý phân trang. -->
+              <nav class="pagination" aria-label="Phân trang danh sách đề tài">
+                <ul class="pagination__list">
+                  <li class="pagination__item">
+                    <button class="pagination__button" type="button" disabled>
+                      Trang trước
+                    </button>
+                  </li>
+                  <li class="pagination__item">
+                    <span
+                      class="pagination__current"
+                      aria-current="page"
+                      aria-label="Trang 1, trang hiện tại"
+                    >
+                      1
+                    </span>
+                  </li>
+                  <li class="pagination__item">
+                    <button class="pagination__button" type="button" disabled>
+                      Trang sau
+                    </button>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- CHÂN TRANG CHUNG -->
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN</p>
+          <p>Trường Đại học Công nghệ Thông tin</p>
+        </div>
+        <ul class="site-footer__information" aria-label="Thông tin và quy định">
+          <li><span>Điều khoản sử dụng (đang cập nhật)</span></li>
+          <li><span>Quy chế đồ án / khóa luận (đang cập nhật)</span></li>
+          <li><span>Chính sách bảo mật (đang cập nhật)</span></li>
+        </ul>
+        <p class="site-footer__copyright">
+          © 2026 · Hệ thống quản lý đồ án / khóa luận
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
