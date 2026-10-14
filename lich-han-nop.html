@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Theo dõi các hạn nộp và mở phần báo cáo của đề tài đang thực hiện."
+    />
+    <title>Lịch hạn nộp | Quản lý đồ án</title>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
+
+    <!-- ĐẦU TRANG -->
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-sinh-vien.html">
+          QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN
+        </a>
+
+        <!-- Điều hướng chính dành cho sinh viên -->
+        <nav class="main-nav" aria-label="Điều hướng sinh viên">
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html">
+                Tổng quan
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="dang-ky-de-tai.html">
+                Đăng ký đề tài
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <!-- Đề xuất của tôi và Tạo đề xuất mới thuộc Đề tài của tôi. -->
+              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html">
+                Đề tài của tôi
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="lich-han-nop.html" aria-current="page">
+                Lịch hạn nộp
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Tài khoản -->
+        <div class="account-menu">
+          <details class="account-menu__disclosure">
+            <summary class="account-menu__toggle" aria-controls="account-dropdown" aria-label="Mở menu tài khoản sinh viên">
+              <span class="account-menu__avatar" aria-hidden="true">SV</span>
+              <span class="account-menu__label">Tài khoản sinh viên</span>
+            </summary>
+            <ul id="account-dropdown" class="account-menu__list">
+              <li><a class="account-menu__profile" href="ho-so-ca-nhan.html">Hồ sơ cá nhân</a></li>
+              <li><button class="account-menu__logout" type="button" aria-controls="logout-dialog" aria-describedby="logout-notice" disabled>Đăng xuất</button></li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
+        </div>
+      </div>
+    </header>
+    <dialog id="logout-dialog" class="confirmation-dialog" aria-labelledby="logout-title" hidden>
+      <h2 id="logout-title">Xác nhận đăng xuất</h2>
+      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+      <button type="button" disabled>Hủy</button>
+      <button type="button" disabled>Xác nhận đăng xuất</button>
+    </dialog>
+
+    <!-- NỘI DUNG RIÊNG CỦA TỪNG TRANG -->
+    <main id="main-content" class="main-content" tabindex="-1">
+      <div class="page-container">
+        <!-- Thay tên trang trong breadcrumb khi sử dụng khung -->
+        <nav class="breadcrumb" aria-label="Đường dẫn">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item">
+              <a href="tong-quan-sinh-vien.html">Sinh viên</a>
+            </li>
+
+            <li class="breadcrumb__item">
+              <span aria-current="page">Lịch hạn nộp</span>
+            </li>
+          </ol>
+        </nav>
+
+        <header class="page-header">
+          <h1 class="page-header__title">Lịch hạn nộp</h1>
+          <p class="page-header__description">
+            Theo dõi các hạn nộp và mở phần báo cáo của đề tài đang thực hiện.
+          </p>
+        </header>
+
+        <div class="page-content">
+
+          <p class="demo-notice">Hai hạn nộp mẫu của DT002; thời gian theo giờ Việt Nam (UTC+7).</p>
+          <section aria-labelledby="deadline-list-title"><h2 id="deadline-list-title">Danh sách hạn nộp</h2>
+            <table><caption>DT002 — Website quản lý câu lạc bộ sinh viên · Giảng viên Trần Thị B</caption>
+              <thead><tr><th scope="col">Nội dung</th><th scope="col">Hạn nộp</th><th scope="col">Tình trạng bài nộp</th><th scope="col">Thao tác</th></tr></thead>
+              <tbody><tr><th scope="row">Đề cương</th><td><time datetime="2026-10-20T23:59:00+07:00">20/10/2026 23:59</time></td><td>Chưa nộp · Hạn sắp tới</td><td><a href="chi-tiet-de-tai-cua-toi-sinh-vien.html#de-cuong">Đến phần nộp đề cương</a></td></tr><tr><th scope="row">Báo cáo tiến độ</th><td><time datetime="2026-10-27T23:59:00+07:00">27/10/2026 23:59</time></td><td>Chưa nộp · Hạn sắp tới</td><td><a href="chi-tiet-de-tai-cua-toi-sinh-vien.html#bao-cao-tien-do">Đến phần nộp báo cáo tiến độ</a></td></tr></tbody>
+            </table>
+          </section>
+          <template id="deadlines-empty-template"><p class="empty-state">Bạn chưa có hạn nộp. Các hạn do giảng viên công bố sẽ hiển thị tại đây.</p></template>
+          <template id="deadline-overdue-template"><p class="deadline-status">Quá hạn · Chưa nộp</p></template>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- CHÂN TRANG CHUNG -->
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN</p>
+          <p>Trường Đại học Công nghệ Thông tin</p>
+        </div>
+        <ul class="site-footer__information" aria-label="Thông tin và quy định">
+          <li><span>Điều khoản sử dụng (đang cập nhật)</span></li>
+          <li><span>Quy chế đồ án / khóa luận (đang cập nhật)</span></li>
+          <li><span>Chính sách bảo mật (đang cập nhật)</span></li>
+        </ul>
+        <p class="site-footer__copyright">
+          © 2026 · Hệ thống quản lý đồ án / khóa luận
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
