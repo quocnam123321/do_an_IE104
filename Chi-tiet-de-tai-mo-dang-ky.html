@@ -53,14 +53,49 @@
         </nav>
 
         <div class="account-menu">
-          <a class="account-menu__profile" href="ho-so-ca-nhan.html">
-            <span class="account-menu__label">Hồ sơ cá nhân</span>
-
-            <span class="account-menu__avatar" aria-hidden="true"> SV </span>
-          </a>
+          <details class="account-menu__disclosure">
+            <summary
+              class="account-menu__toggle"
+              aria-label="Mở menu tài khoản sinh viên"
+            >
+              <span class="account-menu__avatar" aria-hidden="true">SV</span>
+              <span class="account-menu__label">Tài khoản sinh viên</span>
+            </summary>
+            <ul id="account-dropdown" class="account-menu__list">
+              <li>
+                <a class="account-menu__profile" href="ho-so-ca-nhan.html"
+                  >Hồ sơ cá nhân</a
+                >
+              </li>
+              <li>
+                <button
+                  class="account-menu__logout"
+                  type="button"
+                  aria-controls="logout-dialog"
+                  aria-describedby="logout-notice"
+                  disabled
+                >
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
         </div>
       </div>
     </header>
+    <dialog
+      id="logout-dialog"
+      class="confirmation-dialog"
+      aria-labelledby="logout-title"
+    >
+      <h2 id="logout-title">Xác nhận đăng xuất</h2>
+      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+      <form method="dialog">
+        <button type="submit" value="cancel">Hủy</button>
+        <button type="button" disabled>Xác nhận đăng xuất</button>
+      </form>
+    </dialog>
 
     <!-- NỘI DUNG RIÊNG CỦA TRANG -->
     <main id="main-content" class="main-content" tabindex="-1">
@@ -100,6 +135,10 @@
 
         <div class="page-content">
           <!-- Dữ liệu minh họa cho một đề tài đang mở đăng ký. -->
+          <p class="demo-notice">
+            Thông tin đề tài DT001 là dữ liệu minh họa, cập nhật ngày
+            <time datetime="2026-10-13">13/10/2026</time>.
+          </p>
           <article class="topic-detail">
             <div class="topic-detail__overview">
               <div
@@ -129,7 +168,9 @@
                     <dt>Loại đề tài</dt>
                     <dd>Đồ án môn học</dd>
                     <dt>Môn học</dt>
-                    <dd>Chưa có thông tin</dd>
+                    <dd>IE104 — Internet và Công nghệ Web</dd>
+                    <dt>Ngày tạo</dt>
+                    <dd><time datetime="2026-10-05">05/10/2026</time></dd>
                     <dt>Học kỳ</dt>
                     <dd>Chưa có thông tin</dd>
                     <dt>Năm học</dt>
@@ -158,18 +199,23 @@
                 <section class="topic-detail__section">
                   <h3>Mô tả đề tài</h3>
                   <p>
-                    Xây dựng hệ thống tập trung thông tin sách, độc giả và lịch sử
-                    mượn trả, giúp hạn chế sai sót khi quản lý thủ công.
+                    Xây dựng hệ thống tập trung thông tin sách, độc giả và lịch
+                    sử mượn trả, giúp hạn chế sai sót khi quản lý thủ công.
                   </p>
                 </section>
 
                 <section class="topic-detail__section">
                   <h3>Mục tiêu đề tài</h3>
                   <ul>
-                    <li>Giúp sinh viên tìm kiếm sách và xem tình trạng sẵn có.</li>
-                    <li>Giúp thủ thư quản lý phiếu mượn, trả và sách quá hạn.</li>
                     <li>
-                      Vận dụng kiến thức lập trình web và thiết kế cơ sở dữ liệu.
+                      Giúp sinh viên tìm kiếm sách và xem tình trạng sẵn có.
+                    </li>
+                    <li>
+                      Giúp thủ thư quản lý phiếu mượn, trả và sách quá hạn.
+                    </li>
+                    <li>
+                      Vận dụng kiến thức lập trình web và thiết kế cơ sở dữ
+                      liệu.
                     </li>
                   </ul>
                 </section>
@@ -181,11 +227,14 @@
                     <h4>Phạm vi và chức năng cần thực hiện</h4>
                     <ul>
                       <li>
-                        Đăng nhập và phân quyền sinh viên, thủ thư, quản trị viên.
+                        Đăng nhập và phân quyền sinh viên, thủ thư, quản trị
+                        viên.
                       </li>
                       <li>Tra cứu sách theo tên, tác giả và thể loại.</li>
                       <li>Quản lý danh mục sách, số lượng và hồ sơ độc giả.</li>
-                      <li>Lập phiếu mượn, ghi nhận trả sách và theo dõi hạn trả.</li>
+                      <li>
+                        Lập phiếu mượn, ghi nhận trả sách và theo dõi hạn trả.
+                      </li>
                       <li>Thống kê sách đang mượn và các phiếu quá hạn.</li>
                     </ul>
                   </section>
@@ -194,9 +243,13 @@
                     <h4>Yêu cầu kiến thức và kỹ năng</h4>
                     <ul>
                       <li>Nắm kiến thức HTML, CSS và JavaScript cơ bản.</li>
-                      <li>Biết thiết kế cơ sở dữ liệu quan hệ và truy vấn SQL.</li>
+                      <li>
+                        Biết thiết kế cơ sở dữ liệu quan hệ và truy vấn SQL.
+                      </li>
                       <li>Có khả năng xây dựng chức năng phía máy chủ.</li>
-                      <li>Biết sử dụng Git và phân chia công việc trong nhóm.</li>
+                      <li>
+                        Biết sử dụng Git và phân chia công việc trong nhóm.
+                      </li>
                     </ul>
                   </section>
 
@@ -204,11 +257,14 @@
                     <h4>Sản phẩm cần bàn giao</h4>
                     <ul>
                       <li>
-                        Website đáp ứng các chức năng đã thống nhất với giảng viên.
+                        Website đáp ứng các chức năng đã thống nhất với giảng
+                        viên.
                       </li>
                       <li>Mã nguồn, cơ sở dữ liệu mẫu và hướng dẫn cài đặt.</li>
                       <li>Báo cáo phân tích, thiết kế và kết quả kiểm thử.</li>
-                      <li>Hướng dẫn sử dụng và tài liệu thuyết trình sản phẩm.</li>
+                      <li>
+                        Hướng dẫn sử dụng và tài liệu thuyết trình sản phẩm.
+                      </li>
                     </ul>
                   </section>
 
@@ -216,13 +272,17 @@
                     <h4>Các bước thực hiện dự kiến</h4>
                     <ol>
                       <li>
-                        Trao đổi với giảng viên để thống nhất yêu cầu và kế hoạch.
+                        Trao đổi với giảng viên để thống nhất yêu cầu và kế
+                        hoạch.
                       </li>
                       <li>
-                        Phân tích nghiệp vụ, thiết kế giao diện và cơ sở dữ liệu.
+                        Phân tích nghiệp vụ, thiết kế giao diện và cơ sở dữ
+                        liệu.
                       </li>
                       <li>Xây dựng chức năng và báo cáo tiến độ.</li>
-                      <li>Kiểm thử, hoàn thiện báo cáo và trình bày sản phẩm.</li>
+                      <li>
+                        Kiểm thử, hoàn thiện báo cáo và trình bày sản phẩm.
+                      </li>
                     </ol>
                     <p>
                       Lịch thực hiện cụ thể sẽ được thống nhất sau khi nhóm được
@@ -240,12 +300,12 @@
               >
                 <h3 id="registration-title">Thông tin đăng ký</h3>
                 <p>
-                  Gửi thông tin thành viên và nguyện vọng trước hạn đăng ký.
-                  Yêu cầu cần được giảng viên xét duyệt.
+                  Gửi thông tin thành viên và nguyện vọng trước hạn đăng ký. Yêu
+                  cầu cần được giảng viên xét duyệt.
                 </p>
                 <p id="registration-notice">
-                  Đây là đề tài minh họa. Biểu mẫu chưa tiếp nhận hoặc lưu yêu cầu
-                  đăng ký.
+                  Đây là đề tài minh họa. Biểu mẫu chưa tiếp nhận hoặc lưu yêu
+                  cầu đăng ký.
                 </p>
                 <!-- Bổ sung xử lý dữ liệu trước khi bật các nút thao tác. -->
                 <form
@@ -272,15 +332,17 @@
                   >
                     <legend>Danh sách thành viên</legend>
                     <p id="group-members-help">
-                      Điền mã số sinh viên và họ tên của người đăng ký cùng
-                      các thành viên trong nhóm.
+                      Điền mã số sinh viên và họ tên của người đăng ký cùng các
+                      thành viên trong nhóm.
                     </p>
 
                     <fieldset class="registration-form__member">
                       <legend>Người đăng ký</legend>
                       <!-- Chưa có phiên đăng nhập để tự điền thông tin. -->
                       <div class="registration-form__field">
-                        <label for="student-code">Mã số sinh viên (bắt buộc)</label>
+                        <label for="student-code"
+                          >Mã số sinh viên (bắt buộc)</label
+                        >
                         <input
                           id="student-code"
                           name="ma-sinh-vien"
@@ -299,7 +361,9 @@
                         />
                       </div>
                       <div class="registration-form__field">
-                        <label for="student-email">Email liên hệ (bắt buộc)</label>
+                        <label for="student-email"
+                          >Email liên hệ (bắt buộc)</label
+                        >
                         <input
                           id="student-email"
                           name="email"

@@ -1,1288 +1,1182 @@
-<!DOCTYPE html>
+<!doctype html>
+
 <html lang="vi">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <meta content="Xem nội dung đăng ký, đề xuất đã gửi, trạng thái và phản hồi của giảng viên." name="description"/>
-  <title>
-   Chi tiết đăng ký và đề xuất | Quản lý đồ án
-  </title>
- </head>
- <body>
-  <a class="skip-link" href="#main-content">
-   Chuyển đến nội dung chính
-  </a>
-  <header class="site-header">
-   <div class="site-header__inner">
-    <a class="site-brand" href="tong-quan-sinh-vien.html">
-     QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta
+      content="Xem nội dung đăng ký, đề xuất đã gửi, trạng thái và phản hồi của giảng viên."
+      name="description"
+    />
+    <title>Chi tiết đăng ký và đề xuất | Quản lý đồ án</title>
+
+    <style>
+      /* Mỗi fragment chỉ mở một yêu cầu, kể cả phần phản hồi/chỉnh sửa. */
+      .request-detail {
+        display: none;
+      }
+      .request-detail:target,
+      .request-detail:has(:target) {
+        display: block;
+      }
+      .page-content:has(.request-detail:target, .request-detail :target)
+        > .request-detail-notice {
+        display: none;
+      }
+      .request-detail-skip {
+        display: none;
+      }
+      .request-detail-page:has(.request-detail:target, .request-detail :target)
+        > .skip-link--default {
+        display: none;
+      }
+      .request-detail-page:has(#dk001:target, #dk001 :target)
+        > .request-detail-skip--dk001 {
+        display: inline;
+      }
+      .request-detail-page:has(#dk002:target, #dk002 :target)
+        > .request-detail-skip--dk002 {
+        display: inline;
+      }
+      .request-detail-page:has(#dx001:target, #dx001 :target)
+        > .request-detail-skip--dx001 {
+        display: inline;
+      }
+      .request-detail-page:has(#dx002:target, #dx002 :target)
+        > .request-detail-skip--dx002 {
+        display: inline;
+      }
+    </style>
+  </head>
+  <body class="request-detail-page">
+    <a
+      class="skip-link request-detail-skip request-detail-skip--dk001"
+      href="#dk001"
+      >Chuyển đến nội dung chính</a
+    ><a
+      class="skip-link request-detail-skip request-detail-skip--dk002"
+      href="#dk002"
+      >Chuyển đến nội dung chính</a
+    ><a
+      class="skip-link request-detail-skip request-detail-skip--dx001"
+      href="#dx001"
+      >Chuyển đến nội dung chính</a
+    ><a
+      class="skip-link request-detail-skip request-detail-skip--dx002"
+      href="#dx002"
+      >Chuyển đến nội dung chính</a
+    ><a class="skip-link skip-link--default" href="#main-content">
+      Chuyển đến nội dung chính
     </a>
-    <!-- Điều hướng chính dành cho sinh viên -->
-    <nav aria-label="Điều hướng sinh viên" class="main-nav">
-     <ul class="main-nav__list">
-      <li class="main-nav__item">
-       <a class="main-nav__link" href="tong-quan-sinh-vien.html">
-        Tổng quan
-       </a>
-      </li>
-      <li class="main-nav__item">
-       <a class="main-nav__link" href="dang-ky-de-tai.html">
-        Đăng ký đề tài
-       </a>
-      </li>
-      <li class="main-nav__item">
-       <!-- Đề xuất của tôi và Tạo đề xuất mới thuộc Đề tài của tôi. -->
-       <a aria-current="location" class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html">
-        Đề tài của tôi
-       </a>
-      </li>
-      <li class="main-nav__item">
-       <a class="main-nav__link" href="lich-han-nop.html">
-        Lịch hạn nộp
-       </a>
-      </li>
-     </ul>
-    </nav>
-    <!-- Tài khoản -->
-    <div class="account-menu">
-     <details class="account-menu__disclosure">
-      <summary aria-controls="account-dropdown" aria-label="Mở menu tài khoản sinh viên" class="account-menu__toggle">
-       <span aria-hidden="true" class="account-menu__avatar">
-        SV
-       </span>
-       <span class="account-menu__label">
-        Tài khoản sinh viên
-       </span>
-      </summary>
-      <ul class="account-menu__list" id="account-dropdown">
-       <li>
-        <a class="account-menu__profile" href="ho-so-ca-nhan.html">
-         Hồ sơ cá nhân
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-sinh-vien.html">
+          QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN
         </a>
-       </li>
-       <li>
-        <button aria-controls="logout-dialog" aria-describedby="logout-notice" class="account-menu__logout" disabled="" type="button">
-         Đăng xuất
-        </button>
-       </li>
-      </ul>
-      <p id="logout-notice">
-       Chưa có xử lý đăng xuất.
-      </p>
-     </details>
-    </div>
-   </div>
-  </header>
-  <dialog aria-labelledby="logout-title" class="confirmation-dialog" hidden="" id="logout-dialog">
-   <h2 id="logout-title">
-    Xác nhận đăng xuất
-   </h2>
-   <p>
-    Bạn muốn đăng xuất khỏi tài khoản hiện tại?
-   </p>
-   <button disabled="" type="button">
-    Hủy
-   </button>
-   <button disabled="" type="button">
-    Xác nhận đăng xuất
-   </button>
-  </dialog>
-  <main class="main-content" id="main-content" tabindex="-1">
-   <div class="page-container">
-    <nav aria-label="Đường dẫn" class="breadcrumb">
-     <ol class="breadcrumb__list">
-      <li class="breadcrumb__item">
-       <a href="tong-quan-sinh-vien.html">
-        Sinh viên
-       </a>
-      </li>
-      <li class="breadcrumb__item">
-       <a href="de-tai-cua-toi-sinh-vien.html">
-        Đề tài của tôi
-       </a>
-      </li>
-      <li class="breadcrumb__item">
-       <span aria-current="page">
-        Chi tiết đăng ký và đề xuất
-       </span>
-      </li>
-     </ol>
-    </nav>
-    <header class="page-header">
-     <h1 class="page-header__title">
-      Chi tiết đăng ký và đề xuất
-     </h1>
-     <p class="page-header__description">
-      Xem lại nội dung đã gửi, trạng thái xét duyệt và phản hồi của giảng viên.
-     </p>
-    </header>
-    <div class="page-content">
-     <p class="demo-notice" id="demo-notice">
-      Dữ liệu minh họa. Các liên kết trong trang đưa tới từng yêu cầu; chưa xử lý hoặc lưu thay đổi.
-     </p>
-     <nav aria-label="Các chi tiết đăng ký và đề xuất" class="request-detail-nav">
-      <ul>
-       <li>
-        <a href="#dk001">
-         Chi tiết đăng ký DK001 — Chờ duyệt
-        </a>
-       </li>
-       <li>
-        <a href="#dk002">
-         Chi tiết đăng ký DK002 — Đã duyệt
-        </a>
-       </li>
-       <li>
-        <a href="#dx001">
-         Chi tiết đề xuất DX001 — Chờ duyệt
-        </a>
-       </li>
-       <li>
-        <a href="#dx002">
-         Chi tiết đề xuất DX002 — Yêu cầu chỉnh sửa
-        </a>
-       </li>
-      </ul>
-     </nav>
-     <article aria-labelledby="dk001-title" class="request-detail" data-request-id="DK001" data-request-type="dang-ky" id="dk001" tabindex="-1">
-      <header class="request-detail__header">
-       <h2 id="dk001-title">
-        Chi tiết đăng ký DK001 — Chờ duyệt
-       </h2>
-       <p class="page-back">
-        <a class="page-back__link" href="de-tai-cua-toi-sinh-vien.html#dang-ky-da-gui">
-         Quay lại danh sách đăng ký
-        </a>
-       </p>
-      </header>
-      <section aria-labelledby="dk001-request-title" class="request-detail__overview">
-       <h3 id="dk001-request-title">
-        Thông tin yêu cầu
-       </h3>
-       <dl class="request-detail__meta">
-        <dt>
-         Mã đăng ký
-        </dt>
-        <dd>
-         DK001
-        </dd>
-        <dt>
-         Hình thức
-        </dt>
-        <dd>
-         Nhóm
-        </dd>
-        <dt>
-         Trạng thái đăng ký
-        </dt>
-        <dd>
-         Chờ duyệt
-        </dd>
-       </dl>
-      </section>
-      <div class="request-detail__layout">
-       <div class="request-detail__body">
-        <section aria-labelledby="dk001-topic-title" class="request-detail__section">
-         <h3 id="dk001-topic-title">
-          Thông tin đề tài đăng ký
-         </h3>
-         <h4>
-          Website quản lý thư viện
-         </h4>
-         <dl class="request-detail__meta">
-          <dt>
-           Mã đề tài
-          </dt>
-          <dd>
-           DT001
-          </dd>
-          <dt>
-           Giảng viên hướng dẫn
-          </dt>
-          <dd>
-           Nguyễn Văn A
-          </dd>
-          <dt>
-           Loại đề tài
-          </dt>
-          <dd>
-           Đồ án môn học
-          </dd>
-          <dt>
-           Học kỳ
-          </dt>
-          <dd>
-           Chưa có thông tin
-          </dd>
-          <dt>
-           Năm học
-          </dt>
-          <dd>
-           Chưa có thông tin
-          </dd>
-          <dt>
-           Hạn đăng ký
-          </dt>
-          <dd>
-           <time datetime="2026-10-20">
-            20/10/2026
-           </time>
-          </dd>
-         </dl>
-         <section aria-labelledby="dk001-message-title">
-          <h4 id="dk001-message-title">
-           Nội dung / ghi chú đăng ký đã gửi
-          </h4>
-          <p>
-           Nhóm mong muốn xây dựng chức năng tra cứu và quản lý mượn, trả sách cho thư viện đại học.
-          </p>
-         </section>
-         <p>
-          <a href="Chi-tiet-de-tai-mo-dang-ky.html">
-           Xem thông tin đề tài DT001
-          </a>
-         </p>
-        </section>
-        <section aria-labelledby="dk001-members-title" class="request-detail__section">
-         <h3 id="dk001-members-title">
-          Nhóm đăng ký
-         </h3>
-         <dl class="request-detail__meta">
-          <dt>
-           Tên nhóm
-          </dt>
-          <dd>
-           Web UIT
-          </dd>
-         </dl>
-         <table class="members-table">
-          <caption>
-           Danh sách thành viên trong yêu cầu đã gửi
-          </caption>
-          <thead>
-           <tr>
-            <th scope="col">
-             Thành viên
-            </th>
-            <th scope="col">
-             Mã số sinh viên
-            </th>
-            <th scope="col">
-             Vai trò trong yêu cầu
-            </th>
-           </tr>
-          </thead>
-          <tbody>
-           <tr>
-            <th scope="row">
-             Nguyễn Minh Anh
-            </th>
-            <td>
-             24520001
-            </td>
-            <td>
-             Người đại diện gửi
-            </td>
-           </tr>
-           <tr>
-            <th scope="row">
-             Trần Gia Bảo
-            </th>
-            <td>
-             24520002
-            </td>
-            <td>
-             Thành viên
-            </td>
-           </tr>
-           <tr>
-            <th scope="row">
-             Lê Hoàng Chi
-            </th>
-            <td>
-             24520003
-            </td>
-            <td>
-             Thành viên
-            </td>
-           </tr>
-          </tbody>
-         </table>
-        </section>
-       </div>
-       <aside aria-label="Xét duyệt đăng ký" class="request-detail__sidebar">
-        <section aria-labelledby="dk001-status-title" class="request-detail__section">
-         <h3 id="dk001-status-title">
-          Tình trạng xử lý
-         </h3>
-         <dl class="request-detail__meta">
-          <dt>
-           Trạng thái đăng ký
-          </dt>
-          <dd>
-           Chờ duyệt
-          </dd>
-          <dt>
-           Ngày gửi
-          </dt>
-          <dd>
-           <time datetime="2026-10-12T09:00:00+07:00">
-            12/10/2026 lúc 09:00
-           </time>
-          </dd>
-          <dt>
-           Người tiếp nhận
-          </dt>
-          <dd>
-           Nguyễn Văn A
-          </dd>
-         </dl>
-         <p>
-          Yêu cầu đã gửi · Chỉ xem.
-         </p>
-        </section>
-        <section aria-labelledby="dk001-feedback-title" class="request-detail__section" id="dk001-phan-hoi-giang-vien">
-         <h3 id="dk001-feedback-title">
-          Phản hồi của giảng viên
-         </h3>
-         <p>
-          Chưa có kết quả xét duyệt.
-         </p>
-         <p>
-          Kết quả và ý kiến sẽ hiển thị tại đây sau khi giảng viên xét duyệt.
-         </p>
-        </section>
-        <section aria-labelledby="dk001-readonly-title" class="request-detail__section">
-         <h3 id="dk001-readonly-title">
-          Thông tin chỉ đọc
-         </h3>
-         <p>
-          Không sửa hoặc rút đăng ký đã gửi.
-         </p>
-        </section>
-       </aside>
-      </div>
-     </article>
-     <article aria-labelledby="dk002-title" class="request-detail" data-request-id="DK002" data-request-type="dang-ky" id="dk002" tabindex="-1">
-      <header class="request-detail__header">
-       <h2 id="dk002-title">
-        Chi tiết đăng ký DK002 — Đã duyệt
-       </h2>
-       <p class="page-back">
-        <a class="page-back__link" href="de-tai-cua-toi-sinh-vien.html#dang-ky-da-gui">
-         Quay lại danh sách đăng ký
-        </a>
-       </p>
-      </header>
-      <section aria-labelledby="dk002-request-title" class="request-detail__overview">
-       <h3 id="dk002-request-title">
-        Thông tin yêu cầu
-       </h3>
-       <dl class="request-detail__meta">
-        <dt>
-         Mã đăng ký
-        </dt>
-        <dd>
-         DK002
-        </dd>
-        <dt>
-         Hình thức
-        </dt>
-        <dd>
-         Cá nhân
-        </dd>
-        <dt>
-         Trạng thái đăng ký
-        </dt>
-        <dd>
-         Đã duyệt
-        </dd>
-       </dl>
-      </section>
-      <div class="request-detail__layout">
-       <div class="request-detail__body">
-        <section aria-labelledby="dk002-topic-title" class="request-detail__section">
-         <h3 id="dk002-topic-title">
-          Thông tin đề tài đăng ký
-         </h3>
-         <h4>
-          Website quản lý câu lạc bộ sinh viên
-         </h4>
-         <dl class="request-detail__meta">
-          <dt>
-           Mã đề tài
-          </dt>
-          <dd>
-           DT002
-          </dd>
-          <dt>
-           Giảng viên hướng dẫn
-          </dt>
-          <dd>
-           Trần Thị B
-          </dd>
-          <dt>
-           Loại đề tài
-          </dt>
-          <dd>
-           Chưa có thông tin
-          </dd>
-          <dt>
-           Học kỳ
-          </dt>
-          <dd>
-           Chưa có thông tin
-          </dd>
-          <dt>
-           Năm học
-          </dt>
-          <dd>
-           Chưa có thông tin
-          </dd>
-         </dl>
-         <section aria-labelledby="dk002-message-title">
-          <h4 id="dk002-message-title">
-           Nội dung / ghi chú đăng ký đã gửi
-          </h4>
-          <p>
-           Em mong muốn xây dựng website giúp câu lạc bộ quản lý hoạt động và thành viên, đồng thời giúp sinh viên tra cứu sự kiện.
-          </p>
-         </section>
-        </section>
-        <section aria-labelledby="dk002-student-title" class="request-detail__section">
-         <h3 id="dk002-student-title">
-          Người đăng ký
-         </h3>
-         <dl class="request-detail__meta">
-          <dt>
-           Họ và tên
-          </dt>
-          <dd>
-           Nguyễn Minh Anh
-          </dd>
-          <dt>
-           Mã số sinh viên
-          </dt>
-          <dd>
-           24520001
-          </dd>
-          <dt>
-           Lớp
-          </dt>
-          <dd>
-           IE104.01
-          </dd>
-          <dt>
-           Ngành
-          </dt>
-          <dd>
-           Hệ thống thông tin
-          </dd>
-         </dl>
-        </section>
-       </div>
-       <aside aria-label="Xét duyệt đăng ký" class="request-detail__sidebar">
-        <section aria-labelledby="dk002-status-title" class="request-detail__section">
-         <h3 id="dk002-status-title">
-          Tình trạng xử lý
-         </h3>
-         <dl class="request-detail__meta">
-          <dt>
-           Trạng thái đăng ký
-          </dt>
-          <dd>
-           Đã duyệt
-          </dd>
-          <dt>
-           Ngày gửi
-          </dt>
-          <dd>
-           <time datetime="2026-10-08T14:00:00+07:00">
-            08/10/2026 lúc 14:00
-           </time>
-          </dd>
-          <dt>
-           Người tiếp nhận
-          </dt>
-          <dd>
-           Trần Thị B
-          </dd>
-         </dl>
-         <p>
-          Yêu cầu đã gửi · Chỉ xem.
-         </p>
-        </section>
-        <section aria-labelledby="dk002-feedback-title" class="request-detail__section" id="dk002-phan-hoi-giang-vien">
-         <h3 id="dk002-feedback-title">
-          Phản hồi của giảng viên
-         </h3>
-         <dl class="request-detail__meta">
-          <dt>
-           Kết quả xét duyệt
-          </dt>
-          <dd>
-           Đã duyệt
-          </dd>
-          <dt>
-           Ngày phản hồi
-          </dt>
-          <dd>
-           <time datetime="2026-10-09T10:00:00+07:00">
-            09/10/2026 lúc 10:00
-           </time>
-          </dd>
-          <dt>
-           Giảng viên phản hồi
-          </dt>
-          <dd>
-           Trần Thị B
-          </dd>
-         </dl>
-         <blockquote>
-          <p>
-           Đồng ý hướng dẫn. Chuẩn bị phạm vi chức năng và kế hoạch thực hiện để trao đổi ở buổi đầu tiên.
-          </p>
-         </blockquote>
-        </section>
-        <section aria-labelledby="dk002-execution-title" class="request-detail__section">
-         <h3 id="dk002-execution-title">
-          Đề tài đã được phân công
-         </h3>
-         <dl class="request-detail__meta">
-          <dt>
-           Trạng thái thực hiện
-          </dt>
-          <dd>
-           Đang thực hiện
-          </dd>
-          <dt>
-           Tiến độ
-          </dt>
-          <dd>
-           25%
-          </dd>
-         </dl>
-         <p>
-          <a href="chi-tiet-de-tai-cua-toi-sinh-vien.html">
-           Xem đề tài DT002 đang thực hiện
-          </a>
-         </p>
-         <h4>
-          Hạn nộp sắp tới
-         </h4>
-         <ul>
-          <li>
-           Đề cương:
-           <time datetime="2026-10-20T23:59:00+07:00">
-            20/10/2026 lúc 23:59
-           </time>
-           .
-          </li>
-          <li>
-           Báo cáo tiến độ:
-           <time datetime="2026-10-27T23:59:00+07:00">
-            27/10/2026 lúc 23:59
-           </time>
-           .
-          </li>
-         </ul>
-         <p>
-          <a href="lich-han-nop.html">
-           Xem lịch hạn nộp
-          </a>
-         </p>
-        </section>
-        <section aria-labelledby="dk002-readonly-title" class="request-detail__section">
-         <h3 id="dk002-readonly-title">
-          Thông tin chỉ đọc
-         </h3>
-         <p>
-          Không sửa hoặc rút đăng ký đã gửi.
-         </p>
-        </section>
-       </aside>
-      </div>
-     </article>
-     <article aria-labelledby="dx001-title" class="request-detail" data-request-id="DX001" data-request-type="de-xuat" id="dx001" tabindex="-1">
-      <header class="request-detail__header">
-       <h2 id="dx001-title">
-        Chi tiết đề xuất DX001 — Chờ duyệt
-       </h2>
-       <p class="page-back">
-        <a class="page-back__link" href="de-xuat-cua-toi.html">
-         Quay lại danh sách đề xuất
-        </a>
-       </p>
-      </header>
-      <section aria-labelledby="dx001-request-title" class="request-detail__overview">
-       <h3 id="dx001-request-title">
-        Thông tin yêu cầu
-       </h3>
-       <dl class="request-detail__meta">
-        <dt>
-         Mã đề xuất
-        </dt>
-        <dd>
-         DX001
-        </dd>
-        <dt>
-         Hình thức
-        </dt>
-        <dd>
-         Cá nhân
-        </dd>
-        <dt>
-         Trạng thái đề xuất
-        </dt>
-        <dd>
-         Chờ duyệt
-        </dd>
-       </dl>
-      </section>
-      <div class="request-detail__layout">
-       <div class="request-detail__body">
-        <section aria-labelledby="dx001-proposal-title" class="request-detail__section">
-         <h3 id="dx001-proposal-title">
-          Nội dung đề xuất
-         </h3>
-         <h4>
-          Cổng thông tin nghiên cứu sinh viên
-         </h4>
-         <dl class="request-detail__meta">
-          <dt>
-           Loại đề tài
-          </dt>
-          <dd>
-           Đồ án môn học
-          </dd>
-          <dt>
-           Học kỳ
-          </dt>
-          <dd>
-           Chưa có thông tin
-          </dd>
-          <dt>
-           Năm học
-          </dt>
-          <dd>
-           Chưa có thông tin
-          </dd>
-          <dt>
-           Giảng viên được đề nghị hướng dẫn
-          </dt>
-          <dd>
-           Nguyễn Văn A
-          </dd>
-         </dl>
-         <section aria-labelledby="dx001-description-title">
-          <h4 id="dx001-description-title">
-           Mô tả đề xuất
-          </h4>
-          <p>
-           Xây dựng cổng thông tin giúp sinh viên tra cứu công trình nghiên cứu, tìm đề tài quan tâm và tìm nhóm cùng thực hiện nghiên cứu.
-          </p>
-         </section>
-         <section aria-labelledby="dx001-objectives-title">
-          <h4 id="dx001-objectives-title">
-           Mục tiêu / kết quả dự kiến
-          </h4>
-          <p>
-           Tập trung thông tin công trình nghiên cứu và hỗ trợ sinh viên tìm nhóm theo lĩnh vực quan tâm.
-          </p>
-         </section>
-         <section aria-labelledby="dx001-scope-title">
-          <h4 id="dx001-scope-title">
-           Yêu cầu / phạm vi thực hiện
-          </h4>
-          <p>
-           Trình bày danh sách công trình, tìm kiếm theo tên hoặc lĩnh vực, xem chi tiết công trình và thông tin nhóm nghiên cứu.
-          </p>
-         </section>
-        </section>
-        <section aria-labelledby="dx001-student-title" class="request-detail__section">
-         <h3 id="dx001-student-title">
-          Sinh viên đề xuất
-         </h3>
-         <dl class="request-detail__meta">
-          <dt>
-           Họ và tên
-          </dt>
-          <dd>
-           Nguyễn Minh Anh
-          </dd>
-          <dt>
-           Mã số sinh viên
-          </dt>
-          <dd>
-           24520001
-          </dd>
-          <dt>
-           Lớp
-          </dt>
-          <dd>
-           IE104.01
-          </dd>
-          <dt>
-           Ngành
-          </dt>
-          <dd>
-           Hệ thống thông tin
-          </dd>
-         </dl>
-        </section>
-       </div>
-       <aside aria-label="Xét duyệt đề xuất" class="request-detail__sidebar">
-        <section aria-labelledby="dx001-status-title" class="request-detail__section">
-         <h3 id="dx001-status-title">
-          Tình trạng xử lý
-         </h3>
-         <dl class="request-detail__meta">
-          <dt>
-           Trạng thái đề xuất
-          </dt>
-          <dd>
-           Chờ duyệt
-          </dd>
-          <dt>
-           Ngày gửi
-          </dt>
-          <dd>
-           <time datetime="2026-10-11T16:00:00+07:00">
-            11/10/2026 lúc 16:00
-           </time>
-          </dd>
-          <dt>
-           Người tiếp nhận
-          </dt>
-          <dd>
-           Nguyễn Văn A
-          </dd>
-         </dl>
-         <p>
-          Yêu cầu đã gửi · Chỉ xem.
-         </p>
-        </section>
-        <section aria-labelledby="dx001-feedback-title" class="request-detail__section" id="dx001-phan-hoi-giang-vien">
-         <h3 id="dx001-feedback-title">
-          Phản hồi của giảng viên
-         </h3>
-         <p>
-          Chưa có kết quả xét duyệt.
-         </p>
-         <p>
-          Kết quả và ý kiến sẽ hiển thị tại đây sau khi giảng viên xét duyệt.
-         </p>
-        </section>
-        <section aria-labelledby="dx001-readonly-title" class="request-detail__section">
-         <h3 id="dx001-readonly-title">
-          Thông tin chỉ đọc
-         </h3>
-         <p>
-          Không sửa hoặc gửi lại đề xuất đang chờ duyệt.
-         </p>
-         <p>
-          Đề xuất được chấp nhận không tự động đồng nghĩa đã phân công thực hiện.
-         </p>
-        </section>
-       </aside>
-      </div>
-     </article>
-     <article aria-labelledby="dx002-title" class="request-detail" data-request-id="DX002" data-request-type="de-xuat" id="dx002" tabindex="-1">
-      <header class="request-detail__header">
-       <h2 id="dx002-title">
-        Chi tiết đề xuất DX002 — Yêu cầu chỉnh sửa
-       </h2>
-       <p class="page-back">
-        <a class="page-back__link" href="de-xuat-cua-toi.html">
-         Quay lại danh sách đề xuất
-        </a>
-       </p>
-      </header>
-      <section aria-labelledby="dx002-request-title" class="request-detail__overview">
-       <h3 id="dx002-request-title">
-        Thông tin yêu cầu
-       </h3>
-       <dl class="request-detail__meta">
-        <dt>
-         Mã đề xuất
-        </dt>
-        <dd>
-         DX002
-        </dd>
-        <dt>
-         Hình thức
-        </dt>
-        <dd>
-         Nhóm
-        </dd>
-        <dt>
-         Trạng thái đề xuất
-        </dt>
-        <dd>
-         Yêu cầu chỉnh sửa
-        </dd>
-       </dl>
-      </section>
-      <div class="request-detail__layout">
-       <div class="request-detail__body">
-        <section aria-labelledby="dx002-proposal-title" class="request-detail__section">
-         <h3 id="dx002-proposal-title">
-          Nội dung đề xuất
-         </h3>
-         <h4>
-          Website hỗ trợ sinh viên tìm nhóm học tập
-         </h4>
-         <dl class="request-detail__meta">
-          <dt>
-           Loại đề tài
-          </dt>
-          <dd>
-           Đồ án môn học
-          </dd>
-          <dt>
-           Học kỳ
-          </dt>
-          <dd>
-           Chưa có thông tin
-          </dd>
-          <dt>
-           Năm học
-          </dt>
-          <dd>
-           Chưa có thông tin
-          </dd>
-          <dt>
-           Giảng viên được đề nghị hướng dẫn
-          </dt>
-          <dd>
-           Trần Thị B
-          </dd>
-         </dl>
-         <section aria-labelledby="dx002-description-title">
-          <h4 id="dx002-description-title">
-           Mô tả đề xuất
-          </h4>
-          <p>
-           Xây dựng website giúp sinh viên đăng nhu cầu học tập, tìm bạn cùng môn học và tổ chức nhóm học tập phù hợp.
-          </p>
-         </section>
-         <section aria-labelledby="dx002-objectives-title">
-          <h4 id="dx002-objectives-title">
-           Mục tiêu / kết quả dự kiến
-          </h4>
-          <p>
-           Giúp sinh viên tìm nhóm theo môn học và nhu cầu học tập; tạo giao diện giới thiệu nhóm, danh sách thành viên và lịch học dự kiến.
-          </p>
-         </section>
-         <section aria-labelledby="dx002-scope-title">
-          <h4 id="dx002-scope-title">
-           Yêu cầu / phạm vi thực hiện
-          </h4>
-          <p>
-           Đăng nhu cầu tìm nhóm, xem danh sách nhóm, tìm kiếm theo môn học và xem thông tin nhóm. Tiêu chí ghép nhóm, phạm vi môn học và kế hoạch kiểm thử sẽ được bổ sung theo phản hồi.
-          </p>
-         </section>
-        </section>
-        <section aria-labelledby="dx002-members-title" class="request-detail__section">
-         <h3 id="dx002-members-title">
-          Nhóm đề xuất
-         </h3>
-         <dl class="request-detail__meta">
-          <dt>
-           Tên nhóm
-          </dt>
-          <dd>
-           Web UIT
-          </dd>
-         </dl>
-         <table class="members-table">
-          <caption>
-           Danh sách thành viên trong yêu cầu đã gửi
-          </caption>
-          <thead>
-           <tr>
-            <th scope="col">
-             Thành viên
-            </th>
-            <th scope="col">
-             Mã số sinh viên
-            </th>
-            <th scope="col">
-             Vai trò trong yêu cầu
-            </th>
-           </tr>
-          </thead>
-          <tbody>
-           <tr>
-            <th scope="row">
-             Nguyễn Minh Anh
-            </th>
-            <td>
-             24520001
-            </td>
-            <td>
-             Người đại diện gửi
-            </td>
-           </tr>
-           <tr>
-            <th scope="row">
-             Trần Gia Bảo
-            </th>
-            <td>
-             24520002
-            </td>
-            <td>
-             Thành viên
-            </td>
-           </tr>
-           <tr>
-            <th scope="row">
-             Lê Hoàng Chi
-            </th>
-            <td>
-             24520003
-            </td>
-            <td>
-             Thành viên
-            </td>
-           </tr>
-          </tbody>
-         </table>
-        </section>
-       </div>
-       <aside aria-label="Xét duyệt đề xuất" class="request-detail__sidebar">
-        <section aria-labelledby="dx002-status-title" class="request-detail__section">
-         <h3 id="dx002-status-title">
-          Tình trạng xử lý
-         </h3>
-         <dl class="request-detail__meta">
-          <dt>
-           Trạng thái đề xuất
-          </dt>
-          <dd>
-           Yêu cầu chỉnh sửa
-          </dd>
-          <dt>
-           Ngày gửi
-          </dt>
-          <dd>
-           <time datetime="2026-10-07T10:00:00+07:00">
-            07/10/2026 lúc 10:00
-           </time>
-          </dd>
-          <dt>
-           Người tiếp nhận
-          </dt>
-          <dd>
-           Trần Thị B
-          </dd>
-         </dl>
-         <p>
-          Giảng viên đã yêu cầu bổ sung nội dung đề xuất.
-         </p>
-        </section>
-        <section aria-labelledby="dx002-feedback-title" class="request-detail__section" id="dx002-phan-hoi-giang-vien">
-         <h3 id="dx002-feedback-title">
-          Phản hồi của giảng viên
-         </h3>
-         <dl class="request-detail__meta">
-          <dt>
-           Kết quả xét duyệt
-          </dt>
-          <dd>
-           Yêu cầu chỉnh sửa
-          </dd>
-          <dt>
-           Ngày phản hồi
-          </dt>
-          <dd>
-           <time datetime="2026-10-10T15:00:00+07:00">
-            10/10/2026 lúc 15:00
-           </time>
-          </dd>
-          <dt>
-           Giảng viên phản hồi
-          </dt>
-          <dd>
-           Trần Thị B
-          </dd>
-         </dl>
-         <blockquote>
-          <p>
-           Bổ sung tiêu chí ghép nhóm, phạm vi môn học và kế hoạch kiểm thử.
-          </p>
-         </blockquote>
-        </section>
-        <section aria-labelledby="dx002-actions-title" class="request-detail__section">
-         <h3 id="dx002-actions-title">
-          Thao tác với đề xuất
-         </h3>
-         <p>
-          <a href="#dx002-chinh-sua">
-           Chỉnh sửa đề xuất DX002
-          </a>
-         </p>
-         <button aria-controls="dx002-delete-proposal-dialog" aria-describedby="demo-notice" disabled="" type="button">
-          Xóa đề xuất
-         </button>
-         <p>
-          Đề xuất được chấp nhận không tự động đồng nghĩa đã phân công thực hiện.
-         </p>
-        </section>
-       </aside>
-      </div>
-      <dialog aria-describedby="dx002-delete-description" aria-labelledby="dx002-delete-title" class="confirmation-dialog" hidden="" id="dx002-delete-proposal-dialog">
-       <h3 id="dx002-delete-title">
-        Xác nhận xóa đề xuất DX002
-       </h3>
-       <p id="dx002-delete-description">
-        Bạn muốn xóa đề xuất Website hỗ trợ sinh viên tìm nhóm học tập?
-       </p>
-       <div class="confirmation-dialog__actions">
-        <button disabled="" type="button">
-         Hủy xóa
-        </button>
-        <button disabled="" type="button">
-         Xác nhận xóa
-        </button>
-       </div>
-      </dialog>
-      <details class="request-detail__edit" id="dx002-chinh-sua">
-       <summary>
-        Biểu mẫu chỉnh sửa đề xuất DX002
-       </summary>
-       <p id="dx002-edit-proposal-form-notice">
-        Gửi, lưu, thêm và xóa thành viên chưa được xử lý trong giai đoạn HTML.
-       </p>
-       <p hidden="" id="dx002-edit-proposal-form-errors" role="alert">
-        Kiểm tra lại các trường được đánh dấu trước khi gửi đề xuất.
-       </p>
-       <form action="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html" aria-describedby="dx002-edit-proposal-form-notice" class="proposal-form" method="get">
-        <fieldset class="proposal-form__section">
-         <legend>
-          Thông tin đề tài đề xuất
-         </legend>
-         <div class="proposal-form__field">
-          <label for="dx002-edit-proposal-title">
-           Tên đề tài (bắt buộc)
-          </label>
-          <input id="dx002-edit-proposal-title" name="ten-de-tai" required="" type="text" value="Website hỗ trợ sinh viên tìm nhóm học tập"/>
-         </div>
-         <div class="proposal-form__field">
-          <label for="dx002-edit-proposal-type">
-           Loại đề tài (bắt buộc)
-          </label>
-          <select id="dx002-edit-proposal-type" name="loai-de-tai" required="">
-           <option value="">
-            Chọn loại đề tài
-           </option>
-           <option selected="" value="do-an-mon-hoc">
-            Đồ án môn học
-           </option>
-           <option value="khoa-luan">
-            Khóa luận tốt nghiệp
-           </option>
-          </select>
-         </div>
-         <div class="proposal-form__field">
-          <label for="dx002-edit-proposal-description">
-           Mô tả đề tài (bắt buộc)
-          </label>
-          <textarea id="dx002-edit-proposal-description" name="mo-ta" required="" rows="5">Xây dựng website giúp sinh viên đăng nhu cầu học tập, tìm bạn cùng môn học và tổ chức nhóm học tập phù hợp.</textarea>
-         </div>
-         <div class="proposal-form__field">
-          <label for="dx002-edit-proposal-goals">
-           Mục tiêu và kết quả dự kiến
-          </label>
-          <textarea id="dx002-edit-proposal-goals" name="muc-tieu" rows="4">Giúp sinh viên tìm nhóm theo môn học và nhu cầu học tập; tạo giao diện giới thiệu nhóm, danh sách thành viên và lịch học dự kiến.</textarea>
-         </div>
-         <div class="proposal-form__field">
-          <label for="dx002-edit-proposal-scope">
-           Yêu cầu và phạm vi thực hiện
-          </label>
-          <textarea id="dx002-edit-proposal-scope" name="pham-vi" rows="5">Đăng nhu cầu tìm nhóm, xem danh sách nhóm, tìm kiếm theo môn học và xem thông tin nhóm. Tiêu chí ghép nhóm, phạm vi môn học và kế hoạch kiểm thử sẽ được bổ sung theo phản hồi.</textarea>
-         </div>
-        </fieldset>
-        <fieldset class="proposal-form__section">
-         <legend>
-          Hình thức thực hiện
-         </legend>
-         <div class="proposal-form__choice">
-          <input id="dx002-edit-proposal-mode-individual" name="hinh-thuc" type="radio" value="ca-nhan"/>
-          <label for="dx002-edit-proposal-mode-individual">
-           Cá nhân
-          </label>
-         </div>
-         <div class="proposal-form__choice">
-          <input checked="" id="dx002-edit-proposal-mode-group" name="hinh-thuc" type="radio" value="nhom"/>
-          <label for="dx002-edit-proposal-mode-group">
-           Nhóm
-          </label>
-         </div>
-         <p id="dx002-edit-proposal-group-help">
-          Nếu thực hiện theo nhóm, điền tên nhóm và thông tin các thành viên bên dưới. Việc đổi hình thức chưa tự ẩn hoặc thay đổi các trường trong giai đoạn HTML.
-         </p>
-         <fieldset class="proposal-form__member">
-          <legend>
-           Người gửi đề xuất
-          </legend>
-          <div class="proposal-form__field">
-           <label for="dx002-edit-student-code">
-            Mã số sinh viên người gửi
-           </label>
-           <input aria-describedby="dx002-edit-student-identity-note" id="dx002-edit-student-code" name="student-code" readonly="" type="text" value="24520001"/>
-          </div>
-          <div class="proposal-form__field">
-           <label for="dx002-edit-student-name">
-            Họ và tên người gửi
-           </label>
-           <input aria-describedby="dx002-edit-student-identity-note" autocomplete="name" id="dx002-edit-student-name" name="student-name" readonly="" type="text" value="Nguyễn Minh Anh"/>
-          </div>
-          <p id="dx002-edit-student-identity-note">
-           Thông tin tài khoản mẫu, chưa được lấy từ phiên đăng nhập.
-          </p>
-         </fieldset>
-         <details class="proposal-form__group" open="">
-          <summary>
-           Thông tin nhóm và thành viên
-          </summary>
-          <div class="proposal-form__field">
-           <label for="dx002-edit-proposal-group-name">
-            Tên nhóm
-           </label>
-           <input aria-describedby="dx002-edit-proposal-group-help" id="dx002-edit-proposal-group-name" name="ten-nhom" type="text" value="Web UIT"/>
-          </div>
-          <fieldset class="proposal-form__member">
-           <legend>
-            Thành viên 2
-           </legend>
-           <div class="proposal-form__field">
-            <label for="dx002-edit-member-code-2">
-             Mã số sinh viên thành viên 2
-            </label>
-            <input autocomplete="off" id="dx002-edit-member-code-2" name="member-code-2" type="text" value="24520002"/>
-           </div>
-           <div class="proposal-form__field">
-            <label for="dx002-edit-member-name-2">
-             Họ và tên thành viên 2
-            </label>
-            <input autocomplete="off" id="dx002-edit-member-name-2" name="member-name-2" type="text" value="Trần Gia Bảo"/>
-           </div>
-           <button aria-describedby="dx002-edit-proposal-form-notice" disabled="" type="button">
-            Xóa thành viên 2
-           </button>
-          </fieldset>
-          <fieldset class="proposal-form__member">
-           <legend>
-            Thành viên 3
-           </legend>
-           <div class="proposal-form__field">
-            <label for="dx002-edit-member-code-3">
-             Mã số sinh viên thành viên 3
-            </label>
-            <input autocomplete="off" id="dx002-edit-member-code-3" name="member-code-3" type="text" value="24520003"/>
-           </div>
-           <div class="proposal-form__field">
-            <label for="dx002-edit-member-name-3">
-             Họ và tên thành viên 3
-            </label>
-            <input autocomplete="off" id="dx002-edit-member-name-3" name="member-name-3" type="text" value="Lê Hoàng Chi"/>
-           </div>
-           <button aria-describedby="dx002-edit-proposal-form-notice" disabled="" type="button">
-            Xóa thành viên 3
-           </button>
-          </fieldset>
-          <button aria-describedby="dx002-edit-proposal-form-notice" class="proposal-form__add-member" disabled="" type="button">
-           Thêm thành viên
-          </button>
-          <p class="proposal-form__member-count">
-           Số thành viên mẫu: 3 (bao gồm người gửi).
-          </p>
-         </details>
-        </fieldset>
-        <fieldset class="proposal-form__section">
-         <legend>
-          Giảng viên đề nghị
-         </legend>
-         <div class="proposal-form__field">
-          <label for="dx002-edit-proposal-lecturer">
-           Chọn giảng viên hướng dẫn đề nghị
-          </label>
-          <select id="dx002-edit-proposal-lecturer" name="giang-vien-de-nghi">
-           <option value="">
-            Chọn giảng viên
-           </option>
-           <option value="GV001">
-            Nguyễn Văn A
-           </option>
-           <option selected="" value="GV002">
-            Trần Thị B
-           </option>
-          </select>
-         </div>
-        </fieldset>
-        <div class="proposal-form__actions">
-         <button aria-controls="dx002-edit-proposal-send-dialog" aria-describedby="dx002-edit-proposal-form-notice" disabled="" type="submit">
-          Lưu chỉnh sửa và gửi lại
-         </button>
-         <button type="reset">
-          Khôi phục nội dung mẫu
-         </button>
-         <a href="#dx002">
-          Hủy
-         </a>
+        <!-- Điều hướng chính dành cho sinh viên -->
+        <nav aria-label="Điều hướng sinh viên" class="main-nav">
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html">
+                Tổng quan
+              </a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="dang-ky-de-tai.html">
+                Đăng ký đề tài
+              </a>
+            </li>
+            <li class="main-nav__item">
+              <!-- Đề xuất của tôi và Tạo đề xuất mới thuộc Đề tài của tôi. -->
+              <a
+                aria-current="location"
+                class="main-nav__link"
+                href="de-tai-cua-toi-sinh-vien.html"
+              >
+                Đề tài của tôi
+              </a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="lich-han-nop.html">
+                Lịch hạn nộp
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <!-- Tài khoản -->
+        <div class="account-menu">
+          <details class="account-menu__disclosure">
+            <summary
+              aria-label="Mở menu tài khoản sinh viên"
+              class="account-menu__toggle"
+            >
+              <span aria-hidden="true" class="account-menu__avatar"> SV </span>
+              <span class="account-menu__label"> Tài khoản sinh viên </span>
+            </summary>
+            <ul class="account-menu__list" id="account-dropdown">
+              <li>
+                <a class="account-menu__profile" href="ho-so-ca-nhan.html">
+                  Hồ sơ cá nhân
+                </a>
+              </li>
+              <li>
+                <button
+                  aria-controls="logout-dialog"
+                  aria-describedby="logout-notice"
+                  class="account-menu__logout"
+                  disabled=""
+                  type="button"
+                >
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
         </div>
-       </form>
-       <dialog aria-describedby="dx002-edit-proposal-send-description" aria-labelledby="dx002-edit-proposal-send-title" hidden="" id="dx002-edit-proposal-send-dialog">
-        <h3 id="dx002-edit-proposal-send-title">
-         Xác nhận gửi lại đề xuất DX002
-        </h3>
-        <p id="dx002-edit-proposal-send-description">
-         Kiểm tra thông tin đề tài, hình thức thực hiện, thành viên và giảng viên đề nghị trước khi gửi. Việc xác nhận và lưu đề xuất chưa được xử lý.
+      </div>
+    </header>
+    <dialog
+      aria-labelledby="logout-title"
+      class="confirmation-dialog"
+      id="logout-dialog"
+    >
+      <h2 id="logout-title">Xác nhận đăng xuất</h2>
+      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+      <form method="dialog">
+        <button type="submit" value="cancel">Hủy</button>
+      </form>
+      <button disabled="" type="button">Xác nhận đăng xuất</button>
+    </dialog>
+    <main class="main-content" id="main-content" tabindex="-1">
+      <div class="page-container">
+        <nav aria-label="Đường dẫn" class="breadcrumb">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item">
+              <a href="tong-quan-sinh-vien.html"> Sinh viên </a>
+            </li>
+            <li class="breadcrumb__item">
+              <a href="de-tai-cua-toi-sinh-vien.html"> Đề tài của tôi </a>
+            </li>
+            <li class="breadcrumb__item">
+              <span aria-current="page"> Chi tiết đăng ký và đề xuất </span>
+            </li>
+          </ol>
+        </nav>
+        <header class="page-header">
+          <h1 class="page-header__title">Chi tiết đăng ký và đề xuất</h1>
+          <p class="page-header__description">
+            Xem lại nội dung đã gửi, trạng thái xét duyệt và phản hồi của giảng
+            viên.
+          </p>
+        </header>
+        <div class="page-content">
+          <p class="demo-notice" id="demo-notice">
+            Dữ liệu minh họa. Mỗi liên kết chỉ mở một đăng ký hoặc đề xuất; thay
+            đổi chưa được xử lý hoặc lưu.
+          </p>
+          <p class="request-detail-notice" role="status">
+            Chọn yêu cầu mẫu để xem chi tiết:
+            <a href="#dk001">Đăng ký DK001</a> ·
+            <a href="#dk002">Đăng ký DK002</a> ·
+            <a href="#dx001">Đề xuất DX001</a> ·
+            <a href="#dx002">Đề xuất DX002</a>.
+          </p>
+          <article
+            aria-labelledby="dk001-title"
+            class="request-detail"
+            data-request-id="DK001"
+            data-request-status="cho-duyet"
+            data-request-type="dang-ky"
+            id="dk001"
+            tabindex="-1"
+          >
+            <header class="request-detail__header">
+              <h2 id="dk001-title">Chi tiết đăng ký DK001 — Chờ duyệt</h2>
+              <p class="page-back">
+                <a
+                  class="page-back__link"
+                  href="de-tai-cua-toi-sinh-vien.html#dang-ky-da-gui"
+                >
+                  Quay lại danh sách đăng ký
+                </a>
+              </p>
+            </header>
+            <section
+              aria-labelledby="dk001-request-title"
+              class="request-detail__overview"
+            >
+              <h3 id="dk001-request-title">Thông tin yêu cầu</h3>
+              <dl class="request-detail__meta">
+                <dt>Mã đăng ký</dt>
+                <dd>DK001</dd>
+                <dt>Hình thức</dt>
+                <dd>Nhóm</dd>
+                <dt>Trạng thái đăng ký</dt>
+                <dd>Chờ duyệt</dd>
+              </dl>
+            </section>
+            <div class="request-detail__layout">
+              <div class="request-detail__body">
+                <section
+                  aria-labelledby="dk001-topic-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dk001-topic-title">Thông tin đề tài đăng ký</h3>
+                  <h4>Website quản lý thư viện</h4>
+                  <dl class="request-detail__meta">
+                    <dt>Mã đề tài</dt>
+                    <dd>DT001</dd>
+                    <dt>Giảng viên hướng dẫn</dt>
+                    <dd>Nguyễn Văn A</dd>
+                    <dt>Loại đề tài</dt>
+                    <dd>Đồ án môn học</dd>
+                    <dt>Học kỳ</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Năm học</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Hạn đăng ký</dt>
+                    <dd>
+                      <time datetime="2026-10-20">20/10/2026</time>
+                    </dd>
+                  </dl>
+                  <section aria-labelledby="dk001-message-title">
+                    <h4 id="dk001-message-title">
+                      Nội dung / ghi chú đăng ký đã gửi
+                    </h4>
+                    <p>
+                      Nhóm mong muốn xây dựng chức năng tra cứu và quản lý mượn,
+                      trả sách cho thư viện đại học.
+                    </p>
+                  </section>
+                  <p>
+                    <a href="Chi-tiet-de-tai-mo-dang-ky.html">
+                      Xem thông tin đề tài DT001
+                    </a>
+                  </p>
+                </section>
+                <section
+                  aria-labelledby="dk001-members-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dk001-members-title">Nhóm đăng ký</h3>
+                  <dl class="request-detail__meta">
+                    <dt>Tên nhóm</dt>
+                    <dd>Web UIT</dd>
+                  </dl>
+                  <table class="members-table">
+                    <caption>
+                      Danh sách thành viên trong yêu cầu đã gửi
+                    </caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Thành viên</th>
+                        <th scope="col">Mã số sinh viên</th>
+                        <th scope="col">Vai trò trong yêu cầu</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">Nguyễn Minh Anh</th>
+                        <td>24520001</td>
+                        <td>Người đại diện gửi</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Trần Gia Bảo</th>
+                        <td>24520002</td>
+                        <td>Thành viên</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Lê Hoàng Chi</th>
+                        <td>24520003</td>
+                        <td>Thành viên</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              </div>
+              <aside
+                aria-label="Xét duyệt đăng ký"
+                class="request-detail__sidebar"
+              >
+                <section
+                  aria-labelledby="dk001-status-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dk001-status-title">Tình trạng xử lý</h3>
+                  <dl class="request-detail__meta">
+                    <dt>Trạng thái đăng ký</dt>
+                    <dd>Chờ duyệt</dd>
+                    <dt>Ngày gửi</dt>
+                    <dd>
+                      <time datetime="2026-10-12T09:00:00+07:00"
+                        >12/10/2026 lúc 09:00</time
+                      >
+                    </dd>
+                    <dt>Người tiếp nhận</dt>
+                    <dd>Nguyễn Văn A</dd>
+                  </dl>
+                  <p>Yêu cầu đã gửi · Chỉ xem.</p>
+                </section>
+                <section
+                  aria-labelledby="dk001-feedback-title"
+                  class="request-detail__section"
+                  id="dk001-phan-hoi-giang-vien"
+                >
+                  <h3 id="dk001-feedback-title">Phản hồi của giảng viên</h3>
+                  <p>Chưa có kết quả xét duyệt.</p>
+                  <p>
+                    Kết quả và ý kiến sẽ hiển thị tại đây sau khi giảng viên xét
+                    duyệt.
+                  </p>
+                </section>
+                <section
+                  aria-labelledby="dk001-readonly-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dk001-readonly-title">Thông tin chỉ đọc</h3>
+                  <p>Không sửa hoặc rút đăng ký đã gửi.</p>
+                </section>
+              </aside>
+            </div>
+          </article>
+          <article
+            aria-labelledby="dk002-title"
+            class="request-detail"
+            data-request-id="DK002"
+            data-request-status="da-duyet"
+            data-request-type="dang-ky"
+            id="dk002"
+            tabindex="-1"
+          >
+            <header class="request-detail__header">
+              <h2 id="dk002-title">Chi tiết đăng ký DK002 — Đã duyệt</h2>
+              <p class="page-back">
+                <a
+                  class="page-back__link"
+                  href="de-tai-cua-toi-sinh-vien.html#dang-ky-da-gui"
+                >
+                  Quay lại danh sách đăng ký
+                </a>
+              </p>
+            </header>
+            <section
+              aria-labelledby="dk002-request-title"
+              class="request-detail__overview"
+            >
+              <h3 id="dk002-request-title">Thông tin yêu cầu</h3>
+              <dl class="request-detail__meta">
+                <dt>Mã đăng ký</dt>
+                <dd>DK002</dd>
+                <dt>Hình thức</dt>
+                <dd>Cá nhân</dd>
+                <dt>Trạng thái đăng ký</dt>
+                <dd>Đã duyệt</dd>
+              </dl>
+            </section>
+            <div class="request-detail__layout">
+              <div class="request-detail__body">
+                <section
+                  aria-labelledby="dk002-topic-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dk002-topic-title">Thông tin đề tài đăng ký</h3>
+                  <h4>Website quản lý câu lạc bộ sinh viên</h4>
+                  <dl class="request-detail__meta">
+                    <dt>Mã đề tài</dt>
+                    <dd>DT002</dd>
+                    <dt>Giảng viên hướng dẫn</dt>
+                    <dd>Trần Thị B</dd>
+                    <dt>Loại đề tài</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Học kỳ</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Năm học</dt>
+                    <dd>Chưa có thông tin</dd>
+                  </dl>
+                  <section aria-labelledby="dk002-message-title">
+                    <h4 id="dk002-message-title">
+                      Nội dung / ghi chú đăng ký đã gửi
+                    </h4>
+                    <p>
+                      Em mong muốn xây dựng website giúp câu lạc bộ quản lý hoạt
+                      động và thành viên, đồng thời giúp sinh viên tra cứu sự
+                      kiện.
+                    </p>
+                  </section>
+                </section>
+                <section
+                  aria-labelledby="dk002-student-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dk002-student-title">Người đăng ký</h3>
+                  <dl class="request-detail__meta">
+                    <dt>Họ và tên</dt>
+                    <dd>Nguyễn Minh Anh</dd>
+                    <dt>Mã số sinh viên</dt>
+                    <dd>24520001</dd>
+                    <dt>Lớp</dt>
+                    <dd>IE104.01</dd>
+                    <dt>Ngành</dt>
+                    <dd>Hệ thống thông tin</dd>
+                  </dl>
+                </section>
+              </div>
+              <aside
+                aria-label="Xét duyệt đăng ký"
+                class="request-detail__sidebar"
+              >
+                <section
+                  aria-labelledby="dk002-status-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dk002-status-title">Tình trạng xử lý</h3>
+                  <dl class="request-detail__meta">
+                    <dt>Trạng thái đăng ký</dt>
+                    <dd>Đã duyệt</dd>
+                    <dt>Ngày gửi</dt>
+                    <dd>
+                      <time datetime="2026-10-08T14:00:00+07:00"
+                        >08/10/2026 lúc 14:00</time
+                      >
+                    </dd>
+                    <dt>Người tiếp nhận</dt>
+                    <dd>Trần Thị B</dd>
+                  </dl>
+                  <p>Yêu cầu đã gửi · Chỉ xem.</p>
+                </section>
+                <section
+                  aria-labelledby="dk002-feedback-title"
+                  class="request-detail__section"
+                  id="dk002-phan-hoi-giang-vien"
+                >
+                  <h3 id="dk002-feedback-title">Phản hồi của giảng viên</h3>
+                  <dl class="request-detail__meta">
+                    <dt>Kết quả xét duyệt</dt>
+                    <dd>Đã duyệt</dd>
+                    <dt>Ngày phản hồi</dt>
+                    <dd>
+                      <time datetime="2026-10-09T10:00:00+07:00"
+                        >09/10/2026 lúc 10:00</time
+                      >
+                    </dd>
+                    <dt>Giảng viên phản hồi</dt>
+                    <dd>Trần Thị B</dd>
+                  </dl>
+                  <blockquote>
+                    <p>
+                      Đồng ý hướng dẫn. Chuẩn bị phạm vi chức năng và kế hoạch
+                      thực hiện để trao đổi ở buổi đầu tiên.
+                    </p>
+                  </blockquote>
+                </section>
+                <section
+                  aria-labelledby="dk002-execution-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dk002-execution-title">Đề tài đã được phân công</h3>
+                  <dl class="request-detail__meta">
+                    <dt>Trạng thái thực hiện</dt>
+                    <dd>Đang thực hiện</dd>
+                    <dt>Tiến độ</dt>
+                    <dd>25%</dd>
+                  </dl>
+                  <p>
+                    <a href="chi-tiet-de-tai-cua-toi-sinh-vien.html">
+                      Xem đề tài DT002 đang thực hiện
+                    </a>
+                  </p>
+                  <h4>Hạn nộp sắp tới</h4>
+                  <ul>
+                    <li>
+                      Đề cương:
+                      <time datetime="2026-10-20T23:59:00+07:00"
+                        >20/10/2026 lúc 23:59</time
+                      >.
+                    </li>
+                    <li>
+                      Báo cáo tiến độ:
+                      <time datetime="2026-10-27T23:59:00+07:00"
+                        >27/10/2026 lúc 23:59</time
+                      >.
+                    </li>
+                  </ul>
+                  <p>
+                    <a href="lich-han-nop.html"> Xem lịch hạn nộp </a>
+                  </p>
+                </section>
+                <section
+                  aria-labelledby="dk002-readonly-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dk002-readonly-title">Thông tin chỉ đọc</h3>
+                  <p>Không sửa hoặc rút đăng ký đã gửi.</p>
+                </section>
+              </aside>
+            </div>
+          </article>
+          <article
+            aria-labelledby="dx001-title"
+            class="request-detail"
+            data-request-id="DX001"
+            data-request-status="cho-duyet"
+            data-request-type="de-xuat"
+            id="dx001"
+            tabindex="-1"
+          >
+            <header class="request-detail__header">
+              <h2 id="dx001-title">Chi tiết đề xuất DX001 — Chờ duyệt</h2>
+              <p class="page-back">
+                <a class="page-back__link" href="de-xuat-cua-toi.html">
+                  Quay lại danh sách đề xuất
+                </a>
+              </p>
+            </header>
+            <section
+              aria-labelledby="dx001-request-title"
+              class="request-detail__overview"
+            >
+              <h3 id="dx001-request-title">Thông tin yêu cầu</h3>
+              <dl class="request-detail__meta">
+                <dt>Mã đề xuất</dt>
+                <dd>DX001</dd>
+                <dt>Hình thức</dt>
+                <dd>Cá nhân</dd>
+                <dt>Trạng thái đề xuất</dt>
+                <dd>Chờ duyệt</dd>
+              </dl>
+            </section>
+            <div class="request-detail__layout">
+              <div class="request-detail__body">
+                <section
+                  aria-labelledby="dx001-proposal-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dx001-proposal-title">Nội dung đề xuất</h3>
+                  <h4>Cổng thông tin nghiên cứu sinh viên</h4>
+                  <dl class="request-detail__meta">
+                    <dt>Loại đề tài</dt>
+                    <dd>Đồ án môn học</dd>
+                    <dt>Học kỳ</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Năm học</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Giảng viên được đề nghị hướng dẫn</dt>
+                    <dd>Nguyễn Văn A</dd>
+                  </dl>
+                  <section aria-labelledby="dx001-description-title">
+                    <h4 id="dx001-description-title">Mô tả đề xuất</h4>
+                    <p>
+                      Xây dựng cổng thông tin giúp sinh viên tra cứu công trình
+                      nghiên cứu, tìm đề tài quan tâm và tìm nhóm cùng thực hiện
+                      nghiên cứu.
+                    </p>
+                  </section>
+                  <section aria-labelledby="dx001-objectives-title">
+                    <h4 id="dx001-objectives-title">
+                      Mục tiêu / kết quả dự kiến
+                    </h4>
+                    <p>
+                      Tập trung thông tin công trình nghiên cứu và hỗ trợ sinh
+                      viên tìm nhóm theo lĩnh vực quan tâm.
+                    </p>
+                  </section>
+                  <section aria-labelledby="dx001-scope-title">
+                    <h4 id="dx001-scope-title">Yêu cầu / phạm vi thực hiện</h4>
+                    <p>
+                      Trình bày danh sách công trình, tìm kiếm theo tên hoặc
+                      lĩnh vực, xem chi tiết công trình và thông tin nhóm nghiên
+                      cứu.
+                    </p>
+                  </section>
+                </section>
+                <section
+                  aria-labelledby="dx001-student-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dx001-student-title">Sinh viên đề xuất</h3>
+                  <dl class="request-detail__meta">
+                    <dt>Họ và tên</dt>
+                    <dd>Nguyễn Minh Anh</dd>
+                    <dt>Mã số sinh viên</dt>
+                    <dd>24520001</dd>
+                    <dt>Lớp</dt>
+                    <dd>IE104.01</dd>
+                    <dt>Ngành</dt>
+                    <dd>Hệ thống thông tin</dd>
+                  </dl>
+                </section>
+              </div>
+              <aside
+                aria-label="Xét duyệt đề xuất"
+                class="request-detail__sidebar"
+              >
+                <section
+                  aria-labelledby="dx001-status-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dx001-status-title">Tình trạng xử lý</h3>
+                  <dl class="request-detail__meta">
+                    <dt>Trạng thái đề xuất</dt>
+                    <dd>Chờ duyệt</dd>
+                    <dt>Ngày gửi</dt>
+                    <dd>
+                      <time datetime="2026-10-11T16:00:00+07:00"
+                        >11/10/2026 lúc 16:00</time
+                      >
+                    </dd>
+                    <dt>Người tiếp nhận</dt>
+                    <dd>Nguyễn Văn A</dd>
+                  </dl>
+                  <p>Yêu cầu đã gửi · Chỉ xem.</p>
+                </section>
+                <section
+                  aria-labelledby="dx001-feedback-title"
+                  class="request-detail__section"
+                  id="dx001-phan-hoi-giang-vien"
+                >
+                  <h3 id="dx001-feedback-title">Phản hồi của giảng viên</h3>
+                  <p>Chưa có kết quả xét duyệt.</p>
+                  <p>
+                    Kết quả và ý kiến sẽ hiển thị tại đây sau khi giảng viên xét
+                    duyệt.
+                  </p>
+                </section>
+                <section
+                  aria-labelledby="dx001-readonly-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dx001-readonly-title">Thông tin chỉ đọc</h3>
+                  <p>Không sửa hoặc gửi lại đề xuất đang chờ duyệt.</p>
+                  <p>
+                    Đề xuất được chấp nhận không tự động đồng nghĩa đã phân công
+                    thực hiện.
+                  </p>
+                </section>
+              </aside>
+            </div>
+          </article>
+          <article
+            aria-labelledby="dx002-title"
+            class="request-detail"
+            data-request-id="DX002"
+            data-request-status="yeu-cau-chinh-sua"
+            data-request-type="de-xuat"
+            id="dx002"
+            tabindex="-1"
+          >
+            <header class="request-detail__header">
+              <h2 id="dx002-title">
+                Chi tiết đề xuất DX002 — Yêu cầu chỉnh sửa
+              </h2>
+              <p class="page-back">
+                <a class="page-back__link" href="de-xuat-cua-toi.html">
+                  Quay lại danh sách đề xuất
+                </a>
+              </p>
+            </header>
+            <section
+              aria-labelledby="dx002-request-title"
+              class="request-detail__overview"
+            >
+              <h3 id="dx002-request-title">Thông tin yêu cầu</h3>
+              <dl class="request-detail__meta">
+                <dt>Mã đề xuất</dt>
+                <dd>DX002</dd>
+                <dt>Hình thức</dt>
+                <dd>Nhóm</dd>
+                <dt>Trạng thái đề xuất</dt>
+                <dd>Yêu cầu chỉnh sửa</dd>
+              </dl>
+            </section>
+            <div class="request-detail__layout">
+              <div class="request-detail__body">
+                <section
+                  aria-labelledby="dx002-proposal-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dx002-proposal-title">Nội dung đề xuất</h3>
+                  <h4>Website hỗ trợ sinh viên tìm nhóm học tập</h4>
+                  <dl class="request-detail__meta">
+                    <dt>Loại đề tài</dt>
+                    <dd>Đồ án môn học</dd>
+                    <dt>Học kỳ</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Năm học</dt>
+                    <dd>Chưa có thông tin</dd>
+                    <dt>Giảng viên được đề nghị hướng dẫn</dt>
+                    <dd>Trần Thị B</dd>
+                  </dl>
+                  <section aria-labelledby="dx002-description-title">
+                    <h4 id="dx002-description-title">Mô tả đề xuất</h4>
+                    <p>
+                      Xây dựng website giúp sinh viên đăng nhu cầu học tập, tìm
+                      bạn cùng môn học và tổ chức nhóm học tập phù hợp.
+                    </p>
+                  </section>
+                  <section aria-labelledby="dx002-objectives-title">
+                    <h4 id="dx002-objectives-title">
+                      Mục tiêu / kết quả dự kiến
+                    </h4>
+                    <p>
+                      Giúp sinh viên tìm nhóm theo môn học và nhu cầu học tập;
+                      tạo giao diện giới thiệu nhóm, danh sách thành viên và
+                      lịch học dự kiến.
+                    </p>
+                  </section>
+                  <section aria-labelledby="dx002-scope-title">
+                    <h4 id="dx002-scope-title">Yêu cầu / phạm vi thực hiện</h4>
+                    <p>
+                      Đăng nhu cầu tìm nhóm, xem danh sách nhóm, tìm kiếm theo
+                      môn học và xem thông tin nhóm. Tiêu chí ghép nhóm, phạm vi
+                      môn học và kế hoạch kiểm thử sẽ được bổ sung theo phản
+                      hồi.
+                    </p>
+                  </section>
+                </section>
+                <section
+                  aria-labelledby="dx002-members-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dx002-members-title">Nhóm đề xuất</h3>
+                  <dl class="request-detail__meta">
+                    <dt>Tên nhóm</dt>
+                    <dd>Web UIT</dd>
+                  </dl>
+                  <table class="members-table">
+                    <caption>
+                      Danh sách thành viên trong yêu cầu đã gửi
+                    </caption>
+                    <thead>
+                      <tr>
+                        <th scope="col">Thành viên</th>
+                        <th scope="col">Mã số sinh viên</th>
+                        <th scope="col">Vai trò trong yêu cầu</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row">Nguyễn Minh Anh</th>
+                        <td>24520001</td>
+                        <td>Người đại diện gửi</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Trần Gia Bảo</th>
+                        <td>24520002</td>
+                        <td>Thành viên</td>
+                      </tr>
+                      <tr>
+                        <th scope="row">Lê Hoàng Chi</th>
+                        <td>24520003</td>
+                        <td>Thành viên</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              </div>
+              <aside
+                aria-label="Xét duyệt đề xuất"
+                class="request-detail__sidebar"
+              >
+                <section
+                  aria-labelledby="dx002-status-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dx002-status-title">Tình trạng xử lý</h3>
+                  <dl class="request-detail__meta">
+                    <dt>Trạng thái đề xuất</dt>
+                    <dd>Yêu cầu chỉnh sửa</dd>
+                    <dt>Ngày gửi</dt>
+                    <dd>
+                      <time datetime="2026-10-07T10:00:00+07:00"
+                        >07/10/2026 lúc 10:00</time
+                      >
+                    </dd>
+                    <dt>Người tiếp nhận</dt>
+                    <dd>Trần Thị B</dd>
+                  </dl>
+                  <p>Giảng viên đã yêu cầu bổ sung nội dung đề xuất.</p>
+                </section>
+                <section
+                  aria-labelledby="dx002-feedback-title"
+                  class="request-detail__section"
+                  id="dx002-phan-hoi-giang-vien"
+                >
+                  <h3 id="dx002-feedback-title">Phản hồi của giảng viên</h3>
+                  <dl class="request-detail__meta">
+                    <dt>Kết quả xét duyệt</dt>
+                    <dd>Yêu cầu chỉnh sửa</dd>
+                    <dt>Ngày phản hồi</dt>
+                    <dd>
+                      <time datetime="2026-10-10T15:00:00+07:00"
+                        >10/10/2026 lúc 15:00</time
+                      >
+                    </dd>
+                    <dt>Giảng viên phản hồi</dt>
+                    <dd>Trần Thị B</dd>
+                  </dl>
+                  <blockquote>
+                    <p>
+                      Bổ sung tiêu chí ghép nhóm, phạm vi môn học và kế hoạch
+                      kiểm thử.
+                    </p>
+                  </blockquote>
+                </section>
+                <section
+                  aria-labelledby="dx002-actions-title"
+                  class="request-detail__section"
+                >
+                  <h3 id="dx002-actions-title">Thao tác với đề xuất</h3>
+                  <p>
+                    <a href="#dx002-chinh-sua"> Chỉnh sửa đề xuất DX002 </a>
+                  </p>
+                  <button
+                    aria-controls="dx002-delete-proposal-dialog"
+                    aria-describedby="demo-notice"
+                    disabled=""
+                    type="button"
+                  >
+                    Xóa đề xuất
+                  </button>
+                  <p>
+                    Đề xuất được chấp nhận không tự động đồng nghĩa đã phân công
+                    thực hiện.
+                  </p>
+                </section>
+              </aside>
+            </div>
+            <dialog
+              aria-describedby="dx002-delete-description"
+              aria-labelledby="dx002-delete-title"
+              class="confirmation-dialog"
+              id="dx002-delete-proposal-dialog"
+            >
+              <h3 id="dx002-delete-title">Xác nhận xóa đề xuất DX002</h3>
+              <p id="dx002-delete-description">
+                Bạn muốn xóa đề xuất Website hỗ trợ sinh viên tìm nhóm học tập?
+              </p>
+              <div class="confirmation-dialog__actions">
+                <form method="dialog">
+                  <button type="submit" value="cancel">Hủy xóa</button>
+                </form>
+                <button disabled="" type="button">Xác nhận xóa</button>
+              </div>
+            </dialog>
+            <section
+              aria-labelledby="dx002-edit-title"
+              class="request-detail__edit"
+              id="dx002-chinh-sua"
+            >
+              <h3 id="dx002-edit-title">Biểu mẫu chỉnh sửa đề xuất DX002</h3>
+              <p id="dx002-edit-proposal-form-notice">
+                Gửi, lưu, thêm và xóa thành viên chưa được xử lý trong giai đoạn
+                HTML.
+              </p>
+              <p hidden="" id="dx002-edit-proposal-form-errors" role="alert">
+                Kiểm tra lại các trường được đánh dấu trước khi gửi đề xuất.
+              </p>
+              <form
+                action="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html"
+                aria-describedby="dx002-edit-proposal-form-notice"
+                class="proposal-form"
+                method="get"
+              >
+                <fieldset class="proposal-form__section">
+                  <legend>Thông tin đề tài đề xuất</legend>
+                  <div class="proposal-form__field">
+                    <label for="dx002-edit-proposal-title">
+                      Tên đề tài (bắt buộc)
+                    </label>
+                    <input
+                      id="dx002-edit-proposal-title"
+                      name="ten-de-tai"
+                      required=""
+                      type="text"
+                      value="Website hỗ trợ sinh viên tìm nhóm học tập"
+                    />
+                  </div>
+                  <div class="proposal-form__field">
+                    <label for="dx002-edit-proposal-type">
+                      Loại đề tài (bắt buộc)
+                    </label>
+                    <select
+                      id="dx002-edit-proposal-type"
+                      name="loai-de-tai"
+                      required=""
+                    >
+                      <option value="">Chọn loại đề tài</option>
+                      <option selected="" value="do-an-mon-hoc">
+                        Đồ án môn học
+                      </option>
+                      <option value="khoa-luan">Khóa luận tốt nghiệp</option>
+                    </select>
+                  </div>
+                  <div class="proposal-form__field">
+                    <label for="dx002-edit-proposal-description">
+                      Mô tả đề tài (bắt buộc)
+                    </label>
+                    <textarea
+                      id="dx002-edit-proposal-description"
+                      name="mo-ta"
+                      required=""
+                      rows="5"
+                    >
+Xây dựng website giúp sinh viên đăng nhu cầu học tập, tìm bạn cùng môn học và tổ chức nhóm học tập phù hợp.</textarea>
+                  </div>
+                  <div class="proposal-form__field">
+                    <label for="dx002-edit-proposal-goals">
+                      Mục tiêu và kết quả dự kiến
+                    </label>
+                    <textarea
+                      id="dx002-edit-proposal-goals"
+                      name="muc-tieu"
+                      rows="4"
+                    >
+Giúp sinh viên tìm nhóm theo môn học và nhu cầu học tập; tạo giao diện giới thiệu nhóm, danh sách thành viên và lịch học dự kiến.</textarea>
+                  </div>
+                  <div class="proposal-form__field">
+                    <label for="dx002-edit-proposal-scope">
+                      Yêu cầu và phạm vi thực hiện
+                    </label>
+                    <textarea
+                      id="dx002-edit-proposal-scope"
+                      name="pham-vi"
+                      rows="5"
+                    >
+Đăng nhu cầu tìm nhóm, xem danh sách nhóm, tìm kiếm theo môn học và xem thông tin nhóm. Tiêu chí ghép nhóm, phạm vi môn học và kế hoạch kiểm thử sẽ được bổ sung theo phản hồi.</textarea>
+                  </div>
+                </fieldset>
+                <fieldset class="proposal-form__section">
+                  <legend>Hình thức thực hiện</legend>
+                  <div class="proposal-form__choice">
+                    <input
+                      id="dx002-edit-proposal-mode-individual"
+                      name="hinh-thuc"
+                      type="radio"
+                      value="ca-nhan"
+                    />
+                    <label for="dx002-edit-proposal-mode-individual">
+                      Cá nhân
+                    </label>
+                  </div>
+                  <div class="proposal-form__choice">
+                    <input
+                      checked=""
+                      id="dx002-edit-proposal-mode-group"
+                      name="hinh-thuc"
+                      type="radio"
+                      value="nhom"
+                    />
+                    <label for="dx002-edit-proposal-mode-group"> Nhóm </label>
+                  </div>
+                  <p id="dx002-edit-proposal-group-help">
+                    Nếu thực hiện theo nhóm, điền tên nhóm và thông tin các
+                    thành viên bên dưới. Việc đổi hình thức chưa tự ẩn hoặc thay
+                    đổi các trường trong giai đoạn HTML.
+                  </p>
+                  <fieldset class="proposal-form__member">
+                    <legend>Người gửi đề xuất</legend>
+                    <div class="proposal-form__field">
+                      <label for="dx002-edit-student-code">
+                        Mã số sinh viên người gửi
+                      </label>
+                      <input
+                        aria-describedby="dx002-edit-student-identity-note"
+                        id="dx002-edit-student-code"
+                        name="ma-sinh-vien"
+                        readonly=""
+                        type="text"
+                        value="24520001"
+                      />
+                    </div>
+                    <div class="proposal-form__field">
+                      <label for="dx002-edit-student-name">
+                        Họ và tên người gửi
+                      </label>
+                      <input
+                        aria-describedby="dx002-edit-student-identity-note"
+                        autocomplete="name"
+                        id="dx002-edit-student-name"
+                        name="ho-ten"
+                        readonly=""
+                        type="text"
+                        value="Nguyễn Minh Anh"
+                      />
+                    </div>
+                    <p id="dx002-edit-student-identity-note">
+                      Thông tin tài khoản mẫu, chưa được lấy từ phiên đăng nhập.
+                    </p>
+                  </fieldset>
+                  <details class="proposal-form__group" open="">
+                    <summary>Thông tin nhóm và thành viên</summary>
+                    <div class="proposal-form__field">
+                      <label for="dx002-edit-proposal-group-name">
+                        Tên nhóm
+                      </label>
+                      <input
+                        aria-describedby="dx002-edit-proposal-group-help"
+                        id="dx002-edit-proposal-group-name"
+                        name="ten-nhom"
+                        type="text"
+                        value="Web UIT"
+                      />
+                    </div>
+                    <fieldset class="proposal-form__member">
+                      <legend>Thành viên 2</legend>
+                      <div class="proposal-form__field">
+                        <label for="dx002-edit-member-code-2">
+                          Mã số sinh viên thành viên 2
+                        </label>
+                        <input
+                          autocomplete="off"
+                          id="dx002-edit-member-code-2"
+                          name="thanh-vien-2-mssv"
+                          type="text"
+                          value="24520002"
+                        />
+                      </div>
+                      <div class="proposal-form__field">
+                        <label for="dx002-edit-member-name-2">
+                          Họ và tên thành viên 2
+                        </label>
+                        <input
+                          autocomplete="off"
+                          id="dx002-edit-member-name-2"
+                          name="thanh-vien-2-ho-ten"
+                          type="text"
+                          value="Trần Gia Bảo"
+                        />
+                      </div>
+                      <button
+                        aria-describedby="dx002-edit-proposal-form-notice"
+                        disabled=""
+                        type="button"
+                      >
+                        Xóa thành viên 2
+                      </button>
+                    </fieldset>
+                    <fieldset class="proposal-form__member">
+                      <legend>Thành viên 3</legend>
+                      <div class="proposal-form__field">
+                        <label for="dx002-edit-member-code-3">
+                          Mã số sinh viên thành viên 3
+                        </label>
+                        <input
+                          autocomplete="off"
+                          id="dx002-edit-member-code-3"
+                          name="thanh-vien-3-mssv"
+                          type="text"
+                          value="24520003"
+                        />
+                      </div>
+                      <div class="proposal-form__field">
+                        <label for="dx002-edit-member-name-3">
+                          Họ và tên thành viên 3
+                        </label>
+                        <input
+                          autocomplete="off"
+                          id="dx002-edit-member-name-3"
+                          name="thanh-vien-3-ho-ten"
+                          type="text"
+                          value="Lê Hoàng Chi"
+                        />
+                      </div>
+                      <button
+                        aria-describedby="dx002-edit-proposal-form-notice"
+                        disabled=""
+                        type="button"
+                      >
+                        Xóa thành viên 3
+                      </button>
+                    </fieldset>
+                    <button
+                      aria-describedby="dx002-edit-proposal-form-notice"
+                      class="proposal-form__add-member"
+                      disabled=""
+                      type="button"
+                    >
+                      Thêm thành viên
+                    </button>
+                    <p class="proposal-form__member-count">
+                      Số thành viên mẫu: 3 (bao gồm người gửi).
+                    </p>
+                  </details>
+                </fieldset>
+                <fieldset class="proposal-form__section">
+                  <legend>Giảng viên đề nghị</legend>
+                  <div class="proposal-form__field">
+                    <label for="dx002-edit-proposal-lecturer">
+                      Chọn giảng viên hướng dẫn đề nghị
+                    </label>
+                    <select
+                      id="dx002-edit-proposal-lecturer"
+                      name="giang-vien-de-nghi"
+                    >
+                      <option value="">Chọn giảng viên</option>
+                      <option value="GV001">Nguyễn Văn A</option>
+                      <option selected="" value="GV002">Trần Thị B</option>
+                    </select>
+                  </div>
+                </fieldset>
+                <div class="proposal-form__actions">
+                  <button
+                    aria-controls="dx002-edit-proposal-send-dialog"
+                    aria-describedby="dx002-edit-proposal-form-notice"
+                    disabled=""
+                    type="submit"
+                  >
+                    Lưu chỉnh sửa và gửi lại
+                  </button>
+                  <button type="reset">Khôi phục nội dung mẫu</button>
+                  <a href="#dx002"> Hủy </a>
+                </div>
+              </form>
+              <dialog
+                aria-describedby="dx002-edit-proposal-send-description"
+                aria-labelledby="dx002-edit-proposal-send-title"
+                id="dx002-edit-proposal-send-dialog"
+              >
+                <h3 id="dx002-edit-proposal-send-title">
+                  Xác nhận gửi lại đề xuất DX002
+                </h3>
+                <p id="dx002-edit-proposal-send-description">
+                  Kiểm tra thông tin đề tài, hình thức thực hiện, thành viên và
+                  giảng viên đề nghị trước khi gửi. Việc xác nhận và lưu đề xuất
+                  chưa được xử lý.
+                </p>
+                <form method="dialog">
+                  <button type="submit" value="cancel">
+                    Quay lại chỉnh sửa
+                  </button>
+                </form>
+                <button disabled="" type="button">Xác nhận gửi lại</button>
+              </dialog>
+            </section>
+          </article>
+        </div>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN</p>
+          <p>Trường Đại học Công nghệ Thông tin</p>
+        </div>
+        <ul aria-label="Thông tin và quy định" class="site-footer__information">
+          <li>
+            <span> Điều khoản sử dụng (đang cập nhật) </span>
+          </li>
+          <li>
+            <span> Quy chế đồ án / khóa luận (đang cập nhật) </span>
+          </li>
+          <li>
+            <span> Chính sách bảo mật (đang cập nhật) </span>
+          </li>
+        </ul>
+        <p class="site-footer__copyright">
+          © 2026 · Hệ thống quản lý đồ án / khóa luận
         </p>
-        <button disabled="" type="button">
-         Quay lại chỉnh sửa
-        </button>
-        <button disabled="" type="button">
-         Xác nhận gửi lại
-        </button>
-       </dialog>
-      </details>
-     </article>
-    </div>
-   </div>
-  </main>
-  <footer class="site-footer">
-   <div class="site-footer__inner">
-    <div class="site-footer__brand">
-     <p class="site-footer__name">
-      QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN
-     </p>
-     <p>
-      Trường Đại học Công nghệ Thông tin
-     </p>
-    </div>
-    <ul aria-label="Thông tin và quy định" class="site-footer__information">
-     <li>
-      <span>
-       Điều khoản sử dụng (đang cập nhật)
-      </span>
-     </li>
-     <li>
-      <span>
-       Quy chế đồ án / khóa luận (đang cập nhật)
-      </span>
-     </li>
-     <li>
-      <span>
-       Chính sách bảo mật (đang cập nhật)
-      </span>
-     </li>
-    </ul>
-    <p class="site-footer__copyright">
-     © 2026 · Hệ thống quản lý đồ án / khóa luận
-    </p>
-   </div>
-  </footer>
- </body>
+      </div>
+    </footer>
+  </body>
 </html>

@@ -38,16 +38,16 @@
                 aria-labelledby="topic-management-label"
               >
                 <li class="main-nav__subitem">
+                  <a class="main-nav__link" href="de-tai-huong-dan.html">
+                    Đề tài đang hướng dẫn
+                  </a>
+                </li>
+                <li class="main-nav__subitem">
                   <a
                     class="main-nav__link"
                     href="de-tai-cua-toi-giang-vien.html"
                   >
                     Đề tài đã tạo
-                  </a>
-                </li>
-                <li class="main-nav__subitem">
-                  <a class="main-nav__link" href="de-tai-huong-dan.html">
-                    Đề tài đang hướng dẫn
                   </a>
                 </li>
               </ul>
@@ -64,13 +64,49 @@
 
         <!-- Tài khoản -->
         <div class="account-menu">
-          <a class="account-menu__profile" href="ho-so-ca-nhan.html">
-            <span class="account-menu__label">Hồ sơ cá nhân</span>
-            <span class="account-menu__avatar" aria-hidden="true"> GV </span>
-          </a>
+          <details class="account-menu__disclosure">
+            <summary
+              class="account-menu__toggle"
+              aria-label="Mở menu tài khoản giảng viên"
+            >
+              <span class="account-menu__avatar" aria-hidden="true">GV</span>
+              <span class="account-menu__label">Tài khoản giảng viên</span>
+            </summary>
+            <ul id="account-dropdown" class="account-menu__list">
+              <li>
+                <a class="account-menu__profile" href="ho-so-ca-nhan.html"
+                  >Hồ sơ cá nhân</a
+                >
+              </li>
+              <li>
+                <button
+                  class="account-menu__logout"
+                  type="button"
+                  aria-controls="logout-dialog"
+                  aria-describedby="logout-notice"
+                  disabled
+                >
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
         </div>
       </div>
     </header>
+    <dialog
+      id="logout-dialog"
+      class="confirmation-dialog"
+      aria-labelledby="logout-title"
+    >
+      <h2 id="logout-title">Xác nhận đăng xuất</h2>
+      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+      <form method="dialog">
+        <button type="submit" value="cancel">Hủy</button>
+        <button type="button" disabled>Xác nhận đăng xuất</button>
+      </form>
+    </dialog>
 
     <!-- NỘI DUNG RIÊNG CỦA TỪNG TRANG -->
     <main id="main-content" class="main-content" tabindex="-1">

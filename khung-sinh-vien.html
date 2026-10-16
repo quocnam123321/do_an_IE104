@@ -52,13 +52,49 @@
 
         <!-- Tài khoản -->
         <div class="account-menu">
-          <a class="account-menu__profile" href="ho-so-ca-nhan.html">
-            <span class="account-menu__label">Hồ sơ cá nhân</span>
-            <span class="account-menu__avatar" aria-hidden="true"> SV </span>
-          </a>
+          <details class="account-menu__disclosure">
+            <summary
+              class="account-menu__toggle"
+              aria-label="Mở menu tài khoản sinh viên"
+            >
+              <span class="account-menu__avatar" aria-hidden="true">SV</span>
+              <span class="account-menu__label">Tài khoản sinh viên</span>
+            </summary>
+            <ul id="account-dropdown" class="account-menu__list">
+              <li>
+                <a class="account-menu__profile" href="ho-so-ca-nhan.html"
+                  >Hồ sơ cá nhân</a
+                >
+              </li>
+              <li>
+                <button
+                  class="account-menu__logout"
+                  type="button"
+                  aria-controls="logout-dialog"
+                  aria-describedby="logout-notice"
+                  disabled
+                >
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
         </div>
       </div>
     </header>
+    <dialog
+      id="logout-dialog"
+      class="confirmation-dialog"
+      aria-labelledby="logout-title"
+    >
+      <h2 id="logout-title">Xác nhận đăng xuất</h2>
+      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+      <form method="dialog">
+        <button type="submit" value="cancel">Hủy</button>
+        <button type="button" disabled>Xác nhận đăng xuất</button>
+      </form>
+    </dialog>
 
     <!-- NỘI DUNG RIÊNG CỦA TỪNG TRANG -->
     <main id="main-content" class="main-content" tabindex="-1">
