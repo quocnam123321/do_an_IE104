@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Theo dõi tiến độ, danh sách công việc và lịch sử cập nhật tiến độ đề tài của nhóm sinh viên."
+    />
+    <title>Tiến độ đề tài | Đề tài của tôi | Quản lý đồ án</title>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+
+    <!-- ĐẦU TRANG CHUNG CHO SINH VIÊN -->
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-sinh-vien.html">
+          QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN
+        </a>
+
+        <!-- Điều hướng chính dành cho sinh viên -->
+        <nav class="main-nav" aria-label="Điều hướng sinh viên">
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html">
+                Tổng quan
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="dang-ky-de-tai.html">
+                Đăng ký đề tài
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <!-- Trang danh sách Đề tài của tôi chưa có file riêng, đánh dấu vị trí hiện tại và ghi nhận pending -->
+              <span
+                class="main-nav__link"
+                aria-current="location"
+                data-pending-href="de-tai-cua-toi-sinh-vien.html"
+              >
+                Đề tài của tôi (đang cập nhật)
+              </span>
+            </li>
+
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="lich-han-nop.html">
+                Lịch hạn nộp
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <!-- Mục Chung với hai danh mục con Liên hệ và Thông báo -->
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__toggle">Chung</summary>
+                <ul class="main-nav__sublist">
+                  <li>
+                    <span data-pending-href="lien-he.html"
+                      >Liên hệ (đang cập nhật)</span
+                    >
+                  </li>
+                  <li>
+                    <span data-pending-href="thong-bao.html"
+                      >Thông báo (đang cập nhật)</span
+                    >
+                  </li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Tài khoản -->
+        <div class="account-menu">
+          <details class="account-menu__disclosure">
+            <summary
+              class="account-menu__toggle"
+              aria-label="Mở menu tài khoản sinh viên"
+            >
+              <span class="account-menu__avatar" aria-hidden="true">SV</span>
+              <span class="account-menu__label">Tài khoản sinh viên</span>
+            </summary>
+            <ul id="account-dropdown" class="account-menu__list">
+              <li>
+                <span
+                  class="account-menu__profile"
+                  data-pending-href="ho-so-ca-nhan.html"
+                >
+                  Hồ sơ cá nhân (đang cập nhật)
+                </span>
+              </li>
+              <li>
+                <button
+                  class="account-menu__logout"
+                  type="button"
+                  aria-controls="logout-dialog"
+                  aria-describedby="logout-notice"
+                  disabled
+                >
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
+        </div>
+      </div>
+    </header>
+
+    <dialog
+      id="logout-dialog"
+      class="confirmation-dialog"
+      aria-labelledby="logout-title"
+    >
+      <h2 id="logout-title">Xác nhận đăng xuất</h2>
+      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+      <form method="dialog">
+        <button type="submit" value="cancel">Hủy</button>
+        <button type="button" disabled>Xác nhận đăng xuất</button>
+      </form>
+    </dialog>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <main id="main-content" class="main-content" tabindex="-1">
+      <div class="page-container">
+        <!-- Đường dẫn Breadcrumb -->
+        <nav class="breadcrumb" aria-label="Đường dẫn">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item">
+              <a href="tong-quan-sinh-vien.html">Sinh viên</a>
+            </li>
+            <li class="breadcrumb__item">
+              <span data-pending-href="de-tai-cua-toi-sinh-vien.html"
+                >Đề tài của tôi (đang cập nhật)</span
+              >
+            </li>
+            <li class="breadcrumb__item">
+              <span data-pending-href="chi-tiet-de-tai-cua-toi-sinh-vien.html"
+                >Chi tiết đề tài (đang cập nhật)</span
+              >
+            </li>
+            <li class="breadcrumb__item">
+              <span aria-current="page">Tiến độ</span>
+            </li>
+          </ol>
+        </nav>
+
+        <!-- Quay lại -->
+        <p class="back-navigation">
+          <span
+            class="back-link"
+            data-pending-href="de-tai-cua-toi-sinh-vien.html"
+          >
+            ← Quay lại Đề tài của tôi (đang cập nhật)
+          </span>
+        </p>
+
+        <!-- Tiêu đề trang và thanh thông tin đề tài -->
+        <header class="page-header">
+          <h1 class="page-header__title">Chi tiết đề tài</h1>
+          <p class="project-info-bar">
+            <strong>Tên đồ án / khóa luận</strong>
+          </p>
+          <p id="progress-demo-notice" class="demo-notice">
+            Dữ liệu tiến độ minh họa của nhóm; các thao tác thêm, sửa, xóa và
+            cập nhật chưa được xử lý.
+          </p>
+        </header>
+
+        <!-- Điều hướng bốn tab chi tiết -->
+        <nav class="detail-tabs-nav" aria-label="Các mục chi tiết đề tài">
+          <ul class="detail-tabs-list">
+            <li class="detail-tabs-item">
+              <span data-pending-href="chi-tiet-de-tai-tong-quan.html"
+                >Tổng quan (đang cập nhật)</span
+              >
+            </li>
+            <li class="detail-tabs-item">
+              <span class="detail-tabs-link--active" aria-current="page"
+                >Tiến độ</span
+              >
+            </li>
+            <li class="detail-tabs-item">
+              <span data-pending-href="chi-tiet-de-tai-bai-nop.html"
+                >Bài nộp (đang cập nhật)</span
+              >
+            </li>
+            <li class="detail-tabs-item">
+              <span
+                data-pending-href="chi-tiet-de-tai-ket-qua-danh-gia.html"
+                >Kết quả đánh giá (đang cập nhật)</span
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <div class="page-content">
+          <!-- KHU VỰC 1: TIẾN ĐỘ TỔNG THỂ -->
+          <section
+            class="project-progress"
+            aria-labelledby="overall-progress-title"
+          >
+            <h2 id="overall-progress-title">Tiến độ tổng thể</h2>
+            <div class="overall-progress-bar">
+              <label for="overall-progress">Thanh tiến độ tổng thể</label>
+              <progress id="overall-progress" max="100" value="40">
+                40%
+              </progress>
+              <span class="overall-progress__text"
+                >40% — dữ liệu minh họa</span
+              >
+            </div>
+            <dl class="progress-stats">
+              <div class="progress-stat-item">
+                <dt>Tổng công việc</dt>
+                <dd>5</dd>
+              </div>
+              <div class="progress-stat-item">
+                <dt>Đã hoàn thành</dt>
+                <dd>2</dd>
+              </div>
+              <div class="progress-stat-item">
+                <dt>Còn lại</dt>
+                <dd>3</dd>
+              </div>
+            </dl>
+          </section>
+
+          <!-- KHU VỰC 2: DANH SÁCH CÔNG VIỆC -->
+          <section
+            class="task-list-section"
+            aria-labelledby="task-list-title"
+          >
+            <div class="section-header">
+              <h2 id="task-list-title">Danh sách công việc</h2>
+              <button
+                type="button"
+                class="btn-add-task"
+                disabled
+                aria-describedby="progress-demo-notice"
+              >
+                + Thêm công việc
+              </button>
+            </div>
+
+            <table class="data-table">
+              <caption>
+                Danh sách công việc theo dõi tiến độ đề tài
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Công việc</th>
+                  <th scope="col">Người phụ trách</th>
+                  <th scope="col">Hạn hoàn thành dự kiến</th>
+                  <th scope="col">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="cv-01" data-task-id="cv-01">
+                  <th scope="row">Khảo sát yêu cầu</th>
+                  <td>Họ tên thành viên · MSSV</td>
+                  <td>dd/mm/yyyy</td>
+                  <td>
+                    <button
+                      type="button"
+                      disabled
+                      aria-describedby="progress-demo-notice"
+                      aria-label="Sửa công việc: Khảo sát yêu cầu"
+                    >
+                      Sửa
+                    </button>
+                    <button
+                      type="button"
+                      disabled
+                      aria-describedby="progress-demo-notice"
+                      aria-label="Xóa công việc: Khảo sát yêu cầu"
+                    >
+                      Xóa
+                    </button>
+                  </td>
+                </tr>
+                <tr id="cv-02" data-task-id="cv-02">
+                  <th scope="row">Phân tích chức năng</th>
+                  <td>Họ tên thành viên · MSSV</td>
+                  <td>dd/mm/yyyy</td>
+                  <td>
+                    <button
+                      type="button"
+                      disabled
+                      aria-describedby="progress-demo-notice"
+                      aria-label="Sửa công việc: Phân tích chức năng"
+                    >
+                      Sửa
+                    </button>
+                    <button
+                      type="button"
+                      disabled
+                      aria-describedby="progress-demo-notice"
+                      aria-label="Xóa công việc: Phân tích chức năng"
+                    >
+                      Xóa
+                    </button>
+                  </td>
+                </tr>
+                <tr id="cv-03" data-task-id="cv-03">
+                  <th scope="row">Thiết kế giao diện</th>
+                  <td>Họ tên thành viên · MSSV</td>
+                  <td>dd/mm/yyyy</td>
+                  <td>
+                    <button
+                      type="button"
+                      disabled
+                      aria-describedby="progress-demo-notice"
+                      aria-label="Sửa công việc: Thiết kế giao diện"
+                    >
+                      Sửa
+                    </button>
+                    <button
+                      type="button"
+                      disabled
+                      aria-describedby="progress-demo-notice"
+                      aria-label="Xóa công việc: Thiết kế giao diện"
+                    >
+                      Xóa
+                    </button>
+                  </td>
+                </tr>
+                <tr id="cv-04" data-task-id="cv-04">
+                  <th scope="row">Xây dựng chức năng</th>
+                  <td>Họ tên thành viên · MSSV</td>
+                  <td>dd/mm/yyyy</td>
+                  <td>
+                    <button
+                      type="button"
+                      disabled
+                      aria-describedby="progress-demo-notice"
+                      aria-label="Sửa công việc: Xây dựng chức năng"
+                    >
+                      Sửa
+                    </button>
+                    <button
+                      type="button"
+                      disabled
+                      aria-describedby="progress-demo-notice"
+                      aria-label="Xóa công việc: Xây dựng chức năng"
+                    >
+                      Xóa
+                    </button>
+                  </td>
+                </tr>
+                <tr id="cv-05" data-task-id="cv-05">
+                  <th scope="row">Kiểm thử và hoàn thiện báo cáo</th>
+                  <td>Họ tên thành viên · MSSV</td>
+                  <td>dd/mm/yyyy</td>
+                  <td>
+                    <button
+                      type="button"
+                      disabled
+                      aria-describedby="progress-demo-notice"
+                      aria-label="Sửa công việc: Kiểm thử và hoàn thiện báo cáo"
+                    >
+                      Sửa
+                    </button>
+                    <button
+                      type="button"
+                      disabled
+                      aria-describedby="progress-demo-notice"
+                      aria-label="Xóa công việc: Kiểm thử và hoàn thiện báo cáo"
+                    >
+                      Xóa
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Trạng thái rỗng chuẩn bị cho JavaScript -->
+            <template id="empty-task-list-template">
+              <p>Chưa có công việc. Hãy thêm công việc để theo dõi tiến độ.</p>
+            </template>
+          </section>
+
+          <!-- KHU VỰC 3: LỊCH SỬ CẬP NHẬT -->
+          <section
+            class="update-history-section"
+            aria-labelledby="history-title"
+          >
+            <div class="section-header">
+              <h2 id="history-title">Lịch sử cập nhật</h2>
+              <button
+                type="button"
+                class="btn-update-progress"
+                disabled
+                aria-describedby="progress-demo-notice"
+              >
+                + Cập nhật tiến độ
+              </button>
+            </div>
+
+            <table class="data-table">
+              <caption>
+                Lịch sử cập nhật tiến độ công việc
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Ngày cập nhật</th>
+                  <th scope="col">Công việc</th>
+                  <th scope="col">Nội dung đã làm</th>
+                  <th scope="col">Trạng thái</th>
+                  <th scope="col">Mức hoàn thành (%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>dd/mm/yyyy</td>
+                  <th scope="row">Phân tích chức năng</th>
+                  <td>Hoàn tất danh sách chức năng</td>
+                  <td>Đã hoàn thành</td>
+                  <td>100%</td>
+                </tr>
+                <tr>
+                  <td>dd/mm/yyyy</td>
+                  <th scope="row">Khảo sát yêu cầu</th>
+                  <td>Hoàn tất khảo sát</td>
+                  <td>Đã hoàn thành</td>
+                  <td>100%</td>
+                </tr>
+                <tr>
+                  <td>dd/mm/yyyy</td>
+                  <th scope="row">Khảo sát yêu cầu</th>
+                  <td>Tổng hợp yêu cầu ban đầu</td>
+                  <td>Đang thực hiện</td>
+                  <td>50%</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Trạng thái rỗng chuẩn bị cho JavaScript -->
+            <template id="empty-history-template">
+              <p>Chưa có cập nhật tiến độ.</p>
+            </template>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- CHÂN TRANG CHUNG -->
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN</p>
+          <p>Trường Đại học Công nghệ Thông tin</p>
+        </div>
+        <ul class="site-footer__information" aria-label="Thông tin và quy định">
+          <li><span>Điều khoản sử dụng (đang cập nhật)</span></li>
+          <li><span>Quy chế đồ án / khóa luận (đang cập nhật)</span></li>
+          <li><span>Chính sách bảo mật (đang cập nhật)</span></li>
+        </ul>
+        <p class="site-footer__copyright">
+          © 2026 · Hệ thống quản lý đồ án / khóa luận
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
