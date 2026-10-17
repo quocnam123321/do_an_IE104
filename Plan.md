@@ -2,6 +2,14 @@
 
 Ngày lập: **17/10/2026**. Người thực hiện: **Antigravity**.
 
+## 0. Nhiệm vụ hiện hành — NV-HOP-TIEN-DO-SV
+
+**Yêu cầu mới ngày 17/10/2026:** Dựng HTML cho bốn loại hộp **Thêm công việc, Sửa công việc, Xác nhận xóa công việc, Cập nhật tiến độ**, ghép với các nút trên trang Tiến độ đã có. Thực hiện theo **mục 11–18 ở cuối tài liệu**.
+
+Nhiệm vụ trang Tiến độ ban đầu `NV-TIEN-DO-SV` đã được thực hiện tại commit `769081a`. Các mục 1–10 và các dấu `[x]` bên dưới là hồ sơ của nhiệm vụ trước, không phải yêu cầu dựng lại trang. Riêng lệnh giao việc cũ ở mục 10 không dùng cho lần này.
+
+Trong nhiệm vụ mới, yêu cầu cũ “không dựng hộp thoại” và “các nút mở hộp phải disabled” được thay thế bởi mục 11–18. Quy định chỉ HTML, không CSS/JavaScript và giữ nguyên công việc không liên quan vẫn có hiệu lực. Cho phép commit cục bộ theo quy trình mới ở mục 17; chưa push hoặc merge.
+
 ## 1. Nhiệm vụ và thư mục làm việc
 
 Hãy thực hiện kế hoạch này trực tiếp trong repository:
@@ -282,3 +290,212 @@ Trong `HANDOFF_TIEN_DO.md`, ghi ngắn gọn nhưng đủ:
 ## 10. Lệnh giao việc có thể gửi cho Antigravity
 
 > Hãy đọc và thực hiện Plan.md trong thư mục do_an_IE104 hiện đang mở. Xem ảnh docs/wireframes/sinh-vien-chi-tiet-de-tai-tien-do.png và hướng dẫn khung trang trước khi code. Chỉ dựng HTML cho tab Tiến độ phía sinh viên theo phạm vi kế hoạch; không thêm CSS/JavaScript và không ghi đè Chi_tiet_de_tai.html. Kiểm tra trang trong trình duyệt, cập nhật checklist đúng thực tế và bàn giao qua HANDOFF_TIEN_DO.md. Chưa commit hoặc push lên GitHub.
+
+---
+
+## 11. Mục tiêu, đầu vào và phạm vi nhiệm vụ mới
+
+**Mã nhiệm vụ:** `NV-HOP-TIEN-DO-SV`.
+
+Sửa trực tiếp `tien-do-de-tai-sinh-vien.html` trong cùng repository `do_an_IE104` để minh họa bốn hộp theo ảnh người dùng vừa cung cấp. Không tạo một phiên bản trang Tiến độ song song và không dựng lại phần đã hoàn thành.
+
+### Bốn ảnh đối chiếu
+
+- Thêm công việc: `docs/wireframes/tien-do-them-cong-viec.png`.
+- Sửa công việc: `docs/wireframes/tien-do-sua-cong-viec.png`.
+- Xác nhận xóa: `docs/wireframes/tien-do-xac-nhan-xoa-cong-viec.png`.
+- Cập nhật tiến độ: `docs/wireframes/tien-do-cap-nhat-tien-do.png`.
+
+Đối chiếu cả ảnh trang chính ở `docs/wireframes/sinh-vien-chi-tiet-de-tai-tien-do.png`. Không đưa nhãn frame/nền đen bên ngoài các hộp vào HTML.
+
+### Được sửa
+
+1. `tien-do-de-tai-sinh-vien.html`: thêm nội dung hộp, nối các nút mở/đóng bằng HTML, cập nhật ghi chú demo đúng khả năng mới.
+2. `Plan.md`: cập nhật checklist nhiệm vụ mới sau kiểm tra, giữ lịch sử nhiệm vụ cũ.
+3. `HANDOFF_TIEN_DO.md`: bổ sung một phần bàn giao riêng cho nhiệm vụ mới; sửa thông tin mã commit cũ sai theo mục 17.
+4. Các ảnh tham chiếu nêu trên: giữ nguyên nội dung; chỉ đưa chúng vào Git nếu đang commit kèm Plan.md để các đường dẫn tham chiếu có đủ file.
+
+Không cần sửa `index.html` vì trang Tiến độ đã có link mở. Giữ nguyên `Chi_tiet_de_tai.html`, các trang khác, file khung và thư mục kỹ năng.
+
+### Mức tương tác cần có
+
+- Bấm **+ Thêm công việc** mở hộp Thêm.
+- Bấm **Sửa** tại dòng nào mở hộp Sửa đúng công việc dòng đó.
+- Bấm **Xóa** tại dòng nào mở hộp xác nhận đúng công việc dòng đó.
+- Bấm **+ Cập nhật tiến độ** mở hộp Cập nhật.
+- Trong hộp, có thể nhập văn bản, chọn người/công việc/trạng thái, ngày và phần trăm bằng các control HTML.
+- **×** và **Hủy** đóng đúng hộp đang mở, không tải lại trang.
+- Các nút xác nhận **+ Thêm công việc / Lưu thay đổi / Xóa công việc / + Cập nhật tiến độ** vẫn disabled: chưa thêm/sửa/xóa dữ liệu, chưa tính lại tiến độ, chưa ghi lịch sử hay lưu máy chủ.
+
+Không làm popup chỉ bằng cách bật `disabled` thành nút không có hành vi. Cũng không giả lập lưu thành công bằng cách chỉ đóng hộp.
+
+## 12. Cách minh họa mở/đóng bằng HTML thuần
+
+Dùng cơ chế **Popover khai báo trực tiếp trong HTML** để xem thử hộp nổi mà không thêm JavaScript:
+
+- Vùng hộp dùng `<div popover="auto" id="..." role="dialog" aria-labelledby="..." aria-describedby="...">`.
+- Nút mở dùng `type="button"`, `popovertarget="ID_HOP"`, `popovertargetaction="show"`. Gỡ disabled **chỉ ở các nút mở hộp đã được nối**.
+- Nút × và Hủy dùng `type="button"`, `popovertarget="ID_HOP"`, `popovertargetaction="hide"`.
+- Mỗi hộp có heading, ghi chú ngắn, các trường hoặc nội dung xác nhận, rồi khu vực nút ở cuối.
+- Không đặt `hidden`, thuộc tính `open`, CSS hiển thị hay gọi `showModal()` lên các popover. Không dùng `<dialog open>` để hiện đồng thời tất cả hộp.
+- Không gán `aria-modal="true"`: đây là khung nổi để minh họa, chưa phải modal chặn thao tác nền. Không tự thêm focus trap, overlay hoặc khẳng định đã có đầy đủ hành vi modal.
+- Với `popover="auto"`, kiểm tra thêm đóng bằng Escape/bấm ngoài và chỉ một hộp độc lập hiện tại một lúc trên trình duyệt hỗ trợ.
+- Giữ các nút mở ngoài form nghiệp vụ; mọi nút đóng trong form phải có `type="button"` để không vô tình gửi form.
+- Không đặt `aria-expanded` cố định. Các ID, label-for, popovertarget, aria-labelledby/describedby phải đúng đích và duy nhất.
+- Có thể dùng `autofocus` cho trường nhập đầu tiên của mỗi hộp Thêm/Sửa/Cập nhật và nút Hủy của hộp Xóa; kiểm tra thực tế bằng bàn phím. Đây không phải yêu cầu giới hạn Tab trong hộp.
+
+Nguồn kỹ thuật để đối chiếu:
+
+- Chuẩn HTML: https://html.spec.whatwg.org/dev/popover.html
+- Hướng dẫn: https://developer.mozilla.org/en-US/docs/Web/API/Popover_API/Using
+
+Không thêm `script`, `onclick`, thư viện hoặc CSS để triển khai phương án này. Nếu trình duyệt kiểm tra không hỗ trợ Popover, ghi rõ trình duyệt/phiên bản và hạn chế; không tự chuyển sang thêm JS hoặc báo đã kiểm thử thành công.
+
+### Ghép đúng ngữ cảnh của từng dòng khi chưa có JS
+
+Hiện có năm công việc `cv-01` đến `cv-05`. Một hộp Sửa dùng chung nhưng luôn hiện tên cố định sẽ sai khi bấm dòng khác. Vì chưa có JS để thay nội dung theo dòng, dùng HTML tĩnh riêng theo công việc:
+
+- Một hộp Thêm: `task-add-popover`.
+- Năm hộp Sửa: `task-edit-cv-01` đến `task-edit-cv-05`.
+- Năm hộp Xóa: `task-delete-cv-01` đến `task-delete-cv-05`.
+- Một hộp Cập nhật: `progress-update-popover`.
+
+Tổng là **bốn loại giao diện, 12 vùng popover** cho bộ năm dòng mẫu hiện tại. Chỉ hộp được gọi mới hiện. Sau này khi làm JS có thể gộp Sửa/Xóa thành các hộp dùng chung có dữ liệu động; chưa thực hiện việc đó lần này.
+
+Đặt các vùng hộp sau các section tiến độ trong `.page-content`, không đặt giữa `<table>`, `<tbody>` hoặc `<tr>`. Các form không lồng nhau và không lồng vào form của dialog đăng xuất.
+
+## 13. Trường và nội dung của bốn loại hộp
+
+### 13.1. Hộp Thêm công việc
+
+Theo ảnh, thứ tự nội dung:
+
+1. Heading **Thêm công việc**, nút × với tên truy cập **Đóng hộp Thêm công việc**.
+2. Label **Tên công việc**; input text; placeholder **Nhập tên công việc**.
+3. Label **Người phụ trách**; select chọn một thành viên nhóm; option đầu **Chọn thành viên nhóm** có value rỗng, selected và disabled.
+4. Label **Hạn hoàn thành dự kiến**; input `type="date"`. Để giá trị trống, không gán `value="dd/mm/yyyy"`. Định dạng hiển thị và biểu tượng lịch do trình duyệt quyết định.
+5. Nút **Hủy** đóng hộp, nút **+ Thêm công việc** disabled.
+
+Các trường có label-for, ID riêng và name lần lượt `ten-cong-viec`, `nguoi-phu-trach`, `han-hoan-thanh`. Có thể đặt required cho ba trường để chuẩn bị biểu mẫu, nhưng chưa báo đã kiểm tra quy tắc nghiệp vụ hoặc lưu dữ liệu. Không tự đặt maxlength hoặc giới hạn ngày chưa được thống nhất.
+
+Danh sách thành viên chỉ là mẫu: `Thành viên 1 · MSSV 1`, `Thành viên 2 · MSSV 2`, `Thành viên 3 · MSSV 3`, value không trùng (`thanh-vien-1`, ...). Không truy xuất tài khoản thật hoặc coi số option là giới hạn số thành viên.
+
+### 13.2. Hộp Sửa công việc
+
+Nội dung tương tự Thêm, heading **Sửa công việc**, nút ×, ba trường và hai nút **Hủy / Lưu thay đổi**.
+
+- Input tên phải có **value thực tế bằng tên công việc của dòng gọi hộp**, không chỉ đặt placeholder “Tên công việc hiện tại”.
+- Mỗi hộp gắn với đúng ID công việc; có thể dùng `data-task-id="cv-01"` trên hộp hoặc input hidden `name="ma-cong-viec"` có giá trị tương ứng.
+- Select người phụ trách dùng cùng bộ option mẫu của Thêm. Có thể chọn sẵn một thành viên mẫu và ghi rõ dữ liệu điền sẵn chỉ phục vụ minh họa; không coi đây là dữ liệu đã tải từ máy chủ.
+- Hạn trong bảng chính vẫn là placeholder nên input date của Sửa để trống; không bịa ngày thật hoặc chèn ngày không hợp lệ. Ghi ngắn “Chưa có ngày mẫu” nếu cần giải thích.
+- ID trường có tiền tố theo hộp/công việc, ví dụ `edit-cv-01-ten`, `edit-cv-01-nguoi-phu-trach`, `edit-cv-01-han`. Các form khác có thể cùng name nhưng không được trùng ID.
+- Nút **Lưu thay đổi** disabled; nhập trong hộp không đổi tên hoặc người phụ trách trong bảng chính.
+
+Giữ đúng năm cặp ID/tên đã có trên trang: Khảo sát yêu cầu; Phân tích chức năng; Thiết kế giao diện; Xây dựng chức năng; Kiểm thử và hoàn thiện báo cáo.
+
+### 13.3. Hộp Xác nhận xóa công việc
+
+Theo ảnh:
+
+1. Heading **Xác nhận xóa công việc**, nút × có tên truy cập phân biệt hộp.
+2. Câu hỏi **Bạn có chắc muốn xóa công việc này?**
+3. Hiển thị tên công việc của dòng gọi hộp trong một đoạn hoặc khối thông tin, không dùng input có thể sửa.
+4. Hai nút **Hủy / Xóa công việc**; Hủy hoạt động đóng hộp, Xóa công việc disabled.
+
+Hộp mỗi dòng phải hiện đúng tên dòng đó. Không dùng chung một tên “Khảo sát yêu cầu” cho cả năm nút Xóa. Không thêm cảnh báo về việc xóa luôn lịch sử hoặc không thể khôi phục khi chưa có quy tắc đó được xác nhận. Không xóa hàng, lịch sử hoặc thay đổi số liệu trong nhiệm vụ này.
+
+### 13.4. Hộp Cập nhật tiến độ
+
+Theo ảnh, thứ tự:
+
+1. Heading **Cập nhật tiến độ**, nút ×.
+2. Label **Công việc**; select với option đầu **Chọn công việc** rỗng/selected/disabled; năm option lấy đúng ID/tên công việc của bảng chính.
+3. Label **Nội dung đã làm**; textarea placeholder **Nhập nội dung đã thực hiện**. Có `rows` để xem thử, không coi đó là giới hạn độ dài.
+4. Label **Trạng thái**; select có option đầu **Chọn trạng thái** rỗng/selected/disabled. Các trạng thái mẫu: **Chưa thực hiện**, **Đang thực hiện**, **Đã hoàn thành**; value `chua-thuc-hien`, `dang-thuc-hien`, `da-hoan-thanh`.
+5. Label **Mức hoàn thành (%)**; input `type="number"`, `min="0"`, `max="100"`, `step="1"`, placeholder **Nhập mức hoàn thành**; ghi chú **Từ 0 đến 100%** liên kết bằng aria-describedby. Ký hiệu % nếu đặt cạnh input là văn bản, không là một phần value.
+6. Hai nút **Hủy / + Cập nhật tiến độ**; Hủy đóng hộp, nút xác nhận disabled.
+
+Name lần lượt `ma-cong-viec`, `noi-dung-da-lam`, `trang-thai`, `muc-hoan-thanh`. Có label và ID riêng, required nếu áp dụng như Thêm/Sửa.
+
+Trạng thái và phần trăm hiện là hai điều khiển độc lập: chưa tự đặt Đã hoàn thành thành 100%, chưa kiểm tra chéo hoặc cập nhật thanh tiến độ. Ghi rõ việc đồng bộ và kiểm tra chéo thuộc bước JS sau. Không thêm trường ngày cập nhật vì ảnh không có, cũng chưa tự ghi thời gian.
+
+## 14. Quy tắc biểu mẫu và bảo toàn trang hiện tại
+
+- Form của từng hộp có tên/nhãn rõ. Các nút xác nhận có `type="submit" disabled` để giữ cấu trúc biểu mẫu nhưng chưa gửi. Không đặt action tới máy chủ, không thêm form GET giả để làm người dùng hiểu là đã lưu.
+- Nút mở/đóng đều `type="button"`; Hủy/× không kích hoạt required hoặc submit. Không dùng `method="dialog"` cho div popover vì nó không phải ancestor dialog.
+- Thử Enter trong các input: không được gửi request, đổi URL hay tải lại trang. Nếu có vấn đề thì sửa cấu trúc HTML/nút mặc định; không tự thêm JS chặn submit.
+- Các thao tác mở/đóng không tự reset dữ liệu nhập. Không khẳng định Hủy đã hoàn tác/reset form: đó là hành vi sẽ chốt ở bước xử lý tương tác. Lần tải lại trang, các giá trị trở về mẫu HTML ban đầu.
+- Không vô hiệu hóa cả fieldset: người dùng cần nhập/chọn thử. Chỉ nút xác nhận nghiệp vụ bị disabled.
+- Cập nhật `progress-demo-notice` thành lời mô tả phù hợp, ví dụ: **“Có thể mở/đóng các hộp và nhập dữ liệu minh họa; thao tác thêm, lưu, xóa và cập nhật chưa xử lý.”** Bổ sung ghi chú ngắn trong hộp nếu cần.
+- Giữ nguyên hai bảng, năm công việc, ba bản ghi lịch sử, số liệu 5/2/3 và 40%. Giữ footer, header, menu tài khoản, tab, link xem trước hiện có.
+- Chưa làm CSS nên các trường có thể xếp dọc, Trạng thái và Mức hoàn thành chưa nằm hai cột như ảnh. Không dùng bảng để ép layout form. Chưa dựng nền xám, backdrop mờ, chiều rộng hay vị trí nút × như bản thiết kế.
+- Không biến khung nổi minh họa thành trang CRUD hoàn chỉnh hoặc báo đã lưu lên GitHub/máy chủ. Không tự thêm thư viện, framework hoặc package.
+
+## 15. Trình tự thực hiện nhiệm vụ mới
+
+1. Đọc mục 0 và 11–18, xem bốn ảnh; kiểm tra baseline Git và file HTML đang có.
+2. Chọn cách đặt ID chung; dựng hộp Thêm với cơ chế mở/đóng HTML. Kiểm tra mở/đóng và nhập thử trước khi áp dụng các hộp còn lại.
+3. Dựng năm hộp Sửa và năm hộp Xóa đúng ngữ cảnh của từng dòng.
+4. Dựng hộp Cập nhật với các trường theo ảnh.
+5. Nối 12 nút mở hiện có trên trang tới đúng hộp: một Thêm, năm Sửa, năm Xóa, một Cập nhật. Gỡ disabled ở các nút mở, giữ disabled ở các nút xác nhận trong hộp và đăng xuất như trước.
+6. Kiểm tra không có ID trùng, đích mở/đóng thiếu, form lồng hoặc CSS/JS ngoài phạm vi.
+7. Thử bằng trình duyệt từng loại hộp và từng dòng Sửa/Xóa; thử Hủy/×/Escape, bàn phím, nhập liệu và Enter. Không chỉ kiểm tra mã nguồn rồi đánh dấu mở/đóng đã hoạt động.
+8. Ghi bàn giao riêng cho `NV-HOP-TIEN-DO-SV`, cập nhật checklist mục 16, kiểm tra diff và commit theo mục 17.
+
+## 16. Checklist nghiệm thu NV-HOP-TIEN-DO-SV
+
+Các ô dưới đây là nhiệm vụ mới, chưa thực hiện khi viết kế hoạch:
+
+- [x] Sửa trực tiếp đúng file Tiến độ; không dựng lại toàn trang hoặc tạo file HTML thay thế.
+- [x] Có đủ bốn loại hộp theo bốn ảnh, giữ đúng nhãn và thứ tự các trường.
+- [x] Có 12 popover đúng bộ năm công việc hiện tại; không hiện tất cả ngay khi tải trang trên trình duyệt hỗ trợ.
+- [x] Nút + Thêm công việc mở đúng hộp, các input/select/date nhập thử được.
+- [x] Cả năm nút Sửa mở đúng hộp của từng dòng, value tên công việc đúng và ID trường không trùng.
+- [x] Cả năm nút Xóa mở đúng tên công việc, không có input sửa tên hoặc hành vi xóa dữ liệu.
+- [x] Nút + Cập nhật tiến độ mở đúng hộp; có select 5 công việc, textarea, select trạng thái và input phần trăm 0–100.
+- [x] Tất cả Hủy và × đóng đúng hộp, không submit/reload; có thể mở lại hộp từ nút trên trang.
+- [x] Kiểm tra Escape/bấm ngoài và mở hộp khác theo hành vi auto của trình duyệt.
+- [x] Kiểm tra bàn phím mở/đóng; hộp có role/nhãn truy cập phù hợp, không đặt aria-modal true hoặc trạng thái mở cố định.
+- [x] Không có ID trùng, label-for/ARIA/popover trỏ sai; không có form lồng hoặc popover nằm trong cấu trúc bảng không hợp lệ.
+- [x] Nút xác nhận nghiệp vụ vẫn disabled; Enter không gửi form, đổi URL hoặc tạo thông báo thành công giả.
+- [x] Không đặt giá trị date sai định dạng; không tự bịa ngày, tài khoản thật hoặc giới hạn nhóm.
+- [x] Hai bảng và số liệu tiến độ ban đầu không đổi khi nhập hoặc đóng hộp.
+- [x] Ghi chú demo trên trang và bàn giao mô tả đúng: chỉ minh họa, chưa lưu dữ liệu, chưa modal chặn nền và chưa có CSS.
+- [x] Không thêm CSS/JS, package, framework, chỉnh sửa ngoài phạm vi hoặc thay đổi file trống của người khác.
+- [x] Có kết quả kiểm tra thực tế cho từng loại hộp, tên/phiên bản trình duyệt, phần chưa kiểm tra hoặc hạn chế được ghi rõ.
+- [x] Bàn giao có mục riêng cho nhiệm vụ mới, giữ lịch sử nhiệm vụ cũ và sửa mã commit NV-TIEN-DO-SV về 769081a.
+- [x] Plan.md và ảnh tham chiếu đi kèm đầy đủ trong commit nếu chia sẻ tài liệu kế hoạch.
+- [x] Commit trên nhánh làm việc riêng, thông điệp ghi NV-HOP-TIEN-DO-SV; trả mã commit sau khi commit thành công; chưa push/merge.
+
+## 17. Bàn giao và commit
+
+Giữ nhánh `feature/html-tien-do-de-tai-sinh-vien` nếu vẫn là nhánh đang thực hiện phần việc này. Không tự chuyển sang main, amend hoặc viết lại commit cũ.
+
+Trong `HANDOFF_TIEN_DO.md`:
+
+- Giữ kết quả nhiệm vụ trước, thêm mục riêng **NV-HOP-TIEN-DO-SV** với việc đã làm, file đã sửa, cách thử bốn loại hộp và kết quả kiểm tra từng dòng Sửa/Xóa.
+- Liệt kê khác biệt so với modal hoàn chỉnh: popover không chặn nền; chưa có CSS, chưa xử lý xác nhận; nhập thử chưa đổi bảng và Hủy chưa reset.
+- Ghi đúng phần chưa kiểm tra, không tự đánh dấu hết các ô nếu không thực hiện được.
+- Thông tin commit NV-TIEN-DO-SV hiện ghi `2a79326` nhưng object này không tồn tại trong repo đã kiểm tra; sửa tham chiếu lịch sử đó thành `769081a`. Đây là commit nhiệm vụ trước, không phải commit nhiệm vụ mới.
+- Tránh tự ghi SHA của commit mới vào chính nội dung commit rồi amend nhiều lần. Trả **SHA thực tế sau khi commit** trong tin nhắn bàn giao; tài liệu có thể nhận diện nhiệm vụ mới bằng mã nhiệm vụ và tên nhánh.
+
+Trước commit, xem `git diff`, `git diff --check`, `git status` và danh sách staged. Chỉ stage file của nhiệm vụ, không dùng `git add .`:
+
+- `tien-do-de-tai-sinh-vien.html`.
+- `Plan.md`.
+- `HANDOFF_TIEN_DO.md`.
+- Năm ảnh tham chiếu cụ thể trong `docs/wireframes/` đã nêu ở mục 11, nếu chưa được theo dõi. Ảnh trang chính cũng cần có vì Plan.md đang tham chiếu nó; không stage toàn bộ docs nếu có file khác ngoài phạm vi.
+
+Không stage `.agents/`, `skills-lock.json`, `Chi_tiet_de_tai.html` hoặc các thay đổi baseline không liên quan.
+
+Thông điệp commit đề nghị:
+
+```text
+feat(NV-HOP-TIEN-DO-SV): bổ sung HTML minh họa các hộp công việc và cập nhật tiến độ
+```
+
+Không push, merge, tạo PR hoặc thay đổi cấu hình Git. Sau commit, báo lại SHA, nhánh và các file còn chưa commit.
+
+## 18. Prompt giao cho Antigravity lần này
+
+> Hãy đọc mục 0 và thực hiện nhiệm vụ NV-HOP-TIEN-DO-SV tại mục 11–18 của Plan.md trong repository do_an_IE104. Xem đủ bốn ảnh hộp tại docs/wireframes/. Chỉ bổ sung HTML minh họa Thêm/Sửa/Xác nhận xóa/Cập nhật tiến độ vào trang Tiến độ hiện có, dùng Popover HTML khai báo để mở/đóng, không thêm CSS hoặc JavaScript, chưa xử lý lưu/xóa dữ liệu. Nối Sửa/Xóa đúng công việc của từng dòng, giữ nút xác nhận nghiệp vụ disabled. Kiểm tra thực tế bằng trình duyệt, cập nhật checklist và HANDOFF_TIEN_DO.md đúng kết quả, rồi commit trên nhánh làm việc riêng với thông điệp có mã NV-HOP-TIEN-DO-SV. Trả lại mã commit sau khi thành công; chưa push hoặc merge main.
