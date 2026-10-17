@@ -1,0 +1,1278 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Theo dõi tiến độ, danh sách công việc và lịch sử cập nhật tiến độ đề tài của nhóm sinh viên."
+    />
+    <title>Tiến độ đề tài | Đề tài của tôi | Quản lý đồ án</title>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+
+    <!-- ĐẦU TRANG CHUNG CHO SINH VIÊN -->
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-sinh-vien.html">
+          QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN
+        </a>
+
+        <!-- Điều hướng chính dành cho sinh viên -->
+        <nav class="main-nav" aria-label="Điều hướng sinh viên">
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html">
+                Tổng quan
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="dang-ky-de-tai.html">
+                Đăng ký đề tài
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <!-- Trang danh sách Đề tài của tôi chưa có file riêng, đánh dấu vị trí hiện tại và ghi nhận pending -->
+              <span
+                class="main-nav__link"
+                aria-current="location"
+                data-pending-href="de-tai-cua-toi-sinh-vien.html"
+              >
+                Đề tài của tôi (đang cập nhật)
+              </span>
+            </li>
+
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="lich-han-nop.html">
+                Lịch hạn nộp
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <!-- Mục Chung với hai danh mục con Liên hệ và Thông báo -->
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__toggle">Chung</summary>
+                <ul class="main-nav__sublist">
+                  <li>
+                    <span data-pending-href="lien-he.html"
+                      >Liên hệ (đang cập nhật)</span
+                    >
+                  </li>
+                  <li>
+                    <span data-pending-href="thong-bao.html"
+                      >Thông báo (đang cập nhật)</span
+                    >
+                  </li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Tài khoản -->
+        <div class="account-menu">
+          <details class="account-menu__disclosure">
+            <summary
+              class="account-menu__toggle"
+              aria-label="Mở menu tài khoản sinh viên"
+            >
+              <span class="account-menu__avatar" aria-hidden="true">SV</span>
+              <span class="account-menu__label">Tài khoản sinh viên</span>
+            </summary>
+            <ul id="account-dropdown" class="account-menu__list">
+              <li>
+                <span
+                  class="account-menu__profile"
+                  data-pending-href="ho-so-ca-nhan.html"
+                >
+                  Hồ sơ cá nhân (đang cập nhật)
+                </span>
+              </li>
+              <li>
+                <button
+                  class="account-menu__logout"
+                  type="button"
+                  aria-controls="logout-dialog"
+                  aria-describedby="logout-notice"
+                  disabled
+                >
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
+        </div>
+      </div>
+    </header>
+
+    <dialog
+      id="logout-dialog"
+      class="confirmation-dialog"
+      aria-labelledby="logout-title"
+    >
+      <h2 id="logout-title">Xác nhận đăng xuất</h2>
+      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+      <form method="dialog">
+        <button type="submit" value="cancel">Hủy</button>
+        <button type="button" disabled>Xác nhận đăng xuất</button>
+      </form>
+    </dialog>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <main id="main-content" class="main-content" tabindex="-1">
+      <div class="page-container">
+        <!-- Đường dẫn Breadcrumb -->
+        <nav class="breadcrumb" aria-label="Đường dẫn">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item">
+              <a href="tong-quan-sinh-vien.html">Sinh viên</a>
+            </li>
+            <li class="breadcrumb__item">
+              <span data-pending-href="de-tai-cua-toi-sinh-vien.html"
+                >Đề tài của tôi (đang cập nhật)</span
+              >
+            </li>
+            <li class="breadcrumb__item">
+              <span data-pending-href="chi-tiet-de-tai-cua-toi-sinh-vien.html"
+                >Chi tiết đề tài (đang cập nhật)</span
+              >
+            </li>
+            <li class="breadcrumb__item">
+              <span aria-current="page">Tiến độ</span>
+            </li>
+          </ol>
+        </nav>
+
+        <!-- Quay lại -->
+        <p class="back-navigation">
+          <span
+            class="back-link"
+            data-pending-href="de-tai-cua-toi-sinh-vien.html"
+          >
+            ← Quay lại Đề tài của tôi (đang cập nhật)
+          </span>
+        </p>
+
+        <!-- Tiêu đề trang và thanh thông tin đề tài -->
+        <header class="page-header">
+          <h1 class="page-header__title">Chi tiết đề tài</h1>
+          <p class="project-info-bar">
+            <strong>Tên đồ án / khóa luận</strong>
+          </p>
+          <p id="progress-demo-notice" class="demo-notice">
+            Có thể mở/đóng các hộp và nhập dữ liệu minh họa; thao tác thêm, lưu,
+            xóa và cập nhật chưa xử lý.
+          </p>
+        </header>
+
+        <!-- Điều hướng bốn tab chi tiết -->
+        <nav class="detail-tabs-nav" aria-label="Các mục chi tiết đề tài">
+          <ul class="detail-tabs-list">
+            <li class="detail-tabs-item">
+              <span data-pending-href="chi-tiet-de-tai-tong-quan.html"
+                >Tổng quan (đang cập nhật)</span
+              >
+            </li>
+            <li class="detail-tabs-item">
+              <span class="detail-tabs-link--active" aria-current="page"
+                >Tiến độ</span
+              >
+            </li>
+            <li class="detail-tabs-item">
+              <span data-pending-href="chi-tiet-de-tai-bai-nop.html"
+                >Bài nộp (đang cập nhật)</span
+              >
+            </li>
+            <li class="detail-tabs-item">
+              <span
+                data-pending-href="chi-tiet-de-tai-ket-qua-danh-gia.html"
+                >Kết quả đánh giá (đang cập nhật)</span
+              >
+            </li>
+          </ul>
+        </nav>
+
+        <div class="page-content">
+          <!-- KHU VỰC 1: TIẾN ĐỘ TỔNG THỂ -->
+          <section
+            class="project-progress"
+            aria-labelledby="overall-progress-title"
+          >
+            <h2 id="overall-progress-title">Tiến độ tổng thể</h2>
+            <div class="overall-progress-bar">
+              <label for="overall-progress">Thanh tiến độ tổng thể</label>
+              <progress id="overall-progress" max="100" value="40">
+                40%
+              </progress>
+              <span class="overall-progress__text"
+                >40% — dữ liệu minh họa</span
+              >
+            </div>
+            <dl class="progress-stats">
+              <div class="progress-stat-item">
+                <dt>Tổng công việc</dt>
+                <dd>5</dd>
+              </div>
+              <div class="progress-stat-item">
+                <dt>Đã hoàn thành</dt>
+                <dd>2</dd>
+              </div>
+              <div class="progress-stat-item">
+                <dt>Còn lại</dt>
+                <dd>3</dd>
+              </div>
+            </dl>
+          </section>
+
+          <!-- KHU VỰC 2: DANH SÁCH CÔNG VIỆC -->
+          <section
+            class="task-list-section"
+            aria-labelledby="task-list-title"
+          >
+            <div class="section-header">
+              <h2 id="task-list-title">Danh sách công việc</h2>
+              <button
+                type="button"
+                class="btn-add-task"
+                popovertarget="task-add-popover"
+                popovertargetaction="show"
+              >
+                + Thêm công việc
+              </button>
+            </div>
+
+            <table class="data-table">
+              <caption>
+                Danh sách công việc theo dõi tiến độ đề tài
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Công việc</th>
+                  <th scope="col">Người phụ trách</th>
+                  <th scope="col">Hạn hoàn thành dự kiến</th>
+                  <th scope="col">Thao tác</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr id="cv-01" data-task-id="cv-01">
+                  <th scope="row">Khảo sát yêu cầu</th>
+                  <td>Họ tên thành viên · MSSV</td>
+                  <td>dd/mm/yyyy</td>
+                  <td>
+                    <button
+                      type="button"
+                      popovertarget="task-edit-cv-01"
+                      popovertargetaction="show"
+                      aria-label="Sửa công việc: Khảo sát yêu cầu"
+                    >
+                      Sửa
+                    </button>
+                    <button
+                      type="button"
+                      popovertarget="task-delete-cv-01"
+                      popovertargetaction="show"
+                      aria-label="Xóa công việc: Khảo sát yêu cầu"
+                    >
+                      Xóa
+                    </button>
+                  </td>
+                </tr>
+                <tr id="cv-02" data-task-id="cv-02">
+                  <th scope="row">Phân tích chức năng</th>
+                  <td>Họ tên thành viên · MSSV</td>
+                  <td>dd/mm/yyyy</td>
+                  <td>
+                    <button
+                      type="button"
+                      popovertarget="task-edit-cv-02"
+                      popovertargetaction="show"
+                      aria-label="Sửa công việc: Phân tích chức năng"
+                    >
+                      Sửa
+                    </button>
+                    <button
+                      type="button"
+                      popovertarget="task-delete-cv-02"
+                      popovertargetaction="show"
+                      aria-label="Xóa công việc: Phân tích chức năng"
+                    >
+                      Xóa
+                    </button>
+                  </td>
+                </tr>
+                <tr id="cv-03" data-task-id="cv-03">
+                  <th scope="row">Thiết kế giao diện</th>
+                  <td>Họ tên thành viên · MSSV</td>
+                  <td>dd/mm/yyyy</td>
+                  <td>
+                    <button
+                      type="button"
+                      popovertarget="task-edit-cv-03"
+                      popovertargetaction="show"
+                      aria-label="Sửa công việc: Thiết kế giao diện"
+                    >
+                      Sửa
+                    </button>
+                    <button
+                      type="button"
+                      popovertarget="task-delete-cv-03"
+                      popovertargetaction="show"
+                      aria-label="Xóa công việc: Thiết kế giao diện"
+                    >
+                      Xóa
+                    </button>
+                  </td>
+                </tr>
+                <tr id="cv-04" data-task-id="cv-04">
+                  <th scope="row">Xây dựng chức năng</th>
+                  <td>Họ tên thành viên · MSSV</td>
+                  <td>dd/mm/yyyy</td>
+                  <td>
+                    <button
+                      type="button"
+                      popovertarget="task-edit-cv-04"
+                      popovertargetaction="show"
+                      aria-label="Sửa công việc: Xây dựng chức năng"
+                    >
+                      Sửa
+                    </button>
+                    <button
+                      type="button"
+                      popovertarget="task-delete-cv-04"
+                      popovertargetaction="show"
+                      aria-label="Xóa công việc: Xây dựng chức năng"
+                    >
+                      Xóa
+                    </button>
+                  </td>
+                </tr>
+                <tr id="cv-05" data-task-id="cv-05">
+                  <th scope="row">Kiểm thử và hoàn thiện báo cáo</th>
+                  <td>Họ tên thành viên · MSSV</td>
+                  <td>dd/mm/yyyy</td>
+                  <td>
+                    <button
+                      type="button"
+                      popovertarget="task-edit-cv-05"
+                      popovertargetaction="show"
+                      aria-label="Sửa công việc: Kiểm thử và hoàn thiện báo cáo"
+                    >
+                      Sửa
+                    </button>
+                    <button
+                      type="button"
+                      popovertarget="task-delete-cv-05"
+                      popovertargetaction="show"
+                      aria-label="Xóa công việc: Kiểm thử và hoàn thiện báo cáo"
+                    >
+                      Xóa
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Trạng thái rỗng chuẩn bị cho JavaScript -->
+            <template id="empty-task-list-template">
+              <p>Chưa có công việc. Hãy thêm công việc để theo dõi tiến độ.</p>
+            </template>
+          </section>
+
+          <!-- KHU VỰC 3: LỊCH SỬ CẬP NHẬT -->
+          <section
+            class="update-history-section"
+            aria-labelledby="history-title"
+          >
+            <div class="section-header">
+              <h2 id="history-title">Lịch sử cập nhật</h2>
+              <button
+                type="button"
+                class="btn-update-progress"
+                popovertarget="progress-update-popover"
+                popovertargetaction="show"
+              >
+                + Cập nhật tiến độ
+              </button>
+            </div>
+
+            <table class="data-table">
+              <caption>
+                Lịch sử cập nhật tiến độ công việc
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">Ngày cập nhật</th>
+                  <th scope="col">Công việc</th>
+                  <th scope="col">Nội dung đã làm</th>
+                  <th scope="col">Trạng thái</th>
+                  <th scope="col">Mức hoàn thành (%)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>dd/mm/yyyy</td>
+                  <th scope="row">Phân tích chức năng</th>
+                  <td>Hoàn tất danh sách chức năng</td>
+                  <td>Đã hoàn thành</td>
+                  <td>100%</td>
+                </tr>
+                <tr>
+                  <td>dd/mm/yyyy</td>
+                  <th scope="row">Khảo sát yêu cầu</th>
+                  <td>Hoàn tất khảo sát</td>
+                  <td>Đã hoàn thành</td>
+                  <td>100%</td>
+                </tr>
+                <tr>
+                  <td>dd/mm/yyyy</td>
+                  <th scope="row">Khảo sát yêu cầu</th>
+                  <td>Tổng hợp yêu cầu ban đầu</td>
+                  <td>Đang thực hiện</td>
+                  <td>50%</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <!-- Trạng thái rỗng chuẩn bị cho JavaScript -->
+            <template id="empty-history-template">
+              <p>Chưa có cập nhật tiến độ.</p>
+            </template>
+          </section>
+
+          <!-- KHU VỰC CÁC HỘP THOẠI MINH HỌA (HTML POPOVER) -->
+          <section
+            class="task-popovers-section"
+            aria-label="Các hộp thoại chức năng tiến độ"
+          >
+            <!-- 1. Hộp Thêm công việc -->
+            <div
+              id="task-add-popover"
+              popover="auto"
+              role="dialog"
+              aria-labelledby="add-task-title"
+              aria-describedby="add-task-desc"
+              class="task-popover"
+            >
+              <div class="popover-header">
+                <h3 id="add-task-title">Thêm công việc</h3>
+                <button
+                  type="button"
+                  popovertarget="task-add-popover"
+                  popovertargetaction="hide"
+                  aria-label="Đóng hộp Thêm công việc"
+                  class="btn-close-popover"
+                >
+                  ×
+                </button>
+              </div>
+              <p id="add-task-desc" class="demo-notice">
+                Dữ liệu minh họa; nút thêm công việc chưa xử lý lưu.
+              </p>
+              <form class="popover-form">
+                <div class="form-group">
+                  <label for="add-task-name">Tên công việc</label>
+                  <input
+                    type="text"
+                    id="add-task-name"
+                    name="ten-cong-viec"
+                    placeholder="Nhập tên công việc"
+                    required
+                    autofocus
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="add-task-assignee">Người phụ trách</label>
+                  <select
+                    id="add-task-assignee"
+                    name="nguoi-phu-trach"
+                    required
+                  >
+                    <option value="" selected disabled>
+                      Chọn thành viên nhóm
+                    </option>
+                    <option value="thanh-vien-1">Thành viên 1 · MSSV 1</option>
+                    <option value="thanh-vien-2">Thành viên 2 · MSSV 2</option>
+                    <option value="thanh-vien-3">Thành viên 3 · MSSV 3</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="add-task-deadline">Hạn hoàn thành dự kiến</label>
+                  <input
+                    type="date"
+                    id="add-task-deadline"
+                    name="han-hoan-thanh"
+                    required
+                  />
+                </div>
+
+                <div class="popover-actions">
+                  <button
+                    type="button"
+                    popovertarget="task-add-popover"
+                    popovertargetaction="hide"
+                  >
+                    Hủy
+                  </button>
+                  <button type="submit" disabled>+ Thêm công việc</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 2. Năm hộp Sửa công việc cho năm dòng mẫu -->
+            <!-- 2.1. Sửa cv-01 -->
+            <div
+              id="task-edit-cv-01"
+              popover="auto"
+              role="dialog"
+              aria-labelledby="edit-cv-01-title"
+              aria-describedby="edit-cv-01-desc"
+              data-task-id="cv-01"
+              class="task-popover"
+            >
+              <div class="popover-header">
+                <h3 id="edit-cv-01-title">Sửa công việc</h3>
+                <button
+                  type="button"
+                  popovertarget="task-edit-cv-01"
+                  popovertargetaction="hide"
+                  aria-label="Đóng hộp Sửa công việc: Khảo sát yêu cầu"
+                  class="btn-close-popover"
+                >
+                  ×
+                </button>
+              </div>
+              <p id="edit-cv-01-desc" class="demo-notice">
+                Dữ liệu minh họa; nút lưu thay đổi chưa xử lý lưu.
+              </p>
+              <form class="popover-form">
+                <input type="hidden" name="ma-cong-viec" value="cv-01" />
+                <div class="form-group">
+                  <label for="edit-cv-01-name">Tên công việc</label>
+                  <input
+                    type="text"
+                    id="edit-cv-01-name"
+                    name="ten-cong-viec"
+                    value="Khảo sát yêu cầu"
+                    required
+                    autofocus
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="edit-cv-01-assignee">Người phụ trách</label>
+                  <select
+                    id="edit-cv-01-assignee"
+                    name="nguoi-phu-trach"
+                    required
+                  >
+                    <option value="" disabled>Chọn thành viên nhóm</option>
+                    <option value="thanh-vien-1" selected>
+                      Thành viên 1 · MSSV 1
+                    </option>
+                    <option value="thanh-vien-2">Thành viên 2 · MSSV 2</option>
+                    <option value="thanh-vien-3">Thành viên 3 · MSSV 3</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="edit-cv-01-deadline">Hạn hoàn thành dự kiến</label>
+                  <input
+                    type="date"
+                    id="edit-cv-01-deadline"
+                    name="han-hoan-thanh"
+                    required
+                  />
+                </div>
+
+                <div class="popover-actions">
+                  <button
+                    type="button"
+                    popovertarget="task-edit-cv-01"
+                    popovertargetaction="hide"
+                  >
+                    Hủy
+                  </button>
+                  <button type="submit" disabled>Lưu thay đổi</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 2.2. Sửa cv-02 -->
+            <div
+              id="task-edit-cv-02"
+              popover="auto"
+              role="dialog"
+              aria-labelledby="edit-cv-02-title"
+              aria-describedby="edit-cv-02-desc"
+              data-task-id="cv-02"
+              class="task-popover"
+            >
+              <div class="popover-header">
+                <h3 id="edit-cv-02-title">Sửa công việc</h3>
+                <button
+                  type="button"
+                  popovertarget="task-edit-cv-02"
+                  popovertargetaction="hide"
+                  aria-label="Đóng hộp Sửa công việc: Phân tích chức năng"
+                  class="btn-close-popover"
+                >
+                  ×
+                </button>
+              </div>
+              <p id="edit-cv-02-desc" class="demo-notice">
+                Dữ liệu minh họa; nút lưu thay đổi chưa xử lý lưu.
+              </p>
+              <form class="popover-form">
+                <input type="hidden" name="ma-cong-viec" value="cv-02" />
+                <div class="form-group">
+                  <label for="edit-cv-02-name">Tên công việc</label>
+                  <input
+                    type="text"
+                    id="edit-cv-02-name"
+                    name="ten-cong-viec"
+                    value="Phân tích chức năng"
+                    required
+                    autofocus
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="edit-cv-02-assignee">Người phụ trách</label>
+                  <select
+                    id="edit-cv-02-assignee"
+                    name="nguoi-phu-trach"
+                    required
+                  >
+                    <option value="" disabled>Chọn thành viên nhóm</option>
+                    <option value="thanh-vien-1" selected>
+                      Thành viên 1 · MSSV 1
+                    </option>
+                    <option value="thanh-vien-2">Thành viên 2 · MSSV 2</option>
+                    <option value="thanh-vien-3">Thành viên 3 · MSSV 3</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="edit-cv-02-deadline">Hạn hoàn thành dự kiến</label>
+                  <input
+                    type="date"
+                    id="edit-cv-02-deadline"
+                    name="han-hoan-thanh"
+                    required
+                  />
+                </div>
+
+                <div class="popover-actions">
+                  <button
+                    type="button"
+                    popovertarget="task-edit-cv-02"
+                    popovertargetaction="hide"
+                  >
+                    Hủy
+                  </button>
+                  <button type="submit" disabled>Lưu thay đổi</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 2.3. Sửa cv-03 -->
+            <div
+              id="task-edit-cv-03"
+              popover="auto"
+              role="dialog"
+              aria-labelledby="edit-cv-03-title"
+              aria-describedby="edit-cv-03-desc"
+              data-task-id="cv-03"
+              class="task-popover"
+            >
+              <div class="popover-header">
+                <h3 id="edit-cv-03-title">Sửa công việc</h3>
+                <button
+                  type="button"
+                  popovertarget="task-edit-cv-03"
+                  popovertargetaction="hide"
+                  aria-label="Đóng hộp Sửa công việc: Thiết kế giao diện"
+                  class="btn-close-popover"
+                >
+                  ×
+                </button>
+              </div>
+              <p id="edit-cv-03-desc" class="demo-notice">
+                Dữ liệu minh họa; nút lưu thay đổi chưa xử lý lưu.
+              </p>
+              <form class="popover-form">
+                <input type="hidden" name="ma-cong-viec" value="cv-03" />
+                <div class="form-group">
+                  <label for="edit-cv-03-name">Tên công việc</label>
+                  <input
+                    type="text"
+                    id="edit-cv-03-name"
+                    name="ten-cong-viec"
+                    value="Thiết kế giao diện"
+                    required
+                    autofocus
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="edit-cv-03-assignee">Người phụ trách</label>
+                  <select
+                    id="edit-cv-03-assignee"
+                    name="nguoi-phu-trach"
+                    required
+                  >
+                    <option value="" disabled>Chọn thành viên nhóm</option>
+                    <option value="thanh-vien-1" selected>
+                      Thành viên 1 · MSSV 1
+                    </option>
+                    <option value="thanh-vien-2">Thành viên 2 · MSSV 2</option>
+                    <option value="thanh-vien-3">Thành viên 3 · MSSV 3</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="edit-cv-03-deadline">Hạn hoàn thành dự kiến</label>
+                  <input
+                    type="date"
+                    id="edit-cv-03-deadline"
+                    name="han-hoan-thanh"
+                    required
+                  />
+                </div>
+
+                <div class="popover-actions">
+                  <button
+                    type="button"
+                    popovertarget="task-edit-cv-03"
+                    popovertargetaction="hide"
+                  >
+                    Hủy
+                  </button>
+                  <button type="submit" disabled>Lưu thay đổi</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 2.4. Sửa cv-04 -->
+            <div
+              id="task-edit-cv-04"
+              popover="auto"
+              role="dialog"
+              aria-labelledby="edit-cv-04-title"
+              aria-describedby="edit-cv-04-desc"
+              data-task-id="cv-04"
+              class="task-popover"
+            >
+              <div class="popover-header">
+                <h3 id="edit-cv-04-title">Sửa công việc</h3>
+                <button
+                  type="button"
+                  popovertarget="task-edit-cv-04"
+                  popovertargetaction="hide"
+                  aria-label="Đóng hộp Sửa công việc: Xây dựng chức năng"
+                  class="btn-close-popover"
+                >
+                  ×
+                </button>
+              </div>
+              <p id="edit-cv-04-desc" class="demo-notice">
+                Dữ liệu minh họa; nút lưu thay đổi chưa xử lý lưu.
+              </p>
+              <form class="popover-form">
+                <input type="hidden" name="ma-cong-viec" value="cv-04" />
+                <div class="form-group">
+                  <label for="edit-cv-04-name">Tên công việc</label>
+                  <input
+                    type="text"
+                    id="edit-cv-04-name"
+                    name="ten-cong-viec"
+                    value="Xây dựng chức năng"
+                    required
+                    autofocus
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="edit-cv-04-assignee">Người phụ trách</label>
+                  <select
+                    id="edit-cv-04-assignee"
+                    name="nguoi-phu-trach"
+                    required
+                  >
+                    <option value="" disabled>Chọn thành viên nhóm</option>
+                    <option value="thanh-vien-1" selected>
+                      Thành viên 1 · MSSV 1
+                    </option>
+                    <option value="thanh-vien-2">Thành viên 2 · MSSV 2</option>
+                    <option value="thanh-vien-3">Thành viên 3 · MSSV 3</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="edit-cv-04-deadline">Hạn hoàn thành dự kiến</label>
+                  <input
+                    type="date"
+                    id="edit-cv-04-deadline"
+                    name="han-hoan-thanh"
+                    required
+                  />
+                </div>
+
+                <div class="popover-actions">
+                  <button
+                    type="button"
+                    popovertarget="task-edit-cv-04"
+                    popovertargetaction="hide"
+                  >
+                    Hủy
+                  </button>
+                  <button type="submit" disabled>Lưu thay đổi</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 2.5. Sửa cv-05 -->
+            <div
+              id="task-edit-cv-05"
+              popover="auto"
+              role="dialog"
+              aria-labelledby="edit-cv-05-title"
+              aria-describedby="edit-cv-05-desc"
+              data-task-id="cv-05"
+              class="task-popover"
+            >
+              <div class="popover-header">
+                <h3 id="edit-cv-05-title">Sửa công việc</h3>
+                <button
+                  type="button"
+                  popovertarget="task-edit-cv-05"
+                  popovertargetaction="hide"
+                  aria-label="Đóng hộp Sửa công việc: Kiểm thử và hoàn thiện báo cáo"
+                  class="btn-close-popover"
+                >
+                  ×
+                </button>
+              </div>
+              <p id="edit-cv-05-desc" class="demo-notice">
+                Dữ liệu minh họa; nút lưu thay đổi chưa xử lý lưu.
+              </p>
+              <form class="popover-form">
+                <input type="hidden" name="ma-cong-viec" value="cv-05" />
+                <div class="form-group">
+                  <label for="edit-cv-05-name">Tên công việc</label>
+                  <input
+                    type="text"
+                    id="edit-cv-05-name"
+                    name="ten-cong-viec"
+                    value="Kiểm thử và hoàn thiện báo cáo"
+                    required
+                    autofocus
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label for="edit-cv-05-assignee">Người phụ trách</label>
+                  <select
+                    id="edit-cv-05-assignee"
+                    name="nguoi-phu-trach"
+                    required
+                  >
+                    <option value="" disabled>Chọn thành viên nhóm</option>
+                    <option value="thanh-vien-1" selected>
+                      Thành viên 1 · MSSV 1
+                    </option>
+                    <option value="thanh-vien-2">Thành viên 2 · MSSV 2</option>
+                    <option value="thanh-vien-3">Thành viên 3 · MSSV 3</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="edit-cv-05-deadline">Hạn hoàn thành dự kiến</label>
+                  <input
+                    type="date"
+                    id="edit-cv-05-deadline"
+                    name="han-hoan-thanh"
+                    required
+                  />
+                </div>
+
+                <div class="popover-actions">
+                  <button
+                    type="button"
+                    popovertarget="task-edit-cv-05"
+                    popovertargetaction="hide"
+                  >
+                    Hủy
+                  </button>
+                  <button type="submit" disabled>Lưu thay đổi</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 3. Năm hộp Xác nhận xóa công việc cho năm dòng mẫu -->
+            <!-- 3.1. Xóa cv-01 -->
+            <div
+              id="task-delete-cv-01"
+              popover="auto"
+              role="dialog"
+              aria-labelledby="delete-cv-01-title"
+              aria-describedby="delete-cv-01-desc"
+              data-task-id="cv-01"
+              class="task-popover"
+            >
+              <div class="popover-header">
+                <h3 id="delete-cv-01-title">Xác nhận xóa công việc</h3>
+                <button
+                  type="button"
+                  popovertarget="task-delete-cv-01"
+                  popovertargetaction="hide"
+                  aria-label="Đóng hộp Xác nhận xóa công việc: Khảo sát yêu cầu"
+                  class="btn-close-popover"
+                >
+                  ×
+                </button>
+              </div>
+              <p id="delete-cv-01-desc">
+                Bạn có chắc muốn xóa công việc này?
+              </p>
+              <p class="delete-task-target">
+                <strong>Khảo sát yêu cầu</strong>
+              </p>
+              <p class="demo-notice">
+                Dữ liệu minh họa; nút xóa công việc chưa xử lý xóa.
+              </p>
+              <form class="popover-form">
+                <input type="hidden" name="ma-cong-viec" value="cv-01" />
+                <div class="popover-actions">
+                  <button
+                    type="button"
+                    popovertarget="task-delete-cv-01"
+                    popovertargetaction="hide"
+                    autofocus
+                  >
+                    Hủy
+                  </button>
+                  <button type="submit" disabled>Xóa công việc</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 3.2. Xóa cv-02 -->
+            <div
+              id="task-delete-cv-02"
+              popover="auto"
+              role="dialog"
+              aria-labelledby="delete-cv-02-title"
+              aria-describedby="delete-cv-02-desc"
+              data-task-id="cv-02"
+              class="task-popover"
+            >
+              <div class="popover-header">
+                <h3 id="delete-cv-02-title">Xác nhận xóa công việc</h3>
+                <button
+                  type="button"
+                  popovertarget="task-delete-cv-02"
+                  popovertargetaction="hide"
+                  aria-label="Đóng hộp Xác nhận xóa công việc: Phân tích chức năng"
+                  class="btn-close-popover"
+                >
+                  ×
+                </button>
+              </div>
+              <p id="delete-cv-02-desc">
+                Bạn có chắc muốn xóa công việc này?
+              </p>
+              <p class="delete-task-target">
+                <strong>Phân tích chức năng</strong>
+              </p>
+              <p class="demo-notice">
+                Dữ liệu minh họa; nút xóa công việc chưa xử lý xóa.
+              </p>
+              <form class="popover-form">
+                <input type="hidden" name="ma-cong-viec" value="cv-02" />
+                <div class="popover-actions">
+                  <button
+                    type="button"
+                    popovertarget="task-delete-cv-02"
+                    popovertargetaction="hide"
+                    autofocus
+                  >
+                    Hủy
+                  </button>
+                  <button type="submit" disabled>Xóa công việc</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 3.3. Xóa cv-03 -->
+            <div
+              id="task-delete-cv-03"
+              popover="auto"
+              role="dialog"
+              aria-labelledby="delete-cv-03-title"
+              aria-describedby="delete-cv-03-desc"
+              data-task-id="cv-03"
+              class="task-popover"
+            >
+              <div class="popover-header">
+                <h3 id="delete-cv-03-title">Xác nhận xóa công việc</h3>
+                <button
+                  type="button"
+                  popovertarget="task-delete-cv-03"
+                  popovertargetaction="hide"
+                  aria-label="Đóng hộp Xác nhận xóa công việc: Thiết kế giao diện"
+                  class="btn-close-popover"
+                >
+                  ×
+                </button>
+              </div>
+              <p id="delete-cv-03-desc">
+                Bạn có chắc muốn xóa công việc này?
+              </p>
+              <p class="delete-task-target">
+                <strong>Thiết kế giao diện</strong>
+              </p>
+              <p class="demo-notice">
+                Dữ liệu minh họa; nút xóa công việc chưa xử lý xóa.
+              </p>
+              <form class="popover-form">
+                <input type="hidden" name="ma-cong-viec" value="cv-03" />
+                <div class="popover-actions">
+                  <button
+                    type="button"
+                    popovertarget="task-delete-cv-03"
+                    popovertargetaction="hide"
+                    autofocus
+                  >
+                    Hủy
+                  </button>
+                  <button type="submit" disabled>Xóa công việc</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 3.4. Xóa cv-04 -->
+            <div
+              id="task-delete-cv-04"
+              popover="auto"
+              role="dialog"
+              aria-labelledby="delete-cv-04-title"
+              aria-describedby="delete-cv-04-desc"
+              data-task-id="cv-04"
+              class="task-popover"
+            >
+              <div class="popover-header">
+                <h3 id="delete-cv-04-title">Xác nhận xóa công việc</h3>
+                <button
+                  type="button"
+                  popovertarget="task-delete-cv-04"
+                  popovertargetaction="hide"
+                  aria-label="Đóng hộp Xác nhận xóa công việc: Xây dựng chức năng"
+                  class="btn-close-popover"
+                >
+                  ×
+                </button>
+              </div>
+              <p id="delete-cv-04-desc">
+                Bạn có chắc muốn xóa công việc này?
+              </p>
+              <p class="delete-task-target">
+                <strong>Xây dựng chức năng</strong>
+              </p>
+              <p class="demo-notice">
+                Dữ liệu minh họa; nút xóa công việc chưa xử lý xóa.
+              </p>
+              <form class="popover-form">
+                <input type="hidden" name="ma-cong-viec" value="cv-04" />
+                <div class="popover-actions">
+                  <button
+                    type="button"
+                    popovertarget="task-delete-cv-04"
+                    popovertargetaction="hide"
+                    autofocus
+                  >
+                    Hủy
+                  </button>
+                  <button type="submit" disabled>Xóa công việc</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 3.5. Xóa cv-05 -->
+            <div
+              id="task-delete-cv-05"
+              popover="auto"
+              role="dialog"
+              aria-labelledby="delete-cv-05-title"
+              aria-describedby="delete-cv-05-desc"
+              data-task-id="cv-05"
+              class="task-popover"
+            >
+              <div class="popover-header">
+                <h3 id="delete-cv-05-title">Xác nhận xóa công việc</h3>
+                <button
+                  type="button"
+                  popovertarget="task-delete-cv-05"
+                  popovertargetaction="hide"
+                  aria-label="Đóng hộp Xác nhận xóa công việc: Kiểm thử và hoàn thiện báo cáo"
+                  class="btn-close-popover"
+                >
+                  ×
+                </button>
+              </div>
+              <p id="delete-cv-05-desc">
+                Bạn có chắc muốn xóa công việc này?
+              </p>
+              <p class="delete-task-target">
+                <strong>Kiểm thử và hoàn thiện báo cáo</strong>
+              </p>
+              <p class="demo-notice">
+                Dữ liệu minh họa; nút xóa công việc chưa xử lý xóa.
+              </p>
+              <form class="popover-form">
+                <input type="hidden" name="ma-cong-viec" value="cv-05" />
+                <div class="popover-actions">
+                  <button
+                    type="button"
+                    popovertarget="task-delete-cv-05"
+                    popovertargetaction="hide"
+                    autofocus
+                  >
+                    Hủy
+                  </button>
+                  <button type="submit" disabled>Xóa công việc</button>
+                </div>
+              </form>
+            </div>
+
+            <!-- 4. Hộp Cập nhật tiến độ -->
+            <div
+              id="progress-update-popover"
+              popover="auto"
+              role="dialog"
+              aria-labelledby="update-progress-title"
+              aria-describedby="update-progress-desc"
+              class="task-popover"
+            >
+              <div class="popover-header">
+                <h3 id="update-progress-title">Cập nhật tiến độ</h3>
+                <button
+                  type="button"
+                  popovertarget="progress-update-popover"
+                  popovertargetaction="hide"
+                  aria-label="Đóng hộp Cập nhật tiến độ"
+                  class="btn-close-popover"
+                >
+                  ×
+                </button>
+              </div>
+              <p id="update-progress-desc" class="demo-notice">
+                Dữ liệu minh họa; nút cập nhật tiến độ chưa xử lý lưu.
+              </p>
+              <form class="popover-form">
+                <div class="form-group">
+                  <label for="update-progress-task">Công việc</label>
+                  <select
+                    id="update-progress-task"
+                    name="ma-cong-viec"
+                    required
+                    autofocus
+                  >
+                    <option value="" selected disabled>Chọn công việc</option>
+                    <option value="cv-01">Khảo sát yêu cầu</option>
+                    <option value="cv-02">Phân tích chức năng</option>
+                    <option value="cv-03">Thiết kế giao diện</option>
+                    <option value="cv-04">Xây dựng chức năng</option>
+                    <option value="cv-05">
+                      Kiểm thử và hoàn thiện báo cáo
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="update-progress-content">Nội dung đã làm</label>
+                  <textarea
+                    id="update-progress-content"
+                    name="noi-dung-da-lam"
+                    rows="4"
+                    placeholder="Nhập nội dung đã thực hiện"
+                    required
+                  ></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label for="update-progress-status">Trạng thái</label>
+                  <select
+                    id="update-progress-status"
+                    name="trang-thai"
+                    required
+                  >
+                    <option value="" selected disabled>Chọn trạng thái</option>
+                    <option value="chua-thuc-hien">Chưa thực hiện</option>
+                    <option value="dang-thuc-hien">Đang thực hiện</option>
+                    <option value="da-hoan-thanh">Đã hoàn thành</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="update-progress-percent"
+                    >Mức hoàn thành (%)</label
+                  >
+                  <input
+                    type="number"
+                    id="update-progress-percent"
+                    name="muc-hoan-thanh"
+                    min="0"
+                    max="100"
+                    step="1"
+                    placeholder="Nhập mức hoàn thành"
+                    aria-describedby="update-percent-hint"
+                    required
+                  />
+                  <span aria-hidden="true">%</span>
+                  <p id="update-percent-hint">Từ 0 đến 100%</p>
+                </div>
+
+                <div class="popover-actions">
+                  <button
+                    type="button"
+                    popovertarget="progress-update-popover"
+                    popovertargetaction="hide"
+                  >
+                    Hủy
+                  </button>
+                  <button type="submit" disabled>+ Cập nhật tiến độ</button>
+                </div>
+              </form>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- CHÂN TRANG CHUNG -->
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN</p>
+          <p>Trường Đại học Công nghệ Thông tin</p>
+        </div>
+        <ul class="site-footer__information" aria-label="Thông tin và quy định">
+          <li><span>Điều khoản sử dụng (đang cập nhật)</span></li>
+          <li><span>Quy chế đồ án / khóa luận (đang cập nhật)</span></li>
+          <li><span>Chính sách bảo mật (đang cập nhật)</span></li>
+        </ul>
+        <p class="site-footer__copyright">
+          © 2026 · Hệ thống quản lý đồ án / khóa luận
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
