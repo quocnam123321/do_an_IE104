@@ -1,6 +1,6 @@
 # Hướng dẫn sử dụng khung trang
 
-Cập nhật: **18/10/2026**, đối chiếu sitemap hiện hành và **11 file HTML đang có
+Cập nhật: **18/10/2026**, đối chiếu sitemap hiện hành và **17 file HTML đang có
 trong repo**. Tài liệu phân biệt trang đã có mã nguồn với đường dẫn dự kiến
 để các thành viên tiếp tục triển khai.
 
@@ -9,8 +9,8 @@ trong repo**. Tài liệu phân biệt trang đã có mã nguồn với đườn
 Hai file khung giúp các thành viên tạo trang có cấu trúc và điều hướng
 thống nhất:
 
-- `khung-sinh-vien.html`: dùng cho các trang dành cho sinh viên.
-- `khung-giang-vien.html`: dùng cho các trang dành cho giảng viên.
+- `templates/khung-sinh-vien.html`: dùng cho các trang dành cho sinh viên.
+- `templates/khung-giang-vien.html`: dùng cho các trang dành cho giảng viên.
 
 Đây là file mẫu để sao chép, không phải trang chức năng dành cho người dùng.
 
@@ -21,23 +21,33 @@ backend, lưu dữ liệu hoặc upload máy chủ.
 
 ### Các file hiện có
 
+Các tên file ngắn bên dưới nằm trong `pages/sinh-vien/` hoặc
+`pages/giang-vien/` theo vai trò; hai khung nằm trong `templates/`,
+`index.html` nằm ở gốc repo. Xem cây đầy đủ trong [README](../README.md).
+
 | File                                         | Nội dung hiện tại                                            |
 | -------------------------------------------- | ------------------------------------------------------------ |
 | `index.html`                                 | Trang vào các màn SV và Tổng quan GV đã có       |
 | `khung-sinh-vien.html`                       | Khung mẫu SV, chưa có nội dung chức năng                     |
 | `khung-giang-vien.html`                      | Khung mẫu GV, chưa có nội dung chức năng                     |
 | `dang-ky-de-tai.html`                        | Danh mục bốn đề tài, form tìm/lọc/sắp xếp chờ JS             |
-| `Chi-tiet-de-tai-mo-dang-ky.html`            | Chi tiết DT001 và biểu mẫu đăng ký                           |
+| `chi-tiet-de-tai-mo-dang-ky.html`            | Chi tiết DT001 và biểu mẫu đăng ký                           |
 | `tong-quan-sinh-vien.html`                   | Tóm tắt hoạt động, yêu cầu gần đây, hạn nộp và thông báo mẫu |
 | `lich-han-nop.html`                          | Lịch tháng 10/2026, bộ lọc HTML và hai hạn nộp DT002                                    |
 | `chi-tiet-dang-ky-va-de-xuat-sinh-vien.html` | Chi tiết DK001, DK002, DX001, DX002; mỗi lần hiện một hồ sơ  |
-
 | `ho-so-ca-nhan.html` | Hồ sơ SV Nguyễn Minh Anh, biểu mẫu liên hệ và đề tài đang thực hiện |
 | `tong-quan-giang-vien.html` | Tổng quan GV Nguyễn Văn A: 2 đề tài đã tạo, 2 yêu cầu chờ duyệt |
 | `tien-do-de-tai-sinh-vien.html` | Mẫu tiến độ với danh sách công việc và các hộp nhập liệu HTML |
+| `chi-tiet-de-tai-bai-nop.html` | HTML bài nộp dành cho sinh viên |
+| `chi-tiet-de-tai-ket-qua-danh-gia.html` | HTML kết quả đánh giá dành cho sinh viên |
+| `tao-de-tai-giang-vien.html` | Biểu mẫu tạo đề tài, chưa lưu |
+| `chinh-sua-de-tai-giang-vien.html` | Khung biểu mẫu chỉnh sửa đề tài |
+| `chi-tiet-de-tai-da-tao-giang-vien.html` | Khung chi tiết đề tài, chưa kết nối dữ liệu theo mã |
+| `ho-so-ca-nhan-giang-vien.html` | Khung hồ sơ giảng viên, chưa kết nối dữ liệu tài khoản |
 
-Mở `index.html` bằng trình duyệt để xem các trang hiện có. Tổng quan GV đã có
-HTML; các trang quản lý và xét duyệt chi tiết vẫn chưa có. Việc tài liệu hướng dẫn sao chép khung ở mục 3
+Mở `index.html` ở gốc repo bằng trình duyệt để xem các trang hiện có.
+Tổng quan, tạo/sửa/chi tiết đề tài đã tạo và hồ sơ GV đã có HTML; các màn
+danh sách quản lý và xét duyệt chi tiết vẫn chưa có. Việc tài liệu hướng dẫn sao chép khung ở mục 3
 không có nghĩa các trang dự kiến đã được tạo.
 
 ## 2. Cấu trúc chung
@@ -85,9 +95,9 @@ nhãn tài khoản; bên trong có Hồ sơ cá nhân và nút Đăng xuất. Gi
 - Summary dùng hành vi đóng/mở tự nhiên của `<details>`, không gắn
   `aria-controls` hoặc đặt `aria-expanded` cố định.
 - `ho-so-ca-nhan.html` hiện có dữ liệu SV, mở từ menu tài khoản sinh viên.
-  Tổng quan GV đánh dấu hồ sơ GV đang cập nhật để tránh mở nhầm hồ sơ SV.
-  Link hồ sơ trong file khung GV vẫn là đường dẫn dự kiến dùng chung; khi triển
-  khai hồ sơ theo phiên đăng nhập cần giữ đúng dữ liệu và quyền của vai trò.
+  Tổng quan GV và khung GV liên kết tới `ho-so-ca-nhan-giang-vien.html`
+  trong `pages/giang-vien/`. Trang hồ sơ GV hiện là khung HTML, chưa kết nối
+  tài khoản; khi bổ sung dữ liệu phải giữ đúng vai trò.
 - Nút Đăng xuất và nút xác nhận đang disabled, có thông báo chưa xử lý.
 - Dialog không có thuộc tính `hidden`. Nút Hủy được bật, dùng
   `type="submit"`, `value="cancel"` trong form `method="dialog"` để đóng
@@ -106,8 +116,15 @@ Sao chép file khung và đổi tên bản sao thành tên trang cần làm.
 
 Ví dụ:
 
-- Trang sinh viên: sao chép `khung-sinh-vien.html`.
-- Trang giảng viên: sao chép `khung-giang-vien.html`.
+- Trang sinh viên: sao chép `templates/khung-sinh-vien.html` vào `pages/sinh-vien/`.
+- Trang giảng viên: sao chép `templates/khung-giang-vien.html` vào `pages/giang-vien/`.
+
+Đường dẫn trong khung được viết để mở trực tiếp từ `templates/`. Sau khi sao
+chép, bỏ tiền tố `../pages/sinh-vien/` hoặc `../pages/giang-vien/` ở các link
+cùng vai trò. Nếu có link chung, đổi `../pages/chung/` thành `../chung/`.
+Tài nguyên từ trang trong `pages/<vai-tro>/` dùng `../../assets/...`;
+liên kết về trang vào dùng `../../index.html`. Cập nhật cả `href`, `src`,
+`action` và `data-pending-href` nếu có.
 
 Giữ file khung gốc để các thành viên khác tiếp tục sử dụng.
 Không ghi nội dung riêng của một trang vào file khung gốc.
@@ -179,9 +196,9 @@ Ví dụ:
 - Yêu cầu chờ duyệt: danh sách yêu cầu, danh sách đề xuất và nội dung xử lý.
 
 File `dang-ky-de-tai.html` là ví dụ đã áp dụng khung sinh viên.
-File `Chi-tiet-de-tai-mo-dang-ky.html` là trang chi tiết minh họa cho DT001.
-Tên file chi tiết hiện vẫn viết hoa chữ **C**. Dùng đúng tên này trong link;
-nếu nhóm đổi sang chữ thường, phải đổi file và các liên kết cùng một lượt.
+File `chi-tiet-de-tai-mo-dang-ky.html` là trang chi tiết minh họa cho DT001.
+Tên file đã được chuẩn hóa thành chữ thường và các liên kết đã cập nhật.
+Tên file mới dùng chữ thường, không dấu, nối bằng dấu gạch ngang.
 
 ### Các thành phần HTML hiện có
 
@@ -276,6 +293,10 @@ kiểm thử.” Giữ riêng trạng thái đăng ký, đề xuất, thực hi�
   khôi phục biểu mẫu; chưa lưu. Không đặt thêm quyền sửa tài khoản thực tế.
 - Tổng quan GV001: DT001 và DT004 đã tạo; DK001 và DX001 chờ duyệt.
   Chưa có đề tài đang hướng dẫn, hạn nộp hoặc bài nộp thuộc GV001 trong mẫu.
+- Tổng quan GV có bốn khối thống kê, hoạt động gần đây từ DK001/DX001 và
+  lối tắt mở trang tạo đề tài/hồ sơ GV đã có. Nút quản lý từng đề tài vẫn
+  tắt vì trang chi tiết chưa nhận mã đề tài; không trỏ DT001/DT004 vào
+  cùng một khung trống rồi coi là đã mở đúng hồ sơ.
 - Bốn trang trên dùng `data-pending-href` cho trang đích chưa có; không tạo
   thêm trang ngoài phạm vi để lấp liên kết. Các trang cũ khác và file khung
   có thể vẫn giữ liên kết dự kiến.
@@ -312,8 +333,11 @@ kiểm thử.” Giữ riêng trạng thái đăng ký, đề xuất, thực hi�
 
 ## 5. Đường dẫn giữa các trang
 
-Các đường dẫn hiện được viết theo giả định các file HTML nằm
-cùng thư mục.
+Các đường dẫn dùng vị trí thư mục thực tế. Trong cùng vai trò dùng tên
+file; tới vai trò khác dùng `../<vai-tro>/ten-trang.html`; tới trang chung
+dự kiến dùng `../chung/ten-trang.html`. Từ `index.html` dùng
+`pages/<vai-tro>/ten-trang.html`; từ khung dùng `../pages/<vai-tro>/...`.
+Các tên ngắn trong bảng dưới được hiểu trong thư mục vai trò tương ứng.
 
 Tên file trong `href` phải khớp với tên file thực tế, kể cả chữ hoa/thường.
 Nếu đổi tên hoặc chuyển thư mục, cần cập nhật các liên kết liên quan.
@@ -323,7 +347,7 @@ Nếu đổi tên hoặc chuyển thư mục, cần cập nhật các liên kế
 | Nội dung                       | Đường dẫn                                    | Tình trạng                          |
 | ------------------------------ | -------------------------------------------- | ----------------------------------- |
 | Đăng ký đề tài                 | `dang-ky-de-tai.html`                        | Đã có HTML danh sách                |
-| Chi tiết đề tài DT001          | `Chi-tiet-de-tai-mo-dang-ky.html`            | Đã có HTML minh họa                 |
+| Chi tiết đề tài DT001          | `chi-tiet-de-tai-mo-dang-ky.html`            | Đã có HTML minh họa                 |
 | Tổng quan SV                   | `tong-quan-sinh-vien.html`                   | Đã có HTML minh họa                 |
 | Lịch hạn nộp                   | `lich-han-nop.html`                          | Đã có HTML minh họa                 |
 | Chi tiết đăng ký/đề xuất       | `chi-tiet-dang-ky-va-de-xuat-sinh-vien.html` | Đã có HTML chọn hồ sơ bằng fragment |
@@ -335,6 +359,10 @@ Nếu đổi tên hoặc chuyển thư mục, cần cập nhật các liên kế
 | Đề tài đã tạo của giảng viên   | `de-tai-cua-toi-giang-vien.html`             | Chưa có trang                       |
 | Đề tài đang hướng dẫn          | `de-tai-huong-dan.html`                      | Chưa có trang                       |
 | Yêu cầu chờ duyệt              | `yeu-cau-cho-duyet.html`                     | Chưa có trang                       |
+| Hồ sơ giảng viên               | `ho-so-ca-nhan-giang-vien.html`              | Đã có khung HTML                    |
+| Tạo đề tài giảng viên          | `tao-de-tai-giang-vien.html`                 | Đã có biểu mẫu HTML, chưa lưu       |
+| Chi tiết đề tài đã tạo         | `chi-tiet-de-tai-da-tao-giang-vien.html`      | Đã có khung, chưa có dữ liệu theo mã |
+| Chỉnh sửa đề tài giảng viên    | `chinh-sua-de-tai-giang-vien.html`            | Đã có khung biểu mẫu HTML           |
 
 DT002–DT004 hiện hiển thị “Chi tiết đang cập nhật”. Chỉ bổ sung liên kết
 khi có nội dung chi tiết tương ứng. Trang DT001 đang là HTML tĩnh;
