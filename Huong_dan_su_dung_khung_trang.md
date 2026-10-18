@@ -1,6 +1,6 @@
 # Hướng dẫn sử dụng khung trang
 
-Cập nhật: **16/10/2026**, đối chiếu sitemap hiện hành và **8 file HTML đang có
+Cập nhật: **18/10/2026**, đối chiếu sitemap hiện hành và **11 file HTML đang có
 trong repo**. Tài liệu phân biệt trang đã có mã nguồn với đường dẫn dự kiến
 để các thành viên tiếp tục triển khai.
 
@@ -23,17 +23,21 @@ backend, lưu dữ liệu hoặc upload máy chủ.
 
 | File                                         | Nội dung hiện tại                                            |
 | -------------------------------------------- | ------------------------------------------------------------ |
-| `index.html`                                 | Trang vào các màn đã có; khu vực GV dẫn tới file khung       |
+| `index.html`                                 | Trang vào các màn SV và Tổng quan GV đã có       |
 | `khung-sinh-vien.html`                       | Khung mẫu SV, chưa có nội dung chức năng                     |
 | `khung-giang-vien.html`                      | Khung mẫu GV, chưa có nội dung chức năng                     |
 | `dang-ky-de-tai.html`                        | Danh mục bốn đề tài, form tìm/lọc/sắp xếp chờ JS             |
 | `Chi-tiet-de-tai-mo-dang-ky.html`            | Chi tiết DT001 và biểu mẫu đăng ký                           |
 | `tong-quan-sinh-vien.html`                   | Tóm tắt hoạt động, yêu cầu gần đây, hạn nộp và thông báo mẫu |
-| `lich-han-nop.html`                          | Hai hạn nộp mẫu của DT002                                    |
+| `lich-han-nop.html`                          | Lịch tháng 10/2026, bộ lọc HTML và hai hạn nộp DT002                                    |
 | `chi-tiet-dang-ky-va-de-xuat-sinh-vien.html` | Chi tiết DK001, DK002, DX001, DX002; mỗi lần hiện một hồ sơ  |
 
-Mở `index.html` bằng trình duyệt để xem các trang hiện có. Chưa có trang
-chức năng GV ngoài khung mẫu. Việc tài liệu hướng dẫn sao chép khung ở mục 3
+| `ho-so-ca-nhan.html` | Hồ sơ SV Nguyễn Minh Anh, biểu mẫu liên hệ và đề tài đang thực hiện |
+| `tong-quan-giang-vien.html` | Tổng quan GV Nguyễn Văn A: 2 đề tài đã tạo, 2 yêu cầu chờ duyệt |
+| `tien-do-de-tai-sinh-vien.html` | Mẫu tiến độ với danh sách công việc và các hộp nhập liệu HTML |
+
+Mở `index.html` bằng trình duyệt để xem các trang hiện có. Tổng quan GV đã có
+HTML; các trang quản lý và xét duyệt chi tiết vẫn chưa có. Việc tài liệu hướng dẫn sao chép khung ở mục 3
 không có nghĩa các trang dự kiến đã được tạo.
 
 ## 2. Cấu trúc chung
@@ -80,7 +84,10 @@ nhãn tài khoản; bên trong có Hồ sơ cá nhân và nút Đăng xuất. Gi
 
 - Summary dùng hành vi đóng/mở tự nhiên của `<details>`, không gắn
   `aria-controls` hoặc đặt `aria-expanded` cố định.
-- Link hồ sơ ở cả hai vai trò là `ho-so-ca-nhan.html`; trang này chưa có.
+- `ho-so-ca-nhan.html` hiện có dữ liệu SV, mở từ menu tài khoản sinh viên.
+  Tổng quan GV đánh dấu hồ sơ GV đang cập nhật để tránh mở nhầm hồ sơ SV.
+  Link hồ sơ trong file khung GV vẫn là đường dẫn dự kiến dùng chung; khi triển
+  khai hồ sơ theo phiên đăng nhập cần giữ đúng dữ liệu và quyền của vai trò.
 - Nút Đăng xuất và nút xác nhận đang disabled, có thông báo chưa xử lý.
 - Dialog không có thuộc tính `hidden`. Nút Hủy được bật, dùng
   `type="submit"`, `value="cancel"` trong form `method="dialog"` để đóng
@@ -229,7 +236,7 @@ Trang Chi tiết đăng ký và đề xuất dùng fragment như `#dk001` hoặc
   sửa vẫn hiện đúng article cha. Cần trình duyệt hỗ trợ CSS `:has()`.
 - URL thiếu/sai fragment hiện phần chọn bốn yêu cầu mẫu, không hiện cả bốn
   chi tiết cùng lúc. Thêm `?ma=DK001` chưa có tác dụng chọn hồ sơ.
-- Biểu mẫu sửa DX002 là `<section id="dx002-chinh-sua">`, không bị che bởi
+- Biểu mẫu sửa DX001/DX002 dùng `#dx001-chinh-sua` / `#dx002-chinh-sua`, không bị che bởi
   `<details>` đóng. Thêm/xóa thành viên, lưu/gửi lại/xóa đề xuất chưa xử lý.
 - Giữ `request-detail-page`, các ID hồ sơ và bộ skip-link tương ứng để
   chuyển tới nội dung bằng bàn phím không làm mất hồ sơ đang xem.
@@ -257,6 +264,23 @@ Việt Nam; thuộc tính `datetime` có offset `+07:00`.
 
 Phản hồi DX002: “Bổ sung tiêu chí ghép nhóm, phạm vi môn học và kế hoạch
 kiểm thử.” Giữ riêng trạng thái đăng ký, đề xuất, thực hiện và bài nộp.
+
+### Phần bổ sung ngày 18/10/2026
+
+- Chi tiết đăng ký/đề xuất: thêm lịch sử xử lý cho bốn hồ sơ; DX001 có biểu
+  mẫu chỉnh sửa khi chờ duyệt và khung xác nhận xóa. DX002 giữ biểu mẫu nhóm.
+- Lịch hạn nộp: lịch đủ 31 ngày tháng 10/2026, hai ngày có hạn dẫn tới dòng
+  tương ứng, tách tình trạng bài nộp khỏi tình trạng hạn. Các số liệu là ảnh
+  chụp dữ liệu ngày 18/10/2026, không tự thay đổi theo thời gian.
+- Hồ sơ sinh viên: giữ thông tin định danh chỉ đọc; có thể nhập thử liên hệ,
+  khôi phục biểu mẫu; chưa lưu. Không đặt thêm quyền sửa tài khoản thực tế.
+- Tổng quan GV001: DT001 và DT004 đã tạo; DK001 và DX001 chờ duyệt.
+  Chưa có đề tài đang hướng dẫn, hạn nộp hoặc bài nộp thuộc GV001 trong mẫu.
+- Bốn trang trên dùng `data-pending-href` cho trang đích chưa có; không tạo
+  thêm trang ngoài phạm vi để lấp liên kết. Các trang cũ khác và file khung
+  có thể vẫn giữ liên kết dự kiến.
+- Chưa bổ sung CSS giao diện chung, JavaScript, lưu dữ liệu hay backend.
+  Các nút lưu, gửi, xóa, lọc, xét duyệt và đăng xuất vẫn bị vô hiệu hóa.
 
 ## 4. Quy ước khi làm việc
 
@@ -306,8 +330,8 @@ Nếu đổi tên hoặc chuyển thư mục, cần cập nhật các liên kế
 | Đề tài của tôi SV              | `de-tai-cua-toi-sinh-vien.html`              | Chưa có trang                       |
 | Chi tiết đề tài đang thực hiện | `chi-tiet-de-tai-cua-toi-sinh-vien.html`     | Chưa có trang                       |
 | Danh sách đề xuất              | `de-xuat-cua-toi.html`                       | Chưa có trang                       |
-| Hồ sơ cá nhân                  | `ho-so-ca-nhan.html`                         | Chưa có trang                       |
-| Tổng quan GV                   | `tong-quan-giang-vien.html`                  | Chưa có trang                       |
+| Hồ sơ cá nhân                  | `ho-so-ca-nhan.html`                         | Đã có HTML hồ sơ sinh viên          |
+| Tổng quan GV                   | `tong-quan-giang-vien.html`                  | Đã có HTML minh họa GV001           |
 | Đề tài đã tạo của giảng viên   | `de-tai-cua-toi-giang-vien.html`             | Chưa có trang                       |
 | Đề tài đang hướng dẫn          | `de-tai-huong-dan.html`                      | Chưa có trang                       |
 | Yêu cầu chờ duyệt              | `yeu-cau-cho-duyet.html`                     | Chưa có trang                       |
@@ -319,8 +343,8 @@ thêm `?ma=DT002` vào URL chưa làm nội dung đổi theo mã đề tài.
 Những trang chưa tạo sẽ chưa mở được từ menu.
 Không xem việc có liên kết là chức năng đã hoàn thành.
 
-`ho-so-ca-nhan.html` đang là tên đề xuất cho trang hồ sơ dùng chung.
-Nếu nhóm tách hồ sơ theo vai trò, cần sửa liên kết tương ứng.
+`ho-so-ca-nhan.html` đã có HTML cho sinh viên. Chưa có chuyển dữ liệu theo
+vai trò hoặc phiên đăng nhập; không dùng hồ sơ mẫu này cho giảng viên.
 
 Giới thiệu, Thông báo, Liên hệ, Đăng nhập và Quên mật khẩu có trong sitemap
 nhưng chưa có trang. Tạo đề xuất mới cũng chưa có trang. Không tự thêm các

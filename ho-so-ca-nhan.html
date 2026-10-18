@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Xem hồ sơ sinh viên, thông tin liên hệ và đề tài đang thực hiện."
+    />
+    <title>Hồ sơ cá nhân | Quản lý đồ án</title>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
+
+    <!-- ĐẦU TRANG -->
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-sinh-vien.html">
+          QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN
+        </a>
+
+        <!-- Điều hướng chính dành cho sinh viên -->
+        <nav class="main-nav" aria-label="Điều hướng sinh viên">
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html">
+                Tổng quan
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="dang-ky-de-tai.html">
+                Đăng ký đề tài
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <!-- Đề xuất của tôi và Tạo đề xuất mới thuộc Đề tài của tôi. -->
+              <span class="main-nav__link" data-pending-href="de-tai-cua-toi-sinh-vien.html">
+                Đề tài của tôi
+               (đang cập nhật)</span>
+            </li>
+
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="lich-han-nop.html">
+                Lịch hạn nộp
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Tài khoản -->
+        <div class="account-menu">
+          <details class="account-menu__disclosure">
+            <summary
+              class="account-menu__toggle"
+              aria-label="Mở menu tài khoản sinh viên"
+            >
+              <span class="account-menu__avatar" aria-hidden="true">SV</span>
+              <span class="account-menu__label">Tài khoản sinh viên</span>
+            </summary>
+            <ul id="account-dropdown" class="account-menu__list">
+              <li>
+                <a class="account-menu__profile" aria-current="page" href="ho-so-ca-nhan.html"
+                  >Hồ sơ cá nhân</a
+                >
+              </li>
+              <li>
+                <button
+                  class="account-menu__logout"
+                  type="button"
+                  aria-controls="logout-dialog"
+                  aria-describedby="logout-notice"
+                  disabled
+                >
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
+        </div>
+      </div>
+    </header>
+    <dialog
+      id="logout-dialog"
+      class="confirmation-dialog"
+      aria-labelledby="logout-title"
+    >
+      <h2 id="logout-title">Xác nhận đăng xuất</h2>
+      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+      <form method="dialog">
+        <button type="submit" value="cancel">Hủy</button>
+        <button type="button" disabled>Xác nhận đăng xuất</button>
+      </form>
+    </dialog>
+
+    <!-- NỘI DUNG RIÊNG CỦA TỪNG TRANG -->
+    <main id="main-content" class="main-content" tabindex="-1">
+      <div class="page-container">
+        <!-- Đường dẫn trang hiện tại -->
+        <nav class="breadcrumb" aria-label="Đường dẫn">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item">
+              <a href="tong-quan-sinh-vien.html">Sinh viên</a>
+            </li>
+
+            <li class="breadcrumb__item">
+              <span aria-current="page">Hồ sơ cá nhân</span>
+            </li>
+          </ol>
+        </nav>
+
+        <header class="page-header">
+          <h1 class="page-header__title">Hồ sơ cá nhân</h1>
+          <p class="page-header__description">
+            Xem hồ sơ sinh viên, thông tin liên hệ và đề tài đang thực hiện.
+          </p>
+        </header>
+
+        <div class="page-content">
+          <p class="demo-notice" id="profile-demo-notice">Hồ sơ minh họa của sinh viên Nguyễn Minh Anh. Thông tin chưa được lấy từ phiên đăng nhập; thay đổi trong biểu mẫu chưa được lưu.</p>
+          <section class="profile-summary" aria-labelledby="profile-summary-title">
+            <h2 id="profile-summary-title">Thông tin sinh viên</h2>
+            <span class="profile-summary__avatar" aria-hidden="true">MA</span>
+            <h3>Nguyễn Minh Anh</h3>
+            <p>Sinh viên · 24520001</p>
+            <dl class="profile-summary__details">
+              <dt>Mã số sinh viên</dt><dd>24520001</dd>
+              <dt>Họ và tên</dt><dd>Nguyễn Minh Anh</dd>
+              <dt>Lớp</dt><dd>IE104.01</dd>
+              <dt>Ngành</dt><dd>Hệ thống thông tin</dd>
+              <dt>Trường</dt><dd>Trường Đại học Công nghệ Thông tin</dd>
+              <dt>Email tài khoản</dt><dd>Chưa có thông tin</dd>
+            </dl>
+          </section>
+          <section class="profile-contact" aria-labelledby="profile-contact-title">
+            <h2 id="profile-contact-title">Thông tin liên hệ</h2>
+            <p id="profile-contact-help">Có thể nhập thử thông tin liên hệ. Các trường định danh ở trên chỉ hiển thị trong bản HTML này.</p>
+            <form class="profile-form" aria-labelledby="profile-contact-title" aria-describedby="profile-contact-help profile-demo-notice">
+              <fieldset>
+                <legend>Liên hệ cá nhân</legend>
+                <div class="profile-form__field">
+                  <label for="profile-email">Email liên hệ</label>
+                  <input type="email" id="profile-email" name="email-lien-he" autocomplete="email" aria-describedby="profile-email-help" />
+                  <p id="profile-email-help">Chưa có email liên hệ trong dữ liệu mẫu.</p>
+                </div>
+                <div class="profile-form__field">
+                  <label for="profile-phone">Số điện thoại</label>
+                  <input type="tel" id="profile-phone" name="so-dien-thoai" autocomplete="tel" />
+                </div>
+                <div class="profile-form__field">
+                  <label for="profile-introduction">Giới thiệu bản thân và lĩnh vực quan tâm</label>
+                  <textarea id="profile-introduction" name="gioi-thieu" rows="4"></textarea>
+                </div>
+              </fieldset>
+              <div class="profile-form__actions">
+                <button type="submit" disabled aria-describedby="profile-demo-notice">Lưu thay đổi</button>
+                <button type="reset">Khôi phục nội dung mẫu</button>
+              </div>
+            </form>
+          </section>
+          <section class="profile-projects" aria-labelledby="profile-projects-title">
+            <h2 id="profile-projects-title">Đề tài đang thực hiện</h2>
+            <article aria-labelledby="profile-topic-title" data-topic-id="DT002">
+              <h3 id="profile-topic-title">Website quản lý câu lạc bộ sinh viên</h3>
+              <dl>
+                <dt>Mã đề tài</dt><dd>DT002</dd>
+                <dt>Giảng viên hướng dẫn</dt><dd>Trần Thị B</dd>
+                <dt>Hình thức</dt><dd>Cá nhân</dd>
+                <dt>Trạng thái thực hiện</dt><dd>Đang thực hiện</dd>
+              </dl>
+              <a href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dk002">Xem kết quả đăng ký DK002</a>
+              <a href="lich-han-nop.html">Xem lịch hạn nộp</a>
+            </article>
+          </section>
+          <template id="profile-unavailable-template">
+            <section class="empty-state" aria-labelledby="profile-unavailable-title">
+              <h2 id="profile-unavailable-title">Chưa tải được hồ sơ</h2>
+              <p>Thông tin cá nhân hiện chưa có sẵn. Vui lòng thử lại sau.</p>
+            </section>
+          </template>
+        </div>
+      </div>
+    </main>
+
+    <!-- CHÂN TRANG CHUNG -->
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN</p>
+          <p>Trường Đại học Công nghệ Thông tin</p>
+        </div>
+        <ul class="site-footer__information" aria-label="Thông tin và quy định">
+          <li><span>Điều khoản sử dụng (đang cập nhật)</span></li>
+          <li><span>Quy chế đồ án / khóa luận (đang cập nhật)</span></li>
+          <li><span>Chính sách bảo mật (đang cập nhật)</span></li>
+        </ul>
+        <p class="site-footer__copyright">
+          © 2026 · Hệ thống quản lý đồ án / khóa luận
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

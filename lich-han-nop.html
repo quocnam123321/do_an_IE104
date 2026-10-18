@@ -33,9 +33,9 @@
             </li>
             <li class="main-nav__item">
               <!-- Đề xuất của tôi và Tạo đề xuất mới thuộc Đề tài của tôi. -->
-              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html">
+              <span class="main-nav__link" data-pending-href="de-tai-cua-toi-sinh-vien.html">
                 Đề tài của tôi
-              </a>
+               (đang cập nhật)</span>
             </li>
             <li class="main-nav__item">
               <a
@@ -115,9 +115,45 @@
         </header>
         <div class="page-content">
           <p class="demo-notice">
-            Hai hạn nộp mẫu của DT002; thời gian theo giờ Việt Nam (UTC+7).
+            Dữ liệu minh họa tại ngày 18/10/2026: hai hạn nộp của DT002. Thời gian theo giờ Việt Nam (UTC+7); trạng thái chưa tự cập nhật theo thời gian thực.
           </p>
-          <section aria-labelledby="deadline-list-title">
+          <nav class="deadline-view-nav" aria-label="Các phần lịch hạn nộp">
+            <a href="#deadline-calendar">Lịch tháng 10/2026</a> · <a href="#deadline-list">Danh sách hạn nộp</a>
+          </nav>
+          <section class="deadline-summary" aria-labelledby="deadline-summary-title">
+            <h2 id="deadline-summary-title">Tóm tắt hạn nộp</h2>
+            <dl><dt>Tổng số hạn nộp</dt><dd>2</dd><dt>Chưa nộp</dt><dd>2</dd><dt>Đã nộp</dt><dd>0</dd><dt>Quá hạn chưa nộp</dt><dd>0</dd></dl>
+          </section>
+          <section class="deadline-filters" aria-labelledby="deadline-filter-title">
+            <h2 id="deadline-filter-title">Lọc hạn nộp</h2>
+            <p id="deadline-filter-notice">Bộ lọc là mẫu HTML; chưa thay đổi lịch và danh sách bên dưới.</p>
+            <form aria-labelledby="deadline-filter-title" aria-describedby="deadline-filter-notice">
+              <fieldset><legend>Điều kiện lọc</legend>
+                <label for="deadline-month">Tháng</label><input type="month" id="deadline-month" name="thang" value="2026-10" />
+                <label for="deadline-topic">Đề tài</label><select id="deadline-topic" name="de-tai"><option value="">Tất cả đề tài</option><option value="DT002">DT002 — Website quản lý câu lạc bộ sinh viên</option></select>
+                <label for="deadline-submission">Tình trạng bài nộp</label><select id="deadline-submission" name="tinh-trang-bai-nop"><option value="">Tất cả</option><option value="chua-nop">Chưa nộp</option><option value="da-nop">Đã nộp</option></select>
+                <label for="deadline-timing">Tình trạng hạn</label><select id="deadline-timing" name="tinh-trang-han"><option value="">Tất cả</option><option value="sap-toi">Hạn sắp tới</option><option value="qua-han">Quá hạn</option></select>
+              </fieldset>
+              <button type="submit" disabled aria-describedby="deadline-filter-notice">Áp dụng bộ lọc</button>
+              <button type="reset">Khôi phục bộ lọc mẫu</button>
+            </form>
+          </section>
+          <section class="deadline-calendar" id="deadline-calendar" aria-labelledby="deadline-calendar-title">
+            <h2 id="deadline-calendar-title">Lịch tháng 10/2026</h2>
+            <p>Các ngày có hạn nộp liên kết đến thông tin bên dưới.</p>
+            <table class="calendar-table">
+              <caption>Tháng 10 năm 2026 · Giờ Việt Nam (UTC+7)</caption>
+              <thead><tr><th scope="col">Thứ hai</th><th scope="col">Thứ ba</th><th scope="col">Thứ tư</th><th scope="col">Thứ năm</th><th scope="col">Thứ sáu</th><th scope="col">Thứ bảy</th><th scope="col">Chủ nhật</th></tr></thead>
+              <tbody>
+                <tr><td class="calendar-table__empty"></td><td class="calendar-table__empty"></td><td class="calendar-table__empty"></td><td><time datetime="2026-10-01">1</time></td><td><time datetime="2026-10-02">2</time></td><td><time datetime="2026-10-03">3</time></td><td><time datetime="2026-10-04">4</time></td></tr>
+                <tr><td><time datetime="2026-10-05">5</time></td><td><time datetime="2026-10-06">6</time></td><td><time datetime="2026-10-07">7</time></td><td><time datetime="2026-10-08">8</time></td><td><time datetime="2026-10-09">9</time></td><td><time datetime="2026-10-10">10</time></td><td><time datetime="2026-10-11">11</time></td></tr>
+                <tr><td><time datetime="2026-10-12">12</time></td><td><time datetime="2026-10-13">13</time></td><td><time datetime="2026-10-14">14</time></td><td><time datetime="2026-10-15">15</time></td><td><time datetime="2026-10-16">16</time></td><td><time datetime="2026-10-17">17</time></td><td><time datetime="2026-10-18">18</time></td></tr>
+                <tr><td><time datetime="2026-10-19">19</time></td><td><time datetime="2026-10-20">20</time> <a href="#han-de-cuong">Đề cương · 23:59</a></td><td><time datetime="2026-10-21">21</time></td><td><time datetime="2026-10-22">22</time></td><td><time datetime="2026-10-23">23</time></td><td><time datetime="2026-10-24">24</time></td><td><time datetime="2026-10-25">25</time></td></tr>
+                <tr><td><time datetime="2026-10-26">26</time></td><td><time datetime="2026-10-27">27</time> <a href="#han-bao-cao-tien-do">Báo cáo tiến độ · 23:59</a></td><td><time datetime="2026-10-28">28</time></td><td><time datetime="2026-10-29">29</time></td><td><time datetime="2026-10-30">30</time></td><td><time datetime="2026-10-31">31</time></td><td class="calendar-table__empty"></td></tr>
+              </tbody>
+            </table>
+          </section>
+          <section id="deadline-list" aria-labelledby="deadline-list-title">
             <h2 id="deadline-list-title">Danh sách hạn nộp</h2>
             <table>
               <caption>
@@ -129,42 +165,42 @@
                   <th scope="col">Nội dung</th>
                   <th scope="col">Hạn nộp</th>
                   <th scope="col">Tình trạng bài nộp</th>
+                  <th scope="col">Tình trạng hạn</th>
                   <th scope="col">Thao tác</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <th scope="row">Đề cương</th>
+                  <th scope="row" id="han-de-cuong">Đề cương</th>
                   <td>
                     <time datetime="2026-10-20T23:59:00+07:00"
                       >20/10/2026 23:59</time
                     >
                   </td>
-                  <td>Chưa nộp · Hạn sắp tới</td>
+                  <td>Chưa nộp</td>
+                  <td>Hạn sắp tới</td>
                   <td>
-                    <a href="chi-tiet-de-tai-cua-toi-sinh-vien.html#de-cuong"
-                      >Đến phần nộp đề cương</a
-                    >
+                    <span data-pending-href="chi-tiet-de-tai-cua-toi-sinh-vien.html#de-cuong">Đến phần nộp đề cương (đang cập nhật)</span>
                   </td>
                 </tr>
                 <tr>
-                  <th scope="row">Báo cáo tiến độ</th>
+                  <th scope="row" id="han-bao-cao-tien-do">Báo cáo tiến độ</th>
                   <td>
                     <time datetime="2026-10-27T23:59:00+07:00"
                       >27/10/2026 23:59</time
                     >
                   </td>
-                  <td>Chưa nộp · Hạn sắp tới</td>
+                  <td>Chưa nộp</td>
+                  <td>Hạn sắp tới</td>
                   <td>
-                    <a
-                      href="chi-tiet-de-tai-cua-toi-sinh-vien.html#bao-cao-tien-do"
-                      >Đến phần nộp báo cáo tiến độ</a
-                    >
+                    <span data-pending-href="chi-tiet-de-tai-cua-toi-sinh-vien.html#bao-cao-tien-do">Đến phần nộp báo cáo tiến độ (đang cập nhật)</span>
                   </td>
                 </tr>
               </tbody>
             </table>
           </section>
+          <p class="deadline-help">Phần nộp báo cáo đang được xây dựng. <a href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dk002">Xem thông tin đăng ký DT002 đã được duyệt</a>.</p>
+          <template id="deadlines-filter-empty-template"><p class="empty-state">Không có hạn nộp phù hợp với bộ lọc đã chọn.</p></template>
           <template id="deadlines-empty-template"
             ><p class="empty-state">
               Bạn chưa có hạn nộp. Các hạn do giảng viên công bố sẽ hiển thị tại
