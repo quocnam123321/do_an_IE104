@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Chỉnh sửa thông tin, nội dung, điều kiện và thời gian đăng ký của đề tài do giảng viên tạo."
+    />
+    <title>Chỉnh sửa đề tài | Quản lý đồ án và khóa luận tốt nghiệp</title>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
+
+    <!-- ĐẦU TRANG -->
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-giang-vien.html">
+          <span class="site-brand__name">
+            QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP
+          </span>
+        </a>
+
+        <!-- Điều hướng chính dành cho giảng viên -->
+        <nav class="main-nav" aria-label="Điều hướng giảng viên">
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-giang-vien.html">
+                Tổng quan
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <a
+                class="main-nav__link"
+                href="quan-ly-de-tai.html"
+                aria-current="location"
+              >
+                Quản lý đề tài
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <!-- Trang này gồm Danh sách yêu cầu và Danh sách đề xuất. -->
+              <a class="main-nav__link" href="yeu-cau-cho-duyet.html">
+                Yêu cầu chờ duyệt
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__label" id="common-navigation-label">
+                  Chung
+                </summary>
+                <ul
+                  class="main-nav__sublist"
+                  aria-labelledby="common-navigation-label"
+                >
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="gioi-thieu.html">Giới thiệu</a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="thong-bao.html">Thông báo</a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="lien-he.html">Liên hệ</a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Tài khoản -->
+        <div class="account-menu">
+          <details class="account-menu__disclosure">
+            <summary
+              class="account-menu__toggle"
+              aria-label="Mở menu tài khoản giảng viên"
+            >
+              <span class="account-menu__avatar" aria-hidden="true">GV</span>
+              <span class="account-menu__label">Tài khoản giảng viên</span>
+            </summary>
+            <ul id="account-dropdown" class="account-menu__list">
+              <li>
+                <a
+                  class="account-menu__profile"
+                  href="ho-so-ca-nhan.html"
+                  >Hồ sơ cá nhân</a
+                >
+              </li>
+              <li>
+                <button
+                  class="account-menu__logout"
+                  type="button"
+                  aria-controls="logout-dialog"
+                  aria-describedby="logout-notice"
+                  disabled
+                >
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
+        </div>
+      </div>
+    </header>
+    <dialog
+      id="logout-dialog"
+      class="confirmation-dialog"
+      aria-labelledby="logout-title"
+    >
+      <h2 id="logout-title">Xác nhận đăng xuất</h2>
+      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+      <form method="dialog">
+        <button type="submit" value="cancel">Hủy</button>
+        <button type="button" disabled>Xác nhận đăng xuất</button>
+      </form>
+    </dialog>
+
+    <!-- NỘI DUNG RIÊNG CỦA TRANG CHỈNH SỬA ĐỀ TÀI -->
+    <main id="main-content" class="main-content" tabindex="-1">
+      <div class="page-container">
+        <nav class="breadcrumb" aria-label="Đường dẫn">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item">
+              <a href="tong-quan-giang-vien.html">Giảng viên</a>
+            </li>
+            <li class="breadcrumb__item">
+              <a href="quan-ly-de-tai.html">Quản lý đề tài</a>
+            </li>
+            <li class="breadcrumb__item">
+              <span>Đề tài đang chỉnh sửa</span>
+            </li>
+            <li class="breadcrumb__item">
+              <span aria-current="page">Chỉnh sửa</span>
+            </li>
+          </ol>
+        </nav>
+
+        <header class="page-header">
+          <h1 class="page-header__title">Chỉnh sửa đề tài</h1>
+          <p class="topic-status">Trạng thái đề tài: Chưa có thông tin</p>
+          <p class="page-header__description">
+            Cập nhật nội dung và điều kiện đăng ký của đề tài đã tạo.
+          </p>
+        </header>
+
+        <div class="page-content">
+          <p class="demo-notice">
+            Bản HTML mẫu, chưa kết nối dữ liệu đề tài. Các trường được để trống,
+            dùng placeholder hoặc hiển thị “Chưa có thông tin”. Biểu mẫu chưa lưu
+            thay đổi.
+          </p>
+
+          <form
+            id="topic-edit-form"
+            class="topic-edit-form"
+            method="post"
+            aria-describedby="topic-required-notice topic-save-notice"
+          >
+            <p id="topic-required-notice" class="topic-edit-form__required-note">
+              Trường có dấu * là bắt buộc.
+            </p>
+            <div class="topic-edit-form__overview">
+              <section
+                class="topic-edit-form__basic"
+                aria-labelledby="basic-information-title"
+              >
+                <h2 id="basic-information-title">Thông tin cơ bản</h2>
+                <div class="topic-edit-form__field">
+                  <label for="ma-de-tai">Mã đề tài (chỉ đọc)</label>
+                  <input
+                    id="ma-de-tai"
+                    name="ma-de-tai"
+                    type="text"
+                    placeholder="Chưa có thông tin"
+                    readonly
+                  />
+                </div>
+
+                <div class="topic-edit-form__field">
+                  <label for="ten-de-tai">
+                    Tên đề tài <span aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    id="ten-de-tai"
+                    name="ten-de-tai"
+                    type="text"
+                    placeholder="Chưa có thông tin"
+                    required
+                  />
+                </div>
+
+                <div class="topic-edit-form__row">
+                  <div class="topic-edit-form__field">
+                    <label for="loai-de-tai">
+                      Loại đề tài <span aria-hidden="true">*</span>
+                    </label>
+                    <select id="loai-de-tai" name="loai-de-tai" required>
+                      <option value="" selected>Chọn loại đề tài</option>
+                    </select>
+                  </div>
+                  <div class="topic-edit-form__field">
+                    <label for="mon-hoc">
+                      Môn học <span aria-hidden="true">*</span>
+                    </label>
+                    <select id="mon-hoc" name="mon-hoc" required>
+                      <option value="" selected>Chọn môn học</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="topic-edit-form__row">
+                  <div class="topic-edit-form__field">
+                    <label for="hoc-ky">
+                      Học kỳ <span aria-hidden="true">*</span>
+                    </label>
+                    <select id="hoc-ky" name="hoc-ky" required>
+                      <option value="" selected>Chọn học kỳ</option>
+                    </select>
+                  </div>
+                  <div class="topic-edit-form__field">
+                    <label for="nam-hoc">
+                      Năm học <span aria-hidden="true">*</span>
+                    </label>
+                    <select id="nam-hoc" name="nam-hoc" required>
+                      <option value="" selected>Chọn năm học</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="topic-edit-form__row">
+                  <div class="topic-edit-form__field">
+                    <label for="linh-vuc">Lĩnh vực</label>
+                    <select id="linh-vuc" name="linh-vuc">
+                      <option value="" selected>Chọn lĩnh vực</option>
+                    </select>
+                  </div>
+                  <div class="topic-edit-form__field">
+                    <label for="cong-nghe-goi-y">Công nghệ gợi ý</label>
+                    <input
+                      id="cong-nghe-goi-y"
+                      name="cong-nghe-goi-y"
+                      type="text"
+                      placeholder="Chưa có thông tin"
+                    />
+                  </div>
+                </div>
+              </section>
+
+              <aside class="topic-edit-form__sidebar" aria-label="Ảnh và giảng viên hướng dẫn">
+                <section
+                  class="topic-edit-form__image"
+                  aria-labelledby="topic-image-title"
+                >
+                  <h2 id="topic-image-title">Ảnh minh họa đề tài</h2>
+                  <figure class="topic-image">
+                    <div class="topic-image__placeholder">
+                      <p>Chưa có ảnh minh họa</p>
+                    </div>
+                    <figcaption>Ảnh minh họa đề tài</figcaption>
+                  </figure>
+                  <div class="topic-image__actions" role="group" aria-label="Thao tác ảnh minh họa">
+                    <button type="button" aria-describedby="topic-image-notice" disabled>
+                      Thay ảnh
+                    </button>
+                    <button type="button" aria-describedby="topic-image-notice" disabled>
+                      Gỡ ảnh
+                    </button>
+                  </div>
+                  <p id="topic-image-notice" class="topic-image__notice">
+                    Chưa có ảnh minh họa. Chưa có xử lý thay, gỡ và lưu ảnh.
+                  </p>
+                </section>
+
+                <section
+                  class="topic-edit-form__lecturer"
+                  aria-labelledby="topic-lecturer-title"
+                >
+                  <h2 id="topic-lecturer-title">Giảng viên hướng dẫn</h2>
+                  <p>Thông tin sẽ lấy từ hồ sơ giảng viên.</p>
+                  <div class="topic-edit-form__field">
+                    <label for="ho-ten-giang-vien">Họ tên (chỉ đọc)</label>
+                    <input
+                      id="ho-ten-giang-vien"
+                      name="ho-ten-giang-vien"
+                      type="text"
+                      placeholder="Chưa có thông tin"
+                      readonly
+                    />
+                  </div>
+
+                  <div class="topic-edit-form__field">
+                    <label for="khoa-bo-mon">Khoa / Bộ môn (chỉ đọc)</label>
+                    <input
+                      id="khoa-bo-mon"
+                      name="khoa-bo-mon"
+                      type="text"
+                      placeholder="Chưa có thông tin"
+                      readonly
+                    />
+                  </div>
+
+                  <div class="topic-edit-form__field">
+                    <label for="email-lien-he">Email liên hệ (chỉ đọc)</label>
+                    <input
+                      id="email-lien-he"
+                      name="email-lien-he"
+                      type="email"
+                      placeholder="Chưa có thông tin"
+                      readonly
+                    />
+                  </div>
+                </section>
+              </aside>
+            </div>
+
+            <section
+              class="topic-edit-form__content"
+              aria-labelledby="topic-content-title"
+            >
+              <h2 id="topic-content-title">Nội dung đề tài</h2>
+              <div class="topic-edit-form__field">
+                <label for="mo-ta">
+                  Mô tả đề tài <span aria-hidden="true">*</span>
+                </label>
+                <textarea
+                  id="mo-ta"
+                  name="mo-ta"
+                  rows="5"
+                  placeholder="Chưa có thông tin"
+                  required
+                ></textarea>
+              </div>
+
+              <div class="topic-edit-form__field">
+                <label for="muc-tieu">
+                  Mục tiêu <span aria-hidden="true">*</span>
+                </label>
+                <textarea
+                  id="muc-tieu"
+                  name="muc-tieu"
+                  rows="5"
+                  placeholder="Chưa có thông tin"
+                  required
+                ></textarea>
+              </div>
+
+              <div class="topic-edit-form__field">
+                <label for="yeu-cau-thuc-hien">
+                  Yêu cầu thực hiện <span aria-hidden="true">*</span>
+                </label>
+                <textarea
+                  id="yeu-cau-thuc-hien"
+                  name="yeu-cau-thuc-hien"
+                  rows="5"
+                  placeholder="Chưa có thông tin"
+                  required
+                ></textarea>
+              </div>
+            </section>
+
+            <section
+              class="topic-edit-form__conditions"
+              aria-labelledby="registration-conditions-title"
+            >
+              <h2 id="registration-conditions-title">Điều kiện đăng ký</h2>
+              <div class="topic-edit-form__row">
+                <div class="topic-edit-form__field">
+                  <label for="so-thanh-vien-toi-thieu">
+                    Số thành viên tối thiểu / nhóm <span aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    id="so-thanh-vien-toi-thieu"
+                    name="so-thanh-vien-toi-thieu"
+                    type="number"
+                    placeholder="Chưa có thông tin"
+                    min="1"
+                    step="1"
+                    required
+                  />
+                </div>
+                <div class="topic-edit-form__field">
+                  <label for="so-thanh-vien-toi-da">
+                    Số thành viên tối đa / nhóm <span aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    id="so-thanh-vien-toi-da"
+                    name="so-thanh-vien-toi-da"
+                    type="number"
+                    placeholder="Chưa có thông tin"
+                    min="1"
+                    step="1"
+                    required
+                  />
+                </div>
+              </div>
+            </section>
+
+            <section
+              class="topic-edit-form__schedule"
+              aria-labelledby="topic-schedule-title"
+            >
+              <h2 id="topic-schedule-title">Thời gian đăng ký và thực hiện</h2>
+              <p id="topic-timezone-notice">
+                Thời gian được hiểu theo múi giờ Việt Nam (UTC+07:00).
+              </p>
+              <div class="topic-edit-form__row">
+                <div class="topic-edit-form__field">
+                  <label for="mo-dang-ky-luc">
+                    Mở đăng ký từ <span aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    id="mo-dang-ky-luc"
+                    name="mo-dang-ky-luc"
+                    type="datetime-local"
+                    aria-describedby="topic-timezone-notice"
+                    required
+                  />
+                </div>
+                <div class="topic-edit-form__field">
+                  <label for="dong-dang-ky-luc">
+                    Đóng đăng ký lúc <span aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    id="dong-dang-ky-luc"
+                    name="dong-dang-ky-luc"
+                    type="datetime-local"
+                    aria-describedby="topic-timezone-notice"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="topic-edit-form__row">
+                <div class="topic-edit-form__field">
+                  <label for="ngay-bat-dau-thuc-hien">Ngày bắt đầu thực hiện</label>
+                  <input
+                    id="ngay-bat-dau-thuc-hien"
+                    name="ngay-bat-dau-thuc-hien"
+                    type="date"
+                  />
+                </div>
+                <div class="topic-edit-form__field">
+                  <label for="han-hoan-thanh-de-tai">
+                    Hạn hoàn thành đề tài <span aria-hidden="true">*</span>
+                  </label>
+                  <input
+                    id="han-hoan-thanh-de-tai"
+                    name="han-hoan-thanh-de-tai"
+                    type="datetime-local"
+                    aria-describedby="topic-timezone-notice"
+                    required
+                  />
+                </div>
+              </div>
+            </section>
+
+            <p id="topic-save-notice" class="topic-edit-form__notice">
+              Chưa có xử lý kiểm tra dữ liệu và lưu thay đổi đề tài.
+            </p>
+            <div class="topic-edit-form__actions">
+              <a class="topic-edit-form__cancel" href="quan-ly-de-tai.html">Hủy</a>
+              <button
+                class="topic-edit-form__save"
+                type="submit"
+                aria-describedby="topic-save-notice"
+                disabled
+              >
+                Lưu thay đổi
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <!-- CHÂN TRANG CHUNG -->
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__columns">
+          <div class="site-footer__brand">
+            <p class="site-footer__name">
+              QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP
+            </p>
+            <dl class="site-footer__about">
+              <div>
+                <dt>Thông tin trang web</dt>
+                <dd>Trường Đại học Công nghệ Thông tin</dd>
+              </div>
+              <div>
+                <dt>Thông tin nhóm</dt>
+                <dd>Đồ án IE104 — Nhóm 7</dd>
+              </div>
+            </dl>
+          </div>
+
+          <section
+            class="site-footer__information site-footer__terms"
+            aria-labelledby="footer-terms-title"
+          >
+            <h2 id="footer-terms-title">Điều khoản sử dụng</h2>
+            <p>Đang cập nhật.</p>
+          </section>
+
+          <section
+            class="site-footer__information site-footer__policies"
+            aria-labelledby="footer-policies-title"
+          >
+            <h2 id="footer-policies-title">Quy chế, chính sách bảo mật</h2>
+            <p>Đang cập nhật.</p>
+          </section>
+        </div>
+        <p class="site-footer__copyright">
+          © 2026 · Quản lý đồ án và khóa luận tốt nghiệp
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
