@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Theo dõi đồ án môn học và khóa luận tốt nghiệp của bạn."
+    />
+    <title>Đề tài của tôi | Quản lý đồ án</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-sinh-vien.html">
+          <!-- Chưa có tài nguyên logo trong dự án; tạm dùng logo chữ. -->
+          <span class="site-brand__logo" aria-hidden="true">QLĐA</span>
+          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</span>
+        </a>
+        <nav class="main-nav" aria-label="Điều hướng sinh viên">
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html">Tổng quan</a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="dang-ky-de-tai.html">Đăng ký đề tài</a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html" aria-current="page">Đề tài của tôi</a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="lich-han-nop.html">Lịch hạn nộp</a>
+            </li>
+            <li class="main-nav__item">
+              <!-- Liên kết tạm: trang Chung chưa có trong dự án. -->
+              <a class="main-nav__link" href="#">Chung</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="account-menu">
+          <!-- Nút minh họa, chưa triển khai menu tài khoản. -->
+          <button class="account-menu__toggle" type="button">
+            <span class="account-menu__avatar" aria-hidden="true">SV</span>
+            <span class="account-menu__label">Tài khoản sinh viên</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="main-content" tabindex="-1">
+      <div class="page-container">
+        <nav class="breadcrumb" aria-label="Đường dẫn">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item">
+              <a href="tong-quan-sinh-vien.html">Sinh viên</a>
+              <span class="breadcrumb__separator" aria-hidden="true">/</span>
+            </li>
+            <li class="breadcrumb__item">
+              <span aria-current="page">Đề tài của tôi</span>
+            </li>
+          </ol>
+        </nav>
+        <header class="page-header">
+          <h1 class="page-header__title">Đề tài của tôi</h1>
+          <p class="page-header__description">Theo dõi đồ án môn học và khóa luận tốt nghiệp của bạn.</p>
+        </header>
+
+        <div class="page-content">
+          <!-- Các trường tìm kiếm/học kỳ chưa có xử lý; không gửi form. -->
+          <div class="topic-search" role="search" aria-label="Tìm kiếm đề tài">
+            <div class="topic-filters__field">
+              <label for="topic-search">Tìm kiếm theo tên hoặc mã đề tài</label>
+              <input
+                type="search"
+                id="topic-search"
+                name="tu-khoa"
+                placeholder="Tìm kiếm theo tên hoặc mã đề tài"
+              />
+            </div>
+            <div class="topic-filters__field">
+              <label for="semester-filter">Học kỳ / Năm học</label>
+              <select id="semester-filter" name="hoc-ky">
+                <option value="">Tất cả học kỳ / năm học</option>
+                <option value="2026-2027-1">Học kỳ 1 / 2026–2027</option>
+                <option value="2025-2026-2">Học kỳ 2 / 2025–2026</option>
+                <option value="2025-2026-1">Học kỳ 1 / 2025–2026</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Khung để bổ sung CSS: bộ lọc bên trái, danh sách bên phải. -->
+          <div class="topics-layout">
+            <aside class="topics-layout__sidebar" aria-labelledby="filter-title">
+              <h2 id="filter-title" class="topic-filters__title">BỘ LỌC</h2>
+              <!-- Chưa lọc danh sách; reset chỉ khôi phục các lựa chọn trong form. -->
+              <form class="topic-filters" aria-labelledby="filter-title">
+                <fieldset class="topic-filters__group">
+                  <legend>Sắp xếp</legend>
+                  <!-- Khi bổ sung JavaScript, xử lý nhóm sắp xếp để chỉ chọn một lựa chọn tại một thời điểm. -->
+                  <div class="topic-filters__option">
+                    <input type="checkbox" id="sort-newest" name="sap-xep" value="moi-nhat" checked />
+                    <label for="sort-newest">Mới nhất</label>
+                  </div>
+                  <div class="topic-filters__option">
+                    <input type="checkbox" id="sort-oldest" name="sap-xep" value="cu-nhat" />
+                    <label for="sort-oldest">Cũ nhất</label>
+                  </div>
+                  <div class="topic-filters__option">
+                    <input type="checkbox" id="sort-name" name="sap-xep" value="ten-a-z" />
+                    <label for="sort-name">Tên A–Z</label>
+                  </div>
+                </fieldset>
+                <fieldset class="topic-filters__group">
+                  <legend>Trạng thái</legend>
+                  <div class="topic-filters__option">
+                    <input type="checkbox" id="status-in-progress" name="trang-thai" value="dang-thuc-hien" />
+                    <label for="status-in-progress">Đang thực hiện</label>
+                  </div>
+                  <div class="topic-filters__option">
+                    <input type="checkbox" id="status-completed" name="trang-thai" value="hoan-thanh" />
+                    <label for="status-completed">Hoàn thành</label>
+                  </div>
+                </fieldset>
+                <fieldset class="topic-filters__group">
+                  <legend>Loại đề tài</legend>
+                  <div class="topic-filters__option">
+                    <input type="checkbox" id="type-project" name="loai-de-tai" value="do-an" />
+                    <label for="type-project">Đồ án</label>
+                  </div>
+                  <div class="topic-filters__option">
+                    <input type="checkbox" id="type-thesis" name="loai-de-tai" value="khoa-luan" />
+                    <label for="type-thesis">Khóa luận</label>
+                  </div>
+                </fieldset>
+                <button class="topic-filters__clear" type="reset">Xóa bộ lọc</button>
+              </form>
+            </aside>
+
+            <section class="topics topics-layout__main" aria-labelledby="topic-list-title">
+              <header class="topics__header">
+                <h2 id="topic-list-title" class="topics__title">Danh sách đề tài</h2>
+              </header>
+              <!-- Dữ liệu minh họa; cả 5 đề tài luôn có trong HTML hiện tại. -->
+              <ul class="topic-list">
+                <li class="topic-list__item">
+                  <article class="topic-card" aria-labelledby="topic-title-da001">
+                    <div class="topic-image-placeholder topic-card__image" role="img" aria-label="Chưa có ảnh minh họa cho Website quản lý đồ án sinh viên">
+                      <span aria-hidden="true">Ảnh đồ án / khóa luận</span>
+                    </div>
+                    <div class="topic-card__content">
+                      <header class="topic-card__header">
+                        <h3 id="topic-title-da001" class="topic-card__title">Website quản lý đồ án sinh viên</h3>
+                      </header>
+                      <dl class="topic-card__meta">
+                        <dt>Mã đề tài</dt><dd>DA001</dd>
+                        <dt>Loại đề tài</dt><dd>Đồ án</dd>
+                        <dt>Giảng viên hướng dẫn</dt><dd>Nguyễn Văn An</dd>
+                        <dt>Nhóm thực hiện</dt><dd>Nhóm 7 — Web UIT</dd>
+                      </dl>
+                    </div>
+                    <div class="topic-card__summary">
+                      <dl class="topic-card__semester">
+                        <dt>Học kỳ / Năm học</dt><dd>Học kỳ 1 / 2026–2027</dd>
+                      </dl>
+                      <p class="topic-card__status">Trạng thái: <span>Đang thực hiện</span></p>
+                      <footer class="topic-card__footer">
+                        <!-- Trang Tổng quan dùng nội dung giữ chỗ; chưa tải dữ liệu riêng của đề tài. -->
+                        <a class="topic-card__link" href="chi-tiet-de-tai-tong-quan.html" aria-label="Xem chi tiết Website quản lý đồ án sinh viên">Xem chi tiết <span aria-hidden="true">→</span></a>
+                      </footer>
+                    </div>
+                  </article>
+                </li>
+                <li class="topic-list__item">
+                  <article class="topic-card" aria-labelledby="topic-title-da002">
+                    <div class="topic-image-placeholder topic-card__image" role="img" aria-label="Chưa có ảnh minh họa cho Website bán sách trực tuyến">
+                      <span aria-hidden="true">Ảnh đồ án / khóa luận</span>
+                    </div>
+                    <div class="topic-card__content">
+                      <header class="topic-card__header">
+                        <h3 id="topic-title-da002" class="topic-card__title">Website bán sách trực tuyến</h3>
+                      </header>
+                      <dl class="topic-card__meta">
+                        <dt>Mã đề tài</dt><dd>DA002</dd>
+                        <dt>Loại đề tài</dt><dd>Đồ án</dd>
+                        <dt>Giảng viên hướng dẫn</dt><dd>Trần Thị Bình</dd>
+                        <dt>Nhóm thực hiện</dt><dd>Nhóm 3 — BookHub</dd>
+                      </dl>
+                    </div>
+                    <div class="topic-card__summary">
+                      <dl class="topic-card__semester">
+                        <dt>Học kỳ / Năm học</dt><dd>Học kỳ 1 / 2026–2027</dd>
+                      </dl>
+                      <p class="topic-card__status">Trạng thái: <span>Đang thực hiện</span></p>
+                      <footer class="topic-card__footer">
+                        <!-- Trang Tổng quan dùng nội dung giữ chỗ; chưa tải dữ liệu riêng của đề tài. -->
+                        <a class="topic-card__link" href="chi-tiet-de-tai-tong-quan.html" aria-label="Xem chi tiết Website bán sách trực tuyến">Xem chi tiết <span aria-hidden="true">→</span></a>
+                      </footer>
+                    </div>
+                  </article>
+                </li>
+                <li class="topic-list__item">
+                  <article class="topic-card" aria-labelledby="topic-title-da003">
+                    <div class="topic-image-placeholder topic-card__image" role="img" aria-label="Chưa có ảnh minh họa cho Hệ thống quản lý thư viện">
+                      <span aria-hidden="true">Ảnh đồ án / khóa luận</span>
+                    </div>
+                    <div class="topic-card__content">
+                      <header class="topic-card__header">
+                        <h3 id="topic-title-da003" class="topic-card__title">Hệ thống quản lý thư viện</h3>
+                      </header>
+                      <dl class="topic-card__meta">
+                        <dt>Mã đề tài</dt><dd>DA003</dd>
+                        <dt>Loại đề tài</dt><dd>Đồ án</dd>
+                        <dt>Giảng viên hướng dẫn</dt><dd>Lê Minh Châu</dd>
+                        <dt>Nhóm thực hiện</dt><dd>Nhóm 5 — Library UIT</dd>
+                      </dl>
+                    </div>
+                    <div class="topic-card__summary">
+                      <dl class="topic-card__semester">
+                        <dt>Học kỳ / Năm học</dt><dd>Học kỳ 2 / 2025–2026</dd>
+                      </dl>
+                      <p class="topic-card__status">Trạng thái: <span>Hoàn thành</span></p>
+                      <footer class="topic-card__footer">
+                        <!-- Trang Tổng quan dùng nội dung giữ chỗ; chưa tải dữ liệu riêng của đề tài. -->
+                        <a class="topic-card__link" href="chi-tiet-de-tai-tong-quan.html" aria-label="Xem chi tiết Hệ thống quản lý thư viện">Xem chi tiết <span aria-hidden="true">→</span></a>
+                      </footer>
+                    </div>
+                  </article>
+                </li>
+                <li class="topic-list__item">
+                  <article class="topic-card" aria-labelledby="topic-title-kl001">
+                    <div class="topic-image-placeholder topic-card__image" role="img" aria-label="Chưa có ảnh minh họa cho Hệ thống gợi ý phim theo sở thích">
+                      <span aria-hidden="true">Ảnh đồ án / khóa luận</span>
+                    </div>
+                    <div class="topic-card__content">
+                      <header class="topic-card__header">
+                        <h3 id="topic-title-kl001" class="topic-card__title">Hệ thống gợi ý phim theo sở thích</h3>
+                      </header>
+                      <dl class="topic-card__meta">
+                        <dt>Mã đề tài</dt><dd>KL001</dd>
+                        <dt>Loại đề tài</dt><dd>Khóa luận</dd>
+                        <dt>Giảng viên hướng dẫn</dt><dd>Phạm Hoàng Dũng</dd>
+                        <dt>Nhóm thực hiện</dt><dd>Nhóm 2 — MovieMatch</dd>
+                      </dl>
+                    </div>
+                    <div class="topic-card__summary">
+                      <dl class="topic-card__semester">
+                        <dt>Học kỳ / Năm học</dt><dd>Học kỳ 1 / 2026–2027</dd>
+                      </dl>
+                      <p class="topic-card__status">Trạng thái: <span>Đang thực hiện</span></p>
+                      <footer class="topic-card__footer">
+                        <!-- Trang Tổng quan dùng nội dung giữ chỗ; chưa tải dữ liệu riêng của đề tài. -->
+                        <a class="topic-card__link" href="chi-tiet-de-tai-tong-quan.html" aria-label="Xem chi tiết Hệ thống gợi ý phim theo sở thích">Xem chi tiết <span aria-hidden="true">→</span></a>
+                      </footer>
+                    </div>
+                  </article>
+                </li>
+                <li class="topic-list__item">
+                  <article class="topic-card" aria-labelledby="topic-title-kl002">
+                    <div class="topic-image-placeholder topic-card__image" role="img" aria-label="Chưa có ảnh minh họa cho Ứng dụng học tiếng Anh trực tuyến">
+                      <span aria-hidden="true">Ảnh đồ án / khóa luận</span>
+                    </div>
+                    <div class="topic-card__content">
+                      <header class="topic-card__header">
+                        <h3 id="topic-title-kl002" class="topic-card__title">Ứng dụng học tiếng Anh trực tuyến</h3>
+                      </header>
+                      <dl class="topic-card__meta">
+                        <dt>Mã đề tài</dt><dd>KL002</dd>
+                        <dt>Loại đề tài</dt><dd>Khóa luận</dd>
+                        <dt>Giảng viên hướng dẫn</dt><dd>Võ Thị Mai</dd>
+                        <dt>Nhóm thực hiện</dt><dd>Nhóm 4 — English Connect</dd>
+                      </dl>
+                    </div>
+                    <div class="topic-card__summary">
+                      <dl class="topic-card__semester">
+                        <dt>Học kỳ / Năm học</dt><dd>Học kỳ 2 / 2025–2026</dd>
+                      </dl>
+                      <p class="topic-card__status">Trạng thái: <span>Hoàn thành</span></p>
+                      <footer class="topic-card__footer">
+                        <!-- Trang Tổng quan dùng nội dung giữ chỗ; chưa tải dữ liệu riêng của đề tài. -->
+                        <a class="topic-card__link" href="chi-tiet-de-tai-tong-quan.html" aria-label="Xem chi tiết Ứng dụng học tiếng Anh trực tuyến">Xem chi tiết <span aria-hidden="true">→</span></a>
+                      </footer>
+                    </div>
+                  </article>
+                </li>
+              </ul>
+
+              <!-- Phân trang minh họa: các nút chưa chuyển trang hay ẩn đề tài. -->
+              <nav class="pagination" aria-label="Phân trang đề tài">
+                <ul class="pagination__list">
+                  <li class="pagination__item"><button class="pagination__button" type="button" aria-label="Trang trước">‹</button></li>
+                  <li class="pagination__item"><button class="pagination__button" type="button" aria-label="Trang 1" aria-current="page">1</button></li>
+                  <li class="pagination__item"><button class="pagination__button" type="button" aria-label="Trang 2">2</button></li>
+                  <li class="pagination__item"><button class="pagination__button" type="button" aria-label="Trang 3">3</button></li>
+                  <li class="pagination__item"><button class="pagination__button" type="button" aria-label="Trang sau">›</button></li>
+                </ul>
+              </nav>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <!-- Logo chữ tạm, đồng nhất với đầu trang. -->
+          <a class="site-brand" href="tong-quan-sinh-vien.html" aria-label="Quản lý đồ án — Tổng quan sinh viên">
+            <span class="site-brand__logo" aria-hidden="true">QLĐA</span>
+          </a>
+          <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</p>
+          <p>Trường Đại học Công nghệ Thông tin</p>
+          <p class="site-footer__group">Đồ án IE104 — Nhóm 7</p>
+        </div>
+        <ul class="site-footer__information" aria-label="Thông tin và quy định">
+          <li>
+            <!-- Liên kết tạm: chưa có trang Điều khoản sử dụng. -->
+            <a href="#">Điều khoản sử dụng</a>
+          </li>
+          <li>
+            <!-- Liên kết tạm: chưa có trang Quy chế, chính sách bảo mật. -->
+            <a href="#">Quy chế, chính sách bảo mật</a>
+          </li>
+        </ul>
+        <p class="site-footer__copyright">Copyright © 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>

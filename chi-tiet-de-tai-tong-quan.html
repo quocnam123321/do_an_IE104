@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Thông tin tổng quan, giảng viên hướng dẫn, nhóm thực hiện và các mốc thời gian của đề tài." />
+    <title>Tổng quan đề tài | Đề tài của tôi | Quản lý đồ án</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-sinh-vien.html">
+          <!-- Chưa có tài nguyên logo trong dự án; tạm dùng logo chữ. -->
+          <span class="site-brand__logo" aria-hidden="true">QLĐA</span>
+          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</span>
+        </a>
+        <nav class="main-nav" aria-label="Điều hướng sinh viên">
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html">Tổng quan</a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="dang-ky-de-tai.html">Đăng ký đề tài</a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html" aria-current="location">Đề tài của tôi</a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="lich-han-nop.html">Lịch hạn nộp</a>
+            </li>
+            <li class="main-nav__item">
+              <!-- Liên kết tạm: trang Chung chưa có trong dự án. -->
+              <a class="main-nav__link" href="#">Chung</a>
+            </li>
+          </ul>
+        </nav>
+        <div class="account-menu">
+          <!-- Nút minh họa, chưa triển khai menu tài khoản. -->
+          <button class="account-menu__toggle" type="button">
+            <span class="account-menu__avatar" aria-hidden="true">SV</span>
+            <span class="account-menu__label">Tài khoản sinh viên</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="main-content" tabindex="-1">
+      <div class="page-container">
+        <nav class="breadcrumb" aria-label="Đường dẫn">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item">
+              <a href="tong-quan-sinh-vien.html">Sinh viên</a>
+              <span class="breadcrumb__separator" aria-hidden="true">/</span>
+            </li>
+            <li class="breadcrumb__item">
+              <a href="de-tai-cua-toi-sinh-vien.html">Đề tài của tôi</a>
+              <span class="breadcrumb__separator" aria-hidden="true">/</span>
+            </li>
+            <li class="breadcrumb__item"><span aria-current="page">Chi tiết đề tài</span></li>
+          </ol>
+        </nav>
+        <p class="back-navigation">
+          <a class="back-link" href="de-tai-cua-toi-sinh-vien.html">← Quay lại Đề tài của tôi</a>
+        </p>
+        <header class="page-header">
+          <h1 class="page-header__title">Chi tiết đề tài</h1>
+        </header>
+
+        <nav class="detail-tabs-nav" aria-label="Các mục chi tiết đề tài">
+          <ul class="detail-tabs-list">
+            <li class="detail-tabs-item">
+              <a class="detail-tabs-link detail-tabs-link--active" href="chi-tiet-de-tai-tong-quan.html" aria-current="page">Tổng quan</a>
+            </li>
+            <li class="detail-tabs-item">
+              <a class="detail-tabs-link" href="tien-do-de-tai-sinh-vien.html">Tiến độ</a>
+            </li>
+            <li class="detail-tabs-item">
+              <a class="detail-tabs-link" href="chi-tiet-de-tai-bai-nop.html">Bài nộp</a>
+            </li>
+            <li class="detail-tabs-item">
+              <a class="detail-tabs-link" href="chi-tiet-de-tai-ket-qua-danh-gia.html">Kết quả đánh giá</a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="page-content">
+          <!-- Khung nội dung giữ chỗ, chưa tải dữ liệu của từng đề tài. -->
+          <section class="project-summary" aria-labelledby="project-title">
+            <div class="topic-image-placeholder project-summary__image" role="img" aria-label="Ảnh đồ án / khóa luận">
+              <span aria-hidden="true">Ảnh đồ án / khóa luận</span>
+            </div>
+            <div class="project-summary__content">
+              <h2 id="project-title" class="project-summary__title">Tên đồ án / khóa luận</h2>
+              <dl class="project-summary__meta">
+                <div class="project-summary__field"><dt>Mã đề tài</dt><dd>[Mã đề tài]</dd></div>
+                <div class="project-summary__field"><dt>Loại đề tài</dt><dd>[Loại đề tài]</dd></div>
+                <div class="project-summary__field"><dt>Môn học</dt><dd>[Tên môn học]</dd></div>
+                <div class="project-summary__field"><dt>Học kỳ</dt><dd>[Học kỳ]</dd></div>
+                <div class="project-summary__field"><dt>Năm học</dt><dd>[Năm học]</dd></div>
+                <div class="project-summary__field"><dt>Giảng viên hướng dẫn</dt><dd>Họ tên giảng viên</dd></div>
+                <div class="project-summary__field"><dt>Trạng thái</dt><dd class="project-summary__status">Đang thực hiện</dd></div>
+              </dl>
+            </div>
+          </section>
+
+          <!-- Khi bổ sung CSS: cột nội dung khoảng 60%, cột thông tin khoảng 40%. -->
+          <div class="project-overview-layout">
+            <div class="project-overview-layout__main">
+              <section class="project-description" aria-labelledby="description-title">
+                <h2 id="description-title">Mô tả đề tài</h2>
+                <p class="project-description__text">[Nội dung mô tả đề tài: bối cảnh, phạm vi và vấn đề cần giải quyết.]</p>
+              </section>
+              <section class="project-objectives" aria-labelledby="objectives-title">
+                <h2 id="objectives-title">Mục tiêu đề tài</h2>
+                <p class="project-objectives__text">[Nội dung mục tiêu đề tài: các mục tiêu cần đạt được trong quá trình thực hiện.]</p>
+              </section>
+              <section class="project-outcomes" aria-labelledby="outcomes-title">
+                <h2 id="outcomes-title">Kết quả dự kiến</h2>
+                <p class="project-outcomes__text">[Nội dung kết quả dự kiến: sản phẩm, báo cáo và các kết quả cần hoàn thành.]</p>
+              </section>
+            </div>
+
+            <aside class="project-overview-layout__sidebar" aria-label="Giảng viên, nhóm thực hiện và mốc thời gian">
+              <section class="project-supervisors" aria-labelledby="supervisors-title">
+                <header class="project-supervisors__header">
+                  <h2 id="supervisors-title">Giảng viên hướng dẫn</h2>
+                  <!-- Chưa xử lý mở dialog; JavaScript sẽ nối nút này với invite-supervisor-dialog. -->
+                  <button id="invite-supervisor-button" class="project-supervisors__invite" type="button" aria-haspopup="dialog" aria-controls="invite-supervisor-dialog">+ Mời</button>
+                </header>
+                <ul class="supervisor-list">
+                  <li class="supervisor-list__item">
+                    <article class="supervisor-card" aria-labelledby="primary-supervisor-name">
+                      <div class="supervisor-card__avatar" role="img" aria-label="Ảnh đại diện giảng viên"><span aria-hidden="true">Avatar</span></div>
+                      <div class="supervisor-card__content">
+                        <h3 id="primary-supervisor-name" class="supervisor-card__name">Họ tên giảng viên</h3>
+                        <p class="supervisor-card__department">Khoa / Bộ môn</p>
+                        <p class="supervisor-card__role">Hướng dẫn chính</p>
+                      </div>
+                    </article>
+                  </li>
+                  <li class="supervisor-list__item">
+                    <article class="supervisor-card" aria-labelledby="co-supervisor-name">
+                      <div class="supervisor-card__avatar" role="img" aria-label="Ảnh đại diện giảng viên"><span aria-hidden="true">Avatar</span></div>
+                      <div class="supervisor-card__content">
+                        <h3 id="co-supervisor-name" class="supervisor-card__name">Họ tên giảng viên</h3>
+                        <p class="supervisor-card__department">Khoa / Bộ môn</p>
+                        <p class="supervisor-card__role">Đồng hướng dẫn</p>
+                      </div>
+                    </article>
+                  </li>
+                </ul>
+                <section class="pending-invitations" aria-labelledby="pending-invitations-title">
+                  <h3 id="pending-invitations-title">Lời mời đang chờ</h3>
+                  <ul class="pending-invitations__list">
+                    <li class="pending-invitation">
+                      <p class="pending-invitation__name">Họ tên giảng viên</p>
+                      <dl class="pending-invitation__meta">
+                        <dt>Ngày gửi</dt><dd>[Ngày gửi]</dd>
+                        <dt>Trạng thái</dt><dd>Chờ phản hồi</dd>
+                      </dl>
+                      <button id="cancel-pending-invitation" class="pending-invitation__cancel" type="button" aria-label="Hủy lời mời đang chờ">Hủy</button>
+                    </li>
+                  </ul>
+                </section>
+              </section>
+
+              <section class="project-team" aria-labelledby="team-title">
+                <h2 id="team-title">Nhóm thực hiện</h2>
+                <p class="project-team__name">Tên nhóm</p>
+                <ul class="team-member-list">
+                  <li class="team-member">
+                    <div class="team-member__avatar" role="img" aria-label="Ảnh đại diện thành viên"><span aria-hidden="true">Avatar</span></div>
+                    <div class="team-member__content">
+                      <p class="team-member__name">Họ tên · MSSV</p>
+                      <p class="team-member__role">Nhóm trưởng</p>
+                    </div>
+                  </li>
+                  <li class="team-member">
+                    <div class="team-member__avatar" role="img" aria-label="Ảnh đại diện thành viên"><span aria-hidden="true">Avatar</span></div>
+                    <div class="team-member__content">
+                      <p class="team-member__name">Họ tên · MSSV</p>
+                      <p class="team-member__role">Thành viên</p>
+                    </div>
+                  </li>
+                  <li class="team-member">
+                    <div class="team-member__avatar" role="img" aria-label="Ảnh đại diện thành viên"><span aria-hidden="true">Avatar</span></div>
+                    <div class="team-member__content">
+                      <p class="team-member__name">Họ tên · MSSV</p>
+                      <p class="team-member__role">Thành viên</p>
+                    </div>
+                  </li>
+                </ul>
+              </section>
+
+              <section class="project-milestones" aria-labelledby="milestones-title">
+                <h2 id="milestones-title">Mốc thời gian chính</h2>
+                <dl class="project-milestones__list">
+                  <div class="project-milestones__item"><dt>Ngày bắt đầu</dt><dd>[Ngày bắt đầu]</dd></div>
+                  <div class="project-milestones__item"><dt>Hạn nộp báo cáo tiến độ</dt><dd>[Hạn nộp báo cáo tiến độ]</dd></div>
+                  <div class="project-milestones__item"><dt>Hạn nộp báo cáo cuối cùng</dt><dd>[Hạn nộp báo cáo cuối cùng]</dd></div>
+                </dl>
+              </section>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <!-- Logo chữ tạm, đồng nhất với đầu trang. -->
+          <a class="site-brand" href="tong-quan-sinh-vien.html" aria-label="Quản lý đồ án — Tổng quan sinh viên">
+            <span class="site-brand__logo" aria-hidden="true">QLĐA</span>
+          </a>
+          <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</p>
+          <p>Trường Đại học Công nghệ Thông tin</p>
+          <p class="site-footer__group">Đồ án IE104 — Nhóm 7</p>
+        </div>
+        <ul class="site-footer__information" aria-label="Thông tin và quy định">
+          <li>
+            <!-- Liên kết tạm: chưa có trang Điều khoản sử dụng. -->
+            <a href="#">Điều khoản sử dụng</a>
+          </li>
+          <li>
+            <!-- Liên kết tạm: chưa có trang Quy chế, chính sách bảo mật. -->
+            <a href="#">Quy chế, chính sách bảo mật</a>
+          </li>
+        </ul>
+        <p class="site-footer__copyright">Copyright © 2026</p>
+      </div>
+    </footer>
+
+    <!-- Dialog mặc định đóng. Chưa có JavaScript mở/đóng, tìm kiếm, chọn hoặc gửi lời mời. -->
+    <dialog id="invite-supervisor-dialog" class="invite-supervisor-dialog" aria-labelledby="invite-supervisor-title">
+      <header class="invite-supervisor-dialog__header">
+        <h2 id="invite-supervisor-title">Mời giảng viên đồng hướng dẫn</h2>
+        <button id="close-invite-supervisor" class="invite-supervisor-dialog__close" type="button" aria-label="Đóng hộp thoại">×</button>
+      </header>
+      <p class="invite-supervisor-dialog__topic">Đề tài: Tên đồ án / khóa luận</p>
+      <form id="invite-supervisor-form" class="invite-supervisor-form" aria-labelledby="invite-supervisor-title">
+        <div class="invite-supervisor-form__field">
+          <label for="supervisor-search">Giảng viên *</label>
+          <input id="supervisor-search" name="giang-vien" type="search" placeholder="Tìm theo tên hoặc email" aria-describedby="supervisor-search-help" required />
+          <p id="supervisor-search-help" class="invite-supervisor-form__help">Chọn giảng viên chưa tham gia đề tài.</p>
+          <!-- JavaScript sẽ cập nhật, hiện danh sách và lưu giảng viên được chọn. -->
+          <ul id="supervisor-search-results" class="supervisor-search-results" aria-label="Kết quả tìm kiếm giảng viên" hidden>
+            <li class="supervisor-search-results__item">
+              <button class="supervisor-search-results__option" type="button">
+                <span class="supervisor-search-results__name">Họ tên giảng viên</span>
+                <span class="supervisor-search-results__email">[Email giảng viên]</span>
+              </button>
+            </li>
+            <li class="supervisor-search-results__item">
+              <button class="supervisor-search-results__option" type="button">
+                <span class="supervisor-search-results__name">Họ tên giảng viên</span>
+                <span class="supervisor-search-results__email">[Email giảng viên]</span>
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div class="invite-supervisor-form__field">
+          <label for="invitation-message">Lời nhắn (không bắt buộc)</label>
+          <textarea id="invitation-message" name="loi-nhan" rows="4" placeholder="Nhập lời nhắn gửi giảng viên..."></textarea>
+        </div>
+        <p class="invite-supervisor-form__notice">Giảng viên được thêm sau khi chấp nhận lời mời.</p>
+        <div class="invite-supervisor-form__actions">
+          <button id="cancel-invite-supervisor" class="invite-supervisor-form__cancel" type="button">Hủy</button>
+          <button id="send-invite-supervisor" class="invite-supervisor-form__send" type="button">Gửi lời mời</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>
