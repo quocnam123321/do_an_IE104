@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Đăng nhập hệ thống quản lý đồ án và khóa luận tốt nghiệp dành cho sinh viên và giảng viên."
+    />
+    <title>Đăng nhập | Quản lý đồ án và khóa luận</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+
+    <!-- ĐẦU TRANG -->
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="../../index.html">
+          <span class="site-brand__logo" aria-hidden="true">ISE</span>
+          <span class="site-brand__name">
+            QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP
+          </span>
+        </a>
+        <nav class="main-nav" aria-label="Điều hướng chính">
+          <ul class="main-nav__list">
+            <!-- Thay bằng liên kết khi các trang chung được triển khai. -->
+            <li><a href="gioi-thieu.html">Giới thiệu</a></li>
+            <li><a href="thong-bao.html">Thông báo</a></li>
+            <li><a href="lien-he.html">Liên hệ</a></li>
+            <li><a href="dang-nhap.html" aria-current="page">Đăng nhập</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="login-page" tabindex="-1">
+      <div class="login-page__inner">
+        <!-- KHUNG MINH HỌA: thay nội dung bằng ảnh khi có tài nguyên chính thức. -->
+        <div class="login-illustration">
+          <figure class="login-illustration__placeholder">
+            <figcaption>HÌNH ẢNH MINH HỌA</figcaption>
+          </figure>
+        </div>
+
+        <!-- FORM DÙNG CHUNG CHO SINH VIÊN VÀ GIẢNG VIÊN -->
+        <section class="login-panel" aria-labelledby="login-title">
+          <header class="login-panel__header">
+            <h1 id="login-title">Chào mừng bạn trở lại</h1>
+            <p>
+              Quản lý đồ án và khóa luận trong một không gian chung.<br />
+              Theo dõi tiến độ, cập nhật báo cáo và xem phản hồi từ giảng viên.
+            </p>
+          </header>
+
+          <!-- Chưa nối backend. Không gửi hoặc lưu thông tin đăng nhập ở bản HTML. -->
+          <form class="login-form" aria-describedby="login-help login-status">
+            <div class="form-field">
+              <label for="username">Tài khoản</label>
+              <input
+                id="username"
+                type="text"
+                placeholder="Nhập tài khoản"
+                autocomplete="username"
+                autocapitalize="none"
+                spellcheck="false"
+                required
+              />
+            </div>
+
+            <div class="form-field">
+              <label for="password">Mật khẩu</label>
+              <div class="password-field">
+                <input
+                  id="password"
+                  type="password"
+                  placeholder="Nhập mật khẩu"
+                  autocomplete="current-password"
+                  required
+                />
+                <!-- Cần JavaScript để bật tính năng hiện/ẩn mật khẩu. -->
+                <button
+                  class="password-field__toggle"
+                  type="button"
+                  aria-label="Hiện mật khẩu (chưa hỗ trợ)"
+                  aria-controls="password"
+                  disabled
+                >
+                  Hiện mật khẩu
+                </button>
+              </div>
+            </div>
+
+            <p class="login-form__forgot-password">
+              <span aria-disabled="true">Quên mật khẩu? (đang cập nhật)</span>
+            </p>
+
+            <button class="login-form__submit" type="button" disabled>
+              Đăng nhập
+            </button>
+            <p id="login-help" class="login-form__help">
+              Đăng nhập bằng tài khoản sinh viên hoặc giảng viên để tiếp tục công
+              việc của bạn.
+            </p>
+            <p id="login-status" class="demo-notice">
+              Đây là giao diện HTML minh họa. Chức năng đăng nhập chưa được kết nối.
+            </p>
+          </form>
+        </section>
+      </div>
+    </main>
+
+    <!-- CHÂN TRANG -->
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        
+        <div class="site-footer__terms">
+          <p><span aria-disabled="true">Điều khoản sử dụng (đang cập nhật)</span></p>
+        </div>
+        <div class="site-footer__privacy">
+          <p>
+            <span aria-disabled="true">Quy chế, chính sách bảo mật (đang cập nhật)</span>
+          </p>
+        </div>
+      </div>
+      <div class="site-footer__copyright">
+        <p>Copyright &copy; 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
