@@ -16,58 +16,53 @@
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-brand" href="tong-quan-sinh-vien.html">
-          QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN
+          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
+          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
         </a>
-        <nav aria-label="Điều hướng sinh viên" class="main-nav">
+        <nav class="main-nav" aria-label="Điều hướng sinh viên">
           <ul class="main-nav__list">
             <li class="main-nav__item">
-              <a class="main-nav__link" href="tong-quan-sinh-vien.html">
-                Tổng quan
-              </a>
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html">Tổng quan</a>
             </li>
             <li class="main-nav__item">
-              <a
-                aria-current="page"
-                class="main-nav__link"
-                href="dang-ky-de-tai.html"
-              >
-                Đăng ký đề tài
-              </a>
+              <a class="main-nav__link" href="dang-ky-de-tai.html" aria-current="page">Đăng ký đề tài</a>
             </li>
             <li class="main-nav__item">
-              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html">
-                Đề tài của tôi
-              </a>
+              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html">Đề tài của tôi</a>
             </li>
             <li class="main-nav__item">
-              <a class="main-nav__link" href="lich-han-nop.html">
-                Lịch hạn nộp
-              </a>
+              <a class="main-nav__link" href="lich-han-nop.html">Lịch hạn nộp</a>
+            </li>
+            <li class="main-nav__item">
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
+                <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
+                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/gioi-thieu.html" aria-disabled="true">Giới thiệu (đang cập nhật)</span></li>
+                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/thong-bao.html" aria-disabled="true">Thông báo (đang cập nhật)</span></li>
+                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/lien-he.html" aria-disabled="true">Liên hệ (đang cập nhật)</span></li>
+                </ul>
+              </details>
             </li>
           </ul>
         </nav>
+        <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
         <div class="account-menu">
           <details class="account-menu__disclosure">
-            <summary
-              aria-label="Mở menu tài khoản sinh viên"
-              class="account-menu__toggle"
-            >
-              <span aria-hidden="true" class="account-menu__avatar">SV</span>
+            <summary class="account-menu__toggle" aria-label="Mở menu tài khoản sinh viên">
+              <span class="account-menu__avatar" aria-hidden="true">SV</span>
               <span class="account-menu__label">Tài khoản sinh viên</span>
             </summary>
-            <ul class="account-menu__list" id="account-dropdown">
+            <ul id="account-dropdown" class="account-menu__list">
               <li>
-                <a class="account-menu__profile" href="ho-so-ca-nhan.html"
-                  >Hồ sơ cá nhân</a
-                >
+                <a class="account-menu__profile" href="ho-so-ca-nhan.html">Hồ sơ cá nhân</a>
               </li>
               <li>
                 <button
+                  class="account-menu__logout"
+                  type="button"
                   aria-controls="logout-dialog"
                   aria-describedby="logout-notice"
-                  class="account-menu__logout"
-                  disabled=""
-                  type="button"
+                  disabled
                 >
                   Đăng xuất
                 </button>

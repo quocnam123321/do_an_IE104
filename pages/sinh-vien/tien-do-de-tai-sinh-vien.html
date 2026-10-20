@@ -17,80 +17,45 @@
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-brand" href="tong-quan-sinh-vien.html">
-          QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN
+          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
+          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
         </a>
-
-        <!-- Điều hướng chính dành cho sinh viên -->
         <nav class="main-nav" aria-label="Điều hướng sinh viên">
           <ul class="main-nav__list">
             <li class="main-nav__item">
-              <a class="main-nav__link" href="tong-quan-sinh-vien.html">
-                Tổng quan
-              </a>
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html">Tổng quan</a>
             </li>
-
             <li class="main-nav__item">
-              <a class="main-nav__link" href="dang-ky-de-tai.html">
-                Đăng ký đề tài
-              </a>
+              <a class="main-nav__link" href="dang-ky-de-tai.html">Đăng ký đề tài</a>
             </li>
-
             <li class="main-nav__item">
-              <!-- Trang danh sách Đề tài của tôi chưa có file riêng, đánh dấu vị trí hiện tại và ghi nhận pending -->
-              <span
-                class="main-nav__link"
-                aria-current="location"
-                data-pending-href="de-tai-cua-toi-sinh-vien.html"
-              >
-                Đề tài của tôi (đang cập nhật)
-              </span>
+              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html" aria-current="location">Đề tài của tôi</a>
             </li>
-
             <li class="main-nav__item">
-              <a class="main-nav__link" href="lich-han-nop.html">
-                Lịch hạn nộp
-              </a>
+              <a class="main-nav__link" href="lich-han-nop.html">Lịch hạn nộp</a>
             </li>
-
             <li class="main-nav__item">
-              <!-- Mục Chung với hai danh mục con Liên hệ và Thông báo -->
               <details class="main-nav__disclosure">
-                <summary class="main-nav__toggle">Chung</summary>
-                <ul class="main-nav__sublist">
-                  <li>
-                    <span data-pending-href="../chung/lien-he.html"
-                      >Liên hệ (đang cập nhật)</span
-                    >
-                  </li>
-                  <li>
-                    <span data-pending-href="../chung/thong-bao.html"
-                      >Thông báo (đang cập nhật)</span
-                    >
-                  </li>
+                <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
+                <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
+                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/gioi-thieu.html" aria-disabled="true">Giới thiệu (đang cập nhật)</span></li>
+                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/thong-bao.html" aria-disabled="true">Thông báo (đang cập nhật)</span></li>
+                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/lien-he.html" aria-disabled="true">Liên hệ (đang cập nhật)</span></li>
                 </ul>
               </details>
             </li>
           </ul>
         </nav>
-
-        <!-- Tài khoản -->
+        <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
         <div class="account-menu">
           <details class="account-menu__disclosure">
-            <summary
-              class="account-menu__toggle"
-              aria-label="Mở menu tài khoản sinh viên"
-            >
+            <summary class="account-menu__toggle" aria-label="Mở menu tài khoản sinh viên">
               <span class="account-menu__avatar" aria-hidden="true">SV</span>
               <span class="account-menu__label">Tài khoản sinh viên</span>
             </summary>
             <ul id="account-dropdown" class="account-menu__list">
               <li>
-                <span
-                  class="account-menu__profile"
-                  data-pending-href="ho-so-ca-nhan.html"
-                >
-                  Hồ sơ cá nhân (đang cập nhật)
-                </span>
+                <a class="account-menu__profile" href="ho-so-ca-nhan.html">Hồ sơ cá nhân</a>
               </li>
               <li>
                 <button
@@ -133,14 +98,10 @@
               <a href="tong-quan-sinh-vien.html">Sinh viên</a>
             </li>
             <li class="breadcrumb__item">
-              <span data-pending-href="de-tai-cua-toi-sinh-vien.html"
-                >Đề tài của tôi (đang cập nhật)</span
-              >
+              <a href="de-tai-cua-toi-sinh-vien.html">Đề tài của tôi</a>
             </li>
             <li class="breadcrumb__item">
-              <span data-pending-href="chi-tiet-de-tai-cua-toi-sinh-vien.html"
-                >Chi tiết đề tài (đang cập nhật)</span
-              >
+              <a href="chi-tiet-de-tai-tong-quan.html">Chi tiết đề tài</a>
             </li>
             <li class="breadcrumb__item">
               <span aria-current="page">Tiến độ</span>
@@ -150,12 +111,7 @@
 
         <!-- Quay lại -->
         <p class="back-navigation">
-          <span
-            class="back-link"
-            data-pending-href="de-tai-cua-toi-sinh-vien.html"
-          >
-            ← Quay lại Đề tài của tôi (đang cập nhật)
-          </span>
+          <a class="back-link" href="de-tai-cua-toi-sinh-vien.html">← Quay lại Đề tài của tôi</a>
         </p>
 
         <!-- Tiêu đề trang và thanh thông tin đề tài -->
@@ -174,9 +130,7 @@
         <nav class="detail-tabs-nav" aria-label="Các mục chi tiết đề tài">
           <ul class="detail-tabs-list">
             <li class="detail-tabs-item">
-              <span data-pending-href="chi-tiet-de-tai-tong-quan.html"
-                >Tổng quan (đang cập nhật)</span
-              >
+              <a class="detail-tabs-link" href="chi-tiet-de-tai-tong-quan.html">Tổng quan</a>
             </li>
             <li class="detail-tabs-item">
               <span class="detail-tabs-link--active" aria-current="page"
@@ -184,15 +138,10 @@
               >
             </li>
             <li class="detail-tabs-item">
-              <span data-pending-href="chi-tiet-de-tai-bai-nop.html"
-                >Bài nộp (đang cập nhật)</span
-              >
+              <a class="detail-tabs-link" href="chi-tiet-de-tai-bai-nop.html">Bài nộp</a>
             </li>
             <li class="detail-tabs-item">
-              <span
-                data-pending-href="chi-tiet-de-tai-ket-qua-danh-gia.html"
-                >Kết quả đánh giá (đang cập nhật)</span
-              >
+              <a class="detail-tabs-link" href="chi-tiet-de-tai-ket-qua-danh-gia.html">Kết quả đánh giá</a>
             </li>
           </ul>
         </nav>

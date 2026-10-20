@@ -12,9 +12,8 @@
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-brand" href="tong-quan-sinh-vien.html">
-          <!-- Chưa có tài nguyên logo trong dự án; tạm dùng logo chữ. -->
-          <span class="site-brand__logo" aria-hidden="true">QLĐA</span>
-          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</span>
+          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
+          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
         </a>
         <nav class="main-nav" aria-label="Điều hướng sinh viên">
           <ul class="main-nav__list">
@@ -31,20 +30,54 @@
               <a class="main-nav__link" href="lich-han-nop.html">Lịch hạn nộp</a>
             </li>
             <li class="main-nav__item">
-              <!-- Liên kết tạm: trang Chung chưa có trong dự án. -->
-              <a class="main-nav__link" href="#">Chung</a>
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
+                <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
+                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/gioi-thieu.html" aria-disabled="true">Giới thiệu (đang cập nhật)</span></li>
+                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/thong-bao.html" aria-disabled="true">Thông báo (đang cập nhật)</span></li>
+                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/lien-he.html" aria-disabled="true">Liên hệ (đang cập nhật)</span></li>
+                </ul>
+              </details>
             </li>
           </ul>
         </nav>
+        <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
         <div class="account-menu">
-          <!-- Nút minh họa, chưa triển khai menu tài khoản. -->
-          <button class="account-menu__toggle" type="button">
-            <span class="account-menu__avatar" aria-hidden="true">SV</span>
-            <span class="account-menu__label">Tài khoản sinh viên</span>
-          </button>
+          <details class="account-menu__disclosure">
+            <summary class="account-menu__toggle" aria-label="Mở menu tài khoản sinh viên">
+              <span class="account-menu__avatar" aria-hidden="true">SV</span>
+              <span class="account-menu__label">Tài khoản sinh viên</span>
+            </summary>
+            <ul id="account-dropdown" class="account-menu__list">
+              <li>
+                <a class="account-menu__profile" href="ho-so-ca-nhan.html">Hồ sơ cá nhân</a>
+              </li>
+              <li>
+                <button
+                  class="account-menu__logout"
+                  type="button"
+                  aria-controls="logout-dialog"
+                  aria-describedby="logout-notice"
+                  disabled
+                >
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
         </div>
       </div>
     </header>
+
+    <dialog id="logout-dialog" class="confirmation-dialog" aria-labelledby="logout-title">
+      <h2 id="logout-title">Xác nhận đăng xuất</h2>
+      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+      <form method="dialog">
+        <button type="submit" value="cancel">Hủy</button>
+        <button type="button" disabled>Xác nhận đăng xuất</button>
+      </form>
+    </dialog>
 
     <main id="main-content" class="main-content" tabindex="-1">
       <div class="page-container">
