@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đề xuất đề tài | Quản lý đồ án</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-sinh-vien.html">
+          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
+          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
+        </a>
+        <nav class="main-nav" aria-label="Điều hướng sinh viên">
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html">Tổng quan</a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="dang-ky-de-tai.html" aria-current="page">Đăng ký đề tài</a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html">Đề tài của tôi</a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="lich-han-nop.html">Lịch hạn nộp</a>
+            </li>
+            <li class="main-nav__item">
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
+                <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
+                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/gioi-thieu.html" aria-disabled="true">Giới thiệu (đang cập nhật)</span></li>
+                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/thong-bao.html" aria-disabled="true">Thông báo (đang cập nhật)</span></li>
+                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/lien-he.html" aria-disabled="true">Liên hệ (đang cập nhật)</span></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </nav>
+        <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
+        <div class="account-menu">
+          <details class="account-menu__disclosure">
+            <summary class="account-menu__toggle" aria-label="Mở menu tài khoản sinh viên">
+              <span class="account-menu__avatar" aria-hidden="true">SV</span>
+              <span class="account-menu__label">Tài khoản sinh viên</span>
+            </summary>
+            <ul id="account-dropdown" class="account-menu__list">
+              <li>
+                <a class="account-menu__profile" href="ho-so-ca-nhan.html">Hồ sơ cá nhân</a>
+              </li>
+              <li>
+                <button
+                  class="account-menu__logout"
+                  type="button"
+                  aria-controls="logout-dialog"
+                  aria-describedby="logout-notice"
+                  disabled
+                >
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="main-content" tabindex="-1">
+      <div class="page-container">
+        <nav class="breadcrumb" aria-label="Đường dẫn">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item"><a href="tong-quan-sinh-vien.html">Sinh viên</a></li>
+            <li class="breadcrumb__item"><a href="dang-ky-de-tai.html">Đăng ký đề tài</a></li>
+            <li class="breadcrumb__item"><span aria-current="page">Đề xuất đề tài</span></li>
+          </ol>
+        </nav>
+        <a class="page-back-link" href="dang-ky-de-tai.html">← Quay lại danh sách</a>
+        <header class="page-header">
+          <h1 id="proposal-title" class="page-header__title">Đề xuất đề tài</h1>
+          <p class="page-header__description">Điền thông tin bên dưới để gửi đề xuất đề tài đến giảng viên.</p>
+        </header>
+
+        <div class="page-content proposal-layout">
+          <!-- Khung HTML: bổ sung xử lý gửi, kiểm tra giảng viên và dữ liệu danh mục sau. -->
+          <form id="proposal-form" class="proposal-form" aria-labelledby="proposal-title" aria-describedby="proposal-required-note">
+            <fieldset class="proposal-form__section">
+              <legend>Thông tin đề tài</legend>
+              <div class="proposal-form__field">
+                <label for="topic-name">Tên đề tài *</label>
+                <input id="topic-name" name="ten-de-tai" type="text" required />
+              </div>
+              <div class="proposal-form__field">
+                <label for="topic-type">Loại đề tài *</label>
+                <select id="topic-type" name="loai-de-tai" required>
+                  <option value="" selected disabled>Chọn loại đề tài</option>
+                  <option value="do-an-mon-hoc">Đồ án môn học</option>
+                  <option value="khoa-luan">Khóa luận tốt nghiệp</option>
+                </select>
+              </div>
+              <div class="proposal-form__field">
+                <label for="course">Môn học *</label>
+                <select id="course" name="mon-hoc" required>
+                  <option value="" selected disabled>Chọn môn học</option>
+                </select>
+              </div>
+              <div class="proposal-form__field">
+                <label for="semester">Học kỳ *</label>
+                <select id="semester" name="hoc-ky" required>
+                  <option value="" selected disabled>Chọn học kỳ</option>
+                  <option value="1">Học kỳ 1</option>
+                  <option value="2">Học kỳ 2</option>
+                  <option value="he">Học kỳ hè</option>
+                </select>
+              </div>
+              <div class="proposal-form__field">
+                <label for="academic-year">Năm học *</label>
+                <select id="academic-year" name="nam-hoc" required>
+                  <option value="" selected disabled>Chọn năm học</option>
+                </select>
+              </div>
+              <!-- Danh mục môn học và năm học sẽ được bổ sung khi tích hợp dữ liệu. -->
+            </fieldset>
+
+            <fieldset class="proposal-form__section">
+              <legend>Nội dung đề xuất</legend>
+              <div class="proposal-form__field">
+                <label for="topic-description">Mô tả đề tài *</label>
+                <textarea id="topic-description" name="mo-ta-de-tai" rows="5" required></textarea>
+              </div>
+              <div class="proposal-form__field">
+                <label for="topic-objectives">Mục tiêu *</label>
+                <textarea id="topic-objectives" name="muc-tieu" rows="4" required></textarea>
+              </div>
+              <div class="proposal-form__field">
+                <label for="expected-results">Kết quả dự kiến *</label>
+                <textarea id="expected-results" name="ket-qua-du-kien" rows="4" required></textarea>
+              </div>
+            </fieldset>
+
+            <fieldset class="proposal-form__section">
+              <legend>Thông tin hướng dẫn</legend>
+              <div class="proposal-form__field">
+                <label for="add-supervisor">Giảng viên hướng dẫn chính *</label>
+                <button id="add-supervisor" class="proposal-form__add-supervisor" type="button" aria-haspopup="dialog" aria-controls="supervisor-dialog" aria-describedby="selected-supervisor">+ Thêm giảng viên</button>
+                <p id="selected-supervisor" class="proposal-form__selected-supervisor" aria-live="polite">Chưa chọn giảng viên</p>
+                <input id="supervisor-id" name="ma-giang-vien" type="hidden" value="" />
+              </div>
+              <div class="proposal-form__field">
+                <label for="proposal-attachment">Tài liệu đính kèm</label>
+                <input id="proposal-attachment" name="tai-lieu-dinh-kem" type="file" aria-describedby="attachment-note" />
+                <p id="attachment-note">Đề cương hoặc tài liệu mô tả ý tưởng (nếu có)</p>
+              </div>
+            </fieldset>
+
+            <div class="proposal-form__footer">
+              <p id="proposal-required-note">* Thông tin bắt buộc</p>
+              <div class="proposal-form__actions">
+                <a class="proposal-form__cancel" href="dang-ky-de-tai.html">Hủy</a>
+                <button class="proposal-form__submit" type="submit">Gửi đề xuất</button>
+              </div>
+            </div>
+          </form>
+
+          <aside class="proposal-notes" aria-labelledby="proposal-notes-title">
+            <h2 id="proposal-notes-title">Lưu ý khi đề xuất</h2>
+            <ol class="proposal-notes__list">
+              <li>
+                <h3>Chọn giảng viên phù hợp lĩnh vực</h3>
+                <p>Giảng viên sẽ nhận đề xuất và có thể chấp nhận hoặc từ chối. Có thể đính kèm đề cương nếu đã có.</p>
+              </li>
+              <li>
+                <h3>Liên hệ giảng viên trước khi gửi</h3>
+                <p>Hãy gửi email cho giảng viên hướng dẫn và nhận được sự đồng ý trước khi gửi đề xuất.</p>
+              </li>
+              <li>
+                <h3>Tên đề tài rõ ràng, ngắn gọn</h3>
+                <p>Nêu được đối tượng và vấn đề cần giải quyết, tránh viết quá chung chung.</p>
+              </li>
+              <li>
+                <h3>Theo dõi kết quả trong “Đề tài của tôi”</h3>
+                <p>Sau khi gửi, bạn sẽ nhận thông báo khi giảng viên phản hồi. Chưa được duyệt thì chưa thể bắt đầu thực hiện đề tài.</p>
+              </li>
+            </ol>
+          </aside>
+        </div>
+      </div>
+    </main>
+    <!-- CHÂN TRANG CHUNG -->
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN</p>
+          <p>Trường Đại học Công nghệ Thông tin</p>
+        </div>
+        <ul aria-label="Thông tin và quy định" class="site-footer__information">
+          <li><span>Điều khoản sử dụng (đang cập nhật)</span></li>
+          <li><span>Quy chế đồ án / khóa luận (đang cập nhật)</span></li>
+          <li><span>Chính sách bảo mật (đang cập nhật)</span></li>
+        </ul>
+        <p class="site-footer__copyright">
+          © 2026 · Hệ thống quản lý đồ án / khóa luận
+        </p>
+      </div>
+    </footer>
+
+    <!-- Chưa có xử lý mở/đóng, tìm kiếm hoặc xác nhận lựa chọn. -->
+    <dialog id="supervisor-dialog" class="supervisor-dialog" aria-labelledby="supervisor-dialog-title" aria-describedby="supervisor-dialog-description">
+      <header class="supervisor-dialog__header">
+        <h2 id="supervisor-dialog-title">Chọn giảng viên hướng dẫn chính</h2>
+        <button id="close-supervisor-dialog" class="supervisor-dialog__close" type="button" aria-label="Đóng hộp thoại chọn giảng viên">×</button>
+      </header>
+      <p id="supervisor-dialog-description">Tìm kiếm và chọn một giảng viên để gửi đề xuất đề tài.</p>
+      <div class="supervisor-dialog__search">
+        <label for="supervisor-search">Tìm kiếm giảng viên</label>
+        <input id="supervisor-search" name="tim-giang-vien" type="search" placeholder="Tìm kiếm tên giảng viên..." />
+      </div>
+      <fieldset class="supervisor-dialog__choices">
+        <legend>Chọn 1 giảng viên</legend>
+        <div class="supervisor-dialog__list">
+          <label class="supervisor-dialog__option" for="supervisor-option-1">
+            <input id="supervisor-option-1" name="giang-vien-huong-dan" type="radio" value="placeholder-1" />
+            <span class="supervisor-dialog__lecturer">
+              <span class="supervisor-dialog__name">Tên giảng viên</span>
+              <span class="supervisor-dialog__specialty">Lĩnh vực chuyên môn</span>
+            </span>
+          </label>
+          <label class="supervisor-dialog__option" for="supervisor-option-2">
+            <input id="supervisor-option-2" name="giang-vien-huong-dan" type="radio" value="placeholder-2" />
+            <span class="supervisor-dialog__lecturer">
+              <span class="supervisor-dialog__name">Tên giảng viên</span>
+              <span class="supervisor-dialog__specialty">Lĩnh vực chuyên môn</span>
+            </span>
+          </label>
+          <label class="supervisor-dialog__option" for="supervisor-option-3">
+            <input id="supervisor-option-3" name="giang-vien-huong-dan" type="radio" value="placeholder-3" />
+            <span class="supervisor-dialog__lecturer">
+              <span class="supervisor-dialog__name">Tên giảng viên</span>
+              <span class="supervisor-dialog__specialty">Lĩnh vực chuyên môn</span>
+            </span>
+          </label>
+          <label class="supervisor-dialog__option" for="supervisor-option-4">
+            <input id="supervisor-option-4" name="giang-vien-huong-dan" type="radio" value="placeholder-4" />
+            <span class="supervisor-dialog__lecturer">
+              <span class="supervisor-dialog__name">Tên giảng viên</span>
+              <span class="supervisor-dialog__specialty">Lĩnh vực chuyên môn</span>
+            </span>
+          </label>
+        </div>
+      </fieldset>
+      <p class="supervisor-dialog__note">Giảng viên chính thức được xác nhận sau khi chấp nhận yêu cầu.</p>
+      <footer class="supervisor-dialog__footer">
+        <p id="supervisor-selection-status" aria-live="polite">Chưa chọn giảng viên</p>
+        <div class="supervisor-dialog__actions">
+          <button id="cancel-supervisor-selection" type="button">Hủy</button>
+          <button id="confirm-supervisor-selection" type="button" disabled>Xác nhận</button>
+        </div>
+      </footer>
+    </dialog>
+
+    <!-- Hộp thoại tài khoản dùng chung với header sinh viên. -->
+    <dialog id="logout-dialog" class="confirmation-dialog" aria-labelledby="logout-title">
+      <h2 id="logout-title">Xác nhận đăng xuất</h2>
+      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+      <button type="button">Hủy</button>
+      <button type="button" disabled>Xác nhận đăng xuất</button>
+    </dialog>
+  </body>
+</html>
