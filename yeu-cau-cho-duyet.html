@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Xem và xử lý các đề xuất đề tài do sinh viên gửi." />
+    <title>Yêu cầu chờ duyệt | Quản lý đồ án và khóa luận tốt nghiệp</title>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+
+    <!-- ĐẦU TRANG -->
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-giang-vien.html">
+          <!-- Chưa có tài nguyên logo trong dự án; thay placeholder khi có ảnh. -->
+          <span class="site-brand__logo-placeholder" aria-hidden="true">Logo</span>
+          <span class="site-brand__name">
+            QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP
+          </span>
+        </a>
+
+        <!-- Điều hướng chính dành cho giảng viên. data-pending-href lưu đường dẫn chưa có trang đích. -->
+        <nav class="main-nav" aria-label="Điều hướng giảng viên">
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-giang-vien.html">
+                Tổng quan
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <span class="main-nav__link" data-pending-href="quan-ly-de-tai.html">
+                Quản lý đề tài
+              </span>
+            </li>
+
+            <li class="main-nav__item">
+              <!-- Liên kết tới trang Yêu cầu chờ duyệt. -->
+              <a class="main-nav__link" href="yeu-cau-cho-duyet.html" aria-current="page">
+                Yêu cầu chờ duyệt
+              </a>
+            </li>
+
+            <li class="main-nav__item">
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__label" id="common-navigation-label">
+                  Chung
+                </summary>
+                <ul
+                  class="main-nav__sublist"
+                  aria-labelledby="common-navigation-label"
+                >
+                  <li class="main-nav__subitem">
+                    <span class="main-nav__link" data-pending-href="gioi-thieu.html">Giới thiệu (đang cập nhật)</span>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <span class="main-nav__link" data-pending-href="thong-bao.html">Thông báo (đang cập nhật)</span>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <span class="main-nav__link" data-pending-href="lien-he.html">Liên hệ (đang cập nhật)</span>
+                  </li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Tài khoản -->
+        <div class="account-menu">
+          <details class="account-menu__disclosure">
+            <summary
+              class="account-menu__toggle"
+              aria-label="Mở menu tài khoản giảng viên"
+            >
+              <span class="account-menu__avatar" aria-hidden="true">GV</span>
+              <span class="account-menu__label">Tài khoản giảng viên</span>
+            </summary>
+            <ul id="account-dropdown" class="account-menu__list">
+              <li>
+                <a
+                  class="account-menu__profile"
+                  href="ho-so-ca-nhan-giang-vien.html"
+                  >Hồ sơ cá nhân</a
+                >
+              </li>
+              <li>
+                <button
+                  class="account-menu__logout"
+                  type="button"
+                  aria-controls="logout-dialog"
+                  aria-describedby="logout-notice"
+                  disabled
+                >
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
+        </div>
+      </div>
+    </header>
+    <dialog
+      id="logout-dialog"
+      class="confirmation-dialog"
+      aria-labelledby="logout-title"
+    >
+      <h2 id="logout-title">Xác nhận đăng xuất</h2>
+      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+      <form method="dialog">
+        <button type="submit" value="cancel">Hủy</button>
+        <button type="button" disabled>Xác nhận đăng xuất</button>
+      </form>
+    </dialog>
+
+    <!-- NỘI DUNG TRANG YÊU CẦU CHỜ DUYỆT -->
+    <main id="main-content" class="main-content" tabindex="-1">
+      <div class="page-container">
+        <nav class="breadcrumb" aria-label="Đường dẫn">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item">
+              <a href="tong-quan-giang-vien.html">Giảng viên</a>
+            </li>
+            <li class="breadcrumb__item">
+              <span aria-current="page">Yêu cầu chờ duyệt</span>
+            </li>
+          </ol>
+        </nav>
+
+        <header class="page-header">
+          <h1 class="page-header__title">Yêu cầu chờ duyệt</h1>
+          <p class="page-header__description">
+            Xem và xử lý các đề xuất đề tài do sinh viên gửi.
+          </p>
+        </header>
+
+        <!-- Hai khu vực bộ lọc và danh sách được chuẩn bị để đặt cạnh nhau bằng CSS. -->
+        <div class="page-content pending-proposals-layout">
+          <aside class="proposal-filters" aria-labelledby="proposal-filters-title">
+            <h2 id="proposal-filters-title">Bộ lọc</h2>
+            <!-- Form chỉ chứa lựa chọn HTML; chưa lọc dữ liệu danh sách. -->
+            <form id="proposal-filter-form" class="proposal-filters__form">
+              <fieldset class="proposal-filters__group">
+                <legend>Vai trò trong đề tài</legend>
+                <div class="proposal-filters__option">
+                  <input type="checkbox" id="role-primary" name="supervision_role" value="huong-dan-chinh" />
+                  <label for="role-primary">Hướng dẫn chính</label>
+                </div>
+                <div class="proposal-filters__option">
+                  <input type="checkbox" id="role-secondary" name="supervision_role" value="dong-huong-dan" />
+                  <label for="role-secondary">Đồng hướng dẫn</label>
+                </div>
+              </fieldset>
+
+              <fieldset class="proposal-filters__group">
+                <legend>Loại đề tài</legend>
+                <div class="proposal-filters__option">
+                  <input type="checkbox" id="type-course-project" name="topic_type" value="do-an-mon-hoc" />
+                  <label for="type-course-project">Đồ án môn học</label>
+                </div>
+                <div class="proposal-filters__option">
+                  <input type="checkbox" id="type-graduation-project" name="topic_type" value="do-an-tot-nghiep" />
+                  <label for="type-graduation-project">Đồ án tốt nghiệp</label>
+                </div>
+                <div class="proposal-filters__option">
+                  <input type="checkbox" id="type-thesis" name="topic_type" value="khoa-luan" />
+                  <label for="type-thesis">Khóa luận</label>
+                </div>
+              </fieldset>
+
+              <fieldset class="proposal-filters__group">
+                <legend>Môn học</legend>
+                <div class="proposal-filters__option">
+                  <input type="checkbox" id="course-web" name="course" value="internet-va-cong-nghe-web" />
+                  <label for="course-web">Internet và công nghệ Web</label>
+                </div>
+                <div class="proposal-filters__option">
+                  <input type="checkbox" id="course-database" name="course" value="co-so-du-lieu" />
+                  <label for="course-database">Cơ sở dữ liệu</label>
+                </div>
+                <div class="proposal-filters__option">
+                  <input type="checkbox" id="course-software" name="course" value="cong-nghe-phan-mem" />
+                  <label for="course-software">Công nghệ phần mềm</label>
+                </div>
+              </fieldset>
+
+              <!-- Reset HTML chỉ bỏ các lựa chọn trong form, không xử lý danh sách. -->
+              <button class="proposal-filters__reset" type="reset">Xóa bộ lọc</button>
+            </form>
+          </aside>
+
+          <section class="pending-proposals" aria-labelledby="pending-proposals-title">
+            <!-- Hai nhóm tìm kiếm và sắp xếp dùng chung toolbar để CSS đặt cùng hàng. -->
+            <div class="proposal-toolbar">
+              <div class="proposal-toolbar__search">
+                <label for="proposal-search">Tìm kiếm đề xuất</label>
+                <input
+                  type="search"
+                  id="proposal-search"
+                  name="proposal_search"
+                  placeholder="Tìm theo tên đề tài, họ tên hoặc MSSV"
+                />
+              </div>
+              <div class="proposal-toolbar__sort">
+                <label for="proposal-sort">Sắp xếp</label>
+                <select id="proposal-sort" name="proposal_sort">
+                  <option value="newest">Mới nhất</option>
+                  <option value="oldest" selected>Cũ nhất</option>
+                  <option value="name-asc">Tên A–Z</option>
+                </select>
+              </div>
+            </div>
+
+            <h2 id="pending-proposals-title">Danh sách đề xuất chờ duyệt</h2>
+            <!--
+              Chưa có trang chi tiết giảng viên cho ba đề xuất mẫu dưới đây.
+              Các thẻ a chưa có href và đang aria-disabled để không mở đường dẫn lỗi.
+              Khi có trang đích, thay data-pending-href bằng href đúng của từng đề xuất,
+              đồng thời bỏ aria-disabled và aria-describedby về ghi chú đường dẫn.
+            -->
+            <div class="proposal-list">
+              <article class="proposal-card" aria-labelledby="proposal-library-title">
+                <div class="proposal-card__media">
+                  <div class="proposal-card__image-placeholder" role="img" aria-label="Chưa có ảnh minh họa Website quản lý thư viện">
+                    <span aria-hidden="true">Ảnh minh họa</span>
+                  </div>
+                </div>
+                <div class="proposal-card__content">
+                  <h3 id="proposal-library-title" class="proposal-card__title">Website quản lý thư viện</h3>
+                  <p class="proposal-card__type">Loại đề tài: Đồ án môn học</p>
+                  <p class="proposal-card__course">Môn học: Internet và công nghệ Web</p>
+                  <p class="proposal-card__student">Sinh viên: Nguyễn Văn A · 22520001</p>
+                  <p class="proposal-card__role">Vai trò của tôi: Hướng dẫn chính</p>
+                </div>
+                <div class="proposal-card__actions">
+                  <p class="proposal-card__status">Chờ duyệt</p>
+                  <!-- Đường dẫn dự kiến cần bổ sung cho đề xuất Website quản lý thư viện. -->
+                  <a class="proposal-card__detail-link" role="link" aria-disabled="true"
+                    aria-describedby="proposal-detail-notice"
+                    data-pending-href="chi-tiet-de-xuat-giang-vien.html#website-quan-ly-thu-vien">Xem đề xuất <span aria-hidden="true">→</span></a>
+                </div>
+              </article>
+
+              <article class="proposal-card" aria-labelledby="proposal-expenses-title">
+                <div class="proposal-card__media">
+                  <div class="proposal-card__image-placeholder" role="img" aria-label="Chưa có ảnh minh họa Ứng dụng quản lý chi tiêu">
+                    <span aria-hidden="true">Ảnh minh họa</span>
+                  </div>
+                </div>
+                <div class="proposal-card__content">
+                  <h3 id="proposal-expenses-title" class="proposal-card__title">Ứng dụng quản lý chi tiêu</h3>
+                  <p class="proposal-card__type">Loại đề tài: Đồ án môn học</p>
+                  <p class="proposal-card__course">Môn học: Cơ sở dữ liệu</p>
+                  <p class="proposal-card__student">Sinh viên: Trần Thị B · 22520002</p>
+                  <p class="proposal-card__role">Vai trò của tôi: Đồng hướng dẫn</p>
+                </div>
+                <div class="proposal-card__actions">
+                  <p class="proposal-card__status">Chờ duyệt</p>
+                  <!-- Đường dẫn dự kiến cần bổ sung cho đề xuất Ứng dụng quản lý chi tiêu. -->
+                  <a class="proposal-card__detail-link" role="link" aria-disabled="true"
+                    aria-describedby="proposal-detail-notice"
+                    data-pending-href="chi-tiet-de-xuat-giang-vien.html#ung-dung-quan-ly-chi-tieu">Xem đề xuất <span aria-hidden="true">→</span></a>
+                </div>
+              </article>
+
+              <article class="proposal-card" aria-labelledby="proposal-movies-title">
+                <div class="proposal-card__media">
+                  <div class="proposal-card__image-placeholder" role="img" aria-label="Chưa có ảnh minh họa Hệ thống gợi ý phim">
+                    <span aria-hidden="true">Ảnh minh họa</span>
+                  </div>
+                </div>
+                <div class="proposal-card__content">
+                  <h3 id="proposal-movies-title" class="proposal-card__title">Hệ thống gợi ý phim</h3>
+                  <p class="proposal-card__type">Loại đề tài: Khóa luận</p>
+                  <p class="proposal-card__student">Sinh viên: Lê Văn C · 22520003</p>
+                  <p class="proposal-card__role">Vai trò của tôi: Hướng dẫn chính</p>
+                </div>
+                <div class="proposal-card__actions">
+                  <p class="proposal-card__status">Chờ duyệt</p>
+                  <!-- Đường dẫn dự kiến cần bổ sung cho đề xuất Hệ thống gợi ý phim. -->
+                  <a class="proposal-card__detail-link" role="link" aria-disabled="true"
+                    aria-describedby="proposal-detail-notice"
+                    data-pending-href="chi-tiet-de-xuat-giang-vien.html#he-thong-goi-y-phim">Xem đề xuất <span aria-hidden="true">→</span></a>
+                </div>
+              </article>
+            </div>
+
+            <!-- Phân trang minh họa; chưa chuyển trang hoặc tải dữ liệu. -->
+            <nav class="pagination" aria-label="Phân trang đề xuất">
+              <ul class="pagination__list">
+                <li class="pagination__item">
+                  <button class="pagination__button" type="button" disabled>Trang trước</button>
+                </li>
+                <li class="pagination__item">
+                  <span class="pagination__current" aria-current="page" aria-label="Trang 1">1</span>
+                </li>
+                <li class="pagination__item">
+                  <button class="pagination__button" type="button" aria-label="Trang 2" disabled>2</button>
+                </li>
+                <li class="pagination__item">
+                  <button class="pagination__button" type="button" aria-label="Trang 3" disabled>3</button>
+                </li>
+                <li class="pagination__item">
+                  <button class="pagination__button" type="button" disabled>Trang sau</button>
+                </li>
+              </ul>
+            </nav>
+            <p id="proposal-detail-notice" class="pending-proposals__notice">
+              Trang chi tiết đề xuất đang được xây dựng; liên kết Xem đề xuất chưa hoạt động.
+            </p>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <!-- CHÂN TRANG CHUNG -->
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__columns">
+          <div class="site-footer__brand">
+            <p class="site-footer__name">
+              QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP
+            </p>
+            <dl class="site-footer__about">
+              <div>
+                <dt>Thông tin trang web</dt>
+                <dd>Trường Đại học Công nghệ Thông tin</dd>
+              </div>
+              <div>
+                <dt>Thông tin nhóm</dt>
+                <dd>Đồ án IE104 — Nhóm 7</dd>
+              </div>
+            </dl>
+          </div>
+
+          <section
+            class="site-footer__information site-footer__terms"
+            aria-labelledby="footer-terms-title"
+          >
+            <h2 id="footer-terms-title">Điều khoản sử dụng</h2>
+            <p>Đang cập nhật.</p>
+          </section>
+
+          <section
+            class="site-footer__information site-footer__policies"
+            aria-labelledby="footer-policies-title"
+          >
+            <h2 id="footer-policies-title">Quy chế, chính sách bảo mật</h2>
+            <p>Đang cập nhật.</p>
+          </section>
+        </div>
+        <p class="site-footer__copyright">
+          Copyright © 2026 · Quản lý đồ án và khóa luận tốt nghiệp
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
