@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Xem thông tin yêu cầu đăng ký hoặc đề xuất và chuẩn bị phản hồi cho sinh viên."
+    />
+    <title>Chi tiết yêu cầu | Quản lý đồ án</title>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
+
+    <!-- ĐẦU TRANG -->
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-giang-vien.html">
+          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
+          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
+        </a>
+        <nav class="main-nav" aria-label="Điều hướng giảng viên">
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-giang-vien.html">Tổng quan</a>
+            </li>
+            <li class="main-nav__item">
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__label" id="topic-management-label">Quản lý đề tài</summary>
+                <ul class="main-nav__sublist" aria-labelledby="topic-management-label">
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="danh-sach-de-tai-dang-huong-dan.html">Đề tài đang hướng dẫn</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="danh-sach-de-tai-da-tao.html">Đề tài đã tạo</a></li>
+                </ul>
+              </details>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="yeu-cau-cho-duyet.html" aria-current="location">Yêu cầu chờ duyệt</a>
+            </li>
+            <li class="main-nav__item">
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
+                <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </nav>
+        <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
+        <div class="account-menu">
+          <details class="account-menu__disclosure">
+            <summary class="account-menu__toggle" aria-label="Mở menu tài khoản giảng viên">
+              <span class="account-menu__avatar" aria-hidden="true">GV</span>
+              <span class="account-menu__label">Tài khoản giảng viên</span>
+            </summary>
+            <ul id="account-dropdown" class="account-menu__list">
+              <li>
+                <a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
+              </li>
+              <li>
+                <button
+                  class="account-menu__logout"
+                  type="button"
+                  aria-controls="logout-dialog"
+                  aria-describedby="logout-notice"
+                  disabled
+                >
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
+        </div>
+      </div>
+    </header>
+    <dialog
+      id="logout-dialog"
+      class="confirmation-dialog"
+      aria-labelledby="logout-title"
+    >
+      <h2 id="logout-title">Xác nhận đăng xuất</h2>
+      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+      <form method="dialog">
+        <button type="submit" value="cancel">Hủy</button>
+        <button type="button" disabled>Xác nhận đăng xuất</button>
+      </form>
+    </dialog>
+
+    <main id="main-content" class="main-content" tabindex="-1">
+      <div class="page-container">
+        <nav class="breadcrumb" aria-label="Đường dẫn">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item"><a href="tong-quan-giang-vien.html">Giảng viên</a></li>
+            <li class="breadcrumb__item"><a href="yeu-cau-cho-duyet.html">Yêu cầu chờ duyệt</a></li>
+            <li class="breadcrumb__item"><span aria-current="page">Chi tiết yêu cầu</span></li>
+          </ol>
+        </nav>
+        <p class="page-back"><a href="yeu-cau-cho-duyet.html"><span aria-hidden="true">←</span> Quay lại danh sách</a></p>
+        <header class="page-header"><h1 class="page-header__title">Chi tiết yêu cầu</h1></header>
+        <!-- Figma 541:1694. Các yêu cầu mẫu dùng chung khung; không có xử lý duyệt hoặc lưu phản hồi. -->
+        <div class="page-content">
+          <details class="request-example">
+            <summary>Đăng ký đề tài DK001 — Website quản lý thư viện</summary>
+          <article id="dk001" class="request-detail" aria-labelledby="dk001-title" tabindex="-1" data-request-id="DK001" data-request-type="dang-ky" data-request-status="cho-duyet">
+            <header class="request-detail__header">
+              <h2 id="dk001-title">Đăng ký đề tài DK001 — Website quản lý thư viện</h2>
+              <p>Đăng ký đề tài · Nguyễn Minh Anh · Gửi ngày <time datetime="2026-10-12">12/10/2026</time></p>
+              <p class="status-badge status-badge--pending">Chờ duyệt</p>
+            </header>
+            <div class="request-detail__layout">
+              <div class="request-detail__body">
+                <section class="request-detail__section" aria-labelledby="dk001-student-title">
+                  <h3 id="dk001-student-title">Thông tin sinh viên</h3>
+                  <p class="request-detail__student-name">Nguyễn Minh Anh</p>
+                  <p>Sinh viên gửi yêu cầu</p>
+                  <dl class="request-detail__student-meta">
+                    <div><dt>Mã sinh viên</dt><dd>24520001</dd></div>
+                    <div><dt>Lớp / Khóa</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Email liên hệ</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Nhóm</dt><dd>Nhóm Web UIT · 3 thành viên</dd></div>
+                    <div><dt>Thành viên khác</dt><dd>Chưa có thông tin</dd></div>
+                  </dl>
+                </section>
+                <section class="request-detail__section" aria-labelledby="dk001-topic-title">
+                  <h3 id="dk001-topic-title">Thông tin đề tài</h3>
+                  <h4>Website quản lý thư viện</h4>
+                  <dl class="request-detail__topic-meta">
+                    <div><dt>Mã đề tài</dt><dd>DT001</dd></div>
+                    <div><dt>Loại đề tài</dt><dd>Đồ án môn học</dd></div>
+                    <div><dt>Môn học</dt><dd>Internet và công nghệ Web</dd></div>
+                    <div><dt>Lĩnh vực</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Năm học</dt><dd>2026–2027</dd></div>
+                  </dl>
+                  <section class="request-detail__description" aria-labelledby="dk001-description-title">
+                    <h4 id="dk001-description-title">Mô tả và mục tiêu dự kiến</h4>
+                    <p>Nội dung mô tả và mục tiêu của đề tài sẽ hiển thị tại đây.</p>
+                  </section>
+                </section>
+                <section class="request-detail__section" aria-labelledby="dk001-attachments-title">
+                  <h3 id="dk001-attachments-title">Tài liệu đính kèm</h3>
+                  <div class="request-detail__attachments-empty"><p>Chưa có tài liệu đính kèm</p><p>Yêu cầu này chưa có tệp để xem xét.</p><span>0 tệp</span></div>
+                </section>
+              </div>
+              <aside class="request-detail__sidebar" aria-labelledby="dk001-request-title">
+                <section class="request-detail__section">
+                  <h3 id="dk001-request-title">Thông tin yêu cầu</h3>
+                  <dl class="request-detail__request-meta">
+                    <div><dt>Trạng thái</dt><dd>Chờ duyệt</dd></div>
+                    <div><dt>Loại yêu cầu</dt><dd>Đăng ký đề tài</dd></div>
+                    <div><dt>Ngày gửi</dt><dd><time datetime="2026-10-12">12/10/2026</time></dd></div>
+                    <div><dt>Mã yêu cầu</dt><dd>DK001</dd></div>
+                    <div><dt>Người xử lý</dt><dd>Chưa có thông tin</dd></div>
+                  </dl>
+                </section>
+                <section class="request-detail__section" aria-labelledby="dk001-feedback-title">
+                  <h3 id="dk001-feedback-title">Ghi chú và phản hồi</h3>
+                  <p>Xem xét thông tin trước khi đưa ra quyết định.</p>
+                  <form class="request-feedback-form" aria-labelledby="dk001-feedback-title">
+                    <label for="dk001-feedback">Phản hồi cho sinh viên</label>
+                    <textarea id="dk001-feedback" name="feedback" rows="5" placeholder="Nhập nhận xét hoặc lý do từ chối…" aria-describedby="dk001-feedback-help"></textarea>
+                    <p id="dk001-feedback-help">Vui lòng nêu rõ lý do nếu từ chối để sinh viên có thể bổ sung hoặc điều chỉnh.</p>
+                    <p class="form-message form-message--error" id="dk001-feedback-error" role="alert" hidden>Vui lòng kiểm tra nội dung phản hồi.</p>
+                    <div class="request-feedback-form__actions">
+                      <button type="button" aria-controls="dk001-reject-dialog" disabled>Từ chối</button>
+                      <button type="button" aria-controls="dk001-approve-dialog" disabled>Phê duyệt</button>
+                    </div>
+                    <p class="request-feedback-form__status">Yêu cầu vẫn đang chờ duyệt. Chưa có phản hồi được gửi đến sinh viên.</p>
+                  </form>
+                </section>
+              </aside>
+            </div>
+            <dialog id="dk001-reject-dialog" class="confirmation-dialog" aria-labelledby="dk001-reject-title">
+              <h3 id="dk001-reject-title">Xác nhận từ chối yêu cầu</h3>
+              <p>Bạn muốn từ chối yêu cầu DK001 với phản hồi đã nhập?</p>
+              <form method="dialog"><button type="submit" value="cancel">Hủy</button><button type="button" disabled>Xác nhận từ chối</button></form>
+            </dialog>
+            <dialog id="dk001-approve-dialog" class="confirmation-dialog" aria-labelledby="dk001-approve-title">
+              <h3 id="dk001-approve-title">Xác nhận phê duyệt yêu cầu</h3>
+              <p>Bạn muốn phê duyệt yêu cầu DK001?</p>
+              <form method="dialog"><button type="submit" value="cancel">Hủy</button><button type="button" disabled>Xác nhận phê duyệt</button></form>
+            </dialog>
+          </article>
+          </details>
+          <details class="request-example">
+            <summary>Đề xuất đề tài DX001 — Cổng thông tin nghiên cứu sinh viên</summary>
+          <article id="dx001" class="request-detail" aria-labelledby="dx001-title" tabindex="-1" data-request-id="DX001" data-request-type="de-xuat" data-request-status="cho-duyet">
+            <header class="request-detail__header">
+              <h2 id="dx001-title">Đề xuất đề tài DX001 — Cổng thông tin nghiên cứu sinh viên</h2>
+              <p>Đề xuất đề tài · Nguyễn Minh Anh · Gửi ngày <time datetime="2026-10-11">11/10/2026</time></p>
+              <p class="status-badge status-badge--pending">Chờ duyệt</p>
+            </header>
+            <div class="request-detail__layout">
+              <div class="request-detail__body">
+                <section class="request-detail__section" aria-labelledby="dx001-student-title">
+                  <h3 id="dx001-student-title">Thông tin sinh viên</h3>
+                  <p class="request-detail__student-name">Nguyễn Minh Anh</p>
+                  <p>Sinh viên gửi yêu cầu</p>
+                  <dl class="request-detail__student-meta">
+                    <div><dt>Mã sinh viên</dt><dd>24520001</dd></div>
+                    <div><dt>Lớp / Khóa</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Email liên hệ</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Nhóm</dt><dd>Cá nhân</dd></div>
+                    <div><dt>Thành viên khác</dt><dd>Chưa có thông tin</dd></div>
+                  </dl>
+                </section>
+                <section class="request-detail__section" aria-labelledby="dx001-topic-title">
+                  <h3 id="dx001-topic-title">Thông tin đề tài</h3>
+                  <h4>Cổng thông tin nghiên cứu sinh viên</h4>
+                  <dl class="request-detail__topic-meta">
+                    <div><dt>Mã đề tài</dt><dd>Chưa được cấp</dd></div>
+                    <div><dt>Loại đề tài</dt><dd>Đồ án môn học</dd></div>
+                    <div><dt>Môn học</dt><dd>Internet và công nghệ Web</dd></div>
+                    <div><dt>Lĩnh vực</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Năm học</dt><dd>2026–2027</dd></div>
+                  </dl>
+                  <section class="request-detail__description" aria-labelledby="dx001-description-title">
+                    <h4 id="dx001-description-title">Mô tả và mục tiêu dự kiến</h4>
+                    <p>Nội dung mô tả và mục tiêu của đề tài sẽ hiển thị tại đây.</p>
+                  </section>
+                </section>
+                <section class="request-detail__section" aria-labelledby="dx001-attachments-title">
+                  <h3 id="dx001-attachments-title">Tài liệu đính kèm</h3>
+                  <div class="request-detail__attachments-empty"><p>Chưa có tài liệu đính kèm</p><p>Yêu cầu này chưa có tệp để xem xét.</p><span>0 tệp</span></div>
+                </section>
+              </div>
+              <aside class="request-detail__sidebar" aria-labelledby="dx001-request-title">
+                <section class="request-detail__section">
+                  <h3 id="dx001-request-title">Thông tin yêu cầu</h3>
+                  <dl class="request-detail__request-meta">
+                    <div><dt>Trạng thái</dt><dd>Chờ duyệt</dd></div>
+                    <div><dt>Loại yêu cầu</dt><dd>Đề xuất đề tài</dd></div>
+                    <div><dt>Ngày gửi</dt><dd><time datetime="2026-10-11">11/10/2026</time></dd></div>
+                    <div><dt>Mã yêu cầu</dt><dd>DX001</dd></div>
+                    <div><dt>Người xử lý</dt><dd>Chưa có thông tin</dd></div>
+                  </dl>
+                </section>
+                <section class="request-detail__section" aria-labelledby="dx001-feedback-title">
+                  <h3 id="dx001-feedback-title">Ghi chú và phản hồi</h3>
+                  <p>Xem xét thông tin trước khi đưa ra quyết định.</p>
+                  <form class="request-feedback-form" aria-labelledby="dx001-feedback-title">
+                    <label for="dx001-feedback">Phản hồi cho sinh viên</label>
+                    <textarea id="dx001-feedback" name="feedback" rows="5" placeholder="Nhập nhận xét hoặc lý do từ chối…" aria-describedby="dx001-feedback-help"></textarea>
+                    <p id="dx001-feedback-help">Vui lòng nêu rõ lý do nếu từ chối để sinh viên có thể bổ sung hoặc điều chỉnh.</p>
+                    <p class="form-message form-message--error" id="dx001-feedback-error" role="alert" hidden>Vui lòng kiểm tra nội dung phản hồi.</p>
+                    <div class="request-feedback-form__actions">
+                      <button type="button" aria-controls="dx001-reject-dialog" disabled>Từ chối</button>
+                      <button type="button" aria-controls="dx001-approve-dialog" disabled>Phê duyệt</button>
+                    </div>
+                    <p class="request-feedback-form__status">Yêu cầu vẫn đang chờ duyệt. Chưa có phản hồi được gửi đến sinh viên.</p>
+                  </form>
+                </section>
+              </aside>
+            </div>
+            <dialog id="dx001-reject-dialog" class="confirmation-dialog" aria-labelledby="dx001-reject-title">
+              <h3 id="dx001-reject-title">Xác nhận từ chối yêu cầu</h3>
+              <p>Bạn muốn từ chối yêu cầu DX001 với phản hồi đã nhập?</p>
+              <form method="dialog"><button type="submit" value="cancel">Hủy</button><button type="button" disabled>Xác nhận từ chối</button></form>
+            </dialog>
+            <dialog id="dx001-approve-dialog" class="confirmation-dialog" aria-labelledby="dx001-approve-title">
+              <h3 id="dx001-approve-title">Xác nhận phê duyệt yêu cầu</h3>
+              <p>Bạn muốn phê duyệt yêu cầu DX001?</p>
+              <form method="dialog"><button type="submit" value="cancel">Hủy</button><button type="button" disabled>Xác nhận phê duyệt</button></form>
+            </dialog>
+          </article>
+          </details>
+          <details class="request-example">
+            <summary>Đề xuất đề tài DX101 — Website quản lý thư viện</summary>
+          <article id="website-quan-ly-thu-vien" class="request-detail" aria-labelledby="website-quan-ly-thu-vien-title" tabindex="-1" data-request-id="DX101" data-request-type="de-xuat" data-request-status="cho-duyet">
+            <header class="request-detail__header">
+              <h2 id="website-quan-ly-thu-vien-title">Đề xuất đề tài DX101 — Website quản lý thư viện</h2>
+              <p>Đề xuất đề tài · Nguyễn Văn A · Gửi ngày <time datetime="2026-10-12">12/10/2026</time></p>
+              <p class="status-badge status-badge--pending">Chờ duyệt</p>
+            </header>
+            <div class="request-detail__layout">
+              <div class="request-detail__body">
+                <section class="request-detail__section" aria-labelledby="website-quan-ly-thu-vien-student-title">
+                  <h3 id="website-quan-ly-thu-vien-student-title">Thông tin sinh viên</h3>
+                  <p class="request-detail__student-name">Nguyễn Văn A</p>
+                  <p>Sinh viên gửi yêu cầu</p>
+                  <dl class="request-detail__student-meta">
+                    <div><dt>Mã sinh viên</dt><dd>22520001</dd></div>
+                    <div><dt>Lớp / Khóa</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Email liên hệ</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Nhóm</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Thành viên khác</dt><dd>Chưa có thông tin</dd></div>
+                  </dl>
+                </section>
+                <section class="request-detail__section" aria-labelledby="website-quan-ly-thu-vien-topic-title">
+                  <h3 id="website-quan-ly-thu-vien-topic-title">Thông tin đề tài</h3>
+                  <h4>Website quản lý thư viện</h4>
+                  <dl class="request-detail__topic-meta">
+                    <div><dt>Mã đề tài</dt><dd>Chưa được cấp</dd></div>
+                    <div><dt>Loại đề tài</dt><dd>Đồ án môn học</dd></div>
+                    <div><dt>Môn học</dt><dd>Internet và công nghệ Web</dd></div>
+                    <div><dt>Lĩnh vực</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Năm học</dt><dd>2026–2027</dd></div>
+                  </dl>
+                  <section class="request-detail__description" aria-labelledby="website-quan-ly-thu-vien-description-title">
+                    <h4 id="website-quan-ly-thu-vien-description-title">Mô tả và mục tiêu dự kiến</h4>
+                    <p>Nội dung mô tả và mục tiêu của đề tài sẽ hiển thị tại đây.</p>
+                  </section>
+                </section>
+                <section class="request-detail__section" aria-labelledby="website-quan-ly-thu-vien-attachments-title">
+                  <h3 id="website-quan-ly-thu-vien-attachments-title">Tài liệu đính kèm</h3>
+                  <div class="request-detail__attachments-empty"><p>Chưa có tài liệu đính kèm</p><p>Yêu cầu này chưa có tệp để xem xét.</p><span>0 tệp</span></div>
+                </section>
+              </div>
+              <aside class="request-detail__sidebar" aria-labelledby="website-quan-ly-thu-vien-request-title">
+                <section class="request-detail__section">
+                  <h3 id="website-quan-ly-thu-vien-request-title">Thông tin yêu cầu</h3>
+                  <dl class="request-detail__request-meta">
+                    <div><dt>Trạng thái</dt><dd>Chờ duyệt</dd></div>
+                    <div><dt>Loại yêu cầu</dt><dd>Đề xuất đề tài</dd></div>
+                    <div><dt>Ngày gửi</dt><dd><time datetime="2026-10-12">12/10/2026</time></dd></div>
+                    <div><dt>Mã yêu cầu</dt><dd>DX101</dd></div>
+                    <div><dt>Người xử lý</dt><dd>Chưa có thông tin</dd></div>
+                  </dl>
+                </section>
+                <section class="request-detail__section" aria-labelledby="website-quan-ly-thu-vien-feedback-title">
+                  <h3 id="website-quan-ly-thu-vien-feedback-title">Ghi chú và phản hồi</h3>
+                  <p>Xem xét thông tin trước khi đưa ra quyết định.</p>
+                  <form class="request-feedback-form" aria-labelledby="website-quan-ly-thu-vien-feedback-title">
+                    <label for="website-quan-ly-thu-vien-feedback">Phản hồi cho sinh viên</label>
+                    <textarea id="website-quan-ly-thu-vien-feedback" name="feedback" rows="5" placeholder="Nhập nhận xét hoặc lý do từ chối…" aria-describedby="website-quan-ly-thu-vien-feedback-help"></textarea>
+                    <p id="website-quan-ly-thu-vien-feedback-help">Vui lòng nêu rõ lý do nếu từ chối để sinh viên có thể bổ sung hoặc điều chỉnh.</p>
+                    <p class="form-message form-message--error" id="website-quan-ly-thu-vien-feedback-error" role="alert" hidden>Vui lòng kiểm tra nội dung phản hồi.</p>
+                    <div class="request-feedback-form__actions">
+                      <button type="button" aria-controls="website-quan-ly-thu-vien-reject-dialog" disabled>Từ chối</button>
+                      <button type="button" aria-controls="website-quan-ly-thu-vien-approve-dialog" disabled>Phê duyệt</button>
+                    </div>
+                    <p class="request-feedback-form__status">Yêu cầu vẫn đang chờ duyệt. Chưa có phản hồi được gửi đến sinh viên.</p>
+                  </form>
+                </section>
+              </aside>
+            </div>
+            <dialog id="website-quan-ly-thu-vien-reject-dialog" class="confirmation-dialog" aria-labelledby="website-quan-ly-thu-vien-reject-title">
+              <h3 id="website-quan-ly-thu-vien-reject-title">Xác nhận từ chối yêu cầu</h3>
+              <p>Bạn muốn từ chối yêu cầu DX101 với phản hồi đã nhập?</p>
+              <form method="dialog"><button type="submit" value="cancel">Hủy</button><button type="button" disabled>Xác nhận từ chối</button></form>
+            </dialog>
+            <dialog id="website-quan-ly-thu-vien-approve-dialog" class="confirmation-dialog" aria-labelledby="website-quan-ly-thu-vien-approve-title">
+              <h3 id="website-quan-ly-thu-vien-approve-title">Xác nhận phê duyệt yêu cầu</h3>
+              <p>Bạn muốn phê duyệt yêu cầu DX101?</p>
+              <form method="dialog"><button type="submit" value="cancel">Hủy</button><button type="button" disabled>Xác nhận phê duyệt</button></form>
+            </dialog>
+          </article>
+          </details>
+          <details class="request-example">
+            <summary>Đề xuất đề tài DX102 — Ứng dụng quản lý chi tiêu</summary>
+          <article id="ung-dung-quan-ly-chi-tieu" class="request-detail" aria-labelledby="ung-dung-quan-ly-chi-tieu-title" tabindex="-1" data-request-id="DX102" data-request-type="de-xuat" data-request-status="cho-duyet">
+            <header class="request-detail__header">
+              <h2 id="ung-dung-quan-ly-chi-tieu-title">Đề xuất đề tài DX102 — Ứng dụng quản lý chi tiêu</h2>
+              <p>Đề xuất đề tài · Trần Thị B · Gửi ngày <time datetime="2026-10-12">12/10/2026</time></p>
+              <p class="status-badge status-badge--pending">Chờ duyệt</p>
+            </header>
+            <div class="request-detail__layout">
+              <div class="request-detail__body">
+                <section class="request-detail__section" aria-labelledby="ung-dung-quan-ly-chi-tieu-student-title">
+                  <h3 id="ung-dung-quan-ly-chi-tieu-student-title">Thông tin sinh viên</h3>
+                  <p class="request-detail__student-name">Trần Thị B</p>
+                  <p>Sinh viên gửi yêu cầu</p>
+                  <dl class="request-detail__student-meta">
+                    <div><dt>Mã sinh viên</dt><dd>22520002</dd></div>
+                    <div><dt>Lớp / Khóa</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Email liên hệ</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Nhóm</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Thành viên khác</dt><dd>Chưa có thông tin</dd></div>
+                  </dl>
+                </section>
+                <section class="request-detail__section" aria-labelledby="ung-dung-quan-ly-chi-tieu-topic-title">
+                  <h3 id="ung-dung-quan-ly-chi-tieu-topic-title">Thông tin đề tài</h3>
+                  <h4>Ứng dụng quản lý chi tiêu</h4>
+                  <dl class="request-detail__topic-meta">
+                    <div><dt>Mã đề tài</dt><dd>Chưa được cấp</dd></div>
+                    <div><dt>Loại đề tài</dt><dd>Đồ án môn học</dd></div>
+                    <div><dt>Môn học</dt><dd>Cơ sở dữ liệu</dd></div>
+                    <div><dt>Lĩnh vực</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Năm học</dt><dd>2026–2027</dd></div>
+                  </dl>
+                  <section class="request-detail__description" aria-labelledby="ung-dung-quan-ly-chi-tieu-description-title">
+                    <h4 id="ung-dung-quan-ly-chi-tieu-description-title">Mô tả và mục tiêu dự kiến</h4>
+                    <p>Nội dung mô tả và mục tiêu của đề tài sẽ hiển thị tại đây.</p>
+                  </section>
+                </section>
+                <section class="request-detail__section" aria-labelledby="ung-dung-quan-ly-chi-tieu-attachments-title">
+                  <h3 id="ung-dung-quan-ly-chi-tieu-attachments-title">Tài liệu đính kèm</h3>
+                  <div class="request-detail__attachments-empty"><p>Chưa có tài liệu đính kèm</p><p>Yêu cầu này chưa có tệp để xem xét.</p><span>0 tệp</span></div>
+                </section>
+              </div>
+              <aside class="request-detail__sidebar" aria-labelledby="ung-dung-quan-ly-chi-tieu-request-title">
+                <section class="request-detail__section">
+                  <h3 id="ung-dung-quan-ly-chi-tieu-request-title">Thông tin yêu cầu</h3>
+                  <dl class="request-detail__request-meta">
+                    <div><dt>Trạng thái</dt><dd>Chờ duyệt</dd></div>
+                    <div><dt>Loại yêu cầu</dt><dd>Đề xuất đề tài</dd></div>
+                    <div><dt>Ngày gửi</dt><dd><time datetime="2026-10-12">12/10/2026</time></dd></div>
+                    <div><dt>Mã yêu cầu</dt><dd>DX102</dd></div>
+                    <div><dt>Người xử lý</dt><dd>Chưa có thông tin</dd></div>
+                  </dl>
+                </section>
+                <section class="request-detail__section" aria-labelledby="ung-dung-quan-ly-chi-tieu-feedback-title">
+                  <h3 id="ung-dung-quan-ly-chi-tieu-feedback-title">Ghi chú và phản hồi</h3>
+                  <p>Xem xét thông tin trước khi đưa ra quyết định.</p>
+                  <form class="request-feedback-form" aria-labelledby="ung-dung-quan-ly-chi-tieu-feedback-title">
+                    <label for="ung-dung-quan-ly-chi-tieu-feedback">Phản hồi cho sinh viên</label>
+                    <textarea id="ung-dung-quan-ly-chi-tieu-feedback" name="feedback" rows="5" placeholder="Nhập nhận xét hoặc lý do từ chối…" aria-describedby="ung-dung-quan-ly-chi-tieu-feedback-help"></textarea>
+                    <p id="ung-dung-quan-ly-chi-tieu-feedback-help">Vui lòng nêu rõ lý do nếu từ chối để sinh viên có thể bổ sung hoặc điều chỉnh.</p>
+                    <p class="form-message form-message--error" id="ung-dung-quan-ly-chi-tieu-feedback-error" role="alert" hidden>Vui lòng kiểm tra nội dung phản hồi.</p>
+                    <div class="request-feedback-form__actions">
+                      <button type="button" aria-controls="ung-dung-quan-ly-chi-tieu-reject-dialog" disabled>Từ chối</button>
+                      <button type="button" aria-controls="ung-dung-quan-ly-chi-tieu-approve-dialog" disabled>Phê duyệt</button>
+                    </div>
+                    <p class="request-feedback-form__status">Yêu cầu vẫn đang chờ duyệt. Chưa có phản hồi được gửi đến sinh viên.</p>
+                  </form>
+                </section>
+              </aside>
+            </div>
+            <dialog id="ung-dung-quan-ly-chi-tieu-reject-dialog" class="confirmation-dialog" aria-labelledby="ung-dung-quan-ly-chi-tieu-reject-title">
+              <h3 id="ung-dung-quan-ly-chi-tieu-reject-title">Xác nhận từ chối yêu cầu</h3>
+              <p>Bạn muốn từ chối yêu cầu DX102 với phản hồi đã nhập?</p>
+              <form method="dialog"><button type="submit" value="cancel">Hủy</button><button type="button" disabled>Xác nhận từ chối</button></form>
+            </dialog>
+            <dialog id="ung-dung-quan-ly-chi-tieu-approve-dialog" class="confirmation-dialog" aria-labelledby="ung-dung-quan-ly-chi-tieu-approve-title">
+              <h3 id="ung-dung-quan-ly-chi-tieu-approve-title">Xác nhận phê duyệt yêu cầu</h3>
+              <p>Bạn muốn phê duyệt yêu cầu DX102?</p>
+              <form method="dialog"><button type="submit" value="cancel">Hủy</button><button type="button" disabled>Xác nhận phê duyệt</button></form>
+            </dialog>
+          </article>
+          </details>
+          <details class="request-example">
+            <summary>Đề xuất đề tài DX103 — Hệ thống gợi ý phim</summary>
+          <article id="he-thong-goi-y-phim" class="request-detail" aria-labelledby="he-thong-goi-y-phim-title" tabindex="-1" data-request-id="DX103" data-request-type="de-xuat" data-request-status="cho-duyet">
+            <header class="request-detail__header">
+              <h2 id="he-thong-goi-y-phim-title">Đề xuất đề tài DX103 — Hệ thống gợi ý phim</h2>
+              <p>Đề xuất đề tài · Lê Văn C · Gửi ngày <time datetime="2026-10-12">12/10/2026</time></p>
+              <p class="status-badge status-badge--pending">Chờ duyệt</p>
+            </header>
+            <div class="request-detail__layout">
+              <div class="request-detail__body">
+                <section class="request-detail__section" aria-labelledby="he-thong-goi-y-phim-student-title">
+                  <h3 id="he-thong-goi-y-phim-student-title">Thông tin sinh viên</h3>
+                  <p class="request-detail__student-name">Lê Văn C</p>
+                  <p>Sinh viên gửi yêu cầu</p>
+                  <dl class="request-detail__student-meta">
+                    <div><dt>Mã sinh viên</dt><dd>22520003</dd></div>
+                    <div><dt>Lớp / Khóa</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Email liên hệ</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Nhóm</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Thành viên khác</dt><dd>Chưa có thông tin</dd></div>
+                  </dl>
+                </section>
+                <section class="request-detail__section" aria-labelledby="he-thong-goi-y-phim-topic-title">
+                  <h3 id="he-thong-goi-y-phim-topic-title">Thông tin đề tài</h3>
+                  <h4>Hệ thống gợi ý phim</h4>
+                  <dl class="request-detail__topic-meta">
+                    <div><dt>Mã đề tài</dt><dd>Chưa được cấp</dd></div>
+                    <div><dt>Loại đề tài</dt><dd>Khóa luận</dd></div>
+                    <div><dt>Môn học</dt><dd>Không áp dụng</dd></div>
+                    <div><dt>Lĩnh vực</dt><dd>Chưa có thông tin</dd></div>
+                    <div><dt>Năm học</dt><dd>2026–2027</dd></div>
+                  </dl>
+                  <section class="request-detail__description" aria-labelledby="he-thong-goi-y-phim-description-title">
+                    <h4 id="he-thong-goi-y-phim-description-title">Mô tả và mục tiêu dự kiến</h4>
+                    <p>Nội dung mô tả và mục tiêu của đề tài sẽ hiển thị tại đây.</p>
+                  </section>
+                </section>
+                <section class="request-detail__section" aria-labelledby="he-thong-goi-y-phim-attachments-title">
+                  <h3 id="he-thong-goi-y-phim-attachments-title">Tài liệu đính kèm</h3>
+                  <div class="request-detail__attachments-empty"><p>Chưa có tài liệu đính kèm</p><p>Yêu cầu này chưa có tệp để xem xét.</p><span>0 tệp</span></div>
+                </section>
+              </div>
+              <aside class="request-detail__sidebar" aria-labelledby="he-thong-goi-y-phim-request-title">
+                <section class="request-detail__section">
+                  <h3 id="he-thong-goi-y-phim-request-title">Thông tin yêu cầu</h3>
+                  <dl class="request-detail__request-meta">
+                    <div><dt>Trạng thái</dt><dd>Chờ duyệt</dd></div>
+                    <div><dt>Loại yêu cầu</dt><dd>Đề xuất đề tài</dd></div>
+                    <div><dt>Ngày gửi</dt><dd><time datetime="2026-10-12">12/10/2026</time></dd></div>
+                    <div><dt>Mã yêu cầu</dt><dd>DX103</dd></div>
+                    <div><dt>Người xử lý</dt><dd>Chưa có thông tin</dd></div>
+                  </dl>
+                </section>
+                <section class="request-detail__section" aria-labelledby="he-thong-goi-y-phim-feedback-title">
+                  <h3 id="he-thong-goi-y-phim-feedback-title">Ghi chú và phản hồi</h3>
+                  <p>Xem xét thông tin trước khi đưa ra quyết định.</p>
+                  <form class="request-feedback-form" aria-labelledby="he-thong-goi-y-phim-feedback-title">
+                    <label for="he-thong-goi-y-phim-feedback">Phản hồi cho sinh viên</label>
+                    <textarea id="he-thong-goi-y-phim-feedback" name="feedback" rows="5" placeholder="Nhập nhận xét hoặc lý do từ chối…" aria-describedby="he-thong-goi-y-phim-feedback-help"></textarea>
+                    <p id="he-thong-goi-y-phim-feedback-help">Vui lòng nêu rõ lý do nếu từ chối để sinh viên có thể bổ sung hoặc điều chỉnh.</p>
+                    <p class="form-message form-message--error" id="he-thong-goi-y-phim-feedback-error" role="alert" hidden>Vui lòng kiểm tra nội dung phản hồi.</p>
+                    <div class="request-feedback-form__actions">
+                      <button type="button" aria-controls="he-thong-goi-y-phim-reject-dialog" disabled>Từ chối</button>
+                      <button type="button" aria-controls="he-thong-goi-y-phim-approve-dialog" disabled>Phê duyệt</button>
+                    </div>
+                    <p class="request-feedback-form__status">Yêu cầu vẫn đang chờ duyệt. Chưa có phản hồi được gửi đến sinh viên.</p>
+                  </form>
+                </section>
+              </aside>
+            </div>
+            <dialog id="he-thong-goi-y-phim-reject-dialog" class="confirmation-dialog" aria-labelledby="he-thong-goi-y-phim-reject-title">
+              <h3 id="he-thong-goi-y-phim-reject-title">Xác nhận từ chối yêu cầu</h3>
+              <p>Bạn muốn từ chối yêu cầu DX103 với phản hồi đã nhập?</p>
+              <form method="dialog"><button type="submit" value="cancel">Hủy</button><button type="button" disabled>Xác nhận từ chối</button></form>
+            </dialog>
+            <dialog id="he-thong-goi-y-phim-approve-dialog" class="confirmation-dialog" aria-labelledby="he-thong-goi-y-phim-approve-title">
+              <h3 id="he-thong-goi-y-phim-approve-title">Xác nhận phê duyệt yêu cầu</h3>
+              <p>Bạn muốn phê duyệt yêu cầu DX103?</p>
+              <form method="dialog"><button type="submit" value="cancel">Hủy</button><button type="button" disabled>Xác nhận phê duyệt</button></form>
+            </dialog>
+          </article>
+          </details>
+          <template id="request-processed-template"><section class="request-detail__processed"><h2>Yêu cầu đã được xử lý</h2><dl><dt>Kết quả</dt><dd></dd><dt>Người xử lý</dt><dd></dd><dt>Ngày xử lý</dt><dd></dd><dt>Phản hồi</dt><dd></dd></dl></section></template>
+          <template id="request-error-template"><p class="form-message form-message--error" role="alert">Không thể xử lý yêu cầu. Vui lòng thử lại.</p></template>
+          <template id="request-success-template"><p class="form-message form-message--success" role="status">Yêu cầu đã được xử lý.</p></template>
+        </div>
+      </div>
+    </main>
+
+    <!-- CHÂN TRANG CHUNG -->
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__columns">
+          <div class="site-footer__brand">
+            <p class="site-footer__name">
+              QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP
+            </p>
+            <dl class="site-footer__about">
+              <div>
+                <dt>Thông tin trang web</dt>
+                <dd>Trường Đại học Công nghệ Thông tin</dd>
+              </div>
+              <div>
+                <dt>Thông tin nhóm</dt>
+                <dd>Đồ án IE104 — Nhóm 7</dd>
+              </div>
+            </dl>
+          </div>
+
+          <section
+            class="site-footer__information site-footer__terms"
+            aria-labelledby="footer-terms-title"
+          >
+            <h2 id="footer-terms-title">Điều khoản sử dụng</h2>
+            <p>Đang cập nhật.</p>
+          </section>
+
+          <section
+            class="site-footer__information site-footer__policies"
+            aria-labelledby="footer-policies-title"
+          >
+            <h2 id="footer-policies-title">Quy chế, chính sách bảo mật</h2>
+            <p>Đang cập nhật.</p>
+          </section>
+        </div>
+        <p class="site-footer__copyright">
+          Copyright © 2026 · Quản lý đồ án và khóa luận tốt nghiệp
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

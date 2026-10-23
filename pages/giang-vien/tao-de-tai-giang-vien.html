@@ -1,49 +1,80 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Tạo đề tài đồ án hoặc khóa luận dành cho giảng viên."
-    />
-    <title>Tạo đề tài | Quản lý đồ án</title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="Tạo đề tài đồ án hoặc khóa luận dành cho giảng viên." name="description"/>
+    <title>
+      Tạo đề tài | Quản lý đồ án
+    </title>
   </head>
-
   <body>
-    <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
-
+    <a class="skip-link" href="#main-content">
+      Chuyển đến nội dung chính
+    </a>
     <!-- ĐẦU TRANG -->
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-brand" href="tong-quan-giang-vien.html">
-          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
-          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
+          <img alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" class="site-brand__logo" height="70" src="../../assets/images/images.jpg" width="70"/>
+          <span class="site-brand__name">
+            QUẢN LÝ ĐỒ ÁN VÀ
+            <br/>
+            KHÓA LUẬN TỐT NGHIỆP
+          </span>
         </a>
-        <nav class="main-nav" aria-label="Điều hướng giảng viên">
+        <nav aria-label="Điều hướng giảng viên" class="main-nav">
           <ul class="main-nav__list">
             <li class="main-nav__item">
-              <a class="main-nav__link" href="tong-quan-giang-vien.html">Tổng quan</a>
+              <a class="main-nav__link" href="tong-quan-giang-vien.html">
+                Tổng quan
+              </a>
             </li>
             <li class="main-nav__item">
               <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="topic-management-label" aria-current="location">Quản lý đề tài</summary>
-                <ul class="main-nav__sublist" aria-labelledby="topic-management-label">
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="de-tai-huong-dan.html" aria-disabled="true">Đề tài đang hướng dẫn (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="de-tai-cua-toi-giang-vien.html" aria-disabled="true">Đề tài đã tạo (đang cập nhật)</span></li>
+                <summary aria-current="location" class="main-nav__label" id="topic-management-label">
+                  Quản lý đề tài
+                </summary>
+                <ul aria-labelledby="topic-management-label" class="main-nav__sublist">
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="danh-sach-de-tai-dang-huong-dan.html">
+                      Đề tài đang hướng dẫn
+                    </a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="danh-sach-de-tai-da-tao.html">
+                      Đề tài đã tạo
+                    </a>
+                  </li>
                 </ul>
               </details>
             </li>
             <li class="main-nav__item">
-              <span class="main-nav__link" data-pending-href="yeu-cau-cho-duyet.html" aria-disabled="true">Yêu cầu chờ duyệt (đang cập nhật)</span>
+              <a class="main-nav__link" href="yeu-cau-cho-duyet.html">
+                Yêu cầu chờ duyệt
+              </a>
             </li>
             <li class="main-nav__item">
               <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
-                <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/gioi-thieu.html" aria-disabled="true">Giới thiệu (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/thong-bao.html" aria-disabled="true">Thông báo (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/lien-he.html" aria-disabled="true">Liên hệ (đang cập nhật)</span></li>
+                <summary class="main-nav__label" id="common-navigation-label">
+                  Chung
+                </summary>
+                <ul aria-labelledby="common-navigation-label" class="main-nav__sublist">
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/gioi-thieu.html">
+                      Giới thiệu
+                    </a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/thong-bao.html">
+                      Thông báo
+                    </a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/lien-he.html">
+                      Liên hệ
+                    </a>
+                  </li>
                 </ul>
               </details>
             </li>
@@ -52,220 +83,327 @@
         <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
         <div class="account-menu">
           <details class="account-menu__disclosure">
-            <summary class="account-menu__toggle" aria-label="Mở menu tài khoản giảng viên">
-              <span class="account-menu__avatar" aria-hidden="true">GV</span>
-              <span class="account-menu__label">Tài khoản giảng viên</span>
+            <summary aria-label="Mở menu tài khoản giảng viên" class="account-menu__toggle">
+              <span aria-hidden="true" class="account-menu__avatar">
+                GV
+              </span>
+              <span class="account-menu__label">
+                Tài khoản giảng viên
+              </span>
             </summary>
-            <ul id="account-dropdown" class="account-menu__list">
+            <ul class="account-menu__list" id="account-dropdown">
               <li>
-                <a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
+                <a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">
+                  Hồ sơ cá nhân
+                </a>
               </li>
               <li>
-                <button
-                  class="account-menu__logout"
-                  type="button"
-                  aria-controls="logout-dialog"
-                  aria-describedby="logout-notice"
-                  disabled
-                >
+                <button aria-controls="logout-dialog" aria-describedby="logout-notice" class="account-menu__logout" disabled="" type="button">
                   Đăng xuất
                 </button>
               </li>
             </ul>
-            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+            <p id="logout-notice">
+              Chưa có xử lý đăng xuất.
+            </p>
           </details>
         </div>
       </div>
     </header>
-    <dialog
-      id="logout-dialog"
-      class="confirmation-dialog"
-      aria-labelledby="logout-title"
-    >
-      <h2 id="logout-title">Xác nhận đăng xuất</h2>
-      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+    <dialog aria-labelledby="logout-title" class="confirmation-dialog" id="logout-dialog">
+      <h2 id="logout-title">
+        Xác nhận đăng xuất
+      </h2>
+      <p>
+        Bạn muốn đăng xuất khỏi tài khoản hiện tại?
+      </p>
       <form method="dialog">
-        <button type="submit" value="cancel">Hủy</button>
-        <button type="button" disabled>Xác nhận đăng xuất</button>
+        <button type="submit" value="cancel">
+          Hủy
+        </button>
+        <button disabled="" type="button">
+          Xác nhận đăng xuất
+        </button>
       </form>
     </dialog>
-
     <!-- NỘI DUNG RIÊNG CỦA TỪNG TRANG -->
-    <main id="main-content" class="main-content" tabindex="-1">
+    <main class="main-content" id="main-content" tabindex="-1">
       <div class="page-container">
-        <nav class="breadcrumb" aria-label="Đường dẫn">
+        <nav aria-label="Đường dẫn" class="breadcrumb">
           <ol class="breadcrumb__list">
-            <li class="breadcrumb__item"><a href="tong-quan-giang-vien.html">Giảng viên</a></li>
-            <li class="breadcrumb__item"><span data-pending-href="de-tai-cua-toi-giang-vien.html" aria-disabled="true">Quản lý đề tài (đang cập nhật)</span></li>
-            <li class="breadcrumb__item"><span aria-current="page">Tạo đề tài</span></li>
+            <li class="breadcrumb__item">
+              <a href="tong-quan-giang-vien.html">
+                Giảng viên
+              </a>
+            </li>
+            <li class="breadcrumb__item">
+              <a href="danh-sach-de-tai-da-tao.html">
+                Quản lý đề tài
+              </a>
+            </li>
+            <li class="breadcrumb__item">
+              <span aria-current="page">
+                Tạo đề tài
+              </span>
+            </li>
           </ol>
         </nav>
         <header class="page-header">
-          <h1 class="page-header__title">Tạo đề tài</h1>
-          <p class="page-header__description">Khai báo thông tin và thiết lập đăng ký cho đề tài mới.</p>
+          <h1 class="page-header__title">
+            Tạo đề tài
+          </h1>
+          <p class="page-header__description">
+            Khai báo thông tin và thiết lập đăng ký cho đề tài mới.
+          </p>
         </header>
         <div class="page-content">
-          <p id="topic-form-notice">Các trường có dấu * là bắt buộc. Đây là cấu trúc HTML; biểu mẫu chưa lưu dữ liệu.</p>
+          <p id="topic-form-notice">
+            Các trường có dấu * là bắt buộc. Đây là cấu trúc HTML; biểu mẫu chưa lưu dữ liệu.
+          </p>
           <!-- Bổ sung endpoint, dữ liệu danh mục và xử lý nghiệp vụ khi tích hợp hệ thống. -->
-          <form class="topic-form" aria-label="Tạo đề tài mới" aria-describedby="topic-form-notice">
-            <div class="topic-form__overview">
-              <fieldset class="topic-form__basic">
-                <legend>Thông tin cơ bản</legend>
-                <div class="topic-form__field">
-                  <label for="topic-code">Mã đề tài (tự sinh)</label>
-                  <input id="topic-code" name="topic-code" type="text" placeholder="Tự tạo sau khi lưu đề tài" readonly />
-                </div>
-                <div class="topic-form__field">
-                  <label for="topic-name">Tên đề tài *</label>
-                  <input id="topic-name" name="topic-name" type="text" placeholder="Nhập tên đề tài" required maxlength="255" />
-                </div>
-                <div class="topic-form__grid">
-                <div class="topic-form__field">
-                  <label for="topic-type">Loại đề tài *</label>
-                  <select id="topic-type" name="topic-type" required>
-                    <option value="" selected disabled>Chọn Đồ án / Khóa luận</option>
-                    <option value="do-an">Đồ án</option>
-                    <option value="khoa-luan">Khóa luận</option>
-                  </select>
-                </div>
-                <div class="topic-form__field">
-                  <label for="course">Môn học *</label>
-                  <select id="course" name="course" required>
-                    <option value="" selected disabled>Chọn môn học</option>
-
-                  </select>
-                </div>
-                <div class="topic-form__field">
-                  <label for="semester">Học kỳ *</label>
-                  <select id="semester" name="semester" required>
-                    <option value="" selected disabled>Chọn học kỳ</option>
-                    <option value="1">Học kỳ 1</option>
-                    <option value="2">Học kỳ 2</option>
-                    <option value="he">Học kỳ hè</option>
-                  </select>
-                </div>
-                <div class="topic-form__field">
-                  <label for="academic-year">Năm học *</label>
-                  <select id="academic-year" name="academic-year" required>
-                    <option value="" selected disabled>Chọn năm học</option>
-
-                  </select>
-                </div>
-                <div class="topic-form__field">
-                  <label for="topic-field">Lĩnh vực *</label>
-                  <select id="topic-field" name="topic-field" required>
-                    <option value="" selected disabled>Chọn lĩnh vực</option>
-
-                  </select>
-                </div>
-                <div class="topic-form__field">
-                  <label for="technologies">Công nghệ gợi ý</label>
-                  <input id="technologies" name="technologies" type="text" placeholder="Nhập công nghệ / công cụ" />
-                </div>
-                </div>
-                <!-- Các danh mục môn học, năm học, lĩnh vực được nạp từ hệ thống. -->
-              </fieldset>
-              <div class="topic-form__sidebar">
-                <fieldset class="topic-form__image">
-                  <legend>Ảnh minh họa đề tài</legend>
-                  <figure class="topic-form__image-preview">
-                    <!-- Chèn ảnh xem trước sau khi bổ sung xử lý chọn ảnh. -->
-                    <figcaption>Xem trước ảnh đã chọn</figcaption>
-                  </figure>
-                  <label for="topic-image">Chọn ảnh</label>
-                  <input id="topic-image" name="topic-image" type="file" accept="image/*" aria-describedby="topic-image-help" />
-                  <button type="button" class="topic-form__remove-image" disabled>Gỡ ảnh</button>
-                  <p id="topic-image-help">Chọn và gỡ ảnh: hiển thị bản xem trước khi bổ sung xử lý JavaScript.</p>
-                </fieldset>
-                <fieldset class="topic-form__supervisor">
-                  <legend>Giảng viên hướng dẫn</legend>
-                  <p>Thông tin lấy từ hồ sơ giảng viên khi đăng nhập.</p>
-                <div class="topic-form__field">
-                  <label for="supervisor-name">Họ tên (chỉ đọc)</label>
-                  <input id="supervisor-name" name="supervisor-name" type="text" placeholder="Họ tên giảng viên" readonly />
-                </div>
-                <div class="topic-form__field">
-                  <label for="supervisor-department">Khoa / Bộ môn (chỉ đọc)</label>
-                  <input id="supervisor-department" name="supervisor-department" type="text" placeholder="Khoa / Bộ môn" readonly />
-                </div>
-                <div class="topic-form__field">
-                  <label for="supervisor-email">Email liên hệ (chỉ đọc)</label>
-                  <input id="supervisor-email" name="supervisor-email" type="email" placeholder="Email giảng viên" readonly />
-                </div>
-                </fieldset>
-              </div>
-            </div>
-            <fieldset class="topic-form__content">
-              <legend>Nội dung đề tài</legend>
-                <div class="topic-form__field">
-                  <label for="topic-description">Mô tả đề tài *</label>
-                  <textarea id="topic-description" name="topic-description" rows="5" placeholder="Nhập mô tả đề tài" required></textarea>
-                </div>
-                <div class="topic-form__field">
-                  <label for="topic-objectives">Mục tiêu *</label>
-                  <textarea id="topic-objectives" name="topic-objectives" rows="5" placeholder="Nhập các mục tiêu cần đạt" required></textarea>
-                </div>
-                <div class="topic-form__field">
-                  <label for="topic-requirements">Yêu cầu thực hiện *</label>
-                  <textarea id="topic-requirements" name="topic-requirements" rows="5" placeholder="Nhập yêu cầu kiến thức, chức năng và sản phẩm cần đạt" required></textarea>
-                </div>
+          <form aria-describedby="topic-form-notice" aria-label="Tạo đề tài mới" class="topic-form">
+            <fieldset>
+              <legend>
+                Thông tin cơ bản
+              </legend>
+              <p>
+                <label for="topic-code">
+                  Mã đề tài *
+                </label>
+                <input id="topic-code" name="topic-code" required="" type="text"/>
+              </p>
+              <p>
+                <label for="topic-name">
+                  Tên đề tài *
+                </label>
+                <input id="topic-name" name="topic-name" required="" type="text"/>
+              </p>
+              <p>
+                <label for="topic-type">
+                  Loại đề tài *
+                </label>
+                <select id="topic-type" name="topic-type" required="">
+                  <option value="">
+                    Chọn loại đề tài
+                  </option>
+                  <option value="1">
+                    Đồ án môn học
+                  </option>
+                  <option value="2">
+                    Đồ án tốt nghiệp
+                  </option>
+                  <option value="3">
+                    Khóa luận
+                  </option>
+                </select>
+              </p>
+              <p>
+                <label for="course">
+                  Môn học *
+                </label>
+                <select id="course" name="course" required="">
+                  <option value="">
+                    Chọn môn học
+                  </option>
+                  <option value="1">
+                    [Môn học]
+                  </option>
+                </select>
+              </p>
+              <p>
+                <label for="semester">
+                  Học kỳ *
+                </label>
+                <select id="semester" name="semester" required="">
+                  <option value="">
+                    Chọn học kỳ
+                  </option>
+                  <option value="1">
+                    Học kỳ 1
+                  </option>
+                  <option value="2">
+                    Học kỳ 2
+                  </option>
+                  <option value="3">
+                    Học kỳ hè
+                  </option>
+                </select>
+              </p>
+              <p>
+                <label for="academic-year">
+                  Năm học *
+                </label>
+                <select id="academic-year" name="academic-year" required="">
+                  <option value="">
+                    Chọn năm học
+                  </option>
+                  <option value="1">
+                    [Năm học]
+                  </option>
+                </select>
+              </p>
             </fieldset>
-            <fieldset class="topic-form__conditions">
-              <legend>Điều kiện đăng ký</legend>
-              <div class="topic-form__grid">
-                <div class="topic-form__field">
-                  <label for="minimum-members">Số thành viên tối thiểu / nhóm *</label>
-                  <input id="minimum-members" name="minimum-members" type="number" placeholder="Số thành viên tối thiểu" required min="1" step="1" />
-                </div>
-                <div class="topic-form__field">
-                  <label for="maximum-members">Số thành viên tối đa / nhóm *</label>
-                  <input id="maximum-members" name="maximum-members" type="number" placeholder="Số thành viên tối đa" required min="1" step="1" />
-                </div>
-              </div>
+            <section aria-labelledby="create-supervisor-title">
+              <h2 id="create-supervisor-title">
+                Giảng viên hướng dẫn
+              </h2>
+              <p>
+                Thông tin lấy từ hồ sơ giảng viên.
+              </p>
+              <dl>
+                <dt>
+                  Họ tên
+                </dt>
+                <dd>
+                  [Họ tên]
+                </dd>
+                <dt>
+                  Khoa/Bộ môn
+                </dt>
+                <dd>
+                  [Khoa/Bộ môn]
+                </dd>
+                <dt>
+                  Email liên hệ
+                </dt>
+                <dd>
+                  [Email liên hệ]
+                </dd>
+                <dt>
+                  Hướng nghiên cứu
+                </dt>
+                <dd>
+                  [Hướng nghiên cứu]
+                </dd>
+              </dl>
+            </section>
+            <p>
+              <label for="topic-description">
+                Mô tả đề tài *
+              </label>
+              <textarea id="topic-description" name="topic-description" required="" rows="4"></textarea>
+            </p>
+            <p>
+              <label for="topic-objectives">
+                Mục tiêu *
+              </label>
+              <textarea id="topic-objectives" name="topic-objectives" required="" rows="4"></textarea>
+            </p>
+            <p>
+              <label for="topic-outcomes">
+                Kết quả dự kiến *
+              </label>
+              <textarea id="topic-outcomes" name="topic-outcomes" required="" rows="4"></textarea>
+            </p>
+            <p>
+              <label for="topic-requirements">
+                Yêu cầu đối với sinh viên *
+              </label>
+              <textarea id="topic-requirements" name="topic-requirements" required="" rows="4"></textarea>
+            </p>
+            <fieldset>
+              <legend>
+                Số thành viên
+              </legend>
+              <p>
+                <label for="minimum-members">
+                  Tối thiểu / nhóm *
+                </label>
+                <input id="minimum-members" name="minimum-members" required="" type="number"/>
+              </p>
+              <p>
+                <label for="maximum-members">
+                  Tối đa / nhóm *
+                </label>
+                <input id="maximum-members" name="maximum-members" required="" type="number"/>
+              </p>
             </fieldset>
-            <fieldset class="topic-form__schedule">
-              <legend>Thời gian đăng ký và thực hiện</legend>
-              <div class="topic-form__grid">
-                <div class="topic-form__field">
-                  <label for="registration-opens">Mở đăng ký từ *</label>
-                  <input id="registration-opens" name="registration-opens" type="datetime-local" required />
-                </div>
-                <div class="topic-form__field">
-                  <label for="registration-closes">Đóng đăng ký lúc *</label>
-                  <input id="registration-closes" name="registration-closes" type="datetime-local" required />
-                </div>
-                <div class="topic-form__field">
-                  <label for="project-start">Ngày bắt đầu thực hiện *</label>
-                  <input id="project-start" name="project-start" type="date" required />
-                </div>
-                <div class="topic-form__field">
-                  <label for="project-deadline">Hạn hoàn thành đề tài *</label>
-                  <input id="project-deadline" name="project-deadline" type="datetime-local" required />
-                </div>
-              </div>
-              <!-- Khi tích hợp: kiểm tra số thành viên tối đa >= tối thiểu và thứ tự các mốc thời gian. -->
+            <fieldset>
+              <legend>
+                Ảnh đề tài
+              </legend>
+              <figure>
+                <figcaption>
+                  Ảnh minh họa đề tài
+                </figcaption>
+              </figure>
+              <p>
+                <label for="topic-image">
+                  Tải ảnh lên
+                </label>
+                <input accept="image/jpeg,image/png" id="topic-image" name="topic-image" type="file"/>
+              </p>
+              <p>
+                Chưa có ảnh, dùng ảnh mặc định của hệ thống. JPG/PNG, tối đa 2 MB, tỷ lệ khuyến nghị 16:9.
+              </p>
             </fieldset>
-            <div class="topic-form__actions">
-              <a class="topic-form__cancel" href="tong-quan-giang-vien.html">Hủy</a>
-              <!-- Chỉ bật khi có xử lý kiểm tra và lưu dữ liệu. -->
-              <button class="topic-form__submit" type="button" disabled>Tạo đề tài</button>
-            </div>
+            <fieldset>
+              <legend>
+                Tài liệu đính kèm
+              </legend>
+              <p>
+                <label for="topic-attachment">
+                  Tải tài liệu lên
+                </label>
+                <input id="topic-attachment" name="topic-attachment" type="file"/>
+              </p>
+              <p>
+                Đề cương hoặc tài liệu mô tả đề tài (không bắt buộc).
+              </p>
+            </fieldset>
+            <p>
+              <label for="registration-closes">
+                Hạn đăng ký *
+              </label>
+              <input id="registration-closes" name="registration-closes" required="" type="datetime-local"/>
+            </p>
+            <a class="topic-form__cancel" href="danh-sach-de-tai-da-tao.html">
+              Hủy
+            </a>
+            <button disabled="" type="button">
+              Tạo đề tài
+            </button>
+            <template id="create-topic-error-template">
+              <p role="alert">
+                Không thể thực hiện thao tác. Vui lòng kiểm tra thông tin và thử lại.
+              </p>
+            </template>
+            <template id="create-topic-success-template">
+              <p role="status">
+                Thao tác đã hoàn tất.
+              </p>
+            </template>
           </form>
         </div>
       </div>
     </main>
-
     <!-- CHÂN TRANG CHUNG -->
     <footer class="site-footer">
       <div class="site-footer__inner">
         <div class="site-footer__brand">
-          <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN</p>
-          <p>Trường Đại học Công nghệ Thông tin</p>
+          <p class="site-footer__name">
+            QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN
+          </p>
+          <p>
+            Trường Đại học Công nghệ Thông tin
+          </p>
         </div>
-        <ul class="site-footer__information" aria-label="Thông tin và quy định">
-          <li><span>Điều khoản sử dụng (đang cập nhật)</span></li>
-          <li><span>Quy chế đồ án / khóa luận (đang cập nhật)</span></li>
-          <li><span>Chính sách bảo mật (đang cập nhật)</span></li>
+        <ul aria-label="Thông tin và quy định" class="site-footer__information">
+          <li>
+            <span>
+              Điều khoản sử dụng (đang cập nhật)
+            </span>
+          </li>
+          <li>
+            <span>
+              Quy chế đồ án / khóa luận (đang cập nhật)
+            </span>
+          </li>
+          <li>
+            <span>
+              Chính sách bảo mật (đang cập nhật)
+            </span>
+          </li>
         </ul>
         <p class="site-footer__copyright">
           © 2026 · Hệ thống quản lý đồ án / khóa luận

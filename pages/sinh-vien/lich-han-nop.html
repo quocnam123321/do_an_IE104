@@ -37,9 +37,9 @@
               <details class="main-nav__disclosure">
                 <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
                 <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/gioi-thieu.html" aria-disabled="true">Giới thiệu (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/thong-bao.html" aria-disabled="true">Thông báo (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/lien-he.html" aria-disabled="true">Liên hệ (đang cập nhật)</span></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
                 </ul>
               </details>
             </li>
@@ -102,7 +102,7 @@
           <p class="demo-notice" id="deadline-demo-notice">
             Lịch minh họa tháng 10/2026 theo wireframe, lấy ngày 18/10/2026 làm mốc “Hôm nay”.
             Tên trong ngoặc vuông và giờ hh:mm là dữ liệu giữ chỗ, chưa gắn với đề tài thực tế.
-            Bộ lọc, tìm kiếm, chuyển tháng và nộp bài chưa được xử lý.
+            Bộ lọc, tìm kiếm và chuyển tháng chưa được xử lý. Liên kết Nộp bài mở khung nộp bài mẫu, chưa tự chọn bài tương ứng.
           </p>
           <!-- Wireframe_Nhom7: SV - Lịch hạn nộp, node 584:1487. -->
           <section class="deadline-calendar" id="deadline-calendar" aria-labelledby="deadline-calendar-title">
@@ -308,15 +308,14 @@
                   <td>[Tên đề tài tương ứng]</td>
                   <td><time datetime="2026-10-21">21/10/2026</time><br />hh:mm</td>
                   <td>
-                    <button
+                    <a
                       class="upcoming-submissions__submit"
-                      type="button"
+                      href="chi-tiet-de-tai-sinh-vien.html#submission-form-section"
                       aria-label="Nộp bài: [Tên bài nộp A]"
                       aria-describedby="deadline-demo-notice"
-                      disabled
                     >
                       Nộp bài
-                    </button>
+                    </a>
                   </td>
                 </tr>
                 <tr id="bai-nop-b">
@@ -324,15 +323,14 @@
                   <td>[Tên đề tài tương ứng]</td>
                   <td><time datetime="2026-10-23">23/10/2026</time><br />hh:mm</td>
                   <td>
-                    <button
+                    <a
                       class="upcoming-submissions__submit"
-                      type="button"
+                      href="chi-tiet-de-tai-sinh-vien.html#submission-form-section"
                       aria-label="Nộp bài: [Tên bài nộp B]"
                       aria-describedby="deadline-demo-notice"
-                      disabled
                     >
                       Nộp bài
-                    </button>
+                    </a>
                   </td>
                 </tr>
                 <tr id="bai-nop-c">
@@ -340,15 +338,14 @@
                   <td>[Tên đề tài tương ứng]</td>
                   <td><time datetime="2026-10-24">24/10/2026</time><br />hh:mm</td>
                   <td>
-                    <button
+                    <a
                       class="upcoming-submissions__submit"
-                      type="button"
+                      href="chi-tiet-de-tai-sinh-vien.html#submission-form-section"
                       aria-label="Nộp bài: [Tên bài nộp C]"
                       aria-describedby="deadline-demo-notice"
-                      disabled
                     >
                       Nộp bài
-                    </button>
+                    </a>
                   </td>
                 </tr>
               </tbody>

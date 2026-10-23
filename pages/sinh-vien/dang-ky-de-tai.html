@@ -37,9 +37,9 @@
               <details class="main-nav__disclosure">
                 <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
                 <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/gioi-thieu.html" aria-disabled="true">Giới thiệu (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/thong-bao.html" aria-disabled="true">Thông báo (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/lien-he.html" aria-disabled="true">Liên hệ (đang cập nhật)</span></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
                 </ul>
               </details>
             </li>
@@ -147,6 +147,7 @@
               <select id="topic-type-filter" name="loai-de-tai">
                 <option value="">Tất cả loại đề tài</option>
                 <option value="do-an-mon-hoc">Đồ án môn học</option>
+                <option value="do-an-tot-nghiep">Đồ án tốt nghiệp</option>
                 <option value="khoa-luan">Khóa luận tốt nghiệp</option>
               </select>
             </div>
@@ -291,11 +292,7 @@
                     <dd>Chưa có thông tin</dd>
                   </dl>
                   <footer class="topic-card__footer">
-                    <span
-                      class="topic-card__pending"
-                      data-pending-href="chi-tiet-de-tai-cua-toi-sinh-vien.html"
-                      >Chi tiết đang cập nhật</span
-                    >
+                    <a class="topic-card__pending" href="chi-tiet-de-tai-sinh-vien.html#tong-quan">Chi tiết đang cập nhật</a>                    >
                   </footer>
                 </article>
               </li>
@@ -447,6 +444,27 @@
               </nav>
             </div>
           </section>
+          <!-- Các biến thể khung danh sách, chưa có xử lý lọc hoặc tải dữ liệu. -->
+          <template id="topics-empty-template">
+            <section class="empty-state" aria-label="Danh sách đề tài trống">
+              <h2>Chưa có đề tài mở đăng ký</h2>
+              <p>Các đề tài sẽ xuất hiện tại đây khi được mở đăng ký.</p>
+              <a href="tao-de-xuat.html">Tạo đề xuất mới</a>
+            </section>
+          </template>
+          <template id="topics-no-results-template">
+            <section class="empty-state" aria-label="Không có kết quả tìm kiếm">
+              <h2>Không tìm thấy đề tài phù hợp</h2>
+              <p>Thử thay đổi từ khóa hoặc bộ lọc.</p>
+              <a href="dang-ky-de-tai.html">Xóa bộ lọc</a>
+            </section>
+          </template>
+          <template id="topics-error-template">
+            <div class="error-state" role="alert">
+              <p>Không thể tải danh sách đề tài.</p>
+              <a href="dang-ky-de-tai.html">Thử lại</a>
+            </div>
+          </template>
         </div>
       </div>
     </main>

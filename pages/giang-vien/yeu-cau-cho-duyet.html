@@ -3,87 +3,62 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Xem và xử lý các đề xuất đề tài do sinh viên gửi." />
-    <title>Yêu cầu chờ duyệt | Quản lý đồ án và khóa luận tốt nghiệp</title>
+    <meta
+      name="description"
+      content="Xem và xử lý các đề xuất đề tài do sinh viên gửi."
+    />
+    <title>Yêu cầu chờ duyệt | Quản lý đồ án</title>
   </head>
 
   <body>
-    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+    <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
 
     <!-- ĐẦU TRANG -->
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-brand" href="tong-quan-giang-vien.html">
-          <!-- Chưa có tài nguyên logo trong dự án; thay placeholder khi có ảnh. -->
-          <span class="site-brand__logo-placeholder" aria-hidden="true">Logo</span>
-          <span class="site-brand__name">
-            QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP
-          </span>
+          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
+          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
         </a>
-
-        <!-- Điều hướng chính dành cho giảng viên. data-pending-href lưu đường dẫn chưa có trang đích. -->
         <nav class="main-nav" aria-label="Điều hướng giảng viên">
           <ul class="main-nav__list">
             <li class="main-nav__item">
-              <a class="main-nav__link" href="tong-quan-giang-vien.html">
-                Tổng quan
-              </a>
+              <a class="main-nav__link" href="tong-quan-giang-vien.html">Tổng quan</a>
             </li>
-
-            <li class="main-nav__item">
-              <span class="main-nav__link" data-pending-href="quan-ly-de-tai.html">
-                Quản lý đề tài
-              </span>
-            </li>
-
-            <li class="main-nav__item">
-              <!-- Liên kết tới trang Yêu cầu chờ duyệt. -->
-              <a class="main-nav__link" href="yeu-cau-cho-duyet.html" aria-current="page">
-                Yêu cầu chờ duyệt
-              </a>
-            </li>
-
             <li class="main-nav__item">
               <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="common-navigation-label">
-                  Chung
-                </summary>
-                <ul
-                  class="main-nav__sublist"
-                  aria-labelledby="common-navigation-label"
-                >
-                  <li class="main-nav__subitem">
-                    <span class="main-nav__link" data-pending-href="gioi-thieu.html">Giới thiệu (đang cập nhật)</span>
-                  </li>
-                  <li class="main-nav__subitem">
-                    <span class="main-nav__link" data-pending-href="thong-bao.html">Thông báo (đang cập nhật)</span>
-                  </li>
-                  <li class="main-nav__subitem">
-                    <span class="main-nav__link" data-pending-href="lien-he.html">Liên hệ (đang cập nhật)</span>
-                  </li>
+                <summary class="main-nav__label" id="topic-management-label">Quản lý đề tài</summary>
+                <ul class="main-nav__sublist" aria-labelledby="topic-management-label">
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="danh-sach-de-tai-dang-huong-dan.html">Đề tài đang hướng dẫn</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="danh-sach-de-tai-da-tao.html">Đề tài đã tạo</a></li>
+                </ul>
+              </details>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="yeu-cau-cho-duyet.html" aria-current="page">Yêu cầu chờ duyệt</a>
+            </li>
+            <li class="main-nav__item">
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
+                <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
                 </ul>
               </details>
             </li>
           </ul>
         </nav>
-
-        <!-- Tài khoản -->
+        <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
         <div class="account-menu">
           <details class="account-menu__disclosure">
-            <summary
-              class="account-menu__toggle"
-              aria-label="Mở menu tài khoản giảng viên"
-            >
+            <summary class="account-menu__toggle" aria-label="Mở menu tài khoản giảng viên">
               <span class="account-menu__avatar" aria-hidden="true">GV</span>
               <span class="account-menu__label">Tài khoản giảng viên</span>
             </summary>
             <ul id="account-dropdown" class="account-menu__list">
               <li>
-                <a
-                  class="account-menu__profile"
-                  href="ho-so-ca-nhan-giang-vien.html"
-                  >Hồ sơ cá nhân</a
-                >
+                <a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
               </li>
               <li>
                 <button
@@ -214,12 +189,6 @@
             </div>
 
             <h2 id="pending-proposals-title">Danh sách đề xuất chờ duyệt</h2>
-            <!--
-              Chưa có trang chi tiết giảng viên cho ba đề xuất mẫu dưới đây.
-              Các thẻ a chưa có href và đang aria-disabled để không mở đường dẫn lỗi.
-              Khi có trang đích, thay data-pending-href bằng href đúng của từng đề xuất,
-              đồng thời bỏ aria-disabled và aria-describedby về ghi chú đường dẫn.
-            -->
             <div class="proposal-list">
               <article class="proposal-card" aria-labelledby="proposal-library-title">
                 <div class="proposal-card__media">
@@ -236,10 +205,7 @@
                 </div>
                 <div class="proposal-card__actions">
                   <p class="proposal-card__status">Chờ duyệt</p>
-                  <!-- Đường dẫn dự kiến cần bổ sung cho đề xuất Website quản lý thư viện. -->
-                  <a class="proposal-card__detail-link" role="link" aria-disabled="true"
-                    aria-describedby="proposal-detail-notice"
-                    data-pending-href="chi-tiet-de-xuat-giang-vien.html#website-quan-ly-thu-vien">Xem đề xuất <span aria-hidden="true">→</span></a>
+                  <a class="proposal-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html#website-quan-ly-thu-vien">Xem đề xuất <span aria-hidden="true">→</span></a>
                 </div>
               </article>
 
@@ -258,10 +224,7 @@
                 </div>
                 <div class="proposal-card__actions">
                   <p class="proposal-card__status">Chờ duyệt</p>
-                  <!-- Đường dẫn dự kiến cần bổ sung cho đề xuất Ứng dụng quản lý chi tiêu. -->
-                  <a class="proposal-card__detail-link" role="link" aria-disabled="true"
-                    aria-describedby="proposal-detail-notice"
-                    data-pending-href="chi-tiet-de-xuat-giang-vien.html#ung-dung-quan-ly-chi-tieu">Xem đề xuất <span aria-hidden="true">→</span></a>
+                  <a class="proposal-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html#ung-dung-quan-ly-chi-tieu">Xem đề xuất <span aria-hidden="true">→</span></a>
                 </div>
               </article>
 
@@ -279,10 +242,7 @@
                 </div>
                 <div class="proposal-card__actions">
                   <p class="proposal-card__status">Chờ duyệt</p>
-                  <!-- Đường dẫn dự kiến cần bổ sung cho đề xuất Hệ thống gợi ý phim. -->
-                  <a class="proposal-card__detail-link" role="link" aria-disabled="true"
-                    aria-describedby="proposal-detail-notice"
-                    data-pending-href="chi-tiet-de-xuat-giang-vien.html#he-thong-goi-y-phim">Xem đề xuất <span aria-hidden="true">→</span></a>
+                  <a class="proposal-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html#he-thong-goi-y-phim">Xem đề xuất <span aria-hidden="true">→</span></a>
                 </div>
               </article>
             </div>
@@ -307,9 +267,9 @@
                 </li>
               </ul>
             </nav>
-            <p id="proposal-detail-notice" class="pending-proposals__notice">
-              Trang chi tiết đề xuất đang được xây dựng; liên kết Xem đề xuất chưa hoạt động.
-            </p>
+            <template id="proposal-empty-template"><section class="empty-state"><h3>Không có đề xuất chờ duyệt</h3><p>Các đề xuất mới sẽ hiển thị tại đây.</p></section></template>
+            <template id="proposal-no-results-template"><section class="empty-state"><h3>Không tìm thấy đề xuất phù hợp</h3><p>Hãy thử từ khóa hoặc bộ lọc khác.</p></section></template>
+            <template id="proposal-error-template"><p class="form-message form-message--error" role="alert">Không thể tải danh sách đề xuất. Vui lòng thử lại.</p></template>
           </section>
         </div>
       </div>

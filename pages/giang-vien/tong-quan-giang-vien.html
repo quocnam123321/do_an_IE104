@@ -29,21 +29,21 @@
               <details class="main-nav__disclosure">
                 <summary class="main-nav__label" id="topic-management-label">Quản lý đề tài</summary>
                 <ul class="main-nav__sublist" aria-labelledby="topic-management-label">
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="de-tai-huong-dan.html" aria-disabled="true">Đề tài đang hướng dẫn (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="de-tai-cua-toi-giang-vien.html" aria-disabled="true">Đề tài đã tạo (đang cập nhật)</span></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="danh-sach-de-tai-dang-huong-dan.html">Đề tài đang hướng dẫn</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="danh-sach-de-tai-da-tao.html">Đề tài đã tạo</a></li>
                 </ul>
               </details>
             </li>
             <li class="main-nav__item">
-              <span class="main-nav__link" data-pending-href="yeu-cau-cho-duyet.html" aria-disabled="true">Yêu cầu chờ duyệt (đang cập nhật)</span>
+              <a class="main-nav__link" href="yeu-cau-cho-duyet.html">Yêu cầu chờ duyệt</a>
             </li>
             <li class="main-nav__item">
               <details class="main-nav__disclosure">
                 <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
                 <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/gioi-thieu.html" aria-disabled="true">Giới thiệu (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/thong-bao.html" aria-disabled="true">Thông báo (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/lien-he.html" aria-disabled="true">Liên hệ (đang cập nhật)</span></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
                 </ul>
               </details>
             </li>
@@ -135,12 +135,12 @@
               <article class="summary-card" aria-labelledby="supervised-count-title">
                 <h3 id="supervised-count-title">Đề tài đang hướng dẫn</h3>
                 <p class="summary-card__value"><strong>0</strong> đề tài</p>
-                <a href="#supervised-topics">Xem đề tài đang hướng dẫn</a>
+                <a href="danh-sach-de-tai-dang-huong-dan.html">Xem đề tài đang hướng dẫn</a>
               </article>
               <article class="summary-card" aria-labelledby="created-count-title">
                 <h3 id="created-count-title">Đề tài đã tạo</h3>
                 <p class="summary-card__value"><strong>2</strong> đề tài</p>
-                <a href="#created-topics">Xem đề tài đã tạo</a>
+                <a href="danh-sach-de-tai-da-tao.html">Xem đề tài đã tạo</a>
               </article>
               <article class="summary-card" aria-labelledby="registrations-count-title">
                 <h3 id="registrations-count-title">Đăng ký chờ duyệt</h3>
@@ -163,8 +163,7 @@
             <h2 id="pending-requests-title">Yêu cầu cần xem xét</h2>
             <p>Có <strong>2 yêu cầu chờ duyệt</strong>: 1 đăng ký và 1 đề xuất.</p>
             <p id="request-actions-notice">
-              Trang xét duyệt chi tiết đang được xây dựng. Các nút xem và xử lý
-              yêu cầu chưa hoạt động.
+              Có thể mở khung chi tiết yêu cầu; các thao tác duyệt và lưu phản hồi chưa được xử lý.
             </p>
             <section id="pending-registrations" aria-labelledby="pending-registrations-title">
               <h3 id="pending-registrations-title">Đăng ký đề tài chờ duyệt</h3>
@@ -190,9 +189,7 @@
                     </td>
                     <td><span class="status-badge status-badge--pending">Chờ duyệt</span></td>
                     <td>
-                      <button type="button" disabled aria-describedby="request-actions-notice">
-                        Xem đăng ký DK001
-                      </button>
+                      <a href="chi-tiet-de-xuat-giang-vien.html#dk001">Xem đăng ký DK001</a>
                     </td>
                   </tr>
                 </tbody>
@@ -222,9 +219,7 @@
                     </td>
                     <td><span class="status-badge status-badge--pending">Chờ duyệt</span></td>
                     <td>
-                      <button type="button" disabled aria-describedby="request-actions-notice">
-                        Xem đề xuất DX001
-                      </button>
+                      <a href="chi-tiet-de-xuat-giang-vien.html#dx001">Xem đề xuất DX001</a>
                     </td>
                   </tr>
                 </tbody>
@@ -277,9 +272,7 @@
                   <td><span class="status-badge status-badge--open">Mở đăng ký</span></td>
                   <td><time datetime="2026-10-20">20/10/2026</time></td>
                   <td>
-                    <button type="button" disabled aria-describedby="topic-actions-notice">
-                      Quản lý DT001
-                    </button>
+                    <a href="chi-tiet-de-tai-da-tao-giang-vien.html">Quản lý DT001 (khung minh họa)</a>
                   </td>
                 </tr>
                 <tr data-topic-id="DT004">
@@ -289,9 +282,7 @@
                   <td><span class="status-badge status-badge--open">Mở đăng ký</span></td>
                   <td>Chưa có thông tin</td>
                   <td>
-                    <button type="button" disabled aria-describedby="topic-actions-notice">
-                      Quản lý DT004
-                    </button>
+                    <a href="chi-tiet-de-tai-da-tao-giang-vien.html">Quản lý DT004 (khung minh họa)</a>
                   </td>
                 </tr>
               </tbody>
@@ -300,6 +291,7 @@
 
           <section class="upcoming-deadlines" aria-labelledby="lecturer-deadlines-title">
             <h2 id="lecturer-deadlines-title">Hạn nộp sắp tới</h2>
+            <a href="han-nop-cua-sinh-vien.html">Xem tất cả hạn nộp của sinh viên</a>
             <p class="empty-state">Chưa có hạn nộp từ đề tài đang hướng dẫn.</p>
           </section>
           <section class="recent-submissions" aria-labelledby="recent-submissions-title">
@@ -334,7 +326,7 @@
             <ul class="quick-actions__list">
               <li><a href="tao-de-tai-giang-vien.html">Tạo đề tài mới</a></li>
               <li><a href="#pending-requests">Xem yêu cầu cần xem xét</a></li>
-              <li><a href="#created-topics">Xem đề tài đã tạo</a></li>
+              <li><a href="danh-sach-de-tai-da-tao.html">Xem đề tài đã tạo</a></li>
               <li><a href="ho-so-ca-nhan-giang-vien.html">Xem hồ sơ cá nhân</a></li>
             </ul>
           </section>

@@ -1,49 +1,80 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Xem thông tin cá nhân, thông tin công tác và chuyên môn của giảng viên."
-    />
-    <title>Hồ sơ cá nhân giảng viên | Quản lý đồ án và khóa luận tốt nghiệp</title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="Xem thông tin cá nhân, thông tin công tác và chuyên môn của giảng viên." name="description"/>
+    <title>
+      Hồ sơ cá nhân giảng viên | Quản lý đồ án và khóa luận tốt nghiệp
+    </title>
   </head>
-
   <body>
-    <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
-
+    <a class="skip-link" href="#main-content">
+      Chuyển đến nội dung chính
+    </a>
     <!-- ĐẦU TRANG -->
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-brand" href="tong-quan-giang-vien.html">
-          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
-          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
+          <img alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" class="site-brand__logo" height="70" src="../../assets/images/images.jpg" width="70"/>
+          <span class="site-brand__name">
+            QUẢN LÝ ĐỒ ÁN VÀ
+            <br/>
+            KHÓA LUẬN TỐT NGHIỆP
+          </span>
         </a>
-        <nav class="main-nav" aria-label="Điều hướng giảng viên">
+        <nav aria-label="Điều hướng giảng viên" class="main-nav">
           <ul class="main-nav__list">
             <li class="main-nav__item">
-              <a class="main-nav__link" href="tong-quan-giang-vien.html">Tổng quan</a>
+              <a class="main-nav__link" href="tong-quan-giang-vien.html">
+                Tổng quan
+              </a>
             </li>
             <li class="main-nav__item">
               <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="topic-management-label">Quản lý đề tài</summary>
-                <ul class="main-nav__sublist" aria-labelledby="topic-management-label">
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="de-tai-huong-dan.html" aria-disabled="true">Đề tài đang hướng dẫn (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="de-tai-cua-toi-giang-vien.html" aria-disabled="true">Đề tài đã tạo (đang cập nhật)</span></li>
+                <summary class="main-nav__label" id="topic-management-label">
+                  Quản lý đề tài
+                </summary>
+                <ul aria-labelledby="topic-management-label" class="main-nav__sublist">
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="danh-sach-de-tai-dang-huong-dan.html">
+                      Đề tài đang hướng dẫn
+                    </a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="danh-sach-de-tai-da-tao.html">
+                      Đề tài đã tạo
+                    </a>
+                  </li>
                 </ul>
               </details>
             </li>
             <li class="main-nav__item">
-              <span class="main-nav__link" data-pending-href="yeu-cau-cho-duyet.html" aria-disabled="true">Yêu cầu chờ duyệt (đang cập nhật)</span>
+              <a class="main-nav__link" href="yeu-cau-cho-duyet.html">
+                Yêu cầu chờ duyệt
+              </a>
             </li>
             <li class="main-nav__item">
               <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
-                <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/gioi-thieu.html" aria-disabled="true">Giới thiệu (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/thong-bao.html" aria-disabled="true">Thông báo (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/lien-he.html" aria-disabled="true">Liên hệ (đang cập nhật)</span></li>
+                <summary class="main-nav__label" id="common-navigation-label">
+                  Chung
+                </summary>
+                <ul aria-labelledby="common-navigation-label" class="main-nav__sublist">
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/gioi-thieu.html">
+                      Giới thiệu
+                    </a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/thong-bao.html">
+                      Thông báo
+                    </a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/lien-he.html">
+                      Liên hệ
+                    </a>
+                  </li>
                 </ul>
               </details>
             </li>
@@ -52,322 +83,311 @@
         <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
         <div class="account-menu">
           <details class="account-menu__disclosure">
-            <summary class="account-menu__toggle" aria-label="Mở menu tài khoản giảng viên">
-              <span class="account-menu__avatar" aria-hidden="true">GV</span>
-              <span class="account-menu__label">Tài khoản giảng viên</span>
+            <summary aria-label="Mở menu tài khoản giảng viên" class="account-menu__toggle">
+              <span aria-hidden="true" class="account-menu__avatar">
+                GV
+              </span>
+              <span class="account-menu__label">
+                Tài khoản giảng viên
+              </span>
             </summary>
-            <ul id="account-dropdown" class="account-menu__list">
+            <ul class="account-menu__list" id="account-dropdown">
               <li>
-                <a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html" aria-current="page">Hồ sơ cá nhân</a>
+                <a aria-current="page" class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">
+                  Hồ sơ cá nhân
+                </a>
               </li>
               <li>
-                <button
-                  class="account-menu__logout"
-                  type="button"
-                  aria-controls="logout-dialog"
-                  aria-describedby="logout-notice"
-                  disabled
-                >
+                <button aria-controls="logout-dialog" aria-describedby="logout-notice" class="account-menu__logout" disabled="" type="button">
                   Đăng xuất
                 </button>
               </li>
             </ul>
-            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+            <p id="logout-notice">
+              Chưa có xử lý đăng xuất.
+            </p>
           </details>
         </div>
       </div>
     </header>
-    <dialog
-      id="logout-dialog"
-      class="confirmation-dialog"
-      aria-labelledby="logout-title"
-    >
-      <h2 id="logout-title">Xác nhận đăng xuất</h2>
-      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+    <dialog aria-labelledby="logout-title" class="confirmation-dialog" id="logout-dialog">
+      <h2 id="logout-title">
+        Xác nhận đăng xuất
+      </h2>
+      <p>
+        Bạn muốn đăng xuất khỏi tài khoản hiện tại?
+      </p>
       <form method="dialog">
-        <button type="submit" value="cancel">Hủy</button>
-        <button type="button" disabled>Xác nhận đăng xuất</button>
+        <button type="submit" value="cancel">
+          Hủy
+        </button>
+        <button disabled="" type="button">
+          Xác nhận đăng xuất
+        </button>
       </form>
     </dialog>
-
     <!-- NỘI DUNG RIÊNG CỦA TỪNG TRANG -->
-    <main id="main-content" class="main-content" tabindex="-1">
+    <main class="main-content" id="main-content" tabindex="-1">
       <div class="page-container">
-        <nav class="breadcrumb" aria-label="Đường dẫn">
+        <nav aria-label="Đường dẫn" class="breadcrumb">
           <ol class="breadcrumb__list">
             <li class="breadcrumb__item">
-              <a href="tong-quan-giang-vien.html">Giảng viên</a>
+              <a href="tong-quan-giang-vien.html">
+                Giảng viên
+              </a>
             </li>
-
             <li class="breadcrumb__item">
-              <span aria-current="page">Hồ sơ cá nhân</span>
+              <span aria-current="page">
+                Hồ sơ cá nhân
+              </span>
             </li>
           </ol>
         </nav>
-
         <header class="page-header">
-          <h1 class="page-header__title">Hồ sơ cá nhân</h1>
+          <h1 class="page-header__title">
+            Hồ sơ cá nhân
+          </h1>
           <p class="page-header__description">
             Xem thông tin cá nhân, thông tin công tác và chuyên môn của bạn.
           </p>
         </header>
-
         <div class="page-content">
           <p class="demo-notice">
             Bản HTML minh họa hồ sơ giảng viên, chưa kết nối dữ liệu tài khoản.
             Các trường chưa có dữ liệu hiển thị “Chưa có thông tin”.
           </p>
-
           <div class="lecturer-profile">
             <!-- Vùng chờ ảnh; chỉ thêm thẻ img khi có nguồn ảnh hợp lệ. -->
-            <section
-              class="lecturer-profile__avatar-panel"
-              aria-label="Ảnh đại diện giảng viên"
-            >
+            <section aria-label="Ảnh đại diện giảng viên" class="lecturer-profile__avatar-panel">
               <figure class="profile-avatar">
                 <div class="profile-avatar__placeholder">
-                  <p>Chưa có ảnh đại diện</p>
+                  <p>
+                    Chưa có ảnh đại diện
+                  </p>
                 </div>
-                <figcaption>Ảnh đại diện giảng viên</figcaption>
+                <figcaption>
+                  Ảnh đại diện giảng viên
+                </figcaption>
               </figure>
-              <button
-                class="profile-avatar__change"
-                type="button"
-                aria-describedby="avatar-change-notice"
-                disabled
-              >
+              <button aria-describedby="avatar-change-notice" class="profile-avatar__change" disabled="" type="button">
                 Thay đổi ảnh
               </button>
-              <p id="avatar-change-notice" class="profile-avatar__notice">
+              <p class="profile-avatar__notice" id="avatar-change-notice">
                 Chưa có xử lý thay đổi và lưu ảnh đại diện.
               </p>
             </section>
-
-            <section
-              class="lecturer-profile__information"
-              aria-labelledby="personal-information-title"
-            >
-              <h2 id="personal-information-title">Thông tin cá nhân</h2>
+            <section aria-labelledby="personal-information-title" class="lecturer-profile__information">
+              <h2 id="personal-information-title">
+                Thông tin cá nhân
+              </h2>
               <!-- Hồ sơ ở chế độ xem; biểu mẫu chỉnh sửa sẽ được bổ sung sau. -->
               <dl class="profile-details">
                 <div class="profile-details__item">
-                  <dt>Họ và tên</dt>
-                  <dd>Chưa có thông tin</dd>
+                  <dt>
+                    Họ và tên
+                  </dt>
+                  <dd>
+                    Chưa có thông tin
+                  </dd>
                 </div>
                 <div class="profile-details__item">
-                  <dt>Mã giảng viên</dt>
-                  <dd>Chưa có thông tin</dd>
+                  <dt>
+                    Mã giảng viên
+                  </dt>
+                  <dd>
+                    Chưa có thông tin
+                  </dd>
                 </div>
                 <div class="profile-details__item">
-                  <dt>Email</dt>
-                  <dd>Chưa có thông tin</dd>
+                  <dt>
+                    Email
+                  </dt>
+                  <dd>
+                    Chưa có thông tin
+                  </dd>
                 </div>
                 <div class="profile-details__item">
-                  <dt>Số điện thoại</dt>
-                  <dd>Chưa có thông tin</dd>
+                  <dt>
+                    Số điện thoại
+                  </dt>
+                  <dd>
+                    Chưa có thông tin
+                  </dd>
                 </div>
                 <div class="profile-details__item">
-                  <dt>Khoa</dt>
-                  <dd>Chưa có thông tin</dd>
+                  <dt>
+                    Khoa
+                  </dt>
+                  <dd>
+                    Chưa có thông tin
+                  </dd>
                 </div>
                 <div class="profile-details__item">
-                  <dt>Bộ môn</dt>
-                  <dd>Chưa có thông tin</dd>
+                  <dt>
+                    Bộ môn
+                  </dt>
+                  <dd>
+                    Chưa có thông tin
+                  </dd>
                 </div>
                 <div class="profile-details__item">
-                  <dt>Học vị</dt>
-                  <dd>Chưa có thông tin</dd>
+                  <dt>
+                    Học vị
+                  </dt>
+                  <dd>
+                    Chưa có thông tin
+                  </dd>
                 </div>
                 <div class="profile-details__item">
-                  <dt>Chuyên môn</dt>
-                  <dd>Chưa có thông tin</dd>
+                  <dt>
+                    Chuyên môn
+                  </dt>
+                  <dd>
+                    Chưa có thông tin
+                  </dd>
                 </div>
               </dl>
             </section>
           </div>
-
-          <div class="profile-actions" role="group" aria-label="Thao tác hồ sơ">
-            <button
-              id="open-change-password"
-              class="profile-actions__change-password"
-              type="button"
-              aria-haspopup="dialog"
-              aria-controls="change-password-dialog"
-              aria-describedby="profile-actions-notice"
-              disabled
-            >
+          <div aria-label="Thao tác hồ sơ" class="profile-actions" role="group">
+            <button aria-controls="change-password-dialog" aria-describedby="profile-actions-notice" aria-haspopup="dialog" class="profile-actions__change-password" disabled="" id="open-change-password" type="button">
               Đổi mật khẩu
             </button>
-            <button
-              class="profile-actions__edit"
-              type="button"
-              aria-describedby="profile-actions-notice"
-              disabled
-            >
+            <a class="profile-actions__edit" href="#profile-edit-form">
               Chỉnh sửa thông tin
-            </button>
+            </a>
           </div>
-          <p id="profile-actions-notice" class="profile-actions__notice">
-            Chưa có xử lý mở hộp thoại đổi mật khẩu và chỉnh sửa thông tin cá nhân.
+          <p class="profile-actions__notice" id="profile-actions-notice">
+            Biểu mẫu chỉnh sửa chưa lưu dữ liệu. Đổi mật khẩu chưa được xử lý.
           </p>
+          <details class="profile-edit">
+            <summary>
+              Chỉnh sửa thông tin cá nhân
+            </summary>
+            <form id="profile-edit-form" aria-describedby="profile-edit-notice">
+              <p>
+                <label for="profile-full-name">
+                  Họ và tên *
+                </label>
+                <input id="profile-full-name" name="profile-full-name" required="" type="text"/>
+              </p>
+              <p>
+                <label for="profile-email">
+                  Email *
+                </label>
+                <input id="profile-email" name="profile-email" required="" type="email"/>
+              </p>
+              <p>
+                <label for="profile-phone">
+                  Số điện thoại
+                </label>
+                <input id="profile-phone" name="profile-phone" type="tel"/>
+              </p>
+              <p>
+                <label for="profile-expertise">
+                  Chuyên môn
+                </label>
+                <input id="profile-expertise" name="profile-expertise" type="text"/>
+              </p>
+              <p id="profile-edit-notice">
+                Khung chỉnh sửa minh họa, chưa lưu thông tin tài khoản.
+              </p>
+              <button type="reset">
+                Hủy thay đổi
+              </button>
+              <button disabled="" type="button">
+                Lưu thay đổi
+              </button>
+              <template id="profile-edit-error-template">
+                <p role="alert">
+                  Không thể thực hiện thao tác. Vui lòng kiểm tra thông tin và thử lại.
+                </p>
+              </template>
+              <template id="profile-edit-success-template">
+                <p role="status">
+                  Thao tác đã hoàn tất.
+                </p>
+              </template>
+            </form>
+          </details>
         </div>
       </div>
     </main>
-
     <!-- HỘP THOẠI ĐỔI MẬT KHẨU -->
-    <dialog
-      id="change-password-dialog"
-      class="change-password-dialog"
-      aria-labelledby="change-password-title"
-    >
+    <dialog aria-labelledby="change-password-title" class="change-password-dialog" id="change-password-dialog">
       <header class="change-password-dialog__header">
-        <h2 id="change-password-title">Đổi mật khẩu</h2>
-        <button
-          class="change-password-dialog__close"
-          type="submit"
-          form="change-password-form"
-          value="cancel"
-          formnovalidate
-          aria-label="Đóng hộp thoại đổi mật khẩu"
-        >
-          <span aria-hidden="true">×</span>
+        <h2 id="change-password-title">
+          Đổi mật khẩu
+        </h2>
+        <button aria-label="Đóng hộp thoại đổi mật khẩu" class="change-password-dialog__close" form="change-password-form" formnovalidate="" type="submit" value="cancel">
+          <span aria-hidden="true">
+            ×
+          </span>
         </button>
       </header>
-
       <!-- method="dialog" không gửi thông tin mật khẩu lên URL hoặc máy chủ. -->
-      <form id="change-password-form" class="change-password-form" method="dialog">
+      <form class="change-password-form" id="change-password-form" method="dialog">
         <div class="change-password-form__field">
-          <label for="current-password">Mật khẩu hiện tại</label>
+          <label for="current-password">
+            Mật khẩu hiện tại
+          </label>
           <div class="change-password-form__input-group">
-            <input
-              id="current-password"
-              name="mat-khau-hien-tai"
-              type="password"
-              autocomplete="current-password"
-              placeholder="Nhập mật khẩu hiện tại"
-              required
-              autofocus
-            />
-            <button
-              class="change-password-form__visibility"
-              type="button"
-              aria-label="Hiện mật khẩu hiện tại"
-              aria-controls="current-password"
-              aria-describedby="change-password-notice"
-              disabled
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
-                <circle cx="12" cy="12" r="3" />
+            <input autocomplete="current-password" autofocus="" id="current-password" name="mat-khau-hien-tai" placeholder="Nhập mật khẩu hiện tại" required="" type="password"/>
+            <button aria-controls="current-password" aria-describedby="change-password-notice" aria-label="Hiện mật khẩu hiện tại" class="change-password-form__visibility" disabled="" type="button">
+              <svg aria-hidden="true" fill="none" focusable="false" height="18" stroke="currentColor" viewbox="0 0 24 24" width="18">
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z">
+                </path>
+                <circle cx="12" cy="12" r="3">
+                </circle>
               </svg>
             </button>
           </div>
         </div>
-
         <div class="change-password-form__field">
-          <label for="new-password">Mật khẩu mới</label>
+          <label for="new-password">
+            Mật khẩu mới
+          </label>
           <div class="change-password-form__input-group">
-            <input
-              id="new-password"
-              name="mat-khau-moi"
-              type="password"
-              autocomplete="new-password"
-              placeholder="Nhập mật khẩu mới"
-              required
-            />
-            <button
-              class="change-password-form__visibility"
-              type="button"
-              aria-label="Hiện mật khẩu mới"
-              aria-controls="new-password"
-              aria-describedby="change-password-notice"
-              disabled
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
-                <circle cx="12" cy="12" r="3" />
+            <input autocomplete="new-password" id="new-password" name="mat-khau-moi" placeholder="Nhập mật khẩu mới" required="" type="password"/>
+            <button aria-controls="new-password" aria-describedby="change-password-notice" aria-label="Hiện mật khẩu mới" class="change-password-form__visibility" disabled="" type="button">
+              <svg aria-hidden="true" fill="none" focusable="false" height="18" stroke="currentColor" viewbox="0 0 24 24" width="18">
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z">
+                </path>
+                <circle cx="12" cy="12" r="3">
+                </circle>
               </svg>
             </button>
           </div>
         </div>
-
         <div class="change-password-form__field">
-          <label for="confirm-new-password">Xác nhận mật khẩu mới</label>
+          <label for="confirm-new-password">
+            Xác nhận mật khẩu mới
+          </label>
           <div class="change-password-form__input-group">
-            <input
-              id="confirm-new-password"
-              name="xac-nhan-mat-khau-moi"
-              type="password"
-              autocomplete="new-password"
-              placeholder="Nhập lại mật khẩu mới"
-              required
-            />
-            <button
-              class="change-password-form__visibility"
-              type="button"
-              aria-label="Hiện mật khẩu xác nhận"
-              aria-controls="confirm-new-password"
-              aria-describedby="change-password-notice"
-              disabled
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                aria-hidden="true"
-                focusable="false"
-              >
-                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
-                <circle cx="12" cy="12" r="3" />
+            <input autocomplete="new-password" id="confirm-new-password" name="xac-nhan-mat-khau-moi" placeholder="Nhập lại mật khẩu mới" required="" type="password"/>
+            <button aria-controls="confirm-new-password" aria-describedby="change-password-notice" aria-label="Hiện mật khẩu xác nhận" class="change-password-form__visibility" disabled="" type="button">
+              <svg aria-hidden="true" fill="none" focusable="false" height="18" stroke="currentColor" viewbox="0 0 24 24" width="18">
+                <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z">
+                </path>
+                <circle cx="12" cy="12" r="3">
+                </circle>
               </svg>
             </button>
           </div>
         </div>
-
-        <p id="change-password-notice" class="change-password-form__notice">
+        <p class="change-password-form__notice" id="change-password-notice">
           Chưa có xử lý ẩn/hiện và lưu mật khẩu mới.
         </p>
-
         <div class="change-password-dialog__actions">
-          <button
-            class="change-password-dialog__cancel"
-            type="submit"
-            value="cancel"
-            formnovalidate
-          >
+          <button class="change-password-dialog__cancel" formnovalidate="" type="submit" value="cancel">
             Hủy
           </button>
-          <button
-            class="change-password-dialog__submit"
-            type="button"
-            aria-describedby="change-password-notice"
-            title="Chức năng đổi mật khẩu chưa kết nối máy chủ"
-            disabled
-          >
+          <button aria-describedby="change-password-notice" class="change-password-dialog__submit" disabled="" title="Chức năng đổi mật khẩu chưa kết nối máy chủ" type="button">
             Đổi mật khẩu
           </button>
         </div>
       </form>
     </dialog>
-
     <!-- CHÂN TRANG CHUNG -->
     <footer class="site-footer">
       <div class="site-footer__inner">
@@ -378,30 +398,38 @@
             </p>
             <dl class="site-footer__about">
               <div>
-                <dt>Thông tin trang web</dt>
-                <dd>Trường Đại học Công nghệ Thông tin</dd>
+                <dt>
+                  Thông tin trang web
+                </dt>
+                <dd>
+                  Trường Đại học Công nghệ Thông tin
+                </dd>
               </div>
               <div>
-                <dt>Thông tin nhóm</dt>
-                <dd>Đồ án IE104 — Nhóm 7</dd>
+                <dt>
+                  Thông tin nhóm
+                </dt>
+                <dd>
+                  Đồ án IE104 — Nhóm 7
+                </dd>
               </div>
             </dl>
           </div>
-
-          <section
-            class="site-footer__information site-footer__terms"
-            aria-labelledby="footer-terms-title"
-          >
-            <h2 id="footer-terms-title">Điều khoản sử dụng</h2>
-            <p>Đang cập nhật.</p>
+          <section aria-labelledby="footer-terms-title" class="site-footer__information site-footer__terms">
+            <h2 id="footer-terms-title">
+              Điều khoản sử dụng
+            </h2>
+            <p>
+              Đang cập nhật.
+            </p>
           </section>
-
-          <section
-            class="site-footer__information site-footer__policies"
-            aria-labelledby="footer-policies-title"
-          >
-            <h2 id="footer-policies-title">Quy chế, chính sách bảo mật</h2>
-            <p>Đang cập nhật.</p>
+          <section aria-labelledby="footer-policies-title" class="site-footer__information site-footer__policies">
+            <h2 id="footer-policies-title">
+              Quy chế, chính sách bảo mật
+            </h2>
+            <p>
+              Đang cập nhật.
+            </p>
           </section>
         </div>
         <p class="site-footer__copyright">

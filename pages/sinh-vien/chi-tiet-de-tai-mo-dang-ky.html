@@ -40,9 +40,9 @@
               <details class="main-nav__disclosure">
                 <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
                 <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/gioi-thieu.html" aria-disabled="true">Giới thiệu (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/thong-bao.html" aria-disabled="true">Thông báo (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/lien-he.html" aria-disabled="true">Liên hệ (đang cập nhật)</span></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
                 </ul>
               </details>
             </li>
@@ -108,7 +108,7 @@
             </li>
             <li>
               <a href="dang-ky-de-tai.html">
-                Đề tài mở đăng ký
+                Đăng ký đề tài
               </a>
             </li>
             <li aria-current="page">
@@ -153,6 +153,11 @@
               <p>
                 Môn học: IE104 · Internet và Công nghệ Web
               </p>
+              <dl class="summary__meta">
+                <div><dt>Hình thức</dt><dd>Theo nhóm</dd></div>
+                <div><dt>Học kỳ</dt><dd>[Học kỳ]</dd></div>
+                <div><dt>Năm học</dt><dd>[Năm học]</dd></div>
+              </dl>
               <div class="supervisor">
                 <strong>
                   Giảng viên hướng dẫn: Nguyễn Văn A
@@ -211,7 +216,15 @@
               </section>
               <section class="panel">
                 <h3>
-                  Yêu cầu thực hiện
+                  Kết quả dự kiến
+                </h3>
+                <div class="content-box">
+                  <p>[Sản phẩm, báo cáo và tài liệu dự kiến của đề tài.]</p>
+                </div>
+              </section>
+              <section class="panel">
+                <h3>
+                  Yêu cầu đối với sinh viên
                 </h3>
                 <div class="content-box">
                   <ul>
@@ -230,8 +243,27 @@
                   </ul>
                 </div>
               </section>
+              <section class="panel" aria-labelledby="topic-attachments-title">
+                <h3 id="topic-attachments-title">Tài liệu đính kèm</h3>
+                <ul class="topic-attachments">
+                  <li>
+                    <span>Đề cương đề tài.pdf</span>
+                    <button type="button" disabled aria-describedby="attachment-placeholder-note">Tải xuống</button>
+                  </li>
+                </ul>
+                <p id="attachment-placeholder-note">Vị trí tệp minh họa, chưa có tệp để tải.</p>
+              </section>
             </div>
             <section id="topic-registration" class="panel" aria-labelledby="registration-title">
+              <aside class="registration-notes" aria-labelledby="registration-notes-title">
+                <h3 id="registration-notes-title">Lưu ý khi đăng ký</h3>
+                <ol>
+                  <li>Đọc kỹ yêu cầu trước khi đăng ký.</li>
+                  <li>Kiểm tra thông tin và thành viên nhóm.</li>
+                  <li>Đăng ký sẽ được gửi đến giảng viên để xem xét.</li>
+                  <li>Theo dõi phản hồi trong “Đề tài của tôi”.</li>
+                </ol>
+              </aside>
               <h3 id="registration-title">
                 Thông tin đăng ký
               </h3>
@@ -249,7 +281,7 @@
                   <div class="member-card">
                     <div class="member-heading">
                       <strong>
-                        Nhóm trưởng (tự điền)
+                        Sinh viên đang đăng nhập
                       </strong>
                     </div>
                     <div class="member-fields">
@@ -257,15 +289,23 @@
                         <label for="student-code">
                           MSSV
                         </label>
-                        <input id="student-code" name="ma-sinh-vien" value="" readonly>
+                        <input id="student-code" name="ma-sinh-vien" value="" placeholder="MSSV sinh viên" required>
                       </div>
                       <div>
                         <label for="student-name">
                           Họ tên
                         </label>
-                        <input id="student-name" name="ho-ten" value="Nguyễn Minh Anh" readonly>
+                        <input id="student-name" name="ho-ten" value="Nguyễn Minh Anh" required>
                       </div>
                     </div>
+                    <div>
+                      <label for="student-role">Vai trò</label>
+                      <select id="student-role" name="vai-tro" required>
+                        <option value="nhom-truong" selected>Nhóm trưởng</option>
+                        <option value="thanh-vien">Thành viên</option>
+                      </select>
+                    </div>
+                    <p>Điền sẵn từ tài khoản, có thể chỉnh sửa.</p>
                   </div>
                   <div id="additional-members">
                     <div class="member-card">
@@ -291,6 +331,13 @@
                           <input id="member-name-2" name="thanh-vien-2-ho-ten" type="text" placeholder="Nhập họ tên" maxlength="100">
                         </div>
                       </div>
+                      <div>
+                        <label for="member-role-2">Vai trò</label>
+                        <select id="member-role-2" name="thanh-vien-2-vai-tro">
+                          <option value="thanh-vien" selected>Thành viên</option>
+                          <option value="nhom-truong">Nhóm trưởng</option>
+                        </select>
+                      </div>
                     </div>
                   </div>
                   <button class="add-member" type="button" disabled>
@@ -312,7 +359,7 @@
                   </textarea>
                 </div>
                 <div>
-                  <button class="submit-registration" type="button" disabled>
+                  <button class="submit-registration" type="button" aria-haspopup="dialog" aria-controls="registration-confirm-dialog" disabled>
                     Gửi yêu cầu đăng ký
                   </button>
                   <p class="form-note">
@@ -323,6 +370,20 @@
                   </p>
                 </div>
               </form>
+              <p id="registration-error" class="form-error" role="alert" hidden>Vui lòng kiểm tra lại thông tin đăng ký.</p>
+              <p id="registration-result" class="form-result" role="status" hidden>Yêu cầu đăng ký đã được ghi nhận.</p>
+              <template id="registration-already-sent-template">
+                <div class="registration-state" role="status">
+                  <p>Bạn đã gửi yêu cầu đăng ký đề tài này.</p>
+                  <a href="de-tai-cua-toi-sinh-vien.html">Theo dõi trong Đề tài của tôi</a>
+                </div>
+              </template>
+              <template id="registration-closed-template">
+                <div class="registration-state" role="status">
+                  <p>Đề tài đã đóng đăng ký.</p>
+                  <button type="button" disabled>Gửi yêu cầu đăng ký</button>
+                </div>
+              </template>
             </section>
           </div>
         </article>
@@ -362,5 +423,15 @@
         </p>
       </div>
     </footer>
+    <dialog id="registration-confirm-dialog" class="confirmation-dialog" aria-labelledby="registration-confirm-title">
+      <h2 id="registration-confirm-title">Xác nhận đăng ký đề tài</h2>
+      <p>Kiểm tra thông tin nhóm và thành viên trước khi gửi yêu cầu đến giảng viên.</p>
+      <dl>
+        <div><dt>Đề tài</dt><dd>[Tên đề tài]</dd></div>
+        <div><dt>Nhóm</dt><dd>[Tên nhóm và danh sách thành viên]</dd></div>
+      </dl>
+      <form method="dialog"><button type="submit">Quay lại chỉnh sửa</button></form>
+      <button type="button" disabled>Xác nhận gửi đăng ký</button>
+    </dialog>
   </body>
 </html>

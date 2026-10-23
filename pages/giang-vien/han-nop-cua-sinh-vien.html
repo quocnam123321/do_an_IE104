@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="Theo dõi hạn nộp và tình trạng bài nộp của sinh viên đang hướng dẫn." name="description"/>
+    <title>
+      Hạn nộp của sinh viên | Quản lý đồ án
+    </title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">
+      Chuyển đến nội dung chính
+    </a>
+    <!-- ĐẦU TRANG -->
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-giang-vien.html">
+          <img alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" class="site-brand__logo" height="70" src="../../assets/images/images.jpg" width="70"/>
+          <span class="site-brand__name">
+            QUẢN LÝ ĐỒ ÁN VÀ
+            <br/>
+            KHÓA LUẬN TỐT NGHIỆP
+          </span>
+        </a>
+        <nav aria-label="Điều hướng giảng viên" class="main-nav">
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-giang-vien.html">
+                Tổng quan
+              </a>
+            </li>
+            <li class="main-nav__item">
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__label" id="topic-management-label">
+                  Quản lý đề tài
+                </summary>
+                <ul aria-labelledby="topic-management-label" class="main-nav__sublist">
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="danh-sach-de-tai-dang-huong-dan.html">
+                      Đề tài đang hướng dẫn
+                    </a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="danh-sach-de-tai-da-tao.html">
+                      Đề tài đã tạo
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="yeu-cau-cho-duyet.html">
+                Yêu cầu chờ duyệt
+              </a>
+            </li>
+            <li class="main-nav__item">
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__label" id="common-navigation-label">
+                  Chung
+                </summary>
+                <ul aria-labelledby="common-navigation-label" class="main-nav__sublist">
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/gioi-thieu.html">
+                      Giới thiệu
+                    </a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/thong-bao.html">
+                      Thông báo
+                    </a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/lien-he.html">
+                      Liên hệ
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </nav>
+        <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
+        <div class="account-menu">
+          <details class="account-menu__disclosure">
+            <summary aria-label="Mở menu tài khoản giảng viên" class="account-menu__toggle">
+              <span aria-hidden="true" class="account-menu__avatar">
+                GV
+              </span>
+              <span class="account-menu__label">
+                Tài khoản giảng viên
+              </span>
+            </summary>
+            <ul class="account-menu__list" id="account-dropdown">
+              <li>
+                <a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">
+                  Hồ sơ cá nhân
+                </a>
+              </li>
+              <li>
+                <button aria-controls="logout-dialog" aria-describedby="logout-notice" class="account-menu__logout" disabled="" type="button">
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">
+              Chưa có xử lý đăng xuất.
+            </p>
+          </details>
+        </div>
+      </div>
+    </header>
+    <dialog aria-labelledby="logout-title" class="confirmation-dialog" id="logout-dialog">
+      <h2 id="logout-title">
+        Xác nhận đăng xuất
+      </h2>
+      <p>
+        Bạn muốn đăng xuất khỏi tài khoản hiện tại?
+      </p>
+      <form method="dialog">
+        <button type="submit" value="cancel">
+          Hủy
+        </button>
+        <button disabled="" type="button">
+          Xác nhận đăng xuất
+        </button>
+      </form>
+    </dialog>
+    <!-- NỘI DUNG RIÊNG CỦA TỪNG TRANG -->
+    <main class="main-content" id="main-content" tabindex="-1">
+      <div class="page-container">
+        <nav aria-label="Đường dẫn" class="breadcrumb">
+          <ol>
+            <li>
+              <a href="tong-quan-giang-vien.html">
+                Giảng viên
+              </a>
+            </li>
+            <li>
+              <a href="tong-quan-giang-vien.html">
+                Tổng quan
+              </a>
+            </li>
+            <li aria-current="page">
+              Hạn nộp của sinh viên
+            </li>
+          </ol>
+        </nav>
+        <a href="tong-quan-giang-vien.html">
+          ← Quay lại Tổng quan
+        </a>
+        <header class="page-header">
+          <h1 class="page-header__title">
+            Hạn nộp của sinh viên
+          </h1>
+          <p>
+            Theo dõi yêu cầu nộp, thời hạn và tình trạng bài nộp của các sinh viên, nhóm đang hướng dẫn.
+          </p>
+        </header>
+        <p class="demo-notice" id="deadline-notice">
+          Khung HTML với dữ liệu mẫu, chưa thực hiện tìm kiếm hoặc lọc.
+        </p>
+        <section aria-labelledby="deadline-filters-title">
+          <h2 id="deadline-filters-title">
+            Tìm kiếm và lọc hạn nộp
+          </h2>
+          <form aria-describedby="deadline-notice">
+            <p>
+              <label for="deadline-query">
+                Tìm theo đề tài, sinh viên, nhóm hoặc yêu cầu nộp
+              </label>
+              <input id="deadline-query" name="deadline-query" type="search"/>
+            </p>
+            <p>
+              <label for="deadline-period">
+                Thời hạn
+              </label>
+              <select id="deadline-period" name="deadline-period">
+                <option value="">
+                  Chọn thời hạn
+                </option>
+                <option value="1">
+                  Tất cả thời hạn
+                </option>
+                <option value="2">
+                  Quá hạn
+                </option>
+                <option value="3">
+                  Đến hạn hôm nay
+                </option>
+                <option value="4">
+                  Sắp đến hạn
+                </option>
+              </select>
+            </p>
+            <p>
+              <label for="deadline-status">
+                Tình trạng bài nộp
+              </label>
+              <select id="deadline-status" name="deadline-status">
+                <option value="">
+                  Chọn tình trạng bài nộp
+                </option>
+                <option value="1">
+                  Tất cả tình trạng
+                </option>
+                <option value="2">
+                  Chưa nộp
+                </option>
+                <option value="3">
+                  Đã nộp
+                </option>
+              </select>
+            </p>
+            <p>
+              <label for="deadline-topic">
+                Đề tài
+              </label>
+              <select id="deadline-topic" name="deadline-topic">
+                <option value="">
+                  Chọn đề tài
+                </option>
+                <option value="1">
+                  Tất cả đề tài
+                </option>
+              </select>
+            </p>
+            <p>
+              <label for="deadline-assignee">
+                Đối tượng phụ trách
+              </label>
+              <select id="deadline-assignee" name="deadline-assignee">
+                <option value="">
+                  Chọn đối tượng phụ trách
+                </option>
+                <option value="1">
+                  Cá nhân và nhóm
+                </option>
+                <option value="2">
+                  Cá nhân
+                </option>
+                <option value="3">
+                  Nhóm
+                </option>
+              </select>
+            </p>
+            <button disabled="" type="button">
+              Tìm kiếm
+            </button>
+            <button type="reset">
+              Đặt lại
+            </button>
+          </form>
+        </section>
+        <section aria-labelledby="deadline-results-title">
+          <h2 id="deadline-results-title">
+            Danh sách hạn nộp
+          </h2>
+          <p>
+            Sắp xếp: Hạn nộp tăng dần
+          </p>
+          <table>
+            <caption>
+              Các yêu cầu nộp cần theo dõi
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">
+                  Yêu cầu nộp
+                </th>
+                <th scope="col">
+                  Đề tài
+                </th>
+                <th scope="col">
+                  Sinh viên / Nhóm
+                </th>
+                <th scope="col">
+                  Hạn nộp
+                </th>
+                <th scope="col">
+                  Tình trạng
+                </th>
+                <th scope="col">
+                  Thao tác
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">
+                  [Yêu cầu nộp]
+                </th>
+                <td>
+                  [Tên đề tài]
+                </td>
+                <td>
+                  [Sinh viên / Nhóm]
+                </td>
+                <td>
+                  dd/mm/yyyy hh:mm
+                </td>
+                <td>
+                  Chưa nộp — Quá hạn
+                </td>
+                <td>
+                  <a href="chi-tiet-de-tai-dang-huong-dan-giang-vien.html#bai-nop">
+                    Xem chi tiết →
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  [Yêu cầu nộp]
+                </th>
+                <td>
+                  [Tên đề tài]
+                </td>
+                <td>
+                  [Sinh viên / Nhóm]
+                </td>
+                <td>
+                  dd/mm/yyyy hh:mm
+                </td>
+                <td>
+                  Chưa nộp — Đến hạn hôm nay
+                </td>
+                <td>
+                  <a href="chi-tiet-de-tai-dang-huong-dan-giang-vien.html#bai-nop">
+                    Xem chi tiết →
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  [Yêu cầu nộp]
+                </th>
+                <td>
+                  [Tên đề tài]
+                </td>
+                <td>
+                  [Sinh viên / Nhóm]
+                </td>
+                <td>
+                  dd/mm/yyyy hh:mm
+                </td>
+                <td>
+                  Chưa nộp — Sắp đến hạn
+                </td>
+                <td>
+                  <a href="chi-tiet-de-tai-dang-huong-dan-giang-vien.html#bai-nop">
+                    Xem chi tiết →
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  [Yêu cầu nộp]
+                </th>
+                <td>
+                  [Tên đề tài]
+                </td>
+                <td>
+                  [Sinh viên / Nhóm]
+                </td>
+                <td>
+                  dd/mm/yyyy hh:mm
+                </td>
+                <td>
+                  Đã nộp — Nộp đúng hạn
+                </td>
+                <td>
+                  <a href="chi-tiet-de-tai-dang-huong-dan-giang-vien.html#bai-nop">
+                    Xem chi tiết →
+                  </a>
+                </td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  [Yêu cầu nộp]
+                </th>
+                <td>
+                  [Tên đề tài]
+                </td>
+                <td>
+                  [Sinh viên / Nhóm]
+                </td>
+                <td>
+                  dd/mm/yyyy hh:mm
+                </td>
+                <td>
+                  Chưa nộp — Còn thời hạn
+                </td>
+                <td>
+                  <a href="chi-tiet-de-tai-dang-huong-dan-giang-vien.html#bai-nop">
+                    Xem chi tiết →
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <nav aria-label="Phân trang hạn nộp">
+            <button disabled="" type="button">
+              ← Trước
+            </button>
+            <span aria-current="page">
+              1
+            </span>
+            <button disabled="" type="button">
+              Sau →
+            </button>
+          </nav>
+        </section>
+        <template id="deadlines-empty-template">
+          <p>
+            Chưa có hạn nộp cần theo dõi.
+          </p>
+        </template>
+        <template id="deadlines-no-results-template">
+          <p>
+            Không tìm thấy hạn nộp phù hợp.
+          </p>
+        </template>
+        <template id="deadlines-error-template">
+          <p role="alert">
+            Không thể thực hiện thao tác. Vui lòng kiểm tra thông tin và thử lại.
+          </p>
+        </template>
+        <template id="deadlines-success-template">
+          <p role="status">
+            Thao tác đã hoàn tất.
+          </p>
+        </template>
+      </div>
+    </main>
+    <!-- CHÂN TRANG CHUNG -->
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <p class="site-footer__name">
+            QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN
+          </p>
+          <p>
+            Trường Đại học Công nghệ Thông tin
+          </p>
+        </div>
+        <ul aria-label="Thông tin và quy định" class="site-footer__information">
+          <li>
+            <span>
+              Điều khoản sử dụng (đang cập nhật)
+            </span>
+          </li>
+          <li>
+            <span>
+              Quy chế đồ án / khóa luận (đang cập nhật)
+            </span>
+          </li>
+          <li>
+            <span>
+              Chính sách bảo mật (đang cập nhật)
+            </span>
+          </li>
+        </ul>
+        <p class="site-footer__copyright">
+          © 2026 · Hệ thống quản lý đồ án / khóa luận
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

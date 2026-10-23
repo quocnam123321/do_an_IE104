@@ -1,49 +1,80 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Xem thông tin, mô tả, mục tiêu, kết quả dự kiến và các mốc thời gian của đề tài do giảng viên tạo."
-    />
-    <title>Chi tiết đề tài đã tạo | Quản lý đồ án và khóa luận tốt nghiệp</title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="Xem thông tin, mô tả, mục tiêu, kết quả dự kiến và các mốc thời gian của đề tài do giảng viên tạo." name="description"/>
+    <title>
+      Chi tiết đề tài đã tạo | Quản lý đồ án và khóa luận tốt nghiệp
+    </title>
   </head>
-
   <body>
-    <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
-
+    <a class="skip-link" href="#main-content">
+      Chuyển đến nội dung chính
+    </a>
     <!-- ĐẦU TRANG -->
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-brand" href="tong-quan-giang-vien.html">
-          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
-          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
+          <img alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" class="site-brand__logo" height="70" src="../../assets/images/images.jpg" width="70"/>
+          <span class="site-brand__name">
+            QUẢN LÝ ĐỒ ÁN VÀ
+            <br/>
+            KHÓA LUẬN TỐT NGHIỆP
+          </span>
         </a>
-        <nav class="main-nav" aria-label="Điều hướng giảng viên">
+        <nav aria-label="Điều hướng giảng viên" class="main-nav">
           <ul class="main-nav__list">
             <li class="main-nav__item">
-              <a class="main-nav__link" href="tong-quan-giang-vien.html">Tổng quan</a>
+              <a class="main-nav__link" href="tong-quan-giang-vien.html">
+                Tổng quan
+              </a>
             </li>
             <li class="main-nav__item">
               <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="topic-management-label" aria-current="location">Quản lý đề tài</summary>
-                <ul class="main-nav__sublist" aria-labelledby="topic-management-label">
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="de-tai-huong-dan.html" aria-disabled="true">Đề tài đang hướng dẫn (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="de-tai-cua-toi-giang-vien.html" aria-disabled="true">Đề tài đã tạo (đang cập nhật)</span></li>
+                <summary aria-current="location" class="main-nav__label" id="topic-management-label">
+                  Quản lý đề tài
+                </summary>
+                <ul aria-labelledby="topic-management-label" class="main-nav__sublist">
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="danh-sach-de-tai-dang-huong-dan.html">
+                      Đề tài đang hướng dẫn
+                    </a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="danh-sach-de-tai-da-tao.html">
+                      Đề tài đã tạo
+                    </a>
+                  </li>
                 </ul>
               </details>
             </li>
             <li class="main-nav__item">
-              <span class="main-nav__link" data-pending-href="yeu-cau-cho-duyet.html" aria-disabled="true">Yêu cầu chờ duyệt (đang cập nhật)</span>
+              <a class="main-nav__link" href="yeu-cau-cho-duyet.html">
+                Yêu cầu chờ duyệt
+              </a>
             </li>
             <li class="main-nav__item">
               <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
-                <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/gioi-thieu.html" aria-disabled="true">Giới thiệu (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/thong-bao.html" aria-disabled="true">Thông báo (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/lien-he.html" aria-disabled="true">Liên hệ (đang cập nhật)</span></li>
+                <summary class="main-nav__label" id="common-navigation-label">
+                  Chung
+                </summary>
+                <ul aria-labelledby="common-navigation-label" class="main-nav__sublist">
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/gioi-thieu.html">
+                      Giới thiệu
+                    </a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/thong-bao.html">
+                      Thông báo
+                    </a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/lien-he.html">
+                      Liên hệ
+                    </a>
+                  </li>
                 </ul>
               </details>
             </li>
@@ -52,183 +83,283 @@
         <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
         <div class="account-menu">
           <details class="account-menu__disclosure">
-            <summary class="account-menu__toggle" aria-label="Mở menu tài khoản giảng viên">
-              <span class="account-menu__avatar" aria-hidden="true">GV</span>
-              <span class="account-menu__label">Tài khoản giảng viên</span>
+            <summary aria-label="Mở menu tài khoản giảng viên" class="account-menu__toggle">
+              <span aria-hidden="true" class="account-menu__avatar">
+                GV
+              </span>
+              <span class="account-menu__label">
+                Tài khoản giảng viên
+              </span>
             </summary>
-            <ul id="account-dropdown" class="account-menu__list">
+            <ul class="account-menu__list" id="account-dropdown">
               <li>
-                <a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
+                <a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">
+                  Hồ sơ cá nhân
+                </a>
               </li>
               <li>
-                <button
-                  class="account-menu__logout"
-                  type="button"
-                  aria-controls="logout-dialog"
-                  aria-describedby="logout-notice"
-                  disabled
-                >
+                <button aria-controls="logout-dialog" aria-describedby="logout-notice" class="account-menu__logout" disabled="" type="button">
                   Đăng xuất
                 </button>
               </li>
             </ul>
-            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+            <p id="logout-notice">
+              Chưa có xử lý đăng xuất.
+            </p>
           </details>
         </div>
       </div>
     </header>
-    <dialog
-      id="logout-dialog"
-      class="confirmation-dialog"
-      aria-labelledby="logout-title"
-    >
-      <h2 id="logout-title">Xác nhận đăng xuất</h2>
-      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+    <dialog aria-labelledby="logout-title" class="confirmation-dialog" id="logout-dialog">
+      <h2 id="logout-title">
+        Xác nhận đăng xuất
+      </h2>
+      <p>
+        Bạn muốn đăng xuất khỏi tài khoản hiện tại?
+      </p>
       <form method="dialog">
-        <button type="submit" value="cancel">Hủy</button>
-        <button type="button" disabled>Xác nhận đăng xuất</button>
+        <button type="submit" value="cancel">
+          Hủy
+        </button>
+        <button disabled="" type="button">
+          Xác nhận đăng xuất
+        </button>
       </form>
     </dialog>
-
     <!-- NỘI DUNG RIÊNG CỦA TRANG CHI TIẾT ĐỀ TÀI ĐÃ TẠO -->
-    <main id="main-content" class="main-content" tabindex="-1">
+    <main class="main-content" id="main-content" tabindex="-1">
       <div class="page-container">
-        <nav class="breadcrumb" aria-label="Đường dẫn">
-          <ol class="breadcrumb__list">
-            <li class="breadcrumb__item">
-              <a href="tong-quan-giang-vien.html">Giảng viên</a>
+        <nav aria-label="Đường dẫn" class="breadcrumb">
+          <ol>
+            <li>
+              <a href="tong-quan-giang-vien.html">
+                Giảng viên
+              </a>
             </li>
-            <li class="breadcrumb__item">
-              <span data-pending-href="de-tai-cua-toi-giang-vien.html" aria-disabled="true">Quản lý đề tài (đang cập nhật)</span>
+            <li>
+              <a href="danh-sach-de-tai-da-tao.html">
+                Đề tài đã tạo
+              </a>
             </li>
-            <li class="breadcrumb__item">
-              <span aria-current="page">Chi tiết đề tài</span>
+            <li aria-current="page">
+              Chi tiết đề tài
             </li>
           </ol>
         </nav>
-
-        <a class="back-link" href="tong-quan-giang-vien.html">
-          <span aria-hidden="true">←</span> Quay lại Tổng quan giảng viên
+        <a class="back-link" href="danh-sach-de-tai-da-tao.html">
+          ← Quay lại đề tài đã tạo
         </a>
-
         <header class="page-header">
-          <h1 class="page-header__title">Chi tiết đề tài</h1>
-        </header>
-
-        <div class="page-content">
-          <p class="demo-notice">
-            Bản HTML mẫu, chưa kết nối dữ liệu đề tài. Các nội dung chưa có dữ
-            liệu hiển thị “Chưa có thông tin”.
+          <h1 class="page-header__title">
+            Chi tiết đề tài
+          </h1>
+          <p>
+            Đang mở đăng ký
           </p>
-
-          <section class="topic-summary" aria-labelledby="topic-summary-title">
-            <figure class="topic-summary__image">
-              <div class="topic-summary__image-placeholder">
-                <p>Chưa có ảnh minh họa</p>
-              </div>
-              <figcaption>Ảnh đồ án / khóa luận</figcaption>
-            </figure>
-
-            <div class="topic-summary__information">
-              <h2 id="topic-summary-title" class="topic-summary__title">
-                Tên đề tài
-              </h2>
-              <div class="topic-summary__details">
-                <div class="topic-summary__row">
-                  <dl class="topic-summary__row-details">
-                    <div class="topic-summary__field">
-                      <dt>Mã đề tài</dt>
-                      <dd>Chưa có thông tin</dd>
-                    </div>
-                    <div class="topic-summary__field">
-                      <dt>Loại đề tài</dt>
-                      <dd>Chưa có thông tin</dd>
-                    </div>
-                  </dl>
-                </div>
-                <div class="topic-summary__row">
-                  <dl class="topic-summary__row-details">
-                    <div class="topic-summary__field">
-                      <dt>Môn học</dt>
-                      <dd>Chưa có thông tin</dd>
-                    </div>
-                    <div class="topic-summary__field">
-                      <dt>Học kỳ</dt>
-                      <dd>Chưa có thông tin</dd>
-                    </div>
-                    <div class="topic-summary__field">
-                      <dt>Năm học</dt>
-                      <dd>Chưa có thông tin</dd>
-                    </div>
-                  </dl>
-                </div>
-                <div class="topic-summary__row">
-                  <dl class="topic-summary__row-details">
-                    <div class="topic-summary__field">
-                      <dt>Trạng thái đề tài</dt>
-                      <dd>Chưa có thông tin</dd>
-                    </div>
-                  </dl>
-                </div>
-              </div>
-            </div>
+          <p>
+            Xem thông tin đề tài đã tạo và quản lý đăng ký.
+          </p>
+          <a href="chinh-sua-de-tai-giang-vien.html">
+            Chỉnh sửa đề tài
+          </a>
+          <button popovertarget="close-registration" type="button">
+            Đóng đăng ký
+          </button>
+        </header>
+        <p class="demo-notice" id="created-topic-notice">
+          Khung HTML minh họa, chưa lưu hoặc thay đổi trạng thái đề tài.
+        </p>
+        <section aria-labelledby="topic-summary-title">
+          <h2 id="topic-summary-title">
+            Tên đồ án / khóa luận tốt nghiệp
+          </h2>
+          <figure>
+            <figcaption>
+              Ảnh minh họa đề tài
+            </figcaption>
+          </figure>
+          <dl>
+            <dt>
+              Mã đề tài
+            </dt>
+            <dd>
+              [Mã đề tài]
+            </dd>
+            <dt>
+              Loại đề tài
+            </dt>
+            <dd>
+              [Loại đề tài]
+            </dd>
+            <dt>
+              Môn học
+            </dt>
+            <dd>
+              [Môn học]
+            </dd>
+            <dt>
+              Học kỳ
+            </dt>
+            <dd>
+              [Học kỳ]
+            </dd>
+            <dt>
+              Năm học
+            </dt>
+            <dd>
+              [Năm học]
+            </dd>
+          </dl>
+        </section>
+        <section aria-labelledby="supervisor-title">
+          <h2 id="supervisor-title">
+            Giảng viên hướng dẫn
+          </h2>
+          <dl>
+            <dt>
+              Họ tên
+            </dt>
+            <dd>
+              [Họ tên]
+            </dd>
+            <dt>
+              Khoa/Bộ môn
+            </dt>
+            <dd>
+              [Khoa/Bộ môn]
+            </dd>
+            <dt>
+              Email liên hệ
+            </dt>
+            <dd>
+              [Email liên hệ]
+            </dd>
+            <dt>
+              Hướng nghiên cứu
+            </dt>
+            <dd>
+              [Hướng nghiên cứu]
+            </dd>
+          </dl>
+        </section>
+        <section aria-labelledby="topic-description-title">
+          <h2 id="topic-description-title">
+            Mô tả đề tài
+          </h2>
+          <p>
+            [Mô tả đề tài]
+          </p>
+        </section>
+        <section aria-labelledby="topic-objectives-title">
+          <h2 id="topic-objectives-title">
+            Mục tiêu
+          </h2>
+          <p>
+            [Mục tiêu]
+          </p>
+        </section>
+        <section aria-labelledby="topic-outcomes-title">
+          <h2 id="topic-outcomes-title">
+            Kết quả dự kiến
+          </h2>
+          <p>
+            [Kết quả dự kiến]
+          </p>
+        </section>
+        <section aria-labelledby="topic-requirements-title">
+          <h2 id="topic-requirements-title">
+            Yêu cầu đối với sinh viên
+          </h2>
+          <p>
+            [Yêu cầu đối với sinh viên]
+          </p>
+        </section>
+        <section aria-labelledby="registration-title">
+          <h2 id="registration-title">
+            Thông tin đăng ký
+          </h2>
+          <dl>
+            <dt>
+              Hình thức
+            </dt>
+            <dd>
+              Nhóm — [Số thành viên tối thiểu / tối đa]
+            </dd>
+            <dt>
+              Hạn đăng ký
+            </dt>
+            <dd>
+              dd/mm/yyyy hh:mm
+            </dd>
+          </dl>
+        </section>
+        <section aria-labelledby="attachments-title">
+          <h2 id="attachments-title">
+            Tài liệu đính kèm
+          </h2>
+          <p>
+            [Tên tài liệu đính kèm]
+          </p>
+          <button disabled="" type="button">
+            Tải xuống
+          </button>
+        </section>
+        <template id="registration-closed-template">
+          <section aria-labelledby="registration-closed-title">
+            <h2 id="registration-closed-title">
+              Đã đóng đăng ký
+            </h2>
+            <button popovertarget="reopen-registration" type="button">
+              Mở lại đăng ký
+            </button>
           </section>
-
-          <div class="topic-detail">
-            <div class="topic-detail__sections">
-              <section
-                class="topic-detail__section topic-detail__description"
-                aria-labelledby="topic-description-title"
-              >
-                <h2 id="topic-description-title">Mô tả đề tài</h2>
-                <div class="topic-detail__text">
-                  <p>Chưa có thông tin</p>
-                </div>
-              </section>
-
-              <section
-                class="topic-detail__section topic-detail__objectives"
-                aria-labelledby="topic-objectives-title"
-              >
-                <h2 id="topic-objectives-title">Mục tiêu đề tài</h2>
-                <div class="topic-detail__text">
-                  <p>Chưa có thông tin</p>
-                </div>
-              </section>
-
-              <section
-                class="topic-detail__section topic-detail__expected-results"
-                aria-labelledby="topic-results-title"
-              >
-                <h2 id="topic-results-title">Kết quả dự kiến</h2>
-                <div class="topic-detail__text">
-                  <p>Chưa có thông tin</p>
-                </div>
-              </section>
-            </div>
-
-            <section class="topic-milestones" aria-labelledby="topic-milestones-title">
-              <h2 id="topic-milestones-title">Mốc thời gian chính</h2>
-              <dl class="topic-milestones__list">
-                <div class="topic-milestones__item">
-                  <dt>Ngày bắt đầu</dt>
-                  <dd>Chưa có thông tin</dd>
-                </div>
-                <div class="topic-milestones__item">
-                  <dt>Hạn nộp báo cáo tiến độ</dt>
-                  <dd>Chưa có thông tin</dd>
-                </div>
-                <div class="topic-milestones__item">
-                  <dt>Hạn nộp báo cáo cuối cùng</dt>
-                  <dd>Chưa có thông tin</dd>
-                </div>
-              </dl>
-            </section>
-          </div>
-        </div>
+        </template>
+        <template id="created-topic-error-template">
+          <p role="alert">
+            Không thể thực hiện thao tác. Vui lòng kiểm tra thông tin và thử lại.
+          </p>
+        </template>
+        <template id="created-topic-success-template">
+          <p role="status">
+            Thao tác đã hoàn tất.
+          </p>
+        </template>
       </div>
     </main>
-
+    <dialog aria-labelledby="close-registration-title" id="close-registration" popover="">
+      <h2 id="close-registration-title">
+        Đóng đăng ký đề tài?
+      </h2>
+      <p>
+        Đề tài [Tên đề tài] sẽ không nhận thêm yêu cầu đăng ký mới. Các yêu cầu đã gửi vẫn được giữ để bạn xem xét và bạn có thể mở lại đăng ký.
+      </p>
+      <p>
+        Khung minh họa, chưa lưu thay đổi.
+      </p>
+      <button popovertarget="close-registration" popovertargetaction="hide" type="button">
+        Hủy
+      </button>
+      <button disabled="" type="button">
+        Đóng đăng ký
+      </button>
+    </dialog>
+    <dialog aria-labelledby="reopen-registration-title" id="reopen-registration" popover="">
+      <h2 id="reopen-registration-title">
+        Mở lại đăng ký đề tài?
+      </h2>
+      <p>
+        Đề tài [Tên đề tài] sẽ tiếp tục nhận yêu cầu đăng ký mới. Các yêu cầu đã gửi trước đó vẫn được giữ để bạn xem xét.
+      </p>
+      <p>
+        Khung minh họa, chưa lưu thay đổi.
+      </p>
+      <button popovertarget="reopen-registration" popovertargetaction="hide" type="button">
+        Hủy
+      </button>
+      <button disabled="" type="button">
+        Mở lại đăng ký
+      </button>
+    </dialog>
     <!-- CHÂN TRANG CHUNG -->
     <footer class="site-footer">
       <div class="site-footer__inner">
@@ -239,30 +370,38 @@
             </p>
             <dl class="site-footer__about">
               <div>
-                <dt>Thông tin trang web</dt>
-                <dd>Trường Đại học Công nghệ Thông tin</dd>
+                <dt>
+                  Thông tin trang web
+                </dt>
+                <dd>
+                  Trường Đại học Công nghệ Thông tin
+                </dd>
               </div>
               <div>
-                <dt>Thông tin nhóm</dt>
-                <dd>Đồ án IE104 — Nhóm 7</dd>
+                <dt>
+                  Thông tin nhóm
+                </dt>
+                <dd>
+                  Đồ án IE104 — Nhóm 7
+                </dd>
               </div>
             </dl>
           </div>
-
-          <section
-            class="site-footer__information site-footer__terms"
-            aria-labelledby="footer-terms-title"
-          >
-            <h2 id="footer-terms-title">Điều khoản sử dụng</h2>
-            <p>Đang cập nhật.</p>
+          <section aria-labelledby="footer-terms-title" class="site-footer__information site-footer__terms">
+            <h2 id="footer-terms-title">
+              Điều khoản sử dụng
+            </h2>
+            <p>
+              Đang cập nhật.
+            </p>
           </section>
-
-          <section
-            class="site-footer__information site-footer__policies"
-            aria-labelledby="footer-policies-title"
-          >
-            <h2 id="footer-policies-title">Quy chế, chính sách bảo mật</h2>
-            <p>Đang cập nhật.</p>
+          <section aria-labelledby="footer-policies-title" class="site-footer__information site-footer__policies">
+            <h2 id="footer-policies-title">
+              Quy chế, chính sách bảo mật
+            </h2>
+            <p>
+              Đang cập nhật.
+            </p>
           </section>
         </div>
         <p class="site-footer__copyright">

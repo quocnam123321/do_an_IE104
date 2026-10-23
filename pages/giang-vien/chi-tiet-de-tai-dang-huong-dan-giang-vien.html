@@ -1,10 +1,12 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Th&#244;ng tin, ti&#7871;n &#273;&#7897;, b&#224;i n&#7897;p v&#224; &#273;&#225;nh gi&#225; &#273;&#7873; t&#224;i &#273;ang h&#432;&#7899;ng d&#7851;n." />
-    <title>Chi ti&#7871;t &#273;&#7873; t&#224;i &#273;ang h&#432;&#7899;ng d&#7851;n | Qu&#7843;n l&#253; &#273;&#7891; &#225;n</title>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="Thông tin, tiến độ, bài nộp và đánh giá đề tài đang hướng dẫn." name="description"/>
+    <title>
+      Chi tiết đề tài đang hướng dẫn | Quản lý đồ án
+    </title>
     <!-- CSS tối thiểu để chuyển mục trong cùng file, không cần JavaScript. -->
     <style>
       .topic-tabs ul {
@@ -59,218 +61,1166 @@
     </style>
   </head>
   <body>
-    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+    <a class="skip-link" href="#main-content">
+      Chuyển đến nội dung chính
+    </a>
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-brand" href="tong-quan-giang-vien.html">
-          <img src="../../assets/images/images.jpg" alt="ISE" width="48" height="48" />
-          QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP
+          <img alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" class="site-brand__logo" height="70" src="../../assets/images/images.jpg" width="70"/>
+          <span class="site-brand__name">
+            QUẢN LÝ ĐỒ ÁN VÀ
+            <br/>
+            KHÓA LUẬN TỐT NGHIỆP
+          </span>
         </a>
-        <nav class="main-nav" aria-label="Điều hướng giảng viên">
-          <ul>
-            <li><a href="tong-quan-giang-vien.html">Tổng quan</a></li>
-            <li><span aria-current="location">Quản lý đề tài</span></li>
-            <li><span aria-disabled="true">Yêu cầu chờ duyệt (đang cập nhật)</span></li>
-            <li><details><summary>Chung</summary><ul>
-              <li><a href="../chung/gioi-thieu.html">Giới thiệu</a></li>
-              <li><a href="../chung/thong-bao.html">Thông báo</a></li>
-              <li><a href="../chung/lien-he.html">Liên hệ</a></li>
-            </ul></details></li>
+        <nav aria-label="Điều hướng giảng viên" class="main-nav">
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-giang-vien.html">
+                Tổng quan
+              </a>
+            </li>
+            <li class="main-nav__item">
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__label" id="topic-management-label">
+                  Quản lý đề tài
+                </summary>
+                <ul aria-labelledby="topic-management-label" class="main-nav__sublist">
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="danh-sach-de-tai-dang-huong-dan.html">
+                      Đề tài đang hướng dẫn
+                    </a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="danh-sach-de-tai-da-tao.html">
+                      Đề tài đã tạo
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="yeu-cau-cho-duyet.html">
+                Yêu cầu chờ duyệt
+              </a>
+            </li>
+            <li class="main-nav__item">
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__label" id="common-navigation-label">
+                  Chung
+                </summary>
+                <ul aria-labelledby="common-navigation-label" class="main-nav__sublist">
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/gioi-thieu.html">
+                      Giới thiệu
+                    </a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/thong-bao.html">
+                      Thông báo
+                    </a>
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/lien-he.html">
+                      Liên hệ
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </li>
           </ul>
         </nav>
-        <details class="account-menu"><summary>Tài khoản giảng viên</summary>
-          <a href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
-          <button type="button" disabled>Đăng xuất (chưa hỗ trợ)</button>
-        </details>
+        <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
+        <div class="account-menu">
+          <details class="account-menu__disclosure">
+            <summary aria-label="Mở menu tài khoản giảng viên" class="account-menu__toggle">
+              <span aria-hidden="true" class="account-menu__avatar">
+                GV
+              </span>
+              <span class="account-menu__label">
+                Tài khoản giảng viên
+              </span>
+            </summary>
+            <ul class="account-menu__list" id="account-dropdown">
+              <li>
+                <a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">
+                  Hồ sơ cá nhân
+                </a>
+              </li>
+              <li>
+                <button aria-controls="logout-dialog" aria-describedby="logout-notice" class="account-menu__logout" disabled="" type="button">
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">
+              Chưa có xử lý đăng xuất.
+            </p>
+          </details>
+        </div>
       </div>
     </header>
-    <main id="main-content" class="main-content" tabindex="-1">
+    <dialog aria-labelledby="logout-title" class="confirmation-dialog" id="logout-dialog">
+      <h2 id="logout-title">
+        Xác nhận đăng xuất
+      </h2>
+      <p>
+        Bạn muốn đăng xuất khỏi tài khoản hiện tại?
+      </p>
+      <form method="dialog">
+        <button type="submit" value="cancel">
+          Hủy
+        </button>
+        <button disabled="" type="button">
+          Xác nhận đăng xuất
+        </button>
+      </form>
+    </dialog>
+    <main class="main-content" id="main-content" tabindex="-1">
       <div class="page-container">
-        <nav class="breadcrumb" aria-label="Đường dẫn trang"><ol>
-          <li><a href="tong-quan-giang-vien.html">Giảng viên</a></li>
-          <li>Quản lý đề tài</li><li aria-current="page">Chi ti&#7871;t &#273;&#7873; t&#224;i</li>
-        </ol></nav>
-        <!-- Trang danh sách Quản lý đề tài chưa được triển khai. -->
-        <a class="back-link" href="tong-quan-giang-vien.html">&larr; Quay lại Tổng quan giảng viên</a>
-        <header class="page-header"><h1>Chi tiết đề tài</h1>
-          <p>Website quản lý đồ án và khóa luận — Nhóm 7</p>
+        <nav aria-label="Đường dẫn trang" class="breadcrumb">
+          <ol>
+            <li>
+              <a href="tong-quan-giang-vien.html">
+                Giảng viên
+              </a>
+            </li>
+            <li>
+              <a href="danh-sach-de-tai-dang-huong-dan.html">
+                Đề tài đang hướng dẫn
+              </a>
+            </li>
+            <li aria-current="page">
+              Chi tiết đề tài
+            </li>
+          </ol>
+        </nav>
+        <!-- Quay lại đúng danh sách nguồn. -->
+        <a class="back-link" href="danh-sach-de-tai-dang-huong-dan.html">
+          ← Quay lại danh sách đang hướng dẫn
+        </a>
+        <header class="page-header">
+          <h1>
+            Chi tiết đề tài
+          </h1>
+          <p>
+            Website quản lý đồ án và khóa luận — Nhóm 7 · Đang thực hiện
+          </p>
+          <a href="chinh-sua-de-tai-giang-vien.html">
+            Chỉnh sửa thông tin
+          </a>
         </header>
-        <nav class="topic-tabs" aria-label="Các mục chi tiết đề tài"><ul><li><a href="#tong-quan">Tổng quan</a></li>
-<li><a href="#tien-do">Tiến độ</a></li>
-<li><a href="#bai-nop">Bài nộp</a></li>
-<li><a href="#ket-qua-danh-gia">Kết quả đánh giá</a></li></ul></nav>
-        <p id="demo-notice" class="demo-notice">Dữ liệu minh họa của đề tài DT005, không liên kết dữ liệu thực tế. Chưa có xử lý lưu, gửi nhận xét, tính điểm hoặc công bố đánh giá.</p>
-        <section id="tong-quan" class="topic-section" aria-labelledby="section-tong-quan-title">
-          <h2 id="section-tong-quan-title">Tổng quan</h2>
-        <section class="topic-summary" aria-labelledby="topic-title">
-          <figure><figcaption>Ảnh đồ án / khóa luận — Chưa có ảnh minh họa</figcaption></figure>
-          <h2 id="topic-title">Website quản lý đồ án và khóa luận</h2>
-          <dl>
-            <dt>Mã đề tài</dt><dd>DT005</dd><dt>Loại đề tài</dt><dd>Đồ án môn học</dd>
-            <dt>Môn học</dt><dd>IE104 — Internet và Công nghệ Web</dd>
-            <dt>Học kỳ / Năm học</dt><dd>Học kỳ I / 2026–2027</dd>
-            <dt>Trạng thái đề tài</dt><dd>Đang thực hiện</dd>
-          </dl>
-        </section>
-        <div class="topic-overview-layout">
-          <div>
-            <section aria-labelledby="description-title"><h2 id="description-title">Mô tả đề tài</h2>
-              <p>Xây dựng website hỗ trợ sinh viên đăng ký và thực hiện đề tài, giúp giảng viên theo dõi tiến độ, nhận bài nộp và đánh giá kết quả.</p>
-            </section>
-            <section aria-labelledby="goals-title"><h2 id="goals-title">Mục tiêu đề tài</h2>
-              <ul><li>Tập trung thông tin đề tài và nhóm thực hiện.</li><li>Theo dõi công việc, hạn nộp và phản hồi.</li><li>Xây dựng giao diện phù hợp cho sinh viên và giảng viên.</li></ul>
-            </section>
-            <section aria-labelledby="outcomes-title"><h2 id="outcomes-title">Kết quả dự kiến</h2>
-              <p>Bộ giao diện website, tài liệu phân tích thiết kế và báo cáo tổng kết đồ án.</p>
-            </section>
+        <nav aria-label="Các mục chi tiết đề tài" class="topic-tabs">
+          <ul>
+            <li>
+              <a href="#tong-quan">
+                Tổng quan
+              </a>
+            </li>
+            <li>
+              <a href="#tien-do">
+                Tiến độ
+              </a>
+            </li>
+            <li>
+              <a href="#bai-nop">
+                Bài nộp
+              </a>
+            </li>
+            <li>
+              <a href="#ket-qua-danh-gia">
+                Kết quả đánh giá
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <p class="demo-notice" id="demo-notice">
+          Dữ liệu minh họa của đề tài DT005, không liên kết dữ liệu thực tế. Chưa có xử lý lưu, gửi nhận xét, tính điểm hoặc công bố đánh giá.
+        </p>
+        <section aria-labelledby="section-tong-quan-title" class="topic-section" id="tong-quan">
+          <h2 id="section-tong-quan-title">
+            Tổng quan
+          </h2>
+          <section aria-labelledby="topic-summary-title">
+            <h2 id="topic-summary-title">
+              Tóm tắt thông tin đề tài
+            </h2>
+            <dl>
+              <dt>
+                Mã đề tài
+              </dt>
+              <dd>
+                DT005
+              </dd>
+              <dt>
+                Loại đề tài
+              </dt>
+              <dd>
+                Đồ án môn học
+              </dd>
+              <dt>
+                Môn học
+              </dt>
+              <dd>
+                IE104 — Internet và Công nghệ Web
+              </dd>
+              <dt>
+                Hạn hoàn thành đề tài
+              </dt>
+              <dd>
+                dd/mm/yyyy hh:mm
+              </dd>
+            </dl>
+          </section>
+          <section aria-labelledby="team-title">
+            <h2 id="team-title">
+              Sinh viên / nhóm thực hiện
+            </h2>
+            <p>
+              Nhóm: [Tên nhóm thực hiện]
+            </p>
+            <ul>
+              <li>
+                <article>
+                  <h3>
+                    [Họ tên sinh viên 1]
+                  </h3>
+                  <p>
+                    MSSV: [MSSV]
+                  </p>
+                  <p>
+                    Nhóm trưởng
+                  </p>
+                </article>
+              </li>
+              <li>
+                <article>
+                  <h3>
+                    [Họ tên sinh viên 2]
+                  </h3>
+                  <p>
+                    MSSV: [MSSV]
+                  </p>
+                  <p>
+                    Thành viên
+                  </p>
+                </article>
+              </li>
+              <li>
+                <article>
+                  <h3>
+                    [Họ tên sinh viên 3]
+                  </h3>
+                  <p>
+                    MSSV: [MSSV]
+                  </p>
+                  <p>
+                    Thành viên
+                  </p>
+                </article>
+              </li>
+              <li>
+                <article>
+                  <h3>
+                    [Họ tên sinh viên 4]
+                  </h3>
+                  <p>
+                    MSSV: [MSSV]
+                  </p>
+                  <p>
+                    Thành viên
+                  </p>
+                </article>
+              </li>
+            </ul>
+          </section>
+          <div class="topic-overview-layout">
+            <div>
+              <section aria-labelledby="description-title">
+                <h2 id="description-title">
+                  Mô tả đề tài
+                </h2>
+                <p>
+                  [Bối cảnh, phạm vi nghiên cứu và vấn đề cần giải quyết]
+                </p>
+              </section>
+              <section aria-labelledby="goals-title">
+                <h2 id="goals-title">
+                  Mục tiêu và công nghệ
+                </h2>
+                <dl>
+                  <dt>
+                    Mục tiêu đề tài
+                  </dt>
+                  <dd>
+                    [Mục tiêu tổng quát và các tiêu chí cần đạt]
+                  </dd>
+                  <dt>
+                    Công nghệ / công cụ
+                  </dt>
+                  <dd>
+                    [Công nghệ, ngôn ngữ, nền tảng sử dụng]
+                  </dd>
+                </dl>
+              </section>
+              <section aria-labelledby="requirements-overview-title">
+                <h2 id="requirements-overview-title">
+                  Yêu cầu thực hiện
+                </h2>
+                <ul>
+                  <li>
+                    [Yêu cầu về nội dung và phạm vi thực hiện]
+                  </li>
+                  <li>
+                    [Yêu cầu về phương pháp, kỹ thuật và chất lượng]
+                  </li>
+                  <li>
+                    [Yêu cầu về báo cáo, tài liệu và sản phẩm bàn giao]
+                  </li>
+                </ul>
+              </section>
+            </div>
+            <aside aria-label="Thông tin đăng ký và theo dõi">
+              <section aria-labelledby="registration-overview-title">
+                <h2 id="registration-overview-title">
+                  Thông tin đăng ký
+                </h2>
+                <dl>
+                  <dt>
+                    Hình thức thực hiện
+                  </dt>
+                  <dd>
+                    Nhóm — [Tên nhóm thực hiện]
+                  </dd>
+                  <dt>
+                    Thời gian đăng ký
+                  </dt>
+                  <dd>
+                    dd/mm/yyyy hh:mm
+                  </dd>
+                </dl>
+              </section>
+              <section aria-labelledby="progress-overview-title">
+                <h2 id="progress-overview-title">
+                  Tiến độ tổng thể
+                </h2>
+                <p>
+                  Công việc và tiến độ do sinh viên cập nhật.
+                </p>
+                <label for="overview-progress">
+                  Tiến độ minh họa
+                </label>
+                <progress id="overview-progress" max="4" value="2">
+                  50%
+                </progress>
+                <p>
+                  Cập nhật gần nhất: dd/mm/yyyy hh:mm
+                </p>
+                <a href="#tien-do">
+                  Xem tiến độ và nhận xét
+                </a>
+              </section>
+              <section aria-labelledby="milestones-title">
+                <h2 id="milestones-title">
+                  Mốc thời gian chính
+                </h2>
+                <dl>
+                  <dt>
+                    Ngày bắt đầu
+                  </dt>
+                  <dd>
+                    dd/mm/yyyy hh:mm
+                  </dd>
+                  <dt>
+                    Hạn báo cáo tiến độ
+                  </dt>
+                  <dd>
+                    dd/mm/yyyy hh:mm
+                  </dd>
+                  <dt>
+                    Hạn báo cáo cuối cùng
+                  </dt>
+                  <dd>
+                    dd/mm/yyyy hh:mm
+                  </dd>
+                  <dt>
+                    Hạn hoàn thành đề tài
+                  </dt>
+                  <dd>
+                    dd/mm/yyyy hh:mm
+                  </dd>
+                </dl>
+              </section>
+            </aside>
           </div>
-          <aside aria-label="Nhóm và mốc thời gian">
-            <section aria-labelledby="team-title"><h2 id="team-title">Nhóm thực hiện</h2><h3>Nhóm 7</h3>
-              <ul><li>Nguyễn Văn A — SV001 — Nhóm trưởng</li><li>Trần Thị B — SV002 — Thành viên</li><li>Lê Văn C — SV003 — Thành viên</li></ul>
-            </section>
-            <section aria-labelledby="milestones-title"><h2 id="milestones-title">Mốc thời gian chính</h2>
-              <dl><dt>Ngày bắt đầu</dt><dd><time datetime="2026-10-01">01/10/2026</time></dd>
-                <dt>Hạn nộp báo cáo tiến độ</dt><dd><time datetime="2026-10-25T23:59">25/10/2026, 23:59</time></dd>
-                <dt>Hạn nộp báo cáo cuối cùng</dt><dd><time datetime="2026-12-20T23:59">20/12/2026, 23:59</time></dd></dl>
-            </section>
-          </aside>
-        </div>
         </section>
-
-        <section id="tien-do" class="topic-section" aria-labelledby="section-tien-do-title">
-          <h2 id="section-tien-do-title">Tiến độ</h2>
-        <section aria-labelledby="progress-title"><h2 id="progress-title">Tiến độ tổng thể</h2>
-          <label for="topic-progress">Hoàn thành 2/4 công việc (50%)</label>
-          <progress id="topic-progress" value="2" max="4">50%</progress>
-          <dl><dt>Tổng công việc</dt><dd>4</dd><dt>Đã hoàn thành</dt><dd>2</dd><dt>Còn lại</dt><dd>2</dd></dl>
-          <p>Tiến độ do sinh viên cập nhật.</p>
-        </section>
-        <section aria-labelledby="tasks-title"><h2 id="tasks-title">Danh sách công việc</h2>
-          <table><caption>Công việc của Nhóm 7</caption>
-            <thead><tr><th scope="col">Công việc</th><th scope="col">Người phụ trách</th><th scope="col">Hạn hoàn thành dự kiến</th><th scope="col">Trạng thái hiện tại</th></tr></thead>
-            <tbody>
-              <tr><th scope="row">Phân tích yêu cầu</th><td>Nguyễn Văn A — SV001</td><td><time datetime="2026-10-08">08/10/2026</time></td><td>Đã hoàn thành</td></tr>
-              <tr><th scope="row">Thiết kế giao diện</th><td>Trần Thị B — SV002</td><td><time datetime="2026-10-15">15/10/2026</time></td><td>Đã hoàn thành</td></tr>
-              <tr><th scope="row">Xây dựng HTML</th><td>Lê Văn C — SV003</td><td><time datetime="2026-10-25">25/10/2026</time></td><td>Đang thực hiện</td></tr>
-              <tr><th scope="row">Kiểm tra và viết báo cáo</th><td>Nguyễn Văn A — SV001</td><td><time datetime="2026-12-20">20/12/2026</time></td><td>Chưa bắt đầu</td></tr>
-            </tbody>
-          </table>
-        </section>
-        <section aria-labelledby="progress-feedback-title"><h2 id="progress-feedback-title">Nhận xét về tiến độ</h2>
-          <form aria-describedby="demo-notice"><label for="progress-feedback">Nội dung nhận xét</label>
-            <textarea id="progress-feedback" rows="5" placeholder="Nhập nhận xét cho nhóm sinh viên" required></textarea>
-            <button type="button" disabled>Gửi nhận xét</button>
-          </form>
-        </section>
-        </section>
-
-        <section id="bai-nop" class="topic-section" aria-labelledby="section-bai-nop-title">
-          <h2 id="section-bai-nop-title">Bài nộp</h2>
-        <section aria-labelledby="requirements-title"><h2 id="requirements-title">Yêu cầu bài nộp</h2>
-          <button type="button" popovertarget="create-requirement">+ Tạo yêu cầu</button>
-          <table><caption>Yêu cầu dành cho Nhóm 7</caption>
-            <thead><tr><th scope="col">Bài nộp</th><th scope="col">Hạn nộp</th><th scope="col">Trạng thái nộp</th><th scope="col">Thao tác</th></tr></thead>
-            <tbody>
-              <tr><th scope="row">Báo cáo tiến độ đợt 1</th><td><time datetime="2026-10-25T23:59">25/10/2026, 23:59</time></td><td>Đã nộp</td><td><button type="button" popovertarget="edit-requirement">Sửa yêu cầu</button> <button type="button" popovertarget="delete-requirement">Xóa yêu cầu</button></td></tr>
-              <tr><th scope="row">Báo cáo cuối kỳ</th><td><time datetime="2026-12-20T23:59">20/12/2026, 23:59</time></td><td>Chưa nộp</td><td><button type="button" disabled>Sửa yêu cầu (chưa hỗ trợ)</button></td></tr>
-            </tbody>
-          </table><p>Trạng thái theo lần nộp mới nhất của nhóm.</p>
-        </section>
-        <section aria-labelledby="submissions-title"><h2 id="submissions-title">Bài nộp của nhóm</h2>
-          <table><caption>Lịch sử nộp báo cáo tiến độ đợt 1</caption>
-            <thead><tr><th scope="col">Ngày nộp</th><th scope="col">Bài nộp</th><th scope="col">Tệp đã nộp</th><th scope="col">Trạng thái</th><th scope="col">Thao tác</th></tr></thead>
-            <tbody><tr><td><time datetime="2026-10-19T20:30">19/10/2026, 20:30</time></td><th scope="row">Báo cáo tiến độ đợt 1 — Lần 1</th><td>nhom-7-tien-do-dot-1.pdf (tệp minh họa)</td><td>Đúng hạn</td><td><button type="button" disabled>Tải xuống</button> <a href="#submission-feedback">Phản hồi</a></td></tr></tbody>
-          </table><p>Chưa có tệp thực tế để tải xuống.</p>
-        </section>
-        <section id="submission-feedback" aria-labelledby="feedback-title"><h2 id="feedback-title">Phản hồi bài nộp</h2>
-          <form aria-describedby="demo-notice">
-            <p><label for="submission-choice">Bài nộp</label><select id="submission-choice" required><option value="">Chọn bài nộp đã gửi</option><option value="submission-01">Báo cáo tiến độ đợt 1 — Lần 1 (19/10/2026)</option></select></p>
-            <p><label for="submission-comment">Nội dung phản hồi</label><textarea id="submission-comment" rows="5" placeholder="Nhập phản hồi cho nhóm sinh viên" required></textarea></p>
-            <button type="button" disabled>Gửi phản hồi</button>
-          </form>
-        </section>
-        </section>
-
-        <section id="ket-qua-danh-gia" class="topic-section" aria-labelledby="section-ket-qua-danh-gia-title">
-          <h2 id="section-ket-qua-danh-gia-title">Kết quả đánh giá</h2>
-        <section aria-labelledby="evaluation-info-title"><h2 id="evaluation-info-title">Thông tin đánh giá</h2>
-          <dl><dt>Nhóm thực hiện</dt><dd>Nhóm 7</dd><dt>Trạng thái đánh giá</dt><dd>Chưa công bố</dd></dl>
-        </section>
-        <form class="evaluation-form" aria-describedby="demo-notice">
-          <section aria-labelledby="criteria-title"><h2 id="criteria-title">Đánh giá theo tiêu chí</h2>
-            <table><caption>Thang điểm đánh giá — tổng trọng số 100%</caption>
-              <thead><tr><th scope="col">Tiêu chí</th><th scope="col">Mô tả tiêu chí</th><th scope="col">Trọng số (%)</th><th scope="col">Điểm / 10</th></tr></thead>
+        <section aria-labelledby="section-tien-do-title" class="topic-section" id="tien-do">
+          <h2 id="section-tien-do-title">
+            Tiến độ
+          </h2>
+          <section aria-labelledby="progress-title">
+            <h2 id="progress-title">
+              Tiến độ tổng thể
+            </h2>
+            <label for="topic-progress">
+              Hoàn thành 2/4 công việc (50%)
+            </label>
+            <progress id="topic-progress" max="4" value="2">
+              50%
+            </progress>
+            <dl>
+              <dt>
+                Tổng công việc
+              </dt>
+              <dd>
+                4
+              </dd>
+              <dt>
+                Đã hoàn thành
+              </dt>
+              <dd>
+                2
+              </dd>
+              <dt>
+                Còn lại
+              </dt>
+              <dd>
+                2
+              </dd>
+            </dl>
+            <p>
+              Tiến độ do sinh viên cập nhật.
+            </p>
+          </section>
+          <section aria-labelledby="tasks-title">
+            <h2 id="tasks-title">
+              Danh sách công việc
+            </h2>
+            <table>
+              <caption>
+                Công việc của Nhóm 7
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">
+                    Công việc
+                  </th>
+                  <th scope="col">
+                    Người phụ trách
+                  </th>
+                  <th scope="col">
+                    Hạn hoàn thành dự kiến
+                  </th>
+                  <th scope="col">
+                    Trạng thái hiện tại
+                  </th>
+                </tr>
+              </thead>
               <tbody>
-                <tr><th scope="row">Nội dung</th><td>Đáp ứng mục tiêu và yêu cầu của đề tài.</td><td>40%</td><td><label for="score-content">Điểm nội dung</label><input id="score-content" type="number" min="0" max="10" step="0.1" placeholder="Nhập điểm" required /></td></tr>
-                <tr><th scope="row">Sản phẩm</th><td>Chất lượng giao diện và mức độ hoàn thiện.</td><td>40%</td><td><label for="score-product">Điểm sản phẩm</label><input id="score-product" type="number" min="0" max="10" step="0.1" placeholder="Nhập điểm" required /></td></tr>
-                <tr><th scope="row">Báo cáo</th><td>Trình bày báo cáo và trả lời câu hỏi.</td><td>20%</td><td><label for="score-report">Điểm báo cáo</label><input id="score-report" type="number" min="0" max="10" step="0.1" placeholder="Nhập điểm" required /></td></tr>
-              </tbody><tfoot><tr><th scope="row" colspan="2">Tổng trọng số</th><td>100%</td><td>Thang điểm 10</td></tr></tfoot>
+                <tr>
+                  <th scope="row">
+                    Phân tích yêu cầu
+                  </th>
+                  <td>
+                    Nguyễn Văn A — SV001
+                  </td>
+                  <td>
+                    <time datetime="2026-10-08">
+                      08/10/2026
+                    </time>
+                  </td>
+                  <td>
+                    Đã hoàn thành
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    Thiết kế giao diện
+                  </th>
+                  <td>
+                    Trần Thị B — SV002
+                  </td>
+                  <td>
+                    <time datetime="2026-10-15">
+                      15/10/2026
+                    </time>
+                  </td>
+                  <td>
+                    Đã hoàn thành
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    Xây dựng HTML
+                  </th>
+                  <td>
+                    Lê Văn C — SV003
+                  </td>
+                  <td>
+                    <time datetime="2026-10-25">
+                      25/10/2026
+                    </time>
+                  </td>
+                  <td>
+                    Đang thực hiện
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    Kiểm tra và viết báo cáo
+                  </th>
+                  <td>
+                    Nguyễn Văn A — SV001
+                  </td>
+                  <td>
+                    <time datetime="2026-12-20">
+                      20/12/2026
+                    </time>
+                  </td>
+                  <td>
+                    Chưa bắt đầu
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </section>
-          <section aria-labelledby="total-title"><h2 id="total-title">Điểm tổng kết</h2>
-            <p>Điểm tổng kết của nhóm: <output for="score-content score-product score-report">Chưa tính / 10</output></p>
-            <p>Công thức: điểm nội dung × 40% + điểm sản phẩm × 40% + điểm báo cáo × 20%. Chưa có JavaScript để tự tính điểm.</p>
+          <section aria-labelledby="progress-feedback-title">
+            <h2 id="progress-feedback-title">
+              Nhận xét về tiến độ
+            </h2>
+            <form aria-describedby="demo-notice">
+              <label for="progress-feedback">
+                Nội dung nhận xét
+              </label>
+              <textarea id="progress-feedback" placeholder="Nhập nhận xét cho nhóm sinh viên" required="" rows="5"></textarea>
+              <button disabled="" type="button">
+                Gửi nhận xét
+              </button>
+            </form>
           </section>
-          <section aria-labelledby="evaluation-comment-title"><h2 id="evaluation-comment-title">Nhận xét</h2>
-            <label for="evaluation-comment">Nhận xét tổng kết cho nhóm</label>
-            <textarea id="evaluation-comment" rows="5" placeholder="Nhập nhận xét cho nhóm sinh viên" required></textarea>
+        </section>
+        <section aria-labelledby="section-bai-nop-title" class="topic-section" id="bai-nop">
+          <h2 id="section-bai-nop-title">
+            Bài nộp
+          </h2>
+          <section aria-labelledby="requirements-title">
+            <h2 id="requirements-title">
+              Yêu cầu bài nộp
+            </h2>
+            <button popovertarget="create-requirement" type="button">
+              + Tạo yêu cầu
+            </button>
+            <table>
+              <caption>
+                Yêu cầu dành cho Nhóm 7
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">
+                    Bài nộp
+                  </th>
+                  <th scope="col">
+                    Hạn nộp
+                  </th>
+                  <th scope="col">
+                    Trạng thái nộp
+                  </th>
+                  <th scope="col">
+                    Tài liệu hướng dẫn
+                  </th>
+                  <th scope="col">
+                    Thao tác
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">
+                    Báo cáo tiến độ đợt 1
+                  </th>
+                  <td>
+                    <time datetime="2026-10-25T23:59">
+                      25/10/2026, 23:59
+                    </time>
+                  </td>
+                  <td>
+                    Đã nộp
+                  </td>
+                  <td>
+                    [Tên tài liệu hướng dẫn]
+                  </td>
+                  <td>
+                    <button popovertarget="edit-requirement" type="button">
+                      Sửa yêu cầu
+                    </button>
+                    <button popovertarget="delete-requirement" type="button">
+                      Xóa yêu cầu
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">
+                    Báo cáo cuối kỳ
+                  </th>
+                  <td>
+                    <time datetime="2026-12-20T23:59">
+                      20/12/2026, 23:59
+                    </time>
+                  </td>
+                  <td>
+                    Chưa nộp
+                  </td>
+                  <td>
+                    [Tên tài liệu hướng dẫn]
+                  </td>
+                  <td>
+                    <button disabled="" type="button">
+                      Sửa yêu cầu (chưa hỗ trợ)
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              Trạng thái theo lần nộp mới nhất của nhóm.
+            </p>
           </section>
-          <button type="button" popovertarget="publish-evaluation">Xem hộp xác nhận công bố đánh giá</button>
-        </form>
+          <section aria-labelledby="submissions-title">
+            <h2 id="submissions-title">
+              Bài nộp của nhóm
+            </h2>
+            <table>
+              <caption>
+                Lịch sử nộp báo cáo tiến độ đợt 1
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">
+                    Ngày nộp
+                  </th>
+                  <th scope="col">
+                    Bài nộp
+                  </th>
+                  <th scope="col">
+                    Tệp đã nộp
+                  </th>
+                  <th scope="col">
+                    Trạng thái
+                  </th>
+                  <th scope="col">
+                    Thao tác
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <time datetime="2026-10-19T20:30">
+                      19/10/2026, 20:30
+                    </time>
+                  </td>
+                  <th scope="row">
+                    Báo cáo tiến độ đợt 1 — Lần 1
+                  </th>
+                  <td>
+                    nhom-7-tien-do-dot-1.pdf (tệp minh họa)
+                  </td>
+                  <td>
+                    Đúng hạn
+                  </td>
+                  <td>
+                    <button disabled="" type="button">
+                      Tải xuống
+                    </button>
+                    <button popovertarget="submission-feedback" type="button">
+                      Phản hồi
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p>
+              Chưa có tệp thực tế để tải xuống.
+            </p>
+          </section>
+          <section aria-labelledby="shared-documents-title">
+            <h2 id="shared-documents-title">
+              Tài liệu hướng dẫn / tham khảo
+            </h2>
+            <button popovertarget="share-document" type="button">
+              + Chia sẻ tài liệu
+            </button>
+            <p>
+              Tài liệu đã chia sẻ cho toàn đề tài hoặc từng yêu cầu nộp.
+            </p>
+            <table>
+              <caption>
+                Tài liệu hướng dẫn
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">
+                    Tên tài liệu
+                  </th>
+                  <th scope="col">
+                    Gắn với
+                  </th>
+                  <th scope="col">
+                    Thao tác
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">
+                    [Tên tài liệu]
+                  </th>
+                  <td>
+                    Tham khảo toàn đề tài
+                  </td>
+                  <td>
+                    <button disabled="" type="button">
+                      Xem
+                    </button>
+                    <button popovertarget="unshare-document" type="button">
+                      Gỡ chia sẻ
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <dialog aria-labelledby="feedback-title" class="submission-feedback-dialog" id="submission-feedback" popover="">
+            <h2 id="feedback-title">
+              Phản hồi bài nộp
+            </h2>
+            <form aria-describedby="submission-feedback-notice">
+              <p>
+                <label for="submission-choice">
+                  Bài nộp đang phản hồi
+                </label>
+                <input id="submission-choice" name="submission-choice" readonly="" type="text" value="[Tên yêu cầu nộp] — [Tên tệp] — [Lần nộp]"/>
+              </p>
+              <p>
+                <label for="submission-comment">
+                  Nội dung phản hồi
+                </label>
+                <textarea id="submission-comment" name="submission-comment" placeholder="Nhập phản hồi cho bài nộp đã chọn" required="" rows="5"></textarea>
+              </p>
+              <p id="submission-feedback-notice">
+                Khung phản hồi cho bài nộp được chọn, chưa gửi hoặc lưu nội dung.
+              </p>
+              <button popovertarget="submission-feedback" popovertargetaction="hide" type="button">
+                Hủy
+              </button>
+              <button disabled="" type="button">
+                Gửi phản hồi
+              </button>
+            </form>
+          </dialog>
+        </section>
+        <section aria-labelledby="section-ket-qua-danh-gia-title" class="topic-section" id="ket-qua-danh-gia">
+          <h2 id="section-ket-qua-danh-gia-title">
+            Kết quả đánh giá
+          </h2>
+          <section aria-labelledby="evaluation-info-title">
+            <h2 id="evaluation-info-title">
+              Thông tin đánh giá
+            </h2>
+            <dl>
+              <dt>
+                Nhóm thực hiện
+              </dt>
+              <dd>
+                Nhóm 7
+              </dd>
+              <dt>
+                Trạng thái đánh giá
+              </dt>
+              <dd>
+                Chưa công bố
+              </dd>
+            </dl>
+          </section>
+          <form aria-describedby="demo-notice" class="evaluation-form">
+            <section aria-labelledby="criteria-title">
+              <h2 id="criteria-title">
+                Đánh giá theo tiêu chí
+              </h2>
+              <table>
+                <caption>
+                  Thang điểm đánh giá — tổng trọng số 100%
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">
+                      Tiêu chí
+                    </th>
+                    <th scope="col">
+                      Mô tả tiêu chí
+                    </th>
+                    <th scope="col">
+                      Trọng số (%)
+                    </th>
+                    <th scope="col">
+                      Điểm / 10
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">
+                      Nội dung
+                    </th>
+                    <td>
+                      Đáp ứng mục tiêu và yêu cầu của đề tài.
+                    </td>
+                    <td>
+                      40%
+                    </td>
+                    <td>
+                      <label for="score-content">
+                        Điểm nội dung
+                      </label>
+                      <input id="score-content" max="10" min="0" placeholder="Nhập điểm" required="" step="0.1" type="number"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">
+                      Sản phẩm
+                    </th>
+                    <td>
+                      Chất lượng giao diện và mức độ hoàn thiện.
+                    </td>
+                    <td>
+                      40%
+                    </td>
+                    <td>
+                      <label for="score-product">
+                        Điểm sản phẩm
+                      </label>
+                      <input id="score-product" max="10" min="0" placeholder="Nhập điểm" required="" step="0.1" type="number"/>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">
+                      Báo cáo
+                    </th>
+                    <td>
+                      Trình bày báo cáo và trả lời câu hỏi.
+                    </td>
+                    <td>
+                      20%
+                    </td>
+                    <td>
+                      <label for="score-report">
+                        Điểm báo cáo
+                      </label>
+                      <input id="score-report" max="10" min="0" placeholder="Nhập điểm" required="" step="0.1" type="number"/>
+                    </td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <th colspan="2" scope="row">
+                      Tổng trọng số
+                    </th>
+                    <td>
+                      100%
+                    </td>
+                    <td>
+                      Thang điểm 10
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+            </section>
+            <section aria-labelledby="total-title">
+              <h2 id="total-title">
+                Điểm tổng kết
+              </h2>
+              <p>
+                Điểm tổng kết của nhóm:
+                <output for="score-content score-product score-report">
+                  Chưa tính / 10
+                </output>
+              </p>
+              <p>
+                Công thức: điểm nội dung × 40% + điểm sản phẩm × 40% + điểm báo cáo × 20%. Chưa có JavaScript để tự tính điểm.
+              </p>
+            </section>
+            <section aria-labelledby="evaluation-comment-title">
+              <h2 id="evaluation-comment-title">
+                Nhận xét
+              </h2>
+              <label for="evaluation-comment">
+                Nhận xét tổng kết cho nhóm
+              </label>
+              <textarea id="evaluation-comment" placeholder="Nhập nhận xét cho nhóm sinh viên" required="" rows="5"></textarea>
+            </section>
+            <button popovertarget="publish-evaluation" type="button">
+              Xem hộp xác nhận công bố đánh giá
+            </button>
+          </form>
         </section>
       </div>
     </main>
-
-    <dialog id="create-requirement" popover aria-labelledby="create-title">
-      <h2 id="create-title">Tạo yêu cầu bài nộp</h2>
-      <button type="button" popovertarget="create-requirement" popovertargetaction="hide" aria-label="Đóng tạo yêu cầu bài nộp">Đóng</button>
+    <dialog aria-labelledby="create-title" id="create-requirement" popover="">
+      <h2 id="create-title">
+        Tạo yêu cầu bài nộp
+      </h2>
+      <button aria-label="Đóng tạo yêu cầu bài nộp" popovertarget="create-requirement" popovertargetaction="hide" type="button">
+        Đóng
+      </button>
       <form aria-describedby="create-notice">
-        <p><label for="create-name">Tên bài nộp *</label><input id="create-name" type="text" value="" placeholder="Nhập tên bài nộp" required /></p>
-        <p><label for="create-content">Nội dung yêu cầu *</label><textarea id="create-content" rows="5" required></textarea></p>
-        <p><label for="create-deadline">Hạn nộp *</label><input id="create-deadline" type="datetime-local"  required /></p>
-        <p id="create-notice">Chỉ minh họa giao diện, chưa lưu thay đổi.</p>
-        <button type="button" popovertarget="create-requirement" popovertargetaction="hide">Hủy</button>
-        <button type="button" disabled>Tạo yêu cầu</button>
+        <p>
+          <label for="create-name">
+            Tên bài nộp *
+          </label>
+          <input id="create-name" placeholder="Nhập tên bài nộp" required="" type="text" value=""/>
+        </p>
+        <p>
+          <label for="create-content">
+            Nội dung yêu cầu *
+          </label>
+          <textarea id="create-content" required="" rows="5"></textarea>
+        </p>
+        <p>
+          <label for="create-deadline">
+            Hạn nộp *
+          </label>
+          <input id="create-deadline" required="" type="datetime-local"/>
+        </p>
+        <p>
+          <label for="create-attachment">
+            Tài liệu hướng dẫn (không bắt buộc)
+          </label>
+          <input id="create-attachment" name="create-attachment" type="file"/>
+        </p>
+        <p id="create-notice">
+          Chỉ minh họa giao diện, chưa lưu thay đổi.
+        </p>
+        <button popovertarget="create-requirement" popovertargetaction="hide" type="button">
+          Hủy
+        </button>
+        <button disabled="" type="button">
+          Tạo yêu cầu
+        </button>
       </form>
     </dialog>
-
-    <dialog id="edit-requirement" popover aria-labelledby="edit-title">
-      <h2 id="edit-title">Sửa yêu cầu bài nộp</h2>
-      <button type="button" popovertarget="edit-requirement" popovertargetaction="hide" aria-label="Đóng sửa yêu cầu bài nộp">Đóng</button>
+    <dialog aria-labelledby="edit-title" id="edit-requirement" popover="">
+      <h2 id="edit-title">
+        Sửa yêu cầu bài nộp
+      </h2>
+      <button aria-label="Đóng sửa yêu cầu bài nộp" popovertarget="edit-requirement" popovertargetaction="hide" type="button">
+        Đóng
+      </button>
       <form aria-describedby="edit-notice">
-        <p><label for="edit-name">Tên bài nộp *</label><input id="edit-name" type="text" value="Báo cáo tiến độ đợt 1" placeholder="Nhập tên bài nộp" required /></p>
-        <p><label for="edit-content">Nội dung yêu cầu *</label><textarea id="edit-content" rows="5" required>Trình bày kết quả phân tích yêu cầu và thiết kế giao diện.</textarea></p>
-        <p><label for="edit-deadline">Hạn nộp *</label><input id="edit-deadline" type="datetime-local" value="2026-10-25T23:59" required /></p>
-        <p id="edit-notice">Chỉ minh họa giao diện, chưa lưu thay đổi.</p>
-        <button type="button" popovertarget="edit-requirement" popovertargetaction="hide">Hủy</button>
-        <button type="button" disabled>Lưu thay đổi</button>
+        <p>
+          <label for="edit-name">
+            Tên bài nộp *
+          </label>
+          <input id="edit-name" placeholder="Nhập tên bài nộp" required="" type="text" value="Báo cáo tiến độ đợt 1"/>
+        </p>
+        <p>
+          <label for="edit-content">
+            Nội dung yêu cầu *
+          </label>
+          <textarea id="edit-content" required="" rows="5">Trình bày kết quả phân tích yêu cầu và thiết kế giao diện.</textarea>
+        </p>
+        <p>
+          <label for="edit-deadline">
+            Hạn nộp *
+          </label>
+          <input id="edit-deadline" required="" type="datetime-local" value="2026-10-25T23:59"/>
+        </p>
+        <p>
+          <label for="edit-attachment">
+            Tài liệu hướng dẫn (không bắt buộc)
+          </label>
+          <input id="edit-attachment" name="edit-attachment" type="file"/>
+        </p>
+        <p id="edit-notice">
+          Chỉ minh họa giao diện, chưa lưu thay đổi.
+        </p>
+        <button popovertarget="edit-requirement" popovertargetaction="hide" type="button">
+          Hủy
+        </button>
+        <button disabled="" type="button">
+          Lưu thay đổi
+        </button>
       </form>
     </dialog>
-
-    <dialog id="delete-requirement" popover aria-labelledby="delete-title">
-      <h2 id="delete-title">Xóa yêu cầu bài nộp?</h2>
-      <p>“Báo cáo tiến độ đợt 1” sẽ được xóa khỏi danh sách yêu cầu bài nộp.</p>
-      <p>Đây là hộp xác nhận minh họa, chưa thực hiện xóa.</p>
-      <button type="button" popovertarget="delete-requirement" popovertargetaction="hide">Hủy</button>
-      <button type="button" disabled>Xóa</button>
+    <dialog aria-labelledby="delete-title" id="delete-requirement" popover="">
+      <h2 id="delete-title">
+        Xóa yêu cầu bài nộp?
+      </h2>
+      <p>
+        “Báo cáo tiến độ đợt 1” sẽ được xóa khỏi danh sách yêu cầu bài nộp.
+      </p>
+      <p>
+        Đây là hộp xác nhận minh họa, chưa thực hiện xóa.
+      </p>
+      <button popovertarget="delete-requirement" popovertargetaction="hide" type="button">
+        Hủy
+      </button>
+      <button disabled="" type="button">
+        Xóa
+      </button>
     </dialog>
-
-    <dialog id="publish-evaluation" popover aria-labelledby="publish-title">
-      <h2 id="publish-title">Xác nhận công bố đánh giá</h2>
-      <p>Bạn muốn công bố đánh giá cho nhóm này?</p>
-      <dl><dt>Đề tài</dt><dd>Website quản lý đồ án và khóa luận</dd><dt>Nhóm thực hiện</dt><dd>Nhóm 7</dd><dt>Điểm tổng kết</dt><dd>Chưa tính / 10</dd></dl>
-      <p>Sau khi công bố, tất cả thành viên của nhóm sẽ xem được điểm và nhận xét.</p>
-      <p>Hộp xác nhận minh họa, chưa đồng bộ điểm nhập và chưa hỗ trợ công bố.</p>
-      <button type="button" popovertarget="publish-evaluation" popovertargetaction="hide">Hủy</button>
-      <button type="button" disabled>Xác nhận công bố</button>
+    <dialog aria-labelledby="publish-title" id="publish-evaluation" popover="">
+      <h2 id="publish-title">
+        Xác nhận công bố đánh giá
+      </h2>
+      <p>
+        Bạn muốn công bố đánh giá cho nhóm này?
+      </p>
+      <dl>
+        <dt>
+          Đề tài
+        </dt>
+        <dd>
+          Website quản lý đồ án và khóa luận
+        </dd>
+        <dt>
+          Nhóm thực hiện
+        </dt>
+        <dd>
+          Nhóm 7
+        </dd>
+        <dt>
+          Điểm tổng kết
+        </dt>
+        <dd>
+          Chưa tính / 10
+        </dd>
+      </dl>
+      <p>
+        Sau khi công bố, tất cả thành viên của nhóm sẽ xem được điểm và nhận xét.
+      </p>
+      <p>
+        Hộp xác nhận minh họa, chưa đồng bộ điểm nhập và chưa hỗ trợ công bố.
+      </p>
+      <button popovertarget="publish-evaluation" popovertargetaction="hide" type="button">
+        Hủy
+      </button>
+      <button disabled="" type="button">
+        Xác nhận công bố
+      </button>
     </dialog>
-    
+    <dialog aria-labelledby="share-document-title" id="share-document" popover="">
+      <h2 id="share-document-title">
+        Chia sẻ tài liệu
+      </h2>
+      <form>
+        <p>
+          <label for="reference-title">
+            Tên tài liệu *
+          </label>
+          <input id="reference-title" name="reference-title" required="" type="text"/>
+        </p>
+        <p>
+          <label for="reference-file">
+            Tệp tài liệu *
+          </label>
+          <input id="reference-file" name="reference-file" required="" type="file"/>
+        </p>
+        <p>
+          <label for="reference-scope">
+            Gắn với *
+          </label>
+          <select id="reference-scope" name="reference-scope" required="">
+            <option value="">
+              Chọn gắn với
+            </option>
+            <option value="1">
+              Tham khảo toàn đề tài
+            </option>
+            <option value="2">
+              Báo cáo tiến độ đợt 1
+            </option>
+          </select>
+        </p>
+      </form>
+      <p>
+        Khung minh họa, chưa lưu thay đổi.
+      </p>
+      <button popovertarget="share-document" popovertargetaction="hide" type="button">
+        Hủy
+      </button>
+      <button disabled="" type="button">
+        Chia sẻ
+      </button>
+    </dialog>
+    <dialog aria-labelledby="unshare-document-title" id="unshare-document" popover="">
+      <h2 id="unshare-document-title">
+        Gỡ chia sẻ tài liệu?
+      </h2>
+      <p>
+        Tài liệu sẽ không còn xuất hiện trong danh sách chia sẻ của đề tài.
+      </p>
+      <p>
+        Khung minh họa, chưa lưu thay đổi.
+      </p>
+      <button popovertarget="unshare-document" popovertargetaction="hide" type="button">
+        Hủy
+      </button>
+      <button disabled="" type="button">
+        Gỡ chia sẻ
+      </button>
+    </dialog>
+    <template id="submissions-empty-template">
+      <p>
+        Chưa có bài nộp.
+      </p>
+    </template>
+    <template id="evaluation-unpublished-template">
+      <p>
+        Kết quả đánh giá chưa được công bố.
+      </p>
+    </template>
+    <template id="lecturer-detail-error-template">
+      <p role="alert">
+        Không thể thực hiện thao tác. Vui lòng kiểm tra thông tin và thử lại.
+      </p>
+    </template>
+    <template id="lecturer-detail-success-template">
+      <p role="status">
+        Thao tác đã hoàn tất.
+      </p>
+    </template>
     <footer class="site-footer">
       <div class="site-footer__inner">
-        
-        <p><span aria-disabled="true">Điều khoản sử dụng (đang cập nhật)</span></p>
-        <p><span aria-disabled="true">Quy chế, chính sách bảo mật (đang cập nhật)</span></p>
-      </div><p>Copyright &copy; 2026</p>
+        <div class="site-footer__brand">
+          <p class="site-footer__name">
+            QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN
+          </p>
+          <p>
+            Trường Đại học Công nghệ Thông tin
+          </p>
+        </div>
+        <ul aria-label="Thông tin và quy định" class="site-footer__information">
+          <li>
+            <span>
+              Điều khoản sử dụng (đang cập nhật)
+            </span>
+          </li>
+          <li>
+            <span>
+              Quy chế đồ án / khóa luận (đang cập nhật)
+            </span>
+          </li>
+          <li>
+            <span>
+              Chính sách bảo mật (đang cập nhật)
+            </span>
+          </li>
+        </ul>
+        <p class="site-footer__copyright">
+          © 2026 · Hệ thống quản lý đồ án / khóa luận
+        </p>
+      </div>
     </footer>
   </body>
 </html>

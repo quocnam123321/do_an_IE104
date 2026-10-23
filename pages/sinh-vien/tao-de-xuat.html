@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Tạo và gửi đề xuất đề tài mới đến giảng viên hướng dẫn." />
     <title>Đề xuất đề tài | Quản lý đồ án</title>
   </head>
   <body>
@@ -19,7 +20,7 @@
               <a class="main-nav__link" href="tong-quan-sinh-vien.html">Tổng quan</a>
             </li>
             <li class="main-nav__item">
-              <a class="main-nav__link" href="dang-ky-de-tai.html" aria-current="page">Đăng ký đề tài</a>
+              <a class="main-nav__link" href="dang-ky-de-tai.html">Đăng ký đề tài</a>
             </li>
             <li class="main-nav__item">
               <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html">Đề tài của tôi</a>
@@ -31,9 +32,9 @@
               <details class="main-nav__disclosure">
                 <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
                 <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/gioi-thieu.html" aria-disabled="true">Giới thiệu (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/thong-bao.html" aria-disabled="true">Thông báo (đang cập nhật)</span></li>
-                  <li class="main-nav__subitem"><span class="main-nav__link" data-pending-href="../chung/lien-he.html" aria-disabled="true">Liên hệ (đang cập nhật)</span></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
                 </ul>
               </details>
             </li>
@@ -86,6 +87,8 @@
         <div class="page-content proposal-layout">
           <!-- Khung HTML: bổ sung xử lý gửi, kiểm tra giảng viên và dữ liệu danh mục sau. -->
           <form id="proposal-form" class="proposal-form" aria-labelledby="proposal-title" aria-describedby="proposal-required-note">
+            <p id="proposal-error" class="form-error" role="alert" hidden>Vui lòng kiểm tra thông tin bắt buộc và giảng viên hướng dẫn.</p>
+            <p id="proposal-result" class="form-result" role="status" hidden>Đề xuất đã được ghi nhận.</p>
             <fieldset class="proposal-form__section">
               <legend>Thông tin đề tài</legend>
               <div class="proposal-form__field">
@@ -159,7 +162,7 @@
               <p id="proposal-required-note">* Thông tin bắt buộc</p>
               <div class="proposal-form__actions">
                 <a class="proposal-form__cancel" href="dang-ky-de-tai.html">Hủy</a>
-                <button class="proposal-form__submit" type="submit">Gửi đề xuất</button>
+                <button class="proposal-form__submit" type="button" aria-haspopup="dialog" aria-controls="proposal-confirm-dialog" disabled>Gửi đề xuất</button>
               </div>
             </div>
           </form>
@@ -258,6 +261,17 @@
           <button id="confirm-supervisor-selection" type="button" disabled>Xác nhận</button>
         </div>
       </footer>
+    </dialog>
+
+    <dialog id="proposal-confirm-dialog" class="confirmation-dialog" aria-labelledby="proposal-confirm-title">
+      <h2 id="proposal-confirm-title">Xác nhận gửi đề xuất</h2>
+      <p>Kiểm tra nội dung và giảng viên hướng dẫn trước khi gửi.</p>
+      <dl>
+        <div><dt>Tên đề tài</dt><dd>[Tên đề tài đề xuất]</dd></div>
+        <div><dt>Giảng viên hướng dẫn</dt><dd>[Giảng viên được chọn]</dd></div>
+      </dl>
+      <form method="dialog"><button type="submit">Quay lại chỉnh sửa</button></form>
+      <button type="button" disabled>Xác nhận gửi đề xuất</button>
     </dialog>
 
     <!-- Hộp thoại tài khoản dùng chung với header sinh viên. -->
