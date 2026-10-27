@@ -13,7 +13,7 @@
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-brand" href="../../index.html">
-          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="ISE" width="48" height="48" />
+          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="48" height="48" />
           <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
         </a>
         <nav class="main-nav" aria-label="Điều hướng chính">
@@ -36,136 +36,131 @@
           </ol>
         </nav>
         <header class="page-header">
-          <h1>Thông báo</h1>
-          <p>Cập nhật thông tin về đăng ký đề tài, lịch báo cáo và hướng dẫn thực hiện.</p>
+          <h1 id="notification-list-title">Tất cả thông báo</h1>
         </header>
-        <p id="demo-notice" class="demo-notice">
-          Nội dung và ngày đăng dưới đây là dữ liệu minh họa.
-          Tìm kiếm, lọc và phân trang chưa được xử lý trong bản HTML.
-        </p>
 
-        <!-- BỘ CÔNG CỤ: chờ bổ sung JavaScript hoặc backend. -->
-        <section class="notification-tools" aria-labelledby="tools-title">
-          <h2 id="tools-title">Tìm kiếm và lọc thông báo</h2>
-          <form class="notification-search" role="search" aria-describedby="demo-notice">
-            <label for="notification-query">Tìm thông báo</label>
-            <input id="notification-query" type="search" placeholder="Tìm theo tiêu đề, từ khóa..." disabled />
-            <button type="button" disabled>Tìm kiếm</button>
-            <label for="notification-sort">Sắp xếp</label>
-            <select id="notification-sort" disabled>
-              <option value="newest" selected>Mới nhất</option>
-              <option value="oldest">Cũ nhất</option>
+        <!-- Wireframe: bộ lọc dạng nút trên desktop và ô chọn trên mobile.
+             CSS/JavaScript sẽ xử lý biến thể hiển thị, lọc và đổi tiêu đề sau. -->
+        <section class="notification-tools" aria-label="Lọc theo loại thông báo" aria-describedby="demo-notice">
+          <div class="notification-categories notification-categories--desktop" role="group" aria-label="Loại thông báo">
+            <button type="button" data-category="all" aria-pressed="true" disabled>Tất cả</button>
+            <button type="button" data-category="dang-ky-de-tai" aria-pressed="false" disabled>Đăng ký đề tài</button>
+            <button type="button" data-category="lich-bao-cao" aria-pressed="false" disabled>Lịch báo cáo</button>
+            <button type="button" data-category="huong-dan" aria-pressed="false" disabled>Hướng dẫn</button>
+            <button type="button" data-category="bieu-mau" aria-pressed="false" disabled>Biểu mẫu</button>
+          </div>
+          <div class="notification-categories notification-categories--mobile">
+            <label for="notification-category">Loại thông báo</label>
+            <select id="notification-category" name="loai-thong-bao" disabled>
+              <option value="all" selected>Tất cả loại</option>
+              <option value="dang-ky-de-tai">Đăng ký đề tài</option>
+              <option value="lich-bao-cao">Lịch báo cáo</option>
+              <option value="huong-dan">Hướng dẫn</option>
+              <option value="bieu-mau">Biểu mẫu</option>
             </select>
-          </form>
-          <div class="notification-categories" role="group" aria-label="Lọc theo danh mục">
-            <button type="button" aria-pressed="true" disabled>Tất cả</button>
-            <button type="button" aria-pressed="false" disabled>Đăng ký đề tài</button>
-            <button type="button" aria-pressed="false" disabled>Lịch báo cáo</button>
-            <button type="button" aria-pressed="false" disabled>Hướng dẫn</button>
-            <button type="button" aria-pressed="false" disabled>Biểu mẫu</button>
           </div>
         </section>
+        <p id="demo-notice" class="demo-notice">Nội dung và ngày đăng là dữ liệu minh họa; bộ lọc và phân trang chưa được xử lý.</p>
 
-        <div class="notifications-layout">
-          <div class="notifications-layout__main">
-            <section class="featured-notification" aria-labelledby="featured-title">
-              <p class="section-eyebrow">THÔNG BÁO NỔI BẬT</p>
-              <h2 id="featured-title"><a href="chi-tiet-thong-bao-01.html">Kế hoạch đăng ký đề tài học kỳ I năm học 2026–2027</a></h2>
-              <p><time datetime="2026-10-10">10/10/2026</time> · Đăng ký đề tài</p>
-              <p>Thông tin về đợt đăng ký, các bước thực hiện và lưu ý dành cho sinh viên.</p>
-              <a href="chi-tiet-thong-bao-01.html">Xem thông báo <span aria-hidden="true">&rarr;</span></a>
-            </section>
-
-            <!-- Mỗi thông báo mở một trang chi tiết HTML riêng. -->
-            <section class="notification-list" aria-labelledby="latest-title">
-              <header class="section-header">
-                <h2 id="latest-title">Thông báo mới nhất</h2>
-                <p>5 thông báo</p>
-              </header>
-              <ol class="notification-list__items">
-                <li>
-                  <article id="thong-bao-01" class="notification-card">
-                    <time class="notification-card__date" datetime="2026-10-10">10/10/2026</time>
-                    <p class="notification-card__category">Đăng ký đề tài <span class="badge">Mới</span></p>
-                    <h3><a href="chi-tiet-thong-bao-01.html">Kế hoạch đăng ký đề tài học kỳ I năm học 2026–2027</a></h3>
-                    <p>Thông tin về đợt đăng ký, các bước thực hiện và lưu ý dành cho sinh viên.</p>
-                    <a class="notification-card__link" href="chi-tiet-thong-bao-01.html">Xem chi tiết thông báo</a>
-                  </article>
-                </li>
-                <li>
-                  <article id="thong-bao-02" class="notification-card">
-                    <time class="notification-card__date" datetime="2026-10-09">09/10/2026</time>
-                    <p class="notification-card__category">Hướng dẫn <span class="badge">Mới</span></p>
-                    <h3><a href="chi-tiet-thong-bao-02.html">Hướng dẫn cập nhật tiến độ và nộp báo cáo</a></h3>
-                    <p>Các bước cập nhật tiến độ và chuẩn bị báo cáo theo hướng dẫn của giảng viên.</p>
-                    <a class="notification-card__link" href="chi-tiet-thong-bao-02.html">Xem chi tiết thông báo</a>
-                  </article>
-                </li>
-                <li>
-                  <article id="thong-bao-03" class="notification-card">
-                    <time class="notification-card__date" datetime="2026-10-08">08/10/2026</time>
-                    <p class="notification-card__category">Lịch báo cáo</p>
-                    <h3><a href="chi-tiet-thong-bao-03.html">Lịch báo cáo tiến độ đồ án đợt 1</a></h3>
-                    <p>Thông tin về lịch báo cáo, nội dung cần chuẩn bị và hình thức trình bày.</p>
-                    <a class="notification-card__link" href="chi-tiet-thong-bao-03.html">Xem chi tiết thông báo</a>
-                  </article>
-                </li>
-                <li>
-                  <article id="thong-bao-04" class="notification-card">
-                    <time class="notification-card__date" datetime="2026-10-06">06/10/2026</time>
-                    <p class="notification-card__category">Biểu mẫu</p>
-                    <h3><a href="chi-tiet-thong-bao-04.html">Biểu mẫu đề cương đồ án và khóa luận</a></h3>
-                    <p>Các mẫu tài liệu tham khảo để chuẩn bị đề cương và trình bày báo cáo.</p>
-                    <a class="notification-card__link" href="chi-tiet-thong-bao-04.html">Xem chi tiết thông báo</a>
-                  </article>
-                </li>
-                <li>
-                  <article id="thong-bao-05" class="notification-card">
-                    <time class="notification-card__date" datetime="2026-10-05">05/10/2026</time>
-                    <p class="notification-card__category">Hướng dẫn</p>
-                    <h3><a href="chi-tiet-thong-bao-05.html">Quy trình đăng ký đề tài</a></h3>
-                    <p>Tìm hiểu các bước lựa chọn đề tài và theo dõi kết quả đăng ký.</p>
-                    <a class="notification-card__link" href="chi-tiet-thong-bao-05.html">Xem chi tiết thông báo</a>
-                  </article>
-                </li>
-              </ol>
-              <div class="notification-list__footer">
-                <p>Hiển thị 1–5 trong 5 thông báo</p>
-                <nav class="pagination" aria-label="Phân trang thông báo">
-                  <ul>
-                    <li><button type="button" disabled>Trước</button></li>
-                    <li><span aria-current="page" aria-label="Trang 1">1</span></li>
-                    <li><button type="button" disabled>Sau</button></li>
-                  </ul>
-                </nav>
-              </div>
-            </section>
-          </div>
-
-          <!-- CỘT THÔNG TIN BỔ SUNG -->
-          <aside class="notifications-sidebar" aria-label="Tài liệu và truy cập hệ thống">
-            <section class="resource-card" aria-labelledby="resources-title">
-              <h2 id="resources-title">Tài liệu &amp; hướng dẫn</h2>
+        <!-- Một danh sách nội dung dùng chung cho desktop và mobile. -->
+        <section class="notification-list" aria-labelledby="notification-list-title">
+          <ol class="notification-list__items">
+            <li>
+              <article id="thong-bao-01" class="notification-card" data-category="dang-ky-de-tai" aria-labelledby="notification-01-title">
+                <a class="notification-card__image" href="chi-tiet-thong-bao-01.html" aria-label="Đọc thông báo: Kế hoạch đăng ký đề tài học kỳ I năm học 2026–2027">
+                  <span class="notification-image-placeholder" aria-hidden="true">Ảnh thông báo</span>
+                </a>
+                <div class="notification-card__content">
+                  <h2 id="notification-01-title"><a href="chi-tiet-thong-bao-01.html">Kế hoạch đăng ký đề tài học kỳ I năm học 2026–2027</a></h2>
+                  <p><time class="notification-card__date" datetime="2026-10-10">10/10/2026</time></p>
+                  <p class="notification-card__summary">Thông tin về đợt đăng ký, các bước thực hiện và lưu ý dành cho sinh viên.</p>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article id="thong-bao-02" class="notification-card" data-category="huong-dan" aria-labelledby="notification-02-title">
+                <a class="notification-card__image" href="chi-tiet-thong-bao-02.html" aria-label="Đọc thông báo: Hướng dẫn cập nhật tiến độ và nộp báo cáo">
+                  <span class="notification-image-placeholder" aria-hidden="true">Ảnh thông báo</span>
+                </a>
+                <div class="notification-card__content">
+                  <h2 id="notification-02-title"><a href="chi-tiet-thong-bao-02.html">Hướng dẫn cập nhật tiến độ và nộp báo cáo</a></h2>
+                  <p><time class="notification-card__date" datetime="2026-10-09">09/10/2026</time></p>
+                  <p class="notification-card__summary">Các bước cập nhật tiến độ và chuẩn bị báo cáo theo hướng dẫn của giảng viên.</p>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article id="thong-bao-03" class="notification-card" data-category="lich-bao-cao" aria-labelledby="notification-03-title">
+                <a class="notification-card__image" href="chi-tiet-thong-bao-03.html" aria-label="Đọc thông báo: Lịch báo cáo tiến độ đồ án đợt 1">
+                  <span class="notification-image-placeholder" aria-hidden="true">Ảnh thông báo</span>
+                </a>
+                <div class="notification-card__content">
+                  <h2 id="notification-03-title"><a href="chi-tiet-thong-bao-03.html">Lịch báo cáo tiến độ đồ án đợt 1</a></h2>
+                  <p><time class="notification-card__date" datetime="2026-10-08">08/10/2026</time></p>
+                  <p class="notification-card__summary">Thông tin về lịch báo cáo, nội dung cần chuẩn bị và hình thức trình bày.</p>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article id="thong-bao-04" class="notification-card" data-category="bieu-mau" aria-labelledby="notification-04-title">
+                <a class="notification-card__image" href="chi-tiet-thong-bao-04.html" aria-label="Đọc thông báo: Biểu mẫu đề cương đồ án và khóa luận">
+                  <span class="notification-image-placeholder" aria-hidden="true">Ảnh thông báo</span>
+                </a>
+                <div class="notification-card__content">
+                  <h2 id="notification-04-title"><a href="chi-tiet-thong-bao-04.html">Biểu mẫu đề cương đồ án và khóa luận</a></h2>
+                  <p><time class="notification-card__date" datetime="2026-10-06">06/10/2026</time></p>
+                  <p class="notification-card__summary">Các mẫu tài liệu tham khảo để chuẩn bị đề cương và trình bày báo cáo.</p>
+                </div>
+              </article>
+            </li>
+            <li>
+              <article id="thong-bao-05" class="notification-card" data-category="huong-dan" aria-labelledby="notification-05-title">
+                <a class="notification-card__image" href="chi-tiet-thong-bao-05.html" aria-label="Đọc thông báo: Quy trình đăng ký đề tài">
+                  <span class="notification-image-placeholder" aria-hidden="true">Ảnh thông báo</span>
+                </a>
+                <div class="notification-card__content">
+                  <h2 id="notification-05-title"><a href="chi-tiet-thong-bao-05.html">Quy trình đăng ký đề tài</a></h2>
+                  <p><time class="notification-card__date" datetime="2026-10-05">05/10/2026</time></p>
+                  <p class="notification-card__summary">Tìm hiểu các bước lựa chọn đề tài và theo dõi kết quả đăng ký.</p>
+                </div>
+              </article>
+            </li>
+          </ol>
+          <div class="notification-list__footer">
+            <p>Hiển thị 1–5 trong 5 thông báo</p>
+            <nav class="pagination" aria-label="Phân trang thông báo" aria-describedby="demo-notice">
               <ul>
-                <li><a href="chi-tiet-thong-bao-05.html">Quy trình đăng ký đề tài <span aria-hidden="true">&rarr;</span></a></li>
-                <li><a href="chi-tiet-thong-bao-04.html">Mẫu đề cương đồ án <span aria-hidden="true">&rarr;</span></a></li>
-                <li><a href="chi-tiet-thong-bao-02.html">Hướng dẫn nộp báo cáo <span aria-hidden="true">&rarr;</span></a></li>
+                <li><button type="button" disabled>Trước</button></li>
+                <li><span aria-current="page" aria-label="Trang 1">1</span></li>
+                <li><button type="button" disabled>Sau</button></li>
               </ul>
-            </section>
-            <section class="login-card" aria-labelledby="access-title">
-              <h2 id="access-title">Truy cập hệ thống</h2>
-              <p>Đăng nhập để quản lý đề tài và theo dõi tiến độ của bạn.</p>
-              <a class="login-card__action" href="dang-nhap.html">Đăng nhập</a>
-            </section>
-          </aside>
-        </div>
+            </nav>
+          </div>
+        </section>
+        <template id="announcements-empty-template">
+          <section class="empty-state" aria-labelledby="announcements-empty-title">
+            <h2 id="announcements-empty-title">Chưa có thông báo</h2>
+            <p>Các thông báo sẽ hiển thị tại đây.</p>
+          </section>
+        </template>
+        <template id="announcements-no-results-template">
+          <section class="empty-state" aria-labelledby="announcements-no-results-title">
+            <h2 id="announcements-no-results-title">Không có thông báo thuộc loại đã chọn</h2>
+            <p>Chọn loại khác hoặc Tất cả để xem các thông báo.</p>
+          </section>
+        </template>
       </div>
-    <template id="announcements-empty-template"><section aria-labelledby="announcements-empty-title"><h2 id="announcements-empty-title">Chưa có thông báo</h2><p>Các thông báo sẽ hiển thị tại đây.</p></section></template>
     </main>
 
     <footer class="site-footer">
       <div class="site-footer__inner">
-
+        <div class="site-footer__about">
+          <a class="site-footer__brand" href="gioi-thieu.html">
+            <img src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="48" height="48" />
+          </a>
+          <p><a href="gioi-thieu.html">Thông tin trang web</a></p>
+          <p><a href="gioi-thieu.html#team-title">Thông tin nhóm</a></p>
+        </div>
         <div class="site-footer__terms">
           <p><span aria-disabled="true">Điều khoản sử dụng (đang cập nhật)</span></p>
         </div>

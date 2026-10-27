@@ -13,7 +13,7 @@
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-brand" href="../../index.html">
-          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="ISE" width="48" height="48" />
+          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="48" height="48" />
           <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
         </a>
         <nav class="main-nav" aria-label="Điều hướng chính">
@@ -28,51 +28,97 @@
     </header>
 
     <main id="main-content" class="contact-page" tabindex="-1">
-      <header class="contact-page__header">
-        <h1>Liên hệ</h1>
-      </header>
       <div class="page-container">
         <div class="contact-layout">
-          <!-- GIỚI THIỆU VÀ KHUNG MINH HỌA -->
+          <!-- Wireframe_Nhom7: phần giới thiệu và biểu mẫu liên hệ. -->
           <section class="contact-intro" aria-labelledby="contact-intro-title">
-            <p class="section-eyebrow">KẾT NỐI VỚI NHÓM</p>
-            <h2 id="contact-intro-title">Chúng mình sẵn sàng<br />lắng nghe bạn.</h2>
+            <p class="contact-intro__description">Chúng tôi luôn sẵn sàng hỗ trợ</p>
+            <h1 id="contact-intro-title">Kết nối với<br />đội ngũ của chúng tôi</h1>
             <p>Gửi câu hỏi hoặc góp ý để nhóm cải thiện trải nghiệm sử dụng website quản lý đồ án.</p>
-            <!-- Bổ sung ảnh hỗ trợ chính thức khi có tài nguyên. -->
             <figure class="contact-intro__illustration">
               <figcaption>HÌNH MINH HỌA HỖ TRỢ — Khung hình minh họa</figcaption>
             </figure>
           </section>
 
-        <!-- THÔNG TIN LIÊN HỆ: thay nội dung chờ bằng thông tin chính thức của nhóm. -->
-        <section class="contact-information" aria-labelledby="contact-info-title">
-          <h2 id="contact-info-title">Thông tin liên hệ của nhóm</h2>
-          <address>
-            <dl class="contact-information__list">
-              <dt>Email của nhóm</dt>
-              <dd>Đang cập nhật email liên hệ.</dd>
-              <dt>Điện thoại</dt>
-              <dd>Đang cập nhật số điện thoại liên hệ.</dd>
-              <dt>Địa chỉ</dt>
-              <dd>Đang cập nhật địa chỉ liên hệ.</dd>
-            </dl>
-          </address>
-        </section>
+          <section class="contact-panel" aria-labelledby="contact-form-title">
+            <header class="contact-panel__header">
+              <h2 id="contact-form-title">Gửi lời nhắn</h2>
+              <p id="contact-required-hint">Các trường có dấu * là bắt buộc.</p>
+            </header>
+            <!-- Chưa có xử lý gửi/lưu liên hệ; nút gửi chỉ là khung HTML. -->
+            <form id="contact-form" class="contact-form" aria-describedby="contact-required-hint contact-form-notice">
+              <div class="contact-form__row">
+                <div class="form-field">
+                  <label for="contact-name">Họ và tên *</label>
+                  <input id="contact-name" name="ho-ten" type="text" autocomplete="name" placeholder="Nhập họ và tên" required />
+                </div>
+                <div class="form-field">
+                  <label for="contact-email">Email *</label>
+                  <input id="contact-email" name="email" type="email" autocomplete="email" placeholder="Nhập email liên hệ" required />
+                </div>
+              </div>
+              <div class="contact-form__row">
+                <div class="form-field">
+                  <label for="contact-phone">Số điện thoại (không bắt buộc)</label>
+                  <input id="contact-phone" name="so-dien-thoai" type="tel" autocomplete="tel" placeholder="Nhập số điện thoại" />
+                </div>
+                <div class="form-field">
+                  <label for="contact-subject">Chủ đề *</label>
+                  <input id="contact-subject" name="chu-de" type="text" placeholder="Nhập chủ đề liên hệ" required />
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="contact-message">Nội dung *</label>
+                <textarea id="contact-message" name="noi-dung" rows="6" placeholder="Bạn cần hỗ trợ hoặc muốn góp ý điều gì?" required></textarea>
+              </div>
+              <p id="contact-error" class="form-error" role="alert" hidden></p>
+              <p id="contact-result" class="form-result" role="status" hidden></p>
+              <button class="contact-form__submit" type="button" disabled>Gửi liên hệ</button>
+              <p id="contact-form-notice" class="demo-notice">Biểu mẫu HTML minh họa, chưa gửi hoặc lưu lời nhắn.</p>
+            </form>
+          </section>
+        </div>
 
         <!-- KHUNG BẢN ĐỒ: bổ sung bản đồ sau khi xác nhận địa chỉ liên hệ. -->
         <section class="contact-location" aria-labelledby="contact-location-title">
-          <h2 id="contact-location-title">Vị trí liên hệ</h2>
-          <p>Địa chỉ liên hệ của nhóm đang được cập nhật.</p>
+          <header class="contact-location__header">
+            <h2 id="contact-location-title">Vị trí của chúng tôi</h2>
+            <p>[Địa chỉ liên hệ của nhóm]</p>
+          </header>
           <figure class="contact-location__map">
             <figcaption>KHUNG BẢN ĐỒ — Vị trí liên hệ của nhóm</figcaption>
           </figure>
         </section>
-      </div>
+
+        <!-- Chưa có thông tin chính thức: giữ các giá trị mẫu như wireframe. -->
+        <address class="contact-information" aria-label="Thông tin liên lạc trực tiếp">
+          <dl class="contact-information__list">
+            <div class="contact-information__item">
+              <dt>Điện thoại</dt>
+              <dd>[Số điện thoại liên hệ]</dd>
+            </div>
+            <div class="contact-information__item">
+              <dt>Email của nhóm</dt>
+              <dd>[Email liên hệ]</dd>
+            </div>
+            <div class="contact-information__item">
+              <dt>Địa chỉ</dt>
+              <dd>[Địa chỉ liên hệ]</dd>
+            </div>
+          </dl>
+        </address>
       </div>
     </main>
 
     <footer class="site-footer">
       <div class="site-footer__inner">
+        <div class="site-footer__about">
+          <a class="site-footer__brand" href="gioi-thieu.html">
+            <img src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="48" height="48" />
+          </a>
+          <p><a href="gioi-thieu.html">Thông tin trang web</a></p>
+          <p><a href="gioi-thieu.html#team-title">Thông tin nhóm</a></p>
+        </div>
         <div class="site-footer__terms">
           <p><span aria-disabled="true">Điều khoản sử dụng (đang cập nhật)</span></p>
         </div>

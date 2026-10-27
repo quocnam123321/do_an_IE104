@@ -12,13 +12,13 @@
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-brand" href="../../index.html">
-          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="ISE" width="48" height="48" />
+          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="48" height="48" />
           <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
         </a>
         <nav class="main-nav" aria-label="Điều hướng chính">
           <ul class="main-nav__list">
             <li><a href="gioi-thieu.html">Giới thiệu</a></li>
-            <li><a href="thong-bao.html" aria-current="page">Thông báo</a></li>
+            <li><a href="thong-bao.html" aria-current="location">Thông báo</a></li>
             <li><a href="lien-he.html">Liên hệ</a></li>
             <li><a href="dang-nhap.html">Đăng nhập</a></li>
           </ul>
@@ -32,29 +32,101 @@
           <ol>
             <li><a href="../../index.html">Chung</a></li>
             <li><a href="thong-bao.html">Thông báo</a></li>
-            <li aria-current="page">Chi tiết thông báo</li>
+            <li aria-current="page">Chi tiết</li>
           </ol>
         </nav>
-        <article class="notification-detail" aria-labelledby="notification-title">
-          <header class="notification-detail__header">
-            <h1 id="notification-title">Lịch báo cáo tiến độ đồ án đợt 1</h1>
-            <p><time class="notification-card__date" datetime="2026-10-08">08/10/2026</time> · Lịch báo cáo</p>
-          </header>
-          <p class="demo-notice">Nội dung và ngày đăng là dữ liệu minh họa.</p>
-          <div class="notification-detail__content">
-            <p>Chuẩn bị phần trình bày về mục tiêu đề tài, kết quả đã thực hiện, khó khăn và kế hoạch tiếp theo.</p>
-                      <p>Thời gian, địa điểm và danh sách báo cáo đang chờ thông báo chính thức. Sinh viên trao đổi với giảng viên hướng dẫn để chuẩn bị nội dung.</p>
-          </div>
-        </article>
         <p class="notification-detail__back">
-          <a href="thong-bao.html#thong-bao-03">&larr; Quay lại danh sách thông báo</a>
+          <a href="thong-bao.html#thong-bao-03">Quay lại thông báo</a>
         </p>
+        <div class="notification-detail-layout">
+          <article class="notification-detail" aria-labelledby="notification-title">
+            <header class="notification-detail__header">
+              <h1 id="notification-title">Lịch báo cáo tiến độ đồ án đợt 1</h1>
+              <p>Ngày đăng: <time class="notification-card__date" datetime="2026-10-08">08/10/2026</time> · Lịch báo cáo</p>
+            </header>
+            <p class="demo-notice">Nội dung và ngày đăng là dữ liệu minh họa.</p>
+            <div class="notification-detail__content">
+              <p>Chuẩn bị phần trình bày về mục tiêu đề tài, kết quả đã thực hiện, khó khăn và kế hoạch tiếp theo.</p>
+              <p>Thời gian, địa điểm và danh sách báo cáo đang chờ thông báo chính thức. Sinh viên trao đổi với giảng viên hướng dẫn để chuẩn bị nội dung.</p>
+            </div>
+            <!-- Chỉ chèn vùng tệp đính kèm khi thông báo có tệp thật.
+                 Hiện chưa có tài liệu trong assets; không tạo liên kết tải giả. -->
+            <template id="notification-attachments-template">
+              <section class="notification-attachments" aria-labelledby="notification-attachments-title">
+                <h2 id="notification-attachments-title">Tệp đính kèm</h2>
+                <ul class="notification-attachments__list">
+                  <li class="notification-attachment">
+                    <span class="notification-attachment__name">Tên tệp đính kèm</span>
+                    <button type="button" disabled>Tải xuống</button>
+                  </li>
+                </ul>
+              </section>
+            </template>
+          </article>
+
+          <!-- Sau bài chính trong DOM; CSS sẽ đặt cạnh bài trên desktop. -->
+          <aside class="related-notifications" aria-labelledby="related-notifications-title">
+            <h2 id="related-notifications-title">Bài viết liên quan</h2>
+            <ul class="related-notifications__list">
+              <li>
+                <article class="related-notification" aria-labelledby="related-01-title">
+                  <a class="related-notification__image" href="chi-tiet-thong-bao-01.html" aria-label="Đọc thông báo: Kế hoạch đăng ký đề tài học kỳ I năm học 2026–2027">
+                    <span class="notification-image-placeholder" aria-hidden="true">Ảnh thông báo</span>
+                  </a>
+                  <div class="related-notification__content">
+                    <h3 id="related-01-title"><a href="chi-tiet-thong-bao-01.html">Kế hoạch đăng ký đề tài học kỳ I năm học 2026–2027</a></h3>
+                    <p><time datetime="2026-10-10">10/10/2026</time></p>
+                  </div>
+                </article>
+              </li>
+              <li>
+                <article class="related-notification" aria-labelledby="related-02-title">
+                  <a class="related-notification__image" href="chi-tiet-thong-bao-02.html" aria-label="Đọc thông báo: Hướng dẫn cập nhật tiến độ và nộp báo cáo">
+                    <span class="notification-image-placeholder" aria-hidden="true">Ảnh thông báo</span>
+                  </a>
+                  <div class="related-notification__content">
+                    <h3 id="related-02-title"><a href="chi-tiet-thong-bao-02.html">Hướng dẫn cập nhật tiến độ và nộp báo cáo</a></h3>
+                    <p><time datetime="2026-10-09">09/10/2026</time></p>
+                  </div>
+                </article>
+              </li>
+              <li>
+                <article class="related-notification" aria-labelledby="related-04-title">
+                  <a class="related-notification__image" href="chi-tiet-thong-bao-04.html" aria-label="Đọc thông báo: Biểu mẫu đề cương đồ án và khóa luận">
+                    <span class="notification-image-placeholder" aria-hidden="true">Ảnh thông báo</span>
+                  </a>
+                  <div class="related-notification__content">
+                    <h3 id="related-04-title"><a href="chi-tiet-thong-bao-04.html">Biểu mẫu đề cương đồ án và khóa luận</a></h3>
+                    <p><time datetime="2026-10-06">06/10/2026</time></p>
+                  </div>
+                </article>
+              </li>
+              <li>
+                <article class="related-notification" aria-labelledby="related-05-title">
+                  <a class="related-notification__image" href="chi-tiet-thong-bao-05.html" aria-label="Đọc thông báo: Quy trình đăng ký đề tài">
+                    <span class="notification-image-placeholder" aria-hidden="true">Ảnh thông báo</span>
+                  </a>
+                  <div class="related-notification__content">
+                    <h3 id="related-05-title"><a href="chi-tiet-thong-bao-05.html">Quy trình đăng ký đề tài</a></h3>
+                    <p><time datetime="2026-10-05">05/10/2026</time></p>
+                  </div>
+                </article>
+              </li>
+            </ul>
+          </aside>
+        </div>
       </div>
     </main>
 
     <footer class="site-footer">
       <div class="site-footer__inner">
-
+        <div class="site-footer__about">
+          <a class="site-footer__brand" href="gioi-thieu.html">
+            <img src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="48" height="48" />
+          </a>
+          <p><a href="gioi-thieu.html">Thông tin trang web</a></p>
+          <p><a href="gioi-thieu.html#team-title">Thông tin nhóm</a></p>
+        </div>
         <div class="site-footer__terms">
           <p><span aria-disabled="true">Điều khoản sử dụng (đang cập nhật)</span></p>
         </div>
