@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta
-      content="Theo dõi đề tài, đăng ký, đề xuất gần đây và các hạn nộp của bạn."
+      content="Theo dõi đề tài, yêu cầu đăng ký và các cập nhật của bạn."
       name="description"
     />
     <title>Tổng quan | Quản lý đồ án</title>
@@ -102,292 +102,141 @@
         <header class="page-header">
           <h1 class="page-header__title">Tổng quan</h1>
           <p class="page-header__description">
-            Theo dõi đề tài, đăng ký, đề xuất gần đây và các hạn nộp của bạn.
+            Theo dõi đề tài, yêu cầu đăng ký và các cập nhật của bạn.
           </p>
         </header>
         <div class="page-content">
-          <p class="demo-notice">
-            Dữ liệu minh họa của sinh viên Nguyễn Minh Anh (24520001), cập nhật
-            ngày <time datetime="2026-10-13">13/10/2026</time>.
-          </p>
-          <section aria-labelledby="summary-title" class="dashboard-summary">
-            <h2 id="summary-title">Tóm tắt hoạt động</h2>
+          <!-- Dữ liệu minh họa theo wireframe tổng quan sinh viên phiên bản 2. -->
+          <section aria-label="Thống kê đề tài" class="dashboard-summary">
             <div class="dashboard-summary__items">
-              <article
-                aria-labelledby="active-topics-title"
-                class="summary-card"
-              >
-                <h3 id="active-topics-title">Đề tài đang thực hiện</h3>
-                <p>
-                  <strong>1</strong> đề tài đang thực hiện; 0 đề tài hoàn thành.
-                </p>
-                <a href="de-tai-cua-toi-sinh-vien.html#de-tai-dang-thuc-hien"
-                  >Xem đề tài của tôi</a
-                >
+              <article aria-labelledby="total-topics-title" class="summary-card summary-card--total">
+                <h2 id="total-topics-title" class="summary-card__title">Tổng đề tài</h2>
+                <p class="summary-card__count"><strong>6</strong></p>
+                <a class="summary-card__link" href="de-tai-cua-toi-sinh-vien.html" aria-label="Xem chi tiết: tổng đề tài">Xem chi tiết <span aria-hidden="true">→</span></a>
               </article>
-              <article aria-labelledby="pending-title" class="summary-card">
-                <h3 id="pending-title">Đăng ký / đề xuất chờ duyệt</h3>
-                <p>
-                  <strong>2</strong> yêu cầu chờ duyệt: 1 đăng ký và 1 đề xuất.
-                </p>
-                <dl>
-                  <dt>Đăng ký đã duyệt</dt>
-                  <dd>1</dd>
-                  <dt>Đăng ký bị từ chối</dt>
-                  <dd>0</dd>
-                  <dt>Đề xuất được yêu cầu chỉnh sửa</dt>
-                  <dd>1</dd>
-                </dl>
-                <a href="de-tai-cua-toi-sinh-vien.html#dang-ky-va-de-xuat">Theo dõi đăng ký và kết quả duyệt</a>
-                <a href="de-tai-cua-toi-sinh-vien.html#dang-ky-va-de-xuat">Mở khu vực đề xuất</a>
+              <article aria-labelledby="active-topics-title" class="summary-card summary-card--active">
+                <h2 id="active-topics-title" class="summary-card__title">Đang thực hiện</h2>
+                <p class="summary-card__count"><strong>2</strong></p>
+                <a class="summary-card__link" href="de-tai-cua-toi-sinh-vien.html#de-tai-dang-thuc-hien" aria-label="Xem chi tiết: đang thực hiện">Xem chi tiết <span aria-hidden="true">→</span></a>
               </article>
-              <article
-                aria-labelledby="upcoming-count-title"
-                class="summary-card"
-              >
-                <h3 id="upcoming-count-title">Hạn nộp sắp tới</h3>
-                <p><strong>2</strong> nội dung chưa nộp.</p>
-                <p>
-                  Gần nhất: Đề cương,
-                  <time datetime="2026-10-20T23:59:00+07:00"
-                    >23:59 ngày 20/10/2026</time
-                  >.
-                </p>
-                <a href="lich-han-nop.html">Xem lịch hạn nộp</a>
+              <article aria-labelledby="approved-topics-title" class="summary-card summary-card--approved">
+                <h2 id="approved-topics-title" class="summary-card__title">Đã duyệt</h2>
+                <p class="summary-card__count"><strong>3</strong></p>
+                <a class="summary-card__link" href="#registration-status" aria-label="Xem chi tiết: Đã duyệt">Xem chi tiết <span aria-hidden="true">→</span></a>
+              </article>
+              <article aria-labelledby="pending-topics-title" class="summary-card summary-card--pending">
+                <h2 id="pending-topics-title" class="summary-card__title">Chờ duyệt</h2>
+                <p class="summary-card__count"><strong>2</strong></p>
+                <a class="summary-card__link" href="#recent-requests" aria-label="Xem chi tiết: chờ duyệt">Xem chi tiết <span aria-hidden="true">→</span></a>
+              </article>
+              <article aria-labelledby="rejected-topics-title" class="summary-card summary-card--rejected">
+                <h2 id="rejected-topics-title" class="summary-card__title">Đã từ chối</h2>
+                <p class="summary-card__count"><strong>1</strong></p>
+                <a class="summary-card__link" href="#registration-status" aria-label="Xem chi tiết: Đã từ chối">Xem chi tiết <span aria-hidden="true">→</span></a>
               </article>
             </div>
           </section>
-          <section aria-labelledby="recent-title" class="recent-requests">
-            <header>
-              <h2 id="recent-title">Đăng ký và đề xuất gần đây</h2>
-              <p>
-                Mới gửi gần nhất trước. Trạng thái đăng ký và đề xuất được theo
-                dõi riêng.
-              </p>
+
+          <section aria-labelledby="registration-status-title" class="registration-status" id="registration-status">
+            <header class="dashboard-section__header">
+              <h2 id="registration-status-title">Trạng thái đăng ký</h2>
+            </header>
+            <div class="dashboard-section__body">
+              <p>Tình trạng các đề tài bạn đã đăng ký / đề xuất.</p>
+              <figure class="registration-status__figure">
+                <svg class="registration-status__chart" viewBox="0 0 240 240" width="240" height="240" role="img" aria-labelledby="status-chart-title status-chart-description">
+                  <title id="status-chart-title">Trạng thái đăng ký của 6 đề tài</title>
+                  <desc id="status-chart-description">Đã duyệt: 3 đề tài, 50%. Chờ duyệt: 2 đề tài, 33,3%. Đã từ chối: 1 đề tài, 16,7%.</desc>
+                  <g fill="none" stroke-width="44" transform="rotate(-90 120 120)">
+                    <circle cx="120" cy="120" r="76" stroke="#555" pathLength="6" stroke-dasharray="3 3" />
+                    <circle cx="120" cy="120" r="76" stroke="#888" pathLength="6" stroke-dasharray="2 4" stroke-dashoffset="-3" />
+                    <circle cx="120" cy="120" r="76" stroke="#c8c8c8" pathLength="6" stroke-dasharray="1 5" stroke-dashoffset="-5" />
+                  </g>
+                  <g text-anchor="middle" font-family="Arial, sans-serif" font-weight="700">
+                    <text x="120" y="111" font-size="14" fill="#262626">Tổng đề tài</text>
+                    <text x="120" y="143" font-size="32" fill="#262626">6</text>
+                    <text x="196" y="125" font-size="13" fill="#fff">50%</text>
+                    <text x="53" y="164" font-size="13" fill="#fff">33,3%</text>
+                    <text x="82" y="57" font-size="13" fill="#262626">16,7%</text>
+                  </g>
+                </svg>
+                <figcaption class="registration-status__legend">
+                  <ul>
+                    <li class="registration-status__item registration-status__item--approved"><strong>Đã duyệt: 3</strong></li>
+                    <li class="registration-status__item registration-status__item--pending"><strong>Chờ duyệt: 2</strong></li>
+                    <li class="registration-status__item registration-status__item--rejected"><strong>Đã từ chối: 1</strong></li>
+                  </ul>
+                </figcaption>
+              </figure>
+              <p class="registration-status__note">Đang thực hiện là một phần của các đề tài đã duyệt.</p>
+            </div>
+          </section>
+
+          <section aria-labelledby="topic-progress-title" class="topic-progress">
+            <header class="dashboard-section__header">
+              <h2 id="topic-progress-title">Tiến độ đề tài đang thực hiện</h2>
+              <a href="de-tai-cua-toi-sinh-vien.html#de-tai-dang-thuc-hien">Xem tất cả <span aria-hidden="true">→</span></a>
+            </header>
+            <ul class="topic-progress__list">
+              <li>
+                <article aria-labelledby="library-topic-title" class="topic-progress__item">
+                  <div class="topic-progress__info">
+                    <h3 id="library-topic-title">Website quản lý thư viện</h3>
+                    <p>Nhóm 7 · Giảng viên: Nguyễn Văn A</p>
+                  </div>
+                  <div class="topic-progress__completion">
+                    <label for="library-progress">60% hoàn thành</label>
+                    <progress id="library-progress" value="60" max="100">60%</progress>
+                  </div>
+                  <a class="topic-progress__link" href="chi-tiet-de-tai-sinh-vien.html" aria-label="Xem đề tài: Website quản lý thư viện">Xem đề tài <span aria-hidden="true">→</span></a>
+                </article>
+              </li>
+              <li>
+                <article aria-labelledby="expenses-topic-title" class="topic-progress__item">
+                  <div class="topic-progress__info">
+                    <h3 id="expenses-topic-title">Ứng dụng quản lý chi tiêu</h3>
+                    <p>Nhóm 3 · Giảng viên: Trần Thị B</p>
+                  </div>
+                  <div class="topic-progress__completion">
+                    <label for="expenses-progress">25% hoàn thành</label>
+                    <progress id="expenses-progress" value="25" max="100">25%</progress>
+                  </div>
+                  <a class="topic-progress__link" href="chi-tiet-de-tai-sinh-vien.html" aria-label="Xem đề tài: Ứng dụng quản lý chi tiêu">Xem đề tài <span aria-hidden="true">→</span></a>
+                </article>
+              </li>
+            </ul>
+          </section>
+
+          <section aria-labelledby="recent-title" class="recent-requests" id="recent-requests">
+            <header class="dashboard-section__header">
+              <h2 id="recent-title">Đăng ký &amp; đề xuất gần đây</h2>
+              <a href="de-tai-cua-toi-sinh-vien.html#dang-ky-va-de-xuat">Xem tất cả <span aria-hidden="true">→</span></a>
             </header>
             <ol class="recent-requests__list">
               <li>
-                <article aria-labelledby="recent-dk001" class="request-card">
-                  <h3 id="recent-dk001">Website quản lý thư viện</h3>
-                  <dl>
-                    <dt>Loại yêu cầu / mã</dt>
-                    <dd>Đăng ký đề tài · DK001 / DT001</dd>
-                    <dt>Giảng viên</dt>
-                    <dd>Nguyễn Văn A</dd>
-                    <dt>Ngày gửi</dt>
-                    <dd>
-                      <time datetime="2026-10-12T09:00:00+07:00"
-                        >12/10/2026 09:00</time
-                      >
-                    </dd>
-                    <dt>Hình thức</dt>
-                    <dd>Nhóm Web UIT · 3 thành viên</dd>
-                    <dt>Trạng thái đăng ký</dt>
-                    <dd>Chờ duyệt</dd>
-                  </dl>
-                  <a href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dk001"
-                    >Xem chi tiết đăng ký DK001</a
-                  >
+                <article aria-labelledby="recent-proposal-title" class="request-card">
+                  <header class="request-card__header">
+                    <h3 id="recent-proposal-title">Hệ thống gợi ý phim</h3>
+                    <span class="request-card__status request-card__status--pending">Chờ duyệt</span>
+                  </header>
+                  <p class="request-card__type">Đề xuất đề tài</p>
+                  <p>Ngày gửi: <time datetime="2026-10-24T09:00:00+07:00">24/10/2026 · 09:00</time></p>
+                  <a class="request-card__link" href="de-tai-cua-toi-sinh-vien.html#dang-ky-va-de-xuat" aria-label="Xem chi tiết đề xuất: Hệ thống gợi ý phim">Xem chi tiết <span aria-hidden="true">→</span></a>
                 </article>
               </li>
               <li>
-                <article aria-labelledby="recent-dx001" class="request-card">
-                  <h3 id="recent-dx001">Cổng thông tin nghiên cứu sinh viên</h3>
-                  <dl>
-                    <dt>Loại yêu cầu / mã</dt>
-                    <dd>Đề xuất đề tài · DX001</dd>
-                    <dt>Giảng viên được đề nghị</dt>
-                    <dd>Nguyễn Văn A</dd>
-                    <dt>Ngày gửi</dt>
-                    <dd>
-                      <time datetime="2026-10-11T16:00:00+07:00"
-                        >11/10/2026 16:00</time
-                      >
-                    </dd>
-                    <dt>Hình thức</dt>
-                    <dd>Cá nhân · Nguyễn Minh Anh</dd>
-                    <dt>Trạng thái đề xuất</dt>
-                    <dd>Chờ duyệt</dd>
-                  </dl>
-                  <a href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dx001"
-                    >Xem chi tiết đề xuất DX001</a
-                  >
-                </article>
-              </li>
-              <li>
-                <article aria-labelledby="recent-dk002" class="request-card">
-                  <h3 id="recent-dk002">
-                    Website quản lý câu lạc bộ sinh viên
-                  </h3>
-                  <dl>
-                    <dt>Loại yêu cầu / mã</dt>
-                    <dd>Đăng ký đề tài · DK002 / DT002</dd>
-                    <dt>Giảng viên</dt>
-                    <dd>Trần Thị B</dd>
-                    <dt>Ngày gửi</dt>
-                    <dd>
-                      <time datetime="2026-10-08T14:00:00+07:00"
-                        >08/10/2026 14:00</time
-                      >
-                    </dd>
-                    <dt>Hình thức</dt>
-                    <dd>Cá nhân · Nguyễn Minh Anh</dd>
-                    <dt>Trạng thái đăng ký</dt>
-                    <dd>Đã duyệt</dd>
-                  </dl>
-                  <a href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dk002"
-                    >Xem kết quả đăng ký DK002</a
-                  >
+                <article aria-labelledby="recent-registration-title" class="request-card">
+                  <header class="request-card__header">
+                    <h3 id="recent-registration-title">Website quản lý thư viện</h3>
+                    <span class="request-card__status request-card__status--approved">Đã duyệt</span>
+                  </header>
+                  <p class="request-card__type">Đăng ký đề tài</p>
+                  <p>Ngày gửi: <time datetime="2026-10-20T14:30:00+07:00">20/10/2026 · 14:30</time></p>
+                  <a class="request-card__link" href="de-tai-cua-toi-sinh-vien.html#dang-ky-va-de-xuat" aria-label="Xem chi tiết đăng ký: Website quản lý thư viện">Xem chi tiết <span aria-hidden="true">→</span></a>
                 </article>
               </li>
             </ol>
-            <p>Hiển thị 3 yêu cầu gần nhất trong 4 yêu cầu mẫu.</p>
-            <a href="de-tai-cua-toi-sinh-vien.html#dang-ky-va-de-xuat">Xem tất cả đăng ký</a>
-            <a href="de-tai-cua-toi-sinh-vien.html#dang-ky-va-de-xuat">Mở khu vực đề xuất</a>
           </section>
-          <section aria-labelledby="deadlines-title" class="upcoming-deadlines">
-            <h2 id="deadlines-title">Hạn nộp sắp tới</h2>
-            <table>
-              <caption>
-                Hai hạn nộp của DT002 — Website quản lý câu lạc bộ sinh viên
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Nội dung cần nộp</th>
-                  <th scope="col">Đề tài</th>
-                  <th scope="col">Hạn nộp</th>
-                  <th scope="col">Tình trạng bài nộp</th>
-                  <th scope="col">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th scope="row">Đề cương</th>
-                  <td>DT002</td>
-                  <td>
-                    <time datetime="2026-10-20T23:59:00+07:00"
-                      >20/10/2026 23:59</time
-                    >
-                  </td>
-                  <td>Chưa nộp · Hạn sắp tới</td>
-                  <td>
-                    <a href="chi-tiet-de-tai-sinh-vien.html#bai-nop"
-                      >Xem phần nộp đề cương</a
-                    >
-                  </td>
-                </tr>
-                <tr>
-                  <th scope="row">Báo cáo tiến độ</th>
-                  <td>DT002</td>
-                  <td>
-                    <time datetime="2026-10-27T23:59:00+07:00"
-                      >27/10/2026 23:59</time
-                    >
-                  </td>
-                  <td>Chưa nộp · Hạn sắp tới</td>
-                  <td>
-                    <a
-                      href="chi-tiet-de-tai-sinh-vien.html#bai-nop"
-                      >Xem phần nộp báo cáo tiến độ</a
-                    >
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            <a href="lich-han-nop.html">Xem tất cả hạn nộp</a>
-          </section>
-          <section
-            aria-labelledby="notifications-title"
-            class="recent-notifications"
-            id="thong-bao-gan-day"
-          >
-            <h2 id="notifications-title">Thông báo gần đây</h2>
-            <ul>
-              <li>
-                <article>
-                  <h3>Đề xuất DX002 được yêu cầu chỉnh sửa</h3>
-                  <p>
-                    <time datetime="2026-10-10T15:00:00+07:00"
-                      >10/10/2026 15:00</time
-                    >
-                    · Trần Thị B
-                  </p>
-                  <p>
-                    Bổ sung tiêu chí ghép nhóm, phạm vi môn học và kế hoạch kiểm
-                    thử.
-                  </p>
-                  <a
-                    href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dx002-phan-hoi-giang-vien"
-                    >Xem phản hồi đề xuất</a
-                  >
-                </article>
-              </li>
-              <li>
-                <article>
-                  <h3>Đăng ký DK002 đã được duyệt</h3>
-                  <p>
-                    <time datetime="2026-10-09T10:00:00+07:00"
-                      >09/10/2026 10:00</time
-                    >
-                    · Trần Thị B
-                  </p>
-                  <p>
-                    Đồng ý hướng dẫn. Chuẩn bị phạm vi chức năng và kế hoạch
-                    thực hiện để trao đổi ở buổi đầu tiên.
-                  </p>
-                  <a
-                    href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dk002-phan-hoi-giang-vien"
-                    >Xem kết quả duyệt</a
-                  >
-                </article>
-              </li>
-            </ul>
-            <a class="recent-notifications__pending" href="../chung/thong-bao.html">Xem tất cả thông báo</a>            >
-          </section>
-          <nav aria-label="Lối tắt sinh viên" class="quick-links">
-            <h2>Bắt đầu công việc</h2>
-            <ul>
-              <li><a href="dang-ky-de-tai.html">Tìm và đăng ký đề tài</a></li>
-              <li>
-                <a href="de-tai-cua-toi-sinh-vien.html"
-                  >Theo dõi đề tài và đăng ký của tôi</a
-                >
-              </li>
-              <li><a href="de-tai-cua-toi-sinh-vien.html#dang-ky-va-de-xuat">Mở khu vực đề xuất</a></li>
-              <li><a href="lich-han-nop.html">Theo dõi hạn nộp</a></li>
-            </ul>
-          </nav>
-          <!-- Các biến thể không dữ liệu được chuẩn bị để JavaScript chọn sau. -->
-          <template id="dashboard-empty-template"
-            ><section
-              aria-labelledby="empty-dashboard-title"
-              class="empty-state"
-            >
-              <h2 id="empty-dashboard-title">
-                Bạn chưa có đăng ký hoặc đề xuất
-              </h2>
-              <p>
-                0 đề tài đang thực hiện; 0 đăng ký và 0 đề xuất chờ duyệt; chưa
-                có hạn nộp.
-              </p>
-              <a href="dang-ky-de-tai.html">Tìm đề tài để đăng ký</a
-              ><a href="de-tai-cua-toi-sinh-vien.html#dang-ky-va-de-xuat">Mở khu vực đề xuất</a>
-            </section></template
-          >
-          <template id="notifications-empty-template"
-            ><section class="empty-state">
-              <h3>Bạn chưa có thông báo</h3>
-              <p>
-                Kết quả duyệt, phản hồi của giảng viên và cập nhật hạn nộp sẽ
-                hiển thị tại đây.
-              </p>
-            </section></template
-          >
-          <template id="dashboard-error-template"
-            ><p role="alert">
-              Chưa tải được thông tin tổng quan. Vui lòng thử lại sau.
-            </p></template
-          >
         </div>
       </div>
     </main>
