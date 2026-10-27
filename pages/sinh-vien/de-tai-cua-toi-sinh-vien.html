@@ -148,12 +148,20 @@
                 <fieldset class="topic-filters__group">
                   <legend>Trạng thái</legend>
                   <div class="topic-filters__option">
+                    <input type="checkbox" id="status-pending" name="trang-thai" value="cho-duyet" />
+                    <label for="status-pending">Chờ duyệt</label>
+                  </div>
+                  <div class="topic-filters__option">
                     <input type="checkbox" id="status-in-progress" name="trang-thai" value="dang-thuc-hien" />
                     <label for="status-in-progress">Đang thực hiện</label>
                   </div>
                   <div class="topic-filters__option">
                     <input type="checkbox" id="status-completed" name="trang-thai" value="hoan-thanh" />
                     <label for="status-completed">Hoàn thành</label>
+                  </div>
+                  <div class="topic-filters__option">
+                    <input type="checkbox" id="status-rejected" name="trang-thai" value="tu-choi" />
+                    <label for="status-rejected">Từ chối</label>
                   </div>
                 </fieldset>
                 <fieldset class="topic-filters__group">
@@ -164,7 +172,7 @@
                   </div>
                   <div class="topic-filters__option">
                     <input type="checkbox" id="type-thesis" name="loai-de-tai" value="khoa-luan" />
-                    <label for="type-thesis">Khóa luận</label>
+                    <label for="type-thesis">Khóa luận tốt nghiệp</label>
                   </div>
                 </fieldset>
                 <button class="topic-filters__clear" type="reset">Xóa bộ lọc</button>
@@ -175,8 +183,30 @@
               <header class="topics__header">
                 <h2 id="topic-list-title" class="topics__title">Danh sách đề tài</h2>
               </header>
-              <!-- Dữ liệu minh họa; cả 5 đề tài luôn có trong HTML hiện tại. -->
+              <!-- Danh sách minh họa gồm đề xuất chờ duyệt và các đề tài đã được xác nhận. -->
               <ul class="topic-list">
+                <li class="topic-list__item">
+                  <article id="de-xuat-dx001" class="topic-card" aria-labelledby="topic-title-dx001" data-request-id="DX001" data-request-type="de-xuat" data-status="cho-duyet">
+                    <div class="topic-image-placeholder topic-card__image" role="img" aria-label="Chưa có ảnh minh họa cho Cổng thông tin nghiên cứu sinh viên">
+                      <span aria-hidden="true">Ảnh đồ án / khóa luận</span>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="topic-title-dx001" class="topic-card__title">Cổng thông tin nghiên cứu sinh viên</h3>
+                      <dl class="topic-card__meta">
+                        <dt>Mã đề xuất</dt><dd>DX001</dd>
+                        <dt>Loại yêu cầu</dt><dd>Đề xuất đề tài</dd>
+                        <dt>Loại đề tài</dt><dd>Đồ án môn học</dd>
+                        <dt>Giảng viên nhận đề xuất</dt><dd>Nguyễn Văn A</dd>
+                        <dt>Ngày gửi</dt><dd><time datetime="2026-10-11T16:00:00+07:00">11/10/2026 · 16:00</time></dd>
+                      </dl>
+                    </div>
+                    <div class="topic-card__summary">
+                      <dl class="topic-card__semester"><dt>Học kỳ / Năm học</dt><dd>Chưa có thông tin</dd></dl>
+                      <p class="topic-card__status">Trạng thái: <span>Chờ duyệt</span></p>
+                      <a class="topic-card__link" href="chi-tiet-de-tai-cho-duyet-sinh-vien.html" aria-label="Xem chi tiết đề xuất DX001: Cổng thông tin nghiên cứu sinh viên">Xem chi tiết <span aria-hidden="true">→</span></a>
+                    </div>
+                  </article>
+                </li>
                 <li class="topic-list__item">
                   <article class="topic-card" aria-labelledby="topic-title-da001">
                     <div class="topic-image-placeholder topic-card__image" role="img" aria-label="Chưa có ảnh minh họa cho Website quản lý đồ án sinh viên">
@@ -261,68 +291,12 @@
                     </div>
                   </article>
                 </li>
-                <li class="topic-list__item">
-                  <article class="topic-card" aria-labelledby="topic-title-kl001">
-                    <div class="topic-image-placeholder topic-card__image" role="img" aria-label="Chưa có ảnh minh họa cho Hệ thống gợi ý phim theo sở thích">
-                      <span aria-hidden="true">Ảnh đồ án / khóa luận</span>
-                    </div>
-                    <div class="topic-card__content">
-                      <header class="topic-card__header">
-                        <h3 id="topic-title-kl001" class="topic-card__title">Hệ thống gợi ý phim theo sở thích</h3>
-                      </header>
-                      <dl class="topic-card__meta">
-                        <dt>Mã đề tài</dt><dd>KL001</dd>
-                        <dt>Loại đề tài</dt><dd>Khóa luận</dd>
-                        <dt>Giảng viên hướng dẫn</dt><dd>Phạm Hoàng Dũng</dd>
-                        <dt>Nhóm thực hiện</dt><dd>Nhóm 2 — MovieMatch</dd>
-                      </dl>
-                    </div>
-                    <div class="topic-card__summary">
-                      <dl class="topic-card__semester">
-                        <dt>Học kỳ / Năm học</dt><dd>Học kỳ 1 / 2026–2027</dd>
-                      </dl>
-                      <p class="topic-card__status">Trạng thái: <span>Đang thực hiện</span></p>
-                      <footer class="topic-card__footer">
-                        <!-- Trang Tổng quan dùng nội dung giữ chỗ; chưa tải dữ liệu riêng của đề tài. -->
-                        <a class="topic-card__link" href="chi-tiet-de-tai-sinh-vien.html#tong-quan" aria-label="Xem chi tiết Hệ thống gợi ý phim theo sở thích">Xem chi tiết <span aria-hidden="true">→</span></a>
-                      </footer>
-                    </div>
-                  </article>
-                </li>
-                <li class="topic-list__item">
-                  <article class="topic-card" aria-labelledby="topic-title-kl002">
-                    <div class="topic-image-placeholder topic-card__image" role="img" aria-label="Chưa có ảnh minh họa cho Ứng dụng học tiếng Anh trực tuyến">
-                      <span aria-hidden="true">Ảnh đồ án / khóa luận</span>
-                    </div>
-                    <div class="topic-card__content">
-                      <header class="topic-card__header">
-                        <h3 id="topic-title-kl002" class="topic-card__title">Ứng dụng học tiếng Anh trực tuyến</h3>
-                      </header>
-                      <dl class="topic-card__meta">
-                        <dt>Mã đề tài</dt><dd>KL002</dd>
-                        <dt>Loại đề tài</dt><dd>Khóa luận</dd>
-                        <dt>Giảng viên hướng dẫn</dt><dd>Võ Thị Mai</dd>
-                        <dt>Nhóm thực hiện</dt><dd>Nhóm 4 — English Connect</dd>
-                      </dl>
-                    </div>
-                    <div class="topic-card__summary">
-                      <dl class="topic-card__semester">
-                        <dt>Học kỳ / Năm học</dt><dd>Học kỳ 2 / 2025–2026</dd>
-                      </dl>
-                      <p class="topic-card__status">Trạng thái: <span>Hoàn thành</span></p>
-                      <footer class="topic-card__footer">
-                        <!-- Trang Tổng quan dùng nội dung giữ chỗ; chưa tải dữ liệu riêng của đề tài. -->
-                        <a class="topic-card__link" href="chi-tiet-de-tai-sinh-vien.html#tong-quan" aria-label="Xem chi tiết Ứng dụng học tiếng Anh trực tuyến">Xem chi tiết <span aria-hidden="true">→</span></a>
-                      </footer>
-                    </div>
-                  </article>
-                </li>
               </ul>
 
               <!-- Phân trang minh họa: các nút chưa chuyển trang hay ẩn đề tài. -->
               <nav class="pagination" aria-label="Phân trang đề tài">
                 <ul class="pagination__list">
-                  <li class="pagination__item"><button class="pagination__button" type="button" aria-label="Trang trước">‹</button></li>
+                  <li class="pagination__item"><button class="pagination__button" type="button" aria-label="Trang trước" disabled>‹</button></li>
                   <li class="pagination__item"><button class="pagination__button" type="button" aria-label="Trang 1" aria-current="page">1</button></li>
                   <li class="pagination__item"><button class="pagination__button" type="button" aria-label="Trang 2">2</button></li>
                   <li class="pagination__item"><button class="pagination__button" type="button" aria-label="Trang 3">3</button></li>
@@ -332,8 +306,9 @@
             </section>
           </div>
 
-          <section class="requests" id="dang-ky-va-de-xuat" aria-labelledby="request-list-title">
-            <h2 id="request-list-title">Đăng ký và đề xuất của tôi</h2>
+          <!-- Khu vực bổ sung thu gọn để giữ các liên kết theo dõi yêu cầu từ trang khác. -->
+          <details class="requests" id="dang-ky-va-de-xuat">
+            <summary id="request-list-title">Đăng ký và đề xuất của tôi</summary>
             <p>Theo dõi yêu cầu đã gửi, tình trạng xét duyệt và phản hồi của giảng viên.</p>
             <ul class="request-list">
               <li class="request-list__item">
@@ -345,7 +320,7 @@
                     <dt>Trạng thái xét duyệt</dt><dd>Chờ duyệt</dd>
                     <dt>Phản hồi của giảng viên</dt><dd>Chưa có kết quả xét duyệt.</dd>
                   </dl>
-                  <a href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dk001">Xem chi tiết đăng ký DK001</a>
+                  <a href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dk001">Xem yêu cầu DK001</a>
                 </article>
               </li>
               <li class="request-list__item">
@@ -357,7 +332,7 @@
                     <dt>Trạng thái xét duyệt</dt><dd>Đã duyệt</dd>
                     <dt>Phản hồi của giảng viên</dt><dd>Bổ sung kế hoạch thực hiện và các mốc báo cáo.</dd>
                   </dl>
-                  <a href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dk002">Xem chi tiết đăng ký DK002</a>
+                  <a href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dk002">Xem yêu cầu DK002</a>
                 </article>
               </li>
               <li class="request-list__item">
@@ -369,7 +344,7 @@
                     <dt>Trạng thái xét duyệt</dt><dd>Chờ duyệt</dd>
                     <dt>Phản hồi của giảng viên</dt><dd>Chưa có kết quả xét duyệt.</dd>
                   </dl>
-                  <a href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dx001">Xem chi tiết đề xuất DX001</a>
+                  <a href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dx001">Xem yêu cầu DX001</a>
                 </article>
               </li>
               <li class="request-list__item">
@@ -381,11 +356,11 @@
                     <dt>Trạng thái xét duyệt</dt><dd>Yêu cầu chỉnh sửa</dd>
                     <dt>Phản hồi của giảng viên</dt><dd>Bổ sung tiêu chí ghép nhóm, phạm vi môn học và kế hoạch kiểm thử.</dd>
                   </dl>
-                  <a href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dx002">Xem chi tiết đề xuất DX002</a>
+                  <a href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dx002">Xem yêu cầu DX002</a>
                 </article>
               </li>
             </ul>
-          </section>
+          </details>
           <!-- Khung trạng thái theo Figma 130:2032 và 130:2084; chưa nối logic lọc. -->
           <template id="topics-empty-template">
             <section class="empty-state" aria-labelledby="topics-empty-title">

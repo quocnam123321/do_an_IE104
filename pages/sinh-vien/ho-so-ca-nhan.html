@@ -110,111 +110,142 @@
           </p>
         </header>
 
-        <div class="page-content">
-          <section class="profile-summary" aria-labelledby="profile-summary-title">
-            <h2 id="profile-summary-title">Thông tin sinh viên</h2>
-            <span class="profile-summary__avatar" aria-hidden="true">MA</span>
-            <h3>Nguyễn Minh Anh</h3>
-            <p>24520001 · Khóa 2024 · IE104.01 · Khoa KTTT</p>
-          </section>
-          <section class="profile-details" aria-labelledby="profile-details-title">
-            <h2 id="profile-details-title">Thông tin cá nhân</h2>
-            <div class="profile-details__actions">
-              <button type="button" aria-controls="profile-password-dialog" disabled>Đổi mật khẩu</button>
-              <a href="#profile-edit">Sửa thông tin</a>
+        <!-- Các hộp thoại dùng command/commandfor của HTML để mở và đóng trên trình duyệt hỗ trợ. -->
+        <div class="page-content profile-layout">
+          <aside class="profile-avatar" aria-label="Ảnh đại diện">
+            <img id="profile-avatar" src="../../assets/images/student-avatar.svg" alt="Ảnh đại diện sinh viên" width="100" height="100" />
+            <button type="button" commandfor="profile-avatar-dialog" command="show-modal" aria-haspopup="dialog" aria-controls="profile-avatar-dialog">Thay đổi ảnh</button>
+          </aside>
+          <form id="profile-info-form" class="profile-info" aria-labelledby="profile-details-title">
+            <section class="profile-details">
+              <h2 id="profile-details-title">Thông tin cá nhân</h2>
+              <div class="profile-fields">
+                <div class="profile-field"><label for="profile-name">Họ và tên</label><input id="profile-name" name="name" type="text" value="Nguyễn Minh Anh" placeholder="Chưa có thông tin" autocomplete="name" readonly required /></div>
+                <div class="profile-field"><label for="profile-code">Mã số sinh viên</label><input id="profile-code" name="code" type="text" value="24520001" placeholder="Chưa có thông tin"  readonly  /></div>
+                <div class="profile-field"><label for="profile-email">Email</label><input id="profile-email" name="email" type="email" value="" placeholder="Chưa có thông tin" autocomplete="email" readonly  /></div>
+                <div class="profile-field"><label for="profile-phone">Số điện thoại</label><input id="profile-phone" name="phone" type="tel" value="" placeholder="Chưa có thông tin" autocomplete="tel" readonly  /></div>
+                <div class="profile-field"><label for="profile-faculty">Khoa</label><input id="profile-faculty" name="faculty" type="text" value="Khoa Khoa học và Kỹ thuật Thông tin" placeholder="Chưa có thông tin"  readonly  /></div>
+                <div class="profile-field"><label for="profile-major">Ngành học</label><input id="profile-major" name="major" type="text" value="Chưa có thông tin" placeholder="Chưa có thông tin"  readonly  /></div>
+                <div class="profile-field"><label for="profile-class">Lớp</label><input id="profile-class" name="class" type="text" value="IE104.01" placeholder="Chưa có thông tin"  readonly  /></div>
+                <div class="profile-field"><label for="profile-cohort">Khóa học</label><input id="profile-cohort" name="cohort" type="text" value="2024" placeholder="Chưa có thông tin"  readonly  /></div>
+              </div>
+            </section>
+            <p id="profile-save-status" role="status"></p>
+            <div class="profile-actions">
+              <button type="button" commandfor="profile-password-dialog" command="show-modal" aria-haspopup="dialog" aria-controls="profile-password-dialog">Đổi mật khẩu</button>
+              <button id="profile-edit-button" type="button" commandfor="profile-edit-dialog" command="show-modal" aria-haspopup="dialog" aria-controls="profile-edit-dialog">Chỉnh sửa thông tin</button>
             </div>
-            <dl class="profile-details__list">
-              <dt>Họ và tên</dt><dd>Nguyễn Minh Anh</dd>
-              <dt>Email</dt><dd>Chưa có thông tin</dd>
-              <dt>Số điện thoại</dt><dd>Chưa có thông tin</dd>
-              <dt>Mã sinh viên</dt><dd>24520001</dd>
-              <dt>Lớp</dt><dd>IE104.01</dd>
-              <dt>Khoa</dt><dd>Khoa Khoa học và Kỹ thuật Thông tin</dd>
-              <dt>Trạng thái</dt><dd>Đang học</dd>
-            </dl>
-          </section>
-          <details class="profile-edit" id="profile-edit">
-            <summary>Sửa thông tin cá nhân</summary>
-            <form class="profile-form" aria-describedby="profile-edit-notice">
+          </form>
+        </div>
+
+        <!-- Hộp thoại chỉnh sửa thông tin: khung HTML, chưa xử lý lưu dữ liệu. -->
+        <dialog id="profile-edit-dialog" class="profile-dialog" aria-labelledby="profile-edit-title" aria-describedby="profile-edit-notice">
+          <header>
+            <h2 id="profile-edit-title">Chỉnh sửa thông tin cá nhân</h2>
+            <button type="button" commandfor="profile-edit-dialog" command="close" aria-label="Đóng hộp thoại chỉnh sửa thông tin">×</button>
+          </header>
+          <form id="profile-edit-form" aria-describedby="profile-edit-notice">
+            <div class="profile-dialog__body">
               <fieldset>
                 <legend>Thông tin có thể chỉnh sửa</legend>
-                  <div class="profile-form__field">
-                    <label for="profile-name">Họ và tên</label>
-                    <input id="profile-name" name="name" type="text" autocomplete="name" value="Nguyễn Minh Anh" />
-                  </div>
-                  <div class="profile-form__field">
-                    <label for="profile-email">Email</label>
-                    <input id="profile-email" name="email" type="email" autocomplete="email" value="" />
-                  </div>
-                  <div class="profile-form__field">
-                    <label for="profile-phone">Số điện thoại</label>
-                    <input id="profile-phone" name="phone" type="tel" autocomplete="tel" value="" />
-                  </div>
+                <div class="profile-field">
+                  <label for="profile-edit-name">Họ và tên *</label>
+                  <input id="profile-edit-name" name="name" type="text" autocomplete="name" value="Nguyễn Minh Anh" required />
+                </div>
+                <div class="profile-field">
+                  <label for="profile-edit-email">Email</label>
+                  <input id="profile-edit-email" name="email" type="email" autocomplete="email" placeholder="Nhập địa chỉ email" />
+                </div>
+                <div class="profile-field">
+                  <label for="profile-edit-phone">Số điện thoại</label>
+                  <input id="profile-edit-phone" name="phone" type="tel" autocomplete="tel" placeholder="Nhập số điện thoại" />
+                </div>
               </fieldset>
               <fieldset>
                 <legend>Thông tin sinh viên</legend>
-                  <div class="profile-form__field">
-                    <label for="profile-student-code">Mã sinh viên</label>
-                    <input id="profile-student-code" type="text" value="24520001" readonly />
-                  </div>
-                  <div class="profile-form__field">
-                    <label for="profile-class">Lớp</label>
-                    <input id="profile-class" type="text" value="IE104.01" readonly />
-                  </div>
-                  <div class="profile-form__field">
-                    <label for="profile-faculty">Khoa</label>
-                    <input id="profile-faculty" type="text" value="Khoa Khoa học và Kỹ thuật Thông tin" readonly />
-                  </div>
-                  <div class="profile-form__field">
-                    <label for="profile-status">Trạng thái</label>
-                    <input id="profile-status" type="text" value="Đang học" readonly />
-                  </div>
+                <div class="profile-field">
+                  <label for="profile-edit-code">Mã số sinh viên</label>
+                  <input id="profile-edit-code" type="text" value="24520001" readonly />
+                </div>
+                <div class="profile-field">
+                  <label for="profile-edit-faculty">Khoa</label>
+                  <input id="profile-edit-faculty" type="text" value="Khoa Khoa học và Kỹ thuật Thông tin" readonly />
+                </div>
+                <div class="profile-field">
+                  <label for="profile-edit-major">Ngành học</label>
+                  <input id="profile-edit-major" type="text" value="Chưa có thông tin" readonly />
+                </div>
+                <div class="profile-field">
+                  <label for="profile-edit-class">Lớp</label>
+                  <input id="profile-edit-class" type="text" value="IE104.01" readonly />
+                </div>
+                <div class="profile-field">
+                  <label for="profile-edit-cohort">Khóa học</label>
+                  <input id="profile-edit-cohort" type="text" value="2024" readonly />
+                </div>
               </fieldset>
-              <p id="profile-edit-notice">Biểu mẫu minh họa, chưa lưu thay đổi.</p>
-              <p id="profile-form-error" class="form-error" role="alert" hidden></p>
-              <p id="profile-form-result" class="form-result" role="status" hidden></p>
-              <div class="profile-form__actions">
-                <button type="button" disabled>Lưu thay đổi</button>
-                <button type="reset">Hủy thay đổi</button>
+              <p>* Thông tin bắt buộc</p>
+              <p id="profile-edit-notice">Khung HTML chưa lưu thay đổi. Thông tin sinh viên do nhà trường quản lý và chỉ được xem.</p>
+              <p id="profile-edit-error" role="alert" hidden></p>
+            </div>
+            <footer>
+              <button type="button" commandfor="profile-edit-dialog" command="close">Hủy</button>
+              <button type="submit" disabled>Lưu thay đổi</button>
+            </footer>
+          </form>
+        </dialog>
+
+        <!-- Hộp thoại 1: Đổi mật khẩu. -->
+        <dialog id="profile-password-dialog" class="profile-dialog" aria-labelledby="profile-password-title" aria-describedby="profile-password-notice">
+          <header><h2 id="profile-password-title">Đổi mật khẩu</h2><button type="button" commandfor="profile-password-dialog" command="close" aria-label="Đóng hộp thoại đổi mật khẩu">×</button></header>
+          <form id="profile-password-form" aria-describedby="profile-password-notice">
+            <div class="profile-dialog__body">
+              <div class="password-field">
+                <label for="profile-password-current">Mật khẩu hiện tại</label>
+                <div class="password-input">
+                  <input id="profile-password-current" name="current-password" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu hiện tại" required />
+                  <button type="button" class="password-toggle" aria-controls="profile-password-current" aria-label="Hiện mật khẩu hiện tại" aria-pressed="false">Hiện</button>
+                </div>
               </div>
-            </form>
-          </details>
-          <dialog id="profile-password-dialog" class="confirmation-dialog" aria-labelledby="profile-password-title" aria-describedby="profile-password-notice">
-            <header class="confirmation-dialog__header">
-              <h2 id="profile-password-title">Đổi mật khẩu</h2>
-              <form method="dialog"><button type="submit" aria-label="Đóng hộp thoại đổi mật khẩu">Đóng</button></form>
-            </header>
-            <form class="profile-form" aria-labelledby="profile-password-title">
-                  <div class="profile-form__field password-field">
-                    <label for="profile-password-current">Mật khẩu hiện tại</label>
-                    <input id="profile-password-current" name="current" type="password" autocomplete="current-password" required />
-                    <button type="button" class="password-field__toggle" aria-controls="profile-password-current" aria-label="Hiện mật khẩu hiện tại" disabled>Hiện mật khẩu</button>
-                  </div>
-                  <div class="profile-form__field password-field">
-                    <label for="profile-password-new">Mật khẩu mới</label>
-                    <input id="profile-password-new" name="new" type="password" autocomplete="new-password" required />
-                    <button type="button" class="password-field__toggle" aria-controls="profile-password-new" aria-label="Hiện mật khẩu mới" disabled>Hiện mật khẩu</button>
-                  </div>
-                  <div class="profile-form__field password-field">
-                    <label for="profile-password-confirm">Xác nhận mật khẩu mới</label>
-                    <input id="profile-password-confirm" name="confirm" type="password" autocomplete="new-password" required />
-                    <button type="button" class="password-field__toggle" aria-controls="profile-password-confirm" aria-label="Hiện xác nhận mật khẩu mới" disabled>Hiện mật khẩu</button>
-                  </div>
-              <p id="profile-password-notice">Khung biểu mẫu, chưa cập nhật mật khẩu.</p>
-              <p id="profile-password-error" class="form-error" role="alert" hidden></p>
-              <button type="button" disabled>Đổi mật khẩu</button>
-            </form>
-            <form method="dialog"><button type="submit" value="cancel">Hủy</button></form>
-          </dialog>
-          <template id="profile-password-success-template">
-            <dialog class="confirmation-dialog" aria-labelledby="profile-password-success-title">
-              <h2 id="profile-password-success-title">Đổi mật khẩu thành công</h2>
-              <p>Mật khẩu của bạn đã được cập nhật.</p>
-              <p>Bạn có thể dùng mật khẩu mới ở lần đăng nhập tiếp theo.</p>
-              <form method="dialog"><button type="submit">Đã hiểu</button></form>
-            </dialog>
-          </template>
-        </div>
+              <div class="password-field">
+                <label for="profile-password-new">Mật khẩu mới</label>
+                <div class="password-input">
+                  <input id="profile-password-new" name="new-password" type="password" autocomplete="new-password" placeholder="Nhập mật khẩu mới" required />
+                  <button type="button" class="password-toggle" aria-controls="profile-password-new" aria-label="Hiện mật khẩu mới" aria-pressed="false">Hiện</button>
+                </div>
+              </div>
+              <div class="password-field">
+                <label for="profile-password-confirm">Xác nhận mật khẩu mới</label>
+                <div class="password-input">
+                  <input id="profile-password-confirm" name="confirm-password" type="password" autocomplete="new-password" placeholder="Nhập lại mật khẩu mới" required />
+                  <button type="button" class="password-toggle" aria-controls="profile-password-confirm" aria-label="Hiện xác nhận mật khẩu mới" aria-pressed="false">Hiện</button>
+                </div>
+              </div>
+              <p id="profile-password-notice">Bản minh họa: chưa kết nối hệ thống để kiểm tra hoặc cập nhật mật khẩu.</p>
+              <p id="profile-password-error" role="alert"></p>
+            </div>
+            <footer><button type="button" commandfor="profile-password-dialog" command="close">Hủy</button><button id="password-submit" type="submit" disabled>Đổi mật khẩu</button></footer>
+          </form>
+        </dialog>
+        <!-- Trạng thái thành công: chỉ hiển thị sau khi hệ thống xác nhận đổi mật khẩu. -->
+        <dialog id="profile-password-success-dialog" class="profile-dialog" aria-labelledby="profile-password-success-title">
+          <header><h2 id="profile-password-success-title">Đổi mật khẩu thành công</h2><button type="button" commandfor="profile-password-success-dialog" command="close" aria-label="Đóng thông báo">×</button></header>
+          <div class="profile-dialog__body profile-dialog__center"><span class="profile-success-mark" aria-hidden="true">✓</span><p>Mật khẩu của bạn đã được cập nhật.</p><p>Bản xem trước giao diện thành công. Mật khẩu thực tế chưa thay đổi.</p></div>
+          <footer><button type="button" commandfor="profile-password-success-dialog" command="close">Đã hiểu</button></footer>
+        </dialog>
+        <!-- Hộp thoại 3: Thay đổi ảnh đại diện. -->
+        <dialog id="profile-avatar-dialog" class="profile-dialog" aria-labelledby="profile-avatar-title">
+          <header><h2 id="profile-avatar-title">Thay đổi ảnh đại diện</h2><button type="button" commandfor="profile-avatar-dialog" command="close" aria-label="Đóng hộp thoại thay ảnh">×</button></header>
+          <div class="profile-dialog__body profile-dialog__center">
+            <img id="avatar-preview" src="../../assets/images/student-avatar.svg" alt="Ảnh đại diện xem trước" width="100" height="100" />
+            <p>Ảnh xem trước</p>
+            <label class="avatar-file-label" for="avatar-file">Chọn ảnh từ máy</label>
+            <input id="avatar-file" name="avatar" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="avatar-note avatar-error" />
+            <p id="avatar-note">Chọn ảnh JPG, PNG hoặc WebP. Khung HTML chưa xử lý xem trước hoặc lưu ảnh.</p>
+            <p id="avatar-error" role="alert"></p>
+          </div>
+          <footer><button type="button" commandfor="profile-avatar-dialog" command="close">Hủy</button><button id="avatar-save" type="button" disabled>Lưu thay đổi</button></footer>
+        </dialog>
       </div>
     </main>
 

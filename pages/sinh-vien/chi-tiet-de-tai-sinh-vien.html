@@ -188,8 +188,7 @@
               <section class="project-supervisors" aria-labelledby="supervisors-title">
                 <header class="project-supervisors__header">
                   <h2 id="supervisors-title">Giảng viên hướng dẫn</h2>
-                  <!-- Chưa xử lý mở dialog; JavaScript sẽ nối nút này với invite-supervisor-dialog. -->
-                  <button id="invite-supervisor-button" class="project-supervisors__invite" type="button" aria-haspopup="dialog" aria-controls="invite-supervisor-dialog">+ Mời</button>
+                  <button id="invite-supervisor-button" class="project-supervisors__invite" type="button" commandfor="invite-supervisor-dialog" command="show-modal" aria-haspopup="dialog" aria-controls="invite-supervisor-dialog">+ Mời</button>
                 </header>
                 <ul class="supervisor-list">
                   <li class="supervisor-list__item">
@@ -222,14 +221,18 @@
                         <dt>Ngày gửi</dt><dd>[Ngày gửi]</dd>
                         <dt>Trạng thái</dt><dd>Chờ phản hồi</dd>
                       </dl>
-                      <button id="cancel-pending-invitation" class="pending-invitation__cancel" type="button" aria-label="Hủy lời mời đang chờ">Hủy</button>
+                      <button id="cancel-pending-invitation" class="pending-invitation__cancel" type="button" aria-label="Hủy lời mời đang chờ" disabled>Hủy</button>
                     </li>
                   </ul>
                 </section>
               </section>
 
               <section class="project-team" aria-labelledby="team-title">
-                <h2 id="team-title">Nhóm thực hiện</h2>
+                <header class="project-team__header">
+                  <h2 id="team-title">Nhóm thực hiện</h2>
+                  <button id="add-team-member-button" class="project-team__add" type="button" commandfor="add-team-member-dialog" command="show-modal" aria-haspopup="dialog" aria-controls="add-team-member-dialog">+ Thêm thành viên</button>
+                </header>
+                <p class="project-team__note">Đề tài này cho phép tối đa 4 thành viên, bao gồm nhóm trưởng.</p>
                 <p class="project-team__name">Tên nhóm</p>
                 <ul class="team-member-list">
                   <li class="team-member">
@@ -317,143 +320,129 @@
               <button
                 type="button"
                 class="btn-add-task"
-                popovertarget="task-add-popover"
-                popovertargetaction="show"
+                commandfor="task-add-popover" command="show-modal" aria-haspopup="dialog" aria-controls="task-add-popover"
               >
                 + Thêm công việc
               </button>
             </div>
 
-            <table class="data-table">
-              <caption>
-                Danh sách công việc theo dõi tiến độ đề tài
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Công việc</th>
-                  <th scope="col">Người phụ trách</th>
-                  <th scope="col">Hạn hoàn thành dự kiến</th>
-                  <th scope="col">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr id="cv-01" data-task-id="cv-01">
-                  <th scope="row">Khảo sát yêu cầu</th>
-                  <td>Họ tên thành viên · MSSV</td>
-                  <td>dd/mm/yyyy</td>
-                  <td>
-                    <button
+            <ul class="task-list">
+              <li class="task-list__item">
+                <article id="cv-01" class="task-card" data-task-id="cv-01" aria-labelledby="cv-01-title">
+                  <div class="task-card__content">
+                    <h3 id="cv-01-title">Khảo sát yêu cầu</h3>
+                    <p>Người phụ trách: Họ tên thành viên · MSSV</p>
+                    <p>Hạn hoàn thành dự kiến: dd/mm/yyyy</p>
+                  </div>
+                  <div class="task-card__actions"><button
                       type="button"
-                      popovertarget="task-edit-cv-01"
-                      popovertargetaction="show"
+                      commandfor="task-edit-cv-01" command="show-modal" aria-haspopup="dialog" aria-controls="task-edit-cv-01"
                       aria-label="Sửa công việc: Khảo sát yêu cầu"
                     >
                       Sửa
                     </button>
                     <button
                       type="button"
-                      popovertarget="task-delete-cv-01"
-                      popovertargetaction="show"
+                      commandfor="task-delete-cv-01" command="show-modal" aria-haspopup="dialog" aria-controls="task-delete-cv-01"
                       aria-label="Xóa công việc: Khảo sát yêu cầu"
                     >
                       Xóa
-                    </button>
-                  </td>
-                </tr>
-                <tr id="cv-02" data-task-id="cv-02">
-                  <th scope="row">Phân tích chức năng</th>
-                  <td>Họ tên thành viên · MSSV</td>
-                  <td>dd/mm/yyyy</td>
-                  <td>
-                    <button
+                    </button></div>
+                </article>
+              </li>
+              <li class="task-list__item">
+                <article id="cv-02" class="task-card" data-task-id="cv-02" aria-labelledby="cv-02-title">
+                  <div class="task-card__content">
+                    <h3 id="cv-02-title">Phân tích chức năng</h3>
+                    <p>Người phụ trách: Họ tên thành viên · MSSV</p>
+                    <p>Hạn hoàn thành dự kiến: dd/mm/yyyy</p>
+                  </div>
+                  <div class="task-card__actions"><button
                       type="button"
-                      popovertarget="task-edit-cv-02"
-                      popovertargetaction="show"
+                      commandfor="task-edit-cv-02" command="show-modal" aria-haspopup="dialog" aria-controls="task-edit-cv-02"
                       aria-label="Sửa công việc: Phân tích chức năng"
                     >
                       Sửa
                     </button>
                     <button
                       type="button"
-                      popovertarget="task-delete-cv-02"
-                      popovertargetaction="show"
+                      commandfor="task-delete-cv-02" command="show-modal" aria-haspopup="dialog" aria-controls="task-delete-cv-02"
                       aria-label="Xóa công việc: Phân tích chức năng"
                     >
                       Xóa
-                    </button>
-                  </td>
-                </tr>
-                <tr id="cv-03" data-task-id="cv-03">
-                  <th scope="row">Thiết kế giao diện</th>
-                  <td>Họ tên thành viên · MSSV</td>
-                  <td>dd/mm/yyyy</td>
-                  <td>
-                    <button
+                    </button></div>
+                </article>
+              </li>
+              <li class="task-list__item">
+                <article id="cv-03" class="task-card" data-task-id="cv-03" aria-labelledby="cv-03-title">
+                  <div class="task-card__content">
+                    <h3 id="cv-03-title">Thiết kế giao diện</h3>
+                    <p>Người phụ trách: Họ tên thành viên · MSSV</p>
+                    <p>Hạn hoàn thành dự kiến: dd/mm/yyyy</p>
+                  </div>
+                  <div class="task-card__actions"><button
                       type="button"
-                      popovertarget="task-edit-cv-03"
-                      popovertargetaction="show"
+                      commandfor="task-edit-cv-03" command="show-modal" aria-haspopup="dialog" aria-controls="task-edit-cv-03"
                       aria-label="Sửa công việc: Thiết kế giao diện"
                     >
                       Sửa
                     </button>
                     <button
                       type="button"
-                      popovertarget="task-delete-cv-03"
-                      popovertargetaction="show"
+                      commandfor="task-delete-cv-03" command="show-modal" aria-haspopup="dialog" aria-controls="task-delete-cv-03"
                       aria-label="Xóa công việc: Thiết kế giao diện"
                     >
                       Xóa
-                    </button>
-                  </td>
-                </tr>
-                <tr id="cv-04" data-task-id="cv-04">
-                  <th scope="row">Xây dựng chức năng</th>
-                  <td>Họ tên thành viên · MSSV</td>
-                  <td>dd/mm/yyyy</td>
-                  <td>
-                    <button
+                    </button></div>
+                </article>
+              </li>
+              <li class="task-list__item">
+                <article id="cv-04" class="task-card" data-task-id="cv-04" aria-labelledby="cv-04-title">
+                  <div class="task-card__content">
+                    <h3 id="cv-04-title">Xây dựng chức năng</h3>
+                    <p>Người phụ trách: Họ tên thành viên · MSSV</p>
+                    <p>Hạn hoàn thành dự kiến: dd/mm/yyyy</p>
+                  </div>
+                  <div class="task-card__actions"><button
                       type="button"
-                      popovertarget="task-edit-cv-04"
-                      popovertargetaction="show"
+                      commandfor="task-edit-cv-04" command="show-modal" aria-haspopup="dialog" aria-controls="task-edit-cv-04"
                       aria-label="Sửa công việc: Xây dựng chức năng"
                     >
                       Sửa
                     </button>
                     <button
                       type="button"
-                      popovertarget="task-delete-cv-04"
-                      popovertargetaction="show"
+                      commandfor="task-delete-cv-04" command="show-modal" aria-haspopup="dialog" aria-controls="task-delete-cv-04"
                       aria-label="Xóa công việc: Xây dựng chức năng"
                     >
                       Xóa
-                    </button>
-                  </td>
-                </tr>
-                <tr id="cv-05" data-task-id="cv-05">
-                  <th scope="row">Kiểm thử và hoàn thiện báo cáo</th>
-                  <td>Họ tên thành viên · MSSV</td>
-                  <td>dd/mm/yyyy</td>
-                  <td>
-                    <button
+                    </button></div>
+                </article>
+              </li>
+              <li class="task-list__item">
+                <article id="cv-05" class="task-card" data-task-id="cv-05" aria-labelledby="cv-05-title">
+                  <div class="task-card__content">
+                    <h3 id="cv-05-title">Kiểm thử và hoàn thiện báo cáo</h3>
+                    <p>Người phụ trách: Họ tên thành viên · MSSV</p>
+                    <p>Hạn hoàn thành dự kiến: dd/mm/yyyy</p>
+                  </div>
+                  <div class="task-card__actions"><button
                       type="button"
-                      popovertarget="task-edit-cv-05"
-                      popovertargetaction="show"
+                      commandfor="task-edit-cv-05" command="show-modal" aria-haspopup="dialog" aria-controls="task-edit-cv-05"
                       aria-label="Sửa công việc: Kiểm thử và hoàn thiện báo cáo"
                     >
                       Sửa
                     </button>
                     <button
                       type="button"
-                      popovertarget="task-delete-cv-05"
-                      popovertargetaction="show"
+                      commandfor="task-delete-cv-05" command="show-modal" aria-haspopup="dialog" aria-controls="task-delete-cv-05"
                       aria-label="Xóa công việc: Kiểm thử và hoàn thiện báo cáo"
                     >
                       Xóa
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    </button></div>
+                </article>
+              </li>
+            </ul>
 
             <!-- Trạng thái rỗng chuẩn bị cho JavaScript -->
             <template id="progress-locked-template">
@@ -480,50 +469,53 @@
               <button
                 type="button"
                 class="btn-update-progress"
-                popovertarget="progress-update-popover"
-                popovertargetaction="show"
+                commandfor="progress-update-popover" command="show-modal" aria-haspopup="dialog" aria-controls="progress-update-popover"
               >
                 + Cập nhật tiến độ
               </button>
             </div>
 
-            <table class="data-table">
-              <caption>
-                Lịch sử cập nhật tiến độ công việc
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Ngày cập nhật</th>
-                  <th scope="col">Công việc</th>
-                  <th scope="col">Nội dung đã làm</th>
-                  <th scope="col">Trạng thái</th>
-                  <th scope="col">Mức hoàn thành (%)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>dd/mm/yyyy</td>
-                  <th scope="row">Phân tích chức năng</th>
-                  <td>Hoàn tất danh sách chức năng</td>
-                  <td>Đã hoàn thành</td>
-                  <td>100%</td>
-                </tr>
-                <tr>
-                  <td>dd/mm/yyyy</td>
-                  <th scope="row">Khảo sát yêu cầu</th>
-                  <td>Hoàn tất khảo sát</td>
-                  <td>Đã hoàn thành</td>
-                  <td>100%</td>
-                </tr>
-                <tr>
-                  <td>dd/mm/yyyy</td>
-                  <th scope="row">Khảo sát yêu cầu</th>
-                  <td>Tổng hợp yêu cầu ban đầu</td>
-                  <td>Đang thực hiện</td>
-                  <td>50%</td>
-                </tr>
-              </tbody>
-            </table>
+            <ol class="update-history">
+              <li class="update-history__item">
+                <article class="progress-update-card" aria-labelledby="progress-history-1-title">
+                  <div class="progress-update-card__content">
+                    <h3 id="progress-history-1-title">Phân tích chức năng</h3>
+                    <p>Ngày cập nhật: dd/mm/yyyy</p>
+                    <p>Nội dung đã làm: Hoàn tất danh sách chức năng</p>
+                  </div>
+                  <div class="progress-update-card__summary">
+                    <p class="progress-update-card__status">Đã hoàn thành</p>
+                    <p>Mức hoàn thành: 100%</p>
+                  </div>
+                </article>
+              </li>
+              <li class="update-history__item">
+                <article class="progress-update-card" aria-labelledby="progress-history-2-title">
+                  <div class="progress-update-card__content">
+                    <h3 id="progress-history-2-title">Khảo sát yêu cầu</h3>
+                    <p>Ngày cập nhật: dd/mm/yyyy</p>
+                    <p>Nội dung đã làm: Hoàn tất khảo sát</p>
+                  </div>
+                  <div class="progress-update-card__summary">
+                    <p class="progress-update-card__status">Đã hoàn thành</p>
+                    <p>Mức hoàn thành: 100%</p>
+                  </div>
+                </article>
+              </li>
+              <li class="update-history__item">
+                <article class="progress-update-card" aria-labelledby="progress-history-3-title">
+                  <div class="progress-update-card__content">
+                    <h3 id="progress-history-3-title">Khảo sát yêu cầu</h3>
+                    <p>Ngày cập nhật: dd/mm/yyyy</p>
+                    <p>Nội dung đã làm: Tổng hợp yêu cầu ban đầu</p>
+                  </div>
+                  <div class="progress-update-card__summary">
+                    <p class="progress-update-card__status">Đang thực hiện</p>
+                    <p>Mức hoàn thành: 50%</p>
+                  </div>
+                </article>
+              </li>
+            </ol>
 
             <!-- Trạng thái rỗng chuẩn bị cho JavaScript -->
             <template id="empty-history-template">
@@ -531,16 +523,13 @@
             </template>
           </section>
 
-          <!-- KHU VỰC CÁC HỘP THOẠI MINH HỌA (HTML POPOVER) -->
+          <!-- CÁC HỘP THOẠI HTML: THÊM, SỬA, XÓA CÔNG VIỆC VÀ CẬP NHẬT TIẾN ĐỘ -->
           <section
             class="task-popovers-section"
             aria-label="Các hộp thoại chức năng tiến độ"
           >
             <!-- 1. Hộp Thêm công việc -->
-            <div
-              id="task-add-popover"
-              popover="auto"
-              role="dialog"
+            <dialog id="task-add-popover"
               aria-labelledby="add-task-title"
               aria-describedby="add-task-desc"
               class="task-popover"
@@ -549,8 +538,7 @@
                 <h3 id="add-task-title">Thêm công việc</h3>
                 <button
                   type="button"
-                  popovertarget="task-add-popover"
-                  popovertargetaction="hide"
+                  commandfor="task-add-popover" command="close"
                   aria-label="Đóng hộp Thêm công việc"
                   class="btn-close-popover"
                 >
@@ -602,22 +590,18 @@
                 <div class="popover-actions">
                   <button
                     type="button"
-                    popovertarget="task-add-popover"
-                    popovertargetaction="hide"
+                    commandfor="task-add-popover" command="close"
                   >
                     Hủy
                   </button>
                   <button type="submit" disabled>+ Thêm công việc</button>
                 </div>
               </form>
-            </div>
+            </dialog>
 
             <!-- 2. Năm hộp Sửa công việc cho năm dòng mẫu -->
             <!-- 2.1. Sửa cv-01 -->
-            <div
-              id="task-edit-cv-01"
-              popover="auto"
-              role="dialog"
+            <dialog id="task-edit-cv-01"
               aria-labelledby="edit-cv-01-title"
               aria-describedby="edit-cv-01-desc"
               data-task-id="cv-01"
@@ -627,8 +611,7 @@
                 <h3 id="edit-cv-01-title">Sửa công việc</h3>
                 <button
                   type="button"
-                  popovertarget="task-edit-cv-01"
-                  popovertargetaction="hide"
+                  commandfor="task-edit-cv-01" command="close"
                   aria-label="Đóng hộp Sửa công việc: Khảo sát yêu cầu"
                   class="btn-close-popover"
                 >
@@ -681,21 +664,17 @@
                 <div class="popover-actions">
                   <button
                     type="button"
-                    popovertarget="task-edit-cv-01"
-                    popovertargetaction="hide"
+                    commandfor="task-edit-cv-01" command="close"
                   >
                     Hủy
                   </button>
                   <button type="submit" disabled>Lưu thay đổi</button>
                 </div>
               </form>
-            </div>
+            </dialog>
 
             <!-- 2.2. Sửa cv-02 -->
-            <div
-              id="task-edit-cv-02"
-              popover="auto"
-              role="dialog"
+            <dialog id="task-edit-cv-02"
               aria-labelledby="edit-cv-02-title"
               aria-describedby="edit-cv-02-desc"
               data-task-id="cv-02"
@@ -705,8 +684,7 @@
                 <h3 id="edit-cv-02-title">Sửa công việc</h3>
                 <button
                   type="button"
-                  popovertarget="task-edit-cv-02"
-                  popovertargetaction="hide"
+                  commandfor="task-edit-cv-02" command="close"
                   aria-label="Đóng hộp Sửa công việc: Phân tích chức năng"
                   class="btn-close-popover"
                 >
@@ -759,21 +737,17 @@
                 <div class="popover-actions">
                   <button
                     type="button"
-                    popovertarget="task-edit-cv-02"
-                    popovertargetaction="hide"
+                    commandfor="task-edit-cv-02" command="close"
                   >
                     Hủy
                   </button>
                   <button type="submit" disabled>Lưu thay đổi</button>
                 </div>
               </form>
-            </div>
+            </dialog>
 
             <!-- 2.3. Sửa cv-03 -->
-            <div
-              id="task-edit-cv-03"
-              popover="auto"
-              role="dialog"
+            <dialog id="task-edit-cv-03"
               aria-labelledby="edit-cv-03-title"
               aria-describedby="edit-cv-03-desc"
               data-task-id="cv-03"
@@ -783,8 +757,7 @@
                 <h3 id="edit-cv-03-title">Sửa công việc</h3>
                 <button
                   type="button"
-                  popovertarget="task-edit-cv-03"
-                  popovertargetaction="hide"
+                  commandfor="task-edit-cv-03" command="close"
                   aria-label="Đóng hộp Sửa công việc: Thiết kế giao diện"
                   class="btn-close-popover"
                 >
@@ -837,21 +810,17 @@
                 <div class="popover-actions">
                   <button
                     type="button"
-                    popovertarget="task-edit-cv-03"
-                    popovertargetaction="hide"
+                    commandfor="task-edit-cv-03" command="close"
                   >
                     Hủy
                   </button>
                   <button type="submit" disabled>Lưu thay đổi</button>
                 </div>
               </form>
-            </div>
+            </dialog>
 
             <!-- 2.4. Sửa cv-04 -->
-            <div
-              id="task-edit-cv-04"
-              popover="auto"
-              role="dialog"
+            <dialog id="task-edit-cv-04"
               aria-labelledby="edit-cv-04-title"
               aria-describedby="edit-cv-04-desc"
               data-task-id="cv-04"
@@ -861,8 +830,7 @@
                 <h3 id="edit-cv-04-title">Sửa công việc</h3>
                 <button
                   type="button"
-                  popovertarget="task-edit-cv-04"
-                  popovertargetaction="hide"
+                  commandfor="task-edit-cv-04" command="close"
                   aria-label="Đóng hộp Sửa công việc: Xây dựng chức năng"
                   class="btn-close-popover"
                 >
@@ -915,21 +883,17 @@
                 <div class="popover-actions">
                   <button
                     type="button"
-                    popovertarget="task-edit-cv-04"
-                    popovertargetaction="hide"
+                    commandfor="task-edit-cv-04" command="close"
                   >
                     Hủy
                   </button>
                   <button type="submit" disabled>Lưu thay đổi</button>
                 </div>
               </form>
-            </div>
+            </dialog>
 
             <!-- 2.5. Sửa cv-05 -->
-            <div
-              id="task-edit-cv-05"
-              popover="auto"
-              role="dialog"
+            <dialog id="task-edit-cv-05"
               aria-labelledby="edit-cv-05-title"
               aria-describedby="edit-cv-05-desc"
               data-task-id="cv-05"
@@ -939,8 +903,7 @@
                 <h3 id="edit-cv-05-title">Sửa công việc</h3>
                 <button
                   type="button"
-                  popovertarget="task-edit-cv-05"
-                  popovertargetaction="hide"
+                  commandfor="task-edit-cv-05" command="close"
                   aria-label="Đóng hộp Sửa công việc: Kiểm thử và hoàn thiện báo cáo"
                   class="btn-close-popover"
                 >
@@ -993,22 +956,18 @@
                 <div class="popover-actions">
                   <button
                     type="button"
-                    popovertarget="task-edit-cv-05"
-                    popovertargetaction="hide"
+                    commandfor="task-edit-cv-05" command="close"
                   >
                     Hủy
                   </button>
                   <button type="submit" disabled>Lưu thay đổi</button>
                 </div>
               </form>
-            </div>
+            </dialog>
 
             <!-- 3. Năm hộp Xác nhận xóa công việc cho năm dòng mẫu -->
             <!-- 3.1. Xóa cv-01 -->
-            <div
-              id="task-delete-cv-01"
-              popover="auto"
-              role="dialog"
+            <dialog id="task-delete-cv-01"
               aria-labelledby="delete-cv-01-title"
               aria-describedby="delete-cv-01-desc"
               data-task-id="cv-01"
@@ -1018,8 +977,7 @@
                 <h3 id="delete-cv-01-title">Xác nhận xóa công việc</h3>
                 <button
                   type="button"
-                  popovertarget="task-delete-cv-01"
-                  popovertargetaction="hide"
+                  commandfor="task-delete-cv-01" command="close"
                   aria-label="Đóng hộp Xác nhận xóa công việc: Khảo sát yêu cầu"
                   class="btn-close-popover"
                 >
@@ -1040,8 +998,7 @@
                 <div class="popover-actions">
                   <button
                     type="button"
-                    popovertarget="task-delete-cv-01"
-                    popovertargetaction="hide"
+                    commandfor="task-delete-cv-01" command="close"
                     autofocus
                   >
                     Hủy
@@ -1049,13 +1006,10 @@
                   <button type="submit" disabled>Xóa công việc</button>
                 </div>
               </form>
-            </div>
+            </dialog>
 
             <!-- 3.2. Xóa cv-02 -->
-            <div
-              id="task-delete-cv-02"
-              popover="auto"
-              role="dialog"
+            <dialog id="task-delete-cv-02"
               aria-labelledby="delete-cv-02-title"
               aria-describedby="delete-cv-02-desc"
               data-task-id="cv-02"
@@ -1065,8 +1019,7 @@
                 <h3 id="delete-cv-02-title">Xác nhận xóa công việc</h3>
                 <button
                   type="button"
-                  popovertarget="task-delete-cv-02"
-                  popovertargetaction="hide"
+                  commandfor="task-delete-cv-02" command="close"
                   aria-label="Đóng hộp Xác nhận xóa công việc: Phân tích chức năng"
                   class="btn-close-popover"
                 >
@@ -1087,8 +1040,7 @@
                 <div class="popover-actions">
                   <button
                     type="button"
-                    popovertarget="task-delete-cv-02"
-                    popovertargetaction="hide"
+                    commandfor="task-delete-cv-02" command="close"
                     autofocus
                   >
                     Hủy
@@ -1096,13 +1048,10 @@
                   <button type="submit" disabled>Xóa công việc</button>
                 </div>
               </form>
-            </div>
+            </dialog>
 
             <!-- 3.3. Xóa cv-03 -->
-            <div
-              id="task-delete-cv-03"
-              popover="auto"
-              role="dialog"
+            <dialog id="task-delete-cv-03"
               aria-labelledby="delete-cv-03-title"
               aria-describedby="delete-cv-03-desc"
               data-task-id="cv-03"
@@ -1112,8 +1061,7 @@
                 <h3 id="delete-cv-03-title">Xác nhận xóa công việc</h3>
                 <button
                   type="button"
-                  popovertarget="task-delete-cv-03"
-                  popovertargetaction="hide"
+                  commandfor="task-delete-cv-03" command="close"
                   aria-label="Đóng hộp Xác nhận xóa công việc: Thiết kế giao diện"
                   class="btn-close-popover"
                 >
@@ -1134,8 +1082,7 @@
                 <div class="popover-actions">
                   <button
                     type="button"
-                    popovertarget="task-delete-cv-03"
-                    popovertargetaction="hide"
+                    commandfor="task-delete-cv-03" command="close"
                     autofocus
                   >
                     Hủy
@@ -1143,13 +1090,10 @@
                   <button type="submit" disabled>Xóa công việc</button>
                 </div>
               </form>
-            </div>
+            </dialog>
 
             <!-- 3.4. Xóa cv-04 -->
-            <div
-              id="task-delete-cv-04"
-              popover="auto"
-              role="dialog"
+            <dialog id="task-delete-cv-04"
               aria-labelledby="delete-cv-04-title"
               aria-describedby="delete-cv-04-desc"
               data-task-id="cv-04"
@@ -1159,8 +1103,7 @@
                 <h3 id="delete-cv-04-title">Xác nhận xóa công việc</h3>
                 <button
                   type="button"
-                  popovertarget="task-delete-cv-04"
-                  popovertargetaction="hide"
+                  commandfor="task-delete-cv-04" command="close"
                   aria-label="Đóng hộp Xác nhận xóa công việc: Xây dựng chức năng"
                   class="btn-close-popover"
                 >
@@ -1181,8 +1124,7 @@
                 <div class="popover-actions">
                   <button
                     type="button"
-                    popovertarget="task-delete-cv-04"
-                    popovertargetaction="hide"
+                    commandfor="task-delete-cv-04" command="close"
                     autofocus
                   >
                     Hủy
@@ -1190,13 +1132,10 @@
                   <button type="submit" disabled>Xóa công việc</button>
                 </div>
               </form>
-            </div>
+            </dialog>
 
             <!-- 3.5. Xóa cv-05 -->
-            <div
-              id="task-delete-cv-05"
-              popover="auto"
-              role="dialog"
+            <dialog id="task-delete-cv-05"
               aria-labelledby="delete-cv-05-title"
               aria-describedby="delete-cv-05-desc"
               data-task-id="cv-05"
@@ -1206,8 +1145,7 @@
                 <h3 id="delete-cv-05-title">Xác nhận xóa công việc</h3>
                 <button
                   type="button"
-                  popovertarget="task-delete-cv-05"
-                  popovertargetaction="hide"
+                  commandfor="task-delete-cv-05" command="close"
                   aria-label="Đóng hộp Xác nhận xóa công việc: Kiểm thử và hoàn thiện báo cáo"
                   class="btn-close-popover"
                 >
@@ -1228,8 +1166,7 @@
                 <div class="popover-actions">
                   <button
                     type="button"
-                    popovertarget="task-delete-cv-05"
-                    popovertargetaction="hide"
+                    commandfor="task-delete-cv-05" command="close"
                     autofocus
                   >
                     Hủy
@@ -1237,13 +1174,10 @@
                   <button type="submit" disabled>Xóa công việc</button>
                 </div>
               </form>
-            </div>
+            </dialog>
 
             <!-- 4. Hộp Cập nhật tiến độ -->
-            <div
-              id="progress-update-popover"
-              popover="auto"
-              role="dialog"
+            <dialog id="progress-update-popover"
               aria-labelledby="update-progress-title"
               aria-describedby="update-progress-desc"
               class="task-popover"
@@ -1252,8 +1186,7 @@
                 <h3 id="update-progress-title">Cập nhật tiến độ</h3>
                 <button
                   type="button"
-                  popovertarget="progress-update-popover"
-                  popovertargetaction="hide"
+                  commandfor="progress-update-popover" command="close"
                   aria-label="Đóng hộp Cập nhật tiến độ"
                   class="btn-close-popover"
                 >
@@ -1294,6 +1227,7 @@
                   ></textarea>
                 </div>
 
+                <div class="progress-update-form__row">
                 <div class="form-group">
                   <label for="update-progress-status">Trạng thái</label>
                   <select
@@ -1327,500 +1261,189 @@
                   <p id="update-percent-hint">Từ 0 đến 100%</p>
                 </div>
 
+                </div>
+
                 <div class="popover-actions">
                   <button
                     type="button"
-                    popovertarget="progress-update-popover"
-                    popovertargetaction="hide"
+                    commandfor="progress-update-popover" command="close"
                   >
                     Hủy
                   </button>
                   <button type="submit" disabled>+ Cập nhật tiến độ</button>
                 </div>
               </form>
-            </div>
+            </dialog>
           </section>
         </div>
         </section>
 
         <section id="bai-nop" class="student-detail-panel" aria-labelledby="bai-nop-panel-title" tabindex="-1">
           <h2 id="bai-nop-panel-title">Bài nộp</h2>
-<p id="submissions-demo-notice" class="demo-notice">
-            Dữ liệu bài nộp minh họa; có thể chọn tệp và nhập ghi chú minh họa. Các thao tác xem yêu cầu, nộp bài, tải tệp và chuyển trang chưa được xử lý.
-          </p>
-<div class="page-content">
-          <!-- Các biến thể thay cho khu vực nộp bài khi chưa có dữ liệu hoặc đề tài bị khóa. -->
-          <template id="submissions-empty-template">
-            <section class="empty-state" aria-label="Chưa có bài nộp">
-              <h2>Chưa có bài nộp</h2>
-              <p>Các tệp của đề tài sẽ xuất hiện ở đây sau khi bạn nộp bài.</p>
-              <p>Bạn có thể nộp hoặc thay thế tệp khi đợt nộp còn hạn.</p>
-            </section>
-          </template>
-          <template id="required-submissions-empty-template">
-            <p class="empty-state" role="status">Chưa có yêu cầu nộp bài cho đề tài này.</p>
-          </template>
-          <template id="submissions-locked-template">
-            <section class="locked-state" aria-label="Đề tài đã khóa">
-              <h2>Đề tài đã khóa</h2>
-              <p>Bạn vẫn có thể xem và tải bài đã nộp. Thao tác nộp mới hoặc thay thế tệp hiện không khả dụng.</p>
-              <button type="button" disabled>Nộp bài</button>
-            </section>
-          </template>
-          <p id="submission-error" class="form-error" role="alert" hidden>Không thể ghi nhận bài nộp. Vui lòng kiểm tra lại tệp đính kèm.</p>
-          <p id="submission-result" class="form-result" role="status" hidden>Bài nộp đã được ghi nhận.</p>
-          <!-- KHU VỰC 1: CÁC BÀI CẦN NỘP -->
-          <section
-            class="required-submissions-section"
-            aria-labelledby="required-submissions-title"
-          >
-            <h2 id="required-submissions-title">Các bài cần nộp</h2>
-            <table class="required-submissions-table">
-              <caption>
-                Danh sách các bài cần nộp của đề tài (hiển thị 5 bài trên trang hiện tại)
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Bài nộp</th>
-                  <th scope="col">Hạn nộp</th>
-                  <th scope="col">Trạng thái</th>
-                  <th scope="col">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr data-submission-id="BN001">
-                  <th scope="row">Đề cương</th>
-                  <td>dd/mm/yyyy · hh:mm</td>
-                  <td>Chưa nộp</td>
-                  <td>
-                    <button
-                      type="button"
-                      data-submission-id="BN001"
-                      aria-label="Xem yêu cầu bài nộp: Đề cương"
-                      aria-haspopup="dialog"
-                      aria-controls="submission-requirements-dialog"
-                      disabled
-                    >
-                      Xem yêu cầu
-                    </button>
-                    <button
-                      type="button"
-                      data-submission-id="BN001"
-                      aria-label="Nộp bài: Đề cương"
-                      disabled
-                    >
-                      Nộp bài
-                    </button>
-                  </td>
-                </tr>
-                <tr data-submission-id="BN002">
-                  <th scope="row">Báo cáo tuần 1</th>
-                  <td>dd/mm/yyyy · hh:mm</td>
-                  <td>Chưa nộp</td>
-                  <td>
-                    <button
-                      type="button"
-                      data-submission-id="BN002"
-                      aria-label="Xem yêu cầu bài nộp: Báo cáo tuần 1"
-                      aria-haspopup="dialog"
-                      aria-controls="submission-requirements-dialog"
-                      disabled
-                    >
-                      Xem yêu cầu
-                    </button>
-                    <button
-                      type="button"
-                      data-submission-id="BN002"
-                      aria-label="Nộp bài: Báo cáo tuần 1"
-                      disabled
-                    >
-                      Nộp bài
-                    </button>
-                  </td>
-                </tr>
-                <tr data-submission-id="BN003">
-                  <th scope="row">Báo cáo tuần 2</th>
-                  <td>dd/mm/yyyy · hh:mm</td>
-                  <td>Chưa nộp</td>
-                  <td>
-                    <button
-                      type="button"
-                      data-submission-id="BN003"
-                      aria-label="Xem yêu cầu bài nộp: Báo cáo tuần 2"
-                      aria-haspopup="dialog"
-                      aria-controls="submission-requirements-dialog"
-                      disabled
-                    >
-                      Xem yêu cầu
-                    </button>
-                    <button
-                      type="button"
-                      data-submission-id="BN003"
-                      aria-label="Nộp bài: Báo cáo tuần 2"
-                      disabled
-                    >
-                      Nộp bài
-                    </button>
-                  </td>
-                </tr>
-                <tr data-submission-id="BN004">
-                  <th scope="row">Báo cáo giữa kỳ</th>
-                  <td>dd/mm/yyyy · hh:mm</td>
-                  <td>Chưa nộp</td>
-                  <td>
-                    <button
-                      type="button"
-                      data-submission-id="BN004"
-                      aria-label="Xem yêu cầu bài nộp: Báo cáo giữa kỳ"
-                      aria-haspopup="dialog"
-                      aria-controls="submission-requirements-dialog"
-                      disabled
-                    >
-                      Xem yêu cầu
-                    </button>
-                    <button
-                      type="button"
-                      data-submission-id="BN004"
-                      aria-label="Nộp bài: Báo cáo giữa kỳ"
-                      disabled
-                    >
-                      Nộp bài
-                    </button>
-                  </td>
-                </tr>
-                <tr data-submission-id="BN005">
-                  <th scope="row">Báo cáo tuần 4</th>
-                  <td>dd/mm/yyyy · hh:mm</td>
-                  <td>Chưa nộp</td>
-                  <td>
-                    <button
-                      type="button"
-                      data-submission-id="BN005"
-                      aria-label="Xem yêu cầu bài nộp: Báo cáo tuần 4"
-                      aria-haspopup="dialog"
-                      aria-controls="submission-requirements-dialog"
-                      disabled
-                    >
-                      Xem yêu cầu
-                    </button>
-                    <button
-                      type="button"
-                      data-submission-id="BN005"
-                      aria-label="Nộp bài: Báo cáo tuần 4"
-                      disabled
-                    >
-                      Nộp bài
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <!-- Phân trang Các bài cần nộp -->
-            <nav
-              class="pagination"
-              aria-label="Phân trang các bài cần nộp"
-              data-pagination-for="required-submissions"
-              data-page-size="5"
-              data-total-items="12"
-            >
-              <ul class="pagination__list">
-                <li class="pagination__item">
-                  <button
-                    type="button"
-                    class="pagination__button pagination__button--prev"
-                    aria-label="Trang trước"
-                    disabled
-                  >
-                    ‹
-                  </button>
-                </li>
-                <li class="pagination__item">
-                  <span
-                    class="pagination__page pagination__page--current"
-                    aria-current="page"
-                  >
-                    1
-                  </span>
-                </li>
-                <li class="pagination__item">
-                  <button
-                    type="button"
-                    class="pagination__button"
-                    aria-label="Trang 2"
-                    disabled
-                  >
-                    2
-                  </button>
-                </li>
-                <li class="pagination__item">
-                  <button
-                    type="button"
-                    class="pagination__button"
-                    aria-label="Trang 3"
-                    disabled
-                  >
-                    3
-                  </button>
-                </li>
-                <li class="pagination__item">
-                  <button
-                    type="button"
-                    class="pagination__button pagination__button--next"
-                    aria-label="Trang sau"
-                    disabled
-                  >
-                    ›
-                  </button>
-                </li>
+          <!-- Khung HTML theo wireframe; dữ liệu, hạn nộp và tệp đều là minh họa. -->
+          <p id="submissions-demo-notice">Có thể mở hộp thoại và chọn tệp. Chưa xử lý gửi bài, tải tệp, phản hồi thực tế hoặc phân trang.</p>
+          <div class="page-content">
+            <section class="required-submissions-section" aria-labelledby="required-submissions-title">
+              <h2 id="required-submissions-title">Các bài cần nộp</h2>
+              <ul class="required-submissions-list">
+                <li><article class="required-submission-card" data-submission-id="BN001" aria-labelledby="required-submission-1-title">
+                  <div class="required-submission-card__content"><h3 id="required-submission-1-title">Đề cương</h3><p>Hạn nộp: dd/mm/yyyy · hh:mm</p></div>
+                  <div class="required-submission-card__summary"><p class="required-submission-card__status">Chưa nộp</p><div class="required-submission-card__actions"><button type="button" commandfor="submission-requirements-1" command="show-modal" aria-haspopup="dialog" aria-controls="submission-requirements-1" aria-label="Xem yêu cầu: Đề cương">Xem yêu cầu</button> <button type="button" commandfor="submission-form-section" command="show-modal" aria-haspopup="dialog" aria-controls="submission-form-section" aria-label="Nộp bài: Đề cương">Nộp bài</button></div></div>
+                </article></li>
+                <li><article class="required-submission-card" data-submission-id="BN002" aria-labelledby="required-submission-2-title">
+                  <div class="required-submission-card__content"><h3 id="required-submission-2-title">Báo cáo tuần 1</h3><p>Hạn nộp: dd/mm/yyyy · hh:mm</p></div>
+                  <div class="required-submission-card__summary"><p class="required-submission-card__status">Đã nộp</p><div class="required-submission-card__actions"><button type="button" commandfor="submission-requirements-2" command="show-modal" aria-haspopup="dialog" aria-controls="submission-requirements-2" aria-label="Xem yêu cầu: Báo cáo tuần 1">Xem yêu cầu</button> <button type="button" commandfor="submission-upload-2" command="show-modal" aria-haspopup="dialog" aria-controls="submission-upload-2" aria-label="Nộp bài: Báo cáo tuần 1">Nộp bài</button></div></div>
+                </article></li>
+                <li><article class="required-submission-card" data-submission-id="BN003" aria-labelledby="required-submission-3-title">
+                  <div class="required-submission-card__content"><h3 id="required-submission-3-title">Báo cáo giữa kỳ</h3><p>Hạn nộp: dd/mm/yyyy · hh:mm</p></div>
+                  <div class="required-submission-card__summary"><p class="required-submission-card__status">Quá hạn chưa nộp</p><div class="required-submission-card__actions"><button type="button" commandfor="submission-requirements-3" command="show-modal" aria-haspopup="dialog" aria-controls="submission-requirements-3" aria-label="Xem yêu cầu: Báo cáo giữa kỳ">Xem yêu cầu</button> <button type="button" commandfor="submission-upload-3" command="show-modal" aria-haspopup="dialog" aria-controls="submission-upload-3" aria-label="Nộp bài: Báo cáo giữa kỳ">Nộp bài</button></div></div>
+                </article></li>
+                <li><article class="required-submission-card" data-submission-id="BN004" aria-labelledby="required-submission-4-title">
+                  <div class="required-submission-card__content"><h3 id="required-submission-4-title">Báo cáo tuần 3</h3><p>Hạn nộp: dd/mm/yyyy · hh:mm</p></div>
+                  <div class="required-submission-card__summary"><p class="required-submission-card__status">Đã nộp</p><div class="required-submission-card__actions"><button type="button" commandfor="submission-requirements-4" command="show-modal" aria-haspopup="dialog" aria-controls="submission-requirements-4" aria-label="Xem yêu cầu: Báo cáo tuần 3">Xem yêu cầu</button> <button type="button" commandfor="submission-upload-4" command="show-modal" aria-haspopup="dialog" aria-controls="submission-upload-4" aria-label="Nộp bài: Báo cáo tuần 3">Nộp bài</button></div></div>
+                </article></li>
+                <li><article class="required-submission-card" data-submission-id="BN005" aria-labelledby="required-submission-5-title">
+                  <div class="required-submission-card__content"><h3 id="required-submission-5-title">Báo cáo cuối kỳ</h3><p>Hạn nộp: dd/mm/yyyy · hh:mm</p></div>
+                  <div class="required-submission-card__summary"><p class="required-submission-card__status">Chưa nộp</p><div class="required-submission-card__actions"><button type="button" commandfor="submission-requirements-5" command="show-modal" aria-haspopup="dialog" aria-controls="submission-requirements-5" aria-label="Xem yêu cầu: Báo cáo cuối kỳ">Xem yêu cầu</button> <button type="button" commandfor="submission-upload-5" command="show-modal" aria-haspopup="dialog" aria-controls="submission-upload-5" aria-label="Nộp bài: Báo cáo cuối kỳ">Nộp bài</button></div></div>
+                </article></li>
               </ul>
-            </nav>
-          </section>
-
-          <!-- KHU VỰC 2: FORM NỘP BÀI -->
-          <section
-            id="submission-form-section"
-            class="submission-form-section"
-            aria-labelledby="submission-form-title"
-          >
-            <h2 id="submission-form-title">Nộp bài</h2>
-            <p id="submission-form-hint" class="demo-notice">
-              Biểu mẫu nộp bài cho Báo cáo giữa kỳ (mẫu mặc định). Nút nộp bài tại từng dòng bảng trên chưa tự chuyển đổi bài trong giai đoạn HTML.
-            </p>
-            <form id="submission-form" class="submission-form">
-              <!-- Chốt chặn implicit submit khi người dùng nhấn Enter trong trường input -->
-              <button type="submit" hidden disabled aria-hidden="true">Chặn gửi tự động</button>
-
-              <input type="hidden" name="ma-bai-nop" value="BN004" />
-
-              <div class="form-group">
-                <label for="submission-item-name">Bài nộp</label>
-                <input
-                  type="text"
-                  id="submission-item-name"
-                  name="ten-bai-nop"
-                  value="Báo cáo giữa kỳ"
-                  readonly
-                />
-              </div>
-
-              <div class="form-group">
-                <label for="submission-attachment">Tệp đính kèm</label>
-                <input
-                  type="file"
-                  id="submission-attachment"
-                  name="tep-dinh-kem"
-                />
-              </div>
-
-              <div class="form-group">
-                <label for="submission-notes">Ghi chú cho giảng viên</label>
-                <textarea
-                  id="submission-notes"
-                  name="ghi-chu"
-                  rows="4"
-                  placeholder="Nhập ghi chú cho giảng viên (nếu có)..."
-                ></textarea>
-              </div>
-
-              <div class="form-actions">
-                <button type="reset" class="btn btn-secondary">
-                  Hủy
-                </button>
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  aria-describedby="submit-disabled-notice"
-                  aria-haspopup="dialog"
-                  aria-controls="submission-confirm-dialog"
-                  disabled
-                >
-                  Xác nhận nộp bài
-                </button>
-              </div>
-              <p id="submit-disabled-notice" class="sr-only">
-                Chức năng gửi bài nộp lên máy chủ chưa được xử lý.
-              </p>
+              <div class="submissions-pagination"><p>Hiển thị 1–5 trên 12 mục · Tối đa 5/trang (minh họa)</p><nav class="pagination" aria-label="Phân trang bài cần nộp"><ul class="pagination__list"><li><button type="button" aria-label="Trang trước" disabled>‹</button></li><li><span aria-current="page">1</span></li><li><button type="button" disabled>2</button></li><li><button type="button" disabled>3</button></li><li><button type="button" aria-label="Trang sau" disabled>›</button></li></ul></nav></div>
+            </section>
+            <section class="submission-history-section" aria-labelledby="submission-history-title">
+              <h2 id="submission-history-title">Lịch sử nộp bài</h2>
+              <ol class="submission-history-list">
+                <li><article id="history-entry-01" class="submission-history-card" aria-labelledby="submission-history-1-title">
+                  <div class="submission-history-card__content"><h3 id="submission-history-1-title">Đề cương</h3><p>Tệp đã nộp: [Tên tệp đính kèm]</p><p>Ngày nộp: dd/mm/yyyy · hh:mm</p></div>
+                  <div class="submission-history-card__summary"><p class="submission-history-card__status">Đúng hạn</p><div class="submission-history-card__actions"><button type="button" disabled>Tải xuống</button> <button type="button" commandfor="submission-feedback-1" command="show-modal" aria-haspopup="dialog" aria-controls="submission-feedback-1" aria-label="Xem phản hồi lần nộp 1: Đề cương">Xem phản hồi</button></div></div>
+                </article></li>
+                <li><article id="history-entry-02" class="submission-history-card" aria-labelledby="submission-history-2-title">
+                  <div class="submission-history-card__content"><h3 id="submission-history-2-title">Đề cương</h3><p>Tệp đã nộp: [Tên tệp đính kèm]</p><p>Ngày nộp: dd/mm/yyyy · hh:mm</p></div>
+                  <div class="submission-history-card__summary"><p class="submission-history-card__status">Trễ hạn</p><div class="submission-history-card__actions"><button type="button" disabled>Tải xuống</button> <button type="button" commandfor="submission-feedback-2" command="show-modal" aria-haspopup="dialog" aria-controls="submission-feedback-2" aria-label="Xem phản hồi lần nộp 2: Đề cương">Xem phản hồi</button></div></div>
+                </article></li>
+                <li><article id="history-entry-03" class="submission-history-card" aria-labelledby="submission-history-3-title">
+                  <div class="submission-history-card__content"><h3 id="submission-history-3-title">Báo cáo tuần 1</h3><p>Tệp đã nộp: [Tên tệp đính kèm]</p><p>Ngày nộp: dd/mm/yyyy · hh:mm</p></div>
+                  <div class="submission-history-card__summary"><p class="submission-history-card__status">Đúng hạn</p><div class="submission-history-card__actions"><button type="button" disabled>Tải xuống</button> <button type="button" commandfor="submission-feedback-3" command="show-modal" aria-haspopup="dialog" aria-controls="submission-feedback-3" aria-label="Xem phản hồi lần nộp 3: Báo cáo tuần 1">Xem phản hồi</button></div></div>
+                </article></li>
+                <li><article id="history-entry-04" class="submission-history-card" aria-labelledby="submission-history-4-title">
+                  <div class="submission-history-card__content"><h3 id="submission-history-4-title">Báo cáo tuần 1</h3><p>Tệp đã nộp: [Tên tệp đính kèm]</p><p>Ngày nộp: dd/mm/yyyy · hh:mm</p></div>
+                  <div class="submission-history-card__summary"><p class="submission-history-card__status">Đúng hạn</p><div class="submission-history-card__actions"><button type="button" disabled>Tải xuống</button> <button type="button" commandfor="submission-feedback-4" command="show-modal" aria-haspopup="dialog" aria-controls="submission-feedback-4" aria-label="Xem phản hồi lần nộp 4: Báo cáo tuần 1">Xem phản hồi</button></div></div>
+                </article></li>
+                <li><article id="history-entry-05" class="submission-history-card" aria-labelledby="submission-history-5-title">
+                  <div class="submission-history-card__content"><h3 id="submission-history-5-title">Báo cáo giữa kỳ</h3><p>Tệp đã nộp: [Tên tệp đính kèm]</p><p>Ngày nộp: dd/mm/yyyy · hh:mm</p></div>
+                  <div class="submission-history-card__summary"><p class="submission-history-card__status">Trễ hạn</p><div class="submission-history-card__actions"><button type="button" disabled>Tải xuống</button> <button type="button" commandfor="submission-feedback-5" command="show-modal" aria-haspopup="dialog" aria-controls="submission-feedback-5" aria-label="Xem phản hồi lần nộp 5: Báo cáo giữa kỳ">Xem phản hồi</button></div></div>
+                </article></li>
+              </ol>
+              <div class="submissions-pagination"><p>Hiển thị 1–5 trên 18 mục · Tối đa 5/trang (minh họa)</p><nav class="pagination" aria-label="Phân trang lịch sử nộp bài"><ul class="pagination__list"><li><button type="button" aria-label="Trang trước" disabled>‹</button></li><li><span aria-current="page">1</span></li><li><button type="button" disabled>2</button></li><li><button type="button" disabled>3</button></li><li><button type="button" disabled>4</button></li><li><button type="button" aria-label="Trang sau" disabled>›</button></li></ul></nav></div>
+            </section>
+          </div>
+          <dialog id="submission-requirements-1" class="submission-dialog" aria-labelledby="submission-requirements-1-title">
+            <header class="submission-dialog__header"><h2 id="submission-requirements-1-title">Chi tiết yêu cầu bài nộp</h2><button type="button" commandfor="submission-requirements-1" command="close" aria-label="Đóng hộp thoại chi tiết yêu cầu bài nộp">×</button></header>
+            <div class="submission-dialog__body"><h3>Đề cương</h3><dl><dt>Hạn nộp</dt><dd>dd/mm/yyyy · hh:mm</dd></dl><section aria-labelledby="submission-requirements-1-content-title"><h3 id="submission-requirements-1-content-title">Nội dung yêu cầu</h3><ul><li>[Yêu cầu nội dung và phạm vi bài nộp.]</li><li>[Định dạng tệp và tài liệu cần đính kèm.]</li><li>[Hướng dẫn và tiêu chí đánh giá.]</li></ul></section></div>
+            <footer><button type="button" commandfor="submission-requirements-1" command="close">Đóng</button></footer>
+          </dialog>
+          <dialog id="submission-form-section" class="submission-dialog" aria-labelledby="submission-form-section-title">
+            <header class="submission-dialog__header"><h2 id="submission-form-section-title">Nộp bài</h2><button type="button" commandfor="submission-form-section" command="close" aria-label="Đóng hộp thoại nộp bài">×</button></header>
+            <form id="submission-form" aria-describedby="submission-form-section-notice">
+              <div class="submission-form__field"><label for="submission-name-1">Bài nộp</label><input id="submission-name-1" type="text" value="Đề cương" readonly /><input type="hidden" name="ma-bai-nop" value="BN001" /></div>
+              <div class="submission-form__field"><label for="submission-file-1">Tệp đính kèm</label><input id="submission-file-1" name="tep-dinh-kem" type="file" required /></div>
+              <div class="submission-form__field"><label for="submission-note-1">Ghi chú cho giảng viên</label><textarea id="submission-note-1" name="ghi-chu" rows="3" placeholder="Nhập ghi chú cho giảng viên nếu có..."></textarea></div>
+              <p id="submission-form-section-notice">Khung HTML minh họa, chưa gửi hoặc lưu tệp.</p>
+              <footer><button type="button" commandfor="submission-form-section" command="close">Hủy</button> <button type="submit" disabled>Xác nhận nộp bài</button></footer>
             </form>
-          </section>
-
-          <!-- KHU VỰC 3: LỊCH SỬ NỘP BÀI -->
-          <section
-            class="submission-history-section"
-            aria-labelledby="submission-history-title"
-          >
-            <h2 id="submission-history-title">Lịch sử nộp bài</h2>
-            <table class="submission-history-table">
-              <caption>
-                Lịch sử các lần nộp bài của đề tài (hiển thị 5 lần nộp trên trang hiện tại)
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">Ngày nộp</th>
-                  <th scope="col">Bài nộp</th>
-                  <th scope="col">Tệp đã nộp</th>
-                  <th scope="col">Trạng thái</th>
-                  <th scope="col">Thao tác</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr id="history-entry-01" data-submission-id="BN001">
-                  <td>dd/mm/yyyy · hh:mm</td>
-                  <th scope="row">Tên bài nộp</th>
-                  <td>Tên tệp đính kèm</td>
-                  <td>Trạng thái bài nộp</td>
-                  <td>
-                    <button
-                      type="button"
-                      aria-label="Tải xuống tệp đã nộp dòng 1"
-                      disabled
-                    >
-                      Tải xuống
-                    </button>
-                  </td>
-                </tr>
-                <tr id="history-entry-02" data-submission-id="BN001">
-                  <td>dd/mm/yyyy · hh:mm</td>
-                  <th scope="row">Tên bài nộp</th>
-                  <td>Tên tệp đính kèm</td>
-                  <td>Trạng thái bài nộp</td>
-                  <td>
-                    <button
-                      type="button"
-                      aria-label="Tải xuống tệp đã nộp dòng 2"
-                      disabled
-                    >
-                      Tải xuống
-                    </button>
-                  </td>
-                </tr>
-                <tr id="history-entry-03" data-submission-id="BN002">
-                  <td>dd/mm/yyyy · hh:mm</td>
-                  <th scope="row">Tên bài nộp</th>
-                  <td>Tên tệp đính kèm</td>
-                  <td>Trạng thái bài nộp</td>
-                  <td>
-                    <button
-                      type="button"
-                      aria-label="Tải xuống tệp đã nộp dòng 3"
-                      disabled
-                    >
-                      Tải xuống
-                    </button>
-                  </td>
-                </tr>
-                <tr id="history-entry-04" data-submission-id="BN002">
-                  <td>dd/mm/yyyy · hh:mm</td>
-                  <th scope="row">Tên bài nộp</th>
-                  <td>Tên tệp đính kèm</td>
-                  <td>Trạng thái bài nộp</td>
-                  <td>
-                    <button
-                      type="button"
-                      aria-label="Tải xuống tệp đã nộp dòng 4"
-                      disabled
-                    >
-                      Tải xuống
-                    </button>
-                  </td>
-                </tr>
-                <tr id="history-entry-05" data-submission-id="BN003">
-                  <td>dd/mm/yyyy · hh:mm</td>
-                  <th scope="row">Tên bài nộp</th>
-                  <td>Tên tệp đính kèm</td>
-                  <td>Trạng thái bài nộp</td>
-                  <td>
-                    <button
-                      type="button"
-                      aria-label="Tải xuống tệp đã nộp dòng 5"
-                      disabled
-                    >
-                      Tải xuống
-                    </button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-
-            <!-- Phân trang Lịch sử nộp bài -->
-            <nav
-              class="pagination"
-              aria-label="Phân trang lịch sử nộp bài"
-              data-pagination-for="submission-history"
-              data-page-size="5"
-              data-total-items="18"
-            >
-              <ul class="pagination__list">
-                <li class="pagination__item">
-                  <button
-                    type="button"
-                    class="pagination__button pagination__button--prev"
-                    aria-label="Trang trước"
-                    disabled
-                  >
-                    ‹
-                  </button>
-                </li>
-                <li class="pagination__item">
-                  <span
-                    class="pagination__page pagination__page--current"
-                    aria-current="page"
-                  >
-                    1
-                  </span>
-                </li>
-                <li class="pagination__item">
-                  <button
-                    type="button"
-                    class="pagination__button"
-                    aria-label="Trang 2"
-                    disabled
-                  >
-                    2
-                  </button>
-                </li>
-                <li class="pagination__item">
-                  <button
-                    type="button"
-                    class="pagination__button"
-                    aria-label="Trang 3"
-                    disabled
-                  >
-                    3
-                  </button>
-                </li>
-                <li class="pagination__item">
-                  <button
-                    type="button"
-                    class="pagination__button"
-                    aria-label="Trang 4"
-                    disabled
-                  >
-                    4
-                  </button>
-                </li>
-                <li class="pagination__item">
-                  <button
-                    type="button"
-                    class="pagination__button pagination__button--next"
-                    aria-label="Trang sau"
-                    disabled
-                  >
-                    ›
-                  </button>
-                </li>
-              </ul>
-            </nav>
-          </section>
-        </div>
+          </dialog>
+          <dialog id="submission-requirements-2" class="submission-dialog" aria-labelledby="submission-requirements-2-title">
+            <header class="submission-dialog__header"><h2 id="submission-requirements-2-title">Chi tiết yêu cầu bài nộp</h2><button type="button" commandfor="submission-requirements-2" command="close" aria-label="Đóng hộp thoại chi tiết yêu cầu bài nộp">×</button></header>
+            <div class="submission-dialog__body"><h3>Báo cáo tuần 1</h3><dl><dt>Hạn nộp</dt><dd>dd/mm/yyyy · hh:mm</dd></dl><section aria-labelledby="submission-requirements-2-content-title"><h3 id="submission-requirements-2-content-title">Nội dung yêu cầu</h3><ul><li>[Yêu cầu nội dung và phạm vi bài nộp.]</li><li>[Định dạng tệp và tài liệu cần đính kèm.]</li><li>[Hướng dẫn và tiêu chí đánh giá.]</li></ul></section></div>
+            <footer><button type="button" commandfor="submission-requirements-2" command="close">Đóng</button></footer>
+          </dialog>
+          <dialog id="submission-upload-2" class="submission-dialog" aria-labelledby="submission-upload-2-title">
+            <header class="submission-dialog__header"><h2 id="submission-upload-2-title">Nộp bài</h2><button type="button" commandfor="submission-upload-2" command="close" aria-label="Đóng hộp thoại nộp bài">×</button></header>
+            <form id="submission-form-2" aria-describedby="submission-upload-2-notice">
+              <div class="submission-form__field"><label for="submission-name-2">Bài nộp</label><input id="submission-name-2" type="text" value="Báo cáo tuần 1" readonly /><input type="hidden" name="ma-bai-nop" value="BN002" /></div>
+              <div class="submission-form__field"><label for="submission-file-2">Tệp đính kèm</label><input id="submission-file-2" name="tep-dinh-kem" type="file" required /></div>
+              <div class="submission-form__field"><label for="submission-note-2">Ghi chú cho giảng viên</label><textarea id="submission-note-2" name="ghi-chu" rows="3" placeholder="Nhập ghi chú cho giảng viên nếu có..."></textarea></div>
+              <p id="submission-upload-2-notice">Khung HTML minh họa, chưa gửi hoặc lưu tệp.</p>
+              <footer><button type="button" commandfor="submission-upload-2" command="close">Hủy</button> <button type="submit" disabled>Xác nhận nộp bài</button></footer>
+            </form>
+          </dialog>
+          <dialog id="submission-requirements-3" class="submission-dialog" aria-labelledby="submission-requirements-3-title">
+            <header class="submission-dialog__header"><h2 id="submission-requirements-3-title">Chi tiết yêu cầu bài nộp</h2><button type="button" commandfor="submission-requirements-3" command="close" aria-label="Đóng hộp thoại chi tiết yêu cầu bài nộp">×</button></header>
+            <div class="submission-dialog__body"><h3>Báo cáo giữa kỳ</h3><dl><dt>Hạn nộp</dt><dd>dd/mm/yyyy · hh:mm</dd></dl><section aria-labelledby="submission-requirements-3-content-title"><h3 id="submission-requirements-3-content-title">Nội dung yêu cầu</h3><ul><li>[Yêu cầu nội dung và phạm vi bài nộp.]</li><li>[Định dạng tệp và tài liệu cần đính kèm.]</li><li>[Hướng dẫn và tiêu chí đánh giá.]</li></ul></section></div>
+            <footer><button type="button" commandfor="submission-requirements-3" command="close">Đóng</button></footer>
+          </dialog>
+          <dialog id="submission-upload-3" class="submission-dialog" aria-labelledby="submission-upload-3-title">
+            <header class="submission-dialog__header"><h2 id="submission-upload-3-title">Nộp bài</h2><button type="button" commandfor="submission-upload-3" command="close" aria-label="Đóng hộp thoại nộp bài">×</button></header>
+            <form id="submission-form-3" aria-describedby="submission-upload-3-notice">
+              <div class="submission-form__field"><label for="submission-name-3">Bài nộp</label><input id="submission-name-3" type="text" value="Báo cáo giữa kỳ" readonly /><input type="hidden" name="ma-bai-nop" value="BN003" /></div>
+              <div class="submission-form__field"><label for="submission-file-3">Tệp đính kèm</label><input id="submission-file-3" name="tep-dinh-kem" type="file" required /></div>
+              <div class="submission-form__field"><label for="submission-note-3">Ghi chú cho giảng viên</label><textarea id="submission-note-3" name="ghi-chu" rows="3" placeholder="Nhập ghi chú cho giảng viên nếu có..."></textarea></div>
+              <p id="submission-upload-3-notice">Khung HTML minh họa, chưa gửi hoặc lưu tệp.</p>
+              <footer><button type="button" commandfor="submission-upload-3" command="close">Hủy</button> <button type="submit" disabled>Xác nhận nộp bài</button></footer>
+            </form>
+          </dialog>
+          <dialog id="submission-requirements-4" class="submission-dialog" aria-labelledby="submission-requirements-4-title">
+            <header class="submission-dialog__header"><h2 id="submission-requirements-4-title">Chi tiết yêu cầu bài nộp</h2><button type="button" commandfor="submission-requirements-4" command="close" aria-label="Đóng hộp thoại chi tiết yêu cầu bài nộp">×</button></header>
+            <div class="submission-dialog__body"><h3>Báo cáo tuần 3</h3><dl><dt>Hạn nộp</dt><dd>dd/mm/yyyy · hh:mm</dd></dl><section aria-labelledby="submission-requirements-4-content-title"><h3 id="submission-requirements-4-content-title">Nội dung yêu cầu</h3><ul><li>[Yêu cầu nội dung và phạm vi bài nộp.]</li><li>[Định dạng tệp và tài liệu cần đính kèm.]</li><li>[Hướng dẫn và tiêu chí đánh giá.]</li></ul></section></div>
+            <footer><button type="button" commandfor="submission-requirements-4" command="close">Đóng</button></footer>
+          </dialog>
+          <dialog id="submission-upload-4" class="submission-dialog" aria-labelledby="submission-upload-4-title">
+            <header class="submission-dialog__header"><h2 id="submission-upload-4-title">Nộp bài</h2><button type="button" commandfor="submission-upload-4" command="close" aria-label="Đóng hộp thoại nộp bài">×</button></header>
+            <form id="submission-form-4" aria-describedby="submission-upload-4-notice">
+              <div class="submission-form__field"><label for="submission-name-4">Bài nộp</label><input id="submission-name-4" type="text" value="Báo cáo tuần 3" readonly /><input type="hidden" name="ma-bai-nop" value="BN004" /></div>
+              <div class="submission-form__field"><label for="submission-file-4">Tệp đính kèm</label><input id="submission-file-4" name="tep-dinh-kem" type="file" required /></div>
+              <div class="submission-form__field"><label for="submission-note-4">Ghi chú cho giảng viên</label><textarea id="submission-note-4" name="ghi-chu" rows="3" placeholder="Nhập ghi chú cho giảng viên nếu có..."></textarea></div>
+              <p id="submission-upload-4-notice">Khung HTML minh họa, chưa gửi hoặc lưu tệp.</p>
+              <footer><button type="button" commandfor="submission-upload-4" command="close">Hủy</button> <button type="submit" disabled>Xác nhận nộp bài</button></footer>
+            </form>
+          </dialog>
+          <dialog id="submission-requirements-5" class="submission-dialog" aria-labelledby="submission-requirements-5-title">
+            <header class="submission-dialog__header"><h2 id="submission-requirements-5-title">Chi tiết yêu cầu bài nộp</h2><button type="button" commandfor="submission-requirements-5" command="close" aria-label="Đóng hộp thoại chi tiết yêu cầu bài nộp">×</button></header>
+            <div class="submission-dialog__body"><h3>Báo cáo cuối kỳ</h3><dl><dt>Hạn nộp</dt><dd>dd/mm/yyyy · hh:mm</dd></dl><section aria-labelledby="submission-requirements-5-content-title"><h3 id="submission-requirements-5-content-title">Nội dung yêu cầu</h3><ul><li>[Yêu cầu nội dung và phạm vi bài nộp.]</li><li>[Định dạng tệp và tài liệu cần đính kèm.]</li><li>[Hướng dẫn và tiêu chí đánh giá.]</li></ul></section></div>
+            <footer><button type="button" commandfor="submission-requirements-5" command="close">Đóng</button></footer>
+          </dialog>
+          <dialog id="submission-upload-5" class="submission-dialog" aria-labelledby="submission-upload-5-title">
+            <header class="submission-dialog__header"><h2 id="submission-upload-5-title">Nộp bài</h2><button type="button" commandfor="submission-upload-5" command="close" aria-label="Đóng hộp thoại nộp bài">×</button></header>
+            <form id="submission-form-5" aria-describedby="submission-upload-5-notice">
+              <div class="submission-form__field"><label for="submission-name-5">Bài nộp</label><input id="submission-name-5" type="text" value="Báo cáo cuối kỳ" readonly /><input type="hidden" name="ma-bai-nop" value="BN005" /></div>
+              <div class="submission-form__field"><label for="submission-file-5">Tệp đính kèm</label><input id="submission-file-5" name="tep-dinh-kem" type="file" required /></div>
+              <div class="submission-form__field"><label for="submission-note-5">Ghi chú cho giảng viên</label><textarea id="submission-note-5" name="ghi-chu" rows="3" placeholder="Nhập ghi chú cho giảng viên nếu có..."></textarea></div>
+              <p id="submission-upload-5-notice">Khung HTML minh họa, chưa gửi hoặc lưu tệp.</p>
+              <footer><button type="button" commandfor="submission-upload-5" command="close">Hủy</button> <button type="submit" disabled>Xác nhận nộp bài</button></footer>
+            </form>
+          </dialog>
+          <dialog id="submission-feedback-1" class="submission-dialog" aria-labelledby="submission-feedback-1-title">
+            <header class="submission-dialog__header"><h2 id="submission-feedback-1-title">Phản hồi bài nộp</h2><button type="button" commandfor="submission-feedback-1" command="close" aria-label="Đóng hộp thoại phản hồi bài nộp">×</button></header>
+            <div class="submission-dialog__body"><dl><dt>Giảng viên</dt><dd>[Họ tên giảng viên]</dd><dt>Ngày phản hồi</dt><dd>dd/mm/yyyy · hh:mm</dd></dl><section aria-labelledby="submission-feedback-1-content-title"><h3 id="submission-feedback-1-content-title">Nội dung phản hồi</h3><p>[Nội dung nhận xét của giảng viên cho lần nộp 1.]</p></section></div>
+            <footer><button type="button" commandfor="submission-feedback-1" command="close">Đóng</button></footer>
+          </dialog>
+          <dialog id="submission-feedback-2" class="submission-dialog" aria-labelledby="submission-feedback-2-title">
+            <header class="submission-dialog__header"><h2 id="submission-feedback-2-title">Phản hồi bài nộp</h2><button type="button" commandfor="submission-feedback-2" command="close" aria-label="Đóng hộp thoại phản hồi bài nộp">×</button></header>
+            <div class="submission-dialog__body"><dl><dt>Giảng viên</dt><dd>[Họ tên giảng viên]</dd><dt>Ngày phản hồi</dt><dd>dd/mm/yyyy · hh:mm</dd></dl><section aria-labelledby="submission-feedback-2-content-title"><h3 id="submission-feedback-2-content-title">Nội dung phản hồi</h3><p>[Nội dung nhận xét của giảng viên cho lần nộp 2.]</p></section></div>
+            <footer><button type="button" commandfor="submission-feedback-2" command="close">Đóng</button></footer>
+          </dialog>
+          <dialog id="submission-feedback-3" class="submission-dialog" aria-labelledby="submission-feedback-3-title">
+            <header class="submission-dialog__header"><h2 id="submission-feedback-3-title">Phản hồi bài nộp</h2><button type="button" commandfor="submission-feedback-3" command="close" aria-label="Đóng hộp thoại phản hồi bài nộp">×</button></header>
+            <div class="submission-dialog__body"><dl><dt>Giảng viên</dt><dd>[Họ tên giảng viên]</dd><dt>Ngày phản hồi</dt><dd>dd/mm/yyyy · hh:mm</dd></dl><section aria-labelledby="submission-feedback-3-content-title"><h3 id="submission-feedback-3-content-title">Nội dung phản hồi</h3><p>[Nội dung nhận xét của giảng viên cho lần nộp 3.]</p></section></div>
+            <footer><button type="button" commandfor="submission-feedback-3" command="close">Đóng</button></footer>
+          </dialog>
+          <dialog id="submission-feedback-4" class="submission-dialog" aria-labelledby="submission-feedback-4-title">
+            <header class="submission-dialog__header"><h2 id="submission-feedback-4-title">Phản hồi bài nộp</h2><button type="button" commandfor="submission-feedback-4" command="close" aria-label="Đóng hộp thoại phản hồi bài nộp">×</button></header>
+            <div class="submission-dialog__body"><dl><dt>Giảng viên</dt><dd>[Họ tên giảng viên]</dd><dt>Ngày phản hồi</dt><dd>dd/mm/yyyy · hh:mm</dd></dl><section aria-labelledby="submission-feedback-4-content-title"><h3 id="submission-feedback-4-content-title">Nội dung phản hồi</h3><p>[Nội dung nhận xét của giảng viên cho lần nộp 4.]</p></section></div>
+            <footer><button type="button" commandfor="submission-feedback-4" command="close">Đóng</button></footer>
+          </dialog>
+          <dialog id="submission-feedback-5" class="submission-dialog" aria-labelledby="submission-feedback-5-title">
+            <header class="submission-dialog__header"><h2 id="submission-feedback-5-title">Phản hồi bài nộp</h2><button type="button" commandfor="submission-feedback-5" command="close" aria-label="Đóng hộp thoại phản hồi bài nộp">×</button></header>
+            <div class="submission-dialog__body"><dl><dt>Giảng viên</dt><dd>[Họ tên giảng viên]</dd><dt>Ngày phản hồi</dt><dd>dd/mm/yyyy · hh:mm</dd></dl><section aria-labelledby="submission-feedback-5-content-title"><h3 id="submission-feedback-5-content-title">Nội dung phản hồi</h3><p>[Nội dung nhận xét của giảng viên cho lần nộp 5.]</p></section></div>
+            <footer><button type="button" commandfor="submission-feedback-5" command="close">Đóng</button></footer>
+          </dialog>
         </section>
 
         <section id="ket-qua-danh-gia" class="student-detail-panel" aria-labelledby="ket-qua-danh-gia-panel-title" tabindex="-1">
           <h2 id="ket-qua-danh-gia-panel-title">Kết quả đánh giá</h2>
-<p id="evaluation-demo-notice" class="demo-notice">
+          <p id="evaluation-demo-notice" class="demo-notice">
             Khung kết quả đánh giá minh họa; điểm số, tiêu chí và nhận xét sẽ được cập nhật sau khi giảng viên công bố kết quả.
           </p>
-<div class="page-content">
+          <div class="page-content evaluation-content">
           <!-- Thay nội dung đánh giá bằng khung này khi giảng viên chưa công bố. -->
           <template id="evaluation-unpublished-template">
             <section class="empty-state" aria-label="Kết quả chưa công bố">
@@ -1840,29 +1463,33 @@
             class="evaluation-summary"
             aria-labelledby="evaluation-summary-title"
           >
-            <h2 id="evaluation-summary-title">Kết quả tổng hợp</h2>
+            <header class="evaluation-section__header">
+              <h2 id="evaluation-summary-title">Kết quả tổng hợp</h2>
+            </header>
             <div class="evaluation-summary__cards">
-              <div class="evaluation-summary__card">
-                <h3>Điểm tổng kết</h3>
+              <div class="evaluation-summary__card" aria-labelledby="evaluation-score-title">
+                <h3 id="evaluation-score-title">Điểm tổng kết</h3>
                 <p class="evaluation-summary__score">… / 10</p>
               </div>
-              <div class="evaluation-summary__card">
-                <h3>Kết quả</h3>
-                <p class="evaluation-summary__result">Chưa có kết quả đánh giá</p>
+              <div class="evaluation-summary__card" aria-labelledby="evaluation-result-title">
+                <h3 id="evaluation-result-title">Kết quả</h3>
+                <p class="evaluation-summary__result">[Khung kết quả đánh giá]</p>
               </div>
             </div>
           </section>
 
-          <!-- KHU VỰC 2: CHI TIẾT ĐÁNH GIÁ — 5 TIÊU CHÍ -->
+          <!-- KHU VỰC 2: CHI TIẾT ĐÁNH GIÁ — 3 TIÊU CHÍ THEO WIREFRAME -->
           <section
             class="evaluation-details"
             aria-labelledby="evaluation-details-title"
           >
-            <h2 id="evaluation-details-title">Chi tiết đánh giá</h2>
+            <header class="evaluation-section__header">
+              <h2 id="evaluation-details-title">Chi tiết đánh giá</h2>
+            </header>
             <div class="evaluation-details__table-wrapper">
               <table class="evaluation-details__table">
                 <caption>
-                  Năm tiêu chí đánh giá đề tài (nội dung chờ cập nhật)
+                  Ba tiêu chí đánh giá đề tài (dữ liệu giữ chỗ theo wireframe)
                 </caption>
                 <thead>
                   <tr>
@@ -1877,31 +1504,19 @@
                     <th scope="row">Tên tiêu chí 1</th>
                     <td>…%</td>
                     <td>…</td>
-                    <td>Chưa có nhận xét theo tiêu chí</td>
+                    <td>[Khung nhận xét theo tiêu chí]</td>
                   </tr>
                   <tr data-criterion-id="TC002">
                     <th scope="row">Tên tiêu chí 2</th>
                     <td>…%</td>
                     <td>…</td>
-                    <td>Chưa có nhận xét theo tiêu chí</td>
+                    <td>[Khung nhận xét theo tiêu chí]</td>
                   </tr>
                   <tr data-criterion-id="TC003">
                     <th scope="row">Tên tiêu chí 3</th>
                     <td>…%</td>
                     <td>…</td>
-                    <td>Chưa có nhận xét theo tiêu chí</td>
-                  </tr>
-                  <tr data-criterion-id="TC004">
-                    <th scope="row">Tên tiêu chí 4</th>
-                    <td>…%</td>
-                    <td>…</td>
-                    <td>Chưa có nhận xét theo tiêu chí</td>
-                  </tr>
-                  <tr data-criterion-id="TC005">
-                    <th scope="row">Tên tiêu chí 5</th>
-                    <td>…%</td>
-                    <td>…</td>
-                    <td>Chưa có nhận xét theo tiêu chí</td>
+                    <td>[Khung nhận xét theo tiêu chí]</td>
                   </tr>
                 </tbody>
               </table>
@@ -1913,7 +1528,9 @@
             class="lecturer-feedback"
             aria-labelledby="lecturer-feedback-title"
           >
-            <h2 id="lecturer-feedback-title">Nhận xét của giảng viên</h2>
+            <header class="evaluation-section__header">
+              <h2 id="lecturer-feedback-title">Nhận xét của giảng viên</h2>
+            </header>
             <dl class="lecturer-feedback__metadata">
               <div class="lecturer-feedback__field">
                 <dt>Giảng viên đánh giá</dt>
@@ -1925,7 +1542,7 @@
               </div>
             </dl>
             <div class="lecturer-feedback__content">
-              <p>Chưa có nội dung nhận xét của giảng viên.</p>
+              <p>[Khung nội dung nhận xét của giảng viên.]</p>
             </div>
           </section>
 
@@ -1934,9 +1551,11 @@
             class="evaluation-attachments"
             aria-labelledby="evaluation-attachments-title"
           >
-            <h2 id="evaluation-attachments-title">Tệp đánh giá đính kèm</h2>
+            <header class="evaluation-section__header">
+              <h2 id="evaluation-attachments-title">Tệp đánh giá đính kèm</h2>
+            </header>
             <div class="evaluation-attachments__item">
-              <p class="evaluation-attachments__name">Tên tệp đánh giá</p>
+              <p class="evaluation-attachments__name">[Tên tệp đánh giá]</p>
               <!-- Khi có tệp thật, thay nút này bằng liên kết có href và download. -->
               <button
                 class="evaluation-attachments__download"
@@ -1980,11 +1599,42 @@
       </div>
     </footer>
 
-    <!-- Dialog mặc định đóng. Chưa có JavaScript mở/đóng, tìm kiếm, chọn hoặc gửi lời mời. -->
+    <!-- Hộp thoại HTML mở/đóng bằng commandfor trên trình duyệt hỗ trợ; chưa xử lý thêm thành viên. -->
+    <dialog id="add-team-member-dialog" class="team-member-dialog" aria-labelledby="add-team-member-title" aria-describedby="add-team-member-description">
+      <header class="team-member-dialog__header">
+        <h2 id="add-team-member-title">Thêm thành viên</h2>
+        <button type="button" commandfor="add-team-member-dialog" command="close" aria-label="Đóng hộp thoại thêm thành viên">×</button>
+      </header>
+      <p id="add-team-member-description">Nhập thông tin thành viên mới tham gia nhóm.</p>
+      <form id="add-team-member-form" aria-labelledby="add-team-member-title" aria-describedby="add-team-member-notice">
+        <div class="team-member-form__field">
+          <label for="new-team-member-name">Họ tên</label>
+          <input id="new-team-member-name" name="ho-ten" type="text" placeholder="Nhập họ tên sinh viên" maxlength="100" required />
+        </div>
+        <div class="team-member-form__field">
+          <label for="new-team-member-code">Mã số sinh viên</label>
+          <input id="new-team-member-code" name="mssv" type="text" placeholder="Nhập mã số sinh viên" maxlength="20" required />
+        </div>
+        <div class="team-member-form__field">
+          <label for="new-team-member-role">Vai trò</label>
+          <select id="new-team-member-role" name="vai-tro" required>
+            <option value="thanh-vien" selected>Thành viên</option>
+            <option value="nhom-truong">Nhóm trưởng</option>
+          </select>
+        </div>
+        <p id="add-team-member-notice">Khung HTML minh họa, chưa lưu thành viên vào nhóm.</p>
+        <footer class="team-member-dialog__actions">
+          <button type="button" commandfor="add-team-member-dialog" command="close">Hủy</button>
+          <button type="submit" disabled>Thêm thành viên</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <!-- Hộp thoại mời giảng viên: chưa xử lý tìm kiếm, chọn hoặc gửi lời mời. -->
     <dialog id="invite-supervisor-dialog" class="invite-supervisor-dialog" aria-labelledby="invite-supervisor-title">
       <header class="invite-supervisor-dialog__header">
         <h2 id="invite-supervisor-title">Mời giảng viên đồng hướng dẫn</h2>
-        <button id="close-invite-supervisor" class="invite-supervisor-dialog__close" type="button" aria-label="Đóng hộp thoại">×</button>
+        <button id="close-invite-supervisor" class="invite-supervisor-dialog__close" type="button" commandfor="invite-supervisor-dialog" command="close" aria-label="Đóng hộp thoại">×</button>
       </header>
       <p class="invite-supervisor-dialog__topic">Đề tài: Tên đồ án / khóa luận</p>
       <form id="invite-supervisor-form" class="invite-supervisor-form" aria-labelledby="invite-supervisor-title">
@@ -2014,8 +1664,8 @@
         </div>
         <p class="invite-supervisor-form__notice">Giảng viên được thêm sau khi chấp nhận lời mời.</p>
         <div class="invite-supervisor-form__actions">
-          <button id="cancel-invite-supervisor" class="invite-supervisor-form__cancel" type="button">Hủy</button>
-          <button id="send-invite-supervisor" class="invite-supervisor-form__send" type="button">Gửi lời mời</button>
+          <button id="cancel-invite-supervisor" class="invite-supervisor-form__cancel" type="button" commandfor="invite-supervisor-dialog" command="close">Hủy</button>
+          <button id="send-invite-supervisor" class="invite-supervisor-form__send" type="button" disabled>Gửi lời mời</button>
         </div>
       </form>
     </dialog>

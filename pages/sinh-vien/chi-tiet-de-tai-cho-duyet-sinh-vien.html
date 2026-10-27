@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Xem nội dung đề xuất DX001 và theo dõi trạng thái chờ giảng viên xét duyệt." />
+    <title>Chi tiết đề tài — Chờ duyệt | Đề tài của tôi</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-sinh-vien.html">
+          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
+          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
+        </a>
+        <nav class="main-nav" aria-label="Điều hướng sinh viên">
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html">Tổng quan</a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="dang-ky-de-tai.html">Đăng ký đề tài</a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html" aria-current="page">Đề tài của tôi</a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="lich-han-nop.html">Lịch hạn nộp</a>
+            </li>
+            <li class="main-nav__item">
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
+                <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </nav>
+        <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
+        <div class="account-menu">
+          <details class="account-menu__disclosure">
+            <summary class="account-menu__toggle" aria-label="Mở menu tài khoản sinh viên">
+              <span class="account-menu__avatar" aria-hidden="true">SV</span>
+              <span class="account-menu__label">Tài khoản sinh viên</span>
+            </summary>
+            <ul id="account-dropdown" class="account-menu__list">
+              <li>
+                <a class="account-menu__profile" href="ho-so-ca-nhan.html">Hồ sơ cá nhân</a>
+              </li>
+              <li>
+                <button
+                  class="account-menu__logout"
+                  type="button"
+                  aria-controls="logout-dialog"
+                  aria-describedby="logout-notice"
+                  disabled
+                >
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
+        </div>
+      </div>
+    </header>
+
+    <dialog id="logout-dialog" class="confirmation-dialog" aria-labelledby="logout-title">
+      <h2 id="logout-title">Xác nhận đăng xuất</h2>
+      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+      <form method="dialog">
+        <button type="submit" value="cancel">Hủy</button>
+        <button type="button" disabled>Xác nhận đăng xuất</button>
+      </form>
+    </dialog>
+
+    <main id="main-content" class="main-content" tabindex="-1">
+      <div class="page-container">
+        <nav class="breadcrumb" aria-label="Đường dẫn">
+          <ol class="breadcrumb__list">
+            <li><a href="tong-quan-sinh-vien.html">Sinh viên</a></li>
+            <li><a href="de-tai-cua-toi-sinh-vien.html">Đề tài của tôi</a></li>
+            <li aria-current="page">Chi tiết đề tài</li>
+          </ol>
+        </nav>
+        <a class="page-back-link" href="de-tai-cua-toi-sinh-vien.html#dang-ky-va-de-xuat">← Quay lại Đề tài của tôi</a>
+        <header class="page-header pending-proposal-header">
+          <div class="pending-proposal-header__title"><h1>Chi tiết đề tài</h1><span class="proposal-status">Chờ duyệt</span></div>
+          <div class="pending-proposal-header__actions">
+            <a href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dx001-chinh-sua">Chỉnh sửa đề tài</a>
+            <button type="button" commandfor="withdraw-proposal-dialog" command="show-modal" aria-haspopup="dialog" aria-controls="withdraw-proposal-dialog">Rút đề xuất</button>
+          </div>
+          <p>Xem lại nội dung đề xuất và theo dõi kết quả xét duyệt.</p>
+        </header>
+        <p class="pending-proposal-notice" role="status">Đề xuất đang chờ giảng viên xét duyệt. Bạn chưa thể bắt đầu thực hiện đề tài.</p>
+        <!-- Dữ liệu minh họa DX001, đồng nhất với đề xuất trong Đề tài của tôi. -->
+        <article id="dx001" class="pending-proposal" aria-labelledby="proposal-topic-title">
+          <section class="pending-proposal-summary" aria-labelledby="proposal-topic-title">
+            <div class="topic-image-placeholder" role="img" aria-label="Chưa có ảnh minh họa đề tài"><span aria-hidden="true">Ảnh minh họa đề tài</span></div>
+            <div class="pending-proposal-summary__content">
+              <h2 id="proposal-topic-title">Cổng thông tin nghiên cứu sinh viên</h2>
+              <dl class="pending-proposal-summary__meta">
+                <div><dt>Loại đề tài</dt><dd>Đồ án môn học</dd></div>
+                <div><dt>Môn học</dt><dd>[Tên môn học]</dd></div>
+                <div><dt>Học kỳ</dt><dd>[Học kỳ]</dd></div>
+                <div><dt>Năm học</dt><dd>[Năm học]</dd></div>
+              </dl>
+            </div>
+          </section>
+          <section class="proposal-recipient" aria-labelledby="proposal-recipient-title">
+            <h2 id="proposal-recipient-title">Giảng viên nhận đề xuất</h2>
+            <div class="proposal-recipient__profile">
+              <span class="proposal-recipient__avatar" aria-hidden="true">NA</span>
+              <dl>
+                <div><dt>Họ tên</dt><dd>Nguyễn Văn A</dd></div>
+                <div><dt>Vai trò được đề xuất</dt><dd>Hướng dẫn chính</dd></div>
+                <div><dt>Ngày gửi đề xuất</dt><dd><time datetime="2026-10-11T16:00:00+07:00">11/10/2026 · 16:00</time></dd></div>
+              </dl>
+            </div>
+          </section>
+          <section class="proposal-description" aria-labelledby="proposal-description-title">
+            <h2 id="proposal-description-title">Mô tả đề tài</h2>
+            <p>Xây dựng cổng thông tin giúp sinh viên tra cứu công trình nghiên cứu, tìm đề tài quan tâm và tìm nhóm cùng thực hiện nghiên cứu.</p>
+          </section>
+          <section class="proposal-objectives" aria-labelledby="proposal-objectives-title">
+            <h2 id="proposal-objectives-title">Mục tiêu</h2>
+            <p>Tập trung thông tin công trình nghiên cứu và hỗ trợ sinh viên tìm nhóm theo lĩnh vực quan tâm.</p>
+          </section>
+          <section class="proposal-outcomes" aria-labelledby="proposal-outcomes-title">
+            <h2 id="proposal-outcomes-title">Kết quả dự kiến</h2>
+            <p>[Kết quả dự kiến của đề xuất, chờ bổ sung dữ liệu.]</p>
+          </section>
+          <section class="proposal-attachments" aria-labelledby="proposal-attachments-title">
+            <h2 id="proposal-attachments-title">Tài liệu đính kèm</h2>
+            <div class="proposal-attachments__item"><span>[Tên tài liệu đính kèm]</span><button type="button" aria-describedby="proposal-attachment-note" disabled>Tải xuống</button></div>
+            <p id="proposal-attachment-note">Chưa có tệp minh họa để tải xuống.</p>
+          </section>
+        </article>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <!-- Logo chữ tạm, đồng nhất với đầu trang. -->
+          <a class="site-brand" href="tong-quan-sinh-vien.html" aria-label="Quản lý đồ án — Tổng quan sinh viên">
+            <span class="site-brand__logo" aria-hidden="true">QLĐA</span>
+          </a>
+          <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</p>
+          <p>Trường Đại học Công nghệ Thông tin</p>
+          <p class="site-footer__group">Đồ án IE104 — Nhóm 7</p>
+        </div>
+        <ul class="site-footer__information" aria-label="Thông tin và quy định">
+          <li>
+            <!-- Liên kết tạm: chưa có trang Điều khoản sử dụng. -->
+            <span>Điều khoản sử dụng (đang cập nhật)</span>
+          </li>
+          <li>
+            <!-- Liên kết tạm: chưa có trang Quy chế, chính sách bảo mật. -->
+            <span>Quy chế, chính sách bảo mật (đang cập nhật)</span>
+          </li>
+        </ul>
+        <p class="site-footer__copyright">Copyright © 2026</p>
+      </div>
+    </footer>
+    <dialog id="withdraw-proposal-dialog" aria-labelledby="withdraw-proposal-title" aria-describedby="withdraw-proposal-notice">
+      <header><h2 id="withdraw-proposal-title">Rút đề xuất</h2><button type="button" commandfor="withdraw-proposal-dialog" command="close" aria-label="Đóng hộp thoại rút đề xuất">×</button></header>
+      <p>Bạn có chắc muốn rút đề xuất “Cổng thông tin nghiên cứu sinh viên”?</p>
+      <p id="withdraw-proposal-notice">Khung HTML minh họa, chưa xử lý rút đề xuất.</p>
+      <footer><button type="button" commandfor="withdraw-proposal-dialog" command="close">Hủy</button><button type="button" disabled>Xác nhận rút đề xuất</button></footer>
+    </dialog>
+  </body>
+</html>
