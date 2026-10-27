@@ -31,23 +31,7 @@
               </a>
             </li>
             <li class="main-nav__item">
-              <details class="main-nav__disclosure">
-                <summary aria-current="location" class="main-nav__label" id="topic-management-label">
-                  Quản lý đề tài
-                </summary>
-                <ul aria-labelledby="topic-management-label" class="main-nav__sublist">
-                  <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="danh-sach-de-tai-dang-huong-dan.html">
-                      Đề tài đang hướng dẫn
-                    </a>
-                  </li>
-                  <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="danh-sach-de-tai-da-tao.html">
-                      Đề tài đã tạo
-                    </a>
-                  </li>
-                </ul>
-              </details>
+              <a class="main-nav__link" id="topic-management-label" href="danh-sach-de-tai-dang-huong-dan.html" aria-current="location">Quản lý đề tài</a>
             </li>
             <li class="main-nav__item">
               <a class="main-nav__link" href="yeu-cau-cho-duyet.html">
@@ -98,14 +82,11 @@
                 </a>
               </li>
               <li>
-                <button aria-controls="logout-dialog" aria-describedby="logout-notice" class="account-menu__logout" disabled="" type="button">
+                <button aria-controls="logout-dialog" title="Chức năng đăng xuất chưa được kết nối" class="account-menu__logout" disabled="" type="button">
                   Đăng xuất
                 </button>
               </li>
             </ul>
-            <p id="logout-notice">
-              Chưa có xử lý đăng xuất.
-            </p>
           </details>
         </div>
       </div>
@@ -129,242 +110,110 @@
     <!-- NỘI DUNG RIÊNG CỦA TRANG CHI TIẾT ĐỀ TÀI ĐÃ TẠO -->
     <main class="main-content" id="main-content" tabindex="-1">
       <div class="page-container">
-        <nav aria-label="Đường dẫn" class="breadcrumb">
-          <ol>
-            <li>
-              <a href="tong-quan-giang-vien.html">
-                Giảng viên
-              </a>
-            </li>
-            <li>
-              <a href="danh-sach-de-tai-da-tao.html">
-                Đề tài đã tạo
-              </a>
-            </li>
-            <li aria-current="page">
-              Chi tiết đề tài
-            </li>
+        <nav class="breadcrumb" aria-label="Đường dẫn">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item"><a href="tong-quan-giang-vien.html">Giảng viên</a></li>
+            <li class="breadcrumb__item"><a href="danh-sach-de-tai-da-tao.html">Quản lý đề tài</a></li>
+            <li class="breadcrumb__item"><a href="danh-sach-de-tai-da-tao.html">Đề tài đã tạo</a></li>
+            <li class="breadcrumb__item"><span aria-current="page">Chi tiết đề tài</span></li>
           </ol>
         </nav>
-        <a class="back-link" href="danh-sach-de-tai-da-tao.html">
-          ← Quay lại đề tài đã tạo
-        </a>
+        <a class="back-link" href="danh-sach-de-tai-da-tao.html">← Quay lại đề tài đã tạo</a>
         <header class="page-header">
-          <h1 class="page-header__title">
-            Chi tiết đề tài
-          </h1>
-          <p>
-            Đang mở đăng ký
-          </p>
-          <p>
-            Xem thông tin đề tài đã tạo và quản lý đăng ký.
-          </p>
-          <a href="chinh-sua-de-tai-giang-vien.html">
-            Chỉnh sửa đề tài
-          </a>
-          <button popovertarget="close-registration" type="button">
-            Đóng đăng ký
-          </button>
+          <h1 class="page-header__title">Chi tiết đề tài</h1>
+          <p class="status-badge status-badge--open">Đang mở đăng ký</p>
+          <p class="page-header__description">Xem thông tin đề tài đã tạo và quản lý đăng ký.</p>
+          <div class="page-header__actions">
+            <a class="topic-edit-link" href="chinh-sua-de-tai-giang-vien.html">Chỉnh sửa đề tài</a>
+            <button class="registration-close-button" type="button" commandfor="close-registration" command="show-modal" aria-haspopup="dialog" aria-controls="close-registration">Đóng đăng ký</button>
+          </div>
         </header>
-        <p class="demo-notice" id="created-topic-notice">
-          Khung HTML minh họa, chưa lưu hoặc thay đổi trạng thái đề tài.
-        </p>
-        <section aria-labelledby="topic-summary-title">
-          <h2 id="topic-summary-title">
-            Tên đồ án / khóa luận tốt nghiệp
-          </h2>
-          <figure>
-            <figcaption>
-              Ảnh minh họa đề tài
-            </figcaption>
-          </figure>
-          <dl>
-            <dt>
-              Mã đề tài
-            </dt>
-            <dd>
-              [Mã đề tài]
-            </dd>
-            <dt>
-              Loại đề tài
-            </dt>
-            <dd>
-              [Loại đề tài]
-            </dd>
-            <dt>
-              Môn học
-            </dt>
-            <dd>
-              [Môn học]
-            </dd>
-            <dt>
-              Học kỳ
-            </dt>
-            <dd>
-              [Học kỳ]
-            </dd>
-            <dt>
-              Năm học
-            </dt>
-            <dd>
-              [Năm học]
-            </dd>
-          </dl>
-        </section>
-        <section aria-labelledby="supervisor-title">
-          <h2 id="supervisor-title">
-            Giảng viên hướng dẫn
-          </h2>
-          <dl>
-            <dt>
-              Họ tên
-            </dt>
-            <dd>
-              [Họ tên]
-            </dd>
-            <dt>
-              Khoa/Bộ môn
-            </dt>
-            <dd>
-              [Khoa/Bộ môn]
-            </dd>
-            <dt>
-              Email liên hệ
-            </dt>
-            <dd>
-              [Email liên hệ]
-            </dd>
-            <dt>
-              Hướng nghiên cứu
-            </dt>
-            <dd>
-              [Hướng nghiên cứu]
-            </dd>
-          </dl>
-        </section>
-        <section aria-labelledby="topic-description-title">
-          <h2 id="topic-description-title">
-            Mô tả đề tài
-          </h2>
-          <p>
-            [Mô tả đề tài]
-          </p>
-        </section>
-        <section aria-labelledby="topic-objectives-title">
-          <h2 id="topic-objectives-title">
-            Mục tiêu
-          </h2>
-          <p>
-            [Mục tiêu]
-          </p>
-        </section>
-        <section aria-labelledby="topic-outcomes-title">
-          <h2 id="topic-outcomes-title">
-            Kết quả dự kiến
-          </h2>
-          <p>
-            [Kết quả dự kiến]
-          </p>
-        </section>
-        <section aria-labelledby="topic-requirements-title">
-          <h2 id="topic-requirements-title">
-            Yêu cầu đối với sinh viên
-          </h2>
-          <p>
-            [Yêu cầu đối với sinh viên]
-          </p>
-        </section>
-        <section aria-labelledby="registration-title">
-          <h2 id="registration-title">
-            Thông tin đăng ký
-          </h2>
-          <dl>
-            <dt>
-              Hình thức
-            </dt>
-            <dd>
-              Nhóm — [Số thành viên tối thiểu / tối đa]
-            </dd>
-            <dt>
-              Hạn đăng ký
-            </dt>
-            <dd>
-              dd/mm/yyyy hh:mm
-            </dd>
-          </dl>
-        </section>
-        <section aria-labelledby="attachments-title">
-          <h2 id="attachments-title">
-            Tài liệu đính kèm
-          </h2>
-          <p>
-            [Tên tài liệu đính kèm]
-          </p>
-          <button disabled="" type="button">
-            Tải xuống
-          </button>
-        </section>
-        <template id="registration-closed-template">
-          <section aria-labelledby="registration-closed-title">
-            <h2 id="registration-closed-title">
-              Đã đóng đăng ký
-            </h2>
-            <button popovertarget="reopen-registration" type="button">
-              Mở lại đăng ký
-            </button>
+        <!-- Các nội dung bên dưới là nhãn minh họa đúng WF, chưa có dữ liệu đề tài thực. -->
+        <div class="page-content topic-detail">
+          <section class="topic-summary" aria-labelledby="topic-summary-title">
+            <div class="topic-summary__image" role="img" aria-label="Ảnh minh họa đề tài chưa được cung cấp">Ảnh minh họa đề tài</div>
+            <div class="topic-summary__content">
+              <h2 id="topic-summary-title">Tên đồ án / khóa luận tốt nghiệp</h2>
+              <dl class="topic-summary__meta">
+                <div><dt>Mã đề tài:</dt><dd>Mã đề tài</dd></div>
+                <div><dt>Loại đề tài:</dt><dd>Loại đề tài</dd></div>
+                <div><dt>Môn học:</dt><dd>Tên môn học</dd></div>
+                <div><dt>Học kỳ:</dt><dd>Học kỳ</dd></div>
+                <div><dt>Năm học:</dt><dd>Năm học</dd></div>
+              </dl>
+            </div>
           </section>
-        </template>
-        <template id="created-topic-error-template">
-          <p role="alert">
-            Không thể thực hiện thao tác. Vui lòng kiểm tra thông tin và thử lại.
-          </p>
-        </template>
-        <template id="created-topic-success-template">
-          <p role="status">
-            Thao tác đã hoàn tất.
-          </p>
+            <section class="topic-supervisor" aria-labelledby="supervisor-title">
+              <h2 id="supervisor-title">Giảng viên hướng dẫn</h2>
+              <div class="topic-supervisor__content">
+                <div class="topic-supervisor__avatar" role="img" aria-label="Ảnh đại diện giảng viên chưa được cung cấp">Ảnh đại diện giảng viên</div>
+                <dl class="topic-supervisor__details">
+                  <div><dt>Họ tên:</dt><dd>Tên giảng viên</dd></div>
+                  <div><dt>Khoa/Bộ môn:</dt><dd>Tên khoa/bộ môn</dd></div>
+                  <div><dt>Email liên hệ:</dt><dd>email@truong.edu.vn</dd></div>
+                  <div><dt>Hướng nghiên cứu:</dt><dd>Hướng nghiên cứu của giảng viên</dd></div>
+                </dl>
+              </div>
+            </section>
+          <section class="topic-description" aria-labelledby="topic-description-title">
+            <h2 id="topic-description-title">Mô tả đề tài</h2>
+            <p>Giới thiệu bối cảnh, đối tượng và vấn đề cần giải quyết.</p>
+          </section>
+          <section class="topic-objectives" aria-labelledby="topic-objectives-title">
+            <h2 id="topic-objectives-title">Mục tiêu</h2>
+            <ul><li>Mục tiêu của đề tài</li><li>Nội dung cần nghiên cứu</li><li>Vấn đề cần giải quyết</li></ul>
+          </section>
+          <section class="topic-outcomes" aria-labelledby="topic-outcomes-title">
+            <h2 id="topic-outcomes-title">Kết quả dự kiến</h2>
+            <ul><li>Sản phẩm hoặc mô hình dự kiến</li><li>Báo cáo và tài liệu liên quan</li></ul>
+          </section>
+          <section class="topic-requirements" aria-labelledby="topic-requirements-title">
+            <h2 id="topic-requirements-title">Yêu cầu đối với sinh viên</h2>
+            <ul><li>Kiến thức và kỹ năng cần có</li><li>Điều kiện tham gia đề tài</li></ul>
+          </section>
+          <section class="topic-registration" aria-labelledby="registration-title">
+            <h2 id="registration-title">Thông tin đăng ký</h2>
+            <p class="topic-registration__members">Nhóm gồm 2–3 sinh viên</p>
+            <dl><div><dt>Hạn đăng ký:</dt><dd>dd/mm/yyyy hh:mm</dd></div></dl>
+          </section>
+          <section class="topic-attachments" aria-labelledby="attachments-title">
+            <h2 id="attachments-title">Tài liệu đính kèm</h2>
+            <p>Đề cương đề tài.pdf</p>
+            <button class="topic-attachments__download" type="button" disabled title="Chưa có tệp tài liệu thực để tải xuống">Tải xuống</button>
+          </section>
+        </div>
+        <!-- Biến thể đóng đăng ký dành cho tích hợp: thay nhãn trạng thái và nút đóng
+             bằng nội dung template này. HTML thuần không tự đổi hoặc lưu trạng thái. -->
+        <template id="registration-closed-template">
+          <p class="status-badge status-badge--closed">Đã đóng đăng ký</p>
+          <button class="registration-reopen-button" type="button" commandfor="reopen-registration" command="show-modal" aria-haspopup="dialog" aria-controls="reopen-registration">Mở lại đăng ký</button>
         </template>
       </div>
     </main>
-    <dialog aria-labelledby="close-registration-title" id="close-registration" popover="">
-      <h2 id="close-registration-title">
-        Đóng đăng ký đề tài?
-      </h2>
-      <p>
-        Đề tài [Tên đề tài] sẽ không nhận thêm yêu cầu đăng ký mới. Các yêu cầu đã gửi vẫn được giữ để bạn xem xét và bạn có thể mở lại đăng ký.
-      </p>
-      <p>
-        Khung minh họa, chưa lưu thay đổi.
-      </p>
-      <button popovertarget="close-registration" popovertargetaction="hide" type="button">
-        Hủy
-      </button>
-      <button disabled="" type="button">
-        Đóng đăng ký
-      </button>
+    <!-- Hộp thoại HTML gốc: mở/đóng bằng command/commandfor, không dùng CSS/JS.
+         Các nút xác nhận disabled vì chưa có xử lý thay đổi trạng thái đề tài. -->
+    <dialog class="confirmation-dialog" id="close-registration" aria-labelledby="close-registration-title" aria-describedby="close-registration-description">
+      <h2 id="close-registration-title">Đóng đăng ký đề tài?</h2>
+      <p id="close-registration-description">Đề tài <strong>Tên đề tài</strong> sẽ không nhận thêm yêu cầu đăng ký mới. Các yêu cầu đã gửi vẫn được giữ để bạn xem xét, và bạn có thể mở lại đăng ký bất cứ lúc nào.</p>
+      <form method="dialog" class="confirmation-dialog__actions">
+        <button type="submit" value="cancel" autofocus>Hủy</button>
+        <button type="button" disabled title="Chức năng thay đổi trạng thái đăng ký chưa được kết nối">Đóng đăng ký</button>
+      </form>
     </dialog>
-    <dialog aria-labelledby="reopen-registration-title" id="reopen-registration" popover="">
-      <h2 id="reopen-registration-title">
-        Mở lại đăng ký đề tài?
-      </h2>
-      <p>
-        Đề tài [Tên đề tài] sẽ tiếp tục nhận yêu cầu đăng ký mới. Các yêu cầu đã gửi trước đó vẫn được giữ để bạn xem xét.
-      </p>
-      <p>
-        Khung minh họa, chưa lưu thay đổi.
-      </p>
-      <button popovertarget="reopen-registration" popovertargetaction="hide" type="button">
-        Hủy
-      </button>
-      <button disabled="" type="button">
-        Mở lại đăng ký
-      </button>
+    <dialog class="confirmation-dialog" id="reopen-registration" aria-labelledby="reopen-registration-title" aria-describedby="reopen-registration-description">
+      <h2 id="reopen-registration-title">Mở lại đăng ký đề tài?</h2>
+      <p id="reopen-registration-description">Đề tài <strong>Tên đề tài</strong> sẽ tiếp tục nhận yêu cầu đăng ký mới từ sinh viên. Các yêu cầu đã gửi trước đó vẫn được giữ để bạn xem xét.</p>
+      <form method="dialog" class="confirmation-dialog__actions">
+        <button type="submit" value="cancel" autofocus>Hủy</button>
+        <button type="button" disabled title="Chức năng thay đổi trạng thái đăng ký chưa được kết nối">Mở lại đăng ký</button>
+      </form>
     </dialog>
     <!-- CHÂN TRANG CHUNG -->
     <footer class="site-footer">
       <div class="site-footer__inner">
         <div class="site-footer__columns">
           <div class="site-footer__brand">
+            <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40"/>
             <p class="site-footer__name">
               QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP
             </p>

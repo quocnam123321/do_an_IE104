@@ -26,13 +26,7 @@
               <a class="main-nav__link" href="tong-quan-giang-vien.html">Tổng quan</a>
             </li>
             <li class="main-nav__item">
-              <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="topic-management-label">Quản lý đề tài</summary>
-                <ul class="main-nav__sublist" aria-labelledby="topic-management-label">
-                  <li class="main-nav__subitem"><a class="main-nav__link" href="danh-sach-de-tai-dang-huong-dan.html" aria-current="page">Đề tài đang hướng dẫn</a></li>
-                  <li class="main-nav__subitem"><a class="main-nav__link" href="danh-sach-de-tai-da-tao.html">Đề tài đã tạo</a></li>
-                </ul>
-              </details>
+              <a class="main-nav__link" id="topic-management-label" href="danh-sach-de-tai-dang-huong-dan.html" aria-current="page">Quản lý đề tài</a>
             </li>
             <li class="main-nav__item">
               <a class="main-nav__link" href="yeu-cau-cho-duyet.html">Yêu cầu chờ duyệt</a>
@@ -65,14 +59,13 @@
                   class="account-menu__logout"
                   type="button"
                   aria-controls="logout-dialog"
-                  aria-describedby="logout-notice"
+                  title="Chức năng đăng xuất chưa được kết nối"
                   disabled
                 >
                   Đăng xuất
                 </button>
               </li>
             </ul>
-            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
           </details>
         </div>
       </div>
@@ -99,7 +92,7 @@
             <li class="breadcrumb__item"><span aria-current="page">Quản lý đề tài</span></li>
           </ol>
         </nav>
-        <!-- Figma: 640:1507 — phiên bản 2. Chỉ dựng khung HTML. -->
+        <!-- HTML thuần, nội dung và số lượng minh họa bám theo WF Đề tài hướng dẫn phiên bản 2. -->
         <header class="page-header">
           <h1 class="page-header__title">Quản lý đề tài</h1>
           <p class="page-header__description">Quản lý các đề tài đang hướng dẫn và đề tài đã tạo.</p>
@@ -114,7 +107,10 @@
         <div class="page-content topic-list-layout">
           <aside class="topic-filters" aria-labelledby="topic-filters-title">
             <h2 id="topic-filters-title">Bộ lọc</h2>
-            <form id="topic-filter-form" class="topic-filters__form">
+            <!-- Chưa có xử lý lọc, tìm kiếm, sắp xếp hoặc phân trang.
+                 Xóa bộ lọc dùng reset của HTML; submit disabled tránh gửi biểu mẫu bằng Enter. -->
+            <form id="topic-filter-form" class="topic-filters__form" action="danh-sach-de-tai-dang-huong-dan.html" method="get">
+              <button type="submit" hidden disabled aria-hidden="true" tabindex="-1">Áp dụng bộ lọc</button>
               <fieldset class="topic-filters__group">
                 <legend>Vai trò của tôi</legend>
                 <div class="topic-filters__option"><input type="checkbox" id="role-primary" name="role" value="primary" /><label for="role-primary">Hướng dẫn chính</label></div>
@@ -139,11 +135,11 @@
             <div class="topic-toolbar">
               <div class="topic-toolbar__search">
                 <label for="topic-search">Tìm kiếm đề tài</label>
-                <input type="search" id="topic-search" name="topic_search" placeholder="Tìm tên/mã đề tài, tên nhóm hoặc MSSV…" />
+                <input type="search" id="topic-search" name="topic_search" form="topic-filter-form" placeholder="Tìm tên/mã đề tài, tên nhóm hoặc MSSV…" />
               </div>
               <div class="topic-toolbar__sort">
                 <label for="topic-sort">Sắp xếp</label>
-                <select id="topic-sort" name="topic_sort"><option value="newest" selected>Mới nhất</option><option value="oldest">Cũ nhất</option><option value="name-asc">Tên A–Z</option></select>
+                <select id="topic-sort" name="topic_sort" form="topic-filter-form"><option value="newest" selected>Sắp xếp: Mới nhất</option><option value="oldest">Cũ nhất</option><option value="name-asc">Tên A–Z</option></select>
               </div>
             </div>
             <h2 id="topic-results-title">Danh sách đề tài đang hướng dẫn</h2>
@@ -152,14 +148,11 @@
                 <div class="topic-card__media"><div class="topic-card__image-placeholder" role="img" aria-label="Chưa có ảnh minh họa đề tài"><span aria-hidden="true">Ảnh đồ án / khóa luận</span></div></div>
                 <div class="topic-card__content">
                   <h3 id="topic-1-title" class="topic-card__title">Tên đồ án / khóa luận</h3>
-                  <dl class="topic-card__meta">
-                    <div><dt>Mã đề tài</dt><dd>DT001</dd></div>
-                    <div><dt>Loại đề tài</dt><dd>Đồ án môn học</dd></div>
-                    <div><dt>Môn học</dt><dd>Internet và công nghệ Web</dd></div>
-                    <div><dt>Học kỳ</dt><dd>1</dd></div>
-                    <div><dt>Năm học</dt><dd>2026–2027</dd></div>
-                    <div><dt>Nhóm thực hiện</dt><dd>Tên nhóm</dd></div>
-                  </dl>
+                  <div class="topic-card__meta">
+                    <p>Mã đề tài · Loại đề tài</p>
+                    <p>Môn học · Học kỳ · Năm học</p>
+                    <p>Nhóm thực hiện: Tên nhóm</p>
+                  </div>
                 </div>
                 <div class="topic-card__actions">
                   <p class="topic-card__status">Hướng dẫn chính</p>
@@ -170,14 +163,11 @@
                 <div class="topic-card__media"><div class="topic-card__image-placeholder" role="img" aria-label="Chưa có ảnh minh họa đề tài"><span aria-hidden="true">Ảnh đồ án / khóa luận</span></div></div>
                 <div class="topic-card__content">
                   <h3 id="topic-2-title" class="topic-card__title">Tên đồ án / khóa luận</h3>
-                  <dl class="topic-card__meta">
-                    <div><dt>Mã đề tài</dt><dd>DT002</dd></div>
-                    <div><dt>Loại đề tài</dt><dd>Đồ án môn học</dd></div>
-                    <div><dt>Môn học</dt><dd>Internet và công nghệ Web</dd></div>
-                    <div><dt>Học kỳ</dt><dd>1</dd></div>
-                    <div><dt>Năm học</dt><dd>2026–2027</dd></div>
-                    <div><dt>Nhóm thực hiện</dt><dd>Tên nhóm</dd></div>
-                  </dl>
+                  <div class="topic-card__meta">
+                    <p>Mã đề tài · Loại đề tài</p>
+                    <p>Môn học · Học kỳ · Năm học</p>
+                    <p>Nhóm thực hiện: Tên nhóm</p>
+                  </div>
                 </div>
                 <div class="topic-card__actions">
                   <p class="topic-card__status">Đồng hướng dẫn</p>
@@ -188,14 +178,11 @@
                 <div class="topic-card__media"><div class="topic-card__image-placeholder" role="img" aria-label="Chưa có ảnh minh họa đề tài"><span aria-hidden="true">Ảnh đồ án / khóa luận</span></div></div>
                 <div class="topic-card__content">
                   <h3 id="topic-3-title" class="topic-card__title">Tên đồ án / khóa luận</h3>
-                  <dl class="topic-card__meta">
-                    <div><dt>Mã đề tài</dt><dd>DT003</dd></div>
-                    <div><dt>Loại đề tài</dt><dd>Đồ án môn học</dd></div>
-                    <div><dt>Môn học</dt><dd>Internet và công nghệ Web</dd></div>
-                    <div><dt>Học kỳ</dt><dd>1</dd></div>
-                    <div><dt>Năm học</dt><dd>2026–2027</dd></div>
-                    <div><dt>Nhóm thực hiện</dt><dd>Tên nhóm</dd></div>
-                  </dl>
+                  <div class="topic-card__meta">
+                    <p>Mã đề tài · Loại đề tài</p>
+                    <p>Môn học · Học kỳ · Năm học</p>
+                    <p>Nhóm thực hiện: Tên nhóm</p>
+                  </div>
                 </div>
                 <div class="topic-card__actions">
                   <p class="topic-card__status">Hướng dẫn chính</p>
@@ -204,7 +191,7 @@
               </article>
             </div>
             <p class="topic-results__count">Hiển thị 1–3 trên 5 kết quả</p>
-            <!-- Phân trang chỉ là khung; chưa có JavaScript chuyển trang. -->
+            <!-- Phân trang chỉ là khung; chưa có xử lý chuyển trang. -->
             <nav class="pagination" aria-label="Phân trang đề tài">
               <ul class="pagination__list">
                 <li><button class="pagination__button" type="button" aria-label="Trang trước" disabled>‹</button></li>
@@ -213,9 +200,6 @@
                 <li><button class="pagination__button" type="button" aria-label="Trang sau" disabled>›</button></li>
               </ul>
             </nav>
-            <template id="topic-empty-template"><section class="empty-state"><h3>Chưa có đề tài</h3><p>Danh sách đề tài sẽ hiển thị tại đây.</p></section></template>
-            <template id="topic-no-results-template"><section class="empty-state"><h3>Không tìm thấy đề tài phù hợp</h3><p>Hãy thử từ khóa hoặc bộ lọc khác.</p></section></template>
-            <template id="topic-error-template"><p class="form-message form-message--error" role="alert">Không thể tải danh sách đề tài. Vui lòng thử lại.</p></template>
           </section>
         </div>
       </div>
@@ -226,6 +210,7 @@
       <div class="site-footer__inner">
         <div class="site-footer__columns">
           <div class="site-footer__brand">
+            <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40" />
             <p class="site-footer__name">
               QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP
             </p>

@@ -26,13 +26,7 @@
               <a class="main-nav__link" href="tong-quan-giang-vien.html">Tổng quan</a>
             </li>
             <li class="main-nav__item">
-              <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="topic-management-label">Quản lý đề tài</summary>
-                <ul class="main-nav__sublist" aria-labelledby="topic-management-label">
-                  <li class="main-nav__subitem"><a class="main-nav__link" href="danh-sach-de-tai-dang-huong-dan.html">Đề tài đang hướng dẫn</a></li>
-                  <li class="main-nav__subitem"><a class="main-nav__link" href="danh-sach-de-tai-da-tao.html">Đề tài đã tạo</a></li>
-                </ul>
-              </details>
+              <a class="main-nav__link" id="topic-management-label" href="danh-sach-de-tai-dang-huong-dan.html">Quản lý đề tài</a>
             </li>
             <li class="main-nav__item">
               <a class="main-nav__link" href="yeu-cau-cho-duyet.html" aria-current="page">Yêu cầu chờ duyệt</a>
@@ -65,14 +59,13 @@
                   class="account-menu__logout"
                   type="button"
                   aria-controls="logout-dialog"
-                  aria-describedby="logout-notice"
+                  title="Chức năng đăng xuất chưa được kết nối"
                   disabled
                 >
                   Đăng xuất
                 </button>
               </li>
             </ul>
-            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
           </details>
         </div>
       </div>
@@ -111,12 +104,14 @@
           </p>
         </header>
 
-        <!-- Hai khu vực bộ lọc và danh sách được chuẩn bị để đặt cạnh nhau bằng CSS. -->
+        <!-- HTML thuần, dữ liệu minh họa giữ theo WF danh sách Yêu cầu chờ duyệt. -->
         <div class="page-content pending-proposals-layout">
           <aside class="proposal-filters" aria-labelledby="proposal-filters-title">
             <h2 id="proposal-filters-title">Bộ lọc</h2>
             <!-- Form chỉ chứa lựa chọn HTML; chưa lọc dữ liệu danh sách. -->
-            <form id="proposal-filter-form" class="proposal-filters__form">
+            <form id="proposal-filter-form" class="proposal-filters__form" action="yeu-cau-cho-duyet.html" method="get">
+              <!-- Submit disabled ngăn gửi biểu mẫu bằng Enter khi chưa có xử lý dữ liệu. -->
+              <button type="submit" hidden disabled aria-hidden="true" tabindex="-1">Áp dụng bộ lọc</button>
               <fieldset class="proposal-filters__group">
                 <legend>Vai trò trong đề tài</legend>
                 <div class="proposal-filters__option">
@@ -167,7 +162,7 @@
           </aside>
 
           <section class="pending-proposals" aria-labelledby="pending-proposals-title">
-            <!-- Hai nhóm tìm kiếm và sắp xếp dùng chung toolbar để CSS đặt cùng hàng. -->
+            <!-- Tìm kiếm và sắp xếp mới có cấu trúc HTML, chưa thay đổi danh sách. -->
             <div class="proposal-toolbar">
               <div class="proposal-toolbar__search">
                 <label for="proposal-search">Tìm kiếm đề xuất</label>
@@ -175,20 +170,23 @@
                   type="search"
                   id="proposal-search"
                   name="proposal_search"
+                  form="proposal-filter-form"
                   placeholder="Tìm theo tên đề tài, họ tên hoặc MSSV"
                 />
               </div>
               <div class="proposal-toolbar__sort">
                 <label for="proposal-sort">Sắp xếp</label>
-                <select id="proposal-sort" name="proposal_sort">
+                <select id="proposal-sort" name="proposal_sort" form="proposal-filter-form">
                   <option value="newest">Mới nhất</option>
-                  <option value="oldest" selected>Cũ nhất</option>
+                  <option value="oldest" selected>Sắp xếp: Cũ nhất</option>
                   <option value="name-asc">Tên A–Z</option>
                 </select>
               </div>
             </div>
 
             <h2 id="pending-proposals-title">Danh sách đề xuất chờ duyệt</h2>
+            <!-- Cả ba liên kết mở trang chi tiết mẫu theo WF. Chưa có định tuyến/dữ liệu theo mã.
+                 Mẫu danh sách và mẫu chi tiết khác tên/MSSV; giữ nguyên từng WF, không giả lập đồng bộ. -->
             <div class="proposal-list">
               <article class="proposal-card" aria-labelledby="proposal-library-title">
                 <div class="proposal-card__media">
@@ -205,7 +203,7 @@
                 </div>
                 <div class="proposal-card__actions">
                   <p class="proposal-card__status">Chờ duyệt</p>
-                  <a class="proposal-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html#website-quan-ly-thu-vien">Xem đề xuất <span aria-hidden="true">→</span></a>
+                  <a class="proposal-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html">Xem đề xuất <span aria-hidden="true">→</span></a>
                 </div>
               </article>
 
@@ -224,7 +222,7 @@
                 </div>
                 <div class="proposal-card__actions">
                   <p class="proposal-card__status">Chờ duyệt</p>
-                  <a class="proposal-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html#ung-dung-quan-ly-chi-tieu">Xem đề xuất <span aria-hidden="true">→</span></a>
+                  <a class="proposal-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html">Xem đề xuất <span aria-hidden="true">→</span></a>
                 </div>
               </article>
 
@@ -242,7 +240,7 @@
                 </div>
                 <div class="proposal-card__actions">
                   <p class="proposal-card__status">Chờ duyệt</p>
-                  <a class="proposal-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html#he-thong-goi-y-phim">Xem đề xuất <span aria-hidden="true">→</span></a>
+                  <a class="proposal-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html">Xem đề xuất <span aria-hidden="true">→</span></a>
                 </div>
               </article>
             </div>
@@ -251,7 +249,7 @@
             <nav class="pagination" aria-label="Phân trang đề xuất">
               <ul class="pagination__list">
                 <li class="pagination__item">
-                  <button class="pagination__button" type="button" disabled>Trang trước</button>
+                  <button class="pagination__button" type="button" aria-label="Trang trước" disabled>‹</button>
                 </li>
                 <li class="pagination__item">
                   <span class="pagination__current" aria-current="page" aria-label="Trang 1">1</span>
@@ -263,13 +261,10 @@
                   <button class="pagination__button" type="button" aria-label="Trang 3" disabled>3</button>
                 </li>
                 <li class="pagination__item">
-                  <button class="pagination__button" type="button" disabled>Trang sau</button>
+                  <button class="pagination__button" type="button" aria-label="Trang sau" disabled>›</button>
                 </li>
               </ul>
             </nav>
-            <template id="proposal-empty-template"><section class="empty-state"><h3>Không có đề xuất chờ duyệt</h3><p>Các đề xuất mới sẽ hiển thị tại đây.</p></section></template>
-            <template id="proposal-no-results-template"><section class="empty-state"><h3>Không tìm thấy đề xuất phù hợp</h3><p>Hãy thử từ khóa hoặc bộ lọc khác.</p></section></template>
-            <template id="proposal-error-template"><p class="form-message form-message--error" role="alert">Không thể tải danh sách đề xuất. Vui lòng thử lại.</p></template>
           </section>
         </div>
       </div>
@@ -280,6 +275,7 @@
       <div class="site-footer__inner">
         <div class="site-footer__columns">
           <div class="site-footer__brand">
+            <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40" />
             <p class="site-footer__name">
               QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP
             </p>

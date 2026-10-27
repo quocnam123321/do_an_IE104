@@ -31,23 +31,7 @@
               </a>
             </li>
             <li class="main-nav__item">
-              <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="topic-management-label">
-                  Quản lý đề tài
-                </summary>
-                <ul aria-labelledby="topic-management-label" class="main-nav__sublist">
-                  <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="danh-sach-de-tai-dang-huong-dan.html">
-                      Đề tài đang hướng dẫn
-                    </a>
-                  </li>
-                  <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="danh-sach-de-tai-da-tao.html">
-                      Đề tài đã tạo
-                    </a>
-                  </li>
-                </ul>
-              </details>
+              <a class="main-nav__link" id="topic-management-label" href="danh-sach-de-tai-dang-huong-dan.html">Quản lý đề tài</a>
             </li>
             <li class="main-nav__item">
               <a class="main-nav__link" href="yeu-cau-cho-duyet.html">
@@ -78,54 +62,16 @@
                 </ul>
               </details>
             </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="ho-so-ca-nhan-giang-vien.html" aria-current="page">Hồ sơ cá nhân</a>
+            </li>
           </ul>
         </nav>
-        <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
-        <div class="account-menu">
-          <details class="account-menu__disclosure">
-            <summary aria-label="Mở menu tài khoản giảng viên" class="account-menu__toggle">
-              <span aria-hidden="true" class="account-menu__avatar">
-                GV
-              </span>
-              <span class="account-menu__label">
-                Tài khoản giảng viên
-              </span>
-            </summary>
-            <ul class="account-menu__list" id="account-dropdown">
-              <li>
-                <a aria-current="page" class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">
-                  Hồ sơ cá nhân
-                </a>
-              </li>
-              <li>
-                <button aria-controls="logout-dialog" aria-describedby="logout-notice" class="account-menu__logout" disabled="" type="button">
-                  Đăng xuất
-                </button>
-              </li>
-            </ul>
-            <p id="logout-notice">
-              Chưa có xử lý đăng xuất.
-            </p>
-          </details>
-        </div>
       </div>
     </header>
-    <dialog aria-labelledby="logout-title" class="confirmation-dialog" id="logout-dialog">
-      <h2 id="logout-title">
-        Xác nhận đăng xuất
-      </h2>
-      <p>
-        Bạn muốn đăng xuất khỏi tài khoản hiện tại?
-      </p>
-      <form method="dialog">
-        <button type="submit" value="cancel">
-          Hủy
-        </button>
-        <button disabled="" type="button">
-          Xác nhận đăng xuất
-        </button>
-      </form>
-    </dialog>
+    <!-- HTML thuần: không CSS, không JavaScript. Giá trị hồ sơ là nhãn minh họa theo WF.
+         command/commandfor dùng tính năng HTML có sẵn trên trình duyệt hỗ trợ.
+         Các thao tác lưu dữ liệu và hiện mật khẩu chưa kết nối nên để disabled. -->
     <!-- NỘI DUNG RIÊNG CỦA TỪNG TRANG -->
     <main class="main-content" id="main-content" tabindex="-1">
       <div class="page-container">
@@ -147,15 +93,8 @@
           <h1 class="page-header__title">
             Hồ sơ cá nhân
           </h1>
-          <p class="page-header__description">
-            Xem thông tin cá nhân, thông tin công tác và chuyên môn của bạn.
-          </p>
         </header>
         <div class="page-content">
-          <p class="demo-notice">
-            Bản HTML minh họa hồ sơ giảng viên, chưa kết nối dữ liệu tài khoản.
-            Các trường chưa có dữ liệu hiển thị “Chưa có thông tin”.
-          </p>
           <div class="lecturer-profile">
             <!-- Vùng chờ ảnh; chỉ thêm thẻ img khi có nguồn ảnh hợp lệ. -->
             <section aria-label="Ảnh đại diện giảng viên" class="lecturer-profile__avatar-panel">
@@ -169,25 +108,22 @@
                   Ảnh đại diện giảng viên
                 </figcaption>
               </figure>
-              <button aria-describedby="avatar-change-notice" class="profile-avatar__change" disabled="" type="button">
+              <button title="Chức năng lưu ảnh chưa được kết nối" class="profile-avatar__change" disabled="" type="button">
                 Thay đổi ảnh
               </button>
-              <p class="profile-avatar__notice" id="avatar-change-notice">
-                Chưa có xử lý thay đổi và lưu ảnh đại diện.
-              </p>
             </section>
             <section aria-labelledby="personal-information-title" class="lecturer-profile__information">
               <h2 id="personal-information-title">
                 Thông tin cá nhân
               </h2>
-              <!-- Hồ sơ ở chế độ xem; biểu mẫu chỉnh sửa sẽ được bổ sung sau. -->
+              <!-- Hồ sơ ở chế độ xem; nút Chỉnh sửa thông tin mở biểu mẫu bên dưới. -->
               <dl class="profile-details">
                 <div class="profile-details__item">
                   <dt>
                     Họ và tên
                   </dt>
                   <dd>
-                    Chưa có thông tin
+                    Họ tên giảng viên
                   </dd>
                 </div>
                 <div class="profile-details__item">
@@ -195,7 +131,7 @@
                     Mã giảng viên
                   </dt>
                   <dd>
-                    Chưa có thông tin
+                    Mã giảng viên
                   </dd>
                 </div>
                 <div class="profile-details__item">
@@ -203,7 +139,7 @@
                     Email
                   </dt>
                   <dd>
-                    Chưa có thông tin
+                    Địa chỉ email
                   </dd>
                 </div>
                 <div class="profile-details__item">
@@ -211,7 +147,7 @@
                     Số điện thoại
                   </dt>
                   <dd>
-                    Chưa có thông tin
+                    Số điện thoại
                   </dd>
                 </div>
                 <div class="profile-details__item">
@@ -219,7 +155,7 @@
                     Khoa
                   </dt>
                   <dd>
-                    Chưa có thông tin
+                    Tên khoa
                   </dd>
                 </div>
                 <div class="profile-details__item">
@@ -227,7 +163,7 @@
                     Bộ môn
                   </dt>
                   <dd>
-                    Chưa có thông tin
+                    Tên bộ môn
                   </dd>
                 </div>
                 <div class="profile-details__item">
@@ -235,7 +171,7 @@
                     Học vị
                   </dt>
                   <dd>
-                    Chưa có thông tin
+                    Học vị
                   </dd>
                 </div>
                 <div class="profile-details__item">
@@ -243,76 +179,64 @@
                     Chuyên môn
                   </dt>
                   <dd>
-                    Chưa có thông tin
+                    Lĩnh vực chuyên môn
                   </dd>
                 </div>
               </dl>
             </section>
           </div>
           <div aria-label="Thao tác hồ sơ" class="profile-actions" role="group">
-            <button aria-controls="change-password-dialog" aria-describedby="profile-actions-notice" aria-haspopup="dialog" class="profile-actions__change-password" disabled="" id="open-change-password" type="button">
+            <button aria-controls="change-password-dialog" aria-haspopup="dialog" class="profile-actions__change-password" commandfor="change-password-dialog" command="show-modal" id="open-change-password" type="button">
               Đổi mật khẩu
             </button>
-            <a class="profile-actions__edit" href="#profile-edit-form">
+            <button class="profile-actions__edit" type="button" commandfor="profile-edit-dialog" command="show-modal" aria-haspopup="dialog" aria-controls="profile-edit-dialog">
               Chỉnh sửa thông tin
-            </a>
+            </button>
           </div>
-          <p class="profile-actions__notice" id="profile-actions-notice">
-            Biểu mẫu chỉnh sửa chưa lưu dữ liệu. Đổi mật khẩu chưa được xử lý.
-          </p>
-          <details class="profile-edit">
-            <summary>
-              Chỉnh sửa thông tin cá nhân
-            </summary>
-            <form id="profile-edit-form" aria-describedby="profile-edit-notice">
-              <p>
-                <label for="profile-full-name">
-                  Họ và tên *
-                </label>
-                <input id="profile-full-name" name="profile-full-name" required="" type="text"/>
-              </p>
-              <p>
-                <label for="profile-email">
-                  Email *
-                </label>
-                <input id="profile-email" name="profile-email" required="" type="email"/>
-              </p>
-              <p>
-                <label for="profile-phone">
-                  Số điện thoại
-                </label>
-                <input id="profile-phone" name="profile-phone" type="tel"/>
-              </p>
-              <p>
-                <label for="profile-expertise">
-                  Chuyên môn
-                </label>
-                <input id="profile-expertise" name="profile-expertise" type="text"/>
-              </p>
-              <p id="profile-edit-notice">
-                Khung chỉnh sửa minh họa, chưa lưu thông tin tài khoản.
-              </p>
-              <button type="reset">
-                Hủy thay đổi
-              </button>
-              <button disabled="" type="button">
-                Lưu thay đổi
-              </button>
-              <template id="profile-edit-error-template">
-                <p role="alert">
-                  Không thể thực hiện thao tác. Vui lòng kiểm tra thông tin và thử lại.
-                </p>
-              </template>
-              <template id="profile-edit-success-template">
-                <p role="status">
-                  Thao tác đã hoàn tất.
-                </p>
-              </template>
-            </form>
-          </details>
         </div>
       </div>
     </main>
+    <!-- Giữ các trường chỉnh sửa có sẵn; chưa kết nối lưu dữ liệu. -->
+    <dialog id="profile-edit-dialog" class="profile-edit" aria-labelledby="profile-edit-title">
+      <header>
+        <h2 id="profile-edit-title">Chỉnh sửa thông tin</h2>
+        <button type="button" commandfor="profile-edit-dialog" command="close" aria-label="Đóng hộp thoại chỉnh sửa thông tin">×</button>
+      </header>
+      <form id="profile-edit-form" method="dialog" aria-describedby="profile-edit-notice">
+        <p>
+          <label for="profile-full-name">
+            Họ và tên *
+          </label>
+          <input id="profile-full-name" name="profile-full-name" required="" type="text"/>
+        </p>
+        <p>
+          <label for="profile-email">
+            Email *
+          </label>
+          <input id="profile-email" name="profile-email" required="" type="email"/>
+        </p>
+        <p>
+          <label for="profile-phone">
+            Số điện thoại
+          </label>
+          <input id="profile-phone" name="profile-phone" type="tel"/>
+        </p>
+        <p>
+          <label for="profile-expertise">
+            Chuyên môn
+          </label>
+          <input id="profile-expertise" name="profile-expertise" type="text"/>
+        </p>
+        <p id="profile-edit-notice">
+          Khung chỉnh sửa minh họa, chưa lưu thông tin tài khoản.
+        </p>
+        <button type="submit" value="cancel" formnovalidate>Hủy</button>
+        <button type="reset">Đặt lại</button>
+        <button disabled="" type="button">
+          Lưu thay đổi
+        </button>
+      </form>
+    </dialog>
     <!-- HỘP THOẠI ĐỔI MẬT KHẨU -->
     <dialog aria-labelledby="change-password-title" class="change-password-dialog" id="change-password-dialog">
       <header class="change-password-dialog__header">
@@ -334,7 +258,7 @@
           <div class="change-password-form__input-group">
             <input autocomplete="current-password" autofocus="" id="current-password" name="mat-khau-hien-tai" placeholder="Nhập mật khẩu hiện tại" required="" type="password"/>
             <button aria-controls="current-password" aria-describedby="change-password-notice" aria-label="Hiện mật khẩu hiện tại" class="change-password-form__visibility" disabled="" type="button">
-              <svg aria-hidden="true" fill="none" focusable="false" height="18" stroke="currentColor" viewbox="0 0 24 24" width="18">
+              <svg aria-hidden="true" fill="none" focusable="false" height="18" stroke="currentColor" viewBox="0 0 24 24" width="18">
                 <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z">
                 </path>
                 <circle cx="12" cy="12" r="3">
@@ -350,7 +274,7 @@
           <div class="change-password-form__input-group">
             <input autocomplete="new-password" id="new-password" name="mat-khau-moi" placeholder="Nhập mật khẩu mới" required="" type="password"/>
             <button aria-controls="new-password" aria-describedby="change-password-notice" aria-label="Hiện mật khẩu mới" class="change-password-form__visibility" disabled="" type="button">
-              <svg aria-hidden="true" fill="none" focusable="false" height="18" stroke="currentColor" viewbox="0 0 24 24" width="18">
+              <svg aria-hidden="true" fill="none" focusable="false" height="18" stroke="currentColor" viewBox="0 0 24 24" width="18">
                 <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z">
                 </path>
                 <circle cx="12" cy="12" r="3">
@@ -366,7 +290,7 @@
           <div class="change-password-form__input-group">
             <input autocomplete="new-password" id="confirm-new-password" name="xac-nhan-mat-khau-moi" placeholder="Nhập lại mật khẩu mới" required="" type="password"/>
             <button aria-controls="confirm-new-password" aria-describedby="change-password-notice" aria-label="Hiện mật khẩu xác nhận" class="change-password-form__visibility" disabled="" type="button">
-              <svg aria-hidden="true" fill="none" focusable="false" height="18" stroke="currentColor" viewbox="0 0 24 24" width="18">
+              <svg aria-hidden="true" fill="none" focusable="false" height="18" stroke="currentColor" viewBox="0 0 24 24" width="18">
                 <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z">
                 </path>
                 <circle cx="12" cy="12" r="3">
@@ -393,6 +317,7 @@
       <div class="site-footer__inner">
         <div class="site-footer__columns">
           <div class="site-footer__brand">
+            <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40"/>
             <p class="site-footer__name">
               QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP
             </p>
