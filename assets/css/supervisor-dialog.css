@@ -1,40 +1,51 @@
 .supervisor-dialog {
   box-sizing: border-box;
-  width: min(100% - 32px, 520px);
-  max-height: calc(100dvh - 32px);
+  width: min(36rem, calc(100% - 2rem));
+  max-height: calc(100svh - 2rem);
   overflow-y: auto;
-  padding: 20px;
-  border: 1px solid #bdbdbd;
-  background: #fff;
-  color: #262626;
-  font: 14px/1.5 Arial, sans-serif;
+  padding: var(--space-6);
+  border: 0;
+  border-radius: var(--radius-surface);
+  background: var(--color-surface);
+  color: var(--color-foreground);
+  font: inherit;
+  box-shadow: var(--shadow-floating);
 }
-.supervisor-dialog::backdrop { background: rgb(0 0 0 / 65%); }
+.supervisor-dialog::backdrop { background: rgb(15 23 42 / .42); }
 .supervisor-dialog__header,
 .supervisor-dialog__footer,
 .supervisor-dialog__actions { display: flex; align-items: center; gap: 12px; }
 .supervisor-dialog__header,
 .supervisor-dialog__footer { justify-content: space-between; }
-.supervisor-dialog h2 { margin: 0; font-size: 18px; }
-.supervisor-dialog__close { padding: 0 4px; border: 0; background: transparent; font-size: 24px; }
+.supervisor-dialog h2 { margin: 0; font-size: var(--font-size-section-title); font-weight: 600; }
+.supervisor-dialog__close { flex: 0 0 auto; min-width: var(--control-min-height); min-height: var(--control-min-height); padding: 0; border: 0; border-radius: var(--radius-control); background: transparent; font-size: 1.5rem; }
 .supervisor-dialog > p,
 .supervisor-dialog__search label,
-.supervisor-dialog legend { color: #606060; font-size: 12px; }
+.supervisor-dialog legend { color: var(--color-muted-foreground); font-size: var(--font-size-secondary); }
 .supervisor-dialog__search label { display: block; margin-bottom: 4px; }
-.supervisor-dialog__search input { box-sizing: border-box; width: 100%; padding: 9px 12px; border: 1px solid #bdbdbd; font: inherit; }
+.supervisor-dialog__search { margin-block: var(--space-6); }
+.supervisor-dialog__search input { box-sizing: border-box; width: 100%; min-height: var(--control-min-height); padding: .625rem var(--space-3); border: 1px solid var(--color-control-border); border-radius: var(--radius-control); font: inherit; color: inherit; background: var(--color-surface); }
 .supervisor-dialog__choices { min-width: 0; margin: 12px 0; padding: 0; border: 0; }
 .supervisor-dialog legend { margin-bottom: 6px; }
-.supervisor-dialog__list { max-height: 220px; overflow-y: auto; border: 1px solid #ccc; }
-.supervisor-dialog__option { display: flex; gap: 12px; align-items: center; padding: 12px; border-bottom: 1px solid #eee; cursor: pointer; }
+.supervisor-dialog__list { max-height: 15rem; overflow-y: auto; scrollbar-gutter: stable; border: 1px solid var(--color-border); border-radius: var(--radius-control); }
+.supervisor-dialog__option { display: flex; gap: var(--space-3); align-items: center; min-height: 5rem; padding: var(--space-4); border-bottom: 1px solid var(--color-border); cursor: pointer; }
+.supervisor-dialog__option input { flex: 0 0 auto; width: 1.125rem; height: 1.125rem; margin: 0; accent-color: var(--color-primary); }
+.supervisor-dialog__lecturer { min-width: 0; }
 .supervisor-dialog__option:last-child { border-bottom: 0; }
+.supervisor-dialog__list { scrollbar-width: thin; scrollbar-color: var(--color-control-border) var(--color-neutral-bg); }
 .supervisor-dialog__option[hidden] { display: none; }
 .supervisor-dialog__option:hover,
-.supervisor-dialog__option:has(input:checked) { background: #f2f2f2; }
-.supervisor-dialog__name { display: block; font-weight: 700; }
-.supervisor-dialog__specialty { display: block; color: #606060; font-size: 12px; }
-.supervisor-dialog__footer { flex-wrap: wrap; margin-top: 16px; padding-top: 12px; border-top: 1px solid #ddd; }
-.supervisor-dialog__footer p { margin: 0; color: #606060; font-size: 12px; }
+.supervisor-dialog__option:has(input:checked) { background: var(--color-info-bg); }
+.supervisor-dialog__name { display: block; color: var(--color-heading); font-size: var(--font-size-secondary); font-weight: 600; }
+.supervisor-dialog__specialty { display: block; color: var(--color-muted-foreground); font-size: var(--font-size-secondary); }
+.supervisor-dialog__footer { flex-wrap: wrap; margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--color-border); }
+.supervisor-dialog__footer p { margin: 0; color: var(--color-muted-foreground); font-size: var(--font-size-secondary); }
 .supervisor-dialog__actions { margin-left: auto; }
-.supervisor-dialog__actions button { padding: 7px 16px; border: 1px solid #bbb; background: #fff; color: #262626; font: inherit; cursor: pointer; }
-.supervisor-dialog__actions button:disabled { background: #eee; color: #777; cursor: default; }
-.supervisor-dialog :focus-visible { outline: 2px solid #333; outline-offset: 3px; }
+.supervisor-dialog__actions button { min-height: var(--control-min-height); padding: .625rem var(--space-4); border: 1px solid var(--color-control-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-foreground); font: inherit; font-size: var(--font-size-secondary); cursor: pointer; }
+.supervisor-dialog__actions #confirm-supervisor-selection { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
+.supervisor-dialog__actions #confirm-supervisor-selection:disabled { background: var(--color-neutral-bg); border-color: var(--color-border); color: var(--color-muted-foreground); cursor: not-allowed; }
+.supervisor-dialog :focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+@media (max-width: 35.99rem) {
+  .supervisor-dialog { padding: var(--space-4); }
+  .supervisor-dialog h2 { font-size: 1.125rem; }
+}

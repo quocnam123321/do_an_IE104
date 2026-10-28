@@ -5,10 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Tạo và gửi đề xuất đề tài mới đến giảng viên hướng dẫn." />
     <title>Đề xuất đề tài | Quản lý đồ án</title>
+    <link rel="stylesheet" href="../../assets/css/tokens.css" />
+    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../assets/css/components.css" />
+    <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css" />
+    <script src="../../assets/js/nav-indicator.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/supervisor-dialog.css" />
     <script src="../../assets/js/supervisor-dialog.js" defer></script>
   </head>
-  <body>
+  <body class="registration-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
     <header class="site-header">
       <div class="site-header__inner">
@@ -16,23 +21,25 @@
           <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
           <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
         </a>
-        <nav class="main-nav" aria-label="Điều hướng sinh viên">
+        <details class="site-navigation" open>
+          <summary class="site-navigation__toggle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Menu</summary>
+        <nav class="main-nav" aria-label="Điều hướng sinh viên" data-nav-indicator>
           <ul class="main-nav__list">
             <li class="main-nav__item">
-              <a class="main-nav__link" href="tong-quan-sinh-vien.html">Tổng quan</a>
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html"><span class="main-nav__text">Tổng quan</span></a>
             </li>
             <li class="main-nav__item">
-              <a class="main-nav__link" href="dang-ky-de-tai.html">Đăng ký đề tài</a>
+              <a class="main-nav__link" href="dang-ky-de-tai.html" aria-current="page"><span class="main-nav__text">Đăng ký đề tài</span></a>
             </li>
             <li class="main-nav__item">
-              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html">Đề tài của tôi</a>
+              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html"><span class="main-nav__text">Đề tài của tôi</span></a>
             </li>
             <li class="main-nav__item">
-              <a class="main-nav__link" href="lich-han-nop.html">Lịch hạn nộp</a>
+              <a class="main-nav__link" href="lich-han-nop.html"><span class="main-nav__text">Lịch hạn nộp</span></a>
             </li>
             <li class="main-nav__item">
               <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
+                <summary class="main-nav__label" id="common-navigation-label"><span class="main-nav__text">Chung</span></summary>
                 <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
@@ -41,7 +48,9 @@
               </details>
             </li>
           </ul>
+          <span class="main-nav__indicator" aria-hidden="true"></span>
         </nav>
+        </details>
         <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
         <div class="account-menu">
           <details class="account-menu__disclosure">
@@ -231,7 +240,7 @@
       </div>
       <fieldset class="supervisor-dialog__choices">
         <legend>Chọn 1 giảng viên</legend>
-        <!-- Bốn giảng viên giữ chỗ theo wireframe, không phải danh mục giảng viên thực tế. -->
+        <!-- Năm giảng viên giữ chỗ theo wireframe, không phải danh mục giảng viên thực tế. -->
         <div id="supervisor-list" class="supervisor-dialog__list">
           <label class="supervisor-dialog__option" for="supervisor-option-1">
             <input id="supervisor-option-1" name="giang-vien-huong-dan" type="radio" value="placeholder-1" />
@@ -256,6 +265,13 @@
           </label>
           <label class="supervisor-dialog__option" for="supervisor-option-4">
             <input id="supervisor-option-4" name="giang-vien-huong-dan" type="radio" value="placeholder-4" />
+            <span class="supervisor-dialog__lecturer">
+              <span class="supervisor-dialog__name">Tên giảng viên</span>
+              <span class="supervisor-dialog__specialty">Lĩnh vực chuyên môn</span>
+            </span>
+          </label>
+          <label class="supervisor-dialog__option" for="supervisor-option-5">
+            <input id="supervisor-option-5" name="giang-vien-huong-dan" type="radio" value="placeholder-5" />
             <span class="supervisor-dialog__lecturer">
               <span class="supervisor-dialog__name">Tên giảng viên</span>
               <span class="supervisor-dialog__specialty">Lĩnh vực chuyên môn</span>
