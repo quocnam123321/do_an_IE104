@@ -30,7 +30,14 @@
 }
 .site-navigation { flex: 1; min-width: 0; max-width: 46rem; }
 .site-navigation__toggle { display: none; }
-.main-nav { position: relative; flex: 1; min-width: 0; max-width: 46rem; }
+.main-nav {
+  --indicator-x: 0px;
+  --indicator-width: 0px;
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  max-width: 46rem;
+}
 .main-nav__indicator {
   position: absolute;
   left: 0;
@@ -261,6 +268,7 @@
   .main-nav > .main-nav__indicator { display: none; }
   .main-nav__list { flex-direction: column; align-items: stretch; gap: var(--space-1); }
   .main-nav__link, .main-nav__label { padding-inline: var(--space-3); border-radius: var(--radius-control); }
+  .main-nav__label { justify-content: space-between; }
   .main-nav__link[aria-current="page"] { background: var(--color-info-bg); }
   .main-nav__link[aria-current="page"]::before { display: none; }
   .main-nav__sublist { position: static; min-width: 0; padding: 0 0 0 var(--space-4); box-shadow: none; }
@@ -278,4 +286,62 @@
 
 @media (prefers-reduced-motion: reduce) {
   .main-nav--indicator-ready > .main-nav__indicator { transition: none; }
+}
+
+/* Tương thích ba trang cũ: giữ cấu trúc HTML và main-nav.js hiện có.
+   Header/footer vẫn dùng giao diện chung; chỉ xử lý phần markup khác nhau. */
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) :is(ul,ol,figure,dl,dd) { margin: 0; }
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) :is(h4,h5,h6,strong,b) { color: var(--color-heading); }
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) :is(a,button,select,summary) { touch-action: manipulation; }
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .main-content { min-width: 0; }
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__menu { display: none; }
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__menu-icon { width: 1.25rem; height: 1.25rem; }
+/* main-nav.js dùng các class khác nav-indicator.js của bản mới. */
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .main-nav--js > .main-nav__indicator { opacity: 1; }
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .main-nav--js .main-nav__link[aria-current="page"]::before { display: none; }
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .main-nav--ready > .main-nav__indicator {
+  transition: transform 340ms cubic-bezier(.22,1,.36,1), width 340ms cubic-bezier(.22,1,.36,1);
+}
+/* Tài khoản cũ có thêm panel bao ngoài danh sách và thông báo. */
+.account-menu__panel {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  width: min(16rem, calc(100vw - 2rem));
+  padding: var(--space-2);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-floating);
+}
+.account-menu__panel .account-menu__list { position: static; width: 100%; min-width: 0; padding: 0; box-shadow: none; }
+.account-menu__panel #logout-notice { position: static; width: auto; padding: var(--space-3); }
+.confirmation-dialog form { display: inline-flex; margin-right: var(--space-2); }
+.confirmation-dialog button {
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+}
+.confirmation-dialog button:disabled { color: var(--color-muted-foreground); background: var(--color-neutral-bg); }
+/* Footer giảng viên dùng logo ảnh thay vì nhãn chữ. */
+.site-footer img.site-footer__logo { width: 2.5rem; height: 2.5rem; object-fit: contain; }
+@media (min-width: 68rem) {
+  :is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__inner > .main-nav { align-self: stretch; }
+}
+@media (max-width: 67.99rem) {
+  :is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__menu { display: block; margin-left: auto; }
+  :is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__menu-button {
+    display: flex; align-items: center; gap: var(--space-2);
+    min-height: var(--control-min-height); padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-control-border); border-radius: var(--radius-control);
+    background: var(--color-surface); font-size: var(--font-size-secondary); cursor: pointer; list-style: none;
+  }
+  :is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__menu-button::-webkit-details-marker { display: none; }
+  :is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__inner > .main-nav { order: 3; flex-basis: 100%; }
+  :is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__inner:has(.site-header__menu:not([open])) > .main-nav { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .main-nav--ready > .main-nav__indicator { transition: none; }
 }

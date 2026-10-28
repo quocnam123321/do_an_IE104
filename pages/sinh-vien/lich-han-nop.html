@@ -9,68 +9,135 @@
       name="description"
     />
     <title>Lịch hạn nộp | Quản lý đồ án</title>
+    <link rel="stylesheet" href="../../assets/css/tokens.css" />
+    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/deadline-calendar.css" />
+    <script src="../../assets/js/main-nav.js" defer></script>
     <script src="../../assets/js/deadline-calendar.js" defer></script>
   </head>
-  <body>
+  <body class="student-deadline-page">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
     <!-- ĐẦU TRANG -->
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-brand" href="tong-quan-sinh-vien.html">
-          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
-          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
+          <img
+            class="site-brand__logo"
+            src="../../assets/images/images.jpg"
+            alt="Logo Khoa Khoa học và Kỹ thuật Thông tin"
+            width="70"
+            height="70"
+          />
+          <span class="site-brand__name"
+            >QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span
+          >
         </a>
+        <details class="site-header__menu">
+          <summary class="site-header__menu-button" aria-label="Menu điều hướng">
+            <svg
+              class="site-header__menu-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="4" y1="6" x2="20" y2="6" />
+              <line x1="4" y1="12" x2="20" y2="12" />
+              <line x1="4" y1="18" x2="20" y2="18" />
+            </svg>
+            <span>Menu</span>
+          </summary>
+        </details>
         <nav class="main-nav" aria-label="Điều hướng sinh viên">
           <ul class="main-nav__list">
             <li class="main-nav__item">
-              <a class="main-nav__link" href="tong-quan-sinh-vien.html">Tổng quan</a>
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html"
+                >Tổng quan</a
+              >
             </li>
             <li class="main-nav__item">
-              <a class="main-nav__link" href="dang-ky-de-tai.html">Đăng ký đề tài</a>
+              <a class="main-nav__link" href="dang-ky-de-tai.html"
+                >Đăng ký đề tài</a
+              >
             </li>
             <li class="main-nav__item">
-              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html">Đề tài của tôi</a>
+              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html"
+                >Đề tài của tôi</a
+              >
             </li>
             <li class="main-nav__item">
-              <a class="main-nav__link" href="lich-han-nop.html" aria-current="page">Lịch hạn nộp</a>
+              <a
+                class="main-nav__link"
+                href="lich-han-nop.html"
+                aria-current="page"
+                >Lịch hạn nộp</a
+              >
             </li>
             <li class="main-nav__item">
               <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
-                <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
-                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
-                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
-                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
+                <summary class="main-nav__label" id="common-navigation-label">
+                  Chung
+                </summary>
+                <ul
+                  class="main-nav__sublist"
+                  aria-labelledby="common-navigation-label"
+                >
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/gioi-thieu.html"
+                      >Giới thiệu</a
+                    >
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/thong-bao.html"
+                      >Thông báo</a
+                    >
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/lien-he.html"
+                      >Liên hệ</a
+                    >
+                  </li>
                 </ul>
               </details>
             </li>
           </ul>
+          <span class="main-nav__indicator" aria-hidden="true"></span>
         </nav>
         <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
         <div class="account-menu">
           <details class="account-menu__disclosure">
-            <summary class="account-menu__toggle" aria-label="Mở menu tài khoản sinh viên">
+            <summary
+              class="account-menu__toggle"
+              aria-label="Mở menu tài khoản sinh viên"
+            >
               <span class="account-menu__avatar" aria-hidden="true">SV</span>
               <span class="account-menu__label">Tài khoản sinh viên</span>
             </summary>
-            <ul id="account-dropdown" class="account-menu__list">
-              <li>
-                <a class="account-menu__profile" href="ho-so-ca-nhan.html">Hồ sơ cá nhân</a>
-              </li>
-              <li>
-                <button
-                  class="account-menu__logout"
-                  type="button"
-                  aria-controls="logout-dialog"
-                  aria-describedby="logout-notice"
-                  disabled
-                >
-                  Đăng xuất
-                </button>
-              </li>
-            </ul>
-            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+            <div class="account-menu__panel">
+              <ul id="account-dropdown" class="account-menu__list">
+                <li>
+                  <a class="account-menu__profile" href="ho-so-ca-nhan.html"
+                    >Hồ sơ cá nhân</a
+                  >
+                </li>
+                <li>
+                  <button
+                    class="account-menu__logout"
+                    type="button"
+                    aria-controls="logout-dialog"
+                    aria-describedby="logout-notice"
+                    disabled
+                  >
+                    Đăng xuất
+                  </button>
+                </li>
+              </ul>
+              <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+            </div>
           </details>
         </div>
       </div>
@@ -92,24 +159,40 @@
       <div class="page-container">
         <nav aria-label="Đường dẫn" class="breadcrumb">
           <ol class="breadcrumb__list">
-            <li class="breadcrumb__item"><a href="tong-quan-sinh-vien.html">Sinh viên</a></li>
-            <li class="breadcrumb__item"><span aria-current="page">Lịch hạn nộp</span></li>
+            <li class="breadcrumb__item">
+              <a href="tong-quan-sinh-vien.html">Sinh viên</a>
+            </li>
+            <li class="breadcrumb__item">
+              <span aria-current="page">Lịch hạn nộp</span>
+            </li>
           </ol>
         </nav>
         <header class="page-header">
           <h1 class="page-header__title">Lịch hạn nộp</h1>
-          <p class="page-header__description">Xem lịch đề tài và các bài nộp sắp đến hạn của bạn.</p>
+          <p class="page-header__description">
+            Xem lịch đề tài và các bài nộp sắp đến hạn của bạn.
+          </p>
         </header>
         <div class="page-content">
           <p class="demo-notice" id="deadline-demo-notice">
-            Lịch minh họa tháng 10/2026 theo wireframe, lấy ngày 18/10/2026 làm mốc “Hôm nay”.
-            Tên trong ngoặc vuông và giờ hh:mm là dữ liệu giữ chỗ, chưa gắn với đề tài thực tế.
-            Liên kết Nộp bài mở khung nộp bài mẫu, chưa tự chọn bài tương ứng.
+            Lịch minh họa tháng 10/2026 theo wireframe, lấy ngày 18/10/2026 làm
+            mốc “Hôm nay”. Tên trong ngoặc vuông và giờ hh:mm là dữ liệu giữ
+            chỗ, chưa gắn với đề tài thực tế. Liên kết Nộp bài mở khung nộp bài
+            mẫu, chưa tự chọn bài tương ứng.
           </p>
           <!-- Wireframe_Nhom7: SV - Lịch hạn nộp, node 584:1487. -->
-          <section class="deadline-calendar" id="deadline-calendar" aria-labelledby="deadline-calendar-title">
+          <section
+            class="deadline-calendar"
+            id="deadline-calendar"
+            aria-labelledby="deadline-calendar-title"
+          >
             <h2 id="deadline-calendar-title">Lịch</h2>
-            <div class="deadline-calendar__toolbar" role="group" aria-label="Bộ lọc và điều hướng tháng" aria-describedby="deadline-demo-notice">
+            <div
+              class="deadline-calendar__toolbar"
+              role="group"
+              aria-label="Bộ lọc và điều hướng tháng"
+              aria-describedby="deadline-demo-notice"
+            >
               <div class="deadline-calendar__field">
                 <label for="deadline-topic">Đề tài</label>
                 <select id="deadline-topic" name="de-tai">
@@ -117,161 +200,211 @@
                   <option value="de-tai-minh-hoa">[Tên đề tài]</option>
                 </select>
               </div>
-              <button class="deadline-calendar__previous" type="button" aria-label="Tháng trước">‹</button>
+              <button
+                class="deadline-calendar__previous"
+                type="button"
+                aria-label="Tháng trước"
+              >
+                ‹
+              </button>
               <div class="deadline-calendar__field">
                 <label for="deadline-month">Tháng</label>
-                <input type="month" id="deadline-month" name="thang" value="2026-10" />
+                <input
+                  type="month"
+                  id="deadline-month"
+                  name="thang"
+                  value="2026-10"
+                />
               </div>
-              <button class="deadline-calendar__next" type="button" aria-label="Tháng sau">›</button>
-              <button class="deadline-calendar__today" type="button">Hôm nay</button>
+              <button
+                class="deadline-calendar__next"
+                type="button"
+                aria-label="Tháng sau"
+              >
+                ›
+              </button>
+              <button class="deadline-calendar__today" type="button">
+                Hôm nay
+              </button>
             </div>
-            <table class="calendar-table" aria-describedby="calendar-legend deadline-demo-notice">
-              <caption>Tháng 10/2026 · Giờ Việt Nam (UTC+7)</caption>
-              <thead>
-                <tr>
-                  <th scope="col" abbr="Thứ hai">T2</th>
-                  <th scope="col" abbr="Thứ ba">T3</th>
-                  <th scope="col" abbr="Thứ tư">T4</th>
-                  <th scope="col" abbr="Thứ năm">T5</th>
-                  <th scope="col" abbr="Thứ sáu">T6</th>
-                  <th scope="col" abbr="Thứ bảy">T7</th>
-                  <th scope="col" abbr="Chủ nhật">CN</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td class="calendar-table__empty"></td>
-                  <td class="calendar-table__empty"></td>
-                  <td class="calendar-table__empty"></td>
-                  <td>
-                    <time datetime="2026-10-01">1</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-02">2</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-03">3</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-04">4</time>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <time datetime="2026-10-05">5</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-06">6</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-07">7</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-08">8</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-09">9</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-10">10</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-11">11</time>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <time datetime="2026-10-12">12</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-13">13</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-14">14</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-15">15</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-16">16</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-17">17</time>
-                  </td>
-                  <td class="calendar-table__today">
-                    <time datetime="2026-10-18">18</time> · Hôm nay
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <time datetime="2026-10-19">19</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-20">20</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-21">21</time>
-                      <a class="calendar-event calendar-event--submission" href="#bai-nop-a">
+            <div
+              class="calendar-scroll"
+              role="region"
+              aria-labelledby="deadline-calendar-title"
+              tabindex="0"
+            >
+              <table
+                class="calendar-table"
+                aria-describedby="calendar-legend deadline-demo-notice"
+              >
+                <caption>
+                  Tháng 10/2026 · Giờ Việt Nam (UTC+7)
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col" abbr="Thứ hai">T2</th>
+                    <th scope="col" abbr="Thứ ba">T3</th>
+                    <th scope="col" abbr="Thứ tư">T4</th>
+                    <th scope="col" abbr="Thứ năm">T5</th>
+                    <th scope="col" abbr="Thứ sáu">T6</th>
+                    <th scope="col" abbr="Thứ bảy">T7</th>
+                    <th scope="col" abbr="Chủ nhật">CN</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="calendar-table__empty"></td>
+                    <td class="calendar-table__empty"></td>
+                    <td class="calendar-table__empty"></td>
+                    <td>
+                      <time datetime="2026-10-01">1</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-02">2</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-03">3</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-04">4</time>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <time datetime="2026-10-05">5</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-06">6</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-07">7</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-08">8</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-09">9</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-10">10</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-11">11</time>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <time datetime="2026-10-12">12</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-13">13</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-14">14</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-15">15</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-16">16</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-17">17</time>
+                    </td>
+                    <td class="calendar-table__today">
+                      <time datetime="2026-10-18">18</time> · Hôm nay
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <time datetime="2026-10-19">19</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-20">20</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-21">21</time>
+                      <a
+                        class="calendar-event calendar-event--submission"
+                        href="#bai-nop-a"
+                      >
                         <strong>Bài nộp</strong><br />
                         hh:mm - [Tên bài nộp A]
                       </a>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-22">22</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-23">23</time>
-                      <a class="calendar-event calendar-event--submission" href="#bai-nop-b">
+                    </td>
+                    <td>
+                      <time datetime="2026-10-22">22</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-23">23</time>
+                      <a
+                        class="calendar-event calendar-event--submission"
+                        href="#bai-nop-b"
+                      >
                         <strong>Bài nộp</strong><br />
                         hh:mm - [Tên bài nộp B]
                       </a>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-24">24</time>
-                      <a class="calendar-event calendar-event--submission" href="#bai-nop-c">
+                    </td>
+                    <td>
+                      <time datetime="2026-10-24">24</time>
+                      <a
+                        class="calendar-event calendar-event--submission"
+                        href="#bai-nop-c"
+                      >
                         <strong>Bài nộp</strong><br />
                         hh:mm - [Tên bài nộp C]
                       </a>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-25">25</time>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <time datetime="2026-10-26">26</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-27">27</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-28">28</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-29">29</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-30">30</time>
-                  </td>
-                  <td>
-                    <time datetime="2026-10-31">31</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-25">25</time>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <time datetime="2026-10-26">26</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-27">27</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-28">28</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-29">29</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-30">30</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-31">31</time>
                       <div class="calendar-event calendar-event--topic">
                         <strong>Hạn đề tài</strong><br />
                         hh:mm - [Tên đề tài]
                       </div>
-                  </td>
-                  <td class="calendar-table__empty"></td>
-                </tr>
-              </tbody>
-            </table>
+                    </td>
+                    <td class="calendar-table__empty"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             <p class="deadline-calendar__legend" id="calendar-legend">
-              Bài nộp: hạn yêu cầu nộp của giảng viên · Hạn đề tài: thời hạn hoàn thành toàn đề tài.
+              Bài nộp: hạn yêu cầu nộp của giảng viên · Hạn đề tài: thời hạn
+              hoàn thành toàn đề tài.
             </p>
           </section>
 
-          <section class="upcoming-submissions" id="deadline-list" aria-labelledby="deadline-list-title">
+          <section
+            class="upcoming-submissions"
+            id="deadline-list"
+            aria-labelledby="deadline-list-title"
+          >
             <h2 id="deadline-list-title">Bài nộp sắp đến hạn</h2>
-            <form id="upcoming-submissions-filters" class="upcoming-submissions__filters" aria-label="Lọc bài nộp sắp đến hạn" aria-describedby="deadline-demo-notice">
+            <form
+              id="upcoming-submissions-filters"
+              class="upcoming-submissions__filters"
+              aria-label="Lọc bài nộp sắp đến hạn"
+              aria-describedby="deadline-demo-notice"
+            >
               <div class="upcoming-submissions__field">
                 <label for="upcoming-range">Khoảng thời gian</label>
                 <select id="upcoming-range" name="khoang-thoi-gian">
@@ -283,63 +416,113 @@
               <div class="upcoming-submissions__field">
                 <label for="upcoming-sort">Sắp xếp</label>
                 <select id="upcoming-sort" name="sap-xep">
-                  <option value="han-gan-nhat" selected>Hạn gần nhất trước</option>
+                  <option value="han-gan-nhat" selected>
+                    Hạn gần nhất trước
+                  </option>
                   <option value="han-xa-nhat">Hạn xa nhất trước</option>
                 </select>
               </div>
               <div class="upcoming-submissions__field">
                 <label for="upcoming-search">Tìm bài nộp hoặc đề tài</label>
-                <input type="search" id="upcoming-search" name="tu-khoa" placeholder="Tìm bài nộp hoặc đề tài…" />
+                <input
+                  type="search"
+                  id="upcoming-search"
+                  name="tu-khoa"
+                  placeholder="Tìm bài nộp hoặc đề tài…"
+                />
               </div>
               <button type="submit" hidden>Tìm kiếm</button>
             </form>
-            <p id="upcoming-results" role="status">Các bài nộp trong 7 ngày sau mốc minh họa 18/10/2026 · 3 kết quả</p>
-            <div class="upcoming-submissions__cards" aria-describedby="upcoming-results">
-              <article id="bai-nop-a" class="submission-card" aria-labelledby="bai-nop-a-title">
-                <h3 id="bai-nop-a-title" class="submission-card__title">[Tên bài nộp A]</h3>
-                <div class="submission-card__topic"><span class="submission-card__label">Đề tài</span><p>[Tên đề tài tương ứng]</p></div>
-                <div class="submission-card__deadline"><span class="submission-card__label">Hạn nộp</span><p><time datetime="2026-10-21">21/10/2026</time> · hh:mm</p></div>
+            <p id="upcoming-results" role="status">
+              Các bài nộp trong 7 ngày sau mốc minh họa 18/10/2026 · 3 kết quả
+            </p>
+            <div
+              class="upcoming-submissions__cards"
+              aria-describedby="upcoming-results"
+            >
+              <article
+                id="bai-nop-a"
+                class="submission-card"
+                aria-labelledby="bai-nop-a-title"
+              >
+                <h3 id="bai-nop-a-title" class="submission-card__title">
+                  [Tên bài nộp A]
+                </h3>
+                <div class="submission-card__topic">
+                  <span class="submission-card__label">Đề tài</span>
+                  <p>[Tên đề tài tương ứng]</p>
+                </div>
+                <div class="submission-card__deadline">
+                  <span class="submission-card__label">Hạn nộp</span>
+                  <p><time datetime="2026-10-21">21/10/2026</time> · hh:mm</p>
+                </div>
                 <a
-                      class="upcoming-submissions__submit"
-                      href="chi-tiet-de-tai-sinh-vien.html#submission-form-section"
-                      aria-label="Nộp bài: [Tên bài nộp A]"
-                      aria-describedby="deadline-demo-notice"
-                    >
-                      Nộp bài
-                    </a>
+                  class="upcoming-submissions__submit"
+                  href="chi-tiet-de-tai-sinh-vien.html#submission-form-section"
+                  aria-label="Nộp bài: [Tên bài nộp A]"
+                  aria-describedby="deadline-demo-notice"
+                >
+                  Nộp bài
+                </a>
               </article>
-              <article id="bai-nop-b" class="submission-card" aria-labelledby="bai-nop-b-title">
-                <h3 id="bai-nop-b-title" class="submission-card__title">[Tên bài nộp B]</h3>
-                <div class="submission-card__topic"><span class="submission-card__label">Đề tài</span><p>[Tên đề tài tương ứng]</p></div>
-                <div class="submission-card__deadline"><span class="submission-card__label">Hạn nộp</span><p><time datetime="2026-10-23">23/10/2026</time> · hh:mm</p></div>
+              <article
+                id="bai-nop-b"
+                class="submission-card"
+                aria-labelledby="bai-nop-b-title"
+              >
+                <h3 id="bai-nop-b-title" class="submission-card__title">
+                  [Tên bài nộp B]
+                </h3>
+                <div class="submission-card__topic">
+                  <span class="submission-card__label">Đề tài</span>
+                  <p>[Tên đề tài tương ứng]</p>
+                </div>
+                <div class="submission-card__deadline">
+                  <span class="submission-card__label">Hạn nộp</span>
+                  <p><time datetime="2026-10-23">23/10/2026</time> · hh:mm</p>
+                </div>
                 <a
-                      class="upcoming-submissions__submit"
-                      href="chi-tiet-de-tai-sinh-vien.html#submission-form-section"
-                      aria-label="Nộp bài: [Tên bài nộp B]"
-                      aria-describedby="deadline-demo-notice"
-                    >
-                      Nộp bài
-                    </a>
+                  class="upcoming-submissions__submit"
+                  href="chi-tiet-de-tai-sinh-vien.html#submission-form-section"
+                  aria-label="Nộp bài: [Tên bài nộp B]"
+                  aria-describedby="deadline-demo-notice"
+                >
+                  Nộp bài
+                </a>
               </article>
-              <article id="bai-nop-c" class="submission-card" aria-labelledby="bai-nop-c-title">
-                <h3 id="bai-nop-c-title" class="submission-card__title">[Tên bài nộp C]</h3>
-                <div class="submission-card__topic"><span class="submission-card__label">Đề tài</span><p>[Tên đề tài tương ứng]</p></div>
-                <div class="submission-card__deadline"><span class="submission-card__label">Hạn nộp</span><p><time datetime="2026-10-24">24/10/2026</time> · hh:mm</p></div>
+              <article
+                id="bai-nop-c"
+                class="submission-card"
+                aria-labelledby="bai-nop-c-title"
+              >
+                <h3 id="bai-nop-c-title" class="submission-card__title">
+                  [Tên bài nộp C]
+                </h3>
+                <div class="submission-card__topic">
+                  <span class="submission-card__label">Đề tài</span>
+                  <p>[Tên đề tài tương ứng]</p>
+                </div>
+                <div class="submission-card__deadline">
+                  <span class="submission-card__label">Hạn nộp</span>
+                  <p><time datetime="2026-10-24">24/10/2026</time> · hh:mm</p>
+                </div>
                 <a
-                      class="upcoming-submissions__submit"
-                      href="chi-tiet-de-tai-sinh-vien.html#submission-form-section"
-                      aria-label="Nộp bài: [Tên bài nộp C]"
-                      aria-describedby="deadline-demo-notice"
-                    >
-                      Nộp bài
-                    </a>
+                  class="upcoming-submissions__submit"
+                  href="chi-tiet-de-tai-sinh-vien.html#submission-form-section"
+                  aria-label="Nộp bài: [Tên bài nộp C]"
+                  aria-describedby="deadline-demo-notice"
+                >
+                  Nộp bài
+                </a>
               </article>
             </div>
             <template id="deadlines-filter-empty-template">
               <div class="empty-state">
-                    <p><strong>Không tìm thấy bài nộp phù hợp.</strong></p>
-                    <p>Thử thay đổi khoảng thời gian hoặc từ khóa tìm kiếm.</p>
-                    <button type="reset" form="upcoming-submissions-filters">Xóa bộ lọc</button>
+                <p><strong>Không tìm thấy bài nộp phù hợp.</strong></p>
+                <p>Thử thay đổi khoảng thời gian hoặc từ khóa tìm kiếm.</p>
+                <button type="reset" form="upcoming-submissions-filters">
+                  Xóa bộ lọc
+                </button>
               </div>
             </template>
           </section>

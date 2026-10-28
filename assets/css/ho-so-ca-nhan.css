@@ -4,10 +4,11 @@
 .profile-avatar > img { width: 6.25rem; height: 6.25rem; border-radius: 50%; }
 .profile-info { min-width: 0; container-type: inline-size; }
 .page-container { container: profile-page / inline-size; }
-.profile-details { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-surface); }
+.profile-details { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-surface); overflow: hidden; }
 .profile-details > h2 {
   margin: 0;
-  padding: var(--space-4) var(--space-6);
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-neutral-bg);
   border-bottom: 1px solid var(--color-border);
   font-size: var(--font-size-section-title);
   font-weight: 600;
@@ -99,9 +100,9 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--space-3);
-  padding: var(--space-4) var(--space-6);
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-neutral-bg);
   border-bottom: 1px solid var(--color-border);
-  background: var(--color-background);
 }
 .profile-dialog h2 { font-size: var(--font-size-section-title); font-weight: 600; }
 .profile-dialog > header button {

@@ -1,0 +1,602 @@
+/* CSS riêng của trang; nạp sau tokens.css, base.css và components.css.
+   Giữ bố cục/dữ liệu hiện có; kích thước riêng tiếp tục là lựa chọn dựng thử. */
+.student-overview-page {
+  --text-stat-mobile: 1.75rem;
+  --text-stat-desktop: 1.875rem;
+}
+
+/* --------------------------------------------------------------------------
+   5. Dashboard Vertical Stack (.page-content)
+   Khoảng cách nhất quán giữa các section (16px mobile, 20px desktop)
+   -------------------------------------------------------------------------- */
+.student-overview-page .page-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .student-overview-page .page-content {
+    gap: var(--space-5);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   6. Summary Cards (.dashboard-summary & .summary-card)
+   Tinh chỉnh điểm 1:
+   - Giảm padding và khoảng trống để thẻ gọn hơn.
+   - Giữ số liệu nổi bật, nhãn và liên kết có thứ bậc rõ.
+   - Các thẻ cùng hàng có kích thước nhất quán.
+   - Trên màn hình hẹp, tự xuống hàng, không ép năm thẻ vào một hàng.
+   -------------------------------------------------------------------------- */
+.student-overview-page .dashboard-summary__items {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  align-items: stretch;
+}
+
+@media (min-width: 360px) {
+  .student-overview-page .dashboard-summary__items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 640px) {
+  .student-overview-page .dashboard-summary__items {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .student-overview-page .dashboard-summary__items {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+}
+
+.student-overview-page .summary-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  overflow: hidden;
+  min-width: 0;
+}
+
+.student-overview-page .summary-card__title {
+  padding: var(--space-2) var(--space-3);
+  background-color: var(--color-neutral-bg);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-heading);
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.3;
+}
+
+.student-overview-page .summary-card__count {
+  padding: var(--space-2) var(--space-3) 0.125rem;
+  font-size: var(--text-stat-mobile);
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.student-overview-page .summary-card__count strong {
+  color: var(--color-heading);
+  font-weight: var(--font-weight-bold);
+}
+
+.student-overview-page .summary-card__link {
+  margin-top: auto;
+  min-height: 2.25rem;
+  padding: var(--space-1) var(--space-3) var(--space-2);
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: var(--space-1);
+  color: var(--color-primary);
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.student-overview-page .summary-card__link:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+@media (min-width: 768px) {
+  .student-overview-page .summary-card__title {
+    padding: 0.5rem 0.875rem;
+  }
+
+  .student-overview-page .summary-card__count {
+    padding: 0.625rem 0.875rem 0.125rem;
+    font-size: var(--text-stat-desktop);
+  }
+
+  .student-overview-page .summary-card__link {
+    padding: 0.25rem 0.875rem 0.5rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   7. Shared Dashboard Section Frame
+   (.registration-status, .topic-progress, .recent-requests)
+   -------------------------------------------------------------------------- */
+.student-overview-page .registration-status,
+.student-overview-page .topic-progress,
+.student-overview-page .recent-requests {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.student-overview-page .dashboard-section__header {
+  padding: 0.625rem var(--space-4);
+  background-color: var(--color-neutral-bg);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .student-overview-page .dashboard-section__header {
+    padding: 0.6875rem var(--space-5);
+  }
+}
+
+.student-overview-page .dashboard-section__header h2 {
+  color: var(--color-heading);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+}
+
+@media (min-width: 768px) {
+  .student-overview-page .dashboard-section__header h2 {
+    font-size: var(--font-size-section-title);
+  }
+}
+
+.student-overview-page .dashboard-section__header a {
+  min-height: 2rem;
+  padding: 0.125rem var(--space-2);
+  margin-inline-end: calc(var(--space-2) * -1);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-primary);
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  border-radius: var(--radius-control);
+}
+
+.student-overview-page .dashboard-section__header a:hover {
+  color: var(--color-primary-hover);
+  text-decoration: underline;
+}
+
+/* --------------------------------------------------------------------------
+   8. Registration Status Section (.registration-status)
+   Tinh chỉnh điểm 2:
+   - Giảm kích thước biểu đồ và khoảng trắng xung quanh.
+   - Căn biểu đồ và chú giải thành một bố cục cân đối.
+   - Không để khu vực biểu đồ chiếm phần lớn màn hình.
+   - Giữ nguyên số liệu, phần trăm và ý nghĩa trạng thái.
+   -------------------------------------------------------------------------- */
+.student-overview-page .dashboard-section__body {
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+@media (min-width: 768px) {
+  .student-overview-page .dashboard-section__body {
+    padding: var(--space-4) var(--space-5);
+  }
+}
+
+.student-overview-page .dashboard-section__body > p {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+}
+
+.student-overview-page .registration-status__figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  padding: var(--space-1) 0;
+}
+
+@media (min-width: 560px) {
+  .student-overview-page .registration-status__figure {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-10);
+  }
+}
+
+@media (min-width: 1024px) {
+  .student-overview-page .registration-status__figure {
+    gap: 3.5rem;
+  }
+}
+
+.student-overview-page .registration-status__chart {
+  width: min(100%, 10.25rem); /* 164px trên điện thoại */
+  height: auto;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .student-overview-page .registration-status__chart {
+    width: 11rem; /* 176px trên tablet & máy tính — gọn, không chiếm phần lớn màn hình */
+  }
+}
+
+/* Đồng bộ bảng màu semantic và font Be Vietnam Pro cho biểu đồ SVG */
+.student-overview-page .registration-status__chart g {
+  font-family: var(--font-family);
+}
+
+.student-overview-page .registration-status__chart circle:nth-of-type(1) {
+  stroke: var(--color-success-fg); /* Đã duyệt: 50% */
+}
+
+.student-overview-page .registration-status__chart circle:nth-of-type(2) {
+  stroke: var(--color-warning-fg); /* Chờ duyệt: 33,3% */
+}
+
+.student-overview-page .registration-status__chart circle:nth-of-type(3) {
+  stroke: var(--color-danger-fg); /* Đã từ chối: 16,7% */
+}
+
+.student-overview-page .registration-status__chart text:nth-of-type(1),
+.student-overview-page .registration-status__chart text:nth-of-type(2) {
+  fill: var(--color-heading);
+  font-weight: var(--font-weight-bold);
+}
+
+.student-overview-page .registration-status__chart text:nth-of-type(3),
+.student-overview-page .registration-status__chart text:nth-of-type(4),
+.student-overview-page .registration-status__chart text:nth-of-type(5) {
+  fill: var(--color-surface);
+  font-weight: var(--font-weight-bold);
+}
+
+.student-overview-page .registration-status__legend ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+@media (min-width: 768px) {
+  .student-overview-page .registration-status__legend ul {
+    gap: var(--space-3);
+  }
+}
+
+.student-overview-page .registration-status__item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-body);
+  font-variant-numeric: tabular-nums;
+}
+
+.student-overview-page .registration-status__item::before {
+  content: "";
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 0.1875rem;
+  flex-shrink: 0;
+}
+
+.student-overview-page .registration-status__item strong {
+  color: var(--color-heading);
+  font-weight: var(--font-weight-bold);
+}
+
+.student-overview-page .registration-status__item--approved::before {
+  background-color: var(--color-success-fg);
+}
+
+.student-overview-page .registration-status__item--pending::before {
+  background-color: var(--color-warning-fg);
+}
+
+.student-overview-page .registration-status__item--rejected::before {
+  background-color: var(--color-danger-fg);
+}
+
+.student-overview-page .registration-status__note {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   9. Active Topic Progress Section (.topic-progress)
+   Tinh chỉnh điểm 3 & 5:
+   - Căn tên đề tài, thông tin phụ, thanh tiến độ và nút theo hàng rõ ràng.
+   - Làm thanh tiến độ mảnh hơn (8px); giữ phần trăm dễ đọc.
+   - Trên điện thoại, xếp nội dung theo chiều dọc, không tràn ngang.
+   - Giảm cảm giác nhiều hộp lồng nhau bằng đường viền nhẹ.
+   -------------------------------------------------------------------------- */
+.student-overview-page .topic-progress__list {
+  list-style: none;
+  padding: var(--space-3) var(--space-4);
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+@media (min-width: 768px) {
+  .student-overview-page .topic-progress__list {
+    padding: var(--space-4) var(--space-5);
+  }
+}
+
+.student-overview-page .topic-progress__item {
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.student-overview-page .topic-progress__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1875rem;
+  min-width: 0;
+}
+
+.student-overview-page .topic-progress__info h3 {
+  color: var(--color-heading);
+  font-size: var(--font-size-body); /* 16px nội dung chính */
+  font-weight: var(--font-weight-bold);
+}
+
+.student-overview-page .topic-progress__info p {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary); /* 14px thông tin phụ */
+  overflow-wrap: anywhere;
+}
+
+.student-overview-page .topic-progress__completion {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+.student-overview-page .topic-progress__completion label {
+  color: var(--color-foreground);
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Thanh tiến độ mảnh (8px), bo tròn gọn, tương phản rõ */
+.student-overview-page .topic-progress__completion progress {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 0.5rem;
+  border: 0;
+  border-radius: var(--radius-full);
+  background-color: var(--color-border);
+  overflow: hidden;
+}
+
+.student-overview-page .topic-progress__completion progress::-webkit-progress-bar {
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
+}
+
+.student-overview-page .topic-progress__completion progress::-webkit-progress-value {
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+.student-overview-page .topic-progress__completion progress::-moz-progress-bar {
+  background-color: var(--color-primary);
+  border-radius: var(--radius-full);
+}
+
+/* Nút hành động phụ dùng chung (.topic-progress__link & .request-card__link)
+   Tinh chỉnh điểm 5:
+   - Giảm độ lớn của nút hành động phụ, vẫn giữ chiều cao tối thiểu 44px.
+   - Thống nhất padding, bo góc (8px) và kiểu nút cùng chức năng.
+   - Viền nhẹ (--slate-300) giảm cảm giác nhiều hộp lồng nhau. */
+.student-overview-page .topic-progress__link,
+.student-overview-page .request-card__link {
+  min-height: var(--control-min-height); /* 44px */
+  padding: 0.375rem var(--space-3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-end;
+  gap: 0.375rem;
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+  border: 1px solid var(--color-secondary-btn-border);
+  border-radius: var(--radius-control); /* 8px */
+  font-size: var(--font-size-secondary); /* 14px */
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.25;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.student-overview-page .topic-progress__link:hover,
+.student-overview-page .request-card__link:hover {
+  background-color: var(--color-info-bg);
+  border-color: var(--color-primary);
+  color: var(--color-primary-hover);
+}
+
+.student-overview-page .topic-progress__link:active,
+.student-overview-page .request-card__link:active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+@media (min-width: 768px) {
+  .student-overview-page .topic-progress__item {
+    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(11rem, 1fr) auto;
+    align-items: center;
+    gap: var(--space-4) var(--space-6);
+  }
+
+  .student-overview-page .topic-progress__link {
+    justify-self: end;
+    align-self: center;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   10. Recent Registrations & Proposals (.recent-requests & .request-card)
+   Tinh chỉnh điểm 4:
+   - Giảm khoảng trắng không cần thiết trong thẻ.
+   - Căn badge trạng thái với phần tiêu đề, cho phép xuống dòng khi thiếu chỗ.
+   - Thống nhất vị trí các nút giữa những thẻ cùng hàng.
+   - Giảm cảm giác nhiều hộp lồng nhau bằng đường viền nhẹ.
+   -------------------------------------------------------------------------- */
+.student-overview-page .recent-requests__list {
+  list-style: none;
+  padding: var(--space-3) var(--space-4);
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  align-items: stretch;
+}
+
+.student-overview-page .recent-requests__list > li {
+  display: flex;
+  min-width: 0;
+}
+
+@media (min-width: 768px) {
+  .student-overview-page .recent-requests__list {
+    padding: var(--space-4) var(--space-5);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+  }
+}
+
+.student-overview-page .request-card {
+  width: 100%;
+  height: 100%;
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.student-overview-page .request-card__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: 0.125rem;
+}
+
+.student-overview-page .request-card__header h3 {
+  color: var(--color-heading);
+  font-size: var(--font-size-body); /* 16px nội dung chính */
+  font-weight: var(--font-weight-bold);
+  line-height: 1.35;
+  flex: 1 1 10rem;
+  min-width: 0;
+}
+
+/* Badge trạng thái ngữ nghĩa (DESIGN.md mục 3 & 7) */
+.student-overview-page .request-card__status {
+  min-height: 1.5rem;
+  padding: 0.125rem 0.625rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: var(--radius-small);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-neutral-bg);
+  color: var(--color-neutral-fg);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.3;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.student-overview-page .request-card__status--pending {
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning-fg);
+  border-color: var(--color-warning-border);
+}
+
+.student-overview-page .request-card__status--approved {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-fg);
+  border-color: var(--color-success-border);
+}
+
+.student-overview-page .request-card__status--rejected {
+  background-color: var(--color-danger-bg);
+  color: var(--color-danger-fg);
+  border-color: var(--color-danger-border);
+}
+
+.student-overview-page .request-card p {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary); /* 14px thông tin phụ */
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.student-overview-page .request-card__type {
+  color: var(--color-foreground);
+}
+
+/* Đẩy nút hành động xuống đáy phải để đồng bộ vị trí giữa các thẻ cùng hàng */
+.student-overview-page .request-card > p:last-of-type {
+  margin-bottom: var(--space-2);
+}
+
+.student-overview-page .request-card__link {
+  margin-top: auto;
+  align-self: flex-end;
+}
