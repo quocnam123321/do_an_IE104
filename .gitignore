@@ -1,0 +1,5 @@
+# Local tools and CSS backups
+/.agents/
+/.codex/
+/.impeccable/
+/backup-css-*/
