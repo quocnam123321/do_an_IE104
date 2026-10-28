@@ -1,0 +1,179 @@
+/* Hồ sơ sinh viên: cấu trúc theo WF, màu và font theo DESIGN.md. */
+.profile-layout { display: grid; grid-template-columns: 12rem minmax(0, 1fr); gap: var(--space-8); align-items: start; }
+.profile-avatar { display: flex; flex-direction: column; align-items: center; gap: var(--space-6); padding-top: var(--space-8); }
+.profile-avatar > img { width: 6.25rem; height: 6.25rem; border-radius: 50%; }
+.profile-info { min-width: 0; container-type: inline-size; }
+.page-container { container: profile-page / inline-size; }
+.profile-details { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-surface); }
+.profile-details > h2 {
+  margin: 0;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-size-section-title);
+  font-weight: 600;
+}
+.profile-fields { display: grid; gap: var(--space-4); margin: 0; padding: var(--space-6); }
+.profile-field { display: grid; grid-template-columns: 10.5rem minmax(0, 1fr); align-items: center; gap: var(--space-4); }
+.profile-field > label,
+.profile-field > dt { color: var(--color-heading); font-weight: 600; font-size: var(--font-size-secondary); }
+.profile-value {
+  min-width: 0;
+  min-height: var(--control-min-height);
+  margin: 0;
+  padding: .625rem var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-background);
+  overflow-wrap: anywhere;
+}
+.profile-value--empty { color: var(--color-muted-foreground); }
+.profile-field > input,
+.password-input > input {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--control-min-height);
+  padding: .625rem var(--space-3);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  caret-color: var(--color-primary);
+}
+.profile-field > input[readonly] { background: var(--color-background); border-color: var(--color-border); }
+.profile-field > input:focus-visible,
+.password-input > input:focus-visible { outline-offset: 2px; }
+
+.profile-layout button,
+.profile-dialog button,
+.avatar-file-label,
+.confirmation-dialog button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding: .625rem var(--space-4);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-foreground);
+  font-size: var(--font-size-secondary);
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  transition: background-color 150ms ease-out, border-color 150ms ease-out;
+}
+.profile-layout button:not(:disabled):hover,
+.profile-dialog button:not(:disabled):hover,
+.avatar-file-label:hover { background: var(--color-neutral-bg); }
+#profile-edit-button {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+#profile-edit-button:hover { background: var(--color-primary-hover); border-color: var(--color-primary-hover); }
+#profile-edit-button:active { background: var(--color-primary-active); }
+.profile-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-4); }
+#profile-save-status:empty,
+#profile-password-error:empty,
+#avatar-error:empty { display: none; }
+
+.profile-dialog,
+.confirmation-dialog {
+  width: min(32rem, calc(100% - 2rem));
+  max-width: none;
+  max-height: calc(100svh - 2rem);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  color: var(--color-foreground);
+  background: var(--color-surface);
+  border: 0;
+  border-radius: var(--radius-surface);
+  box-shadow: var(--shadow-floating);
+}
+.profile-dialog::backdrop,
+.confirmation-dialog::backdrop { background: rgb(15 23 42 / .42); }
+.profile-dialog > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-background);
+}
+.profile-dialog h2 { font-size: var(--font-size-section-title); font-weight: 600; }
+.profile-dialog > header button {
+  flex: 0 0 auto;
+  width: var(--control-min-height);
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+.profile-dialog__body { display: grid; gap: var(--space-6); padding: var(--space-6); container-type: inline-size; }
+.profile-dialog__body > p,
+.profile-dialog__body > fieldset + p { color: var(--color-muted-foreground); font-size: var(--font-size-secondary); }
+.profile-dialog footer { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-3); padding: var(--space-4) var(--space-6); border-top: 1px solid var(--color-border); }
+.profile-dialog button:disabled { color: var(--color-muted-foreground); border-color: var(--color-border); background: var(--color-neutral-bg); }
+.password-field { display: grid; gap: var(--space-2); }
+.password-field > label { color: var(--color-heading); font-size: var(--font-size-secondary); font-weight: 500; }
+.password-input { display: flex; position: relative; min-width: 0; }
+.password-input > input { padding-right: 4.5rem; }
+.password-input .password-toggle {
+  position: absolute;
+  inset: 1px 1px 1px auto;
+  min-height: 0;
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  background: transparent;
+}
+.password-input .password-toggle:disabled { background: transparent; }
+.profile-dialog__center { justify-items: center; text-align: center; }
+#avatar-preview { width: 6.25rem; height: 6.25rem; border-radius: 50%; }
+.profile-dialog__center { gap: var(--space-4); }
+.profile-success-mark { display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 50%; background: var(--color-success-bg); color: var(--color-success-fg); font-size: 1.5rem; }
+.avatar-file-label { cursor: pointer; }
+#avatar-file { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.avatar-file-label:has(+ #avatar-file:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+.password-toggle svg,
+.avatar-file-label svg { width: 1.125rem; height: 1.125rem; flex: 0 0 auto; }
+#profile-edit-dialog { width: min(42rem, calc(100% - 2rem)); }
+.profile-dialog fieldset { min-width: 0; margin: 0; padding: 0; border: 0; display: grid; gap: var(--space-4); }
+.profile-dialog legend { margin-bottom: var(--space-4); padding: 0; color: var(--color-heading); font-weight: 600; }
+.confirmation-dialog { padding: var(--space-6); }
+.confirmation-dialog p { margin-block: var(--space-4); }
+.confirmation-dialog form { display: flex; justify-content: flex-end; gap: var(--space-3); flex-wrap: wrap; }
+
+@media (max-width: 59.99rem) {
+  .profile-layout { grid-template-columns: 9rem minmax(0, 1fr); gap: var(--space-6); }
+  .profile-field { grid-template-columns: 8.5rem minmax(0, 1fr); }
+}
+@media (max-width: 47.99rem) {
+  .profile-layout { grid-template-columns: minmax(0, 1fr); }
+  .profile-avatar { flex-direction: row; justify-content: flex-start; padding: 0; }
+  .profile-avatar > img { width: 5rem; height: 5rem; }
+  .profile-details > h2,
+  .profile-fields { padding: var(--space-4); }
+  .profile-actions { justify-content: stretch; }
+  .profile-actions > button { flex: 1 1 12rem; }
+}
+@media (max-width: 35.99rem) {
+  .profile-field { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+  .profile-fields { gap: var(--space-6); }
+  .profile-dialog > header { padding: var(--space-3) var(--space-4); }
+  .profile-dialog__body { padding: var(--space-6) var(--space-4); }
+  .profile-dialog footer { padding: var(--space-4); }
+  .profile-dialog h2 { font-size: 1.125rem; }
+}
+
+/* These come after viewport rules so larger text also switches the layout. */
+@container profile-page (max-width: 48rem) {
+  .profile-layout { grid-template-columns: minmax(0, 1fr); }
+  .profile-avatar { flex-direction: row; justify-content: flex-start; padding: 0; flex-wrap: wrap; }
+}
+@container (max-width: 32rem) {
+  .profile-field { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+}

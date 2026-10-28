@@ -1,0 +1,179 @@
+/* Ba trang đăng ký dùng chung token, typography và các trạng thái demo. */
+.registration-page .main-content :is(input, select, textarea) { font: inherit; accent-color: var(--color-primary); caret-color: var(--color-primary); }
+.registration-page .main-content :is(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]), select, textarea) { width: 100%; min-width: 0; min-height: var(--control-min-height); padding: .625rem var(--space-3); border: 1px solid var(--color-control-border); border-radius: var(--radius-control); background: var(--color-surface); }
+.registration-page .main-content textarea { resize: vertical; line-height: 1.5; }
+.registration-page .main-content input[type="file"] { padding: var(--space-3); border-style: dashed; }
+.registration-page input::file-selector-button { margin-right: var(--space-3); padding: var(--space-2) var(--space-3); border: 1px solid var(--color-control-border); border-radius: var(--radius-control); background: var(--color-background); font: inherit; color: var(--color-foreground); cursor: pointer; }
+.registration-page fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.registration-page .main-content label { display: block; color: var(--color-heading); font-size: var(--font-size-secondary); font-weight: 500; }
+.registration-page .main-content :is(button, .topics__create-proposal, .topic-card__link, .proposal-form__cancel), .registration-page .confirmation-dialog button { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: var(--control-min-height); padding: .625rem var(--space-4); border: 1px solid var(--color-control-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-foreground); font-size: var(--font-size-secondary); font-weight: 500; line-height: 1.5; text-decoration: none; text-align: center; transition: color 150ms ease-out, background-color 150ms ease-out; }
+.registration-page .main-content :is(button:not(:disabled), .topics__create-proposal, .topic-card__link:not(button), .proposal-form__cancel):hover { background: var(--color-neutral-bg); }
+.registration-page .main-content :is(.button-primary, .topics__create-proposal, .proposal-form__submit, .submit-registration) { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
+.registration-page .main-content .topics__create-proposal:hover { background: var(--color-primary-hover); }
+.registration-page .main-content button:disabled { background: var(--color-neutral-bg); color: var(--color-muted-foreground); border-color: var(--color-border); cursor: not-allowed; }
+#attachment-note, .proposal-form__selected-supervisor, #proposal-required-note { color: var(--color-muted-foreground); font-size: var(--font-size-secondary); }
+.page-back-link, .page-back { display: inline-block; margin-top: var(--space-4); font-size: var(--font-size-secondary); }
+.page-back-link + .page-header { margin-top: var(--space-3); }
+.description { margin-bottom: var(--space-8); }
+
+/* WF mới nhất: tìm kiếm phía trên; bộ lọc trái, danh sách phải. */
+.topics-layout { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: var(--space-4) var(--space-6); align-items: start; }
+.topic-filter-panel { grid-column: 1; grid-row: 2; border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); }
+.topic-filter-panel > summary { padding: var(--space-4); color: var(--color-heading); font-size: var(--font-size-secondary); font-weight: 600; text-transform: uppercase; cursor: pointer; list-style: none; }
+.topic-filter-panel > summary::-webkit-details-marker { display: none; }
+.topic-filter-panel[open] > summary { border-bottom: 1px solid var(--color-border); }
+.topic-filters { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); padding: var(--space-4); }
+.topic-filters__group + .topic-filters__group { border-top: 1px solid var(--color-border); padding-top: var(--space-4); }
+.topic-filters__group legend { margin-bottom: var(--space-2); color: var(--color-heading); font-size: var(--font-size-secondary); font-weight: 600; }
+.topic-filters__option { display: flex; align-items: center; gap: var(--space-2); min-height: 2.5rem; }
+.topic-filters__option input { flex: 0 0 auto; width: 1.125rem; height: 1.125rem; margin: 0; }
+.registration-page .topic-filters__option label { flex: 1; padding-block: var(--space-2); font-weight: 400; cursor: pointer; }
+.topic-filters__actions { display: flex; border-top: 1px solid var(--color-border); padding-top: var(--space-4); }
+.topic-filters__actions > button { width: 100%; }
+.topic-search { grid-column: 1 / -1; grid-row: 1; display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: var(--space-4); }
+.topic-filters__field { display: grid; align-content: start; gap: var(--space-2); min-width: 0; }
+.topic-search .topic-filters__field > label { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.topics { grid-column: 2; grid-row: 2; display: grid; gap: var(--space-4); min-width: 0; container: topic-results / inline-size; }
+.topics__header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); }
+.topics__header h2 { font-size: var(--font-size-section-title); font-weight: 600; }
+
+/* Khung khoảng ba thẻ ở desktop, cuộn để xem đủ năm mục. */
+.topic-list { --topic-row-height: 14rem; display: grid; grid-auto-rows: minmax(var(--topic-row-height), auto); gap: var(--space-4); block-size: calc(3 * var(--topic-row-height) + 2 * var(--space-4)); min-width: 0; margin: 0; padding: 0 var(--space-2) 0 0; list-style: none; overflow-y: auto; scrollbar-gutter: stable; }
+.topic-list__item { min-width: 0; }
+.topic-list { scrollbar-width: thin; scrollbar-color: var(--color-control-border) var(--color-neutral-bg); }
+.topic-list::-webkit-scrollbar { width: .5rem; }
+.topic-list::-webkit-scrollbar-track { background: var(--color-neutral-bg); }
+.topic-list::-webkit-scrollbar-thumb { background: var(--color-control-border); border-radius: .25rem; }
+.topic-card { position: relative; display: grid; grid-template-columns: 10.5rem minmax(0, 1fr) 11rem; gap: var(--space-4); height: 100%; padding: var(--space-4); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-surface); }
+.topic-card__image, .topic-image { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: var(--space-2); width: 100%; aspect-ratio: 1; align-self: center; border-radius: var(--radius-control); background: var(--color-info-bg); color: var(--color-info-fg); text-align: center; }
+.topic-card__image img, .topic-image img { width: 100%; height: 100%; aspect-ratio: 1; object-fit: cover; }
+.topic-image--uit img { object-fit: contain; padding: var(--space-3); }
+.topic-image-placeholder { background: var(--color-info-bg) url("../images/topic-placeholder.svg") center / contain no-repeat; }
+.topic-image-placeholder > span { padding: var(--space-2); font-size: .75rem; }
+.topic-card__content { min-width: 0; align-self: center; }
+.topic-card__title { margin-bottom: var(--space-3); font-size: 1.125rem; font-weight: 600; }
+.topic-card__meta { display: grid; gap: var(--space-2); margin: 0; font-size: var(--font-size-secondary); }
+.topic-card__meta-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-1); min-width: 0; }
+.topic-card__meta dt { color: inherit; }
+.topic-card__meta dt:not(.topic-card__meta-label)::after { content: ":"; }
+.topic-card__meta dd { min-width: 0; margin: 0; }
+.topic-card__meta-label { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.topic-card__summary { display: flex; flex-direction: column; justify-content: center; gap: var(--space-3); padding-left: var(--space-4); border-left: 1px solid var(--color-border); min-width: 0; }
+.topic-card__status { display: flex; align-items: center; justify-content: center; text-align: center; padding: var(--space-1) var(--space-2); border: 1px solid var(--color-border); border-radius: .25rem; background: var(--color-success-bg); color: var(--color-success-fg); font-size: .75rem; font-weight: 500; }
+.registration-page .main-content a.topic-card__link { color: var(--color-primary); border-color: var(--color-primary); }
+.pagination { justify-self: center; }
+.pagination__list { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.registration-page .main-content .pagination__button, .pagination__current { display: grid; place-items: center; min-width: var(--control-min-height); min-height: var(--control-min-height); padding: var(--space-2); border: 1px solid var(--color-border); border-radius: var(--radius-control); font-size: var(--font-size-secondary); }
+.pagination__current { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); font-weight: 600; }
+
+/* Tạo đề xuất: form và lưu ý hai cột như WF. */
+.proposal-layout { display: grid; grid-template-columns: minmax(0, 2.25fr) minmax(16rem, 1fr); align-items: start; gap: var(--space-6); }
+.proposal-form { min-width: 0; display: grid; gap: var(--space-4); }
+.proposal-form__panel { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-surface); padding: var(--space-6); }
+.registration-page .proposal-form__section { display: grid; gap: var(--space-4); }
+.registration-page .proposal-form__section + .proposal-form__section { margin-top: var(--space-6); padding-top: var(--space-6); border-top: 1px solid var(--color-border); }
+.proposal-form__section legend { padding: 0; margin-bottom: var(--space-4); color: var(--color-heading); font-weight: 600; }
+.proposal-form__field { display: grid; gap: var(--space-2); min-width: 0; }
+.proposal-form__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+.proposal-form__add-supervisor { justify-self: start; }
+.proposal-form__footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); }
+.proposal-form__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-left: auto; }
+.proposal-notes, .registration-notes { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-surface); padding: var(--space-6); }
+.proposal-notes h2 { margin-bottom: var(--space-4); font-size: 1.125rem; font-weight: 600; }
+.proposal-notes__list { margin: 0; padding-left: var(--space-6); }
+.proposal-notes__list li + li { margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--color-border); }
+.proposal-notes__list li::marker { font-weight: 600; color: var(--color-muted-foreground); }
+.proposal-notes__list h3 { margin-bottom: var(--space-2); font-size: var(--font-size-secondary); font-weight: 600; }
+.proposal-notes__list p { font-size: var(--font-size-secondary); color: var(--color-muted-foreground); line-height: 1.7; }
+
+/* Chi tiết và form đăng ký ở cột phải. */
+.page-back { margin-bottom: var(--space-3); }
+.detail-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(22rem, 1fr); align-items: start; gap: var(--space-6); }
+.detail-body, .detail-sidebar { display: grid; align-content: start; gap: var(--space-4); min-width: 0; }
+.overview, .panel { padding: var(--space-6); border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); min-width: 0; }
+.overview { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: var(--space-6); }
+.overview .topic-image { align-self: start; padding: var(--space-3); font-size: .75rem; }
+.topic-image svg { width: 2.5rem; height: 2.5rem; }
+.summary { min-width: 0; }
+.summary h2 { font-size: 1.125rem; margin-bottom: var(--space-4); font-weight: 600; }
+.summary__meta { margin: 0; display: grid; gap: var(--space-3); font-size: var(--font-size-secondary); }
+.summary__meta > div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--space-3); }
+.summary__meta dt { color: var(--color-muted-foreground); }
+.summary__meta dd { margin: 0; min-width: 0; }
+.panel > h3, .registration-notes > h3 { font-size: 1.125rem; margin-bottom: var(--space-4); font-weight: 600; }
+.content-box { line-height: 1.75; }
+.content-box ul { margin: 0; padding-left: var(--space-6); }
+.content-box li + li { margin-top: var(--space-2); }
+.supervisor__profile { display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4); }
+.supervisor__profile img { flex: 0 0 auto; width: 2.5rem; height: 2.5rem; }
+.supervisor__profile h4 { margin: 0 0 var(--space-1); color: var(--color-heading); font-weight: 600; }
+.supervisor__profile p, .supervisor dl { font-size: var(--font-size-secondary); color: var(--color-muted-foreground); }
+.supervisor dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--space-2) var(--space-3); margin: 0; }
+.supervisor dd { margin: 0; }
+.topic-attachments { list-style: none; margin: 0 0 var(--space-3); padding: 0; }
+.topic-attachments li { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
+.registration-notes ol { margin: 0; padding-left: var(--space-6); font-size: var(--font-size-secondary); color: var(--color-muted-foreground); }
+.registration-notes li + li { margin-top: var(--space-2); }
+.registration-form { display: grid; gap: var(--space-4); }
+.registration-form > div, .registration-form .member-card > div:not(.member-heading), .member-fields > div { display: grid; gap: var(--space-2); min-width: 0; }
+.registration-form__group-size { padding: var(--space-3); color: var(--color-muted-foreground); background: var(--color-background); border-radius: var(--radius-control); font-size: var(--font-size-secondary); }
+.registration-form legend { margin-bottom: var(--space-3); color: var(--color-heading); font-weight: 600; }
+.member-card { display: grid; gap: var(--space-3); padding: var(--space-4); margin-bottom: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-control); }
+.member-card > p { font-size: .75rem; color: var(--color-muted-foreground); }
+.member-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); color: var(--color-heading); font-size: var(--font-size-secondary); }
+.member-fields { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3) !important; }
+.registration-page .main-content .remove-member { min-height: 2.75rem; padding-inline: var(--space-2); }
+.registration-page .main-content :is(.add-member, .submit-registration) { width: 100%; }
+
+@media (max-width: 69.99rem) {
+  .topics-layout { grid-template-columns: 13rem minmax(0, 1fr); }
+  .topic-card { grid-template-columns: 8rem minmax(0, 1fr) 10rem; gap: var(--space-3); }
+  .topic-list { --topic-row-height: 15rem; }
+  .detail-layout { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 55.99rem) {
+  .proposal-layout { grid-template-columns: minmax(0, 1fr); }
+  .topics-layout { grid-template-columns: minmax(0, 1fr); }
+  .topic-filter-panel { grid-column: 1; grid-row: 2; }
+  .topics { grid-column: 1; grid-row: 3; }
+  .topic-filters { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .topic-filters__group + .topic-filters__group { border-top: 0; padding-top: 0; }
+  .topic-filters__actions { grid-column: 1 / -1; justify-content: flex-end; }
+  .topic-filters__actions > button { width: auto; }
+  .topic-card { grid-template-columns: 8rem minmax(0, 1fr) 10rem; gap: var(--space-3); }
+}
+@media (max-width: 47.99rem) {
+  .topic-filters { grid-template-columns: minmax(0, 1fr); padding: var(--space-4); gap: var(--space-4); }
+  .topic-filter-panel > summary { padding-inline: var(--space-4); }
+  .topic-filters__group + .topic-filters__group { grid-column: auto; border-left: 0; padding-left: 0; border-top: 1px solid var(--color-border); padding-top: var(--space-4); }
+  .topic-search { grid-template-columns: minmax(0, 1fr); }
+  .topic-filters__actions { justify-content: stretch; }
+  .topic-filters__actions > button { flex: 1; }
+  .topic-list { --topic-row-height: 38rem; max-block-size: 80svh; }
+  .topic-card { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-4); }
+  .topic-card__image { flex: 0 0 auto; align-self: stretch; }
+  .topic-card__summary { padding: 0; border: 0; margin-top: auto; }
+  .topic-card__status { position: absolute; top: var(--space-6); right: var(--space-6); max-width: calc(100% - 3rem); }
+  .registration-page .main-content .topic-card__link { width: 100%; }
+  .topics__header h2 { flex: 1 1 100%; }
+  .proposal-form__panel, .proposal-notes, .overview, .panel, .registration-notes { padding: var(--space-4); }
+  .overview { grid-template-columns: minmax(0, 1fr); }
+  .overview .topic-image { width: min(100%, 18rem); }
+}
+@media (max-width: 35.99rem) {
+  .proposal-form__row, .member-fields { grid-template-columns: minmax(0, 1fr); }
+  .proposal-form__actions { flex: 1 1 100%; }
+  .proposal-form__actions > * { flex: 1; }
+  .supervisor dl, .summary__meta > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+  .registration-form__group-size { font-size: .8125rem; }
+}
+
+/* Reflow cards when larger text leaves too little room for three columns. */
+@container topic-results (max-width: 40rem) {
+  .topic-list { --topic-row-height: 38rem; max-block-size: 80svh; }
+  .topic-card { display: flex; flex-direction: column; gap: var(--space-4); padding: var(--space-4); }
+  .topic-card__image { flex: 0 0 auto; align-self: stretch; }
+  .topic-card__summary { padding: 0; border: 0; margin-top: auto; }
+  .topic-card__status { position: absolute; top: var(--space-6); right: var(--space-6); max-width: calc(100% - 3rem); }
+  .registration-page .main-content .topic-card__link { width: 100%; }
+}
