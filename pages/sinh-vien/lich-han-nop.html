@@ -326,7 +326,7 @@
                       <time datetime="2026-10-21">21</time>
                       <a
                         class="calendar-event calendar-event--submission"
-                        href="#bai-nop-a"
+                        href="chi-tiet-de-tai-sinh-vien.html#submission-form-section"
                       >
                         <strong>Bài nộp</strong><br />
                         hh:mm - [Tên bài nộp A]
@@ -339,7 +339,7 @@
                       <time datetime="2026-10-23">23</time>
                       <a
                         class="calendar-event calendar-event--submission"
-                        href="#bai-nop-b"
+                        href="chi-tiet-de-tai-sinh-vien.html#submission-form-section"
                       >
                         <strong>Bài nộp</strong><br />
                         hh:mm - [Tên bài nộp B]
@@ -349,7 +349,7 @@
                       <time datetime="2026-10-24">24</time>
                       <a
                         class="calendar-event calendar-event--submission"
-                        href="#bai-nop-c"
+                        href="chi-tiet-de-tai-sinh-vien.html#submission-form-section"
                       >
                         <strong>Bài nộp</strong><br />
                         hh:mm - [Tên bài nộp C]
@@ -391,140 +391,6 @@
               Bài nộp: hạn yêu cầu nộp của giảng viên · Hạn đề tài: thời hạn
               hoàn thành toàn đề tài.
             </p>
-          </section>
-
-          <section
-            class="upcoming-submissions"
-            id="deadline-list"
-            aria-labelledby="deadline-list-title"
-          >
-            <h2 id="deadline-list-title">Bài nộp sắp đến hạn</h2>
-            <form
-              id="upcoming-submissions-filters"
-              class="upcoming-submissions__filters"
-              aria-label="Lọc bài nộp sắp đến hạn"
-              aria-describedby="deadline-demo-notice"
-            >
-              <div class="upcoming-submissions__field">
-                <label for="upcoming-range">Khoảng thời gian</label>
-                <select id="upcoming-range" name="khoang-thoi-gian">
-                  <option value="7" selected>7 ngày tới</option>
-                  <option value="14">14 ngày tới</option>
-                  <option value="30">30 ngày tới</option>
-                </select>
-              </div>
-              <div class="upcoming-submissions__field">
-                <label for="upcoming-sort">Sắp xếp</label>
-                <select id="upcoming-sort" name="sap-xep">
-                  <option value="han-gan-nhat" selected>
-                    Hạn gần nhất trước
-                  </option>
-                  <option value="han-xa-nhat">Hạn xa nhất trước</option>
-                </select>
-              </div>
-              <div class="upcoming-submissions__field">
-                <label for="upcoming-search">Tìm bài nộp hoặc đề tài</label>
-                <input
-                  type="search"
-                  id="upcoming-search"
-                  name="tu-khoa"
-                  placeholder="Tìm bài nộp hoặc đề tài…"
-                />
-              </div>
-              <button type="submit" hidden>Tìm kiếm</button>
-            </form>
-            <p id="upcoming-results" role="status">
-              Các bài nộp trong 7 ngày sau mốc minh họa 18/10/2026 · 3 kết quả
-            </p>
-            <div
-              class="upcoming-submissions__cards"
-              aria-describedby="upcoming-results"
-            >
-              <article
-                id="bai-nop-a"
-                class="submission-card"
-                aria-labelledby="bai-nop-a-title"
-              >
-                <h3 id="bai-nop-a-title" class="submission-card__title">
-                  [Tên bài nộp A]
-                </h3>
-                <div class="submission-card__topic">
-                  <span class="submission-card__label">Đề tài</span>
-                  <p>[Tên đề tài tương ứng]</p>
-                </div>
-                <div class="submission-card__deadline">
-                  <span class="submission-card__label">Hạn nộp</span>
-                  <p><time datetime="2026-10-21">21/10/2026</time> · hh:mm</p>
-                </div>
-                <a
-                  class="upcoming-submissions__submit"
-                  href="chi-tiet-de-tai-sinh-vien.html#submission-form-section"
-                  aria-label="Nộp bài: [Tên bài nộp A]"
-                  aria-describedby="deadline-demo-notice"
-                >
-                  Nộp bài
-                </a>
-              </article>
-              <article
-                id="bai-nop-b"
-                class="submission-card"
-                aria-labelledby="bai-nop-b-title"
-              >
-                <h3 id="bai-nop-b-title" class="submission-card__title">
-                  [Tên bài nộp B]
-                </h3>
-                <div class="submission-card__topic">
-                  <span class="submission-card__label">Đề tài</span>
-                  <p>[Tên đề tài tương ứng]</p>
-                </div>
-                <div class="submission-card__deadline">
-                  <span class="submission-card__label">Hạn nộp</span>
-                  <p><time datetime="2026-10-23">23/10/2026</time> · hh:mm</p>
-                </div>
-                <a
-                  class="upcoming-submissions__submit"
-                  href="chi-tiet-de-tai-sinh-vien.html#submission-form-section"
-                  aria-label="Nộp bài: [Tên bài nộp B]"
-                  aria-describedby="deadline-demo-notice"
-                >
-                  Nộp bài
-                </a>
-              </article>
-              <article
-                id="bai-nop-c"
-                class="submission-card"
-                aria-labelledby="bai-nop-c-title"
-              >
-                <h3 id="bai-nop-c-title" class="submission-card__title">
-                  [Tên bài nộp C]
-                </h3>
-                <div class="submission-card__topic">
-                  <span class="submission-card__label">Đề tài</span>
-                  <p>[Tên đề tài tương ứng]</p>
-                </div>
-                <div class="submission-card__deadline">
-                  <span class="submission-card__label">Hạn nộp</span>
-                  <p><time datetime="2026-10-24">24/10/2026</time> · hh:mm</p>
-                </div>
-                <a
-                  class="upcoming-submissions__submit"
-                  href="chi-tiet-de-tai-sinh-vien.html#submission-form-section"
-                  aria-label="Nộp bài: [Tên bài nộp C]"
-                  aria-describedby="deadline-demo-notice"
-                >
-                  Nộp bài
-                </a>
-              </article>
-            </div>
-            <template id="deadlines-filter-empty-template">
-              <div class="empty-state">
-                <p><strong>Không tìm thấy bài nộp phù hợp.</strong></p>
-                <p>Thử thay đổi khoảng thời gian hoặc từ khóa tìm kiếm.</p>
-                <button type="reset" form="upcoming-submissions-filters">
-                  Xóa bộ lọc
-                </button>
-              </div>
-            </template>
           </section>
         </div>
       </div>

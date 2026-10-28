@@ -36,11 +36,9 @@
 }
 
 /* --------------------------------------------------------------------------
-   6. Shared Section Card & Form Control Primitives
-   (.deadline-calendar, .upcoming-submissions)
+   6. Calendar Card & Form Control Primitives (.deadline-calendar)
    -------------------------------------------------------------------------- */
-.student-deadline-page .deadline-calendar,
-.student-deadline-page .upcoming-submissions {
+.student-deadline-page .deadline-calendar {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-surface);
@@ -50,8 +48,7 @@
 }
 
 /* Thanh tiêu đề khu vực đồng bộ với trang Tổng quan sinh viên */
-.student-deadline-page .deadline-calendar > h2,
-.student-deadline-page .upcoming-submissions > h2 {
+.student-deadline-page .deadline-calendar > h2 {
   padding: 0.625rem var(--space-4);
   background-color: var(--color-neutral-bg);
   border-bottom: 1px solid var(--color-border);
@@ -62,24 +59,21 @@
 }
 
 @media (min-width: 768px) {
-  .student-deadline-page .deadline-calendar > h2,
-  .student-deadline-page .upcoming-submissions > h2 {
+  .student-deadline-page .deadline-calendar > h2 {
     padding: 0.6875rem var(--space-5);
     font-size: var(--font-size-section-title);
   }
 }
 
 /* Nhãn và điều khiển form (input, select, button) cao tối thiểu 44px, bo góc 8px */
-.student-deadline-page .deadline-calendar__field,
-.student-deadline-page .upcoming-submissions__field {
+.student-deadline-page .deadline-calendar__field {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   min-width: 0;
 }
 
-.student-deadline-page .deadline-calendar__field label,
-.student-deadline-page .upcoming-submissions__field label {
+.student-deadline-page .deadline-calendar__field label {
   color: var(--color-heading);
   font-size: var(--font-size-secondary); /* 14px */
   font-weight: var(--font-weight-semibold);
@@ -87,9 +81,7 @@
 }
 
 .student-deadline-page .deadline-calendar__field select,
-.student-deadline-page .deadline-calendar__field input,
-.student-deadline-page .upcoming-submissions__field select,
-.student-deadline-page .upcoming-submissions__field input {
+.student-deadline-page .deadline-calendar__field input {
   width: 100%;
   min-width: 0;
   min-height: var(--control-min-height); /* 44px */
@@ -105,15 +97,8 @@
 }
 
 .student-deadline-page .deadline-calendar__field select:hover,
-.student-deadline-page .deadline-calendar__field input:hover,
-.student-deadline-page .upcoming-submissions__field select:hover,
-.student-deadline-page .upcoming-submissions__field input:hover {
+.student-deadline-page .deadline-calendar__field input:hover {
   border-color: var(--color-foreground);
-}
-
-.student-deadline-page .upcoming-submissions__field input::placeholder {
-  color: var(--color-muted-foreground);
-  opacity: 1;
 }
 
 /* --------------------------------------------------------------------------
@@ -486,155 +471,15 @@
   font-weight: var(--font-weight-medium);
 }
 
-.student-deadline-page .calendar-preview .upcoming-submissions__submit {
+/* Nút hành động chính "Nộp bài" trong hộp xem trước (.upcoming-submissions__submit) */
+.student-deadline-page .upcoming-submissions__submit {
   width: 100%;
   margin-top: var(--space-3);
-}
-
-/* Chú giải dưới bảng lịch (.deadline-calendar__legend) */
-.student-deadline-page .deadline-calendar__legend {
-  padding: var(--space-2) var(--space-4) var(--space-3);
-  border-top: 1px solid var(--color-border);
-  background-color: var(--color-background);
-  border-radius: 0 0 calc(var(--radius-surface) - 1px) calc(var(--radius-surface) - 1px);
-  color: var(--color-muted-foreground);
-  font-size: var(--font-size-secondary);
-  line-height: 1.45;
-}
-
-@media (min-width: 768px) {
-  .student-deadline-page .deadline-calendar__legend {
-    padding: var(--space-2) var(--space-5) var(--space-3);
-  }
-}
-
-/* --------------------------------------------------------------------------
-   9. Upcoming Submissions Section (.upcoming-submissions & .submission-card)
-   - Bộ lọc gọn trên 1 hàng ở máy tính, xếp dọc toàn chiều rộng trên điện thoại.
-   - Thẻ bài nộp viền nhẹ, giảm cảm giác hộp lồng nhau, xử lý tốt tên đề tài dài.
-   -------------------------------------------------------------------------- */
-.student-deadline-page .upcoming-submissions__filters {
-  padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--color-border);
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-3);
-}
-
-@media (min-width: 560px) {
-  .student-deadline-page .upcoming-submissions__filters {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .student-deadline-page .upcoming-submissions__field:last-of-type {
-    grid-column: 1 / -1;
-  }
-}
-
-@media (min-width: 768px) {
-  .student-deadline-page .upcoming-submissions__filters {
-    padding: var(--space-3) var(--space-5);
-    grid-template-columns: minmax(10rem, 0.9fr) minmax(11rem, 1fr) minmax(14rem, 1.5fr);
-    align-items: end;
-    gap: var(--space-3);
-  }
-
-  .student-deadline-page .upcoming-submissions__field:last-of-type {
-    grid-column: auto;
-  }
-}
-
-.student-deadline-page #upcoming-results {
-  padding: var(--space-3) var(--space-4) 0;
-  color: var(--color-muted-foreground);
-  font-size: var(--font-size-secondary);
-}
-
-@media (min-width: 768px) {
-  .student-deadline-page #upcoming-results {
-    padding: var(--space-3) var(--space-5) 0;
-  }
-}
-
-.student-deadline-page .upcoming-submissions__cards {
-  padding: var(--space-3) var(--space-4) var(--space-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-@media (min-width: 768px) {
-  .student-deadline-page .upcoming-submissions__cards {
-    padding: var(--space-3) var(--space-5) var(--space-5);
-  }
-}
-
-.student-deadline-page .submission-card {
-  padding: var(--space-3) var(--space-4);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-control);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  min-width: 0;
-  overflow-wrap: anywhere;
-  transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
-}
-
-/* Trạng thái thẻ bài nộp đang được chọn từ lịch (:target) — nổi bật bằng vạch trái 4px + viền xanh */
-.student-deadline-page .submission-card:target {
-  background-color: var(--calendar-today-bg);
-  border-color: var(--color-primary);
-  border-left: 4px solid var(--color-primary);
-  box-shadow: 0 0 0 2px rgb(29 78 216 / 0.16);
-}
-
-.student-deadline-page .submission-card > * {
-  min-width: 0;
-}
-
-.student-deadline-page .submission-card__title {
-  color: var(--color-heading);
-  font-size: var(--font-size-body); /* 16px nội dung chính */
-  font-weight: var(--font-weight-bold);
-}
-
-.student-deadline-page .submission-card__topic,
-.student-deadline-page .submission-card__deadline {
-  display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
-}
-
-.student-deadline-page .submission-card__label {
-  color: var(--color-muted-foreground);
-  font-size: var(--text-xs);
-  font-weight: var(--font-weight-semibold);
-  line-height: 1.3;
-}
-
-.student-deadline-page .submission-card__topic p {
-  color: var(--color-foreground);
-  font-size: var(--font-size-secondary);
-  overflow-wrap: anywhere;
-}
-
-.student-deadline-page .submission-card__deadline p {
-  color: var(--color-heading);
-  font-size: var(--font-size-secondary);
-  font-weight: var(--font-weight-semibold);
-  font-variant-numeric: tabular-nums;
-}
-
-/* Nút hành động chính "Nộp bài" (.upcoming-submissions__submit) */
-.student-deadline-page .upcoming-submissions__submit {
   min-height: var(--control-min-height); /* 44px */
   padding: 0.4375rem var(--space-4);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  align-self: flex-end;
   background-color: var(--color-primary);
   color: var(--color-on-primary);
   border: 1px solid var(--color-primary);
@@ -660,54 +505,21 @@
   color: var(--color-on-primary);
 }
 
-@media (min-width: 768px) {
-  .student-deadline-page .submission-card {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.45fr) minmax(9.5rem, 0.95fr) auto;
-    align-items: center;
-    gap: var(--space-3) var(--space-5);
-  }
-
-  .student-deadline-page .upcoming-submissions__submit {
-    justify-self: end;
-    align-self: center;
-  }
-}
-
-/* Trạng thái trống khi lọc không có bài nộp phù hợp (.empty-state) */
-.student-deadline-page .empty-state {
-  padding: var(--space-6) var(--space-4);
+/* Chú giải dưới bảng lịch (.deadline-calendar__legend) */
+.student-deadline-page .deadline-calendar__legend {
+  padding: var(--space-2) var(--space-4) var(--space-3);
+  border-top: 1px solid var(--color-border);
   background-color: var(--color-background);
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius-control);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.student-deadline-page .empty-state p {
+  border-radius: 0 0 calc(var(--radius-surface) - 1px) calc(var(--radius-surface) - 1px);
   color: var(--color-muted-foreground);
   font-size: var(--font-size-secondary);
+  line-height: 1.45;
 }
 
-.student-deadline-page .empty-state button {
-  margin-top: var(--space-1);
-  min-height: var(--control-min-height);
-  padding: 0.375rem var(--space-4);
-  background-color: var(--color-surface);
-  color: var(--color-primary);
-  border: 1px solid var(--color-secondary-btn-border);
-  border-radius: var(--radius-control);
-  font-size: var(--font-size-secondary);
-  font-weight: var(--font-weight-semibold);
-}
-
-.student-deadline-page .empty-state button:hover {
-  background-color: var(--color-info-bg);
-  border-color: var(--color-primary);
-  color: var(--color-primary-hover);
+@media (min-width: 768px) {
+  .student-deadline-page .deadline-calendar__legend {
+    padding: var(--space-2) var(--space-5) var(--space-3);
+  }
 }
 
 @media (forced-colors: active) {
