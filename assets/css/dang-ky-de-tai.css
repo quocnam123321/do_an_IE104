@@ -9,9 +9,7 @@
 .registration-page .main-content :is(button, .topics__create-proposal, .topic-card__link, .proposal-form__cancel), .registration-page .confirmation-dialog button { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: var(--control-min-height); padding: .625rem var(--space-4); border: 1px solid var(--color-control-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-foreground); font-size: var(--font-size-secondary); font-weight: 500; line-height: 1.5; text-decoration: none; text-align: center; transition: color 150ms ease-out, background-color 150ms ease-out; }
 .registration-page .main-content :is(button:not(:disabled), .topics__create-proposal, .topic-card__link:not(button), .proposal-form__cancel):hover { background: var(--color-neutral-bg); }
 .registration-page .main-content :is(.button-primary, .topics__create-proposal, .proposal-form__submit, .submit-registration) { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
-.registration-page .main-content a.topic-card__link:hover { background: var(--color-info-bg); border-color: var(--color-primary); color: var(--color-primary-hover); }
-.registration-page .main-content :is(.button-primary, .topics__create-proposal, .proposal-form__submit, .submit-registration):hover:not(:disabled) { background: var(--color-primary-hover); border-color: var(--color-primary-hover); color: var(--color-on-primary); }
-.registration-page .main-content :is(.button-primary, .topics__create-proposal, .proposal-form__submit, .submit-registration):active:not(:disabled) { background: var(--color-primary-active); border-color: var(--color-primary-active); color: var(--color-on-primary); }
+.registration-page .main-content .topics__create-proposal:hover { background: var(--color-primary-hover); }
 .registration-page .main-content button:disabled { background: var(--color-neutral-bg); color: var(--color-muted-foreground); border-color: var(--color-border); cursor: not-allowed; }
 #attachment-note, .proposal-form__selected-supervisor, #proposal-required-note { color: var(--color-muted-foreground); font-size: var(--font-size-secondary); }
 .page-back-link, .page-back { display: inline-block; margin-top: var(--space-4); font-size: var(--font-size-secondary); }
@@ -21,7 +19,8 @@
 /* WF mới nhất: tìm kiếm phía trên; bộ lọc trái, danh sách phải. */
 .topics-layout { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: var(--space-4) var(--space-6); align-items: start; }
 .topic-filter-panel { grid-column: 1; grid-row: 2; border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); }
-.topic-filter-panel > summary { padding: var(--space-4); color: var(--color-heading); font-size: var(--font-size-secondary); font-weight: 600; text-transform: uppercase; cursor: pointer; list-style: none; }
+.topic-filter-panel > summary { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-4); color: var(--color-heading); font-size: var(--font-size-secondary); font-weight: 600; text-transform: uppercase; cursor: pointer; list-style: none; }
+.topic-filter-panel__icon { flex: 0 0 auto; color: var(--color-primary); }
 .topic-filter-panel > summary::-webkit-details-marker { display: none; }
 .topic-filter-panel[open] > summary { border-bottom: 1px solid var(--color-border); }
 .topic-filters { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); padding: var(--space-4); }
@@ -110,15 +109,22 @@
 .supervisor__profile img { flex: 0 0 auto; width: 2.5rem; height: 2.5rem; }
 .supervisor__profile h4 { margin: 0 0 var(--space-1); color: var(--color-heading); font-weight: 600; }
 .supervisor__profile p, .supervisor dl { font-size: var(--font-size-secondary); color: var(--color-muted-foreground); }
-.supervisor dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--space-2) var(--space-3); margin: 0; }
+.supervisor dl { display: grid; gap: var(--space-3); margin: 0; }
+.supervisor__info-row { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--space-3); }
+.supervisor__info-row dt { color: var(--color-heading); font-weight: 600; }
+.supervisor__info-row dd { min-width: 0; overflow-wrap: anywhere; color: var(--color-heading); font-weight: 400; }
+.supervisor__info-row--stacked { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
 .supervisor dd { margin: 0; }
 .topic-attachments { list-style: none; margin: 0 0 var(--space-3); padding: 0; }
 .topic-attachments li { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
-.registration-notes ol { margin: 0; padding-left: var(--space-6); font-size: var(--font-size-secondary); color: var(--color-muted-foreground); }
-.registration-notes li + li { margin-top: var(--space-2); }
+.topic-attachments__file { display: inline-flex; align-items: center; gap: var(--space-2); min-width: 0; overflow-wrap: anywhere; }
+.topic-attachments__icon { flex: 0 0 auto; color: var(--color-primary); }
+.registration-notes ol { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; counter-reset: registration-note; font-size: var(--font-size-secondary); color: var(--color-muted-foreground); }
+.registration-notes li { display: grid; grid-template-columns: 1.5rem minmax(0, 1fr); align-items: start; gap: var(--space-2); counter-increment: registration-note; }
+.registration-notes li::before { content: counter(registration-note); display: grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--color-neutral-bg); color: var(--color-foreground); font-size: .75rem; font-weight: 600; }
 .registration-form { display: grid; gap: var(--space-4); }
 .registration-form > div, .registration-form .member-card > div:not(.member-heading), .member-fields > div { display: grid; gap: var(--space-2); min-width: 0; }
-.registration-form__group-size { padding: var(--space-3); color: var(--color-muted-foreground); background: var(--color-background); border-radius: var(--radius-control); font-size: var(--font-size-secondary); }
+.registration-form__group-size { padding: var(--space-3); color: var(--color-foreground); background: var(--color-neutral-bg); border: 1px solid var(--color-border); border-radius: var(--radius-control); font-size: var(--font-size-secondary); }
 .registration-form legend { margin-bottom: var(--space-3); color: var(--color-heading); font-weight: 600; }
 .member-card { display: grid; gap: var(--space-3); padding: var(--space-4); margin-bottom: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-control); }
 .member-card > p { font-size: .75rem; color: var(--color-muted-foreground); }
@@ -166,7 +172,7 @@
   .proposal-form__row, .member-fields { grid-template-columns: minmax(0, 1fr); }
   .proposal-form__actions { flex: 1 1 100%; }
   .proposal-form__actions > * { flex: 1; }
-  .supervisor dl, .summary__meta > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+  .supervisor__info-row, .summary__meta > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
   .registration-form__group-size { font-size: .8125rem; }
 }
 
@@ -179,3 +185,8 @@
   .topic-card__status { position: absolute; top: var(--space-6); right: var(--space-6); max-width: calc(100% - 3rem); }
   .registration-page .main-content .topic-card__link { width: 100%; }
 }
+
+/* Preserve button hover and active states from the group repository. */
+.registration-page .main-content a.topic-card__link:hover { background: var(--color-info-bg); border-color: var(--color-primary); color: var(--color-primary-hover); }
+.registration-page .main-content :is(.button-primary, .topics__create-proposal, .proposal-form__submit, .submit-registration):hover:not(:disabled) { background: var(--color-primary-hover); border-color: var(--color-primary-hover); color: var(--color-on-primary); }
+.registration-page .main-content :is(.button-primary, .topics__create-proposal, .proposal-form__submit, .submit-registration):active:not(:disabled) { background: var(--color-primary-active); border-color: var(--color-primary-active); color: var(--color-on-primary); }
