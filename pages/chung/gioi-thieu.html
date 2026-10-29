@@ -8,8 +8,15 @@
       content="Giới thiệu hệ thống quản lý đồ án và khóa luận tốt nghiệp: kết nối sinh viên và giảng viên, theo dõi tiến độ và trao đổi phản hồi."
     />
     <title>Giới thiệu | Quản lý đồ án và khóa luận</title>
+    <link rel="stylesheet" href="../../assets/css/tokens.css" />
+    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../assets/css/components.css" />
+    <link rel="stylesheet" href="../../assets/css/common.css" />
+    <link rel="stylesheet" href="../../assets/css/information.css" />
+    <script src="../../assets/js/main-nav.js" defer></script>
+    <script src="../../assets/js/about-tabs.js" defer></script>
   </head>
-  <body>
+  <body class="common-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
 
     <!-- ĐẦU TRANG CÔNG KHAI -->
@@ -19,14 +26,21 @@
           <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="48" height="48" />
           <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
         </a>
-        <nav class="main-nav" aria-label="Điều hướng chính">
-          <ul class="main-nav__list">
-            <li><a href="gioi-thieu.html" aria-current="page">Giới thiệu</a></li>
-            <li><a href="thong-bao.html">Thông báo</a></li>
-            <li><a href="lien-he.html">Liên hệ</a></li>
-            <li><a href="dang-nhap.html">Đăng nhập</a></li>
-          </ul>
-        </nav>
+        <details class="main-nav-menu" open>
+          <summary class="main-nav-menu__toggle" aria-label="Mở hoặc thu gọn điều hướng chính">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+            <span>Menu</span>
+          </summary>
+          <nav class="main-nav" aria-label="Điều hướng chính">
+            <ul class="main-nav__list">
+              <li><a href="gioi-thieu.html" aria-current="page">Giới thiệu</a></li>
+              <li><a href="thong-bao.html">Thông báo</a></li>
+              <li><a href="lien-he.html">Liên hệ</a></li>
+              <li><a href="dang-nhap.html">Đăng nhập</a></li>
+            </ul>
+            <span class="main-nav__indicator" aria-hidden="true"></span>
+          </nav>
+        </details>
       </div>
     </header>
 
@@ -43,12 +57,12 @@
         </div>
         <!-- Khung minh họa máy tính và mũ tốt nghiệp; bổ sung tài nguyên ở bước giao diện. -->
         <figure class="about-hero__illustration">
-          <figcaption>Hình minh họa hệ thống quản lý đồ án và khóa luận</figcaption>
+          <img src="../../assets/images/about-project-illustration.png" alt="Hình minh họa hệ thống quản lý đồ án và khóa luận" width="1448" height="1086" />
         </figure>
       </section>
 
       <div class="page-container">
-        <!-- Các lựa chọn vai trò dùng liên kết đến nội dung trong bản HTML. -->
+        <!-- Liên kết vẫn dẫn tới từng vai trò khi JavaScript không chạy. -->
         <section class="about-audiences" aria-labelledby="product-title">
           <header class="section-header">
             <h2 id="product-title">Hệ thống hỗ trợ những ai?</h2>
@@ -56,12 +70,12 @@
           </header>
           <nav class="about-audiences__navigation" aria-label="Vai trò sử dụng hệ thống">
             <ul>
-              <li><a href="#vai-tro-sinh-vien">Sinh viên</a></li>
-              <li><a href="#vai-tro-giang-vien">Giảng viên</a></li>
-              <li><a href="#vai-tro-bo-mon-khoa">Bộ môn / Khoa</a></li>
+              <li><a id="role-tab-student" href="#vai-tro-sinh-vien">Sinh viên</a></li>
+              <li><a id="role-tab-lecturer" href="#vai-tro-giang-vien">Giảng viên</a></li>
+              <li><a id="role-tab-department" href="#vai-tro-bo-mon-khoa">Bộ môn / Khoa</a></li>
             </ul>
           </nav>
-          <!-- Hiển thị đủ ba nội dung; chuyển tab sẽ được bổ sung ở bước CSS/JavaScript. -->
+          <!-- Chỉ panel đang chọn hiển thị khi các tab đã được khởi tạo. -->
           <section id="vai-tro-sinh-vien" class="about-audience" aria-labelledby="student-role-title">
             <h3 id="student-role-title">Sinh viên</h3>
             <div class="about-audience__content">
@@ -80,9 +94,9 @@
                 </div>
               </figure>
               <ul class="about-audience__benefits">
-                <li>Tìm và đăng ký đề tài</li>
-                <li>Theo dõi tiến độ, lịch và hạn nộp</li>
-                <li>Nộp báo cáo, xem phản hồi và kết quả</li>
+                <li><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" />Tìm và đăng ký đề tài</li>
+                <li><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" />Theo dõi tiến độ, lịch và hạn nộp</li>
+                <li><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" />Nộp báo cáo, xem phản hồi và kết quả</li>
               </ul>
             </div>
           </section>
@@ -106,16 +120,20 @@
                 </div>
               </figure>
               <ul class="about-audience__benefits">
-                <li>Tạo và quản lý đề tài</li>
-                <li>Xét duyệt đăng ký và đề xuất</li>
-                <li>Theo dõi tiến độ, tạo yêu cầu nộp</li>
-                <li>Nhận xét bài nộp và đánh giá kết quả</li>
+                <li><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" />Tạo và quản lý đề tài</li>
+                <li><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" />Xét duyệt đăng ký và đề xuất</li>
+                <li><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" />Theo dõi tiến độ, tạo yêu cầu nộp</li>
+                <li><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" />Nhận xét bài nộp và đánh giá kết quả</li>
               </ul>
             </div>
           </section>
           <section id="vai-tro-bo-mon-khoa" class="about-audience about-audience--upcoming" aria-labelledby="department-role-title">
             <h3 id="department-role-title">Bộ môn / Khoa</h3>
             <div class="about-audience__coming-soon">
+              <div class="about-audience__coming-soon-icons" aria-hidden="true">
+                <img src="../../assets/images/icons/role-settings.svg" alt="" width="24" height="24" />
+                <img src="../../assets/images/icons/role-clock.svg" alt="" width="24" height="24" />
+              </div>
               <h4>Chức năng đang được phát triển</h4>
               <p>
                 Các công cụ hỗ trợ quản lý và tổng hợp thông tin đồ án, khóa luận

@@ -8,8 +8,15 @@
       content="Đăng nhập hệ thống quản lý đồ án và khóa luận tốt nghiệp dành cho sinh viên và giảng viên."
     />
     <title>Đăng nhập | Quản lý đồ án và khóa luận</title>
+    <link rel="stylesheet" href="../../assets/css/tokens.css" />
+    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../assets/css/components.css" />
+    <link rel="stylesheet" href="../../assets/css/common.css" />
+    <link rel="stylesheet" href="../../assets/css/auth.css" />
+    <script src="../../assets/js/main-nav.js" defer></script>
+    <script src="../../assets/js/password-toggle.js" defer></script>
   </head>
-  <body>
+  <body class="common-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
 
     <!-- ĐẦU TRANG -->
@@ -19,14 +26,21 @@
           <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="48" height="48" />
           <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
         </a>
-        <nav class="main-nav" aria-label="Điều hướng chính">
-          <ul class="main-nav__list">
-            <li><a href="gioi-thieu.html">Giới thiệu</a></li>
-            <li><a href="thong-bao.html">Thông báo</a></li>
-            <li><a href="lien-he.html">Liên hệ</a></li>
-            <li><a href="dang-nhap.html" aria-current="page">Đăng nhập</a></li>
-          </ul>
-        </nav>
+        <details class="main-nav-menu" open>
+          <summary class="main-nav-menu__toggle" aria-label="Mở hoặc thu gọn điều hướng chính">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+            <span>Menu</span>
+          </summary>
+          <nav class="main-nav" aria-label="Điều hướng chính">
+            <ul class="main-nav__list">
+              <li><a href="gioi-thieu.html">Giới thiệu</a></li>
+              <li><a href="thong-bao.html">Thông báo</a></li>
+              <li><a href="lien-he.html">Liên hệ</a></li>
+              <li><a href="dang-nhap.html" aria-current="page">Đăng nhập</a></li>
+            </ul>
+            <span class="main-nav__indicator" aria-hidden="true"></span>
+          </nav>
+        </details>
       </div>
     </header>
 
@@ -35,7 +49,7 @@
         <!-- KHUNG MINH HỌA: thay nội dung bằng ảnh khi có tài nguyên chính thức. -->
         <div class="login-illustration">
           <figure class="login-illustration__placeholder">
-            <figcaption>HÌNH ẢNH MINH HỌA</figcaption>
+            <img src="../../assets/images/about-project-illustration.png" alt="Hình minh họa hệ thống quản lý đồ án và khóa luận" width="1448" height="1086" />
           </figure>
         </div>
 
@@ -76,15 +90,15 @@
                   autocomplete="current-password"
                   required
                 />
-                <!-- Cần JavaScript để bật tính năng hiện/ẩn mật khẩu. -->
                 <button
                   class="password-field__toggle"
                   type="button"
-                  aria-label="Hiện mật khẩu (chưa hỗ trợ)"
+                  aria-label="Hiện mật khẩu"
                   aria-controls="password"
-                  disabled
+                  aria-pressed="false"
+                  hidden
                 >
-                  Hiện mật khẩu
+                  <img src="../../assets/images/icons/password-eye.svg" alt="" width="20" height="20" aria-hidden="true" />
                 </button>
               </div>
             </div>

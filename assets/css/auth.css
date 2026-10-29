@@ -1,0 +1,300 @@
+/* Layout for the shared sign-in and account-recovery pages.
+   Colors, controls and typography inherit the shared design tokens. */
+
+.login-page {
+  padding-block: 3rem 4rem;
+}
+
+.login-page__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4rem);
+  width: min(100% - 3rem, 72rem);
+  margin-inline: auto;
+}
+
+.login-illustration {
+  min-width: 0;
+}
+
+.login-illustration__placeholder {
+  display: grid;
+  min-height: 30rem;
+  margin: 0;
+  padding: 2rem;
+  place-items: center;
+  border: 1px dashed var(--color-control-border);
+  border-radius: 12px;
+  background: var(--color-info-bg);
+  color: var(--color-info-fg);
+  text-align: center;
+}
+
+.login-illustration__placeholder figcaption {
+  max-width: 24ch;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.login-illustration__placeholder:has(img) {
+  min-height: 0;
+  padding: 0;
+  gap: 0.75rem;
+  border: 0;
+  background: transparent;
+}
+
+.login-illustration__placeholder img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 26rem;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.login-illustration__placeholder:has(img) figcaption {
+  max-width: none;
+  color: var(--color-muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.login-panel {
+  width: 100%;
+  max-width: 32rem;
+  min-width: 0;
+  margin-inline: auto;
+}
+
+.login-panel__header {
+  margin-bottom: 2rem;
+}
+
+.login-panel__header h1,
+.recovery-panel h1 {
+  margin: 0 0 0.75rem;
+  color: var(--color-heading);
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.login-panel__header p {
+  margin: 0;
+  color: var(--color-muted-foreground);
+  line-height: 1.75;
+}
+
+.login-form,
+.recovery-form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.login-form .form-field,
+.recovery-form .form-field {
+  display: grid;
+  min-width: 0;
+  gap: 0.5rem;
+}
+
+.login-form input,
+.recovery-form input {
+  width: 100%;
+  min-width: 0;
+}
+
+.password-field {
+  position: relative;
+  min-width: 0;
+}
+
+.login-form input:not([type="checkbox"]):not([type="radio"]) {
+  min-height: 3rem;
+}
+
+.password-field input:not([type="checkbox"]):not([type="radio"]) {
+  padding-inline-end: 3.5rem;
+}
+
+.password-field input::-ms-reveal {
+  display: none;
+}
+
+.password-field__toggle {
+  position: absolute;
+  top: 50%;
+  inset-inline-end: 0.125rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-height: 2.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0.375rem;
+  background: transparent;
+  color: var(--color-muted-foreground);
+  transform: translateY(-50%);
+}
+
+.password-field__toggle[aria-pressed="true"] {
+  background: var(--color-info-bg);
+}
+
+.password-field__toggle:focus-visible {
+  outline-offset: -3px;
+}
+
+.login-form__forgot-password {
+  margin: -0.25rem 0 0;
+  text-align: right;
+}
+
+.login-form__forgot-password a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.login-form__submit,
+.recovery-form > button {
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  border: 1px solid transparent;
+  background: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+}
+
+.login-form__submit:hover:not(:disabled),
+.recovery-form > button:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+}
+
+.login-form__submit:active:not(:disabled),
+.recovery-form > button:active:not(:disabled) {
+  background: var(--color-primary-active);
+}
+
+.login-form__help {
+  margin: 0;
+  color: var(--color-muted-foreground);
+  font-size: 0.875rem;
+  line-height: 1.65;
+  text-align: center;
+}
+
+.login-form > .demo-notice {
+  margin: 0;
+}
+
+.recovery-page {
+  padding-block: 2rem 4rem;
+}
+
+.recovery-page > .page-container {
+  width: min(100% - 3rem, 72rem);
+  margin-inline: auto;
+}
+
+.recovery-page .breadcrumb {
+  margin-bottom: 2rem;
+}
+
+.recovery-panel {
+  width: min(100%, 34rem);
+  margin-inline: auto;
+  padding: 2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-surface);
+}
+
+.recovery-panel > p:not(.demo-notice) {
+  margin: 0 0 1.75rem;
+  color: var(--color-muted-foreground);
+  line-height: 1.75;
+}
+
+.recovery-form > a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  justify-self: center;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 0.5rem;
+  text-align: center;
+}
+
+.recovery-panel > .demo-notice {
+  margin: 1.5rem 0 0;
+}
+
+@media (max-width: 56rem) {
+  .login-page {
+    padding-block: 2rem 3rem;
+  }
+
+  .login-page__inner {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 36rem;
+    gap: 2rem;
+  }
+
+  .login-illustration__placeholder {
+    min-height: 10rem;
+    padding: 1.5rem;
+  }
+
+  .login-illustration__placeholder:has(img) {
+    min-height: 0;
+    padding: 0;
+    gap: 0.5rem;
+  }
+
+  .login-illustration__placeholder img {
+    max-height: 9rem;
+  }
+
+  .login-panel {
+    max-width: none;
+  }
+
+  .login-panel__header br {
+    display: none;
+  }
+}
+
+@media (max-width: 35rem) {
+  .login-page__inner,
+  .recovery-page > .page-container {
+    width: calc(100% - 2rem);
+  }
+
+  .login-panel__header h1,
+  .recovery-panel h1 {
+    font-size: 1.5rem;
+  }
+
+  .login-panel__header {
+    margin-bottom: 1.5rem;
+  }
+
+  .recovery-page {
+    padding-block: 1.5rem 3rem;
+  }
+
+  .recovery-page .breadcrumb {
+    margin-bottom: 1.5rem;
+  }
+
+  .recovery-panel {
+    padding: 1.5rem;
+  }
+}
