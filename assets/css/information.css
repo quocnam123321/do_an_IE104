@@ -13,7 +13,7 @@
 .about-hero, .about-page > .page-container > section, .contact-page > .page-container {
   width: 100%;
   max-width: none;
-  padding-inline: max(var(--page-gutter), calc((100% - 80rem) / 2));
+  padding-inline: max(var(--page-gutter), calc((100% - var(--content-max-width)) / 2 + var(--page-gutter)));
 }
 .about-hero {
   display: grid;
