@@ -1,3 +1,5 @@
+@import url("breadcrumb.css");
+
 /* Chỉ các trang có link tới file này mới dùng khung giao diện chung. */
 .site-header {
   background: var(--header-background);
@@ -227,19 +229,6 @@
   font-size: .75rem;
   color: var(--color-muted-foreground);
 }
-.breadcrumb__list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  font-size: var(--font-size-secondary);
-  color: var(--color-muted-foreground);
-}
-.breadcrumb__item + .breadcrumb__item::before { content: "/"; margin-right: var(--space-2); }
-.breadcrumb a { color: var(--color-muted-foreground); text-decoration: none; }
-.breadcrumb a:hover { color: var(--color-primary); text-decoration: underline; }
 .site-footer {
   margin-top: var(--space-8);
   background: var(--color-surface);

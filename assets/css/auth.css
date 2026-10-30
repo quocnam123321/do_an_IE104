@@ -1,6 +1,12 @@
 /* Layout for the shared sign-in and account-recovery pages.
    Colors, controls and typography inherit the shared design tokens. */
 
+/* Keep the established project palette within the reference-inspired layout. */
+.login-page--portal {
+  color: var(--color-foreground);
+  background: var(--color-background);
+}
+
 .login-page {
   padding-block: 3rem 4rem;
 }
@@ -43,8 +49,9 @@
   min-height: 0;
   padding: 0;
   gap: 0.75rem;
-  border: 0;
-  background: transparent;
+  border: 2px solid var(--color-control-border);
+  background: var(--color-surface);
+  overflow: hidden;
 }
 
 .login-illustration__placeholder img {
@@ -126,7 +133,7 @@
   display: none;
 }
 
-.password-field__toggle {
+.common-page .password-field__toggle {
   position: absolute;
   top: 50%;
   inset-inline-end: 0.125rem;
@@ -141,11 +148,21 @@
   transform: translateY(-50%);
 }
 
-.password-field__toggle[aria-pressed="true"] {
+.common-page .password-field__toggle:hover:not(:disabled) {
+  background: var(--color-neutral-bg);
+  color: var(--color-foreground);
+}
+
+.common-page .password-field__toggle:active:not(:disabled) {
   background: var(--color-info-bg);
 }
 
-.password-field__toggle:focus-visible {
+.password-field__toggle svg {
+  flex: 0 0 auto;
+  pointer-events: none;
+}
+
+.common-page .password-field__toggle:focus-visible {
   outline-offset: -3px;
 }
 
@@ -297,4 +314,95 @@
   .recovery-panel {
     padding: 1.5rem;
   }
+}
+
+/* Login composition adapted from the supplied UIT portal reference. */
+.login-page--portal { padding: 0; }
+.login-page--portal .login-page__inner {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  align-items: stretch;
+  gap: 0;
+  min-height: calc(100svh - 5rem);
+}
+.login-introduction {
+  min-width: 0;
+  padding: clamp(2rem, 4.5vw, 5rem);
+  background: var(--color-info-bg);
+}
+.login-introduction__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  color: var(--color-heading);
+  font-size: 1.125rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+.login-introduction__brand img { flex-shrink: 0; padding: 0.25rem; background: var(--color-surface); border-radius: 0.5rem; }
+.common-page .login-introduction h2 {
+  margin: 0 0 1.5rem;
+  color: var(--color-heading);
+  font-size: clamp(2.5rem, 4.4vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  text-wrap: initial;
+}
+.login-introduction h2 span { color: var(--color-heading); }
+.login-introduction__description { max-width: 48ch; color: var(--color-muted-foreground); font-size: 1.125rem; line-height: 1.75; }
+.login-introduction__description strong { color: var(--color-heading); font-weight: 600; }
+.login-introduction__journey {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin: 2.5rem 0;
+  padding: 1.75rem 0;
+  border-block: 1px solid var(--color-border);
+  list-style: none;
+}
+.login-introduction__journey li { display: grid; align-content: start; gap: 0.5rem; min-width: 0; }
+.login-introduction__journey strong { font-size: 1.25rem; color: var(--color-heading); }
+.login-introduction__journey span { font-size: 0.875rem; color: var(--color-muted-foreground); }
+.login-introduction__benefit { display: flex; align-items: start; gap: 1rem; padding-block: 0.5rem; }
+.login-introduction__benefit > svg { flex-shrink: 0; margin-top: 0.25rem; color: var(--color-primary); }
+.common-page .login-introduction__benefit h3 { margin-bottom: 0.5rem; font-size: 1rem; color: var(--color-heading); }
+.login-introduction__benefit p { color: var(--color-muted-foreground); line-height: 1.7; font-size: 0.875rem; }
+.login-page--portal .login-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 40rem;
+  padding: clamp(2rem, 4vw, 4rem);
+  margin: auto;
+}
+.common-page .login-page--portal .login-panel__header h1 { font-size: 2.25rem; color: var(--color-heading); font-weight: 700; }
+.login-page--portal .login-panel__header { margin-bottom: 2rem; }
+.login-page--portal .login-form { gap: 1rem; }
+.login-page--portal .login-form input { background: var(--color-surface); color: var(--color-foreground); caret-color: var(--color-primary); }
+.login-page--portal .password-field__toggle { color: var(--color-muted-foreground); }
+.login-page--portal .login-form__submit:disabled { background: var(--color-neutral-bg); border-color: var(--color-border); color: var(--color-muted-foreground); }
+.login-page--portal .login-form__help { text-align: left; }
+.login-page--portal .demo-notice { background: transparent; border: 0; border-radius: 0; padding: 0.75rem 0 0; font-size: 0.8125rem; }
+.login-panel__support { margin-top: 2rem !important; color: var(--color-muted-foreground); font-size: 0.875rem; line-height: 1.8; text-align: center; }
+.login-panel__support a { display: inline-flex; align-items: center; min-height: 2.75rem; font-weight: 600; }
+@media (max-width: 64rem) {
+  .login-page--portal .login-page__inner { grid-template-columns: minmax(0, 1fr); }
+  .login-introduction { padding: 2.5rem max(1.5rem, calc((100% - 40rem) / 2)); }
+  .common-page .login-introduction h2 { font-size: clamp(2.5rem, 6vw, 3.5rem); }
+  .login-introduction h2 br { display: none; }
+  .login-page--portal .login-panel { max-width: 44rem; padding: 3rem 2rem; }
+}
+@media (max-width: 30rem) {
+  .login-introduction { padding: 2rem 1rem; }
+  .login-introduction__brand { font-size: 1rem; }
+  .common-page .login-introduction h2 { font-size: 2.25rem; }
+  .login-introduction__journey { gap: 1rem; margin-block: 1.5rem; }
+  .login-introduction__journey strong { font-size: 1rem; }
+  .login-page--portal .login-panel { padding: 2.5rem 1rem; }
+  .common-page .login-page--portal .login-panel__header h1 { font-size: 1.75rem; }
 }

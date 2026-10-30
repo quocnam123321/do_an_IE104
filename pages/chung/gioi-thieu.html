@@ -58,7 +58,7 @@
           </p>
           <a class="about-hero__action" href="dang-nhap.html">Đăng nhập để bắt đầu</a>
         </div>
-        <!-- Khung minh họa máy tính và mũ tốt nghiệp; bổ sung tài nguyên ở bước giao diện. -->
+        <!-- Minh họa hiện có, giữ bộ màu và hình ảnh của dự án. -->
         <figure class="about-hero__illustration">
           <img src="../../assets/images/about-project-illustration.png" alt="Hình minh họa hệ thống quản lý đồ án và khóa luận" width="1448" height="1086" />
         </figure>
@@ -83,17 +83,33 @@
             <h3 id="student-role-title">Sinh viên</h3>
             <div class="about-audience__content">
               <figure class="about-audience__preview">
-                <figcaption>Minh họa giao diện: Tổng quan sinh viên</figcaption>
+                <figcaption>Tổng quan sinh viên<span class="visually-hidden"> — minh họa giao diện</span></figcaption>
                 <div class="dashboard-preview" aria-hidden="true">
-                  <p class="dashboard-preview__title">Tổng quan sinh viên</p>
-                  <div class="dashboard-preview__summary">
-                    <p>Đề tài của tôi</p>
-                    <p>Lịch và hạn nộp</p>
+                  <div class="dashboard-preview__sidebar">
+                    <img src="../../assets/images/icons/about-house.svg" alt="" width="24" height="24" />
+                    <img src="../../assets/images/icons/about-book.svg" alt="" width="24" height="24" />
+                    <img src="../../assets/images/icons/about-calendar.svg" alt="" width="24" height="24" />
+                    <img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" />
+                    <img src="../../assets/images/icons/role-settings.svg" alt="" width="24" height="24" />
                   </div>
-                  <p>Tiến độ thực hiện đồ án / khóa luận</p>
-                  <div class="dashboard-preview__progress"></div>
-                  <p>Công việc cần làm</p>
-                  <div class="dashboard-preview__tasks"></div>
+                  <div class="dashboard-preview__main">
+                    <div class="dashboard-preview__summary">
+                      <div><p>Đề tài của tôi</p><span class="preview-line"></span></div>
+                      <div><p>Lịch và hạn nộp</p><span class="preview-line"></span></div>
+                    </div>
+                    <div class="dashboard-preview__block">
+                      <p class="dashboard-preview__title">Tiến độ thực hiện đồ án / khóa luận</p>
+                      <div class="dashboard-preview__progress-row"><span class="preview-line"></span><span class="dashboard-preview__progress"></span></div>
+                      <div class="dashboard-preview__progress-row"><span class="preview-line"></span><span class="dashboard-preview__progress"></span></div>
+                      <div class="dashboard-preview__progress-row"><span class="preview-line"></span><span class="dashboard-preview__progress"></span></div>
+                    </div>
+                    <div class="dashboard-preview__block">
+                      <p class="dashboard-preview__title">Công việc cần làm</p>
+                      <div class="dashboard-preview__task"><img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
+                      <div class="dashboard-preview__task"><img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
+                      <div class="dashboard-preview__task"><img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
+                    </div>
+                  </div>
                 </div>
               </figure>
               <ul class="about-audience__benefits">
@@ -107,19 +123,35 @@
             <h3 id="lecturer-role-title">Giảng viên</h3>
             <div class="about-audience__content">
               <figure class="about-audience__preview">
-                <figcaption>Minh họa giao diện: Tổng quan giảng viên</figcaption>
+                <figcaption>Tổng quan giảng viên<span class="visually-hidden"> — minh họa giao diện</span></figcaption>
                 <div class="dashboard-preview" aria-hidden="true">
-                  <p class="dashboard-preview__title">Tổng quan giảng viên</p>
-                  <div class="dashboard-preview__summary">
-                    <p>Đề tài hướng dẫn</p>
-                    <p>Yêu cầu chờ duyệt</p>
-                    <p>Bài nộp mới</p>
-                    <p>Hạn nộp sắp tới</p>
+                  <div class="dashboard-preview__sidebar">
+                    <img src="../../assets/images/icons/about-house.svg" alt="" width="24" height="24" />
+                    <img src="../../assets/images/icons/about-book.svg" alt="" width="24" height="24" />
+                    <img src="../../assets/images/icons/about-calendar.svg" alt="" width="24" height="24" />
+                    <img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" />
+                    <img src="../../assets/images/icons/role-settings.svg" alt="" width="24" height="24" />
                   </div>
-                  <p>Đề tài đang hướng dẫn</p>
-                  <div class="dashboard-preview__topics"></div>
-                  <p>Yêu cầu chờ duyệt</p>
-                  <div class="dashboard-preview__requests"></div>
+                  <div class="dashboard-preview__main">
+                    <div class="dashboard-preview__summary">
+                      <div><p>Đề tài hướng dẫn</p><span class="preview-line"></span></div>
+                      <div><p>Yêu cầu chờ duyệt</p><span class="preview-line"></span></div>
+                      <div><p>Bài nộp mới</p><span class="preview-line"></span></div>
+                      <div><p>Hạn nộp sắp tới</p><span class="preview-line"></span></div>
+                    </div>
+                    <div class="dashboard-preview__block">
+                      <p class="dashboard-preview__title">Đề tài đang hướng dẫn</p>
+                      <div class="dashboard-preview__progress-row"><span class="preview-line"></span><span class="dashboard-preview__progress"></span></div>
+                      <div class="dashboard-preview__progress-row"><span class="preview-line"></span><span class="dashboard-preview__progress"></span></div>
+                      <div class="dashboard-preview__progress-row"><span class="preview-line"></span><span class="dashboard-preview__progress"></span></div>
+                    </div>
+                    <div class="dashboard-preview__block">
+                      <p class="dashboard-preview__title">Yêu cầu chờ duyệt</p>
+                      <div class="dashboard-preview__task"><img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
+                      <div class="dashboard-preview__task"><img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
+                      <div class="dashboard-preview__task"><img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
+                    </div>
+                  </div>
                 </div>
               </figure>
               <ul class="about-audience__benefits">
@@ -158,30 +190,35 @@
           </header>
           <div class="about-features__list">
             <article class="feature-card feature-card--progress">
-              <h3>Quản lý tiến độ</h3>
+              <h3><img src="../../assets/images/icons/about-chart.svg" alt="" width="24" height="24" /><span>Quản lý tiến độ</span></h3>
               <p>Theo dõi công việc và các mốc thực hiện.</p>
               <figure class="feature-card__illustration">
-                <figcaption>Minh họa danh sách công việc và tiến độ thực hiện</figcaption>
+                <figcaption class="visually-hidden">Minh họa danh sách công việc và tiến độ thực hiện</figcaption>
+              <div class="feature-progress" aria-hidden="true">
+                <div class="feature-progress__row"><span class="feature-progress__bar"></span><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
+                <div class="feature-progress__row"><span class="feature-progress__bar"></span><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
+                <div class="feature-progress__row"><span class="feature-progress__bar"></span><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
+              </div>
               </figure>
             </article>
-            <article class="feature-card">
-              <h3>Nộp bài và phản hồi</h3>
+            <article class="feature-card feature-card--submission">
+              <h3><img src="../../assets/images/icons/about-upload.svg" alt="" width="24" height="24" /><span>Nộp bài và phản hồi</span></h3>
               <p>Gửi báo cáo và nhận góp ý từ giảng viên.</p>
             </article>
-            <article class="feature-card">
-              <h3>Lịch và hạn nộp</h3>
+            <article class="feature-card feature-card--calendar">
+              <h3><img src="../../assets/images/icons/about-calendar.svg" alt="" width="24" height="24" /><span>Lịch và hạn nộp</span></h3>
               <p>Theo dõi các mốc cần hoàn thành.</p>
             </article>
-            <article class="feature-card">
-              <h3>Thông báo</h3>
+            <article class="feature-card feature-card--notice">
+              <h3><img src="../../assets/images/icons/about-bell.svg" alt="" width="24" height="24" /><span>Thông báo</span></h3>
               <p>Cập nhật thông tin liên quan.</p>
             </article>
-            <article class="feature-card">
-              <h3>Đăng ký đề tài</h3>
+            <article class="feature-card feature-card--registration">
+              <h3><img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" /><span>Đăng ký đề tài</span></h3>
               <p>Lựa chọn đề tài hoặc gửi đề xuất.</p>
             </article>
-            <article class="feature-card">
-              <h3>Kết quả đánh giá</h3>
+            <article class="feature-card feature-card--evaluation">
+              <h3><img src="../../assets/images/icons/about-file-check.svg" alt="" width="24" height="24" /><span>Kết quả đánh giá</span></h3>
               <p>Tra cứu nhận xét và kết quả.</p>
             </article>
           </div>
@@ -220,22 +257,22 @@
           </header>
           <ul class="about-team__list">
             <li class="member-card">
-              <div class="member-card__avatar" role="img" aria-label="Ảnh đại diện thành viên 01 — khung giữ chỗ"></div>
+              <img class="member-card__avatar" src="../../assets/images/icons/about-member.svg" alt="Ảnh đại diện thành viên 01 — khung giữ chỗ" width="64" height="64" />
               <h3>Thành viên 01</h3>
               <p>Vai trò / công việc</p>
             </li>
             <li class="member-card">
-              <div class="member-card__avatar" role="img" aria-label="Ảnh đại diện thành viên 02 — khung giữ chỗ"></div>
+              <img class="member-card__avatar" src="../../assets/images/icons/about-member.svg" alt="Ảnh đại diện thành viên 02 — khung giữ chỗ" width="64" height="64" />
               <h3>Thành viên 02</h3>
               <p>Vai trò / công việc</p>
             </li>
             <li class="member-card">
-              <div class="member-card__avatar" role="img" aria-label="Ảnh đại diện thành viên 03 — khung giữ chỗ"></div>
+              <img class="member-card__avatar" src="../../assets/images/icons/about-member.svg" alt="Ảnh đại diện thành viên 03 — khung giữ chỗ" width="64" height="64" />
               <h3>Thành viên 03</h3>
               <p>Vai trò / công việc</p>
             </li>
             <li class="member-card">
-              <div class="member-card__avatar" role="img" aria-label="Ảnh đại diện thành viên 04 — khung giữ chỗ"></div>
+              <img class="member-card__avatar" src="../../assets/images/icons/about-member.svg" alt="Ảnh đại diện thành viên 04 — khung giữ chỗ" width="64" height="64" />
               <h3>Thành viên 04</h3>
               <p>Vai trò / công việc</p>
             </li>

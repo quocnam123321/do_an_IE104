@@ -45,17 +45,17 @@
     <main id="main-content" class="notifications-page" tabindex="-1">
       <div class="page-container">
         <nav class="breadcrumb" aria-label="Đường dẫn trang">
-          <ol>
-            <li><a href="../../index.html">Chung</a></li>
-            <li aria-current="page">Thông báo</li>
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item"><a href="../../index.html">Chung</a></li>
+            <li class="breadcrumb__item" aria-current="page">Thông báo</li>
           </ol>
         </nav>
         <header class="page-header">
           <h1 id="notification-list-title">Tất cả thông báo</h1>
         </header>
 
-        <!-- Wireframe: bộ lọc dạng nút trên desktop và ô chọn trên mobile.
-             CSS/JavaScript sẽ xử lý biến thể hiển thị, lọc và đổi tiêu đề sau. -->
+        <!-- Bộ lọc dạng nút trên desktop và ô chọn trên mobile.
+             Chưa có xử lý lọc dữ liệu hoặc đổi tiêu đề. -->
         <section class="notification-tools" aria-label="Lọc theo loại thông báo" aria-describedby="demo-notice">
           <div class="notification-categories notification-categories--desktop" role="group" aria-label="Loại thông báo">
             <button type="button" data-category="all" aria-pressed="true" disabled>Tất cả</button>

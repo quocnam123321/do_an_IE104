@@ -47,22 +47,32 @@
       </div>
     </header>
 
-    <main id="main-content" class="login-page" tabindex="-1">
+    <main id="main-content" class="login-page login-page--portal" tabindex="-1">
       <div class="login-page__inner">
-        <!-- KHUNG MINH HỌA: thay nội dung bằng ảnh khi có tài nguyên chính thức. -->
-        <div class="login-illustration">
-          <figure class="login-illustration__placeholder">
-            <img src="../../assets/images/about-project-illustration.png" alt="Hình minh họa hệ thống quản lý đồ án và khóa luận" width="1448" height="1086" />
-          </figure>
-        </div>
+        <section class="login-introduction" aria-labelledby="login-introduction-title">
+          <a class="login-introduction__brand" href="gioi-thieu.html">
+            <img src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="56" height="56" />
+            <span>Đồ án IE104 · Nhóm 7</span>
+          </a>
+          <h2 id="login-introduction-title">Quản lý đồ án <br />và khóa luận <br /><span>tốt nghiệp</span></h2>
+          <p class="login-introduction__description">Không gian chung dành cho <strong>sinh viên và giảng viên</strong>. Đồng hành từ lựa chọn đề tài đến hoàn thành đồ án.</p>
+          <ol class="login-introduction__journey" aria-label="Các giai đoạn thực hiện">
+            <li><strong>Đăng ký</strong><span>Tìm đề tài phù hợp</span></li>
+            <li><strong>Thực hiện</strong><span>Theo dõi tiến độ</span></li>
+            <li><strong>Đánh giá</strong><span>Xem phản hồi và kết quả</span></li>
+          </ol>
+          <div class="login-introduction__benefit">
+            <svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 3 7v5c0 5 9 9 9 9s9-4 9-9V7l-9-4Z" /><path d="m8 12 3 3 5-6" /></svg>
+            <div><h3>Công việc học thuật trong một không gian</h3><p>Đề tài, lịch hạn nộp, báo cáo và phản hồi được sắp xếp theo từng công việc.</p></div>
+          </div>
+        </section>
 
         <!-- FORM DÙNG CHUNG CHO SINH VIÊN VÀ GIẢNG VIÊN -->
         <section class="login-panel" aria-labelledby="login-title">
           <header class="login-panel__header">
-            <h1 id="login-title">Chào mừng bạn trở lại</h1>
+            <h1 id="login-title">Đăng nhập</h1>
             <p>
-              Quản lý đồ án và khóa luận trong một không gian chung.<br />
-              Theo dõi tiến độ, cập nhật báo cáo và xem phản hồi từ giảng viên.
+              Sử dụng tài khoản sinh viên hoặc giảng viên của bạn để tiếp tục.
             </p>
           </header>
 
@@ -97,11 +107,18 @@
                   class="password-field__toggle"
                   type="button"
                   aria-label="Hiện mật khẩu"
+                  title="Hiện mật khẩu"
                   aria-controls="password"
                   aria-pressed="false"
                   hidden
                 >
-                  <img src="../../assets/images/icons/password-eye.svg" alt="" width="20" height="20" aria-hidden="true" />
+                  <svg data-password-icon="show" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  <svg data-password-icon="hide" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" hidden>
+                    <path d="m3 3 18 18M10.6 5.1A11.3 11.3 0 0 1 12 5c6.5 0 10 7 10 7a18.5 18.5 0 0 1-3 4M6.6 6.6A19 19 0 0 0 2 12s3.5 7 10 7a11.8 11.8 0 0 0 5.4-1.4M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+                  </svg>
                 </button>
               </div>
             </div>
@@ -124,6 +141,7 @@
               Đây là giao diện HTML minh họa. Chức năng đăng nhập chưa được kết nối.
             </p>
           </form>
+          <p class="login-panel__support">Cần hỗ trợ hoặc có góp ý về hệ thống?<br /><a href="lien-he.html">Liên hệ với nhóm phát triển</a></p>
         </section>
       </div>
     </main>

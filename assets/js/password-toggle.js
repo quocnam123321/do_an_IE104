@@ -6,8 +6,12 @@
 
     function setVisible(visible) {
       input.type = visible ? "text" : "password";
-      toggle.setAttribute("aria-label", visible ? "Ẩn mật khẩu" : "Hiện mật khẩu");
+      const label = visible ? "Ẩn mật khẩu" : "Hiện mật khẩu";
+      toggle.setAttribute("aria-label", label);
+      toggle.setAttribute("title", label);
       toggle.setAttribute("aria-pressed", String(visible));
+      toggle.querySelector('[data-password-icon="show"]')?.toggleAttribute("hidden", visible);
+      toggle.querySelector('[data-password-icon="hide"]')?.toggleAttribute("hidden", !visible);
     }
 
     toggle.addEventListener("click", () => setVisible(input.type === "password"));
