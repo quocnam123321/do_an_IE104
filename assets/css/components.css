@@ -1,7 +1,7 @@
 /* Chỉ các trang có link tới file này mới dùng khung giao diện chung. */
 .site-header {
-  background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
+  background: var(--header-background);
+  border-bottom: 1px solid var(--header-background);
 }
 .site-header__inner {
   /* Keep the brand aligned with page content; move the account to the right gutter. */
@@ -18,9 +18,13 @@
   display: flex;
   align-items: center;
   gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-surface);
+  border-radius: var(--radius-surface);
+  background: var(--color-surface);
   text-decoration: none;
 }
-.site-brand__logo { width: 3.5rem; height: 3.5rem; object-fit: contain; }
+.site-brand__logo { width: 3rem; height: 3rem; object-fit: contain; }
 .site-brand__name {
   max-width: 15rem;
   color: var(--color-brand);
@@ -28,9 +32,52 @@
   font-weight: 700;
   line-height: 1.5;
 }
+/* Chuyển sắc theo ảnh tham khảo; giữ chữ xanh khi không hỗ trợ clip. */
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .site-brand__name {
+    background-image: linear-gradient(100deg, var(--header-brand-text-start), var(--header-brand-text-middle) 48%, var(--header-brand-text-end));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+@media (forced-colors: active) {
+  .site-brand__name { background-image: none; color: LinkText; }
+}
 .site-navigation { flex: 1; min-width: 0; max-width: 46rem; }
 .site-navigation__toggle { display: none; }
-.main-nav { position: relative; flex: 1; min-width: 0; max-width: 46rem; }
+.site-header__login {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  margin-inline-start: auto;
+  padding: .625rem var(--space-6);
+  border-radius: var(--radius-full);
+  background: var(--header-login-background);
+  color: var(--color-on-primary);
+  font-size: var(--font-size-secondary);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color var(--transition-fast);
+}
+.site-header__login:hover { background: var(--header-login-hover); }
+.site-header__login:active { background: var(--header-login-active); }
+@media (max-width: 39.99rem) {
+  .site-brand { gap: var(--space-2); padding: var(--space-1) .375rem; }
+  .site-header__login { padding-inline: var(--space-3); font-size: .8125rem; }
+}
+
+.main-nav {
+  --indicator-x: 0px;
+  --indicator-width: 0px;
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  max-width: 46rem;
+}
 .main-nav__indicator {
   position: absolute;
   left: 0;
@@ -54,7 +101,7 @@
   margin: 0;
   padding: 0;
 }
-.main-nav__list { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.main-nav__list { display: flex; align-items: center; justify-content: flex-start; gap: var(--space-6); }
 /* Desktop tabs fill the header so both underline variants meet its lower edge. */
 @media (min-width: 68rem) {
   .site-header__inner { height: 5rem; min-height: 5rem; }
@@ -238,7 +285,7 @@
 
 @media (max-width: 67.99rem) {
   .site-header__inner { flex-wrap: wrap; gap: 0 var(--space-4); padding-top: var(--space-3); }
-  .site-brand { flex: 1; }
+  .site-brand { flex: 1; max-width: max-content; }
   .account-menu { margin-left: auto; }
   .site-navigation { order: 3; flex-basis: 100%; max-width: none; }
   .site-navigation__toggle {
@@ -261,6 +308,7 @@
   .main-nav > .main-nav__indicator { display: none; }
   .main-nav__list { flex-direction: column; align-items: stretch; gap: var(--space-1); }
   .main-nav__link, .main-nav__label { padding-inline: var(--space-3); border-radius: var(--radius-control); }
+  .main-nav__label { justify-content: space-between; }
   .main-nav__link[aria-current="page"] { background: var(--color-info-bg); }
   .main-nav__link[aria-current="page"]::before { display: none; }
   .main-nav__sublist { position: static; min-width: 0; padding: 0 0 0 var(--space-4); box-shadow: none; }
@@ -278,4 +326,86 @@
 
 @media (prefers-reduced-motion: reduce) {
   .main-nav--indicator-ready > .main-nav__indicator { transition: none; }
+}
+
+/* Tương thích ba trang cũ: giữ cấu trúc HTML và main-nav.js hiện có.
+   Header/footer vẫn dùng giao diện chung; chỉ xử lý phần markup khác nhau. */
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) :is(ul,ol,figure,dl,dd) { margin: 0; }
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) :is(h4,h5,h6,strong,b) { color: var(--color-heading); }
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) :is(a,button,select,summary) { touch-action: manipulation; }
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .main-content { min-width: 0; }
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__menu { display: none; }
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__menu-icon { width: 1.25rem; height: 1.25rem; }
+/* main-nav.js dùng các class khác nav-indicator.js của bản mới. */
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .main-nav--js > .main-nav__indicator { opacity: 1; }
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .main-nav--js .main-nav__link[aria-current="page"]::before { display: none; }
+:is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .main-nav--ready > .main-nav__indicator {
+  transition: transform 340ms cubic-bezier(.22,1,.36,1), width 340ms cubic-bezier(.22,1,.36,1);
+}
+/* Tài khoản cũ có thêm panel bao ngoài danh sách và thông báo. */
+.account-menu__panel {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  width: min(16rem, calc(100vw - 2rem));
+  padding: var(--space-2);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-floating);
+}
+.account-menu__panel .account-menu__list { position: static; width: 100%; min-width: 0; padding: 0; box-shadow: none; }
+.account-menu__panel #logout-notice { position: static; width: auto; padding: var(--space-3); }
+.confirmation-dialog form { display: inline-flex; margin-right: var(--space-2); }
+.confirmation-dialog button {
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+}
+.confirmation-dialog button:disabled { color: var(--color-muted-foreground); background: var(--color-neutral-bg); }
+/* Footer giảng viên dùng logo ảnh thay vì nhãn chữ. */
+.site-footer img.site-footer__logo { width: 2.5rem; height: 2.5rem; object-fit: contain; }
+@media (min-width: 68rem) {
+  :is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__inner > .main-nav { align-self: stretch; }
+}
+@media (max-width: 67.99rem) {
+  :is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__menu { display: block; margin-left: auto; }
+  :is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__menu-button {
+    display: flex; align-items: center; gap: var(--space-2);
+    min-height: var(--control-min-height); padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-control-border); border-radius: var(--radius-control);
+    background: var(--color-surface); font-size: var(--font-size-secondary); cursor: pointer; list-style: none;
+  }
+  :is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__menu-button::-webkit-details-marker { display: none; }
+  :is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__inner > .main-nav { order: 3; flex-basis: 100%; }
+  :is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .site-header__inner:has(.site-header__menu:not([open])) > .main-nav { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.student-overview-page, .lecturer-overview-page, .student-deadline-page) .main-nav--ready > .main-nav__indicator { transition: none; }
+}
+
+/* Màu header xanh dương; các menu nổi vẫn dùng nền trắng. */
+.site-header .main-nav__list > .main-nav__item > .main-nav__link,
+.site-header .main-nav__label { color: var(--header-foreground); }
+.site-header .main-nav__list > .main-nav__item > .main-nav__link:hover,
+.site-header .main-nav__label:hover { color: var(--header-hover-foreground); }
+.site-header .account-menu__toggle { color: var(--header-foreground); }
+.site-header .account-menu__avatar { color: var(--color-foreground); }
+.site-header .site-navigation__toggle,
+.site-header .site-header__menu-button {
+  color: var(--header-foreground);
+  background: transparent;
+  border-color: var(--header-control-border);
+}
+.site-header :focus-visible { outline-color: var(--header-focus); }
+.site-header :is(.main-nav__sublist, .account-menu__list) :focus-visible { outline-color: var(--color-focus); }
+@media (max-width: 67.99rem) {
+  .site-header .main-nav__list > .main-nav__item > .main-nav__link[aria-current="page"] { color: var(--color-primary); }
+  .site-header .main-nav__sublist { background: transparent; }
+  .site-header .main-nav__sublist .main-nav__link { color: var(--header-foreground); }
+  .site-header .main-nav__sublist .main-nav__link:hover { color: var(--header-hover-foreground); }
+  .site-header .main-nav__sublist .main-nav__link[aria-current="page"] { color: var(--color-primary); }
+  .site-header .main-nav__sublist :focus-visible { outline-color: var(--header-focus); }
 }

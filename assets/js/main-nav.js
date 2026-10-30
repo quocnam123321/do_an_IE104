@@ -1,117 +1,156 @@
-/* Shared underline for the public header; links keep their native navigation. */
 (() => {
-  const mobile = window.matchMedia("(max-width: 48rem)");
+  const navs = document.querySelectorAll('.main-nav');
+  if (!navs.length) return;
 
-  document.querySelectorAll(".main-nav").forEach((nav) => {
-    const links = [...nav.querySelectorAll(".main-nav__list a[href]")];
-    const indicator = nav.querySelector(".main-nav__indicator");
-    const menu = nav.closest(".main-nav-menu");
-    const toggle = menu?.querySelector(".main-nav-menu__toggle");
-    if (!indicator || !links.length) return;
+  navs.forEach((nav) => {
+    const list = nav.querySelector('.main-nav__list');
+    if (!list) return;
 
-    let hoveredLink = null;
-    let compact = mobile.matches;
-    let layoutFrame = 0;
-    let animationFrame = 0;
+    let indicator = nav.querySelector('.main-nav__indicator');
+    if (!indicator) {
+      indicator = document.createElement('span');
+      indicator.className = 'main-nav__indicator';
+      indicator.setAttribute('aria-hidden', 'true');
+      nav.append(indicator);
+    }
 
-    const focusedLink = () => links.find((link) => link === document.activeElement);
-    const currentLink = () => links.find((link) => link.getAttribute("aria-current") === "page");
-    const restingLink = () => focusedLink() || currentLink();
+    const tabs = Array.from(
+      list.querySelectorAll(
+        ':scope > .main-nav__item > .main-nav__link, :scope > .main-nav__item > .main-nav__disclosure > .main-nav__label'
+      )
+    );
+    if (!tabs.length) return;
 
-    function moveIndicator(link) {
-      if (!link || mobile.matches || !nav.getClientRects().length) return false;
+    const currentTab =
+      tabs.find((tab) => tab.getAttribute('aria-current') === 'page') ||
+      tabs.find((tab) => tab.hasAttribute('aria-current')) ||
+      tabs[0];
+
+    const compact = window.matchMedia('(max-width: 67.99rem)');
+    let activeTarget = currentTab;
+    let pointerTab = null;
+
+    function measureAndSet(target) {
+      if (!target || compact.matches) return false;
       const navRect = nav.getBoundingClientRect();
-      const linkRect = link.getBoundingClientRect();
-      const style = getComputedStyle(link);
-      const insetLeft = parseFloat(style.paddingLeft) + parseFloat(style.borderLeftWidth);
-      const insetRight = parseFloat(style.paddingRight) + parseFloat(style.borderRightWidth);
+      const tabRect = target.getBoundingClientRect();
+      if (navRect.width === 0 || tabRect.width === 0) return false;
 
-      // Only the absolutely positioned indicator changes size, never a tab.
-      nav.style.setProperty("--indicator-x", `${linkRect.left - navRect.left + insetLeft}px`);
-      nav.style.setProperty("--indicator-width", `${Math.max(0, linkRect.width - insetLeft - insetRight)}px`);
+      const style = window.getComputedStyle(target);
+      const padLeft = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.borderLeftWidth) || 0);
+      const padRight = (parseFloat(style.paddingRight) || 0) + (parseFloat(style.borderRightWidth) || 0);
+
+      let x = tabRect.left + padLeft - navRect.left - nav.clientLeft + nav.scrollLeft;
+      let width = Math.max(0, tabRect.width - padLeft - padRight);
+
+      const textEl = target.querySelector('.main-nav__text');
+      if (textEl) {
+        const textRect = textEl.getBoundingClientRect();
+        if (textRect.width > 0) {
+          x = textRect.left - navRect.left - nav.clientLeft + nav.scrollLeft;
+          width = textRect.width;
+        }
+      } else if (target.matches('.main-nav__label') && document.createRange) {
+        const range = document.createRange();
+        range.selectNodeContents(target);
+        const rangeRect = range.getBoundingClientRect();
+        if (rangeRect.width > 0) {
+          x = rangeRect.left - navRect.left - nav.clientLeft + nav.scrollLeft;
+          width = rangeRect.width;
+        }
+      }
+
+      nav.style.setProperty('--indicator-x', `${x.toFixed(2)}px`);
+      nav.style.setProperty('--indicator-width', `${width.toFixed(2)}px`);
       return true;
     }
 
-    function refreshLayout() {
-      layoutFrame = 0;
-      // ResizeObserver can run before a media-query change event is delivered.
-      if (compact !== mobile.matches) {
-        syncMenu();
-        return;
+    function moveIndicator(target, immediate = false) {
+      if (!target) return;
+      activeTarget = target;
+
+      if (immediate) {
+        nav.classList.remove('main-nav--ready');
+        measureAndSet(target);
+        requestAnimationFrame(() => {
+          nav.classList.add('main-nav--ready');
+        });
+      } else {
+        measureAndSet(target);
       }
-      cancelAnimationFrame(animationFrame);
-      nav.classList.remove("main-nav--animated");
-      const positioned = moveIndicator(focusedLink() || hoveredLink || currentLink());
-      nav.classList.toggle("main-nav--enhanced", positioned);
-      if (!positioned) return;
-
-      // Commit initial geometry before enabling transitions in the next frame.
-      indicator.getBoundingClientRect();
-      animationFrame = requestAnimationFrame(() => nav.classList.add("main-nav--animated"));
     }
 
-    function scheduleLayout() {
-      if (!layoutFrame) layoutFrame = requestAnimationFrame(refreshLayout);
+    function getFocusedTab() {
+      const activeEl = document.activeElement;
+      if (!activeEl || !nav.contains(activeEl)) return null;
+      const item = activeEl.closest('.main-nav__item');
+      if (!item) return null;
+      return tabs.find((tab) => tab.closest('.main-nav__item') === item) || null;
     }
 
-    links.forEach((link) => {
-      link.addEventListener("pointerenter", (event) => {
-        if (event.pointerType === "touch") return;
-        hoveredLink = link;
-        moveIndicator(link);
+    tabs.forEach((tab) => {
+      tab.addEventListener('pointerenter', () => {
+        pointerTab = tab;
+        moveIndicator(tab, false);
       });
-      link.addEventListener("pointerdown", () => moveIndicator(link));
-      link.addEventListener("focus", () => moveIndicator(link));
+
+      tab.addEventListener('pointerdown', () => {
+        moveIndicator(tab, false);
+      });
+
+      tab.addEventListener('focus', () => {
+        moveIndicator(tab, false);
+      });
     });
 
-    nav.addEventListener("pointerleave", () => {
-      hoveredLink = null;
-      moveIndicator(restingLink());
-    });
-    nav.addEventListener("focusout", () => {
-      // The new activeElement is available after the focus event sequence.
-      queueMicrotask(() => moveIndicator(focusedLink() || hoveredLink || currentLink()));
+    nav.addEventListener('focusin', (event) => {
+      const item = event.target.closest('.main-nav__item');
+      if (!item) return;
+      const tab = tabs.find((candidate) => candidate.closest('.main-nav__item') === item);
+      if (tab) moveIndicator(tab, false);
     });
 
-    function syncMenu() {
-      compact = mobile.matches;
-      hoveredLink = null;
-      if (menu) {
-        const linkHadFocus = Boolean(focusedLink());
-        const toggleHadFocus = document.activeElement === toggle;
-        menu.open = !mobile.matches;
-        if (mobile.matches && linkHadFocus) toggle?.focus();
-        if (!mobile.matches && toggleHadFocus) currentLink()?.focus();
-      }
-      refreshLayout();
+    nav.addEventListener('pointerleave', () => {
+      pointerTab = null;
+      const fallback = getFocusedTab() || currentTab;
+      moveIndicator(fallback, false);
+    });
+
+    nav.addEventListener('focusout', () => {
+      requestAnimationFrame(() => {
+        if (!pointerTab) {
+          const fallback = getFocusedTab() || currentTab;
+          moveIndicator(fallback, false);
+        }
+      });
+    });
+
+    // Đặt vị trí ban đầu dưới tab aria-current="page", bật transition ở frame kế tiếp
+    nav.classList.add('main-nav--js');
+    moveIndicator(currentTab, true);
+
+    compact.addEventListener('change', () => {
+      pointerTab = null;
+      moveIndicator(getFocusedTab() || currentTab, true);
+    });
+
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => {
+        moveIndicator(activeTarget || currentTab, true);
+      });
     }
 
-    menu?.addEventListener("keydown", (event) => {
-      if (event.key !== "Escape" || !mobile.matches || !menu.open) return;
-      menu.open = false;
-      toggle?.focus();
-    });
-    menu?.addEventListener("toggle", scheduleLayout);
-    mobile.addEventListener("change", syncMenu);
-    window.addEventListener("resize", scheduleLayout);
-    window.addEventListener("pageshow", scheduleLayout);
-
-    if ("ResizeObserver" in window) {
-      const observer = new ResizeObserver(scheduleLayout);
+    if ('ResizeObserver' in window) {
+      const observer = new ResizeObserver(() => {
+        moveIndicator(activeTarget || currentTab, true);
+      });
       observer.observe(nav);
-      nav.querySelectorAll(".main-nav__list, .main-nav__list > li, .main-nav__list a").forEach((element) => observer.observe(element));
+      observer.observe(list);
+    } else {
+      window.addEventListener('resize', () => {
+        moveIndicator(activeTarget || currentTab, true);
+      });
     }
-    // A translation or CSS/class change may move tabs without resizing nav.
-    const mutations = new MutationObserver(scheduleLayout);
-    mutations.observe(nav.querySelector(".main-nav__list"), {
-      subtree: true, childList: true, characterData: true, attributes: true,
-      attributeFilter: ["aria-current", "class", "style", "dir"]
-    });
-    if (document.fonts) {
-      document.fonts.ready.then(scheduleLayout);
-      document.fonts.addEventListener("loadingdone", scheduleLayout);
-    }
-
-    syncMenu();
   });
 })();
+

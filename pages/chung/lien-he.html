@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/common.css" />
     <link rel="stylesheet" href="../../assets/css/information.css" />
-    <script src="../../assets/js/main-nav.js" defer></script>
+    <script src="../../assets/js/nav-indicator.js" defer></script>
   </head>
   <body class="common-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
@@ -19,24 +19,27 @@
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-brand" href="../../index.html">
-          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="48" height="48" />
+          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
           <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
         </a>
-        <details class="main-nav-menu" open>
-          <summary class="main-nav-menu__toggle" aria-label="Mở hoặc thu gọn điều hướng chính">
+        <details class="site-navigation" open>
+          <summary class="site-navigation__toggle" aria-label="Mở hoặc thu gọn điều hướng chính">
             <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
             <span>Menu</span>
           </summary>
-          <nav class="main-nav" aria-label="Điều hướng chính">
+          <nav class="main-nav" aria-label="Điều hướng chính" data-nav-indicator>
             <ul class="main-nav__list">
-              <li><a href="gioi-thieu.html">Giới thiệu</a></li>
-              <li><a href="thong-bao.html">Thông báo</a></li>
-              <li><a href="lien-he.html" aria-current="page">Liên hệ</a></li>
-              <li><a href="dang-nhap.html">Đăng nhập</a></li>
+              <li class="main-nav__item"><a class="main-nav__link" href="gioi-thieu.html"><span class="main-nav__text">Giới thiệu</span></a></li>
+              <li class="main-nav__item"><a class="main-nav__link" href="thong-bao.html"><span class="main-nav__text">Thông báo</span></a></li>
+              <li class="main-nav__item"><a class="main-nav__link" href="lien-he.html" aria-current="page"><span class="main-nav__text">Liên hệ</span></a></li>
             </ul>
             <span class="main-nav__indicator" aria-hidden="true"></span>
           </nav>
         </details>
+        <a class="site-header__login" href="dang-nhap.html">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h5v16h-5M4 12h11M10 7l5 5-5 5" /></svg>
+          <span>Đăng nhập</span>
+        </a>
       </div>
     </header>
 
@@ -125,22 +128,33 @@
 
     <footer class="site-footer">
       <div class="site-footer__inner">
-        <div class="site-footer__about">
-          <a class="site-footer__brand" href="gioi-thieu.html">
-            <img src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="48" height="48" />
-          </a>
-          <p><a href="gioi-thieu.html">Thông tin trang web</a></p>
-          <p><a href="gioi-thieu.html#team-title">Thông tin nhóm</a></p>
+        <div class="site-footer__columns">
+          <div class="site-footer__brand">
+            <a href="gioi-thieu.html">
+              <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40" />
+            </a>
+            <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</p>
+            <dl class="site-footer__about">
+              <div>
+                <dt><a href="gioi-thieu.html">Thông tin trang web</a></dt>
+                <dd>Trường Đại học Công nghệ Thông tin</dd>
+              </div>
+              <div>
+                <dt><a href="gioi-thieu.html#team-title">Thông tin nhóm</a></dt>
+                <dd>Đồ án IE104 — Nhóm 7</dd>
+              </div>
+            </dl>
+          </div>
+          <section class="site-footer__information site-footer__terms" aria-labelledby="footer-terms-title">
+            <h2 id="footer-terms-title">Điều khoản sử dụng</h2>
+            <p>Đang cập nhật.</p>
+          </section>
+          <section class="site-footer__information site-footer__policies" aria-labelledby="footer-policies-title">
+            <h2 id="footer-policies-title">Quy chế, chính sách bảo mật</h2>
+            <p>Đang cập nhật.</p>
+          </section>
         </div>
-        <div class="site-footer__terms">
-          <p><span aria-disabled="true">Điều khoản sử dụng (đang cập nhật)</span></p>
-        </div>
-        <div class="site-footer__privacy">
-          <p><span aria-disabled="true">Quy chế, chính sách bảo mật (đang cập nhật)</span></p>
-        </div>
-      </div>
-      <div class="site-footer__copyright">
-        <p>Copyright &copy; 2026</p>
+        <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
   </body>

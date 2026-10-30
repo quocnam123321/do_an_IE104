@@ -1,64 +1,539 @@
-.deadline-calendar,
-.upcoming-submissions { border: 1px solid #999; padding: 12px; margin-block: 18px; color: #262626; }
-.deadline-calendar h2,
-.upcoming-submissions h2 { margin: 0 0 12px; font-size: 18px; }
-.deadline-calendar__toolbar,
-.upcoming-submissions__filters { display: flex; align-items: end; flex-wrap: wrap; gap: 10px; margin-bottom: 12px; }
-.deadline-calendar__field:first-child { flex: 1; }
-.deadline-calendar__today { margin-left: auto; }
-.deadline-calendar label,
-.upcoming-submissions__field label { display: block; margin-bottom: 4px; font-size: 12px; }
-.deadline-calendar select,
-.deadline-calendar input,
-.deadline-calendar button,
-.upcoming-submissions select,
-.upcoming-submissions input { box-sizing: border-box; min-height: 34px; padding: 6px 10px; border: 1px solid #999; background: #f3f3f3; color: #262626; font: inherit; }
-.upcoming-submissions__field:last-of-type { flex: 1; }
-.upcoming-submissions input { width: 100%; }
-.calendar-table,
-.upcoming-submissions__table { width: 100%; border-collapse: collapse; }
-.calendar-table { table-layout: fixed; }
-.calendar-table caption,
-.upcoming-submissions__table caption { text-align: left; font-size: 12px; margin-bottom: 8px; }
-.calendar-table th,
-.calendar-table td,
-.upcoming-submissions__table th,
-.upcoming-submissions__table td { border: 1px solid #888; padding: 7px; }
-.calendar-table th,
-.upcoming-submissions__table thead th { background: #d9d9d9; }
-.calendar-table td { height: 112px; vertical-align: top; font-size: 12px; }
-.calendar-table__today > time { font-weight: 700; }
-.calendar-entry { position: relative; margin-top: 12px; }
-.calendar-event { display: block; padding: 6px; background: #ddd; border: 1px solid #999; color: #262626; text-decoration: none; overflow-wrap: anywhere; }
-.calendar-preview { display: none; position: absolute; top: 0; left: 0; z-index: 2; box-sizing: border-box; width: 260px; max-width: 80vw; padding: 14px; border: 1px solid #888; background: white; }
-.calendar-table td:nth-child(n+5) .calendar-preview { left: auto; right: 0; }
-.calendar-entry:hover > .calendar-preview,
-.calendar-entry:focus-within > .calendar-preview { display: block; }
-.calendar-entry.calendar-entry--dismissed > .calendar-preview { display: none; }
-.calendar-preview h3 { margin: 0; padding: 8px; background: #ddd; font-size: 14px; }
-.calendar-preview dt { margin-top: 10px; }
-.calendar-preview dd { margin: 4px 0 10px; padding: 7px; background: #eee; }
-.upcoming-submissions__submit { display: inline-block; padding: 7px 14px; border: 1px solid #999; background: #fff; color: #262626; text-decoration: none; white-space: nowrap; }
-.deadline-calendar__legend { font-size: 12px; margin-bottom: 0; }
-.upcoming-submissions__table { text-align: left; }
-.upcoming-submissions .empty-state { padding: 24px 12px; text-align: center; }
-.upcoming-submissions__cards { display: grid; gap: 12px; }
-.submission-card { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.5fr) minmax(0, 1fr) auto; align-items: center; gap: 20px; padding: 16px; border: 1px solid #aaa; background: #fff; }
-.submission-card__title { margin: 0; font-size: 16px; overflow-wrap: anywhere; }
-.submission-card__label { display: block; color: #595959; font-size: 12px; margin-bottom: 4px; }
-.submission-card p { margin: 0; overflow-wrap: anywhere; }
-.submission-card:target { outline: 2px solid #555; outline-offset: 2px; }
-#upcoming-results { font-size: 12px; color: #595959; }
-@media (max-width: 760px) {
-  .submission-card { grid-template-columns: minmax(0, 1fr) auto; gap: 12px; }
-  .submission-card__title, .submission-card__topic { grid-column: 1 / -1; }
+/* CSS riêng của trang; nạp sau tokens.css, base.css và components.css.
+   Giữ bố cục/dữ liệu hiện có; kích thước riêng tiếp tục là lựa chọn dựng thử. */
+.student-deadline-page {
+  --calendar-min-width: 44rem;
+  --calendar-cell-min-height: 6rem;
+  --calendar-today-bg: var(--color-info-bg);
+  --text-event: .8125rem;
 }
-.deadline-calendar :focus-visible,
-.upcoming-submissions :focus-visible { outline: 2px solid #333; outline-offset: 2px; }
-@media (max-width: 600px) {
-  .deadline-calendar, .upcoming-submissions { padding: 8px; }
-  .calendar-table td { height: 90px; padding: 3px; }
-  .calendar-event { padding: 3px; font-size: 10px; }
-  .upcoming-submissions__table th, .upcoming-submissions__table td { padding: 4px; font-size: 12px; overflow-wrap: anywhere; }
-  .upcoming-submissions__submit { padding: 6px; white-space: normal; }
+
+/* --------------------------------------------------------------------------
+   5. Page Content Stack & Demo Notice
+   -------------------------------------------------------------------------- */
+.student-deadline-page .page-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .student-deadline-page .page-content {
+    gap: var(--space-5);
+  }
+}
+
+/* Ghi chú dữ liệu mẫu gọn gàng, phân biệt rõ với chức năng thực tế (DESIGN.md mục 9) */
+.student-deadline-page .demo-notice {
+  padding: 0.625rem var(--space-4);
+  background-color: var(--color-neutral-bg);
+  border: 1px dashed var(--color-control-border);
+  border-left: 3px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+/* --------------------------------------------------------------------------
+   6. Calendar Card & Form Control Primitives (.deadline-calendar)
+   -------------------------------------------------------------------------- */
+.student-deadline-page .deadline-calendar {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+/* Thanh tiêu đề khu vực đồng bộ với trang Tổng quan sinh viên */
+.student-deadline-page .deadline-calendar > h2 {
+  padding: 0.625rem var(--space-4);
+  background-color: var(--color-neutral-bg);
+  border-bottom: 1px solid var(--color-border);
+  border-radius: calc(var(--radius-surface) - 1px) calc(var(--radius-surface) - 1px) 0 0;
+  color: var(--color-heading);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+}
+
+@media (min-width: 768px) {
+  .student-deadline-page .deadline-calendar > h2 {
+    padding: 0.6875rem var(--space-5);
+    font-size: var(--font-size-section-title);
+  }
+}
+
+/* Nhãn và điều khiển form (input, select, button) cao tối thiểu 44px, bo góc 8px */
+.student-deadline-page .deadline-calendar__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.student-deadline-page .deadline-calendar__field label {
+  color: var(--color-heading);
+  font-size: var(--font-size-secondary); /* 14px */
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.3;
+}
+
+.student-deadline-page .deadline-calendar__field select,
+.student-deadline-page .deadline-calendar__field input {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--control-min-height); /* 44px */
+  padding: 0.4375rem 0.75rem;
+  background-color: var(--color-surface);
+  color: var(--color-foreground);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control); /* 8px */
+  font-size: var(--font-size-secondary); /* 14px */
+  line-height: 1.35;
+  caret-color: var(--color-primary);
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.student-deadline-page .deadline-calendar__field select:hover,
+.student-deadline-page .deadline-calendar__field input:hover {
+  border-color: var(--color-foreground);
+}
+
+/* --------------------------------------------------------------------------
+   7. Calendar Toolbar (.deadline-calendar__toolbar)
+   Phân cấp điều khiển lịch: lọc đề tài bên trái, điều hướng tháng + Hôm nay bên phải
+   -------------------------------------------------------------------------- */
+.student-deadline-page .deadline-calendar__toolbar {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  display: grid;
+  grid-template-columns: var(--control-min-height) minmax(0, 1fr) var(--control-min-height);
+  align-items: end;
+  gap: var(--space-2);
+}
+
+.student-deadline-page .deadline-calendar__field:first-child {
+  grid-column: 1 / -1;
+}
+
+.student-deadline-page .deadline-calendar__previous,
+.student-deadline-page .deadline-calendar__next,
+.student-deadline-page .deadline-calendar__today {
+  min-height: var(--control-min-height); /* 44px */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-secondary-btn-border);
+  border-radius: var(--radius-control); /* 8px */
+  font-weight: var(--font-weight-semibold);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.student-deadline-page .deadline-calendar__previous,
+.student-deadline-page .deadline-calendar__next {
+  min-width: var(--control-min-height);
+  padding: 0 var(--space-2);
+  color: var(--color-foreground);
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.student-deadline-page .deadline-calendar__today {
+  grid-column: 1 / -1;
+  padding: 0.375rem var(--space-4);
+  color: var(--color-primary);
+  font-size: var(--font-size-secondary);
+  white-space: nowrap;
+}
+
+.student-deadline-page .deadline-calendar__previous:hover,
+.student-deadline-page .deadline-calendar__next:hover,
+.student-deadline-page .deadline-calendar__today:hover {
+  background-color: var(--color-info-bg);
+  border-color: var(--color-primary);
+  color: var(--color-primary-hover);
+}
+
+.student-deadline-page .deadline-calendar__previous:active,
+.student-deadline-page .deadline-calendar__next:active,
+.student-deadline-page .deadline-calendar__today:active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+@media (min-width: 768px) {
+  .student-deadline-page .deadline-calendar__toolbar {
+    padding: var(--space-3) var(--space-5);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--space-2);
+  }
+
+  .student-deadline-page .deadline-calendar__field:first-child {
+    flex: 1 1 15rem;
+    max-width: 22rem;
+    margin-right: auto;
+  }
+
+  .student-deadline-page .deadline-calendar__field:nth-of-type(2) {
+    flex: 0 1 11.5rem;
+    min-width: 10.25rem;
+  }
+
+  .student-deadline-page .deadline-calendar__today {
+    width: auto;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   8. Calendar Grid, Day States & Events (.calendar-scroll, .calendar-table)
+   - Giữ lịch gọn, khoảng cách cân đối, đường viền nhẹ.
+   - Trên điện thoại, cuộn ngang trong .calendar-scroll để giữ chữ và hạn nộp rõ ràng,
+     không thu nhỏ toàn bộ lịch hoặc tự ẩn hạn nộp.
+   - Phân biệt rõ bằng dấu hiệu ngoài màu sắc:
+     + Ngày hiện tại (.calendar-table__today)
+     + Ngày/sự kiện đang chọn (:focus-within / :focus-visible)
+     + Bài nộp (.calendar-event--submission) vs Hạn đề tài (.calendar-event--topic)
+   -------------------------------------------------------------------------- */
+.student-deadline-page .calendar-scroll {
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--space-3) var(--space-4) var(--space-2);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-secondary-btn-border) var(--color-neutral-bg);
+}
+
+@media (min-width: 768px) {
+  .student-deadline-page .calendar-scroll {
+    padding: var(--space-3) var(--space-5) var(--space-2);
+  }
+}
+
+.student-deadline-page .calendar-table {
+  width: 100%;
+  min-width: var(--calendar-min-width);
+  table-layout: fixed;
+  border-collapse: collapse;
+  background-color: var(--color-surface);
+  font-variant-numeric: tabular-nums;
+}
+
+.student-deadline-page .calendar-table caption {
+  caption-side: top;
+  text-align: left;
+  padding-bottom: var(--space-2);
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.student-deadline-page .calendar-table th,
+.student-deadline-page .calendar-table td {
+  border: 1px solid var(--color-border);
+}
+
+.student-deadline-page .calendar-table th {
+  height: 2.375rem;
+  padding: var(--space-1) var(--space-2);
+  background-color: var(--color-neutral-bg);
+  color: var(--color-heading);
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-bold);
+  text-align: center;
+}
+
+.student-deadline-page .calendar-table td {
+  height: var(--calendar-cell-min-height);
+  padding: 0.375rem 0.4375rem;
+  vertical-align: top;
+  background-color: var(--color-surface);
+  color: var(--color-muted-foreground);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+  transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+/* Số ngày trong ô lịch */
+.student-deadline-page .calendar-table td > time {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.625rem;
+  height: 1.625rem;
+  padding-inline: 0.25rem;
+  border-radius: var(--radius-full);
+  color: var(--color-foreground);
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+}
+
+/* Ô trống ngoài tháng hiện tại: nền xám nhạt kèm sọc chéo mảnh (dấu hiệu ngoài màu sắc) */
+.student-deadline-page .calendar-table__empty {
+  background-color: var(--color-background);
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 6px,
+    rgb(226 232 240 / 0.45) 6px,
+    rgb(226 232 240 / 0.45) 7px
+  );
+}
+
+/* Ngày hiện tại (.calendar-table__today):
+   Dấu hiệu ngoài màu sắc gồm:
+   1. Nhãn chữ "· Hôm nay" in đậm
+   2. Thanh chỉ báo dày 3px sát mép trên + viền trong 1px
+   3. Số ngày đóng khung tròn đặc tương phản cao */
+.student-deadline-page .calendar-table td.calendar-table__today {
+  background-color: var(--calendar-today-bg);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  box-shadow: inset 0 3px 0 0 var(--color-primary), inset 0 0 0 1px var(--color-info-border);
+}
+
+.student-deadline-page .calendar-table td.calendar-table__today > time {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: var(--font-weight-bold);
+  box-shadow: 0 0 0 2px var(--color-surface);
+}
+
+/* Ngày đang chọn / đang mở xem chi tiết sự kiện (:focus-within / :focus-visible):
+   Dấu hiệu ngoài màu sắc: viền trong dày 2px bao quanh ô ngày + gạch chân số ngày */
+.student-deadline-page .calendar-table td:has(.calendar-entry:focus-within),
+.student-deadline-page .calendar-table td:has(.calendar-event:focus-visible),
+.student-deadline-page .calendar-table td:has(.calendar-event:active) {
+  background-color: var(--color-info-bg);
+  box-shadow: inset 0 0 0 2px var(--color-primary);
+}
+
+.student-deadline-page .calendar-table td:has(.calendar-entry:focus-within) > time,
+.student-deadline-page .calendar-table td:has(.calendar-event:focus-visible) > time {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.student-deadline-page .calendar-table td.calendar-table__today:has(.calendar-entry:focus-within) > time,
+.student-deadline-page .calendar-table td.calendar-table__today:has(.calendar-event:focus-visible) > time {
+  color: var(--color-on-primary);
+}
+
+/* Các mục sự kiện trong ô ngày — hỗ trợ ngày có nhiều sự kiện xếp chồng gọn gàng */
+.student-deadline-page .calendar-entry,
+.student-deadline-page .calendar-table td > .calendar-event {
+  position: relative;
+  margin-top: 0.375rem;
+}
+
+.student-deadline-page .calendar-event {
+  display: block;
+  width: 100%;
+  min-height: var(--control-min-height); /* >= 44px dễ chạm trên cả điện thoại và máy tính */
+  padding: 0.375rem 0.5rem;
+  border-radius: var(--radius-small);
+  font-size: var(--text-event);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.35;
+  color: var(--color-foreground);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.student-deadline-page .calendar-event strong {
+  color: var(--color-heading);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Loại sự kiện 1: Hạn Bài nộp (.calendar-event--submission)
+   Dấu hiệu ngoài màu sắc: viền liền + vạch nhấn trái 4px + ký hiệu vuông "▪ " */
+.student-deadline-page .calendar-event--submission {
+  background-color: var(--color-info-bg);
+  border: 1px solid var(--color-info-border);
+  border-left: 4px solid var(--color-primary);
+  color: var(--color-foreground);
+}
+
+.student-deadline-page .calendar-event--submission strong::before {
+  content: "▪ ";
+  color: var(--color-primary);
+}
+
+.student-deadline-page .calendar-event--submission:hover {
+  background-color: var(--color-info-hover-bg);
+  border-color: var(--color-primary);
+  color: var(--color-heading);
+}
+
+.student-deadline-page .calendar-event--submission:hover strong,
+.student-deadline-page .calendar-entry:focus-within > .calendar-event--submission strong {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.student-deadline-page .calendar-entry:focus-within > .calendar-event--submission {
+  background-color: var(--color-info-hover-bg);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+/* Loại sự kiện 2: Hạn đề tài (.calendar-event--topic)
+   Dấu hiệu ngoài màu sắc: viền nét đứt (dashed) + vạch nhấn trái 4px + ký hiệu thoi "◆ " */
+.student-deadline-page .calendar-event--topic {
+  background-color: var(--color-warning-bg);
+  border: 1px dashed var(--color-warning-border);
+  border-left: 4px solid var(--color-warning-fg);
+  color: var(--color-foreground);
+}
+
+.student-deadline-page .calendar-event--topic strong::before {
+  content: "◆ ";
+  color: var(--color-warning-fg);
+}
+
+/* Hộp xem trước sự kiện (.calendar-preview) do deadline-calendar.js khởi tạo */
+.student-deadline-page .calendar-preview {
+  display: none;
+  position: absolute;
+  z-index: var(--z-dropdown);
+  top: calc(100% + 0.375rem);
+  left: 0;
+  width: min(17.5rem, calc(100vw - 2.5rem));
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-surface);
+  color: var(--color-foreground);
+  border: 1px solid var(--color-secondary-btn-border);
+  border-radius: var(--radius-surface);
+  box-shadow: var(--shadow-floating);
+  overflow-wrap: anywhere;
+}
+
+/* Cầu nối khoảng hở 6px để di chuột từ thẻ sự kiện xuống hộp xem trước không bị đóng */
+.student-deadline-page .calendar-preview::before {
+  content: "";
+  position: absolute;
+  top: -0.5rem;
+  left: 0;
+  right: 0;
+  height: 0.5rem;
+}
+
+/* Căn phải hộp xem trước từ cột Thứ sáu → Chủ nhật để không tràn mép phải bảng lịch */
+.student-deadline-page .calendar-table td:nth-child(n+5) .calendar-preview {
+  left: auto;
+  right: 0;
+}
+
+.student-deadline-page .calendar-entry:hover > .calendar-preview,
+.student-deadline-page .calendar-entry:focus-within > .calendar-preview {
+  display: block;
+}
+
+.student-deadline-page .calendar-entry.calendar-entry--dismissed > .calendar-preview {
+  display: none;
+}
+
+.student-deadline-page .calendar-preview h3 {
+  color: var(--color-heading);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.student-deadline-page .calendar-preview dl {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.125rem;
+  margin-top: var(--space-2);
+}
+
+.student-deadline-page .calendar-preview dt {
+  margin-top: var(--space-1);
+  color: var(--color-muted-foreground);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-semibold);
+}
+
+.student-deadline-page .calendar-preview dd {
+  color: var(--color-foreground);
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Nút hành động chính "Nộp bài" trong hộp xem trước (.upcoming-submissions__submit) */
+.student-deadline-page .upcoming-submissions__submit {
+  width: 100%;
+  margin-top: var(--space-3);
+  min-height: var(--control-min-height); /* 44px */
+  padding: 0.4375rem var(--space-4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-control); /* 8px */
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.student-deadline-page .upcoming-submissions__submit:hover {
+  background-color: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  color: var(--color-on-primary);
+}
+
+.student-deadline-page .upcoming-submissions__submit:active {
+  background-color: var(--color-primary-active);
+  border-color: var(--color-primary-active);
+  color: var(--color-on-primary);
+}
+
+/* Chú giải dưới bảng lịch (.deadline-calendar__legend) */
+.student-deadline-page .deadline-calendar__legend {
+  padding: var(--space-2) var(--space-4) var(--space-3);
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-background);
+  border-radius: 0 0 calc(var(--radius-surface) - 1px) calc(var(--radius-surface) - 1px);
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+  line-height: 1.45;
+}
+
+@media (min-width: 768px) {
+  .student-deadline-page .deadline-calendar__legend {
+    padding: var(--space-2) var(--space-5) var(--space-3);
+  }
+}
+
+@media (forced-colors: active) {
+  .student-deadline-page .calendar-table td.calendar-table__today {
+    outline: 2px solid Highlight;
+    outline-offset: -2px;
+  }
+
+  .student-deadline-page .calendar-event--submission {
+    border-left-width: 4px;
+  }
+
+  .student-deadline-page .calendar-event--topic {
+    border-style: dashed;
+    border-left-width: 4px;
+  }
 }

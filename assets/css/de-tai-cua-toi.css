@@ -1,0 +1,72 @@
+/* Đề tài của tôi: dùng khung và thành phần đã chốt của Đăng ký đề tài. */
+.pending-proposal-page .page-container { max-width: 70rem; }
+.pending-proposal-page .breadcrumb__list > li + li::before { content: "/"; margin-right: var(--space-2); color: var(--color-muted-foreground); }
+.my-topics-page .topic-card__status--progress { background: var(--color-info-bg); color: var(--color-info-fg); }
+.my-topics-page .topic-card__status--pending, .proposal-status { background: var(--color-warning-bg); color: var(--color-warning-fg); }
+.my-topics-page .topic-card__status--completed { background: var(--color-success-bg); color: var(--color-success-fg); }
+.requests { margin-top: var(--space-6); padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); }
+.requests > summary { color: var(--color-heading); font-weight: 600; cursor: pointer; }
+.requests > p { margin-block: var(--space-4); color: var(--color-muted-foreground); }
+.request-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
+.request-card { height: 100%; padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-control); }
+.request-card h3 { margin-bottom: var(--space-3); font-size: 1rem; }
+.request-card__meta { display: grid; gap: var(--space-1); margin-bottom: var(--space-3); font-size: var(--font-size-secondary); }
+.request-card__meta dt { color: var(--color-muted-foreground); }
+.request-card__meta dd { margin: 0 0 var(--space-2); overflow-wrap: anywhere; }
+.pending-proposal-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); }
+.pending-proposal-header__title { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
+.pending-proposal-header__title h1 { font-size: var(--font-size-page-title); }
+.proposal-status { display: inline-flex; align-items: center; padding: var(--space-1) var(--space-3); border-radius: var(--radius-control); font-size: var(--font-size-secondary); font-weight: 500; }
+.pending-proposal-header__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.pending-proposal-header__actions a { display: inline-flex; align-items: center; justify-content: center; min-height: var(--control-min-height); padding: .625rem var(--space-4); border: 1px solid var(--color-primary); border-radius: var(--radius-control); background: var(--color-primary); color: var(--color-on-primary); font-size: var(--font-size-secondary); font-weight: 500; line-height: 1.5; text-align: center; text-decoration: none; transition: color 150ms ease-out, background-color 150ms ease-out; }
+.pending-proposal-header__actions a:hover { background: var(--color-primary-hover); }
+.registration-page .main-content .pending-proposal-header__actions button { background: var(--color-surface); transition: color 150ms ease-out, border-color 150ms ease-out; }
+.registration-page .main-content .pending-proposal-header__actions button:hover { background: var(--color-surface); color: var(--color-danger-fg); border-color: var(--color-danger-fg); }
+.pending-proposal-header > p { grid-column: 1 / -1; color: var(--color-muted-foreground); font-size: var(--font-size-secondary); }
+.pending-proposal-notice { display: flex; align-items: baseline; gap: var(--space-3); padding: var(--space-4); margin-bottom: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-control); background: var(--color-neutral-bg); color: var(--color-muted-foreground); font-size: var(--font-size-secondary); }
+.pending-proposal-notice::before { content: "i"; flex: 0 0 auto; display: inline-grid; place-items: center; width: 1.125rem; height: 1.125rem; border: 1px solid currentColor; border-radius: 50%; font-size: .75rem; font-weight: 600; }
+.pending-proposal { display: grid; gap: var(--space-4); }
+.pending-proposal > section { padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); min-width: 0; }
+.pending-proposal h2 { margin-bottom: var(--space-3); font-size: 1rem; font-weight: 600; }
+.pending-proposal p { font-size: var(--font-size-secondary); line-height: 1.75; }
+.pending-proposal-summary { display: grid; grid-template-columns: 8rem minmax(0, 1fr); align-items: center; gap: var(--space-6); }
+.pending-proposal-summary .topic-image { align-self: center; }
+.pending-proposal-summary h2 { font-size: 1.125rem; margin-bottom: var(--space-4); }
+.pending-proposal-summary__content { min-width: 0; }
+@media (min-width: 48rem) {
+ .pending-proposal-summary { column-gap: var(--space-12); }
+ .pending-proposal-summary__content { padding-inline-end: var(--space-12); }
+}
+.pending-proposal-summary__meta { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: var(--space-2) var(--space-6); margin: 0; }
+.pending-proposal-summary__meta > div, .proposal-recipient dl > div { display: grid; grid-template-columns: 5rem minmax(0, 1fr); align-items: baseline; gap: var(--space-3); font-size: var(--font-size-secondary); }
+.pending-proposal dt { color: var(--color-heading); font-weight: 600; }
+.pending-proposal dt::after { content: ":"; }
+.pending-proposal dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.pending-proposal-summary__meta > div:nth-child(2) { grid-column: 1; grid-row: 2; }
+.proposal-recipient__profile { display: flex; align-items: center; gap: var(--space-6); }
+.proposal-recipient__avatar { display: grid; place-items: center; flex: 0 0 auto; width: 4rem; height: 4rem; border-radius: 50%; background: var(--color-neutral-bg); color: var(--color-neutral-fg); font-size: 1.125rem; font-weight: 600; }
+.proposal-recipient dl { display: grid; gap: var(--space-2); margin: 0; }
+.proposal-recipient dl > div { grid-template-columns: 10rem minmax(0, 1fr); }
+.proposal-attachments__item { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3); font-size: var(--font-size-secondary); }
+.pending-withdraw-dialog > header, .pending-withdraw-dialog > footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3); }
+.pending-withdraw-dialog > p { margin-block: var(--space-4); }
+.pending-withdraw-dialog button { min-height: var(--control-min-height); padding: var(--space-2) var(--space-3); border: 1px solid var(--color-control-border); border-radius: var(--radius-control); background: var(--color-surface); font: inherit; cursor: pointer; }
+.pending-withdraw-dialog button:disabled { color: var(--color-muted-foreground); background: var(--color-neutral-bg); cursor: not-allowed; }
+@media (max-width: 47.99rem) {
+ .request-list { grid-template-columns: minmax(0, 1fr); }
+ .pending-proposal-header { grid-template-columns: minmax(0, 1fr); }
+ .pending-proposal-header__actions { grid-row: 3; }
+ .pending-proposal-header__title h1 { font-size: 1.5rem; }
+ .pending-proposal > section { padding: var(--space-4); }
+ .pending-proposal-summary { grid-template-columns: minmax(0, 1fr); }
+ .pending-proposal-summary .topic-image { width: min(100%, 10rem); justify-self: start; }
+ .pending-proposal-summary__meta { grid-template-columns: minmax(0, 1fr); }
+ .pending-proposal-summary__meta > div:nth-child(2) { grid-column: auto; grid-row: auto; }
+ .pending-proposal-summary__meta > div, .proposal-recipient dl > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+ .proposal-recipient__profile { align-items: start; gap: var(--space-4); }
+}
+
+/* Học kỳ theo mẫu mới: nhãn trên, nội dung dưới, không lặp dấu ngăn. */
+.my-topics-page .topic-card__term { display: grid; gap: var(--space-1); }
+.my-topics-page .topic-card__term dt::after { content: none; }
+.my-topics-page .topic-card__term dd { font-weight: 400; }

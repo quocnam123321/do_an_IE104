@@ -9,8 +9,13 @@
       name="description"
     />
     <title>Tổng quan | Quản lý đồ án</title>
+    <link rel="stylesheet" href="../../assets/css/tokens.css" />
+    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../assets/css/components.css" />
+    <link rel="stylesheet" href="../../assets/css/tong-quan-sinh-vien.css" />
+    <script src="../../assets/js/main-nav.js" defer></script>
   </head>
-  <body>
+  <body class="student-overview-page">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
     <!-- ĐẦU TRANG -->
     <header class="site-header">
@@ -27,6 +32,25 @@
             >QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span
           >
         </a>
+        <details class="site-header__menu">
+          <summary class="site-header__menu-button" aria-label="Menu điều hướng">
+            <svg
+              class="site-header__menu-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="4" y1="6" x2="20" y2="6" />
+              <line x1="4" y1="12" x2="20" y2="12" />
+              <line x1="4" y1="18" x2="20" y2="18" />
+            </svg>
+            <span>Menu</span>
+          </summary>
+        </details>
         <nav class="main-nav" aria-label="Điều hướng sinh viên">
           <ul class="main-nav__list">
             <li class="main-nav__item">
@@ -80,6 +104,7 @@
               </details>
             </li>
           </ul>
+          <span class="main-nav__indicator" aria-hidden="true"></span>
         </nav>
         <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
         <div class="account-menu">
@@ -91,25 +116,27 @@
               <span class="account-menu__avatar" aria-hidden="true">SV</span>
               <span class="account-menu__label">Tài khoản sinh viên</span>
             </summary>
-            <ul id="account-dropdown" class="account-menu__list">
-              <li>
-                <a class="account-menu__profile" href="ho-so-ca-nhan.html"
-                  >Hồ sơ cá nhân</a
-                >
-              </li>
-              <li>
-                <button
-                  class="account-menu__logout"
-                  type="button"
-                  aria-controls="logout-dialog"
-                  aria-describedby="logout-notice"
-                  disabled
-                >
-                  Đăng xuất
-                </button>
-              </li>
-            </ul>
-            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+            <div class="account-menu__panel">
+              <ul id="account-dropdown" class="account-menu__list">
+                <li>
+                  <a class="account-menu__profile" href="ho-so-ca-nhan.html"
+                    >Hồ sơ cá nhân</a
+                  >
+                </li>
+                <li>
+                  <button
+                    class="account-menu__logout"
+                    type="button"
+                    aria-controls="logout-dialog"
+                    aria-describedby="logout-notice"
+                    disabled
+                  >
+                    Đăng xuất
+                  </button>
+                </li>
+              </ul>
+              <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+            </div>
           </details>
         </div>
       </div>
