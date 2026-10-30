@@ -11,7 +11,8 @@
     <link rel="stylesheet" href="../../assets/css/tokens.css" />
     <link rel="stylesheet" href="../../assets/css/base.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
-    <link rel="stylesheet" href="../../assets/css/tong-quan-giang-vien.css" />
+    <link rel="stylesheet" href="../../assets/css/teacher-layout.css" />
+    <link rel="stylesheet" href="../../assets/css/tong-quan-giang-vien.css?v=20261030-header-1" />
     <script src="../../assets/js/main-nav.js" defer></script>
   </head>
 
@@ -19,128 +20,132 @@
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
 
     <!-- ĐẦU TRANG -->
+    <!-- Scope CSS khung giang vien rieng cho header. -->
+    <div class="teacher-workspace-page teacher-header-scope">
     <header class="site-header">
-      <div class="site-header__inner">
-        <a class="site-brand" href="tong-quan-giang-vien.html">
-          <img
-            class="site-brand__logo"
-            src="../../assets/images/images.jpg"
-            alt="Logo Khoa Khoa học và Kỹ thuật Thông tin"
-            width="70"
-            height="70"
-          />
-          <span class="site-brand__name"
-            >QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span
-          >
-        </a>
-        <details class="site-header__menu">
-          <summary class="site-header__menu-button" aria-label="Menu điều hướng">
-            <svg
-              class="site-header__menu-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <line x1="4" y1="6" x2="20" y2="6" />
-              <line x1="4" y1="12" x2="20" y2="12" />
-              <line x1="4" y1="18" x2="20" y2="18" />
-            </svg>
-            <span>Menu</span>
-          </summary>
-        </details>
-        <nav class="main-nav" aria-label="Điều hướng giảng viên">
-          <ul class="main-nav__list">
-            <li class="main-nav__item">
-              <a
-                class="main-nav__link"
-                href="tong-quan-giang-vien.html"
-                aria-current="page"
-                >Tổng quan</a
-              >
-            </li>
-            <li class="main-nav__item">
-              <a
-                class="main-nav__link"
-                id="topic-management-label"
-                href="danh-sach-de-tai-dang-huong-dan.html"
-                >Quản lý đề tài</a
-              >
-            </li>
-            <li class="main-nav__item">
-              <a class="main-nav__link" href="yeu-cau-cho-duyet.html"
-                >Yêu cầu chờ duyệt</a
-              >
-            </li>
-            <li class="main-nav__item">
-              <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="common-navigation-label">
-                  Chung
-                </summary>
-                <ul
-                  class="main-nav__sublist"
-                  aria-labelledby="common-navigation-label"
-                >
-                  <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="../chung/gioi-thieu.html"
-                      >Giới thiệu</a
-                    >
-                  </li>
-                  <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="../chung/thong-bao.html"
-                      >Thông báo</a
-                    >
-                  </li>
-                  <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="../chung/lien-he.html"
-                      >Liên hệ</a
-                    >
-                  </li>
-                </ul>
-              </details>
-            </li>
-          </ul>
-          <span class="main-nav__indicator" aria-hidden="true"></span>
-        </nav>
-        <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
-        <div class="account-menu">
-          <details class="account-menu__disclosure">
-            <summary
-              class="account-menu__toggle"
-              aria-label="Mở menu tài khoản giảng viên"
-            >
-              <span class="account-menu__avatar" aria-hidden="true">GV</span>
-              <span class="account-menu__label">Tài khoản giảng viên</span>
-            </summary>
-            <div class="account-menu__panel">
-              <ul id="account-dropdown" class="account-menu__list">
-                <li>
-                  <a
-                    class="account-menu__profile"
-                    href="ho-so-ca-nhan-giang-vien.html"
-                    >Hồ sơ cá nhân</a
-                  >
-                </li>
-                <li>
-                  <button
-                    class="account-menu__logout"
-                    type="button"
-                    aria-controls="logout-dialog"
-                    title="Chức năng đăng xuất chưa được kết nối"
-                    disabled
-                  >
-                    Đăng xuất
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </details>
-        </div>
-      </div>
-    </header>
+<div class="site-header__inner">
+<a class="site-brand" href="tong-quan-giang-vien.html">
+<img alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" class="site-brand__logo" height="70" src="../../assets/images/images.jpg" width="70"/>
+<span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br/>KHÓA LUẬN TỐT NGHIỆP</span>
+</a>
+<nav aria-label="Điều hướng giảng viên" class="main-nav">
+<ul class="main-nav__list">
+<li class="main-nav__item">
+<a aria-current="page" class="main-nav__link" href="tong-quan-giang-vien.html">Tổng quan</a>
+</li>
+<li class="main-nav__item">
+<a class="main-nav__link" href="danh-sach-de-tai-dang-huong-dan.html" id="topic-management-label">Quản lý đề tài</a>
+</li>
+<li class="main-nav__item">
+<a class="main-nav__link" href="yeu-cau-cho-duyet.html">Yêu cầu chờ duyệt</a>
+</li>
+<li class="main-nav__item">
+<details class="main-nav__disclosure">
+<summary class="main-nav__label" id="common-navigation-label">
+<span>Chung</span>
+<svg aria-hidden="true" class="main-nav__chevron" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24">
+<path d="m6 9 6 6 6-6"></path>
+</svg>
+</summary>
+<ul aria-labelledby="common-navigation-label" class="main-nav__sublist">
+<li class="main-nav__subitem">
+<a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a>
+</li>
+<li class="main-nav__subitem">
+<a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a>
+</li>
+<li class="main-nav__subitem">
+<a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a>
+</li>
+</ul>
+</details>
+</li>
+</ul>
+</nav>
+<!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
+<div class="account-menu">
+<details class="account-menu__disclosure">
+<summary aria-label="Mở menu tài khoản giảng viên" class="account-menu__toggle">
+<span aria-hidden="true" class="account-menu__avatar">
+<svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24">
+<circle cx="12" cy="8" r="4"></circle>
+<path d="M5.5 20a6.5 6.5 0 0 1 13 0"></path>
+</svg>
+</span>
+<span class="account-menu__label">Tài khoản giảng viên</span>
+<svg aria-hidden="true" class="account-menu__chevron" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24">
+<path d="m6 9 6 6 6-6"></path>
+</svg>
+</summary>
+<ul class="account-menu__list" id="account-dropdown">
+<li>
+<a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
+</li>
+<li>
+<button aria-controls="logout-dialog" class="account-menu__logout" disabled="" title="Chức năng đăng xuất chưa được kết nối" type="button">
+                  Đăng xuất
+                </button>
+</li>
+</ul>
+</details>
+</div>
+<!-- Menu thu gọn trên điện thoại bằng details/summary thuần HTML -->
+<div class="mobile-nav">
+<details class="mobile-nav__disclosure">
+<summary class="mobile-nav__toggle">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24">
+<path d="M4 6h16M4 12h16M4 18h16"></path>
+</svg>
+<span>Menu</span>
+</summary>
+<div class="mobile-nav__panel">
+<nav aria-label="Điều hướng giảng viên trên điện thoại">
+<ul class="mobile-nav__list">
+<li>
+<a aria-current="page" class="mobile-nav__link" href="tong-quan-giang-vien.html">Tổng quan</a>
+</li>
+<li>
+<a class="mobile-nav__link" href="danh-sach-de-tai-dang-huong-dan.html">Quản lý đề tài</a>
+</li>
+<li>
+<a class="mobile-nav__link" href="yeu-cau-cho-duyet.html">Yêu cầu chờ duyệt</a>
+</li>
+</ul>
+<div class="mobile-nav__section">
+<p class="mobile-nav__section-title">Chung</p>
+<ul class="mobile-nav__list">
+<li>
+<a class="mobile-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a>
+</li>
+<li>
+<a class="mobile-nav__link" href="../chung/thong-bao.html">Thông báo</a>
+</li>
+<li>
+<a class="mobile-nav__link" href="../chung/lien-he.html">Liên hệ</a>
+</li>
+</ul>
+</div>
+<div class="mobile-nav__section">
+<p class="mobile-nav__section-title">Tài khoản giảng viên</p>
+<ul class="mobile-nav__list">
+<li>
+<a class="mobile-nav__link" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
+</li>
+<li>
+<button aria-controls="logout-dialog" class="mobile-nav__logout" disabled="" title="Chức năng đăng xuất chưa được kết nối" type="button">
+                        Đăng xuất
+                      </button>
+</li>
+</ul>
+</div>
+</nav>
+</div>
+</details>
+</div>
+</div>
+</header>
+
+    </div>
     <dialog
       id="logout-dialog"
       class="confirmation-dialog"
