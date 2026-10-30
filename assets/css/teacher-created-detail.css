@@ -1,0 +1,379 @@
+/* Chi tiết đề tài đã tạo: ảnh duyệt 30/10/2026.
+   Nạp sau teacher-layout.css; chỉ áp dụng trên trang này. */
+.teacher-created-detail-page .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  max-width: 100%;
+  padding: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-4);
+  border: 1px solid #93c5fd;
+  border-radius: var(--control-radius);
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.teacher-created-detail-page .back-link__icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.teacher-created-detail-page .back-link:hover {
+  background-color: var(--color-primary-tint);
+  border-color: var(--color-primary);
+  color: var(--color-primary-hover);
+}
+
+.teacher-created-detail-page .created-detail-heading {
+  grid-area: title;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.teacher-created-detail-page .status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: 1.5;
+}
+
+.teacher-created-detail-page .status-badge--open {
+  color: var(--color-success-fg);
+  background: var(--color-success-bg);
+}
+
+.teacher-created-detail-page .status-badge--closed {
+  color: var(--color-neutral-fg);
+  background: var(--color-neutral-bg);
+}
+
+.teacher-created-detail-page .page-header__actions {
+  grid-area: action;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+.teacher-created-detail-page :is(.topic-edit-link, .registration-close-button,
+  .registration-reopen-button, .topic-attachments__download) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding: 0.625rem var(--space-4);
+  border: 1px solid var(--button-secondary-border);
+  border-radius: var(--control-radius);
+  background: var(--button-secondary-bg);
+  color: var(--button-secondary-fg);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  line-height: 1.5;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.teacher-created-detail-page .topic-edit-link {
+  background: var(--button-primary-bg);
+  border-color: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+}
+
+.teacher-created-detail-page .topic-edit-link:hover {
+  background: var(--button-primary-bg-hover);
+  border-color: var(--button-primary-bg-hover);
+}
+
+.teacher-created-detail-page :is(.registration-close-button, .registration-reopen-button):hover {
+  background: var(--button-secondary-bg-hover);
+  border-color: var(--color-foreground);
+}
+
+.teacher-created-detail-page .topic-edit-link svg,
+.teacher-created-detail-page .topic-attachments__download svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+}
+
+.teacher-created-detail-page .topic-detail {
+  display: grid;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+.teacher-created-detail-page .topic-detail > section {
+  min-width: 0;
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--card-radius);
+  background: var(--color-surface);
+}
+
+.teacher-created-detail-page .topic-detail h2 {
+  margin-bottom: var(--space-4);
+  color: var(--color-heading);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  line-height: 1.4;
+}
+
+.teacher-created-detail-page .topic-detail :is(p, dd, li) {
+  color: var(--color-muted-foreground);
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.teacher-created-detail-page .topic-summary {
+  display: grid;
+  grid-template-columns: 13rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.teacher-created-detail-page .topic-summary__image {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--control-radius);
+  background: var(--media-placeholder-bg);
+  color: var(--media-placeholder-icon);
+}
+
+.teacher-created-detail-page .topic-summary__image svg {
+  width: 4.5rem;
+  height: 4.5rem;
+}
+
+.teacher-created-detail-page .topic-summary__content {
+  min-width: 0;
+}
+
+.teacher-created-detail-page .topic-summary h2 {
+  margin-bottom: var(--space-6);
+  font-size: var(--text-2xl);
+}
+
+.teacher-created-detail-page .topic-summary__meta {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  grid-template-rows: repeat(3, auto);
+  grid-auto-flow: column;
+  gap: var(--space-3) var(--space-6);
+}
+
+.teacher-created-detail-page .topic-summary__meta > div {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-3);
+}
+
+.teacher-created-detail-page .topic-detail dt {
+  color: var(--color-heading);
+  font-weight: var(--weight-semibold);
+}
+
+.teacher-created-detail-page .topic-summary__meta > div:nth-child(n + 4) {
+  grid-template-columns: 6rem minmax(0, 1fr);
+}
+
+.teacher-created-detail-page .topic-supervisor h2 {
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.teacher-created-detail-page .topic-supervisor__content {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-6);
+}
+
+.teacher-created-detail-page .topic-supervisor__avatar {
+  display: grid;
+  place-items: center;
+  width: 7.5rem;
+  aspect-ratio: 1;
+  border-radius: var(--radius-full);
+  background: var(--color-info-bg);
+  color: var(--color-primary);
+}
+
+.teacher-created-detail-page .topic-supervisor__avatar svg {
+  width: 4rem;
+  height: 4rem;
+}
+
+.teacher-created-detail-page .topic-supervisor__details {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.teacher-created-detail-page .topic-supervisor__details > div {
+  display: grid;
+  grid-template-columns: 10rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-4);
+}
+
+.teacher-created-detail-page .topic-detail ul {
+  display: grid;
+  gap: var(--space-1);
+  padding-inline-start: 1.25rem;
+  list-style: disc;
+}
+
+.teacher-created-detail-page .topic-detail li::marker {
+  color: var(--color-primary);
+}
+
+.teacher-created-detail-page .topic-registration__members {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  border-radius: var(--control-radius);
+  background: var(--color-info-bg);
+}
+
+.teacher-created-detail-page .topic-registration__members svg {
+  width: 1.75rem;
+  height: 1.75rem;
+  flex-shrink: 0;
+  color: var(--color-primary);
+}
+
+.teacher-created-detail-page .topic-registration dl > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.teacher-created-detail-page .topic-attachments {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+}
+
+.teacher-created-detail-page .topic-attachments h2 {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+
+.teacher-created-detail-page .topic-attachments__file {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.teacher-created-detail-page .topic-attachments__file svg {
+  width: 2rem;
+  height: 2.5rem;
+  flex-shrink: 0;
+}
+
+.teacher-created-detail-page .topic-attachments__download:disabled {
+  color: var(--color-disabled-fg);
+  border-color: var(--color-disabled-border);
+  background: var(--color-disabled-bg);
+  cursor: not-allowed;
+}
+
+.teacher-created-detail-page .created-detail-note {
+  margin-top: var(--space-4);
+  color: var(--color-muted-foreground);
+  font-size: var(--text-sm);
+}
+
+@media (max-width: 74.99rem) {
+  .teacher-created-detail-page .page-header {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "title" "desc" "action";
+  }
+
+  .teacher-created-detail-page .page-header__actions {
+    justify-content: flex-start;
+    margin-top: var(--space-2);
+  }
+
+  .teacher-created-detail-page .topic-summary__meta {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-auto-flow: row;
+  }
+
+  .teacher-created-detail-page .topic-summary__meta > div:nth-child(n) {
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 47.99rem) {
+  .teacher-created-detail-page .topic-detail {
+    gap: var(--space-4);
+  }
+
+  .teacher-created-detail-page .topic-detail > section {
+    padding: var(--space-4);
+  }
+
+  .teacher-created-detail-page .page-header__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .teacher-created-detail-page .topic-summary,
+  .teacher-created-detail-page .topic-supervisor__content {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .teacher-created-detail-page .topic-summary__image {
+    aspect-ratio: 16 / 9;
+  }
+
+  .teacher-created-detail-page .topic-summary h2 {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-4);
+  }
+
+  .teacher-created-detail-page .topic-supervisor__details > div {
+    grid-template-columns: 8.5rem minmax(0, 1fr);
+    gap: var(--space-3);
+  }
+}
+
+@media (max-width: 29.99rem) {
+  .teacher-created-detail-page .page-header__actions,
+  .teacher-created-detail-page .topic-attachments,
+  .teacher-created-detail-page .topic-supervisor__details > div,
+  .teacher-created-detail-page .topic-summary__meta > div:nth-child(n) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .teacher-created-detail-page .topic-supervisor__details > div,
+  .teacher-created-detail-page .topic-summary__meta > div:nth-child(n) {
+    gap: var(--space-1);
+  }
+}

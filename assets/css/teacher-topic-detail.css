@@ -1,0 +1,2131 @@
+/* ==========================================================================
+   TEACHER TOPIC DETAIL — Chi tiết đề tài đang hướng dẫn (Giảng viên)
+   Áp dụng cho: pages/giang-vien/chi-tiet-de-tai-dang-huong-dan-giang-vien.html
+   ========================================================================== */
+
+.site-brand__name {
+  line-height: 1.32;
+}
+
+/* --------------------------------------------------------------------------
+   1. NÚT QUAY LẠI & ĐẦU TRANG CHI TIẾT
+   -------------------------------------------------------------------------- */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-4);
+  border: 1px solid #93c5fd;
+  border-radius: var(--control-radius);
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.back-link__icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.back-link:hover {
+  background-color: var(--color-primary-tint);
+  border-color: var(--color-primary);
+  color: var(--color-primary-hover);
+}
+
+.back-link:hover .back-link__icon {
+  transform: translateX(-2px);
+}
+
+.page-header--detail {
+  display: block;
+  margin-bottom: var(--space-4);
+}
+
+.page-header--detail .page-header__title {
+  margin-bottom: var(--space-1);
+}
+
+.page-header__subtitle {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  color: var(--color-muted-foreground);
+}
+
+/* --------------------------------------------------------------------------
+   2. THANH ĐIỀU HƯỚNG 4 MỤC (TỔNG QUAN / TIẾN ĐỘ / BÀI NỘP / KẾT QUẢ ĐÁNH GIÁ)
+   Trạng thái gạch xanh khớp với mục đang hiển thị (fragment :target)
+   -------------------------------------------------------------------------- */
+.topic-tabs--detail {
+  margin-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.topic-tabs--detail .topic-tabs__list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+}
+
+.topic-tabs--detail .topic-tabs__item {
+  display: flex;
+}
+
+.topic-tabs--detail .topic-tabs__link {
+  justify-content: center;
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  text-align: center;
+}
+
+/* Đồng bộ trạng thái mục đang hiển thị theo fragment (:target).
+   Không có fragment của mục nào → Tổng quan là mục mặc định. */
+.page-container:not(:has(.topic-panel:target, .topic-panel :target)) .topic-tabs--detail .topic-tabs__link[href="#tong-quan"],
+.page-container:has(#overview-section:target, #overview-section :target) .topic-tabs--detail .topic-tabs__link[href="#tong-quan"],
+.page-container:has(#progress-section:target, #progress-section :target) .topic-tabs--detail .topic-tabs__link[href="#tien-do"],
+.page-container:has(#submissions-section:target, #submissions-section :target) .topic-tabs--detail .topic-tabs__link[href="#bai-nop"],
+.page-container:has(#evaluation-section:target, #evaluation-section :target) .topic-tabs--detail .topic-tabs__link[href="#ket-qua-danh-gia"] {
+  color: var(--color-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.page-container:not(:has(.topic-panel:target, .topic-panel :target)) .topic-tabs--detail .topic-tabs__link[href="#tong-quan"]::after,
+.page-container:has(#overview-section:target, #overview-section :target) .topic-tabs--detail .topic-tabs__link[href="#tong-quan"]::after,
+.page-container:has(#progress-section:target, #progress-section :target) .topic-tabs--detail .topic-tabs__link[href="#tien-do"]::after,
+.page-container:has(#submissions-section:target, #submissions-section :target) .topic-tabs--detail .topic-tabs__link[href="#bai-nop"]::after,
+.page-container:has(#evaluation-section:target, #evaluation-section :target) .topic-tabs--detail .topic-tabs__link[href="#ket-qua-danh-gia"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  background-color: var(--color-primary);
+  border-radius: 2px 2px 0 0;
+}
+
+/* --------------------------------------------------------------------------
+   3. BỐN MỤC CHI TIẾT (.topic-panel)
+   Thanh 4 mục ở trên là điều hướng duy nhất. Mỗi mục là một section;
+   chỉ mục được chọn hiển thị (display: none không nhận focus).
+   Trình duyệt không hỗ trợ :has() → hiển thị cả bốn mục, không mất nội dung.
+   -------------------------------------------------------------------------- */
+.topic-context {
+  margin-bottom: var(--space-4);
+  padding: var(--space-4) var(--space-6);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--card-radius);
+}
+
+.topic-context__title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+  color: var(--color-heading);
+  overflow-wrap: anywhere;
+}
+
+.topic-panel + .topic-panel {
+  margin-top: var(--space-8);
+}
+
+@supports selector(:has(*)) {
+  .topic-panel {
+    display: none;
+  }
+
+  .topic-panel:target,
+  .topic-panel:has(:target),
+  .page-content:not(:has(.topic-panel:target, .topic-panel :target)) > #overview-section {
+    display: block;
+  }
+
+  .topic-panel + .topic-panel {
+    margin-top: 0;
+  }
+
+  /* Tổng quan đã có thẻ tóm tắt riêng; các mục còn lại dùng ngữ cảnh chung. */
+  .topic-context {
+    display: none;
+  }
+
+  .page-container:has(#progress-section:target, #progress-section :target) .topic-context,
+  .page-container:has(#submissions-section:target, #submissions-section :target) .topic-context,
+  .page-container:has(#evaluation-section:target, #evaluation-section :target) .topic-context {
+    display: block;
+  }
+
+  .topic-context__group {
+    display: none;
+  }
+
+  .page-container:has(#progress-section:target, #progress-section :target) .topic-context__group,
+  .page-container:has(#submissions-section:target, #submissions-section :target) .topic-context__group,
+  .page-container:has(#evaluation-section:target, #evaluation-section :target) .topic-context__group {
+    display: inline;
+  }
+}
+
+/* Chọn mục trên thanh điều hướng: đưa trang về đầu vùng nội dung thay vì
+   cuộn mất header/thanh 4 mục (vị trí cuộn bị chặn tại 0). */
+#tong-quan,
+#tien-do,
+#bai-nop,
+#ket-qua-danh-gia {
+  scroll-margin-top: 200vh;
+}
+
+#tong-quan:focus,
+#tien-do:focus,
+#bai-nop:focus,
+#ket-qua-danh-gia:focus {
+  outline: none;
+}
+
+/* --------------------------------------------------------------------------
+   4. THẺ TÓM TẮT ĐỀ TÀI (.topic-summary)
+   -------------------------------------------------------------------------- */
+.topic-summary {
+  display: grid;
+  grid-template-columns: minmax(17.5rem, 26.25rem) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-6);
+  padding: var(--space-6);
+  margin-bottom: var(--space-6);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--card-radius);
+}
+
+.topic-summary__image {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background-color: var(--media-placeholder-bg);
+  border: 1px solid var(--media-placeholder-border);
+  color: var(--media-placeholder-icon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.topic-summary__image:has(img) {
+  padding: 0;
+  border: 0;
+}
+
+.topic-summary__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.topic-summary__placeholder-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  flex-shrink: 0;
+}
+
+.topic-summary__content {
+  /* Trải thông tin theo chiều cao ảnh, không gom cả cụm ở giữa thẻ. */
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-2);
+  min-width: 0;
+}
+
+#topic-summary-title {
+  font-size: 1.625rem; /* 26px */
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-heading);
+  margin-bottom: var(--space-2);
+  overflow-wrap: anywhere;
+}
+
+.topic-summary__meta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  color: var(--color-muted-foreground);
+  min-width: 0;
+}
+
+.topic-summary__meta-item > span:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.topic-summary__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  color: var(--color-muted-foreground);
+  margin-top: 0.125rem;
+}
+
+.topic-summary__meta-item--status {
+  align-items: center;
+}
+
+.topic-summary__meta-item--status .topic-summary__icon {
+  margin-top: 0;
+}
+
+/* Nhãn trạng thái Đang thực hiện: #EFF6FF nền, #1E40AF chữ, không làm như nút bấm */
+.topic-summary__status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.375rem 0.875rem;
+  border-radius: var(--control-radius);
+  background-color: var(--color-info-bg);
+  color: var(--color-info-fg);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: 1.35;
+  cursor: default;
+  user-select: text;
+}
+
+/* --------------------------------------------------------------------------
+   5. LƯỚI 2 CỘT PHẦN TỔNG QUAN (.topic-overview-layout)
+   Desktop: Cột trái ~60% (3fr), cột phải ~40% (2fr), gap 24px
+   -------------------------------------------------------------------------- */
+.topic-overview-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  align-items: start;
+  gap: var(--space-6);
+}
+
+.topic-overview-layout__main,
+.topic-overview-layout__aside {
+  display: grid;
+  align-content: start;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+.topic-overview-card {
+  padding: var(--space-6);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--card-radius);
+}
+
+.topic-overview-card > h2 {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+  color: var(--color-heading);
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.topic-description > p {
+  font-size: var(--text-base);
+  line-height: 1.65;
+  color: var(--color-foreground);
+  max-width: 72ch;
+}
+
+/* Danh sách mục tiêu & kết quả dự kiến với chấm tròn xanh */
+.topic-bullet-list {
+  display: grid;
+  gap: var(--space-3);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.topic-bullet-list > li {
+  position: relative;
+  padding-left: var(--space-6);
+  font-size: var(--text-base);
+  line-height: 1.55;
+  color: var(--color-foreground);
+}
+
+.topic-bullet-list > li::before {
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  top: 0.525rem;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+}
+
+/* --------------------------------------------------------------------------
+   6. THẺ NHÓM THỰC HIỆN (.topic-team)
+   -------------------------------------------------------------------------- */
+.topic-team > h2 {
+  border-bottom: 0;
+  padding-bottom: 0;
+  margin-bottom: var(--space-3);
+}
+
+.topic-team__group-name {
+  padding: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-3);
+  border-radius: 0.375rem;
+  background-color: var(--color-surface-subtle);
+  color: var(--color-heading);
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+}
+
+.topic-team__members {
+  display: grid;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.team-member {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.team-member:last-child {
+  border-bottom: 0;
+}
+
+.team-member__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-subtle);
+  color: var(--color-foreground);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.02em;
+  user-select: none;
+}
+
+.team-member__body {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.team-member__identity {
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--color-muted-foreground);
+  overflow-wrap: anywhere;
+}
+
+.team-member__name {
+  font-weight: var(--weight-bold);
+  color: var(--color-foreground);
+}
+
+.team-member__id {
+  font-variant-numeric: tabular-nums;
+}
+
+.team-member__role {
+  font-size: var(--text-sm);
+  line-height: 1.4;
+  color: var(--color-muted-foreground);
+}
+
+/* --------------------------------------------------------------------------
+   7. THẺ MỐC THỜI GIAN CHÍNH (.topic-milestones)
+   -------------------------------------------------------------------------- */
+.topic-milestones > h2 {
+  margin-bottom: var(--space-2);
+}
+
+.topic-milestones__list {
+  display: grid;
+  margin: 0;
+}
+
+.topic-milestones__item {
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.topic-milestones__item:last-child {
+  border-bottom: 0;
+}
+
+.topic-milestones__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-primary-tint);
+  color: var(--color-primary);
+}
+
+.topic-milestones__icon svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.topic-milestones__text {
+  display: grid;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.topic-milestones__text dt {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  color: var(--color-muted-foreground);
+}
+
+.topic-milestones__text dd {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-foreground);
+}
+
+/* --------------------------------------------------------------------------
+   8. KHUNG BÀI NỘP (khoảng đệm thuộc từng khối con)
+   -------------------------------------------------------------------------- */
+#bai-nop {
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+/* --------------------------------------------------------------------------
+   8b. MỤC TIẾN ĐỘ (#tien-do)
+   Tiến độ tổng thể + Kanban 3 cột; cảnh báo quá hạn độc lập với trạng thái.
+   -------------------------------------------------------------------------- */
+#tien-do {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.progress-overview,
+.progress-tasks {
+  padding: var(--space-6);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--card-radius);
+}
+
+.progress-overview__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.progress-overview__title,
+.progress-tasks__title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+  color: var(--color-heading);
+}
+
+.progress-overview__review {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--button-primary-bg);
+  border-radius: var(--control-radius);
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  line-height: 1.35;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.progress-overview__review svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+}
+
+.progress-overview__review:hover {
+  background-color: var(--button-primary-bg-hover);
+  border-color: var(--button-primary-bg-hover);
+}
+
+.progress-overview__review:active {
+  background-color: var(--button-primary-bg-active);
+  border-color: var(--button-primary-bg-active);
+}
+
+.progress-overview__meter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.progress-overview__bar {
+  flex: 1 1 14rem;
+  min-width: 0;
+  height: 0.75rem;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  border-radius: var(--radius-full);
+  background-color: var(--progress-track-bg);
+  color: var(--progress-fill-bg);
+  overflow: hidden;
+}
+
+.progress-overview__bar::-webkit-progress-bar {
+  border-radius: var(--radius-full);
+  background-color: var(--progress-track-bg);
+}
+
+.progress-overview__bar::-webkit-progress-value {
+  border-radius: var(--radius-full);
+  background-color: var(--progress-fill-bg);
+}
+
+.progress-overview__bar::-moz-progress-bar {
+  border-radius: var(--radius-full);
+  background-color: var(--progress-fill-bg);
+}
+
+.progress-overview__percent {
+  flex: 0 0 auto;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+.progress-overview__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.progress-stat {
+  display: grid;
+  position: relative;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  row-gap: var(--space-1);
+  padding: var(--space-4);
+  padding-inline-start: calc(2rem + var(--space-4) * 2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--control-radius);
+  background-color: var(--color-background);
+}
+
+.progress-stat__icon {
+  position: absolute;
+  inset-inline-start: var(--space-4);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2rem;
+  height: 2rem;
+  color: var(--color-primary);
+}
+
+.progress-stat:nth-child(2) .progress-stat__icon { color: var(--color-success-fg); }
+.progress-stat dt { font-size: var(--text-sm); color: var(--color-muted-foreground); }
+.progress-stat dd {
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  color: var(--color-heading);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Kanban: cuộn trong bảng khi thiếu chỗ, không gây tràn cả trang. */
+.progress-view,
+.progress-tasks { min-width: 0; }
+.progress-tasks__title { margin-bottom: var(--space-4); }
+.task-board {
+  position: relative;
+  overflow-x: auto;
+  border-radius: var(--control-radius);
+  scroll-padding-inline: var(--space-2);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-control-border) var(--color-background);
+}
+
+.task-board:focus-visible { outline-offset: 3px; }
+.task-board__columns {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(18rem, 1fr));
+  align-items: stretch;
+  gap: var(--space-3);
+}
+
+.task-column {
+  --column-background: var(--color-neutral-bg);
+  --column-accent: var(--color-neutral-fg);
+  min-width: 0;
+  padding: var(--space-3);
+  border-radius: var(--control-radius);
+  background-color: var(--column-background);
+}
+
+.task-column--in-progress { --column-background: var(--color-info-bg); --column-accent: var(--color-primary); }
+.task-column--done { --column-background: var(--color-success-bg); --column-accent: var(--color-success-fg); }
+.task-column__title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--color-heading);
+  line-height: var(--leading-snug);
+}
+
+.task-column__icon { width: 1.25rem; height: 1.25rem; flex: 0 0 auto; color: var(--column-accent); }
+.task-column__count { color: var(--color-muted-foreground); font-weight: var(--weight-regular); font-variant-numeric: tabular-nums; }
+.task-column__list { position: relative; display: grid; align-content: start; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.task-column__list > li { min-width: 0; }
+
+/* Từ công việc thứ 6, cuộn riêng danh sách; tiêu đề nằm ngoài vùng cuộn.
+   Không khóa chiều cao thẻ để tên dài/phóng to chữ vẫn đọc được đầy đủ. */
+.task-column__list:has(> li:nth-child(6)) {
+  max-block-size: 34rem;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+  padding-inline-end: var(--space-2);
+  overscroll-behavior-y: contain;
+  scroll-padding-block: var(--space-1);
+}
+
+.task-column__list:focus-visible { outline-offset: 2px; }
+
+/* Kích thước scrollbar tường minh để thấy được vùng cuộn trên WebKit/Chromium. */
+.task-column__list::-webkit-scrollbar { width: 12px; }
+.task-column__list::-webkit-scrollbar-track {
+  border-radius: var(--radius-full);
+  background-color: var(--column-background);
+}
+.task-column__list::-webkit-scrollbar-thumb {
+  border: 3px solid var(--column-background);
+  border-radius: var(--radius-full);
+  background-color: var(--color-control-border);
+}
+.task-column__list::-webkit-scrollbar-thumb:hover { background-color: var(--color-muted-foreground); }
+
+@supports not selector(::-webkit-scrollbar) {
+  .task-column__list {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-control-border) var(--column-background);
+  }
+}
+
+.task-card {
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--card-radius);
+  background-color: var(--color-surface);
+}
+
+.task-column--in-progress .task-card { border-color: var(--color-primary-tint-border); }
+.task-column--done .task-card { border-color: var(--task-done-border); }
+.task-card__header { display: flex; flex-wrap: wrap; align-items: start; gap: var(--space-2); }
+.task-card__title {
+  flex: 1 1 10rem;
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  color: var(--color-heading);
+  overflow-wrap: anywhere;
+}
+
+.task-card__overdue {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-inline-start: auto;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+  background-color: var(--task-overdue-badge-bg);
+  color: var(--color-danger-fg);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+}
+
+.task-card__icon { width: 1rem; height: 1rem; flex: 0 0 auto; }
+.task-card__footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-1) var(--space-2); margin-top: var(--space-2); }
+.task-card__deadline { display: inline-flex; align-items: center; gap: var(--space-2); margin: 0; font-size: var(--text-sm); color: var(--color-muted-foreground); font-variant-numeric: tabular-nums; }
+.task-card--overdue .task-card__deadline { color: var(--color-danger-fg); }
+.task-assignees { display: flex; align-items: center; margin-inline-start: auto; }
+.task-assignee {
+  display: inline-grid;
+  place-items: center;
+  width: var(--control-min-height);
+  min-width: var(--control-min-height);
+  height: var(--control-min-height);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.task-assignee__avatar {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+}
+
+.task-assignee__avatar--an { background-color: var(--blue-100); color: var(--color-info-fg); }
+.task-assignee__avatar--binh { background-color: var(--color-info-bg); color: var(--color-brand); }
+.task-assignee__avatar--cuong,
+.task-assignee__avatar--more { background-color: var(--color-neutral-bg); color: var(--color-neutral-fg); }
+.task-assignee:hover .task-assignee__avatar { outline: 1px solid var(--color-primary); outline-offset: 2px; }
+.task-assignee--more { display: none; }
+
+/* Popover HTML tự nhiên: không che tối trang; Escape/bấm ngoài để đóng.
+   Mặc định ở giữa viewport; anchor positioning đặt gần avatar khi được hỗ trợ. */
+.progress-member-popover[popover] {
+  display: none;
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(20rem, calc(100vw - 2rem));
+  max-height: calc(100dvh - 2rem);
+  padding: var(--space-4) 3.5rem var(--space-4) var(--space-4);
+  overflow: auto;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--card-radius);
+  background-color: var(--color-surface);
+  color: var(--color-foreground);
+  box-shadow: var(--shadow-overlay);
+}
+
+.progress-member-popover[popover]:popover-open { display: flex; align-items: flex-start; gap: var(--space-3); }
+.progress-member-popover::backdrop { background: transparent; }
+.progress-member-popover__avatar { display: grid; place-items: center; flex: 0 0 2.75rem; width: 2.75rem; height: 2.75rem; border-radius: var(--radius-full); font-size: var(--text-base); font-weight: var(--weight-semibold); }
+.progress-member-popover__info { min-width: 0; display: grid; justify-items: start; gap: var(--space-1); }
+.progress-member-popover__name { font-size: var(--text-base); font-weight: var(--weight-semibold); line-height: var(--leading-snug); color: var(--color-heading); }
+.progress-member-popover__id { font-size: var(--text-sm); color: var(--color-muted-foreground); font-variant-numeric: tabular-nums; }
+.progress-member-popover__role { margin-top: var(--space-1); padding: var(--space-1) var(--space-2); border-radius: var(--radius-sm); background: var(--color-info-bg); color: var(--color-info-fg); font-size: var(--text-xs); font-weight: var(--weight-medium); }
+.progress-member-popover__close {
+  position: absolute;
+  inset-block-start: var(--space-1);
+  inset-inline-end: var(--space-1);
+  display: grid;
+  place-items: center;
+  width: var(--control-min-height);
+  height: var(--control-min-height);
+  border: 0;
+  border-radius: var(--control-radius);
+  background: transparent;
+  color: var(--color-muted-foreground);
+  cursor: pointer;
+}
+.progress-member-popover__close:hover { background-color: var(--color-neutral-bg); }
+.progress-member-popover__close-icon { width: 1.125rem; height: 1.125rem; }
+
+@supports (position-area: bottom span-left) {
+  .progress-member-popover[popover] {
+    inset: auto;
+    position-area: bottom span-left;
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+    margin: var(--space-2) 0;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .progress-overview,
+  .progress-tasks { padding: var(--space-4); }
+  .progress-overview__review { width: 100%; }
+  .progress-overview__stats { gap: var(--space-2); }
+  .progress-stat { padding: var(--space-3) var(--space-2); justify-items: center; text-align: center; }
+  .progress-stat__icon { display: none; }
+  .task-board__columns { grid-template-columns: repeat(3, minmax(17.5rem, 1fr)); }
+}
+
+@media (max-width: 479.98px) {
+  .task-assignee--third { display: none; }
+  .task-assignee--more { display: inline-grid; }
+}
+
+/* --------------------------------------------------------------------------
+   8c. DIALOG NHẬN XÉT TIẾN ĐỘ (#progress-review)
+   -------------------------------------------------------------------------- */
+#progress-review {
+  width: min(calc(100% - var(--space-8)), 34rem);
+  max-height: calc(100dvh - var(--space-8));
+  padding: 0;
+  border: 0;
+  border-radius: var(--card-radius);
+  background-color: var(--color-surface);
+  color: var(--color-foreground);
+  box-shadow: var(--shadow-overlay);
+}
+
+#progress-review::backdrop {
+  background-color: var(--color-backdrop);
+}
+
+#progress-review .topic-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+}
+
+#progress-review .topic-dialog__header h2 {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: var(--color-heading);
+}
+
+.progress-review-dialog__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--control-min-height);
+  height: var(--control-min-height);
+  border: 0;
+  border-radius: var(--control-radius);
+  background: transparent;
+  color: var(--color-muted-foreground);
+  cursor: pointer;
+}
+
+.progress-review-dialog__close svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.progress-review-dialog__close:hover {
+  background-color: var(--color-surface-subtle);
+  color: var(--color-foreground);
+}
+
+#progress-review .topic-dialog__form {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-6);
+}
+
+.progress-review-dialog__field {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.progress-review-dialog__field label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-heading);
+}
+
+.progress-review-dialog__field textarea {
+  width: 100%;
+  min-height: 9rem;
+  padding: var(--space-3);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--control-radius);
+  background-color: var(--color-surface);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  resize: vertical;
+}
+
+.progress-review-dialog__field textarea:focus-visible {
+  border-color: var(--color-primary);
+}
+
+.progress-review-dialog__note {
+  font-size: var(--text-sm);
+  color: var(--color-muted-foreground);
+}
+
+#progress-review .topic-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.progress-review-dialog__cancel,
+.progress-review-dialog__submit {
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--control-radius);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+}
+
+.progress-review-dialog__cancel {
+  border: 1px solid var(--button-secondary-border);
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-fg);
+}
+
+.progress-review-dialog__cancel:hover {
+  background-color: var(--button-secondary-bg-hover);
+}
+
+.progress-review-dialog__submit {
+  border: 1px solid var(--button-primary-bg);
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+}
+
+.progress-review-dialog__submit:disabled {
+  border-color: var(--color-disabled-border);
+  background-color: var(--color-disabled-bg);
+  color: var(--color-disabled-fg);
+  cursor: not-allowed;
+}
+
+
+/* --------------------------------------------------------------------------
+   8d. MỤC BÀI NỘP (#submissions-section / #bai-nop) — PHẠM VI RIÊNG
+   -------------------------------------------------------------------------- */
+#submissions-section .requirements,
+#submissions-section .submissions {
+  padding: var(--space-6);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--card-radius);
+  margin-bottom: var(--space-6);
+}
+
+/* Ẩn hoàn toàn summary của details để không nhận focus ngoài ý muốn */
+#submissions-section .requirements__mode > summary {
+  display: none;
+}
+
+#submissions-section .requirements__header,
+#submissions-section .submissions__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+#submissions-section .requirements__title,
+#submissions-section .submissions__title {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  color: var(--color-heading);
+  margin: 0;
+  line-height: var(--leading-tight);
+}
+
+#submissions-section .requirements__badge--danger {
+  display: inline-flex;
+  align-items: center;
+  margin-left: var(--space-2);
+  padding: 0.125rem 0.625rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-danger-bg);
+  border: 1px solid var(--color-danger-border);
+  color: var(--color-danger);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+}
+
+#submissions-section .requirements__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+/* Nút Xóa: nền trắng, viền đỏ, chữ đỏ, icon thùng rác đỏ */
+#submissions-section .requirements__delete-mode-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-danger, #b91c1c);
+  border-radius: var(--control-radius);
+  background-color: var(--color-surface);
+  color: var(--color-danger, #b91c1c);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+#submissions-section .requirements__delete-mode-link:hover {
+  background-color: var(--color-danger-bg);
+}
+
+/* Nút Xong trong chế độ xóa */
+#submissions-section .requirements__done-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--button-primary-bg);
+  border-radius: var(--control-radius);
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+#submissions-section .requirements__done-link:hover {
+  background-color: var(--button-primary-bg-hover);
+}
+
+/* Nút + Tạo yêu cầu: nền xanh, chữ trắng */
+#submissions-section .requirements__create-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--button-primary-bg);
+  border-radius: var(--control-radius);
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+#submissions-section .requirements__create-btn:hover {
+  background-color: var(--button-primary-bg-hover);
+}
+
+#submissions-section .requirements__btn-icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+}
+
+/* Danh sách thẻ yêu cầu */
+#submissions-section .requirements__list,
+#submissions-section .requirements__delete-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+#submissions-section .requirement-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+
+#submissions-section .requirement-card__main {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+#submissions-section .requirement-card__title {
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--color-heading);
+  margin: 0;
+  line-height: var(--leading-snug);
+  overflow-wrap: anywhere;
+}
+
+#submissions-section .requirement-card__deadline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-muted-foreground);
+  margin: 0;
+}
+
+#submissions-section .requirement-card__deadline time {
+  font-variant-numeric: tabular-nums;
+}
+
+#submissions-section .requirement-card__meta-icon,
+#submissions-section .submission-card__meta-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  color: var(--color-muted-foreground);
+}
+
+#submissions-section .requirement-card__side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+#submissions-section .requirement-card__side--delete {
+  align-self: center;
+}
+
+/* Nhãn trạng thái yêu cầu */
+#submissions-section .requirement-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 1.75rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--control-radius);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  cursor: default;
+  border: 1px solid transparent;
+  margin: 0;
+}
+
+#submissions-section .requirement-card__status .status-icon,
+#submissions-section .submission-card__status .status-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+/* Cụm 2 nút hành động thẻ yêu cầu */
+#submissions-section .requirement-card__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Nút Sửa: dạng viền */
+#submissions-section .requirement-card__edit {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--control-radius);
+  background-color: var(--color-surface);
+  color: var(--color-foreground);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+#submissions-section .requirement-card__edit:hover {
+  background-color: var(--color-surface-subtle);
+}
+
+/* Nút Xem chi tiết: nền xanh, chữ trắng theo đúng ảnh */
+#submissions-section .requirement-card__detail {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--button-primary-bg);
+  border-radius: var(--control-radius);
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+#submissions-section .requirement-card__detail:hover {
+  background-color: var(--button-primary-bg-hover);
+}
+
+#submissions-section .btn-icon {
+  width: 0.9375rem;
+  height: 0.9375rem;
+  flex-shrink: 0;
+}
+
+/* MÀU TOÀN BỘ NỀN VÀ VIỀN THẺ YÊU CẦU THEO TRẠNG THÁI */
+#submissions-section .requirement-card--submitted {
+  background-color: var(--req-submitted-bg);
+  border-color: var(--req-submitted-border);
+}
+
+#submissions-section .requirement-card--submitted .requirement-card__status {
+  background-color: var(--req-submitted-badge-bg);
+  color: var(--req-submitted-badge-fg);
+  border-color: var(--req-submitted-border);
+}
+
+#submissions-section .requirement-card--pending {
+  background-color: var(--req-pending-bg);
+  border-color: var(--req-pending-border);
+}
+
+#submissions-section .requirement-card--pending .requirement-card__status {
+  background-color: var(--req-pending-badge-bg);
+  color: var(--req-pending-badge-fg);
+  border-color: var(--req-pending-border);
+}
+
+#submissions-section .requirement-card--overdue {
+  background-color: var(--req-overdue-bg);
+  border-color: var(--req-overdue-border);
+}
+
+#submissions-section .requirement-card--overdue .requirement-card__status {
+  background-color: var(--req-overdue-badge-bg);
+  color: var(--req-overdue-badge-fg);
+  border-color: var(--req-overdue-border);
+}
+
+/* Thẻ ở chế độ xóa */
+#submissions-section .requirement-card--delete-mode {
+  justify-content: flex-start;
+}
+
+#submissions-section .requirement-card__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--control-min-height);
+  height: var(--control-min-height);
+  border: 0;
+  border-radius: var(--radius-full);
+  background-color: #fee2e2;
+  color: #dc2626;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+#submissions-section .requirement-card__remove:hover {
+  background-color: #fecaca;
+}
+
+#submissions-section .requirement-card__remove svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+#submissions-section .requirement-card--delete-mode .requirement-card__main {
+  flex: 1 1 auto;
+}
+
+/* Ghi chú và phân trang yêu cầu */
+#submissions-section .requirements__note {
+  font-size: var(--text-sm);
+  color: var(--color-muted-foreground);
+  margin: var(--space-4) 0 var(--space-3) 0;
+}
+
+#submissions-section .requirements__footer,
+#submissions-section .submissions__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
+  flex-wrap: wrap;
+}
+
+#submissions-section .requirements__count,
+#submissions-section .submissions__count {
+  font-size: var(--text-sm);
+  color: var(--color-muted-foreground);
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+/* KHỐI BÀI NỘP CỦA NHÓM */
+#submissions-section .submissions__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+#submissions-section .submission-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border-radius: var(--card-radius);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+
+#submissions-section .submission-card__main {
+  display: grid;
+  gap: 0.375rem;
+  min-width: 0;
+}
+
+#submissions-section .submission-card__title {
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+  color: var(--color-heading);
+  margin: 0;
+  line-height: var(--leading-snug);
+  overflow-wrap: anywhere;
+}
+
+#submissions-section .submission-card__meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-muted-foreground);
+  margin: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+#submissions-section .submission-card__filename {
+  color: var(--color-foreground);
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+#submissions-section .submission-card__side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--space-2);
+  flex-shrink: 0;
+}
+
+/* Nhãn trạng thái bài nộp */
+#submissions-section .submission-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-height: 1.75rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: var(--control-radius);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  cursor: default;
+  border: 1px solid transparent;
+  margin: 0;
+}
+
+#submissions-section .submission-card__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Nút Tải xuống: dạng viền */
+#submissions-section .submission-card__download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--control-radius);
+  background-color: var(--color-surface);
+  color: var(--color-foreground);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+}
+
+#submissions-section .submission-card__download-btn:disabled {
+  background-color: var(--color-disabled-bg);
+  border-color: var(--color-disabled-border);
+  color: var(--color-disabled-fg);
+  cursor: not-allowed;
+}
+
+/* Nút Phản hồi: nền xanh, chữ trắng theo đúng ảnh */
+#submissions-section .submission-card__feedback-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--button-primary-bg);
+  border-radius: var(--control-radius);
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+#submissions-section .submission-card__feedback-btn:hover {
+  background-color: var(--button-primary-bg-hover);
+}
+
+/* MÀU TOÀN BỘ NỀN VÀ VIỀN THẺ BÀI NỘP THEO TRẠNG THÁI */
+#submissions-section .submission-card--on-time {
+  background-color: var(--sub-ontime-bg);
+  border-color: var(--sub-ontime-border);
+}
+
+#submissions-section .submission-card--on-time .submission-card__status {
+  background-color: var(--sub-ontime-badge-bg);
+  color: var(--sub-ontime-badge-fg);
+  border-color: var(--sub-ontime-border);
+}
+
+#submissions-section .submission-card--late {
+  background-color: var(--sub-late-bg);
+  border-color: var(--sub-late-border);
+}
+
+#submissions-section .submission-card--late .submission-card__status {
+  background-color: var(--sub-late-badge-bg);
+  color: var(--sub-late-badge-fg);
+  border-color: var(--sub-late-border);
+}
+
+/* --------------------------------------------------------------------------
+   8e. KẾT QUẢ ĐÁNH GIÁ — bố cục đã duyệt, chưa xử lý tính/lưu điểm
+   -------------------------------------------------------------------------- */
+.page-container:has(#evaluation-section:target, #evaluation-section :target) .page-header__subtitle {
+  display: none;
+}
+
+.page-container:has(#evaluation-section:target, #evaluation-section :target) .topic-context {
+  padding: 0;
+  margin-bottom: var(--space-6);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+.page-container:has(#evaluation-section:target, #evaluation-section :target) .topic-context__title {
+  color: var(--color-muted-foreground);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-regular);
+}
+
+.page-container:has(#evaluation-section:target, #evaluation-section :target) .topic-context__group {
+  font-weight: var(--weight-semibold);
+}
+
+#ket-qua-danh-gia,
+#evaluation-section .evaluation-form {
+  position: relative;
+  display: grid;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+#evaluation-section :is(.evaluation-info, .evaluation-criteria, .evaluation-total, .evaluation-comment) {
+  min-width: 0;
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--card-radius);
+  background-color: var(--color-surface);
+}
+
+#evaluation-section h3 {
+  margin: 0 0 var(--space-4);
+  color: var(--color-heading);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+}
+
+#evaluation-section :is(.evaluation-info, .evaluation-total, .evaluation-comment) > h3 {
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+#evaluation-section .evaluation-info__list {
+  display: grid;
+  gap: var(--space-4);
+  margin: 0;
+}
+
+#evaluation-section :is(.evaluation-info__list > div, .evaluation-total__field, .evaluation-comment__field) {
+  display: grid;
+  grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3) var(--space-6);
+}
+
+#evaluation-section :is(.evaluation-info__list > div, .evaluation-total__field) {
+  align-items: center;
+}
+
+#evaluation-section :is(dt, .evaluation-total__field > label, .evaluation-comment__field > label) {
+  color: var(--color-heading);
+  font-weight: var(--weight-semibold);
+}
+
+#evaluation-section dd {
+  margin: 0;
+}
+
+#evaluation-section .evaluation-info__status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--control-radius);
+  color: var(--color-warning-fg);
+  background-color: var(--color-warning-bg);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+#evaluation-section .evaluation-info__status svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+/* Cuộn riêng bảng trên màn hình hẹp, giữ semantics table và nhãn input. */
+#evaluation-section .evaluation-criteria__scroll {
+  position: relative;
+  overflow-x: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--control-radius);
+}
+
+#evaluation-section .evaluation-criteria__table {
+  width: 100%;
+  min-width: 42rem;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+#evaluation-section .evaluation-criteria__table :is(th, td) {
+  padding: var(--space-4);
+  vertical-align: middle;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+#evaluation-section .evaluation-criteria__table :is(th, td) + :is(th, td) {
+  border-left: 1px solid var(--color-border);
+}
+
+#evaluation-section .evaluation-criteria__table thead th {
+  color: var(--color-heading);
+  background-color: var(--color-neutral-bg);
+  font-weight: var(--weight-semibold);
+}
+
+#evaluation-section .evaluation-criteria__table th:nth-child(1) { width: 22%; }
+#evaluation-section .evaluation-criteria__table th:nth-child(2) { width: 38%; }
+#evaluation-section .evaluation-criteria__table th:nth-child(3) { width: 18%; }
+#evaluation-section .evaluation-criteria__table th:nth-child(4) { width: 22%; }
+
+#evaluation-section .evaluation-criteria__table tbody th {
+  font-weight: var(--weight-regular);
+}
+
+#evaluation-section .evaluation-criteria__table :is(th, td):nth-child(n + 3) {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+#evaluation-section .evaluation-criteria__table tbody tr:last-child > * {
+  border-bottom: 0;
+}
+
+#evaluation-section :is(input, textarea) {
+  width: 100%;
+  min-width: 0;
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--control-radius);
+  color: var(--color-foreground);
+  background-color: var(--color-surface);
+  font: inherit;
+}
+
+#evaluation-section input { max-width: 11rem; }
+#evaluation-section input::placeholder { font-size: var(--text-sm); }
+
+#evaluation-section :is(input, textarea):focus-visible {
+  border-color: var(--color-primary);
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+#evaluation-section input:user-invalid {
+  border-color: var(--color-danger-fg);
+  border-style: dashed;
+}
+
+#evaluation-section #total-score {
+  display: flex;
+  align-items: center;
+  width: min(100%, 16rem);
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--control-radius);
+  color: var(--color-muted-foreground);
+  background-color: var(--color-neutral-bg);
+  font-variant-numeric: tabular-nums;
+}
+
+#evaluation-section textarea {
+  display: block;
+  min-height: 7rem;
+  resize: vertical;
+}
+
+#evaluation-section .evaluation-comment__field > label { padding-top: var(--space-2); }
+#evaluation-section .evaluation-form__actions { display: flex; justify-content: flex-end; }
+
+#evaluation-section .evaluation-form__publish {
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-5);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--control-radius);
+  color: var(--color-on-primary);
+  background-color: var(--color-primary);
+  font-weight: var(--weight-medium);
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+#evaluation-section .evaluation-form__publish:hover { background-color: var(--color-primary-hover); }
+#evaluation-section .evaluation-form__publish:active { background-color: var(--color-primary-active); }
+
+@media (max-width: 47.99rem) {
+  #evaluation-section :is(.evaluation-info, .evaluation-criteria, .evaluation-total, .evaluation-comment) {
+    padding: var(--space-4);
+  }
+
+  #evaluation-section :is(.evaluation-info__list > div, .evaluation-total__field, .evaluation-comment__field) {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+
+  #evaluation-section .evaluation-comment__field > label { padding-top: 0; }
+  #evaluation-section .evaluation-form__publish { width: 100%; }
+}
+
+/* --------------------------------------------------------------------------
+   8f. QUY CHUẨN MODAL DIALOG DÙNG CHUNG (.topic-dialog)
+   -------------------------------------------------------------------------- */
+.topic-dialog {
+  width: min(calc(100% - var(--space-8)), 36rem);
+  max-height: calc(100dvh - var(--space-8));
+  padding: 0;
+  border: 0;
+  border-radius: var(--card-radius);
+  background-color: var(--color-surface);
+  color: var(--color-foreground);
+  box-shadow: var(--shadow-overlay);
+  overflow: hidden;
+}
+
+.topic-dialog::backdrop {
+  background-color: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(2px);
+}
+
+.topic-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.topic-dialog--danger {
+  width: min(calc(100% - var(--space-8)), 28rem);
+}
+
+.topic-dialog--danger .topic-dialog__header {
+  border-bottom-color: #fee2e2;
+  background-color: #fffafb;
+}
+
+.topic-dialog--danger .topic-dialog__header h2 {
+  color: var(--color-danger);
+}
+
+.topic-dialog__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.topic-dialog__header h2 {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: var(--color-heading);
+  margin: 0;
+}
+
+.topic-dialog__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--control-min-height);
+  height: var(--control-min-height);
+  border: 0;
+  border-radius: var(--control-radius);
+  background: transparent;
+  color: var(--color-muted-foreground);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+              color var(--duration-fast) var(--ease-standard);
+}
+
+.topic-dialog__close:hover {
+  background-color: var(--color-surface-subtle);
+  color: var(--color-foreground);
+}
+
+.topic-dialog__close svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.topic-dialog__body,
+.topic-dialog__form {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  overflow-y: auto;
+}
+
+.topic-dialog__field {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.topic-dialog__field label {
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-heading);
+}
+
+.topic-dialog__field input,
+.topic-dialog__field textarea {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--control-radius);
+  background-color: var(--color-surface);
+  font-family: inherit;
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  color: var(--color-foreground);
+  transition: border-color var(--duration-fast) var(--ease-standard),
+              box-shadow var(--duration-fast) var(--ease-standard);
+}
+
+.topic-dialog__field input[readonly],
+.topic-dialog__field textarea[readonly] {
+  background-color: var(--color-surface-subtle);
+  color: var(--color-foreground);
+  cursor: default;
+}
+
+.topic-dialog__field input:focus-visible,
+.topic-dialog__field textarea:focus-visible {
+  border-color: var(--color-primary);
+  outline: 2px solid rgba(22, 119, 255, 0.2);
+}
+
+.topic-dialog__submission-info {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--control-radius);
+  background-color: var(--color-surface-subtle);
+  border: 1px solid var(--color-border);
+}
+
+.topic-dialog__info-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-muted-foreground);
+  margin: 0;
+}
+
+.topic-dialog__info-row strong {
+  color: var(--color-heading);
+}
+
+.topic-dialog__info-icon {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+  color: var(--color-muted-foreground);
+}
+
+.topic-dialog__desc {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--color-foreground);
+  margin: 0;
+}
+
+.topic-dialog__notice {
+  font-size: var(--text-xs);
+  color: var(--color-muted-foreground);
+  margin: 0;
+  font-style: italic;
+}
+
+.topic-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+/* Chân dialog chỉ xem nằm ngoài body: giữ nút thẳng mép ô thông tin. */
+.requirement-view-dialog > .topic-dialog__actions {
+  padding: 0 var(--space-6) var(--space-6);
+  margin-top: 0;
+  flex-shrink: 0;
+}
+
+.requirement-view-dialog > .topic-dialog__body {
+  min-height: 0;
+}
+
+.topic-dialog__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--control-radius);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+              border-color var(--duration-fast) var(--ease-standard);
+}
+
+.topic-dialog__btn--secondary {
+  border: 1px solid var(--button-secondary-border);
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-fg);
+}
+
+.topic-dialog__btn--secondary:hover {
+  background-color: var(--button-secondary-bg-hover);
+}
+
+.topic-dialog__btn--primary {
+  border: 1px solid var(--button-primary-bg);
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+}
+
+.topic-dialog__btn--primary:hover:not(:disabled) {
+  background-color: var(--button-primary-bg-hover);
+}
+
+.topic-dialog__btn--danger {
+  border: 1px solid var(--color-danger);
+  background-color: var(--color-danger);
+  color: #ffffff;
+}
+
+.topic-dialog__btn--danger:hover:not(:disabled) {
+  background-color: #b91c1c;
+}
+
+.topic-dialog__btn:disabled {
+  border-color: var(--color-disabled-border);
+  background-color: var(--color-disabled-bg);
+  color: var(--color-disabled-fg);
+  cursor: not-allowed;
+}
+
+/* --------------------------------------------------------------------------
+   9. RESPONSIVE (1024px / 768px / 390px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 1023.98px) {
+  .topic-summary {
+    grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .topic-overview-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .progress-overview__stats {
+    gap: var(--space-3);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .requirement-view-dialog > .topic-dialog__header {
+    padding-inline: var(--space-4);
+  }
+
+  .requirement-view-dialog > .topic-dialog__body {
+    padding: var(--space-4);
+  }
+
+  .requirement-view-dialog > .topic-dialog__actions {
+    padding: 0 var(--space-4) var(--space-4);
+  }
+
+  /* Tối ưu mục Bài nộp trên tablet và mobile */
+  #submissions-section .requirements,
+  #submissions-section .submissions {
+    padding: var(--space-4);
+  }
+
+  #submissions-section .requirement-card,
+  #submissions-section .requirement-card--delete-mode,
+  #submissions-section .submission-card {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+
+  #submissions-section .requirement-card__side,
+  #submissions-section .submission-card__side {
+    align-items: stretch;
+    width: 100%;
+  }
+
+  #submissions-section .requirement-card__status,
+  #submissions-section .submission-card__status {
+    align-self: flex-start;
+  }
+
+  #submissions-section .requirement-card__actions,
+  #submissions-section .submission-card__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+    width: 100%;
+  }
+
+  #submissions-section .requirement-card__edit,
+  #submissions-section .requirement-card__detail,
+  #submissions-section .submission-card__download-btn,
+  #submissions-section .submission-card__feedback-btn {
+    justify-content: center;
+    min-height: var(--control-min-height);
+  }
+
+  #submissions-section .requirements__footer,
+  #submissions-section .submissions__footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+
+  #submissions-section .requirements__count,
+  #submissions-section .submissions__count {
+    text-align: center;
+  }
+
+  #submissions-section .requirements__pagination,
+  #submissions-section .submissions__pagination {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  #submissions-section .requirements__actions {
+    width: 100%;
+  }
+
+  #submissions-section .requirements__delete-mode-link,
+  #submissions-section .requirements__done-link,
+  #submissions-section .requirements__create-btn {
+    flex: 1 1 auto;
+    justify-content: center;
+    min-height: var(--control-min-height);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-link,
+  .back-link__icon,
+  .progress-overview__review {
+    transition: none;
+  }
+}
