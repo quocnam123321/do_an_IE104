@@ -1,317 +1,885 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Xem và xử lý các đề xuất đề tài do sinh viên gửi."
-    />
-    <title>Yêu cầu chờ duyệt | Quản lý đồ án</title>
-    <link rel="stylesheet" href="../../assets/css/breadcrumb.css" />
-  </head>
-
-  <body>
-    <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
-
-    <!-- ĐẦU TRANG -->
-    <header class="site-header">
-      <div class="site-header__inner">
-        <a class="site-brand" href="tong-quan-giang-vien.html">
-          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
-          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta content="Xem và xử lý các đề xuất đề tài do sinh viên gửi." name="description"/>
+  <title>
+   Yêu cầu chờ duyệt | Quản lý đồ án
+  </title>
+  <link href="../../assets/css/tokens.css" rel="stylesheet"/>
+  <link href="../../assets/css/base.css" rel="stylesheet"/>
+  <link href="../../assets/css/components.css" rel="stylesheet"/>
+  <link href="../../assets/css/breadcrumb.css" rel="stylesheet"/>
+  <link href="../../assets/css/teacher-layout.css" rel="stylesheet"/>
+  <link href="../../assets/css/teacher-supervised-topics.css?v=20261030-tabs-2" rel="stylesheet"/>
+  <link href="../../assets/css/teacher-pending-proposals.css?v=20261030-align-1" rel="stylesheet"/>
+ </head>
+ <body class="teacher-workspace-page teacher-topic-list-page teacher-pending-proposals-page">
+  <a class="skip-link" href="#main-content">
+   Chuyển đến nội dung chính
+  </a>
+  <!-- ĐẦU TRANG -->
+  <header class="site-header">
+   <div class="site-header__inner">
+    <a class="site-brand" href="tong-quan-giang-vien.html">
+     <img alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" class="site-brand__logo" height="70" src="../../assets/images/images.jpg" width="70"/>
+     <span class="site-brand__name">
+      QUẢN LÝ ĐỒ ÁN VÀ
+      <br/>
+      KHÓA LUẬN TỐT NGHIỆP
+     </span>
+    </a>
+    <nav aria-label="Điều hướng giảng viên" class="main-nav">
+     <ul class="main-nav__list">
+      <li class="main-nav__item">
+       <a class="main-nav__link" href="tong-quan-giang-vien.html">
+        Tổng quan
+       </a>
+      </li>
+      <li class="main-nav__item">
+       <a class="main-nav__link" href="danh-sach-de-tai-dang-huong-dan.html" id="topic-management-label">
+        Quản lý đề tài
+       </a>
+      </li>
+      <li class="main-nav__item">
+       <a aria-current="page" class="main-nav__link" href="yeu-cau-cho-duyet.html">
+        Yêu cầu chờ duyệt
+       </a>
+      </li>
+      <li class="main-nav__item">
+       <details class="main-nav__disclosure">
+        <summary class="main-nav__label" id="common-navigation-label">
+         <span>
+          Chung
+         </span>
+         <svg aria-hidden="true" class="main-nav__chevron" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+          <path d="m6 9 6 6 6-6">
+          </path>
+         </svg>
+        </summary>
+        <ul aria-labelledby="common-navigation-label" class="main-nav__sublist">
+         <li class="main-nav__subitem">
+          <a class="main-nav__link" href="../chung/gioi-thieu.html">
+           Giới thiệu
+          </a>
+         </li>
+         <li class="main-nav__subitem">
+          <a class="main-nav__link" href="../chung/thong-bao.html">
+           Thông báo
+          </a>
+         </li>
+         <li class="main-nav__subitem">
+          <a class="main-nav__link" href="../chung/lien-he.html">
+           Liên hệ
+          </a>
+         </li>
+        </ul>
+       </details>
+      </li>
+     </ul>
+    </nav>
+    <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
+    <div class="account-menu">
+     <details class="account-menu__disclosure">
+      <summary aria-label="Mở menu tài khoản giảng viên" class="account-menu__toggle">
+       <span aria-hidden="true" class="account-menu__avatar">
+        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+         <circle cx="12" cy="8" r="4">
+         </circle>
+         <path d="M5.5 20a6.5 6.5 0 0 1 13 0">
+         </path>
+        </svg>
+       </span>
+       <span class="account-menu__label">
+        Tài khoản giảng viên
+       </span>
+       <svg aria-hidden="true" class="account-menu__chevron" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+        <path d="m6 9 6 6 6-6">
+        </path>
+       </svg>
+      </summary>
+      <ul class="account-menu__list" id="account-dropdown">
+       <li>
+        <a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">
+         Hồ sơ cá nhân
         </a>
-        <nav class="main-nav" aria-label="Điều hướng giảng viên">
-          <ul class="main-nav__list">
-            <li class="main-nav__item">
-              <a class="main-nav__link" href="tong-quan-giang-vien.html">Tổng quan</a>
-            </li>
-            <li class="main-nav__item">
-              <a class="main-nav__link" id="topic-management-label" href="danh-sach-de-tai-dang-huong-dan.html">Quản lý đề tài</a>
-            </li>
-            <li class="main-nav__item">
-              <a class="main-nav__link" href="yeu-cau-cho-duyet.html" aria-current="page">Yêu cầu chờ duyệt</a>
-            </li>
-            <li class="main-nav__item">
-              <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
-                <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
-                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
-                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
-                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
-                </ul>
-              </details>
-            </li>
-          </ul>
-        </nav>
-        <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
-        <div class="account-menu">
-          <details class="account-menu__disclosure">
-            <summary class="account-menu__toggle" aria-label="Mở menu tài khoản giảng viên">
-              <span class="account-menu__avatar" aria-hidden="true">GV</span>
-              <span class="account-menu__label">Tài khoản giảng viên</span>
-            </summary>
-            <ul id="account-dropdown" class="account-menu__list">
-              <li>
-                <a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
-              </li>
-              <li>
-                <button
-                  class="account-menu__logout"
-                  type="button"
-                  aria-controls="logout-dialog"
-                  title="Chức năng đăng xuất chưa được kết nối"
-                  disabled
-                >
-                  Đăng xuất
-                </button>
-              </li>
-            </ul>
-          </details>
+       </li>
+       <li>
+        <button aria-controls="logout-dialog" class="account-menu__logout" disabled="" title="Chức năng đăng xuất chưa được kết nối" type="button">
+         Đăng xuất
+        </button>
+       </li>
+      </ul>
+     </details>
+    </div>
+    <!-- Menu thu gọn trên điện thoại bằng details/summary thuần HTML -->
+    <div class="mobile-nav">
+     <details class="mobile-nav__disclosure">
+      <summary class="mobile-nav__toggle">
+       <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+        <path d="M4 6h16M4 12h16M4 18h16">
+        </path>
+       </svg>
+       <span>
+        Menu
+       </span>
+      </summary>
+      <div class="mobile-nav__panel">
+       <nav aria-label="Điều hướng giảng viên trên điện thoại">
+        <ul class="mobile-nav__list">
+         <li>
+          <a class="mobile-nav__link" href="tong-quan-giang-vien.html">
+           Tổng quan
+          </a>
+         </li>
+         <li>
+          <a class="mobile-nav__link" href="danh-sach-de-tai-dang-huong-dan.html">
+           Quản lý đề tài
+          </a>
+         </li>
+         <li>
+          <a aria-current="page" class="mobile-nav__link" href="yeu-cau-cho-duyet.html">
+           Yêu cầu chờ duyệt
+          </a>
+         </li>
+        </ul>
+        <div class="mobile-nav__section">
+         <p class="mobile-nav__section-title">
+          Chung
+         </p>
+         <ul class="mobile-nav__list">
+          <li>
+           <a class="mobile-nav__link" href="../chung/gioi-thieu.html">
+            Giới thiệu
+           </a>
+          </li>
+          <li>
+           <a class="mobile-nav__link" href="../chung/thong-bao.html">
+            Thông báo
+           </a>
+          </li>
+          <li>
+           <a class="mobile-nav__link" href="../chung/lien-he.html">
+            Liên hệ
+           </a>
+          </li>
+         </ul>
         </div>
+        <div class="mobile-nav__section">
+         <p class="mobile-nav__section-title">
+          Tài khoản giảng viên
+         </p>
+         <ul class="mobile-nav__list">
+          <li>
+           <a class="mobile-nav__link" href="ho-so-ca-nhan-giang-vien.html">
+            Hồ sơ cá nhân
+           </a>
+          </li>
+          <li>
+           <button aria-controls="logout-dialog" class="mobile-nav__logout" disabled="" title="Chức năng đăng xuất chưa được kết nối" type="button">
+            Đăng xuất
+           </button>
+          </li>
+         </ul>
+        </div>
+       </nav>
       </div>
+     </details>
+    </div>
+   </div>
+  </header>
+  <dialog aria-labelledby="logout-title" class="confirmation-dialog" id="logout-dialog">
+   <h2 id="logout-title">
+    Xác nhận đăng xuất
+   </h2>
+   <p>
+    Bạn muốn đăng xuất khỏi tài khoản hiện tại?
+   </p>
+   <form method="dialog">
+    <button type="submit" value="cancel">
+     Hủy
+    </button>
+    <button disabled="" type="button">
+     Xác nhận đăng xuất
+    </button>
+   </form>
+  </dialog>
+  <!-- NỘI DUNG TRANG YÊU CẦU CHỜ DUYỆT -->
+  <main class="main-content" id="main-content" tabindex="-1">
+   <div class="page-container">
+    <nav aria-label="Đường dẫn" class="breadcrumb">
+     <ol class="breadcrumb__list">
+      <li class="breadcrumb__item">
+       <a href="tong-quan-giang-vien.html">
+        Giảng viên
+       </a>
+      </li>
+      <li class="breadcrumb__item">
+       <span aria-current="page">
+        Yêu cầu chờ duyệt
+       </span>
+      </li>
+     </ol>
+    </nav>
+    <header class="page-header">
+     <h1 class="page-header__title">
+      Yêu cầu chờ duyệt
+     </h1>
+     <p class="page-header__description">
+      Xem và xử lý các đề xuất đề tài do sinh viên gửi.
+     </p>
     </header>
-    <dialog
-      id="logout-dialog"
-      class="confirmation-dialog"
-      aria-labelledby="logout-title"
-    >
-      <h2 id="logout-title">Xác nhận đăng xuất</h2>
-      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
-      <form method="dialog">
-        <button type="submit" value="cancel">Hủy</button>
-        <button type="button" disabled>Xác nhận đăng xuất</button>
-      </form>
-    </dialog>
-
-    <!-- NỘI DUNG TRANG YÊU CẦU CHỜ DUYỆT -->
-    <main id="main-content" class="main-content" tabindex="-1">
-      <div class="page-container">
-        <nav class="breadcrumb" aria-label="Đường dẫn">
-          <ol class="breadcrumb__list">
-            <li class="breadcrumb__item">
-              <a href="tong-quan-giang-vien.html">Giảng viên</a>
-            </li>
-            <li class="breadcrumb__item">
-              <span aria-current="page">Yêu cầu chờ duyệt</span>
-            </li>
-          </ol>
-        </nav>
-
-        <header class="page-header">
-          <h1 class="page-header__title">Yêu cầu chờ duyệt</h1>
-          <p class="page-header__description">
-            Xem và xử lý các đề xuất đề tài do sinh viên gửi.
-          </p>
-        </header>
-
-        <!-- HTML thuần, dữ liệu minh họa giữ theo WF danh sách Yêu cầu chờ duyệt. -->
-        <div class="page-content pending-proposals-layout">
-          <aside class="proposal-filters" aria-labelledby="proposal-filters-title">
-            <h2 id="proposal-filters-title">Bộ lọc</h2>
-            <!-- Form chỉ chứa lựa chọn HTML; chưa lọc dữ liệu danh sách. -->
-            <form id="proposal-filter-form" class="proposal-filters__form" action="yeu-cau-cho-duyet.html" method="get">
-              <!-- Submit disabled ngăn gửi biểu mẫu bằng Enter khi chưa có xử lý dữ liệu. -->
-              <button type="submit" hidden disabled aria-hidden="true" tabindex="-1">Áp dụng bộ lọc</button>
-              <fieldset class="proposal-filters__group">
-                <legend>Vai trò trong đề tài</legend>
-                <div class="proposal-filters__option">
-                  <input type="checkbox" id="role-primary" name="supervision_role" value="huong-dan-chinh" />
-                  <label for="role-primary">Hướng dẫn chính</label>
-                </div>
-                <div class="proposal-filters__option">
-                  <input type="checkbox" id="role-secondary" name="supervision_role" value="dong-huong-dan" />
-                  <label for="role-secondary">Đồng hướng dẫn</label>
-                </div>
-              </fieldset>
-
-              <fieldset class="proposal-filters__group">
-                <legend>Loại đề tài</legend>
-                <div class="proposal-filters__option">
-                  <input type="checkbox" id="type-course-project" name="topic_type" value="do-an-mon-hoc" />
-                  <label for="type-course-project">Đồ án môn học</label>
-                </div>
-                <div class="proposal-filters__option">
-                  <input type="checkbox" id="type-graduation-project" name="topic_type" value="do-an-tot-nghiep" />
-                  <label for="type-graduation-project">Đồ án tốt nghiệp</label>
-                </div>
-                <div class="proposal-filters__option">
-                  <input type="checkbox" id="type-thesis" name="topic_type" value="khoa-luan" />
-                  <label for="type-thesis">Khóa luận</label>
-                </div>
-              </fieldset>
-
-              <fieldset class="proposal-filters__group">
-                <legend>Môn học</legend>
-                <div class="proposal-filters__option">
-                  <input type="checkbox" id="course-web" name="course" value="internet-va-cong-nghe-web" />
-                  <label for="course-web">Internet và công nghệ Web</label>
-                </div>
-                <div class="proposal-filters__option">
-                  <input type="checkbox" id="course-database" name="course" value="co-so-du-lieu" />
-                  <label for="course-database">Cơ sở dữ liệu</label>
-                </div>
-                <div class="proposal-filters__option">
-                  <input type="checkbox" id="course-software" name="course" value="cong-nghe-phan-mem" />
-                  <label for="course-software">Công nghệ phần mềm</label>
-                </div>
-              </fieldset>
-
-              <!-- Reset HTML chỉ bỏ các lựa chọn trong form, không xử lý danh sách. -->
-              <button class="proposal-filters__reset" type="reset">Xóa bộ lọc</button>
-            </form>
-          </aside>
-
-          <section class="pending-proposals" aria-labelledby="pending-proposals-title">
-            <!-- Tìm kiếm và sắp xếp mới có cấu trúc HTML, chưa thay đổi danh sách. -->
-            <div class="proposal-toolbar">
-              <div class="proposal-toolbar__search">
-                <label for="proposal-search">Tìm kiếm đề xuất</label>
-                <input
-                  type="search"
-                  id="proposal-search"
-                  name="proposal_search"
-                  form="proposal-filter-form"
-                  placeholder="Tìm theo tên đề tài, họ tên hoặc MSSV"
-                />
-              </div>
-              <div class="proposal-toolbar__sort">
-                <label for="proposal-sort">Sắp xếp</label>
-                <select id="proposal-sort" name="proposal_sort" form="proposal-filter-form">
-                  <option value="newest">Mới nhất</option>
-                  <option value="oldest" selected>Sắp xếp: Cũ nhất</option>
-                  <option value="name-asc">Tên A–Z</option>
-                </select>
-              </div>
-            </div>
-
-            <h2 id="pending-proposals-title">Danh sách đề xuất chờ duyệt</h2>
-            <!-- Cả ba liên kết mở trang chi tiết mẫu theo WF. Chưa có định tuyến/dữ liệu theo mã.
-                 Mẫu danh sách và mẫu chi tiết khác tên/MSSV; giữ nguyên từng WF, không giả lập đồng bộ. -->
-            <div class="proposal-list">
-              <article class="proposal-card" aria-labelledby="proposal-library-title">
-                <div class="proposal-card__media">
-                  <div class="proposal-card__image-placeholder" role="img" aria-label="Chưa có ảnh minh họa Website quản lý thư viện">
-                    <span aria-hidden="true">Ảnh minh họa</span>
-                  </div>
-                </div>
-                <div class="proposal-card__content">
-                  <h3 id="proposal-library-title" class="proposal-card__title">Website quản lý thư viện</h3>
-                  <p class="proposal-card__type">Loại đề tài: Đồ án môn học</p>
-                  <p class="proposal-card__course">Môn học: Internet và công nghệ Web</p>
-                  <p class="proposal-card__student">Sinh viên: Nguyễn Văn A · 22520001</p>
-                  <p class="proposal-card__role">Vai trò của tôi: Hướng dẫn chính</p>
-                </div>
-                <div class="proposal-card__actions">
-                  <p class="proposal-card__status">Chờ duyệt</p>
-                  <a class="proposal-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html">Xem đề xuất <span aria-hidden="true">→</span></a>
-                </div>
-              </article>
-
-              <article class="proposal-card" aria-labelledby="proposal-expenses-title">
-                <div class="proposal-card__media">
-                  <div class="proposal-card__image-placeholder" role="img" aria-label="Chưa có ảnh minh họa Ứng dụng quản lý chi tiêu">
-                    <span aria-hidden="true">Ảnh minh họa</span>
-                  </div>
-                </div>
-                <div class="proposal-card__content">
-                  <h3 id="proposal-expenses-title" class="proposal-card__title">Ứng dụng quản lý chi tiêu</h3>
-                  <p class="proposal-card__type">Loại đề tài: Đồ án môn học</p>
-                  <p class="proposal-card__course">Môn học: Cơ sở dữ liệu</p>
-                  <p class="proposal-card__student">Sinh viên: Trần Thị B · 22520002</p>
-                  <p class="proposal-card__role">Vai trò của tôi: Đồng hướng dẫn</p>
-                </div>
-                <div class="proposal-card__actions">
-                  <p class="proposal-card__status">Chờ duyệt</p>
-                  <a class="proposal-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html">Xem đề xuất <span aria-hidden="true">→</span></a>
-                </div>
-              </article>
-
-              <article class="proposal-card" aria-labelledby="proposal-movies-title">
-                <div class="proposal-card__media">
-                  <div class="proposal-card__image-placeholder" role="img" aria-label="Chưa có ảnh minh họa Hệ thống gợi ý phim">
-                    <span aria-hidden="true">Ảnh minh họa</span>
-                  </div>
-                </div>
-                <div class="proposal-card__content">
-                  <h3 id="proposal-movies-title" class="proposal-card__title">Hệ thống gợi ý phim</h3>
-                  <p class="proposal-card__type">Loại đề tài: Khóa luận</p>
-                  <p class="proposal-card__student">Sinh viên: Lê Văn C · 22520003</p>
-                  <p class="proposal-card__role">Vai trò của tôi: Hướng dẫn chính</p>
-                </div>
-                <div class="proposal-card__actions">
-                  <p class="proposal-card__status">Chờ duyệt</p>
-                  <a class="proposal-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html">Xem đề xuất <span aria-hidden="true">→</span></a>
-                </div>
-              </article>
-            </div>
-
-            <!-- Phân trang minh họa; chưa chuyển trang hoặc tải dữ liệu. -->
-            <nav class="pagination" aria-label="Phân trang đề xuất">
-              <ul class="pagination__list">
-                <li class="pagination__item">
-                  <button class="pagination__button" type="button" aria-label="Trang trước" disabled>‹</button>
-                </li>
-                <li class="pagination__item">
-                  <span class="pagination__current" aria-current="page" aria-label="Trang 1">1</span>
-                </li>
-                <li class="pagination__item">
-                  <button class="pagination__button" type="button" aria-label="Trang 2" disabled>2</button>
-                </li>
-                <li class="pagination__item">
-                  <button class="pagination__button" type="button" aria-label="Trang 3" disabled>3</button>
-                </li>
-                <li class="pagination__item">
-                  <button class="pagination__button" type="button" aria-label="Trang sau" disabled>›</button>
-                </li>
-              </ul>
-            </nav>
-          </section>
-        </div>
-      </div>
-    </main>
-
-    <!-- CHÂN TRANG CHUNG -->
-    <footer class="site-footer">
-      <div class="site-footer__inner">
-        <div class="site-footer__columns">
-          <div class="site-footer__brand">
-            <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40" />
-            <p class="site-footer__name">
-              QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP
-            </p>
-            <dl class="site-footer__about">
-              <div>
-                <dt>Thông tin trang web</dt>
-                <dd>Trường Đại học Công nghệ Thông tin</dd>
-              </div>
-              <div>
-                <dt>Thông tin nhóm</dt>
-                <dd>Đồ án IE104 — Nhóm 7</dd>
-              </div>
-            </dl>
+    <!-- HTML thuần, dữ liệu minh họa giữ theo WF danh sách Yêu cầu chờ duyệt. -->
+    <div class="page-content pending-proposals-layout topic-list-layout">
+     <aside aria-labelledby="proposal-filters-title" class="proposal-filters topic-filters">
+      <!-- Form chỉ chứa lựa chọn HTML; chưa lọc dữ liệu danh sách. -->
+      <details class="topic-filters__disclosure" open="">
+       <summary class="topic-filters__summary">
+        <svg aria-hidden="true" class="topic-filters__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+         <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3">
+         </polygon>
+        </svg>
+        <h2 class="topic-filters__title" id="proposal-filters-title">
+         Bộ lọc
+        </h2>
+        <svg aria-hidden="true" class="topic-filters__chevron" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+         <path d="m6 9 6 6 6-6">
+         </path>
+        </svg>
+       </summary>
+       <form action="yeu-cau-cho-duyet.html" class="proposal-filters__form topic-filters__form" id="proposal-filter-form" method="get">
+        <!-- Submit disabled ngăn gửi biểu mẫu bằng Enter khi chưa có xử lý dữ liệu. -->
+        <button aria-hidden="true" disabled="" hidden="" tabindex="-1" type="submit">
+         Áp dụng bộ lọc
+        </button>
+        <fieldset class="proposal-filters__group topic-filters__group">
+         <legend>
+          Vai trò trong đề tài
+         </legend>
+         <div class="topic-filters__options">
+          <div class="proposal-filters__option topic-filters__option">
+           <label for="role-primary">
+            <input id="role-primary" name="supervision_role" type="checkbox" value="huong-dan-chinh"/>
+            <span class="topic-filters__option-text">
+             Hướng dẫn chính
+            </span>
+           </label>
           </div>
-
-          <section
-            class="site-footer__information site-footer__terms"
-            aria-labelledby="footer-terms-title"
-          >
-            <h2 id="footer-terms-title">Điều khoản sử dụng</h2>
-            <p>Đang cập nhật.</p>
-          </section>
-
-          <section
-            class="site-footer__information site-footer__policies"
-            aria-labelledby="footer-policies-title"
-          >
-            <h2 id="footer-policies-title">Quy chế, chính sách bảo mật</h2>
-            <p>Đang cập nhật.</p>
-          </section>
-        </div>
-        <p class="site-footer__copyright">
-          Copyright © 2026 · Quản lý đồ án và khóa luận tốt nghiệp
-        </p>
+          <div class="proposal-filters__option topic-filters__option">
+           <label for="role-secondary">
+            <input id="role-secondary" name="supervision_role" type="checkbox" value="dong-huong-dan"/>
+            <span class="topic-filters__option-text">
+             Đồng hướng dẫn
+            </span>
+           </label>
+          </div>
+         </div>
+        </fieldset>
+        <fieldset class="proposal-filters__group topic-filters__group">
+         <legend>
+          Loại đề tài
+         </legend>
+         <div class="topic-filters__options">
+          <div class="proposal-filters__option topic-filters__option">
+           <label for="type-course-project">
+            <input id="type-course-project" name="topic_type" type="checkbox" value="do-an-mon-hoc"/>
+            <span class="topic-filters__option-text">
+             Đồ án môn học
+            </span>
+           </label>
+          </div>
+          <div class="proposal-filters__option topic-filters__option">
+           <label for="type-graduation-project">
+            <input id="type-graduation-project" name="topic_type" type="checkbox" value="do-an-tot-nghiep"/>
+            <span class="topic-filters__option-text">
+             Đồ án tốt nghiệp
+            </span>
+           </label>
+          </div>
+          <div class="proposal-filters__option topic-filters__option">
+           <label for="type-thesis">
+            <input id="type-thesis" name="topic_type" type="checkbox" value="khoa-luan"/>
+            <span class="topic-filters__option-text">
+             Khóa luận
+            </span>
+           </label>
+          </div>
+         </div>
+        </fieldset>
+        <fieldset class="proposal-filters__group topic-filters__group">
+         <legend>
+          Môn học
+         </legend>
+         <div class="topic-filters__options">
+          <div class="proposal-filters__option topic-filters__option">
+           <label for="course-web">
+            <input id="course-web" name="course" type="checkbox" value="internet-va-cong-nghe-web"/>
+            <span class="topic-filters__option-text">
+             Internet và công nghệ Web
+            </span>
+           </label>
+          </div>
+          <div class="proposal-filters__option topic-filters__option">
+           <label for="course-database">
+            <input id="course-database" name="course" type="checkbox" value="co-so-du-lieu"/>
+            <span class="topic-filters__option-text">
+             Cơ sở dữ liệu
+            </span>
+           </label>
+          </div>
+          <div class="proposal-filters__option topic-filters__option">
+           <label for="course-software">
+            <input id="course-software" name="course" type="checkbox" value="cong-nghe-phan-mem"/>
+            <span class="topic-filters__option-text">
+             Công nghệ phần mềm
+            </span>
+           </label>
+          </div>
+         </div>
+        </fieldset>
+        <!-- Reset HTML chỉ bỏ các lựa chọn trong form, không xử lý danh sách. -->
+        <button class="proposal-filters__reset topic-filters__reset" type="reset">
+         Xóa bộ lọc
+        </button>
+       </form>
+      </details>
+     </aside>
+     <section aria-labelledby="pending-proposals-title" class="pending-proposals topic-results">
+      <!-- Tìm kiếm và sắp xếp mới có cấu trúc HTML, chưa thay đổi danh sách. -->
+      <div class="proposal-toolbar topic-toolbar">
+       <div class="proposal-toolbar__search topic-toolbar__search">
+        <svg aria-hidden="true" class="topic-toolbar__search-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+         <circle cx="10.5" cy="10.5" r="6.5">
+         </circle>
+         <path d="m16 16 4.5 4.5">
+         </path>
+        </svg>
+        <label class="visually-hidden" for="proposal-search">
+         Tìm kiếm đề xuất
+        </label>
+        <input aria-describedby="proposal-preview-note" form="proposal-filter-form" id="proposal-search" name="proposal_search" placeholder="Tìm theo tên đề tài, họ tên hoặc MSSV…" type="search"/>
+       </div>
+       <div class="proposal-toolbar__sort topic-toolbar__sort">
+        <label class="visually-hidden" for="proposal-sort">
+         Sắp xếp
+        </label>
+        <select aria-describedby="proposal-preview-note" form="proposal-filter-form" id="proposal-sort" name="proposal_sort">
+         <option value="newest">
+          Sắp xếp: Mới nhất
+         </option>
+         <option selected="" value="oldest">
+          Sắp xếp: Cũ nhất
+         </option>
+         <option value="name-asc">
+          Sắp xếp: Tên A–Z
+         </option>
+        </select>
+        <svg aria-hidden="true" class="topic-toolbar__sort-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+         <path d="m6 9 6 6 6-6">
+         </path>
+        </svg>
+       </div>
       </div>
-    </footer>
-  </body>
+      <div class="topic-results__header">
+       <h2 id="pending-proposals-title">
+        Danh sách đề xuất chờ duyệt
+       </h2>
+      </div>
+      <!-- Các liên kết mở cùng trang chi tiết mẫu; chưa có định tuyến dữ liệu theo từng mã đề xuất. -->
+      <p class="visually-hidden" id="proposal-scroll-help">
+       Danh sách có thanh cuộn riêng. Dùng phím mũi tên hoặc Page Down để xem đề xuất bên dưới.
+      </p>
+      <div aria-describedby="proposal-scroll-help" aria-labelledby="pending-proposals-title" class="topic-list-scroll proposal-list-scroll" role="region" tabindex="0">
+       <div class="proposal-list topic-list">
+        <article aria-labelledby="proposal-library-title" class="proposal-card topic-card">
+         <div class="proposal-card__media topic-card__media">
+          <div aria-hidden="true" class="proposal-card__image-placeholder topic-card__image-placeholder">
+           <svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+            <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z">
+            </path>
+            <path d="M9 13h6M9 16h4">
+            </path>
+           </svg>
+          </div>
+         </div>
+         <div class="proposal-card__content topic-card__content">
+          <h3 class="proposal-card__title topic-card__title" id="proposal-library-title">
+           Website quản lý thư viện
+          </h3>
+          <div class="topic-card__meta">
+           <p class="proposal-card__type topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z">
+             </path>
+             <circle cx="7" cy="7" r="1.25">
+             </circle>
+            </svg>
+            <span class="topic-card__meta-text">
+             Loại đề tài: Đồ án môn học
+            </span>
+           </p>
+           <p class="proposal-card__course topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z">
+             </path>
+             <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z">
+             </path>
+            </svg>
+            <span class="topic-card__meta-text">
+             Môn học: Internet và công nghệ Web
+            </span>
+           </p>
+           <p class="proposal-card__student topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2">
+             </path>
+             <circle cx="9" cy="7" r="4">
+             </circle>
+             <path d="M22 21v-2a4 4 0 0 0-3-3.87">
+             </path>
+             <path d="M16 3.13a4 4 0 0 1 0 7.75">
+             </path>
+            </svg>
+            <span class="topic-card__meta-text">
+             Sinh viên: Nguyễn Văn A · 22520001
+            </span>
+           </p>
+           <p class="proposal-card__role topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <circle cx="9" cy="7" r="4">
+             </circle>
+             <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 11l2 2 4-4">
+             </path>
+            </svg>
+            <span class="topic-card__meta-text">
+             Vai trò của tôi: Hướng dẫn chính
+            </span>
+           </p>
+          </div>
+         </div>
+         <div class="proposal-card__actions topic-card__actions">
+          <p class="proposal-card__status topic-card__status">
+           Chờ duyệt
+          </p>
+          <a aria-label="Xem đề xuất Website quản lý thư viện" class="proposal-card__detail-link topic-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html">
+           Xem đề xuất
+           <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+            <path d="M5 12h14m-6-6 6 6-6 6">
+            </path>
+           </svg>
+          </a>
+         </div>
+        </article>
+        <article aria-labelledby="proposal-expenses-title" class="proposal-card topic-card">
+         <div class="proposal-card__media topic-card__media">
+          <div aria-hidden="true" class="proposal-card__image-placeholder topic-card__image-placeholder">
+           <svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+            <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z">
+            </path>
+            <path d="M9 13h6M9 16h4">
+            </path>
+           </svg>
+          </div>
+         </div>
+         <div class="proposal-card__content topic-card__content">
+          <h3 class="proposal-card__title topic-card__title" id="proposal-expenses-title">
+           Ứng dụng quản lý chi tiêu
+          </h3>
+          <div class="topic-card__meta">
+           <p class="proposal-card__type topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z">
+             </path>
+             <circle cx="7" cy="7" r="1.25">
+             </circle>
+            </svg>
+            <span class="topic-card__meta-text">
+             Loại đề tài: Đồ án môn học
+            </span>
+           </p>
+           <p class="proposal-card__course topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z">
+             </path>
+             <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z">
+             </path>
+            </svg>
+            <span class="topic-card__meta-text">
+             Môn học: Cơ sở dữ liệu
+            </span>
+           </p>
+           <p class="proposal-card__student topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2">
+             </path>
+             <circle cx="9" cy="7" r="4">
+             </circle>
+             <path d="M22 21v-2a4 4 0 0 0-3-3.87">
+             </path>
+             <path d="M16 3.13a4 4 0 0 1 0 7.75">
+             </path>
+            </svg>
+            <span class="topic-card__meta-text">
+             Sinh viên: Trần Thị B · 22520002
+            </span>
+           </p>
+           <p class="proposal-card__role topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <circle cx="9" cy="7" r="4">
+             </circle>
+             <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 11l2 2 4-4">
+             </path>
+            </svg>
+            <span class="topic-card__meta-text">
+             Vai trò của tôi: Đồng hướng dẫn
+            </span>
+           </p>
+          </div>
+         </div>
+         <div class="proposal-card__actions topic-card__actions">
+          <p class="proposal-card__status topic-card__status">
+           Chờ duyệt
+          </p>
+          <a aria-label="Xem đề xuất Ứng dụng quản lý chi tiêu" class="proposal-card__detail-link topic-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html">
+           Xem đề xuất
+           <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+            <path d="M5 12h14m-6-6 6 6-6 6">
+            </path>
+           </svg>
+          </a>
+         </div>
+        </article>
+        <article aria-labelledby="proposal-movies-title" class="proposal-card topic-card">
+         <div class="proposal-card__media topic-card__media">
+          <div aria-hidden="true" class="proposal-card__image-placeholder topic-card__image-placeholder">
+           <svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+            <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z">
+            </path>
+            <path d="M9 13h6M9 16h4">
+            </path>
+           </svg>
+          </div>
+         </div>
+         <div class="proposal-card__content topic-card__content">
+          <h3 class="proposal-card__title topic-card__title" id="proposal-movies-title">
+           Hệ thống gợi ý phim
+          </h3>
+          <div class="topic-card__meta">
+           <p class="proposal-card__type topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z">
+             </path>
+             <circle cx="7" cy="7" r="1.25">
+             </circle>
+            </svg>
+            <span class="topic-card__meta-text">
+             Loại đề tài: Khóa luận
+            </span>
+           </p>
+           <p class="proposal-card__course topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z">
+             </path>
+             <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z">
+             </path>
+            </svg>
+            <span class="topic-card__meta-text">
+             Môn học: Công nghệ phần mềm
+            </span>
+           </p>
+           <p class="proposal-card__student topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2">
+             </path>
+             <circle cx="9" cy="7" r="4">
+             </circle>
+             <path d="M22 21v-2a4 4 0 0 0-3-3.87">
+             </path>
+             <path d="M16 3.13a4 4 0 0 1 0 7.75">
+             </path>
+            </svg>
+            <span class="topic-card__meta-text">
+             Sinh viên: Lê Văn C · 22520003
+            </span>
+           </p>
+           <p class="proposal-card__role topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <circle cx="9" cy="7" r="4">
+             </circle>
+             <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 11l2 2 4-4">
+             </path>
+            </svg>
+            <span class="topic-card__meta-text">
+             Vai trò của tôi: Hướng dẫn chính
+            </span>
+           </p>
+          </div>
+         </div>
+         <div class="proposal-card__actions topic-card__actions">
+          <p class="proposal-card__status topic-card__status">
+           Chờ duyệt
+          </p>
+          <a aria-label="Xem đề xuất Hệ thống gợi ý phim" class="proposal-card__detail-link topic-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html">
+           Xem đề xuất
+           <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+            <path d="M5 12h14m-6-6 6 6-6 6">
+            </path>
+           </svg>
+          </a>
+         </div>
+        </article>
+        <article aria-labelledby="proposal-club-title" class="proposal-card topic-card">
+         <div class="proposal-card__media topic-card__media">
+          <div aria-hidden="true" class="proposal-card__image-placeholder topic-card__image-placeholder">
+           <svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+            <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z">
+            </path>
+            <path d="M9 13h6M9 16h4">
+            </path>
+           </svg>
+          </div>
+         </div>
+         <div class="proposal-card__content topic-card__content">
+          <h3 class="proposal-card__title topic-card__title" id="proposal-club-title">
+           Website quản lý câu lạc bộ
+          </h3>
+          <div class="topic-card__meta">
+           <p class="proposal-card__type topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z">
+             </path>
+             <circle cx="7" cy="7" r="1.25">
+             </circle>
+            </svg>
+            <span class="topic-card__meta-text">
+             Loại đề tài: Đồ án môn học
+            </span>
+           </p>
+           <p class="proposal-card__course topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z">
+             </path>
+             <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z">
+             </path>
+            </svg>
+            <span class="topic-card__meta-text">
+             Môn học: Internet và công nghệ Web
+            </span>
+           </p>
+           <p class="proposal-card__student topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2">
+             </path>
+             <circle cx="9" cy="7" r="4">
+             </circle>
+             <path d="M22 21v-2a4 4 0 0 0-3-3.87">
+             </path>
+             <path d="M16 3.13a4 4 0 0 1 0 7.75">
+             </path>
+            </svg>
+            <span class="topic-card__meta-text">
+             Sinh viên: Phạm Thị D · 22520004
+            </span>
+           </p>
+           <p class="proposal-card__role topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <circle cx="9" cy="7" r="4">
+             </circle>
+             <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 11l2 2 4-4">
+             </path>
+            </svg>
+            <span class="topic-card__meta-text">
+             Vai trò của tôi: Hướng dẫn chính
+            </span>
+           </p>
+          </div>
+         </div>
+         <div class="proposal-card__actions topic-card__actions">
+          <p class="proposal-card__status topic-card__status">
+           Chờ duyệt
+          </p>
+          <a aria-label="Xem đề xuất Website quản lý câu lạc bộ" class="proposal-card__detail-link topic-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html">
+           Xem đề xuất
+           <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+            <path d="M5 12h14m-6-6 6 6-6 6">
+            </path>
+           </svg>
+          </a>
+         </div>
+        </article>
+        <article aria-labelledby="proposal-enrollment-title" class="proposal-card topic-card">
+         <div class="proposal-card__media topic-card__media">
+          <div aria-hidden="true" class="proposal-card__image-placeholder topic-card__image-placeholder">
+           <svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+            <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z">
+            </path>
+            <path d="M9 13h6M9 16h4">
+            </path>
+           </svg>
+          </div>
+         </div>
+         <div class="proposal-card__content topic-card__content">
+          <h3 class="proposal-card__title topic-card__title" id="proposal-enrollment-title">
+           Hệ thống hỗ trợ đăng ký học phần
+          </h3>
+          <div class="topic-card__meta">
+           <p class="proposal-card__type topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z">
+             </path>
+             <circle cx="7" cy="7" r="1.25">
+             </circle>
+            </svg>
+            <span class="topic-card__meta-text">
+             Loại đề tài: Đồ án môn học
+            </span>
+           </p>
+           <p class="proposal-card__course topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z">
+             </path>
+             <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z">
+             </path>
+            </svg>
+            <span class="topic-card__meta-text">
+             Môn học: Cơ sở dữ liệu
+            </span>
+           </p>
+           <p class="proposal-card__student topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2">
+             </path>
+             <circle cx="9" cy="7" r="4">
+             </circle>
+             <path d="M22 21v-2a4 4 0 0 0-3-3.87">
+             </path>
+             <path d="M16 3.13a4 4 0 0 1 0 7.75">
+             </path>
+            </svg>
+            <span class="topic-card__meta-text">
+             Sinh viên: Hoàng Văn E · 22520005
+            </span>
+           </p>
+           <p class="proposal-card__role topic-card__meta-item">
+            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+             <circle cx="9" cy="7" r="4">
+             </circle>
+             <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 11l2 2 4-4">
+             </path>
+            </svg>
+            <span class="topic-card__meta-text">
+             Vai trò của tôi: Đồng hướng dẫn
+            </span>
+           </p>
+          </div>
+         </div>
+         <div class="proposal-card__actions topic-card__actions">
+          <p class="proposal-card__status topic-card__status">
+           Chờ duyệt
+          </p>
+          <a aria-label="Xem đề xuất Hệ thống hỗ trợ đăng ký học phần" class="proposal-card__detail-link topic-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html">
+           Xem đề xuất
+           <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+            <path d="M5 12h14m-6-6 6 6-6 6">
+            </path>
+           </svg>
+          </a>
+         </div>
+        </article>
+       </div>
+      </div>
+      <!-- Phân trang minh họa; chưa chuyển trang hoặc tải dữ liệu. -->
+      <div class="topic-results__footer">
+       <p class="topic-results__count">
+        Hiển thị 1–5 trên 12 đề xuất
+       </p>
+       <nav aria-describedby="proposal-preview-note" aria-label="Phân trang đề xuất" class="pagination">
+        <ul class="pagination__list">
+         <li class="pagination__item">
+          <button aria-label="Trang trước" class="pagination__button" disabled="" type="button">
+           ‹
+          </button>
+         </li>
+         <li class="pagination__item">
+          <span aria-current="page" aria-label="Trang 1" class="pagination__current">
+           1
+          </span>
+         </li>
+         <li class="pagination__item">
+          <button aria-label="Trang 2" class="pagination__button" disabled="" type="button">
+           2
+          </button>
+         </li>
+         <li class="pagination__item">
+          <button aria-label="Trang 3" class="pagination__button" disabled="" type="button">
+           3
+          </button>
+         </li>
+         <li class="pagination__item">
+          <button aria-label="Trang sau" class="pagination__button" disabled="" type="button">
+           ›
+          </button>
+         </li>
+        </ul>
+       </nav>
+      </div>
+      <p class="proposal-preview-note" id="proposal-preview-note">
+       Dữ liệu minh họa · 5 đề xuất mỗi trang. Tìm kiếm, lọc, sắp xếp và chuyển trang chưa được kết nối.
+      </p>
+     </section>
+    </div>
+   </div>
+  </main>
+  <!-- CHÂN TRANG CHUNG -->
+  <footer class="site-footer">
+   <div class="site-footer__inner">
+    <div class="site-footer__columns">
+     <div class="site-footer__brand">
+      <img alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" class="site-footer__logo" height="40" src="../../assets/images/images.jpg" width="40"/>
+      <p class="site-footer__name">
+       QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP
+      </p>
+      <dl class="site-footer__about">
+       <div>
+        <dt>
+         Thông tin trang web
+        </dt>
+        <dd>
+         Trường Đại học Công nghệ Thông tin
+        </dd>
+       </div>
+       <div>
+        <dt>
+         Thông tin nhóm
+        </dt>
+        <dd>
+         Đồ án IE104 — Nhóm 7
+        </dd>
+       </div>
+      </dl>
+     </div>
+     <section aria-labelledby="footer-terms-title" class="site-footer__information site-footer__terms">
+      <h2 id="footer-terms-title">
+       Điều khoản sử dụng
+      </h2>
+      <p>
+       Đang cập nhật.
+      </p>
+     </section>
+     <section aria-labelledby="footer-policies-title" class="site-footer__information site-footer__policies">
+      <h2 id="footer-policies-title">
+       Quy chế, chính sách bảo mật
+      </h2>
+      <p>
+       Đang cập nhật.
+      </p>
+     </section>
+    </div>
+    <p class="site-footer__copyright">
+     Copyright © 2026 · Quản lý đồ án và khóa luận tốt nghiệp
+    </p>
+   </div>
+  </footer>
+ </body>
 </html>
