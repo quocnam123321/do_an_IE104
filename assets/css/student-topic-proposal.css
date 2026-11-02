@@ -1,0 +1,256 @@
+/* Trang tạo đề xuất: mở rộng hệ thống chung, không đổi các trang đăng ký khác. */
+.student-proposal-page .page-back-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  max-width: 100%;
+  padding: .625rem var(--space-4);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font-size: var(--font-size-body);
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+.student-proposal-page .page-back-link:hover { background: var(--color-info-bg); }
+.student-proposal-page .page-back-link + .page-header { margin-top: var(--space-4); }
+.student-proposal-page .proposal-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 2.25fr) minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+.student-proposal-page .proposal-form,
+.student-proposal-page .proposal-form__field { min-width: 0; }
+.student-proposal-page .proposal-form__panel,
+.student-proposal-page .proposal-notes {
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  background: var(--color-surface);
+}
+.student-proposal-page .proposal-form__section { display: grid; gap: var(--space-4); }
+.student-proposal-page .proposal-form__section + .proposal-form__section {
+  margin-top: var(--space-6);
+  padding-top: 0;
+  border-top: 0;
+}
+.student-proposal-page .proposal-form__section > legend {
+  width: 100%;
+  margin-bottom: var(--space-4);
+  padding: 0;
+  color: var(--color-heading);
+  font-size: var(--font-size-section-title);
+  font-weight: 600;
+  line-height: 1.4;
+}
+.student-proposal-page .proposal-form__section + .proposal-form__section > legend {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+.student-proposal-page .proposal-form__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-6);
+}
+.student-proposal-page .proposal-form__field { display: grid; gap: var(--space-2); align-content: start; }
+.student-proposal-page .proposal-form__field > label { line-height: 1.5; font-weight: 600; }
+.student-proposal-page .proposal-form__required { color: var(--color-danger-fg); }
+.student-proposal-page .proposal-form :is(input:not([type="hidden"]):not([type="file"]), select, textarea) {
+  min-height: var(--control-min-height);
+  color: var(--color-foreground);
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast);
+}
+.student-proposal-page .proposal-form textarea { min-height: 6.5rem; resize: vertical; }
+.student-proposal-page .proposal-form :is(input, textarea)::placeholder { font-size: var(--font-size-secondary); }
+.student-proposal-page .proposal-form :is(input, select, textarea):hover { border-color: var(--color-primary); }
+.student-proposal-page .proposal-form #course:disabled {
+  appearance: none;
+  background: var(--color-neutral-bg);
+  border-color: var(--color-control-border);
+  color: var(--color-muted-foreground);
+  -webkit-text-fill-color: var(--color-muted-foreground);
+  opacity: 1;
+  cursor: not-allowed;
+}
+.student-proposal-page .proposal-form :is(input, select, textarea):focus-visible {
+  border-color: var(--color-primary);
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.student-proposal-page .proposal-form :is(input, textarea):user-invalid { border-color: var(--color-danger-fg); }
+.student-proposal-page .main-content .proposal-form__add-supervisor,
+.student-proposal-page .main-content .proposal-form__file-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: start;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  max-width: 100%;
+  padding: .625rem var(--space-4);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font-size: var(--font-size-body);
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+.student-proposal-page .main-content .proposal-form__add-supervisor:hover,
+.student-proposal-page .main-content .proposal-form__file-button:hover { background: var(--color-info-bg); }
+.student-proposal-page .proposal-form__attachment { position: relative; justify-self: start; max-width: 100%; }
+/* Input tệp native vẫn nhận focus bàn phím và lưu lựa chọn của người dùng. */
+.student-proposal-page .main-content #proposal-attachment {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.student-proposal-page #proposal-attachment:focus-visible + .proposal-form__file-button {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+.student-proposal-page :is(.page-back-link, .proposal-form__add-supervisor, .proposal-form__file-button) svg { flex: 0 0 auto; }
+.student-proposal-page .proposal-form__selected-supervisor { margin: 0; }
+.student-proposal-page .proposal-form__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+.student-proposal-page .proposal-form__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-left: auto; }
+.student-proposal-page .main-content :is(.proposal-form__cancel, .proposal-form__submit) { font-size: var(--font-size-body); padding-inline: var(--space-6); }
+.student-proposal-page .proposal-form__submit:disabled {
+  background: var(--color-disabled-bg);
+  color: var(--color-disabled-fg);
+  border-color: var(--color-disabled-border);
+}
+.student-proposal-page .proposal-notes > h2 { margin: 0 0 var(--space-4); font-size: var(--font-size-section-title); font-weight: 600; }
+.student-proposal-page .proposal-notes__list { margin: 0; padding: 0; list-style: none; counter-reset: proposal-note; }
+.student-proposal-page .proposal-notes__list > li {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  column-gap: var(--space-3);
+  row-gap: var(--space-2);
+  counter-increment: proposal-note;
+}
+.student-proposal-page .proposal-notes__list > li + li { margin-top: var(--space-6); padding-top: var(--space-6); border-top: 1px solid var(--color-border); }
+.student-proposal-page .proposal-notes__list > li::before {
+  content: counter(proposal-note);
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: var(--color-info-bg);
+  color: var(--color-info-fg);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+.student-proposal-page .proposal-notes__list :is(h3, p) { grid-column: 2; margin: 0; font-size: var(--font-size-secondary); }
+.student-proposal-page .proposal-notes__list h3 { font-weight: 600; line-height: 1.5; }
+.student-proposal-page .proposal-notes__list p { color: var(--color-muted-foreground); line-height: 1.7; }
+
+/* Hộp thoại mở/tìm/chọn bằng script đã có, chỉ thay cách trình bày. */
+.student-proposal-page .supervisor-dialog {
+  width: min(42rem, calc(100% - 2rem));
+  max-width: none;
+  max-height: calc(100svh - 2rem);
+  margin: auto;
+  padding: var(--space-8);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.student-proposal-page .supervisor-dialog::backdrop { background: var(--color-backdrop); }
+.student-proposal-page .supervisor-dialog__header { align-items: flex-start; gap: var(--space-3); }
+.student-proposal-page .supervisor-dialog h2 { min-width: 0; font-size: 1.5rem; line-height: 1.4; }
+.student-proposal-page .supervisor-dialog__close {
+  display: grid;
+  place-items: center;
+  width: var(--control-min-height);
+  height: var(--control-min-height);
+  color: var(--color-muted-foreground);
+  transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+.student-proposal-page .supervisor-dialog__close:hover { background: var(--color-neutral-bg); color: var(--color-foreground); }
+.student-proposal-page #supervisor-dialog-description { margin-top: var(--space-2); font-size: var(--font-size-body); line-height: 1.6; }
+.student-proposal-page .supervisor-dialog__search { position: relative; margin-block: var(--space-6); }
+.student-proposal-page .supervisor-dialog__search-icon { position: absolute; left: var(--space-4); top: 50%; transform: translateY(-50%); color: var(--color-muted-foreground); pointer-events: none; }
+.student-proposal-page .supervisor-dialog__search input { min-height: 3rem; padding-left: 3rem; font-size: var(--font-size-body); }
+.student-proposal-page .supervisor-dialog__choices { margin: 0; }
+.student-proposal-page .supervisor-dialog legend { padding: 0; margin-bottom: var(--space-3); color: var(--color-foreground); font-size: var(--font-size-body); }
+.student-proposal-page .supervisor-dialog__list { max-height: calc(19rem + 2px); overscroll-behavior: contain; }
+.student-proposal-page .supervisor-dialog__option { min-height: 4.75rem; gap: var(--space-4); padding: var(--space-3) var(--space-4); }
+.student-proposal-page .supervisor-dialog__option input { width: 1.25rem; height: 1.25rem; }
+.student-proposal-page .supervisor-dialog__option:has(input:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: -3px; }
+.student-proposal-page .supervisor-dialog__name { font-size: var(--font-size-body); line-height: 1.5; }
+.student-proposal-page .supervisor-dialog__specialty { margin-top: var(--space-1); line-height: 1.5; }
+.student-proposal-page :is(.supervisor-dialog__note, .supervisor-dialog__empty) { margin-top: var(--space-4); line-height: 1.6; }
+.student-proposal-page .supervisor-dialog__footer { gap: var(--space-4); margin-top: var(--space-6); padding-top: var(--space-6); }
+.student-proposal-page #supervisor-selection-status { flex: 1 1 10rem; min-width: 0; }
+.student-proposal-page .supervisor-dialog__actions { flex-wrap: wrap; }
+.student-proposal-page .supervisor-dialog__actions button { padding-inline: var(--space-6); font-size: var(--font-size-body); }
+.student-proposal-page #cancel-supervisor-selection { border-color: var(--color-primary); color: var(--color-primary); }
+.student-proposal-page #cancel-supervisor-selection:hover { background: var(--color-info-bg); }
+.student-proposal-page .supervisor-dialog__list::-webkit-scrollbar { width: .5rem; }
+.student-proposal-page .supervisor-dialog__list::-webkit-scrollbar-thumb { background: var(--color-control-border); border-radius: var(--radius-full); }
+.student-proposal-page .supervisor-dialog__list::-webkit-scrollbar-track { background: var(--color-neutral-bg); }
+
+/* Chân trang gọn theo ảnh duyệt; các nội dung chưa có trang đích vẫn là văn bản. */
+.student-proposal-page .site-footer__inner { grid-template-columns: minmax(0, 1fr); }
+.student-proposal-page .site-footer__columns { grid-template-columns: 1fr 1fr 1.15fr; align-items: center; }
+.student-proposal-page .site-footer__brand { display: flex; align-items: center; gap: var(--space-4); padding-block: var(--space-4); }
+.student-proposal-page .site-footer__brand img { width: 4rem; height: 4rem; object-fit: contain; flex: 0 0 auto; }
+.student-proposal-page .site-footer__brand p { color: var(--color-foreground); font-size: var(--font-size-secondary); font-weight: 500; }
+.student-proposal-page .site-footer__columns .site-footer__information { padding-block: var(--space-4); }
+.student-proposal-page .site-footer__information h2 { margin: 0; text-align: center; font-weight: 500; }
+.student-proposal-page .site-footer__copyright { padding-block: var(--space-3); }
+
+@media (max-width: 63.99rem) {
+  .student-proposal-page .proposal-layout { grid-template-columns: minmax(0, 1fr); }
+  .student-proposal-page .proposal-notes__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); }
+  .student-proposal-page .proposal-notes__list > li + li { margin-top: 0; padding-top: 0; border-top: 0; }
+  .student-proposal-page .proposal-notes__list > li:nth-child(n + 3) { padding-top: var(--space-6); border-top: 1px solid var(--color-border); }
+}
+@media (max-width: 47.99rem) {
+  .student-proposal-page .proposal-form__panel,
+  .student-proposal-page .proposal-notes,
+  .student-proposal-page .supervisor-dialog { padding: var(--space-4); }
+  .student-proposal-page .supervisor-dialog h2 { font-size: var(--font-size-section-title); }
+  .student-proposal-page .site-footer__columns { grid-template-columns: minmax(0, 1fr); }
+  .student-proposal-page .site-footer__information h2 { text-align: left; }
+}
+@media (max-width: 39.99rem) {
+  .student-proposal-page .proposal-form__row,
+  .student-proposal-page .proposal-notes__list { grid-template-columns: minmax(0, 1fr); }
+  .student-proposal-page .proposal-notes__list > li + li { padding-top: var(--space-4); border-top: 1px solid var(--color-border); }
+  .student-proposal-page .proposal-form__actions { width: 100%; margin: 0; }
+  .student-proposal-page .proposal-form__actions > * { flex: 1 1 auto; }
+  .student-proposal-page .supervisor-dialog__footer { align-items: stretch; }
+  .student-proposal-page #supervisor-selection-status { flex-basis: 100%; }
+  .student-proposal-page .supervisor-dialog__actions { width: 100%; margin: 0; }
+  .student-proposal-page .supervisor-dialog__actions > button { flex: 1 1 auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .student-proposal-page .page-back-link,
+  .student-proposal-page .proposal-form :is(input, select, textarea, button, label, a),
+  .student-proposal-page .supervisor-dialog :is(button, input) { transition: none; }
+}

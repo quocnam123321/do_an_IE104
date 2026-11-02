@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../../assets/css/base.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css" />
-    <link rel="stylesheet" href="../../assets/css/teacher-supervised-topics.css?v=20261030-tabs-2" />
+    <link rel="stylesheet" href="../../assets/css/teacher-supervised-topics.css?v=20261102-filter-borderless-6" />
     <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css" />
   </head>
 
@@ -272,7 +272,7 @@
         </nav>
 
         <div class="page-content topic-list-layout">
-          <aside class="topic-filters" aria-labelledby="topic-filters-title">
+          <aside class="topic-filters topic-filters--toggleable" aria-labelledby="topic-filters-title">
             <details class="topic-filters__disclosure" open>
               <summary class="topic-filters__summary">
                 <svg
@@ -288,6 +288,7 @@
                   <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
                 </svg>
                 <h2 id="topic-filters-title" class="topic-filters__title">Bộ lọc</h2>
+                <span class="visually-hidden"><span class="topic-filters__hide">Ẩn</span><span class="topic-filters__show">Hiện</span></span>
                 <svg
                   class="topic-filters__chevron"
                   viewBox="0 0 24 24"
@@ -433,6 +434,57 @@
   </div>
 </fieldset>
 
+                <fieldset class="topic-filters__group">
+                  <legend>Học kỳ và năm học</legend>
+                  <div class="topic-filters__options">
+                    <div class="topic-filters__option">
+                      <label for="semester-2026-2027-1">
+                        <input type="checkbox" id="semester-2026-2027-1" name="hoc-ky" value="2026-2027-1" />
+                        <span class="topic-filters__option-text">Học kỳ 1 · 2026–2027</span>
+                      </label>
+                    </div>
+                    <div class="topic-filters__option">
+                      <label for="semester-2026-2027-2">
+                        <input type="checkbox" id="semester-2026-2027-2" name="hoc-ky" value="2026-2027-2" />
+                        <span class="topic-filters__option-text">Học kỳ 2 · 2026–2027</span>
+                      </label>
+                    </div>
+                    <div class="topic-filters__option">
+                      <label for="semester-2026-2027-3">
+                        <input type="checkbox" id="semester-2026-2027-3" name="hoc-ky" value="2026-2027-3" />
+                        <span class="topic-filters__option-text">Học kỳ 3 · 2026–2027</span>
+                      </label>
+                    </div>
+                    <div class="topic-filters__option">
+                      <label for="semester-2025-2026-1">
+                        <input type="checkbox" id="semester-2025-2026-1" name="hoc-ky" value="2025-2026-1" />
+                        <span class="topic-filters__option-text">Học kỳ 1 · 2025–2026</span>
+                      </label>
+                    </div>
+                    <details class="topic-filters__more">
+                      <summary>
+                        <span class="topic-filters__more-label">Xem thêm</span>
+                        <span class="topic-filters__less-label">Ẩn bớt</span>
+                        <span class="visually-hidden"> học kỳ và năm học</span>
+                        <svg class="topic-filters__more-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                      </summary>
+                      <div class="topic-filters__more-options">
+                        <div class="topic-filters__option">
+                          <label for="semester-2025-2026-2">
+                            <input type="checkbox" id="semester-2025-2026-2" name="hoc-ky" value="2025-2026-2" />
+                            <span class="topic-filters__option-text">Học kỳ 2 · 2025–2026</span>
+                          </label>
+                        </div>
+                        <div class="topic-filters__option">
+                          <label for="semester-2025-2026-3">
+                            <input type="checkbox" id="semester-2025-2026-3" name="hoc-ky" value="2025-2026-3" />
+                            <span class="topic-filters__option-text">Học kỳ 3 · 2025–2026</span>
+                          </label>
+                        </div>
+                      </div>
+                    </details>
+                  </div>
+                </fieldset>
                 <button class="topic-filters__reset" type="reset">Xóa bộ lọc</button>
               </form>
             </details>
@@ -523,7 +575,7 @@
                   </div>
                   <div class="topic-card__content">
                     <h3 id="topic-1-title" class="topic-card__title">Website quản lý thư viện</h3>
-                    <ul class="topic-card__meta" aria-label="Thông tin đề tài DT001">
+                    <ul class="topic-card__meta" aria-label="Thông tin đề tài DA001">
                       <li class="topic-card__meta-item">
                         <svg
                           class="topic-card__meta-icon"
@@ -539,7 +591,7 @@
                           <circle cx="7" cy="7" r="1.25" />
                         </svg>
                         <span class="topic-card__meta-text">
-                          <span class="visually-hidden">Mã và loại đề tài: </span>DT001 · Đồ án môn học
+                          <span class="visually-hidden">Mã đề tài: </span>DA001
                         </span>
                       </li>
                       <li class="topic-card__meta-item">
@@ -649,7 +701,7 @@
                   </div>
                   <div class="topic-card__content">
                     <h3 id="topic-2-title" class="topic-card__title">Ứng dụng quản lý chi tiêu</h3>
-                    <ul class="topic-card__meta" aria-label="Thông tin đề tài DT002">
+                    <ul class="topic-card__meta" aria-label="Thông tin đề tài DA002">
                       <li class="topic-card__meta-item">
                         <svg
                           class="topic-card__meta-icon"
@@ -665,7 +717,7 @@
                           <circle cx="7" cy="7" r="1.25" />
                         </svg>
                         <span class="topic-card__meta-text">
-                          <span class="visually-hidden">Mã và loại đề tài: </span>DT002 · Đồ án môn học
+                          <span class="visually-hidden">Mã đề tài: </span>DA002
                         </span>
                       </li>
                       <li class="topic-card__meta-item">
@@ -775,7 +827,7 @@
                   </div>
                   <div class="topic-card__content">
                     <h3 id="topic-3-title" class="topic-card__title">Hệ thống gợi ý phim</h3>
-                    <ul class="topic-card__meta" aria-label="Thông tin đề tài DT003">
+                    <ul class="topic-card__meta" aria-label="Thông tin đề tài KLTN003">
                       <li class="topic-card__meta-item">
                         <svg
                           class="topic-card__meta-icon"
@@ -791,7 +843,7 @@
                           <circle cx="7" cy="7" r="1.25" />
                         </svg>
                         <span class="topic-card__meta-text">
-                          <span class="visually-hidden">Mã và loại đề tài: </span>DT003 · Khóa luận
+                          <span class="visually-hidden">Mã đề tài: </span>KLTN003
                         </span>
                       </li>
                       <li class="topic-card__meta-item">
@@ -809,7 +861,7 @@
                           <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z" />
                         </svg>
                         <span class="topic-card__meta-text">
-                          <span class="visually-hidden">Môn học: </span>Công nghệ phần mềm
+                          <span class="visually-hidden">Hình thức tốt nghiệp: </span>Khóa luận tốt nghiệp
                         </span>
                       </li>
                       <li class="topic-card__meta-item">
@@ -901,7 +953,7 @@
                   </div>
                   <div class="topic-card__content">
                     <h3 id="topic-4-title" class="topic-card__title">Website hỗ trợ học tập</h3>
-                    <ul class="topic-card__meta" aria-label="Thông tin đề tài DT004">
+                    <ul class="topic-card__meta" aria-label="Thông tin đề tài DATN004">
                       <li class="topic-card__meta-item">
                         <svg
                           class="topic-card__meta-icon"
@@ -917,7 +969,7 @@
                           <circle cx="7" cy="7" r="1.25" />
                         </svg>
                         <span class="topic-card__meta-text">
-                          <span class="visually-hidden">Mã và loại đề tài: </span>DT004 · Đồ án tốt nghiệp
+                          <span class="visually-hidden">Mã đề tài: </span>DATN004
                         </span>
                       </li>
                       <li class="topic-card__meta-item">
@@ -935,7 +987,7 @@
                           <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z" />
                         </svg>
                         <span class="topic-card__meta-text">
-                          <span class="visually-hidden">Môn học: </span>Internet và công nghệ Web
+                          <span class="visually-hidden">Hình thức tốt nghiệp: </span>Đồ án tốt nghiệp
                         </span>
                       </li>
                       <li class="topic-card__meta-item">
@@ -1027,7 +1079,7 @@
                   </div>
                   <div class="topic-card__content">
                     <h3 id="topic-5-title" class="topic-card__title">Ứng dụng quản lý công việc</h3>
-                    <ul class="topic-card__meta" aria-label="Thông tin đề tài DT005">
+                    <ul class="topic-card__meta" aria-label="Thông tin đề tài DA005">
                       <li class="topic-card__meta-item">
                         <svg
                           class="topic-card__meta-icon"
@@ -1043,7 +1095,7 @@
                           <circle cx="7" cy="7" r="1.25" />
                         </svg>
                         <span class="topic-card__meta-text">
-                          <span class="visually-hidden">Mã và loại đề tài: </span>DT005 · Đồ án môn học
+                          <span class="visually-hidden">Mã đề tài: </span>DA005
                         </span>
                       </li>
                       <li class="topic-card__meta-item">

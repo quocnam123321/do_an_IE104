@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../../assets/css/base.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css" />
-    <link rel="stylesheet" href="../../assets/css/teacher-supervised-topics.css?v=20261030-tabs-2" />
+    <link rel="stylesheet" href="../../assets/css/teacher-supervised-topics.css?v=20261102-filter-borderless-6" />
     <link rel="stylesheet" href="../../assets/css/teacher-created-topics.css?v=20261030-align-1" />
     <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css" />
   </head>
@@ -251,13 +251,14 @@
           </ul>
         </nav>
         <div class="page-content topic-list-layout">
-          <aside class="topic-filters" aria-labelledby="topic-filters-title">
+          <aside class="topic-filters topic-filters--toggleable" aria-labelledby="topic-filters-title">
             <details class="topic-filters__disclosure" open>
               <summary class="topic-filters__summary">
                 <svg aria-hidden="true" class="topic-filters__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
 </svg>
                 <h2 id="topic-filters-title" class="topic-filters__title">Bộ lọc</h2>
+                <span class="visually-hidden"><span class="topic-filters__hide">Ẩn</span><span class="topic-filters__show">Hiện</span></span>
                 <svg class="topic-filters__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
               </summary>
               <!-- Reset dùng HTML; tìm kiếm/lọc/sắp xếp dữ liệu thuộc giai đoạn sau. -->
@@ -354,6 +355,57 @@
     </details>
   </div>
 </fieldset>
+                <fieldset class="topic-filters__group">
+                  <legend>Học kỳ và năm học</legend>
+                  <div class="topic-filters__options">
+                    <div class="topic-filters__option">
+                      <label for="semester-2026-2027-1">
+                        <input type="checkbox" id="semester-2026-2027-1" name="hoc-ky" value="2026-2027-1" />
+                        <span class="topic-filters__option-text">Học kỳ 1 · 2026–2027</span>
+                      </label>
+                    </div>
+                    <div class="topic-filters__option">
+                      <label for="semester-2026-2027-2">
+                        <input type="checkbox" id="semester-2026-2027-2" name="hoc-ky" value="2026-2027-2" />
+                        <span class="topic-filters__option-text">Học kỳ 2 · 2026–2027</span>
+                      </label>
+                    </div>
+                    <div class="topic-filters__option">
+                      <label for="semester-2026-2027-3">
+                        <input type="checkbox" id="semester-2026-2027-3" name="hoc-ky" value="2026-2027-3" />
+                        <span class="topic-filters__option-text">Học kỳ 3 · 2026–2027</span>
+                      </label>
+                    </div>
+                    <div class="topic-filters__option">
+                      <label for="semester-2025-2026-1">
+                        <input type="checkbox" id="semester-2025-2026-1" name="hoc-ky" value="2025-2026-1" />
+                        <span class="topic-filters__option-text">Học kỳ 1 · 2025–2026</span>
+                      </label>
+                    </div>
+                    <details class="topic-filters__more">
+                      <summary>
+                        <span class="topic-filters__more-label">Xem thêm</span>
+                        <span class="topic-filters__less-label">Ẩn bớt</span>
+                        <span class="visually-hidden"> học kỳ và năm học</span>
+                        <svg class="topic-filters__more-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                      </summary>
+                      <div class="topic-filters__more-options">
+                        <div class="topic-filters__option">
+                          <label for="semester-2025-2026-2">
+                            <input type="checkbox" id="semester-2025-2026-2" name="hoc-ky" value="2025-2026-2" />
+                            <span class="topic-filters__option-text">Học kỳ 2 · 2025–2026</span>
+                          </label>
+                        </div>
+                        <div class="topic-filters__option">
+                          <label for="semester-2025-2026-3">
+                            <input type="checkbox" id="semester-2025-2026-3" name="hoc-ky" value="2025-2026-3" />
+                            <span class="topic-filters__option-text">Học kỳ 3 · 2025–2026</span>
+                          </label>
+                        </div>
+                      </div>
+                    </details>
+                  </div>
+                </fieldset>
                 <button class="topic-filters__reset" type="reset">Xóa bộ lọc</button>
               </form>
             </details>
@@ -395,11 +447,11 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
 <circle cx="7" cy="7" r="1.25"></circle>
-</svg><span class="topic-card__meta-text">DT001 · Đồ án môn học</span></li>
+</svg><span class="topic-card__meta-text"><span class="visually-hidden">Mã đề tài: </span>DA001</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
 <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
-</svg><span class="topic-card__meta-text">Internet và công nghệ Web</span></li>
+</svg><span class="topic-card__meta-text"><span class="visually-hidden">Môn học: </span>Internet và công nghệ Web</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
@@ -407,7 +459,7 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">Ngày tạo: <time datetime="2026-10-28">28/10/2026</time></span></li>
+</svg><span class="topic-card__meta-text"><span class="visually-hidden">Ngày tạo: </span><time datetime="2026-10-28">28/10/2026</time></span></li>
                       </ul>
                     </div>
                     <div class="topic-card__actions">
@@ -430,11 +482,11 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
 <circle cx="7" cy="7" r="1.25"></circle>
-</svg><span class="topic-card__meta-text">DT002 · Đồ án môn học</span></li>
+</svg><span class="topic-card__meta-text"><span class="visually-hidden">Mã đề tài: </span>DA002</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
 <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
-</svg><span class="topic-card__meta-text">Cơ sở dữ liệu</span></li>
+</svg><span class="topic-card__meta-text"><span class="visually-hidden">Môn học: </span>Cơ sở dữ liệu</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
@@ -442,7 +494,7 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">Ngày tạo: <time datetime="2026-10-26">26/10/2026</time></span></li>
+</svg><span class="topic-card__meta-text"><span class="visually-hidden">Ngày tạo: </span><time datetime="2026-10-26">26/10/2026</time></span></li>
                       </ul>
                     </div>
                     <div class="topic-card__actions">
@@ -465,11 +517,11 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
 <circle cx="7" cy="7" r="1.25"></circle>
-</svg><span class="topic-card__meta-text">DT003 · Đồ án môn học</span></li>
+</svg><span class="topic-card__meta-text"><span class="visually-hidden">Mã đề tài: </span>DA003</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
 <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
-</svg><span class="topic-card__meta-text">Công nghệ phần mềm</span></li>
+</svg><span class="topic-card__meta-text"><span class="visually-hidden">Môn học: </span>Công nghệ phần mềm</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
@@ -477,7 +529,7 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">Ngày tạo: <time datetime="2026-10-24">24/10/2026</time></span></li>
+</svg><span class="topic-card__meta-text"><span class="visually-hidden">Ngày tạo: </span><time datetime="2026-10-24">24/10/2026</time></span></li>
                       </ul>
                     </div>
                     <div class="topic-card__actions">
@@ -500,11 +552,11 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
 <circle cx="7" cy="7" r="1.25"></circle>
-</svg><span class="topic-card__meta-text">DT004 · Đồ án môn học</span></li>
+</svg><span class="topic-card__meta-text"><span class="visually-hidden">Mã đề tài: </span>DA004</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
 <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
-</svg><span class="topic-card__meta-text">Internet và công nghệ Web</span></li>
+</svg><span class="topic-card__meta-text"><span class="visually-hidden">Môn học: </span>Internet và công nghệ Web</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
@@ -512,7 +564,7 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">Ngày tạo: <time datetime="2026-10-22">22/10/2026</time></span></li>
+</svg><span class="topic-card__meta-text"><span class="visually-hidden">Ngày tạo: </span><time datetime="2026-10-22">22/10/2026</time></span></li>
                       </ul>
                     </div>
                     <div class="topic-card__actions">
@@ -535,11 +587,11 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
 <circle cx="7" cy="7" r="1.25"></circle>
-</svg><span class="topic-card__meta-text">DT005 · Đồ án môn học</span></li>
+</svg><span class="topic-card__meta-text"><span class="visually-hidden">Mã đề tài: </span>DA005</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
 <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
-</svg><span class="topic-card__meta-text">Cơ sở dữ liệu</span></li>
+</svg><span class="topic-card__meta-text"><span class="visually-hidden">Môn học: </span>Cơ sở dữ liệu</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
@@ -547,7 +599,7 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">Ngày tạo: <time datetime="2026-10-20">20/10/2026</time></span></li>
+</svg><span class="topic-card__meta-text"><span class="visually-hidden">Ngày tạo: </span><time datetime="2026-10-20">20/10/2026</time></span></li>
                       </ul>
                     </div>
                     <div class="topic-card__actions">
