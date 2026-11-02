@@ -63,11 +63,199 @@
 .about-hero__illustration {
   min-width: 0;
 }
-.about-hero__illustration img {
+.about-hero__illustration :is(img, svg) {
+  display: block;
   width: 100%;
+  max-width: 100%;
   height: auto;
   aspect-ratio: 4 / 3;
   object-fit: contain;
+}
+
+/* Trạng thái tĩnh mặc định cho minh họa SVG (áp dụng cả khi giảm chuyển động) */
+.hero-svg__progress-main,
+.hero-svg__timeline-fill,
+.hero-svg__task-bar {
+  transform-box: fill-box;
+}
+.hero-svg__progress-main {
+  transform: translateX(-22%);
+}
+.hero-svg__timeline-fill {
+  transform: translateX(-33.33%);
+}
+.hero-svg__node--2,
+.hero-svg__node--3 {
+  opacity: 1;
+}
+.hero-svg__node--4 {
+  opacity: 0;
+}
+.hero-svg__task-bar--1 {
+  transform: translateX(0%);
+}
+.hero-svg__task-bar--2 {
+  transform: translateX(-22%);
+}
+.hero-svg__task-bar--3 {
+  transform: translateX(-48%);
+}
+.hero-svg__sub-complete--2,
+.hero-svg__check-bg--2 {
+  opacity: 1;
+}
+.hero-svg__check-tick--2 {
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 0;
+  opacity: 1;
+}
+.hero-svg__sub-complete--3,
+.hero-svg__check-bg--3 {
+  opacity: 0;
+}
+.hero-svg__check-tick--3 {
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1;
+  opacity: 0;
+}
+.hero-svg__check-bg {
+  transform-box: fill-box;
+  transform-origin: 50% 50%;
+}
+.hero-svg__tassel {
+  transform-box: fill-box;
+  transform-origin: 50% 0%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-svg__progress-main {
+    animation: hero-progress-main 6.4s ease-in-out infinite;
+  }
+  .hero-svg__timeline-fill {
+    animation: hero-timeline-fill 6.4s ease-in-out infinite;
+  }
+  .hero-svg__node--2 {
+    animation: hero-node-2 6.4s ease-in-out infinite;
+  }
+  .hero-svg__node--3 {
+    animation: hero-node-3 6.4s ease-in-out infinite;
+  }
+  .hero-svg__node--4 {
+    animation: hero-node-4 6.4s ease-in-out infinite;
+  }
+  .hero-svg__task-bar--1 {
+    animation: hero-task-1 6.4s ease-in-out infinite;
+  }
+  .hero-svg__task-bar--2 {
+    animation: hero-task-2 6.4s ease-in-out infinite;
+  }
+  .hero-svg__task-bar--3 {
+    animation: hero-task-3 6.4s ease-in-out infinite;
+  }
+  .hero-svg__sub-complete--2 {
+    animation: hero-sub-card-2 6.4s ease-in-out infinite;
+  }
+  .hero-svg__check-bg--2 {
+    animation: hero-check-bg-2 6.4s ease-in-out infinite;
+  }
+  .hero-svg__check-tick--2 {
+    animation: hero-check-tick-2 6.4s ease-in-out infinite;
+  }
+  .hero-svg__sub-complete--3 {
+    animation: hero-sub-card-3 6.4s ease-in-out infinite;
+  }
+  .hero-svg__check-bg--3 {
+    animation: hero-check-bg-3 6.4s ease-in-out infinite;
+  }
+  .hero-svg__check-tick--3 {
+    animation: hero-check-tick-3 6.4s ease-in-out infinite;
+  }
+  .hero-svg__tassel {
+    animation: hero-tassel-sway 3.2s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes hero-progress-main {
+  0%, 8% { transform: translateX(-72%); }
+  28%, 32% { transform: translateX(-44%); }
+  54%, 56% { transform: translateX(-20%); }
+  76%, 91% { transform: translateX(0%); }
+  100% { transform: translateX(-72%); }
+}
+@keyframes hero-timeline-fill {
+  0%, 8% { transform: translateX(-100%); }
+  26%, 32% { transform: translateX(-66.67%); }
+  52%, 56% { transform: translateX(-33.33%); }
+  74%, 91% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+@keyframes hero-node-2 {
+  0%, 16% { opacity: 0; }
+  25%, 91% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes hero-node-3 {
+  0%, 42% { opacity: 0; }
+  51%, 91% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes hero-node-4 {
+  0%, 64% { opacity: 0; }
+  73%, 91% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes hero-task-1 {
+  0%, 8% { transform: translateX(-42%); }
+  26%, 91% { transform: translateX(0%); }
+  100% { transform: translateX(-42%); }
+}
+@keyframes hero-task-2 {
+  0%, 12% { transform: translateX(-68%); }
+  50%, 56% { transform: translateX(-14%); }
+  74%, 91% { transform: translateX(0%); }
+  100% { transform: translateX(-68%); }
+}
+@keyframes hero-task-3 {
+  0%, 24% { transform: translateX(-80%); }
+  52%, 58% { transform: translateX(-42%); }
+  76%, 91% { transform: translateX(0%); }
+  100% { transform: translateX(-80%); }
+}
+@keyframes hero-sub-card-2 {
+  0%, 18% { opacity: 0; }
+  26%, 91% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes hero-check-bg-2 {
+  0%, 18% { opacity: 0; transform: scale(0.65); }
+  26%, 91% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.65); }
+}
+@keyframes hero-check-tick-2 {
+  0%, 20% { stroke-dashoffset: 1; opacity: 0; }
+  22% { opacity: 1; }
+  30%, 91% { stroke-dashoffset: 0; opacity: 1; }
+  98%, 100% { stroke-dashoffset: 1; opacity: 0; }
+}
+@keyframes hero-sub-card-3 {
+  0%, 63% { opacity: 0; }
+  71%, 91% { opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes hero-check-bg-3 {
+  0%, 63% { opacity: 0; transform: scale(0.65); }
+  71%, 91% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.65); }
+}
+@keyframes hero-check-tick-3 {
+  0%, 65% { stroke-dashoffset: 1; opacity: 0; }
+  67% { opacity: 1; }
+  76%, 91% { stroke-dashoffset: 0; opacity: 1; }
+  98%, 100% { stroke-dashoffset: 1; opacity: 0; }
+}
+@keyframes hero-tassel-sway {
+  from { transform: rotate(-2.5deg); }
+  to { transform: rotate(2.5deg); }
 }
 .about-page > .page-container > section {
   padding-block: 2.5rem 3rem;
