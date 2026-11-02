@@ -1,0 +1,233 @@
+/* Bộ lọc chung của hai danh sách sinh viên và các danh sách giảng viên.
+   Không áp dụng cho form tạo/chỉnh sửa đề tài hoặc trang chi tiết. */
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel,
+.teacher-topic-list-page aside.topic-filters {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel > summary {
+  border: 0;
+}
+
+/* Tiêu đề ở ngoài vùng cuộn. Ít tiêu chí không ép chiều cao. */
+:is(.student-topic-registration-page, .student-my-topics-list-page) form.topic-filters,
+.teacher-topic-list-page .topic-filters__form {
+  min-width: 0;
+  max-block-size: min(36rem, 65vh);
+  max-block-size: min(36rem, 65svh);
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+  scrollbar-width: auto;
+  scrollbar-color: auto;
+  scroll-padding-block: var(--space-2);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-1) var(--space-2);
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) form.topic-filters::-webkit-scrollbar,
+.teacher-topic-list-page .topic-filters__form::-webkit-scrollbar { width: 12px; }
+:is(.student-topic-registration-page, .student-my-topics-list-page) form.topic-filters::-webkit-scrollbar-track,
+.teacher-topic-list-page .topic-filters__form::-webkit-scrollbar-track {
+  background: var(--color-info-bg);
+  border-radius: var(--radius-full);
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) form.topic-filters::-webkit-scrollbar-thumb,
+.teacher-topic-list-page .topic-filters__form::-webkit-scrollbar-thumb {
+  background: var(--color-control-border);
+  border: 3px solid var(--color-info-bg);
+  border-radius: var(--radius-full);
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) form.topic-filters::-webkit-scrollbar-thumb:hover,
+.teacher-topic-list-page .topic-filters__form::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted-foreground);
+}
+@supports not selector(::-webkit-scrollbar) {
+  :is(.student-topic-registration-page, .student-my-topics-list-page) form.topic-filters,
+  .teacher-topic-list-page .topic-filters__form {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-control-border) var(--color-info-bg);
+  }
+}
+
+/* Nhóm có >4 giá trị: 4 option đầu giữ ngoài details; phần dư đặt trong
+   .topic-filters__more-options. Không tạo disclosure cho nhóm <=4 giá trị. */
+.topic-filters__more { clear: both; min-width: 0; }
+.topic-filters__more-options { display: grid; gap: .125rem; }
+.topic-filters__more > summary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  width: fit-content;
+  max-width: 100%;
+  padding: var(--space-2) var(--space-1);
+  color: var(--color-primary);
+  font-size: var(--font-size-secondary);
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none;
+  overflow-wrap: anywhere;
+}
+.topic-filters__more > summary::-webkit-details-marker { display: none; }
+.topic-filters__more > summary:hover { color: var(--color-primary-hover); text-decoration: underline; }
+.topic-filters__more > summary:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+  border-radius: var(--radius-control);
+}
+.topic-filters__more-icon { width: 1rem; height: 1rem; flex-shrink: 0; }
+.topic-filters__more .topic-filters__less-label { display: none; }
+.topic-filters__more[open] .topic-filters__more-label { display: none; }
+.topic-filters__more[open] .topic-filters__less-label { display: inline; }
+.topic-filters__more[open] .topic-filters__more-icon { transform: rotate(180deg); }
+/* Đặt đường đóng cuối các lựa chọn bằng CSS; summary vẫn dùng native details. */
+.topic-filters__more[open] { position: relative; padding-bottom: var(--control-min-height); }
+.topic-filters__more[open] > summary { position: absolute; inset-inline-start: 0; bottom: 0; }
+
+/* Sinh viên dùng cùng typography, nhóm/option và reset với bộ lọc giảng viên.
+   Selector chỉ áp dụng hai danh sách, không tác động form tạo đề xuất. */
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel {
+  font-family: var(--font-family);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel > summary {
+  min-height: 2.25rem;
+  padding: 0;
+  gap: var(--space-2);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: var(--leading-normal);
+  text-transform: none;
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel > summary > span {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel__chevron {
+  display: none;
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  color: var(--color-primary);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel[open] .topic-filter-panel__chevron { transform: rotate(180deg); }
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__group {
+  position: relative;
+  min-width: 0;
+  margin: 0 2px;
+  padding: 0;
+  border: 0;
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__group + .topic-filters__group { padding-top: var(--space-4); }
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__group + .topic-filters__group::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: var(--color-border);
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__group legend {
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin-bottom: var(--space-2);
+  color: var(--color-heading);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-normal);
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__options {
+  clear: both;
+  display: grid;
+  gap: .125rem;
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__option {
+  display: flex;
+  align-items: normal;
+  gap: 0;
+  min-height: var(--control-min-height);
+}
+.registration-page:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__option label {
+  display: flex;
+  align-items: flex-start;
+  gap: .625rem;
+  width: 100%;
+  min-height: var(--control-min-height);
+  padding: .625rem .25rem;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-base);
+  font-weight: 400;
+  line-height: var(--leading-normal);
+  color: var(--color-muted-foreground);
+  cursor: pointer;
+  overflow-wrap: break-word;
+  transition: color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard);
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__option input {
+  width: 1.125rem;
+  height: 1.125rem;
+  margin: .1875rem 0 0;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__option-text { flex: 1 1 auto; min-width: 0; }
+.registration-page:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__option label:hover,
+.registration-page:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__option label:has(input:focus-visible) {
+  color: var(--color-foreground);
+  background: var(--color-surface-subtle);
+}
+.registration-page:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__option label:has(input:checked) {
+  color: var(--color-foreground);
+  font-weight: var(--weight-medium);
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__actions {
+  grid-column: auto;
+  border: 0;
+  padding: 0;
+}
+.registration-page:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__actions > button {
+  width: 100%;
+  min-height: var(--control-min-height);
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--button-secondary-border);
+  border-radius: var(--control-radius);
+  background: var(--button-secondary-bg);
+  color: var(--button-secondary-fg);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+  transition: background-color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard);
+}
+.registration-page:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__actions > button:hover {
+  background: var(--button-secondary-bg-hover);
+  border-color: var(--color-foreground);
+}
+.registration-page:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__actions > button:active { background: var(--color-border); }
+@media (max-width: 1023.98px) {
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel > summary { min-height: var(--control-min-height); }
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel__chevron { display: block; }
+}
+@media (min-width: 768px) and (max-width: 1023.98px) {
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__group + .topic-filters__group { padding: 0 0 0 var(--space-6); }
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__group + .topic-filters__group::before {
+    inset: 0 auto 0 0;
+    width: 1px;
+    height: auto;
+  }
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__actions { grid-column: 1 / -1; justify-content: start; }
+  .registration-page:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__actions > button { width: auto; min-width: 10rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel__chevron,
+  .registration-page:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__option label,
+  .registration-page:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__actions > button { transition: none; }
+}

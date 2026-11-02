@@ -14,6 +14,7 @@
   <link href="../../assets/css/teacher-layout.css" rel="stylesheet"/>
   <link href="../../assets/css/teacher-supervised-topics.css?v=20261030-tabs-2" rel="stylesheet"/>
   <link href="../../assets/css/teacher-pending-proposals.css?v=20261030-align-1" rel="stylesheet"/>
+    <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css" />
  </head>
  <body class="teacher-workspace-page teacher-topic-list-page teacher-pending-proposals-page">
   <a class="skip-link" href="#main-content">
@@ -308,36 +309,64 @@
          </div>
         </fieldset>
         <fieldset class="proposal-filters__group topic-filters__group">
-         <legend>
+  <legend>
           Môn học
          </legend>
-         <div class="topic-filters__options">
-          <div class="proposal-filters__option topic-filters__option">
-           <label for="course-web">
-            <input id="course-web" name="course" type="checkbox" value="internet-va-cong-nghe-web"/>
-            <span class="topic-filters__option-text">
-             Internet và công nghệ Web
-            </span>
-           </label>
-          </div>
-          <div class="proposal-filters__option topic-filters__option">
-           <label for="course-database">
-            <input id="course-database" name="course" type="checkbox" value="co-so-du-lieu"/>
-            <span class="topic-filters__option-text">
-             Cơ sở dữ liệu
-            </span>
-           </label>
-          </div>
-          <div class="proposal-filters__option topic-filters__option">
-           <label for="course-software">
-            <input id="course-software" name="course" type="checkbox" value="cong-nghe-phan-mem"/>
-            <span class="topic-filters__option-text">
-             Công nghệ phần mềm
-            </span>
-           </label>
-          </div>
-         </div>
-        </fieldset>
+  <div class="topic-filters__options">
+    <div class="proposal-filters__option topic-filters__option">
+    <label for="course-web">
+    <input id="course-web" name="course" type="checkbox" value="internet-va-cong-nghe-web"/>
+    <span class="topic-filters__option-text">
+    Internet và công nghệ Web
+    </span>
+    </label>
+    </div>
+    <div class="proposal-filters__option topic-filters__option">
+    <label for="course-database">
+    <input id="course-database" name="course" type="checkbox" value="co-so-du-lieu"/>
+    <span class="topic-filters__option-text">
+    Cơ sở dữ liệu
+    </span>
+    </label>
+    </div>
+    <div class="proposal-filters__option topic-filters__option">
+    <label for="course-software">
+    <input id="course-software" name="course" type="checkbox" value="cong-nghe-phan-mem"/>
+    <span class="topic-filters__option-text">
+    Công nghệ phần mềm
+    </span>
+    </label>
+    </div>
+    <div class="topic-filters__option">
+    <label for="course-analysis">
+    <input type="checkbox" id="course-analysis" name="course" value="phan-tich-thiet-ke-he-thong" />
+    <span class="topic-filters__option-text">Phân tích thiết kế hệ thống</span>
+    </label>
+    </div>
+    <details class="topic-filters__more">
+      <summary>
+        <span class="topic-filters__more-label">Xem thêm</span>
+        <span class="topic-filters__less-label">Ẩn bớt</span>
+        <span class="visually-hidden"> môn học</span>
+        <svg class="topic-filters__more-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+      </summary>
+      <div class="topic-filters__more-options">
+        <div class="topic-filters__option">
+        <label for="course-ecommerce">
+        <input type="checkbox" id="course-ecommerce" name="course" value="thuong-mai-dien-tu" />
+        <span class="topic-filters__option-text">Thương mại điện tử</span>
+        </label>
+        </div>
+        <div class="topic-filters__option">
+        <label for="course-it-project">
+        <input type="checkbox" id="course-it-project" name="course" value="quan-ly-du-an-cntt" />
+        <span class="topic-filters__option-text">Quản lý dự án công nghệ thông tin</span>
+        </label>
+        </div>
+      </div>
+    </details>
+  </div>
+</fieldset>
         <!-- Reset HTML chỉ bỏ các lựa chọn trong form, không xử lý danh sách. -->
         <button class="proposal-filters__reset topic-filters__reset" type="reset">
          Xóa bộ lọc

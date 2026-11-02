@@ -13,9 +13,11 @@
     <link rel="stylesheet" href="../../assets/css/base.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css" />
+    <link rel="stylesheet" href="../../assets/css/student-topic-registration.css" />
+    <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
   </head>
-  <body class="registration-page">
+  <body class="registration-page student-topic-registration-page">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
     <!-- ĐẦU TRANG CHUNG CHO SINH VIÊN -->
     <header class="site-header">
@@ -109,63 +111,116 @@
           </ol>
         </nav>
         <!-- Tiêu đề và mô tả -->
-        <header class="page-header">
-          <h1 class="page-header__title">Đề tài mở đăng ký</h1>
-          <p class="page-header__description">
-            Tìm kiếm và xem các đề tài đang mở đăng ký.
-          </p>
+        <header class="page-header registration-heading">
+          <div class="registration-heading__copy">
+            <h1 class="page-header__title">Đề tài mở đăng ký</h1>
+            <p class="page-header__description">
+              Tìm kiếm và xem các đề tài đang mở đăng ký.
+            </p>
+          </div>
+          <a class="topics__create-proposal" href="tao-de-xuat.html"><span aria-hidden="true">+</span> Tạo đề xuất</a>
         </header>
         <div class="page-content">
           <!-- Khung HTML theo wireframe. Tìm kiếm, lọc và phân trang chưa có xử lý. -->
           <div class="topics-layout">
-          <div class="topic-search" role="search" aria-label="Tìm kiếm đề tài mở đăng ký">
-            <div class="topic-filters__field">
-              <label for="topic-search">Tìm kiếm theo tên hoặc mã đề tài</label>
-              <input id="topic-search" name="tu-khoa" type="search" placeholder="Tìm kiếm theo tên hoặc mã đề tài" />
-            </div>
-            <div class="topic-filters__field">
-              <label for="lecturer-filter">Giảng viên hướng dẫn</label>
-              <input id="lecturer-filter" name="giang-vien" type="text" placeholder="Nhập tên giảng viên hướng dẫn" />
-            </div>
-          </div>
             <details class="topic-filter-panel" open>
-              <summary id="filter-title"><svg class="topic-filter-panel__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 4h18l-7 9v7l-4-2v-5L3 4Z" /></svg><span>Bộ lọc</span></summary>
+              <summary id="filter-title"><svg class="topic-filter-panel__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 4h18l-7 9v7l-4-2v-5L3 4Z" /></svg><span>Bộ lọc</span><svg class="topic-filter-panel__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></summary>
               <form id="topic-filter-form" class="topic-filters" aria-labelledby="filter-title">
                 <fieldset class="topic-filters__group">
                   <legend>Loại đề tài</legend>
+                  <div class="topic-filters__options">
                   <div class="topic-filters__option">
-                    <input id="type-course" name="loai-de-tai" type="checkbox" value="do-an-mon-hoc" />
-                    <label for="type-course">Đồ án môn học</label>
+                    <label for="type-course">
+                      <input id="type-course" name="loai-de-tai" type="checkbox" value="do-an-mon-hoc" />
+                      <span class="topic-filters__option-text">Đồ án môn học</span>
+                    </label>
                   </div>
                   <div class="topic-filters__option">
-                    <input id="type-graduation" name="loai-de-tai" type="checkbox" value="do-an-tot-nghiep" />
-                    <label for="type-graduation">Đồ án tốt nghiệp</label>
+                    <label for="type-graduation">
+                      <input id="type-graduation" name="loai-de-tai" type="checkbox" value="do-an-tot-nghiep" />
+                      <span class="topic-filters__option-text">Đồ án tốt nghiệp</span>
+                    </label>
                   </div>
                   <div class="topic-filters__option">
-                    <input id="type-thesis" name="loai-de-tai" type="checkbox" value="khoa-luan" />
-                    <label for="type-thesis">Khóa luận</label>
+                    <label for="type-thesis">
+                      <input id="type-thesis" name="loai-de-tai" type="checkbox" value="khoa-luan" />
+                      <span class="topic-filters__option-text">Khóa luận</span>
+                    </label>
+                  </div>
                   </div>
                 </fieldset>
+                <fieldset class="topic-filters__group">
+  <legend>Môn học</legend>
+  <div class="topic-filters__options">
+    <div class="topic-filters__option">
+    <label for="course-ie104">
+    <input id="course-ie104" name="mon-hoc" type="checkbox" value="IE104" />
+    <span class="topic-filters__option-text">IE104 — Internet và Công nghệ Web</span>
+    </label>
+    </div>
+    <div class="topic-filters__option">
+    <label for="course-database">
+    <input type="checkbox" id="course-database" name="mon-hoc" value="co-so-du-lieu" />
+    <span class="topic-filters__option-text">Cơ sở dữ liệu</span>
+    </label>
+    </div>
+    <div class="topic-filters__option">
+    <label for="course-software">
+    <input type="checkbox" id="course-software" name="mon-hoc" value="cong-nghe-phan-mem" />
+    <span class="topic-filters__option-text">Công nghệ phần mềm</span>
+    </label>
+    </div>
+    <div class="topic-filters__option">
+    <label for="course-analysis">
+    <input type="checkbox" id="course-analysis" name="mon-hoc" value="phan-tich-thiet-ke-he-thong" />
+    <span class="topic-filters__option-text">Phân tích thiết kế hệ thống</span>
+    </label>
+    </div>
+    <details class="topic-filters__more">
+      <summary>
+        <span class="topic-filters__more-label">Xem thêm</span>
+        <span class="topic-filters__less-label">Ẩn bớt</span>
+        <span class="visually-hidden"> môn học</span>
+        <svg class="topic-filters__more-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+      </summary>
+      <div class="topic-filters__more-options">
+        <div class="topic-filters__option">
+        <label for="course-ecommerce">
+        <input type="checkbox" id="course-ecommerce" name="mon-hoc" value="thuong-mai-dien-tu" />
+        <span class="topic-filters__option-text">Thương mại điện tử</span>
+        </label>
+        </div>
+        <div class="topic-filters__option">
+        <label for="course-it-project">
+        <input type="checkbox" id="course-it-project" name="mon-hoc" value="quan-ly-du-an-cntt" />
+        <span class="topic-filters__option-text">Quản lý dự án công nghệ thông tin</span>
+        </label>
+        </div>
+      </div>
+    </details>
+  </div>
+</fieldset>
                 <fieldset class="topic-filters__group">
                   <legend>Sắp xếp</legend>
+                  <div class="topic-filters__options">
                   <div class="topic-filters__option">
-                    <input id="sort-newest" name="sap-xep" type="radio" value="moi-nhat" />
-                    <label for="sort-newest">Mới nhất</label>
+                    <label for="sort-newest">
+                      <input id="sort-newest" name="sap-xep" type="radio" value="moi-nhat" checked />
+                      <span class="topic-filters__option-text">Mới nhất</span>
+                    </label>
                   </div>
                   <div class="topic-filters__option">
-                    <input id="sort-oldest" name="sap-xep" type="radio" value="cu-nhat" />
-                    <label for="sort-oldest">Cũ nhất</label>
+                    <label for="sort-oldest">
+                      <input id="sort-oldest" name="sap-xep" type="radio" value="cu-nhat" />
+                      <span class="topic-filters__option-text">Cũ nhất</span>
+                    </label>
                   </div>
                   <div class="topic-filters__option">
-                    <input id="sort-name" name="sap-xep" type="radio" value="ten-a-z" />
-                    <label for="sort-name">Tên A–Z</label>
+                    <label for="sort-name">
+                      <input id="sort-name" name="sap-xep" type="radio" value="ten-a-z" />
+                      <span class="topic-filters__option-text">Tên A–Z</span>
+                    </label>
                   </div>
-                </fieldset>
-                <fieldset class="topic-filters__group">
-                  <legend>Môn học</legend>
-                  <div class="topic-filters__option">
-                    <input id="course-ie104" name="mon-hoc" type="checkbox" value="IE104" />
-                    <label for="course-ie104">IE104 — Internet và Công nghệ Web</label>
                   </div>
                 </fieldset>
                 <div class="topic-filters__actions"><button class="topic-filters__clear" type="reset">Xóa bộ lọc</button></div>
@@ -174,9 +229,25 @@
 
 
             <section class="topics topics-layout__main" aria-labelledby="topic-list-title">
+              <div class="topic-search" role="search" aria-label="Tìm kiếm và chọn giảng viên cho đề tài mở đăng ký">
+                <div class="topic-filters__field topic-search__query">
+                  <label for="topic-search">Tìm kiếm theo tên hoặc mã đề tài</label>
+                  <svg class="topic-search__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 5 5" /></svg>
+                  <input id="topic-search" name="tu-khoa" form="topic-filter-form" type="search" placeholder="Tìm theo tên hoặc mã đề tài" />
+                </div>
+                <div class="topic-filters__field topic-search__lecturer">
+                  <label for="lecturer-filter">Giảng viên</label>
+                  <select id="lecturer-filter" name="giang-vien" form="topic-filter-form">
+                    <option value="">Tất cả giảng viên</option>
+                    <option value="Nguyễn Văn A">Nguyễn Văn A</option>
+                    <option value="Lê Văn C">Lê Văn C</option>
+                    <option value="Trần Thị B">Trần Thị B</option>
+                    <option value="Phạm Minh D">Phạm Minh D</option>
+                  </select>
+                </div>
+              </div>
               <header class="topics__header">
                 <h2 id="topic-list-title">Danh sách đề tài mở đăng ký</h2>
-                <a class="topics__create-proposal" href="tao-de-xuat.html"><span aria-hidden="true">+</span> Tạo đề xuất</a>
               </header>
               <ul class="topic-list" tabindex="0" aria-label="Danh sách 5 đề tài minh họa, cuộn để xem thêm">
                 <li class="topic-list__item">
@@ -187,10 +258,10 @@
                     <div class="topic-card__content">
                       <h3 id="topic-title-dt001" class="topic-card__title">Website quản lý thư viện</h3>
                       <dl class="topic-card__meta">
-                        <div class="topic-card__meta-row"><dt class="topic-card__meta-label">Mã đề tài - Loại đề tài</dt><dd>DT001 - Đồ án môn học</dd></div>
-                        <div class="topic-card__meta-row"><dt class="topic-card__meta-label">Môn học</dt><dd>IE104 — Internet và Công nghệ Web</dd></div>
-                        <div class="topic-card__meta-row"><dt>Học kỳ</dt><dd>4</dd></div>
-                        <div class="topic-card__meta-row"><dt>Giảng viên hướng dẫn</dt><dd>Nguyễn Văn A</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 13-7 7L3 10V3h7l10 10Z" /><circle cx="7.5" cy="7.5" r="1" /></svg><span class="visually-hidden">Mã đề tài - Loại đề tài</span></dt><dd>DT001 - Đồ án môn học</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15" /></svg><span class="visually-hidden">Môn học</span></dt><dd>IE104 — Internet và Công nghệ Web</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4m10-4v4M3 11h18" /></svg><span class="visually-hidden">Học kỳ</span></dt><dd>Học kỳ 4</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4" /><path d="M4 21v-2a8 8 0 0 1 16 0v2" /></svg><span class="visually-hidden">Giảng viên hướng dẫn</span></dt><dd>Nguyễn Văn A</dd></div>
                       </dl>
                     </div>
                     <div class="topic-card__summary">
@@ -207,10 +278,10 @@
                     <div class="topic-card__content">
                       <h3 id="topic-title-dt003" class="topic-card__title">Website đăng ký sự kiện</h3>
                       <dl class="topic-card__meta">
-                        <div class="topic-card__meta-row"><dt class="topic-card__meta-label">Mã đề tài - Loại đề tài</dt><dd>DT003 - Đồ án môn học</dd></div>
-                        <div class="topic-card__meta-row"><dt class="topic-card__meta-label">Môn học</dt><dd>IE104 — Internet và Công nghệ Web</dd></div>
-                        <div class="topic-card__meta-row"><dt>Học kỳ</dt><dd>5</dd></div>
-                        <div class="topic-card__meta-row"><dt>Giảng viên hướng dẫn</dt><dd>Lê Văn C</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 13-7 7L3 10V3h7l10 10Z" /><circle cx="7.5" cy="7.5" r="1" /></svg><span class="visually-hidden">Mã đề tài - Loại đề tài</span></dt><dd>DT003 - Đồ án môn học</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15" /></svg><span class="visually-hidden">Môn học</span></dt><dd>IE104 — Internet và Công nghệ Web</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4m10-4v4M3 11h18" /></svg><span class="visually-hidden">Học kỳ</span></dt><dd>Học kỳ 5</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4" /><path d="M4 21v-2a8 8 0 0 1 16 0v2" /></svg><span class="visually-hidden">Giảng viên hướng dẫn</span></dt><dd>Lê Văn C</dd></div>
                       </dl>
                     </div>
                     <div class="topic-card__summary">
@@ -228,10 +299,10 @@
                     <div class="topic-card__content">
                       <h3 id="topic-title-dt004" class="topic-card__title">Website quản lý công việc nhóm</h3>
                       <dl class="topic-card__meta">
-                        <div class="topic-card__meta-row"><dt class="topic-card__meta-label">Mã đề tài - Loại đề tài</dt><dd>DT004 - Khóa luận tốt nghiệp</dd></div>
-                        <div class="topic-card__meta-row"><dt class="topic-card__meta-label">Môn học</dt><dd>Không áp dụng</dd></div>
-                        <div class="topic-card__meta-row"><dt>Học kỳ</dt><dd>6</dd></div>
-                        <div class="topic-card__meta-row"><dt>Giảng viên hướng dẫn</dt><dd>Nguyễn Văn A</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 13-7 7L3 10V3h7l10 10Z" /><circle cx="7.5" cy="7.5" r="1" /></svg><span class="visually-hidden">Mã đề tài - Loại đề tài</span></dt><dd>DT004 - Khóa luận tốt nghiệp</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15" /></svg><span class="visually-hidden">Môn học</span></dt><dd>Không áp dụng</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4m10-4v4M3 11h18" /></svg><span class="visually-hidden">Học kỳ</span></dt><dd>Học kỳ 6</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4" /><path d="M4 21v-2a8 8 0 0 1 16 0v2" /></svg><span class="visually-hidden">Giảng viên hướng dẫn</span></dt><dd>Nguyễn Văn A</dd></div>
                       </dl>
                     </div>
                     <div class="topic-card__summary">
@@ -249,10 +320,10 @@
                     <div class="topic-card__content">
                       <h3 id="topic-title-demo004" class="topic-card__title">Đề tài minh họa 4</h3>
                       <dl class="topic-card__meta">
-                        <div class="topic-card__meta-row"><dt class="topic-card__meta-label">Mã đề tài - Loại đề tài</dt><dd>MẪU-04 - Khóa luận tốt nghiệp</dd></div>
-                        <div class="topic-card__meta-row"><dt class="topic-card__meta-label">Môn học</dt><dd>Không áp dụng</dd></div>
-                        <div class="topic-card__meta-row"><dt>Học kỳ</dt><dd>7</dd></div>
-                        <div class="topic-card__meta-row"><dt>Giảng viên hướng dẫn</dt><dd>Trần Thị B</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 13-7 7L3 10V3h7l10 10Z" /><circle cx="7.5" cy="7.5" r="1" /></svg><span class="visually-hidden">Mã đề tài - Loại đề tài</span></dt><dd>MẪU-04 - Khóa luận tốt nghiệp</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15" /></svg><span class="visually-hidden">Môn học</span></dt><dd>Không áp dụng</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4m10-4v4M3 11h18" /></svg><span class="visually-hidden">Học kỳ</span></dt><dd>Học kỳ 7</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4" /><path d="M4 21v-2a8 8 0 0 1 16 0v2" /></svg><span class="visually-hidden">Giảng viên hướng dẫn</span></dt><dd>Trần Thị B</dd></div>
                       </dl>
                     </div>
                     <div class="topic-card__summary">
@@ -270,10 +341,10 @@
                     <div class="topic-card__content">
                       <h3 id="topic-title-demo005" class="topic-card__title">Đề tài minh họa 5</h3>
                       <dl class="topic-card__meta">
-                        <div class="topic-card__meta-row"><dt class="topic-card__meta-label">Mã đề tài - Loại đề tài</dt><dd>MẪU-05 - Khóa luận tốt nghiệp</dd></div>
-                        <div class="topic-card__meta-row"><dt class="topic-card__meta-label">Môn học</dt><dd>Không áp dụng</dd></div>
-                        <div class="topic-card__meta-row"><dt>Học kỳ</dt><dd>8</dd></div>
-                        <div class="topic-card__meta-row"><dt>Giảng viên hướng dẫn</dt><dd>Phạm Minh D</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m20 13-7 7L3 10V3h7l10 10Z" /><circle cx="7.5" cy="7.5" r="1" /></svg><span class="visually-hidden">Mã đề tài - Loại đề tài</span></dt><dd>MẪU-05 - Khóa luận tốt nghiệp</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5c-3-2-6-2-9-1v15c3-1 6-1 9 1 3-2 6-2 9-1V4c-3-1-6-1-9 1Zm0 0v15" /></svg><span class="visually-hidden">Môn học</span></dt><dd>Không áp dụng</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2" /><path d="M7 3v4m10-4v4M3 11h18" /></svg><span class="visually-hidden">Học kỳ</span></dt><dd>Học kỳ 8</dd></div>
+                        <div class="topic-card__meta-row"><dt class="topic-card__meta-term"><svg class="topic-card__meta-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="7" r="4" /><path d="M4 21v-2a8 8 0 0 1 16 0v2" /></svg><span class="visually-hidden">Giảng viên hướng dẫn</span></dt><dd>Phạm Minh D</dd></div>
                       </dl>
                     </div>
                     <div class="topic-card__summary">
