@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../../assets/css/components.css"/>
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css" />
     <link rel="stylesheet" href="../../assets/css/teacher-dialogs.css?v=20261030-1"/>
-    <link rel="stylesheet" href="../../assets/css/teacher-topic-detail.css?v=20261030-shared-dialogs-1"/>
+    <link rel="stylesheet" href="../../assets/css/teacher-topic-detail.css?v=20261102-overview-summary-5"/>
   </head>
   <body class="teacher-workspace-page">
     <a class="skip-link" href="#main-content">
@@ -196,11 +196,7 @@
         </a>
         <header class="page-header page-header--detail">
           <h1 class="page-header__title">Chi tiết đề tài</h1>
-          <p class="page-header__subtitle">Dữ liệu minh họa</p>
         </header>
-        <section class="topic-context" aria-labelledby="topic-context-title">
-          <h2 id="topic-context-title" class="topic-context__title">Website quản lý thư viện<span class="topic-context__group"> · Nhóm 01</span></h2>
-        </section>
         <nav class="topic-tabs topic-tabs--detail" aria-label="Các mục chi tiết đề tài">
           <ul class="topic-tabs__list">
             <li class="topic-tabs__item"><a class="topic-tabs__link" href="#tong-quan">Tổng quan</a></li>
@@ -229,32 +225,28 @@
                   </svg>
                 </div>
                 <div class="topic-summary__content">
-                  <h2 id="topic-summary-title">Website quản lý thư viện</h2>
-                  <p class="topic-summary__meta-item">
-                    <svg class="topic-summary__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
-                      <line x1="7" y1="7" x2="7.01" y2="7"/>
-                    </svg>
-                    <span class="visually-hidden">Mã và loại đề tài: </span>
-                    <span>DT001 <span aria-hidden="true">·</span> Đồ án môn học</span>
-                  </p>
-                  <p class="topic-summary__meta-item">
-                    <svg class="topic-summary__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                    </svg>
-                    <span class="visually-hidden">Môn học, học kỳ và năm học: </span>
-                    <span>Internet và công nghệ Web <span aria-hidden="true">·</span> Học kỳ 1 <span aria-hidden="true">·</span> 2026–2027</span>
-                  </p>
-                  <p class="topic-summary__meta-item topic-summary__meta-item--status">
-                    <svg class="topic-summary__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <circle cx="12" cy="12" r="10"/>
-                      <line x1="12" y1="16" x2="12" y2="12"/>
-                      <line x1="12" y1="8" x2="12.01" y2="8"/>
-                    </svg>
-                    <span class="visually-hidden">Trạng thái đề tài: </span>
-                    <span class="topic-summary__status">Đang thực hiện</span>
-                  </p>
+                  <div class="topic-summary__heading">
+                    <h2 id="topic-summary-title">Website quản lý thư viện</h2>
+                    <span class="topic-summary__status"><span class="visually-hidden">Trạng thái đề tài: </span>Đang thực hiện</span>
+                  </div>
+                  <dl class="topic-summary__details">
+                    <div class="topic-summary__field">
+                      <dt>Mã đề tài</dt>
+                      <dd>DT001</dd>
+                    </div>
+                    <div class="topic-summary__field">
+                      <dt>Loại đề tài</dt>
+                      <dd>Đồ án môn học</dd>
+                    </div>
+                    <div class="topic-summary__field">
+                      <dt>Môn học</dt>
+                      <dd>IE104 · Internet và Công nghệ Web</dd>
+                    </div>
+                    <div class="topic-summary__field">
+                      <dt>Học kỳ / Năm học</dt>
+                      <dd>Học kỳ 1 · 2026–2027</dd>
+                    </div>
+                  </dl>
                 </div>
               </section>
               <div class="topic-overview-layout">

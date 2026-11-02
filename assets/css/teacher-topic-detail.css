@@ -197,9 +197,9 @@
    -------------------------------------------------------------------------- */
 .topic-summary {
   display: grid;
-  grid-template-columns: minmax(17.5rem, 26.25rem) minmax(0, 1fr);
-  align-items: start;
-  gap: var(--space-6);
+  grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr);
+  align-items: stretch;
+  gap: var(--space-8);
   padding: var(--space-6);
   margin-bottom: var(--space-6);
   background-color: var(--color-surface);
@@ -209,6 +209,7 @@
 
 .topic-summary__image {
   position: relative;
+  align-self: start;
   width: 100%;
   aspect-ratio: 16 / 9;
   padding: var(--space-4);
@@ -241,55 +242,62 @@
 }
 
 .topic-summary__content {
-  /* Trải thông tin theo chiều cao ảnh, không gom cả cụm ở giữa thẻ. */
   display: flex;
   flex-direction: column;
-  align-self: stretch;
-  justify-content: space-between;
-  gap: var(--space-4);
-  padding-block: var(--space-2);
+  /* Tên sát mép trên; giữ khoảng cách hàng tự nhiên, không ép căn đáy ảnh. */
+  justify-content: flex-start;
+  gap: var(--space-6);
+  min-width: 0;
+}
+
+.topic-summary__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
   min-width: 0;
 }
 
 #topic-summary-title {
-  font-size: 1.625rem; /* 26px */
+  min-width: 0;
+  font-size: 1.625rem;
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
   color: var(--color-heading);
-  margin-bottom: var(--space-2);
+  margin: 0;
   overflow-wrap: anywhere;
 }
 
-.topic-summary__meta-item {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
+.topic-summary__details {
+  display: grid;
+  align-content: start;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 1.25rem var(--space-12);
+  width: 100%;
+  max-width: 46rem;
+  margin: 0;
+}
+
+.topic-summary__field {
+  min-width: 0;
+}
+
+.topic-summary__field dt {
+  margin: 0 0 var(--space-1);
+  color: var(--color-muted-foreground);
   font-size: var(--text-base);
-  line-height: 1.5;
-  color: var(--color-muted-foreground);
-  min-width: 0;
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
 }
 
-.topic-summary__meta-item > span:last-child {
-  min-width: 0;
+.topic-summary__field dd {
+  margin: 0;
+  color: var(--color-foreground);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
   overflow-wrap: anywhere;
-}
-
-.topic-summary__icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  flex-shrink: 0;
-  color: var(--color-muted-foreground);
-  margin-top: 0.125rem;
-}
-
-.topic-summary__meta-item--status {
-  align-items: center;
-}
-
-.topic-summary__meta-item--status .topic-summary__icon {
-  margin-top: 0;
 }
 
 /* Nhãn trạng thái Đang thực hiện: #EFF6FF nền, #1E40AF chữ, không làm như nút bấm */
@@ -305,6 +313,8 @@
   line-height: 1.35;
   cursor: default;
   user-select: text;
+  flex-shrink: 0;
+  max-width: 100%;
 }
 
 /* --------------------------------------------------------------------------
@@ -1786,7 +1796,7 @@
    -------------------------------------------------------------------------- */
 @media (max-width: 1023.98px) {
   .topic-summary {
-    grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr);
+    grid-template-columns: minmax(12rem, 0.7fr) minmax(0, 1.5fr);
     gap: var(--space-4);
   }
 
@@ -1800,6 +1810,28 @@
 }
 
 @media (max-width: 767.98px) {
+  .topic-summary {
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--space-4);
+  }
+
+  .topic-summary__image {
+    aspect-ratio: 16 / 9;
+  }
+
+  .topic-summary__heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  #topic-summary-title {
+    font-size: var(--text-xl);
+  }
+
+  .topic-summary__details {
+    gap: var(--space-4);
+  }
+
   .requirement-view-dialog > .topic-dialog__header {
     padding-inline: var(--space-4);
   }
@@ -1890,5 +1922,12 @@
   .back-link__icon,
   .progress-overview__review {
     transition: none;
+  }
+}
+
+/* Khi chiều rộng không đủ cho môn học dài, giữ đủ bốn trường theo một cột. */
+@media (max-width: 479.98px) {
+  .topic-summary__details {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
