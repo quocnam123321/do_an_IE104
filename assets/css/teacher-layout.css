@@ -231,7 +231,6 @@ body:where(.teacher-workspace-page) {
   outline: none;
 }
 
-:where(.teacher-workspace-page) .page-container,
 :where(.teacher-workspace-page) .site-header__inner,
 :where(.teacher-workspace-page) .site-footer__inner {
   width: 100%;
@@ -241,8 +240,7 @@ body:where(.teacher-workspace-page) {
 }
 
 @media (max-width: 1023.98px) {
-  :where(.teacher-workspace-page) .page-container,
-:where(.teacher-workspace-page) .site-header__inner,
+  :where(.teacher-workspace-page) .site-header__inner,
 :where(.teacher-workspace-page) .site-footer__inner {
     padding-inline: var(--space-6);
   }
@@ -253,8 +251,7 @@ body:where(.teacher-workspace-page) {
     padding-block: var(--space-4) var(--space-8);
   }
 
-  :where(.teacher-workspace-page) .page-container,
-:where(.teacher-workspace-page) .site-header__inner,
+  :where(.teacher-workspace-page) .site-header__inner,
 :where(.teacher-workspace-page) .site-footer__inner {
     padding-inline: var(--space-4);
   }

@@ -215,11 +215,6 @@
   padding-block: 2rem 4rem;
 }
 
-.recovery-page > .page-container {
-  width: min(100% - 3rem, 72rem);
-  margin-inline: auto;
-}
-
 .recovery-page .breadcrumb {
   margin-bottom: 2rem;
 }
@@ -289,8 +284,7 @@
 }
 
 @media (max-width: 35rem) {
-  .login-page__inner,
-  .recovery-page > .page-container {
+  .login-page__inner {
     width: calc(100% - 2rem);
   }
 

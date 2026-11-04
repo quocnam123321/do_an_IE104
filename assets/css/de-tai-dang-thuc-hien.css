@@ -1,5 +1,4 @@
 /* Bốn mục dùng fragment + :target có sẵn; không thêm JavaScript dữ liệu. */
-.active-topic-page .page-container { max-width: 76rem; }
 .active-topic-page .page-header { margin-block: var(--space-4); }
 .active-topic-page .back-navigation { margin-block: var(--space-4); font-size: var(--font-size-secondary); }
 .active-project-name { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-3); color: var(--color-heading); font-weight: 600; }

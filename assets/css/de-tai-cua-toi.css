@@ -1,5 +1,4 @@
 /* Đề tài của tôi: dùng khung và thành phần đã chốt của Đăng ký đề tài. */
-.pending-proposal-page .page-container { max-width: 70rem; }
 .pending-proposal-page .breadcrumb__list > li + li::before { content: "/"; margin-right: var(--space-2); color: var(--color-muted-foreground); }
 .my-topics-page .topic-card__status--progress { background: var(--color-info-bg); color: var(--color-info-fg); }
 .my-topics-page .topic-card__status--pending, .proposal-status { background: var(--color-warning-bg); color: var(--color-warning-fg); }
