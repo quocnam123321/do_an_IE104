@@ -1,8 +1,9 @@
 # Hướng dẫn sử dụng khung trang
 
-Cập nhật: **23/10/2026**. Đối chiếu mã nguồn hiện có và wireframe của nhóm.
-Repo có **33 file HTML**: 1 trang vào, 10 trang chung, 9 trang sinh viên,
-11 trang giảng viên và 2 khung mẫu. [README](../README.md) chứa cây file đầy đủ.
+Danh mục và mô tả khung ghi nhận ngày **23/10/2026**. Cập nhật liên kết và
+cách tham khảo trang nguồn ngày **04/11/2026**, sau khi gỡ hai khung mẫu riêng.
+[README](../README.md) chứa cây file tham khảo; [index.html](../index.html)
+là danh mục mở các trang hiện có.
 
 ## 1. Phạm vi bàn giao
 
@@ -18,8 +19,9 @@ thành công trong khung ẩn là nội dung mẫu, chưa phải kết quả g�
 
 ## 2. Danh mục trang thực tế
 
-Các đường dẫn dưới đây trỏ tới file HTML hiện có. File khung là mẫu dành
-cho người phát triển; `index.html` là danh mục truy cập, không phải khung vai trò.
+Các bảng bên dưới giữ danh mục tại mốc 23/10/2026. Khi tạo hoặc sửa trang,
+tham khảo trực tiếp trang hiện có cùng vai trò; `index.html` là danh mục
+truy cập, không phải khung vai trò.
 
 ### Chung — 10 trang
 
@@ -66,9 +68,9 @@ cho người phát triển; `index.html` là danh mục truy cập, không phả
 | Hạn nộp của sinh viên | [han-nop-cua-sinh-vien.html](../pages/giang-vien/han-nop-cua-sinh-vien.html): tìm/lọc, danh sách hạn và tình trạng bài nộp |
 | Hồ sơ cá nhân | [ho-so-ca-nhan-giang-vien.html](../pages/giang-vien/ho-so-ca-nhan-giang-vien.html): xem/sửa hồ sơ và đổi mật khẩu |
 
-Trang vào: [index.html](../index.html). Khung sao chép:
-[khung-sinh-vien.html](../templates/khung-sinh-vien.html),
-[khung-giang-vien.html](../templates/khung-giang-vien.html).
+Trang vào: [index.html](../index.html). Có thể tham khảo cấu trúc chung ở
+[Tổng quan sinh viên](../pages/sinh-vien/tong-quan-sinh-vien.html) và
+[Tổng quan giảng viên](../pages/giang-vien/tong-quan-giang-vien.html).
 
 ## 3. Cấu trúc và điều hướng chung
 
@@ -89,8 +91,8 @@ menu tài khoản, breadcrumb, tiêu đề/mô tả, vùng nội dung và footer
   `account-menu__label`, `account-menu__list`, `account-menu__profile` và
   `account-menu__logout`. `<details>` tự đóng/mở bằng chuột và bàn phím.
 - Logo dùng `../../assets/images/images.jpg` ở trang vai trò, alt
-  “Logo Khoa Khoa học và Kỹ thuật Thông tin”. Header theo khung vai trò
-  dùng kích thước 70 × 70; đường dẫn tại gốc và trong `templates/` cần đổi cấp.
+  “Logo Khoa Khoa học và Kỹ thuật Thông tin”. Khi sao chép trang sang vị trí
+  mới, kiểm tra lại cấp đường dẫn tới tài nguyên.
 
 Chỉ đặt `aria-current="page"` trên liên kết tới đúng trang hiện tại.
 Trang con có thể đánh dấu nhóm bằng `aria-current="location"` hoặc để
@@ -163,13 +165,13 @@ khôi phục mật khẩu, gửi email hoặc đặt lại mật khẩu thật.
 
 ## 6. Tạo hoặc sửa một trang
 
-1. Chọn khung theo vai trò, sao chép vào `pages/sinh-vien/` hoặc
-   `pages/giang-vien/`. Giữ file mẫu gốc cho các thành viên khác.
+1. Chọn trang hiện có cùng vai trò và bố cục phù hợp, sao chép vào
+   `pages/sinh-vien/` hoặc `pages/giang-vien/`. Giữ nguyên trang nguồn.
 2. Sửa `<title>`, meta description, breadcrumb, `<h1>`, mô tả và menu đang chọn.
 3. Thay nội dung trong `page-content`; tái sử dụng vùng/bảng/biểu mẫu đã có.
 4. Sửa đường dẫn theo vị trí mới. Trong cùng thư mục dùng `ten-trang.html`;
    tới trang chung dùng `../chung/...`; tài nguyên dùng `../../assets/...`;
-   về danh mục dùng `../../index.html`. Từ khung mẫu dùng `../pages/...`.
+   về danh mục dùng `../../index.html`.
 5. Dùng tiếng Việt UTF-8, thụt lề hai khoảng trắng và tên file chữ thường
    không dấu. Giữ class chung để dùng CSS thống nhất về sau.
 6. Giữ tên trường dễ hiểu, ưu tiên tiếng Việt không dấu theo quy ước biểu mẫu
@@ -180,9 +182,9 @@ thuộc tính đó. Khi trang đích đã có, thay bằng `href` đúng cấp t
 Không khôi phục file trùng `chi-tiet-de-tai-dang-ky.html` tại gốc; dùng bản
 `pages/sinh-vien/chi-tiet-de-tai-mo-dang-ky.html`.
 
-Khung được sao chép vào từng file; sửa template không tự sửa các trang khác.
-Khi đổi header/footer, cập nhật cả template và các trang chịu ảnh hưởng,
-giữ nội dung riêng từng màn rồi kiểm tra lại điều hướng.
+Khung được sao chép vào từng file; sửa một trang không tự sửa các trang khác.
+Khi đổi header/footer, cập nhật các trang chịu ảnh hưởng, giữ nội dung riêng
+từng màn rồi kiểm tra lại điều hướng.
 
 ## 7. Kiểm tra trước khi bàn giao
 

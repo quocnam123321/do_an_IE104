@@ -1,9 +1,9 @@
 # Website quản lý đồ án và khóa luận — IE104, Nhóm 7
 
 Website dành cho sinh viên và giảng viên, xây dựng bằng HTML, CSS và
-JavaScript thuần. Cập nhật **23/10/2026**: repo có **33 file HTML** gồm
-1 trang vào, 10 trang chung, 9 trang sinh viên, 11 trang giảng viên và
-2 khung mẫu.
+JavaScript thuần. Danh mục HTML bên dưới giữ mốc **23/10/2026**;
+các mục và hướng dẫn về hai khung mẫu đã được gỡ ngày **04/11/2026**.
+Xem [index.html](index.html) để mở các trang hiện có.
 
 Đây là giai đoạn dựng khung HTML. Tên mẫu, ô trống, ảnh giữ chỗ và dữ liệu
 minh họa được giữ để thể hiện cấu trúc; không yêu cầu dữ liệu đầy đủ.
@@ -15,48 +15,45 @@ Mở [index.html](index.html) bằng trình duyệt để truy cập danh mục 
 Không cần cài thư viện hoặc chạy bước build. Có thể dùng Live Server từ
 thư mục gốc repo khi phát triển.
 
-## Cây file HTML hiện có
+## Cây file HTML tham khảo
 
 ```text
 do_an_IE104/
 ├── index.html
-├── pages/
-│   ├── chung/                              # 10 trang
-│   │   ├── dang-nhap.html
-│   │   ├── quen-mat-khau.html
-│   │   ├── gioi-thieu.html
-│   │   ├── lien-he.html
-│   │   ├── thong-bao.html
-│   │   ├── chi-tiet-thong-bao-01.html
-│   │   ├── chi-tiet-thong-bao-02.html
-│   │   ├── chi-tiet-thong-bao-03.html
-│   │   ├── chi-tiet-thong-bao-04.html
-│   │   └── chi-tiet-thong-bao-05.html
-│   ├── sinh-vien/                          # 9 trang
-│   │   ├── tong-quan-sinh-vien.html
-│   │   ├── dang-ky-de-tai.html
-│   │   ├── chi-tiet-de-tai-mo-dang-ky.html
-│   │   ├── tao-de-xuat.html
-│   │   ├── de-tai-cua-toi-sinh-vien.html
-│   │   ├── chi-tiet-dang-ky-va-de-xuat-sinh-vien.html
-│   │   ├── chi-tiet-de-tai-sinh-vien.html
-│   │   ├── lich-han-nop.html
-│   │   └── ho-so-ca-nhan.html
-│   └── giang-vien/                         # 11 trang
-│       ├── tong-quan-giang-vien.html
-│       ├── danh-sach-de-tai-dang-huong-dan.html
-│       ├── danh-sach-de-tai-da-tao.html
-│       ├── tao-de-tai-giang-vien.html
-│       ├── chi-tiet-de-tai-da-tao-giang-vien.html
-│       ├── chinh-sua-de-tai-giang-vien.html
-│       ├── chi-tiet-de-tai-dang-huong-dan-giang-vien.html
-│       ├── yeu-cau-cho-duyet.html
-│       ├── chi-tiet-de-xuat-giang-vien.html
-│       ├── han-nop-cua-sinh-vien.html
-│       └── ho-so-ca-nhan-giang-vien.html
-└── templates/                              # 2 khung mẫu
-    ├── khung-sinh-vien.html
-    └── khung-giang-vien.html
+└── pages/
+    ├── chung/                              # 10 trang
+    │   ├── dang-nhap.html
+    │   ├── quen-mat-khau.html
+    │   ├── gioi-thieu.html
+    │   ├── lien-he.html
+    │   ├── thong-bao.html
+    │   ├── chi-tiet-thong-bao-01.html
+    │   ├── chi-tiet-thong-bao-02.html
+    │   ├── chi-tiet-thong-bao-03.html
+    │   ├── chi-tiet-thong-bao-04.html
+    │   └── chi-tiet-thong-bao-05.html
+    ├── sinh-vien/                          # 9 trang
+    │   ├── tong-quan-sinh-vien.html
+    │   ├── dang-ky-de-tai.html
+    │   ├── chi-tiet-de-tai-mo-dang-ky.html
+    │   ├── tao-de-xuat.html
+    │   ├── de-tai-cua-toi-sinh-vien.html
+    │   ├── chi-tiet-dang-ky-va-de-xuat-sinh-vien.html
+    │   ├── chi-tiet-de-tai-sinh-vien.html
+    │   ├── lich-han-nop.html
+    │   └── ho-so-ca-nhan.html
+    └── giang-vien/                         # 11 trang
+        ├── tong-quan-giang-vien.html
+        ├── danh-sach-de-tai-dang-huong-dan.html
+        ├── danh-sach-de-tai-da-tao.html
+        ├── tao-de-tai-giang-vien.html
+        ├── chi-tiet-de-tai-da-tao-giang-vien.html
+        ├── chinh-sua-de-tai-giang-vien.html
+        ├── chi-tiet-de-tai-dang-huong-dan-giang-vien.html
+        ├── yeu-cau-cho-duyet.html
+        ├── chi-tiet-de-xuat-giang-vien.html
+        ├── han-nop-cua-sinh-vien.html
+        └── ho-so-ca-nhan-giang-vien.html
 ```
 
 `assets/images/images.jpg` là logo đang sử dụng. `assets/css/` và
@@ -99,7 +96,8 @@ tiết yêu cầu vẫn là `chi-tiet-de-xuat-giang-vien.html` để giữ đư�
 - Tên file dùng chữ thường, không dấu, nối bằng dấu gạch ngang.
 - Dùng đường dẫn tương đối và dấu `/`: cùng thư mục dùng `ten-trang.html`,
   trang chung dùng `../chung/...`, tài nguyên dùng `../../assets/...`.
-- `templates/` chứa khung sao chép; sửa khung không tự cập nhật các trang đã tạo.
+- Khi tạo trang mới, tham khảo trang hiện có cùng vai trò; cập nhật đường
+  dẫn và menu cho trang mới. Sửa một trang không tự đồng bộ các trang khác.
 - HTML hiện có các mẫu rỗng, lỗi, thành công, khóa và hộp xác nhận cho những
   luồng liên quan. Nhiều mẫu nằm trong `<template>` hoặc `<dialog>` đóng,
   dành cho bước nối tương tác sau này.
