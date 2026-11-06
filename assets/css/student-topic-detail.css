@@ -1,0 +1,304 @@
+/* Điều chỉnh phạm vi sinh viên khi dùng bảng chi tiết chung với giảng viên. */
+#progress-section.student-progress-view {
+  min-width: 0;
+}
+
+.student-board-heading,
+.student-task-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.student-board-heading {
+  margin-bottom: var(--space-4);
+}
+
+.active-topic-page .student-board-heading > .progress-tasks__title {
+  margin: 0;
+}
+
+.student-task-actions {
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+#progress-section .progress-overview__review {
+  border-color: var(--button-primary-bg);
+  background: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+  font-size: var(--text-base);
+}
+
+#progress-section .progress-overview__review:hover {
+  border-color: var(--button-primary-bg-hover);
+  background: var(--button-primary-bg-hover);
+}
+
+#progress-section :is(.progress-overview__title, .progress-tasks__title),
+#submissions-section :is(.requirements__title, .submissions__title) {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+}
+
+#progress-section .task-column__title,
+#submissions-section .task-column__title {
+  font-size: var(--text-base);
+  margin-bottom: var(--space-3);
+}
+
+#progress-section .task-card {
+  min-height: 0;
+  font-size: var(--text-base);
+  align-items: normal;
+  justify-content: normal;
+}
+
+#progress-section .task-card__title {
+  font-size: var(--text-base);
+}
+
+#progress-section .task-card__deadline {
+  margin: 0;
+  color: var(--color-muted-foreground);
+}
+
+#progress-section .task-card--overdue .task-card__deadline {
+  color: var(--color-danger-fg);
+}
+
+#progress-section .task-assignee {
+  display: inline-grid;
+  min-width: var(--control-min-height);
+  width: var(--control-min-height);
+  height: var(--control-min-height);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+}
+
+#progress-section .task-assignee:hover {
+  background: transparent;
+}
+
+#tien-do .progress-member-popover__close {
+  display: grid;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-muted-foreground);
+}
+
+#tien-do .progress-member-popover__close:hover {
+  background: var(--color-neutral-bg);
+}
+
+#progress-section .task-assignee--more {
+  display: none;
+}
+
+#submissions-section .requirement-board-card__open {
+  display: grid;
+  justify-content: stretch;
+  padding: var(--space-3);
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  text-align: left;
+}
+
+#submissions-section .requirement-board-card__open:hover {
+  background: var(--color-info-bg);
+}
+
+#submissions-section .requirement-board-card__deadline {
+  color: var(--color-muted-foreground);
+}
+
+#submissions-section .requirement-board-card--overdue .requirement-board-card__deadline {
+  color: var(--color-danger-fg);
+}
+
+#tien-do .student-task-members {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--control-radius);
+}
+
+#tien-do .student-task-members legend {
+  padding-inline: var(--space-1);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+#tien-do .student-task-members label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+#tien-do .student-task-members input[type="checkbox"] {
+  flex: 0 0 auto;
+  width: 1.125rem;
+  height: 1.125rem;
+  min-height: 0;
+  padding: 0;
+  accent-color: var(--color-primary);
+}
+
+#submissions-section .student-submission-awaiting {
+  flex: 0 0 6.5rem;
+  width: 6.5rem;
+  max-width: 100%;
+  align-self: center;
+  text-align: center;
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--color-muted-foreground);
+}
+
+/* Tổng quan dùng chung nội dung đề tài, nhóm và mốc thời gian. */
+#overview-section {
+  min-width: 0;
+}
+
+#overview-section .topic-overview-card > h2 {
+  margin: 0 0 var(--space-4);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+}
+
+#overview-section .topic-team > h2 {
+  margin-bottom: var(--space-3);
+}
+
+#overview-section .topic-summary__status {
+  color: var(--color-info-fg);
+}
+
+#overview-section .topic-summary__status--completed {
+  color: var(--color-success-fg);
+  background: var(--color-success-bg);
+}
+
+#overview-section .topic-summary__image--logo {
+  padding: var(--space-3);
+  border: 1px solid var(--media-placeholder-border);
+}
+
+#overview-section .topic-summary__image--logo img {
+  object-fit: contain;
+}
+
+#overview-section .topic-team__group-name {
+  margin-top: 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+}
+
+#overview-section .topic-overview-card:has(> .student-overview-actions) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+#overview-section .topic-overview-card:has(> .student-overview-actions) > h2 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+#overview-section .student-overview-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+#overview-section .topic-overview-card:has(> .student-overview-actions) > :not(h2, .student-overview-actions) {
+  grid-column: 1 / -1;
+}
+
+/* Sinh viên xem đánh giá đã công bố; các giá trị chưa công bố chỉ là văn bản. */
+#evaluation-section :is(.evaluation-total__field, .evaluation-comment__field) {
+  margin: 0;
+}
+
+#evaluation-section .student-evaluation-unpublished {
+  color: var(--color-muted-foreground);
+  font-size: var(--text-sm);
+}
+
+#evaluation-section .evaluation-info__status--published {
+  color: var(--color-success-fg);
+  background: var(--color-success-bg);
+}
+
+#evaluation-section .evaluation-criteria__table--published th:nth-child(1) { width: 24%; }
+#evaluation-section .evaluation-criteria__table--published th:nth-child(2) { width: 14%; }
+#evaluation-section .evaluation-criteria__table--published th:nth-child(3) { width: 14%; }
+#evaluation-section .evaluation-criteria__table--published th:nth-child(4) { width: 48%; }
+
+#evaluation-section .evaluation-criteria__table--published :is(th, td):nth-child(2) {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+#evaluation-section .evaluation-criteria__table--published :is(th, td):nth-child(4) {
+  text-align: left;
+}
+
+#evaluation-section .student-evaluation-comment {
+  min-width: 0;
+  min-height: 7rem;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--control-radius);
+  background: var(--color-neutral-bg);
+  color: var(--color-muted-foreground);
+}
+
+#evaluation-section .evaluation-attachments {
+  padding: var(--space-6);
+}
+
+@media (max-width: 63.99rem) {
+  #progress-section .progress-overview__stats {
+    gap: var(--space-3);
+  }
+}
+
+@media (max-width: 47.99rem) {
+  #submissions-section .requirements,
+  #submissions-section .submissions {
+    padding: var(--space-4);
+  }
+
+  #evaluation-section .evaluation-attachments {
+    padding: var(--space-4);
+  }
+}
+
+@media (max-width: 29.99rem) {
+  #overview-section .topic-overview-card:has(> .student-overview-actions) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #progress-section .task-assignee--third {
+    display: none;
+  }
+
+  #progress-section .task-assignee--more {
+    display: inline-grid;
+  }
+}

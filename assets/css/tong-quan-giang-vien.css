@@ -6,17 +6,13 @@
 }
 
 /* Dùng teacher-layout.css trong riêng vùng header để đồng bộ với Quản lý đề tài.
-   Script điều hướng hiện có vẫn giữ; chỉ dùng gạch chọn CSS của khung giảng viên. */
+   nav-indicator.js bổ sung gạch chuyển động, giữ gạch CSS khi không có JavaScript. */
 .lecturer-overview-page .teacher-header-scope {
   min-width: 0;
   font-family: var(--font-sans);
   font-size: var(--text-base);
   font-weight: var(--weight-regular);
   line-height: var(--leading-normal);
-}
-
-.lecturer-overview-page .teacher-header-scope .main-nav__indicator {
-  display: none;
 }
 
 /* Gỡ thứ tự/flex-basis của menu cũ ở 1024–1087px; breakpoint menu mới

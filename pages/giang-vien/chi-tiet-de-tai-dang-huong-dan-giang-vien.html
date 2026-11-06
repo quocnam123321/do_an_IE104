@@ -12,7 +12,11 @@
     <link rel="stylesheet" href="../../assets/css/components.css"/>
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css" />
     <link rel="stylesheet" href="../../assets/css/teacher-dialogs.css?v=20261030-1"/>
+    <link rel="stylesheet" href="../../assets/css/topic-detail-boards.css"/>
+    <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css"/>
     <link rel="stylesheet" href="../../assets/css/teacher-topic-detail.css?v=20261102-progress-align-8"/>
+    <script src="../../assets/js/nav-indicator.js" defer></script>
+    <script src="../../assets/js/detail-tabs.js" defer></script>
   </head>
   <body class="teacher-workspace-page">
     <a class="skip-link" href="#main-content">
@@ -28,7 +32,7 @@
             KHÓA LUẬN TỐT NGHIỆP
           </span>
         </a>
-        <nav aria-label="Điều hướng giảng viên" class="main-nav">
+        <nav aria-label="Điều hướng giảng viên" class="main-nav" data-nav-indicator>
           <ul class="main-nav__list">
             <li class="main-nav__item">
               <a class="main-nav__link" href="tong-quan-giang-vien.html">
@@ -187,17 +191,19 @@
             <li class="breadcrumb__item"><span aria-current="page">Chi tiết đề tài</span></li>
           </ol>
         </nav>
-        <a class="back-link" href="danh-sach-de-tai-dang-huong-dan.html">
-          <svg class="back-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <line x1="19" y1="12" x2="5" y2="12"/>
-            <polyline points="12 19 5 12 12 5"/>
-          </svg>
-          <span>Quay lại Quản lý đề tài</span>
-        </a>
+        <p class="back-navigation">
+          <a class="back-link" href="danh-sach-de-tai-dang-huong-dan.html">
+            <svg class="back-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19 12H5m7 7-7-7 7-7"/>
+            </svg>
+            <span>Quay lại Quản lý đề tài</span>
+          </a>
+        </p>
         <header class="page-header page-header--detail">
           <h1 class="page-header__title">Chi tiết đề tài</h1>
+          <p class="page-header__topic-name">Website quản lý thư viện</p>
         </header>
-        <nav class="topic-tabs topic-tabs--detail" aria-label="Các mục chi tiết đề tài">
+        <nav class="topic-tabs topic-tabs--detail" data-detail-tabs aria-label="Các mục chi tiết đề tài">
           <ul class="topic-tabs__list">
             <li class="topic-tabs__item"><a class="topic-tabs__link" href="#tong-quan">Tổng quan</a></li>
             <li class="topic-tabs__item"><a class="topic-tabs__link" href="#tien-do">Tiến độ</a></li>
@@ -205,7 +211,7 @@
             <li class="topic-tabs__item"><a class="topic-tabs__link" href="#ket-qua-danh-gia">Kết quả đánh giá</a></li>
           </ul>
         </nav>
-        <div class="page-content">
+        <div class="page-content" data-detail-panels>
           <section class="topic-panel" id="overview-section" aria-label="Tổng quan">
             <div id="tong-quan" tabindex="-1">
               <section class="topic-summary" aria-labelledby="topic-summary-title">
@@ -588,6 +594,9 @@
     <p class="visually-hidden" id="submission-board-help">
       Bản mẫu trình bày. Mỗi cột hiển thị 5 thẻ đầu; cuộn dọc để xem các thẻ tiếp theo. Bảng hẹp có thể cuộn ngang. Bấm thẻ yêu cầu để xem hoặc mở phần sửa; tải tệp và lưu dữ liệu chưa được kết nối.
     </p>
+    <p class="submission-board-demo-note">
+      Dữ liệu mẫu kiểm thử: mỗi cột có 9 thẻ với tiêu đề dài ngắn khác nhau.
+    </p>
     <section aria-label="Yêu cầu bài nộp" class="requirements">
       <!-- Hai chế độ loại trừ nhau bằng details có cùng name; giữ điều hướng fragment HTML. -->
       <details class="requirements__mode" id="requirements-normal-state" name="requirement-display-mode" open="">
@@ -636,7 +645,7 @@
                     Chưa nộp
                   </span>
                   <span class="task-column__count">
-                    (7)
+                    (9)
                   </span>
                 </h4>
                 <div aria-labelledby="requirements-pending-title" class="submission-column__viewport" role="region" tabindex="0">
@@ -840,6 +849,32 @@
                         </button>
                       </article>
                     </li>
+                    <li>
+                      <article class="requirement-board-card submission-board-sample-card">
+                        <h5 class="requirement-board-card__title">Rà soát quy trình đăng nhập và phân quyền</h5>
+                        <p class="requirement-board-card__deadline">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5"/>
+                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                          </svg>
+                          <span class="visually-hidden">Hạn nộp:</span>
+                          <time datetime="2026-12-22T23:59">22/12/2026 · 23:59</time>
+                        </p>
+                      </article>
+                    </li>
+                    <li>
+                      <article class="requirement-board-card submission-board-sample-card">
+                        <h5 class="requirement-board-card__title">Chuẩn bị bộ kiểm thử cho chức năng tra cứu, mượn và trả sách</h5>
+                        <p class="requirement-board-card__deadline">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5"/>
+                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                          </svg>
+                          <span class="visually-hidden">Hạn nộp:</span>
+                          <time datetime="2026-12-27T23:59">27/12/2026 · 23:59</time>
+                        </p>
+                      </article>
+                    </li>
                   </ul>
                 </div>
               </section>
@@ -855,7 +890,7 @@
                     Đã nộp
                   </span>
                   <span class="task-column__count">
-                    (7)
+                    (9)
                   </span>
                 </h4>
                 <div aria-labelledby="requirements-submitted-title" class="submission-column__viewport" role="region" tabindex="0">
@@ -1037,6 +1072,32 @@
                         </button>
                       </article>
                     </li>
+                    <li>
+                      <article class="requirement-board-card submission-board-sample-card">
+                        <h5 class="requirement-board-card__title">Tổng hợp kết quả kiểm thử tích hợp</h5>
+                        <p class="requirement-board-card__deadline">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5"/>
+                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                          </svg>
+                          <span class="visually-hidden">Hạn nộp:</span>
+                          <time datetime="2026-11-18T23:59">18/11/2026 · 23:59</time>
+                        </p>
+                      </article>
+                    </li>
+                    <li>
+                      <article class="requirement-board-card submission-board-sample-card">
+                        <h5 class="requirement-board-card__title">Đối chiếu giao diện trên máy tính, máy tính bảng và điện thoại</h5>
+                        <p class="requirement-board-card__deadline">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5"/>
+                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                          </svg>
+                          <span class="visually-hidden">Hạn nộp:</span>
+                          <time datetime="2026-11-20T23:59">20/11/2026 · 23:59</time>
+                        </p>
+                      </article>
+                    </li>
                   </ul>
                 </div>
               </section>
@@ -1052,7 +1113,7 @@
                     Đã phản hồi
                   </span>
                   <span class="task-column__count">
-                    (7)
+                    (9)
                   </span>
                 </h4>
                 <div aria-labelledby="requirements-done-title" class="submission-column__viewport" role="region" tabindex="0">
@@ -1234,6 +1295,32 @@
                         </button>
                       </article>
                     </li>
+                    <li>
+                      <article class="requirement-board-card submission-board-sample-card">
+                        <h5 class="requirement-board-card__title">Rà soát báo cáo phân tích hệ thống</h5>
+                        <p class="requirement-board-card__deadline">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5"/>
+                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                          </svg>
+                          <span class="visually-hidden">Hạn nộp:</span>
+                          <time datetime="2026-10-23T23:59">23/10/2026 · 23:59</time>
+                        </p>
+                      </article>
+                    </li>
+                    <li>
+                      <article class="requirement-board-card submission-board-sample-card">
+                        <h5 class="requirement-board-card__title">Hoàn thiện sơ đồ chức năng theo góp ý của giảng viên</h5>
+                        <p class="requirement-board-card__deadline">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5"/>
+                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                          </svg>
+                          <span class="visually-hidden">Hạn nộp:</span>
+                          <time datetime="2026-10-25T23:59">25/10/2026 · 23:59</time>
+                        </p>
+                      </article>
+                    </li>
                   </ul>
                 </div>
               </section>
@@ -1288,7 +1375,7 @@
                     Chưa nộp
                   </span>
                   <span class="task-column__count">
-                    (7)
+                    (9)
                   </span>
                 </h4>
                 <div aria-labelledby="requirements-delete-pending-title" class="submission-column__viewport" role="region" tabindex="0">
@@ -1534,6 +1621,32 @@
                         </button>
                       </article>
                     </li>
+                    <li>
+                      <article class="requirement-board-card submission-board-sample-card">
+                        <h5 class="requirement-board-card__title">Rà soát quy trình đăng nhập và phân quyền</h5>
+                        <p class="requirement-board-card__deadline">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5"/>
+                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                          </svg>
+                          <span class="visually-hidden">Hạn nộp:</span>
+                          <time datetime="2026-12-22T23:59">22/12/2026 · 23:59</time>
+                        </p>
+                      </article>
+                    </li>
+                    <li>
+                      <article class="requirement-board-card submission-board-sample-card">
+                        <h5 class="requirement-board-card__title">Chuẩn bị bộ kiểm thử cho chức năng tra cứu, mượn và trả sách</h5>
+                        <p class="requirement-board-card__deadline">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5"/>
+                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                          </svg>
+                          <span class="visually-hidden">Hạn nộp:</span>
+                          <time datetime="2026-12-27T23:59">27/12/2026 · 23:59</time>
+                        </p>
+                      </article>
+                    </li>
                   </ul>
                 </div>
               </section>
@@ -1549,7 +1662,7 @@
                     Đã nộp
                   </span>
                   <span class="task-column__count">
-                    (7)
+                    (9)
                   </span>
                 </h4>
                 <div aria-labelledby="requirements-delete-submitted-title" class="submission-column__viewport" role="region" tabindex="0">
@@ -1773,6 +1886,32 @@
                         </button>
                       </article>
                     </li>
+                    <li>
+                      <article class="requirement-board-card submission-board-sample-card">
+                        <h5 class="requirement-board-card__title">Tổng hợp kết quả kiểm thử tích hợp</h5>
+                        <p class="requirement-board-card__deadline">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5"/>
+                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                          </svg>
+                          <span class="visually-hidden">Hạn nộp:</span>
+                          <time datetime="2026-11-18T23:59">18/11/2026 · 23:59</time>
+                        </p>
+                      </article>
+                    </li>
+                    <li>
+                      <article class="requirement-board-card submission-board-sample-card">
+                        <h5 class="requirement-board-card__title">Đối chiếu giao diện trên máy tính, máy tính bảng và điện thoại</h5>
+                        <p class="requirement-board-card__deadline">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5"/>
+                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                          </svg>
+                          <span class="visually-hidden">Hạn nộp:</span>
+                          <time datetime="2026-11-20T23:59">20/11/2026 · 23:59</time>
+                        </p>
+                      </article>
+                    </li>
                   </ul>
                 </div>
               </section>
@@ -1788,7 +1927,7 @@
                     Đã phản hồi
                   </span>
                   <span class="task-column__count">
-                    (7)
+                    (9)
                   </span>
                 </h4>
                 <div aria-labelledby="requirements-delete-done-title" class="submission-column__viewport" role="region" tabindex="0">
@@ -2012,6 +2151,32 @@
                         </button>
                       </article>
                     </li>
+                    <li>
+                      <article class="requirement-board-card submission-board-sample-card">
+                        <h5 class="requirement-board-card__title">Rà soát báo cáo phân tích hệ thống</h5>
+                        <p class="requirement-board-card__deadline">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5"/>
+                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                          </svg>
+                          <span class="visually-hidden">Hạn nộp:</span>
+                          <time datetime="2026-10-23T23:59">23/10/2026 · 23:59</time>
+                        </p>
+                      </article>
+                    </li>
+                    <li>
+                      <article class="requirement-board-card submission-board-sample-card">
+                        <h5 class="requirement-board-card__title">Hoàn thiện sơ đồ chức năng theo góp ý của giảng viên</h5>
+                        <p class="requirement-board-card__deadline">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5"/>
+                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                          </svg>
+                          <span class="visually-hidden">Hạn nộp:</span>
+                          <time datetime="2026-10-25T23:59">25/10/2026 · 23:59</time>
+                        </p>
+                      </article>
+                    </li>
                   </ul>
                 </div>
               </section>
@@ -2040,7 +2205,7 @@
                 Chờ phản hồi
               </span>
               <span class="task-column__count">
-                (7)
+                (9)
               </span>
             </h4>
             <div aria-labelledby="submissions-awaiting-title" class="submission-column__viewport" role="region" tabindex="0">
@@ -2138,7 +2303,7 @@
                       <div class="submission-board-card__details">
                         <p class="submission-board-card__meta">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M14 2H6a2 2 0 0 0-3 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
                             </path>
                             <path d="M14 2v6h6M8 13h8M8 17h6">
                             </path>
@@ -2165,7 +2330,7 @@
                       <div class="submission-board-card__actions">
                         <button aria-label="Tải xuống Giao_dien.pdf" class="submission-board-card__download" disabled="" title="Bản xem trước: chưa có tệp thực để tải xuống" type="button">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M21 15v4a2 2 0 0 1-3 2H5a2 2 0 0 1-3-2v-4M12 3v12m-5-5 5 5 5-5">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5">
                             </path>
                           </svg>
                           <span>
@@ -2174,7 +2339,7 @@
                         </button>
                         <button aria-controls="submission-feedback-3" aria-haspopup="dialog" aria-label="Phản hồi: Thiết kế giao diện hệ thống" class="submission-board-card__feedback" command="show-modal" commandfor="submission-feedback-3" type="button">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M21 15a2 2 0 0 1-3 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
                             </path>
                             <path d="M8 9h8M8 13h5">
                             </path>
@@ -2209,7 +2374,7 @@
                       <div class="submission-board-card__details">
                         <p class="submission-board-card__meta">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M14 2H6a2 2 0 0 0-4 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
                             </path>
                             <path d="M14 2v6h6M8 13h8M8 17h6">
                             </path>
@@ -2236,7 +2401,7 @@
                       <div class="submission-board-card__actions">
                         <button aria-label="Tải xuống Tien_do.pdf" class="submission-board-card__download" disabled="" title="Bản xem trước: chưa có tệp thực để tải xuống" type="button">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M21 15v4a2 2 0 0 1-4 2H5a2 2 0 0 1-4-2v-4M12 3v12m-5-5 5 5 5-5">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5">
                             </path>
                           </svg>
                           <span>
@@ -2245,7 +2410,7 @@
                         </button>
                         <button aria-controls="submission-feedback-4" aria-haspopup="dialog" aria-label="Phản hồi: Báo cáo tiến độ giai đoạn 1" class="submission-board-card__feedback" command="show-modal" commandfor="submission-feedback-4" type="button">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M21 15a2 2 0 0 1-4 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
                             </path>
                             <path d="M8 9h8M8 13h5">
                             </path>
@@ -2280,7 +2445,7 @@
                       <div class="submission-board-card__details">
                         <p class="submission-board-card__meta">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M14 2H6a2 2 0 0 0-6 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
                             </path>
                             <path d="M14 2v6h6M8 13h8M8 17h6">
                             </path>
@@ -2307,7 +2472,7 @@
                       <div class="submission-board-card__actions">
                         <button aria-label="Tải xuống Muon_tra.pdf" class="submission-board-card__download" disabled="" title="Bản xem trước: chưa có tệp thực để tải xuống" type="button">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M21 15v4a2 2 0 0 1-6 2H5a2 2 0 0 1-6-2v-4M12 3v12m-5-5 5 5 5-5">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5">
                             </path>
                           </svg>
                           <span>
@@ -2316,7 +2481,7 @@
                         </button>
                         <button aria-controls="submission-feedback-6" aria-haspopup="dialog" aria-label="Phản hồi: Kiểm thử chức năng mượn trả" class="submission-board-card__feedback" command="show-modal" commandfor="submission-feedback-6" type="button">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M21 15a2 2 0 0 1-6 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
                             </path>
                             <path d="M8 9h8M8 13h5">
                             </path>
@@ -2351,7 +2516,7 @@
                       <div class="submission-board-card__details">
                         <p class="submission-board-card__meta">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M14 2H6a2 2 0 0 0-7 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
                             </path>
                             <path d="M14 2v6h6M8 13h8M8 17h6">
                             </path>
@@ -2378,7 +2543,7 @@
                       <div class="submission-board-card__actions">
                         <button aria-label="Tải xuống Ban_doc.pdf" class="submission-board-card__download" disabled="" title="Bản xem trước: chưa có tệp thực để tải xuống" type="button">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M21 15v4a2 2 0 0 1-7 2H5a2 2 0 0 1-7-2v-4M12 3v12m-5-5 5 5 5-5">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5">
                             </path>
                           </svg>
                           <span>
@@ -2387,7 +2552,7 @@
                         </button>
                         <button aria-controls="submission-feedback-7" aria-haspopup="dialog" aria-label="Phản hồi: Thiết kế trang quản lý bạn đọc" class="submission-board-card__feedback" command="show-modal" commandfor="submission-feedback-7" type="button">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M21 15a2 2 0 0 1-7 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
                             </path>
                             <path d="M8 9h8M8 13h5">
                             </path>
@@ -2424,7 +2589,7 @@
                       <div class="submission-board-card__details">
                         <p class="submission-board-card__meta">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M14 2H6a2 2 0 0 0-8 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
                             </path>
                             <path d="M14 2v6h6M8 13h8M8 17h6">
                             </path>
@@ -2451,7 +2616,7 @@
                       <div class="submission-board-card__actions">
                         <button aria-label="Tải xuống Hieu_nang.pdf" class="submission-board-card__download" disabled="" title="Bản xem trước: chưa có tệp thực để tải xuống" type="button">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M21 15v4a2 2 0 0 1-8 2H5a2 2 0 0 1-8-2v-4M12 3v12m-5-5 5 5 5-5">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5">
                             </path>
                           </svg>
                           <span>
@@ -2460,7 +2625,7 @@
                         </button>
                         <button aria-controls="submission-feedback-8" aria-haspopup="dialog" aria-label="Phản hồi: Đánh giá hiệu năng hệ thống" class="submission-board-card__feedback" command="show-modal" commandfor="submission-feedback-8" type="button">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M21 15a2 2 0 0 1-8 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
                             </path>
                             <path d="M8 9h8M8 13h5">
                             </path>
@@ -2495,7 +2660,7 @@
                       <div class="submission-board-card__details">
                         <p class="submission-board-card__meta">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M14 2H6a2 2 0 0 0-9 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
                             </path>
                             <path d="M14 2v6h6M8 13h8M8 17h6">
                             </path>
@@ -2522,7 +2687,7 @@
                       <div class="submission-board-card__actions">
                         <button aria-label="Tải xuống Thuc_nghiem.pdf" class="submission-board-card__download" disabled="" title="Bản xem trước: chưa có tệp thực để tải xuống" type="button">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M21 15v4a2 2 0 0 1-9 2H5a2 2 0 0 1-9-2v-4M12 3v12m-5-5 5 5 5-5">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5">
                             </path>
                           </svg>
                           <span>
@@ -2531,7 +2696,149 @@
                         </button>
                         <button aria-controls="submission-feedback-9" aria-haspopup="dialog" aria-label="Phản hồi: Hoàn thiện báo cáo thực nghiệm" class="submission-board-card__feedback" command="show-modal" commandfor="submission-feedback-9" type="button">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <path d="M21 15a2 2 0 0 1-9 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
+                            </path>
+                            <path d="M8 9h8M8 13h5">
+                            </path>
+                          </svg>
+                          <span>
+                            Phản hồi
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                </li>
+                <li>
+                  <article class="submission-board-card submission-board-sample-card" id="submission-sample-awaiting-1">
+                    <header class="submission-board-card__header">
+                      <h5 class="submission-board-card__title">
+                        Bản tổng hợp kết quả chạy thử
+                      </h5>
+                      <span class="submission-board__badge submission-board__badge--success">
+                        <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                          <circle cx="12" cy="12" r="9">
+                          </circle>
+                          <path d="m8 12 3 3 5-6">
+                          </path>
+                        </svg>
+                        <span>
+                          Đúng hạn
+                        </span>
+                      </span>
+                    </header>
+                    <div class="submission-board-card__body">
+                      <div class="submission-board-card__details">
+                        <p class="submission-board-card__meta">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                            </path>
+                            <path d="M14 2v6h6M8 13h8M8 17h6">
+                            </path>
+                          </svg>
+                          <span class="submission-board-card__filename" title="Tong_hop_chay_thu.pdf">
+                            Tong_hop_chay_thu.pdf
+                          </span>
+                        </p>
+                        <p class="submission-board-card__meta">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5">
+                            </rect>
+                            <path d="M16 3v4M8 3v4M3 11h18">
+                            </path>
+                          </svg>
+                          <span class="visually-hidden">
+                            Ngày nộp:
+                          </span>
+                          <time datetime="2026-11-21T18:00">
+                            21/11/2026 · 18:00
+                          </time>
+                        </p>
+                      </div>
+                      <div class="submission-board-card__actions">
+                        <button aria-label="Tải xuống Tong_hop_chay_thu.pdf" class="submission-board-card__download" disabled="" title="Bản xem trước: chưa có tệp thực để tải xuống" type="button">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5">
+                            </path>
+                          </svg>
+                          <span>
+                            Tải xuống
+                          </span>
+                        </button>
+                        <button aria-controls="submission-feedback-sample-awaiting-1" aria-haspopup="dialog" aria-label="Phản hồi: Bản tổng hợp kết quả chạy thử" class="submission-board-card__feedback" command="show-modal" commandfor="submission-feedback-sample-awaiting-1" type="button">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
+                            </path>
+                            <path d="M8 9h8M8 13h5">
+                            </path>
+                          </svg>
+                          <span>
+                            Phản hồi
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                </li>
+                <li>
+                  <article class="submission-board-card submission-board-sample-card" id="submission-sample-awaiting-2">
+                    <header class="submission-board-card__header">
+                      <h5 class="submission-board-card__title">
+                        Tài liệu đối chiếu các trường hợp kiểm thử dữ liệu đầu vào
+                      </h5>
+                      <span class="submission-board__badge submission-board__badge--success">
+                        <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                          <circle cx="12" cy="12" r="9">
+                          </circle>
+                          <path d="m8 12 3 3 5-6">
+                          </path>
+                        </svg>
+                        <span>
+                          Đúng hạn
+                        </span>
+                      </span>
+                    </header>
+                    <div class="submission-board-card__body">
+                      <div class="submission-board-card__details">
+                        <p class="submission-board-card__meta">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                            </path>
+                            <path d="M14 2v6h6M8 13h8M8 17h6">
+                            </path>
+                          </svg>
+                          <span class="submission-board-card__filename" title="Doi_chieu_kiem_thu.pdf">
+                            Doi_chieu_kiem_thu.pdf
+                          </span>
+                        </p>
+                        <p class="submission-board-card__meta">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5">
+                            </rect>
+                            <path d="M16 3v4M8 3v4M3 11h18">
+                            </path>
+                          </svg>
+                          <span class="visually-hidden">
+                            Ngày nộp:
+                          </span>
+                          <time datetime="2026-11-23T20:30">
+                            23/11/2026 · 20:30
+                          </time>
+                        </p>
+                      </div>
+                      <div class="submission-board-card__actions">
+                        <button aria-label="Tải xuống Doi_chieu_kiem_thu.pdf" class="submission-board-card__download" disabled="" title="Bản xem trước: chưa có tệp thực để tải xuống" type="button">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5">
+                            </path>
+                          </svg>
+                          <span>
+                            Tải xuống
+                          </span>
+                        </button>
+                        <button aria-controls="submission-feedback-sample-awaiting-2" aria-haspopup="dialog" aria-label="Phản hồi: Tài liệu đối chiếu các trường hợp kiểm thử dữ liệu đầu vào" class="submission-board-card__feedback" command="show-modal" commandfor="submission-feedback-sample-awaiting-2" type="button">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
                             </path>
                             <path d="M8 9h8M8 13h5">
                             </path>
@@ -2559,7 +2866,7 @@
                 Đã phản hồi
               </span>
               <span class="task-column__count">
-                (7)
+                (9)
               </span>
             </h4>
             <div aria-labelledby="submissions-done-title" class="submission-column__viewport" role="region" tabindex="0">
@@ -3049,6 +3356,148 @@
                           </span>
                         </button>
                         <button aria-controls="submission-feedback-14" aria-haspopup="dialog" aria-label="Xem phản hồi: Biên bản họp nhóm" class="submission-board-card__feedback" command="show-modal" commandfor="submission-feedback-14" type="button">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
+                            </path>
+                            <path d="M8 9h8M8 13h5">
+                            </path>
+                          </svg>
+                          <span>
+                            Xem phản hồi
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                </li>
+                <li>
+                  <article class="submission-board-card submission-board-sample-card" id="submission-sample-done-1">
+                    <header class="submission-board-card__header">
+                      <h5 class="submission-board-card__title">
+                        Bản hiệu chỉnh báo cáo tiến độ
+                      </h5>
+                      <span class="submission-board__badge submission-board__badge--success">
+                        <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                          <circle cx="12" cy="12" r="9">
+                          </circle>
+                          <path d="m8 12 3 3 5-6">
+                          </path>
+                        </svg>
+                        <span>
+                          Đúng hạn
+                        </span>
+                      </span>
+                    </header>
+                    <div class="submission-board-card__body">
+                      <div class="submission-board-card__details">
+                        <p class="submission-board-card__meta">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                            </path>
+                            <path d="M14 2v6h6M8 13h8M8 17h6">
+                            </path>
+                          </svg>
+                          <span class="submission-board-card__filename" title="Hieu_chinh_tien_do.pdf">
+                            Hieu_chinh_tien_do.pdf
+                          </span>
+                        </p>
+                        <p class="submission-board-card__meta">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5">
+                            </rect>
+                            <path d="M16 3v4M8 3v4M3 11h18">
+                            </path>
+                          </svg>
+                          <span class="visually-hidden">
+                            Ngày nộp:
+                          </span>
+                          <time datetime="2026-10-24T17:00">
+                            24/10/2026 · 17:00
+                          </time>
+                        </p>
+                      </div>
+                      <div class="submission-board-card__actions">
+                        <button aria-label="Tải xuống Hieu_chinh_tien_do.pdf" class="submission-board-card__download" disabled="" title="Bản xem trước: chưa có tệp thực để tải xuống" type="button">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5">
+                            </path>
+                          </svg>
+                          <span>
+                            Tải xuống
+                          </span>
+                        </button>
+                        <button aria-controls="submission-feedback-sample-done-1" aria-haspopup="dialog" aria-label="Xem phản hồi: Bản hiệu chỉnh báo cáo tiến độ" class="submission-board-card__feedback" command="show-modal" commandfor="submission-feedback-sample-done-1" type="button">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
+                            </path>
+                            <path d="M8 9h8M8 13h5">
+                            </path>
+                          </svg>
+                          <span>
+                            Xem phản hồi
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                </li>
+                <li>
+                  <article class="submission-board-card submission-board-sample-card" id="submission-sample-done-2">
+                    <header class="submission-board-card__header">
+                      <h5 class="submission-board-card__title">
+                        Báo cáo tổng hợp kết quả nghiệm thu các chức năng quản lý thư viện
+                      </h5>
+                      <span class="submission-board__badge submission-board__badge--success">
+                        <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                          <circle cx="12" cy="12" r="9">
+                          </circle>
+                          <path d="m8 12 3 3 5-6">
+                          </path>
+                        </svg>
+                        <span>
+                          Đúng hạn
+                        </span>
+                      </span>
+                    </header>
+                    <div class="submission-board-card__body">
+                      <div class="submission-board-card__details">
+                        <p class="submission-board-card__meta">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+                            </path>
+                            <path d="M14 2v6h6M8 13h8M8 17h6">
+                            </path>
+                          </svg>
+                          <span class="submission-board-card__filename" title="Tong_hop_nghiem_thu.pdf">
+                            Tong_hop_nghiem_thu.pdf
+                          </span>
+                        </p>
+                        <p class="submission-board-card__meta">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <rect height="16" rx="2" width="18" x="3" y="5">
+                            </rect>
+                            <path d="M16 3v4M8 3v4M3 11h18">
+                            </path>
+                          </svg>
+                          <span class="visually-hidden">
+                            Ngày nộp:
+                          </span>
+                          <time datetime="2026-10-26T19:30">
+                            26/10/2026 · 19:30
+                          </time>
+                        </p>
+                      </div>
+                      <div class="submission-board-card__actions">
+                        <button aria-label="Tải xuống Tong_hop_nghiem_thu.pdf" class="submission-board-card__download" disabled="" title="Bản xem trước: chưa có tệp thực để tải xuống" type="button">
+                          <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5">
+                            </path>
+                          </svg>
+                          <span>
+                            Tải xuống
+                          </span>
+                        </button>
+                        <button aria-controls="submission-feedback-sample-done-2" aria-haspopup="dialog" aria-label="Xem phản hồi: Báo cáo tổng hợp kết quả nghiệm thu các chức năng quản lý thư viện" class="submission-board-card__feedback" command="show-modal" commandfor="submission-feedback-sample-done-2" type="button">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
                             <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
                             </path>
@@ -5972,7 +6421,7 @@
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
         <svg aria-hidden="true" class="topic-dialog__info-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-          <path d="M14 2H6a2 2 0 0 0-6 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
           </path>
           <polyline points="14 2 14 8 20 8">
           </polyline>
@@ -6041,7 +6490,7 @@
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
         <svg aria-hidden="true" class="topic-dialog__info-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-          <path d="M14 2H6a2 2 0 0 0-7 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
           </path>
           <polyline points="14 2 14 8 20 8">
           </polyline>
@@ -6110,7 +6559,7 @@
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
         <svg aria-hidden="true" class="topic-dialog__info-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-          <path d="M14 2H6a2 2 0 0 0-8 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
           </path>
           <polyline points="14 2 14 8 20 8">
           </polyline>
@@ -6179,7 +6628,7 @@
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
         <svg aria-hidden="true" class="topic-dialog__info-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-          <path d="M14 2H6a2 2 0 0 0-9 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
           </path>
           <polyline points="14 2 14 8 20 8">
           </polyline>
@@ -6562,6 +7011,279 @@
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="submission-feedback-14" type="button">
+        Đóng
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<dialog aria-labelledby="submission-feedback-sample-awaiting-1-title" class="topic-dialog" id="submission-feedback-sample-awaiting-1">
+  <header class="topic-dialog__header">
+    <h2 id="submission-feedback-sample-awaiting-1-title">
+      Phản hồi bài nộp
+    </h2>
+    <button aria-label="Đóng hộp thoại phản hồi: Bản tổng hợp kết quả chạy thử" class="topic-dialog__close" command="close" commandfor="submission-feedback-sample-awaiting-1" type="button">
+      <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+        <line x1="18" x2="6" y1="6" y2="18">
+        </line>
+        <line x1="6" x2="18" y1="6" y2="18">
+        </line>
+      </svg>
+    </button>
+  </header>
+  <form class="topic-dialog__form" id="submission-feedback-sample-awaiting-1-form" method="dialog">
+    <input name="submission-id" type="hidden" value="submission-sample-awaiting-1"/>
+    <p class="topic-dialog__field">
+      <label for="submission-feedback-sample-awaiting-1-choice">
+        Bài nộp đang phản hồi
+      </label>
+      <input id="submission-feedback-sample-awaiting-1-choice" name="submission-choice" readonly="" type="text" value="Bản tổng hợp kết quả chạy thử"/>
+    </p>
+    <div class="topic-dialog__submission-info">
+      <p class="topic-dialog__info-row">
+        <svg aria-hidden="true" class="topic-dialog__info-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+          </path>
+          <polyline points="14 2 14 8 20 8">
+          </polyline>
+        </svg>
+        <span>
+          Tệp đã nộp:
+          <strong>
+            Tong_hop_chay_thu.pdf
+          </strong>
+        </span>
+      </p>
+      <p class="topic-dialog__info-row">
+        <svg aria-hidden="true" class="topic-dialog__info-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9">
+          </circle>
+          <polyline points="12 6 12 12 16 14">
+          </polyline>
+        </svg>
+        <span>
+          Ngày nộp:
+          <time datetime="2026-11-21T18:00">
+            21/11/2026 · 18:00
+          </time>
+        </span>
+      </p>
+    </div>
+    <p class="topic-dialog__field">
+      <label for="submission-feedback-sample-awaiting-1-comment">
+        Nội dung phản hồi cho sinh viên
+      </label>
+      <textarea autofocus="" id="submission-feedback-sample-awaiting-1-comment" name="submission-comment" placeholder="Nhập nhận xét chi tiết, góp ý chỉnh sửa hoặc hướng dẫn tiếp theo cho nhóm sinh viên..." required="" rows="5"></textarea>
+    </p>
+    <div class="topic-dialog__actions">
+      <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="submission-feedback-sample-awaiting-1" type="button">
+        Hủy
+      </button>
+      <button class="topic-dialog__btn topic-dialog__btn--primary" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối" type="submit">
+        Gửi phản hồi
+      </button>
+    </div>
+  </form>
+</dialog>
+<dialog aria-labelledby="submission-feedback-sample-awaiting-2-title" class="topic-dialog" id="submission-feedback-sample-awaiting-2">
+  <header class="topic-dialog__header">
+    <h2 id="submission-feedback-sample-awaiting-2-title">
+      Phản hồi bài nộp
+    </h2>
+    <button aria-label="Đóng hộp thoại phản hồi: Tài liệu đối chiếu các trường hợp kiểm thử dữ liệu đầu vào" class="topic-dialog__close" command="close" commandfor="submission-feedback-sample-awaiting-2" type="button">
+      <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+        <line x1="18" x2="6" y1="6" y2="18">
+        </line>
+        <line x1="6" x2="18" y1="6" y2="18">
+        </line>
+      </svg>
+    </button>
+  </header>
+  <form class="topic-dialog__form" id="submission-feedback-sample-awaiting-2-form" method="dialog">
+    <input name="submission-id" type="hidden" value="submission-sample-awaiting-2"/>
+    <p class="topic-dialog__field">
+      <label for="submission-feedback-sample-awaiting-2-choice">
+        Bài nộp đang phản hồi
+      </label>
+      <input id="submission-feedback-sample-awaiting-2-choice" name="submission-choice" readonly="" type="text" value="Tài liệu đối chiếu các trường hợp kiểm thử dữ liệu đầu vào"/>
+    </p>
+    <div class="topic-dialog__submission-info">
+      <p class="topic-dialog__info-row">
+        <svg aria-hidden="true" class="topic-dialog__info-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+          </path>
+          <polyline points="14 2 14 8 20 8">
+          </polyline>
+        </svg>
+        <span>
+          Tệp đã nộp:
+          <strong>
+            Doi_chieu_kiem_thu.pdf
+          </strong>
+        </span>
+      </p>
+      <p class="topic-dialog__info-row">
+        <svg aria-hidden="true" class="topic-dialog__info-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9">
+          </circle>
+          <polyline points="12 6 12 12 16 14">
+          </polyline>
+        </svg>
+        <span>
+          Ngày nộp:
+          <time datetime="2026-11-23T20:30">
+            23/11/2026 · 20:30
+          </time>
+        </span>
+      </p>
+    </div>
+    <p class="topic-dialog__field">
+      <label for="submission-feedback-sample-awaiting-2-comment">
+        Nội dung phản hồi cho sinh viên
+      </label>
+      <textarea autofocus="" id="submission-feedback-sample-awaiting-2-comment" name="submission-comment" placeholder="Nhập nhận xét chi tiết, góp ý chỉnh sửa hoặc hướng dẫn tiếp theo cho nhóm sinh viên..." required="" rows="5"></textarea>
+    </p>
+    <div class="topic-dialog__actions">
+      <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="submission-feedback-sample-awaiting-2" type="button">
+        Hủy
+      </button>
+      <button class="topic-dialog__btn topic-dialog__btn--primary" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối" type="submit">
+        Gửi phản hồi
+      </button>
+    </div>
+  </form>
+</dialog>
+<dialog aria-labelledby="submission-feedback-sample-done-1-title" class="topic-dialog" id="submission-feedback-sample-done-1">
+  <header class="topic-dialog__header">
+    <h2 id="submission-feedback-sample-done-1-title">
+      Phản hồi bài nộp
+    </h2>
+    <button aria-label="Đóng hộp thoại phản hồi: Bản hiệu chỉnh báo cáo tiến độ" class="topic-dialog__close" command="close" commandfor="submission-feedback-sample-done-1" type="button">
+      <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+        <line x1="18" x2="6" y1="6" y2="18">
+        </line>
+        <line x1="6" x2="18" y1="6" y2="18">
+        </line>
+      </svg>
+    </button>
+  </header>
+  <form class="topic-dialog__form" id="submission-feedback-sample-done-1-form" method="dialog">
+    <input name="submission-id" type="hidden" value="submission-sample-done-1"/>
+    <p class="topic-dialog__field">
+      <label for="submission-feedback-sample-done-1-choice">
+        Bài nộp đang phản hồi
+      </label>
+      <input id="submission-feedback-sample-done-1-choice" name="submission-choice" readonly="" type="text" value="Bản hiệu chỉnh báo cáo tiến độ"/>
+    </p>
+    <div class="topic-dialog__submission-info">
+      <p class="topic-dialog__info-row">
+        <svg aria-hidden="true" class="topic-dialog__info-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+          </path>
+          <polyline points="14 2 14 8 20 8">
+          </polyline>
+        </svg>
+        <span>
+          Tệp đã nộp:
+          <strong>
+            Hieu_chinh_tien_do.pdf
+          </strong>
+        </span>
+      </p>
+      <p class="topic-dialog__info-row">
+        <svg aria-hidden="true" class="topic-dialog__info-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9">
+          </circle>
+          <polyline points="12 6 12 12 16 14">
+          </polyline>
+        </svg>
+        <span>
+          Ngày nộp:
+          <time datetime="2026-10-24T17:00">
+            24/10/2026 · 17:00
+          </time>
+        </span>
+      </p>
+    </div>
+    <p class="topic-dialog__field">
+      <label for="submission-feedback-sample-done-1-comment">
+        Nội dung phản hồi mẫu
+      </label>
+      <textarea id="submission-feedback-sample-done-1-comment" name="submission-comment" readonly="" rows="5">Bản hiệu chỉnh đã cập nhật các mốc tiến độ và thống nhất định dạng báo cáo. Nhóm cần rà soát lỗi trình bày trước khi nộp bản cuối.</textarea>
+    </p>
+    <p class="topic-dialog__notice">
+      Phản hồi mẫu để xem bố cục, chưa gửi hoặc lưu vào hệ thống.
+    </p>
+    <div class="topic-dialog__actions">
+      <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="submission-feedback-sample-done-1" type="button">
+        Đóng
+      </button>
+    </div>
+  </form>
+</dialog>
+<dialog aria-labelledby="submission-feedback-sample-done-2-title" class="topic-dialog" id="submission-feedback-sample-done-2">
+  <header class="topic-dialog__header">
+    <h2 id="submission-feedback-sample-done-2-title">
+      Phản hồi bài nộp
+    </h2>
+    <button aria-label="Đóng hộp thoại phản hồi: Báo cáo tổng hợp kết quả nghiệm thu các chức năng quản lý thư viện" class="topic-dialog__close" command="close" commandfor="submission-feedback-sample-done-2" type="button">
+      <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24">
+        <line x1="18" x2="6" y1="6" y2="18">
+        </line>
+        <line x1="6" x2="18" y1="6" y2="18">
+        </line>
+      </svg>
+    </button>
+  </header>
+  <form class="topic-dialog__form" id="submission-feedback-sample-done-2-form" method="dialog">
+    <input name="submission-id" type="hidden" value="submission-sample-done-2"/>
+    <p class="topic-dialog__field">
+      <label for="submission-feedback-sample-done-2-choice">
+        Bài nộp đang phản hồi
+      </label>
+      <input id="submission-feedback-sample-done-2-choice" name="submission-choice" readonly="" type="text" value="Báo cáo tổng hợp kết quả nghiệm thu các chức năng quản lý thư viện"/>
+    </p>
+    <div class="topic-dialog__submission-info">
+      <p class="topic-dialog__info-row">
+        <svg aria-hidden="true" class="topic-dialog__info-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z">
+          </path>
+          <polyline points="14 2 14 8 20 8">
+          </polyline>
+        </svg>
+        <span>
+          Tệp đã nộp:
+          <strong>
+            Tong_hop_nghiem_thu.pdf
+          </strong>
+        </span>
+      </p>
+      <p class="topic-dialog__info-row">
+        <svg aria-hidden="true" class="topic-dialog__info-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="9">
+          </circle>
+          <polyline points="12 6 12 12 16 14">
+          </polyline>
+        </svg>
+        <span>
+          Ngày nộp:
+          <time datetime="2026-10-26T19:30">
+            26/10/2026 · 19:30
+          </time>
+        </span>
+      </p>
+    </div>
+    <p class="topic-dialog__field">
+      <label for="submission-feedback-sample-done-2-comment">
+        Nội dung phản hồi mẫu
+      </label>
+      <textarea id="submission-feedback-sample-done-2-comment" name="submission-comment" readonly="" rows="5">Báo cáo đã tổng hợp các chức năng quản lý thư viện và kết quả kiểm thử. Cần bổ sung minh chứng cho các trường hợp kiểm thử còn thiếu.</textarea>
+    </p>
+    <p class="topic-dialog__notice">
+      Phản hồi mẫu để xem bố cục, chưa gửi hoặc lưu vào hệ thống.
+    </p>
+    <div class="topic-dialog__actions">
+      <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="submission-feedback-sample-done-2" type="button">
         Đóng
       </button>
     </div>

@@ -1,5 +1,40 @@
 @import url("breadcrumb.css");
 
+/* Nút quay lại dùng chung cho các trang chi tiết đề tài của hai vai trò. */
+:where(.active-topic-page, .teacher-workspace-page) .back-navigation > .back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-primary-tint-border);
+  border-radius: var(--control-radius);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+:where(.active-topic-page, .teacher-workspace-page) .back-navigation .back-link__icon {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+}
+
+:where(.active-topic-page, .teacher-workspace-page) .back-navigation > .back-link:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-tint);
+  color: var(--color-primary-hover);
+}
+
+:where(.active-topic-page, .teacher-workspace-page) .back-navigation > .back-link:active {
+  background: var(--color-info-hover-bg);
+}
+
 /* Chỉ các trang có link tới file này mới dùng khung giao diện chung. */
 .site-header {
   background: var(--header-background);

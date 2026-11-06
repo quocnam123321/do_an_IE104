@@ -1,9 +1,15 @@
 /* Progressive enhancement: links and details remain native HTML controls. */
 (() => {
   document.querySelectorAll('[data-nav-indicator]').forEach((nav) => {
-    const indicator = nav.querySelector(':scope > .main-nav__indicator');
     const tabs = [...nav.querySelectorAll('.main-nav__list > .main-nav__item > .main-nav__link, .main-nav__list > .main-nav__item > details > .main-nav__label')];
-    if (!indicator || !tabs.length || nav.dataset.indicatorInitialized) return;
+    if (!tabs.length || nav.dataset.indicatorInitialized) return;
+    let indicator = nav.querySelector(':scope > .main-nav__indicator');
+    if (!indicator) {
+      indicator = document.createElement('span');
+      indicator.className = 'main-nav__indicator';
+      indicator.setAttribute('aria-hidden', 'true');
+      nav.append(indicator);
+    }
 
     const menu = nav.closest('.site-navigation');
     const compact = window.matchMedia('(max-width: 67.99rem)');
@@ -15,7 +21,7 @@
       (tab.matches('summary') && tab.parentElement.contains(element))
     );
     const focused = () => tabFor(document.activeElement);
-    const current = () => tabFor(nav.querySelector('[aria-current="page"]'));
+    const current = () => tabFor(nav.querySelector('[aria-current="page"]') || nav.querySelector('[aria-current]:not([aria-current="false"])'));
 
     const moveTo = (tab) => {
       if (compact.matches || !tab) {
@@ -31,7 +37,7 @@
       const style = getComputedStyle(tab);
       const leftInset = parseFloat(style.paddingLeft) + parseFloat(style.borderLeftWidth);
       const rightInset = parseFloat(style.paddingRight) + parseFloat(style.borderRightWidth);
-      const text = tab.querySelector('.main-nav__text');
+      const text = tab.querySelector('.main-nav__text') || tab.querySelector(':scope > span');
       const textRect = text?.getBoundingClientRect();
       // Span excludes padding and the dropdown arrow; fallback subtracts tab insets.
       const x = (textRect ? textRect.left : tabRect.left + leftInset) - navRect.left - nav.clientLeft + nav.scrollLeft;
