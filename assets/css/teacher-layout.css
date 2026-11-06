@@ -971,6 +971,50 @@ body:where(.teacher-workspace-page) {
   }
 }
 
+/* Gạch chuyển động dùng cùng script với sinh viên; gạch tĩnh còn làm dự phòng. */
+.teacher-workspace-page .site-header .main-nav--enhanced .main-nav__item > .main-nav__link[aria-current]::after {
+  display: none;
+}
+
+/* Chỉ tăng cường thanh bốn mục có opt-in; giữ fragment và panel HTML tự nhiên. */
+.teacher-workspace-page [data-detail-tabs].detail-tabs--enhanced {
+  position: relative;
+}
+
+.teacher-workspace-page #main-content [data-detail-tabs].topic-tabs--detail.detail-tabs--enhanced .topic-tabs__link[href]::after {
+  display: none;
+}
+
+.teacher-workspace-page [data-detail-tabs].detail-tabs--enhanced .detail-tabs-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--detail-indicator-width, 0px);
+  height: 3px;
+  transform: translate(var(--detail-indicator-x, 0px), var(--detail-indicator-y, 0px));
+  border-radius: 2px;
+  background: var(--color-primary);
+  pointer-events: none;
+}
+
+.teacher-workspace-page [data-detail-tabs].detail-tabs--ready .detail-tabs-indicator {
+  transition: transform 340ms cubic-bezier(.22, 1, .36, 1), width 340ms cubic-bezier(.22, 1, .36, 1);
+}
+
+.teacher-workspace-page [data-detail-panels].detail-panels--enhanced > .topic-panel {
+  display: none;
+}
+
+.teacher-workspace-page [data-detail-panels].detail-panels--enhanced > .topic-panel.is-active {
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teacher-workspace-page [data-detail-tabs].detail-tabs--ready .detail-tabs-indicator {
+    transition: none;
+  }
+}
+
 /* --------------------------------------------------------------------------
    6. PHÂN TRANG (PAGINATION)
    -------------------------------------------------------------------------- */

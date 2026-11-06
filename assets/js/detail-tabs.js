@@ -1,11 +1,20 @@
 /* Only switches detail sections and animates their underline; no data mutations. */
 (() => {
-  const nav = document.querySelector('.detail-tabs-nav');
-  const container = document.querySelector('.student-detail-panels');
+  const nav = document.querySelector('.detail-tabs-nav, [data-detail-tabs]');
+  const container = document.querySelector('.student-detail-panels, [data-detail-panels]');
   if (!nav || !container) return;
-  const links = [...nav.querySelectorAll('.detail-tabs-link')];
-  const panels = [...container.querySelectorAll(':scope > .student-detail-panel')];
-  if (!links.length || links.some(link => !panels.some(panel => `#${panel.id}` === link.hash))) return;
+  const links = [...nav.querySelectorAll('.detail-tabs-link, .topic-tabs__link[href^="#"]')];
+  const panels = [...container.querySelectorAll(':scope > .student-detail-panel, :scope > .topic-panel')];
+  const targetForHash = hash => {
+    try {
+      return document.getElementById(decodeURIComponent(hash.slice(1)));
+    } catch {
+      return null;
+    }
+  };
+  const panelForTarget = target => panels.find(panel => panel === target || panel.contains(target));
+  const destinations = new Map(links.map(link => [link, panelForTarget(targetForHash(link.hash))]));
+  if (!links.length || links.some(link => !destinations.get(link))) return;
   const indicator = document.createElement('span');
   indicator.className = 'detail-tabs-indicator';
   indicator.setAttribute('aria-hidden', 'true');
@@ -14,8 +23,7 @@
   let hovered;
   let frame;
   const panelForHash = () => {
-    const target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
-    return panels.find(panel => panel === target || panel.contains(target)) || panels[0];
+    return panelForTarget(targetForHash(location.hash)) || panels[0];
   };
   const move = link => {
     if (!link) return;
@@ -34,7 +42,7 @@
       item.hidden = !active;
     });
     links.forEach(link => {
-      if (link.hash === `#${panel.id}`) {
+      if (destinations.get(link) === panel) {
         link.setAttribute('aria-current', 'location');
         selected = link;
       } else link.removeAttribute('aria-current');
@@ -42,8 +50,10 @@
     move(hovered || selected);
   };
   nav.classList.add('detail-tabs--enhanced');
-  container.classList.add('student-detail-panels--enhanced');
+  container.classList.add('detail-panels--enhanced');
+  if (container.matches('.student-detail-panels')) container.classList.add('student-detail-panels--enhanced');
   select(panelForHash());
+  indicator.getBoundingClientRect();
   requestAnimationFrame(() => nav.classList.add('detail-tabs--ready'));
   links.forEach(link => {
     link.addEventListener('click', event => {
@@ -52,7 +62,7 @@
       const x = window.scrollX;
       const y = window.scrollY;
       if (location.hash !== link.hash) history.pushState(null, '', link.hash);
-      select(panels.find(panel => `#${panel.id}` === link.hash));
+      select(destinations.get(link));
       link.focus({ preventScroll: true });
       // Preserve the viewport even when the outgoing section held focus/anchors.
       window.scrollTo({ left: x, top: y, behavior: 'instant' });
