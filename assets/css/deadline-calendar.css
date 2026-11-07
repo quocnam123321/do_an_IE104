@@ -16,7 +16,7 @@
   gap: var(--space-4);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .student-deadline-page .page-content {
     gap: var(--space-5);
   }
@@ -58,7 +58,7 @@
   font-weight: var(--font-weight-bold);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .student-deadline-page .deadline-calendar > h2 {
     padding: 0.6875rem var(--space-5);
     font-size: var(--font-size-section-title);
@@ -165,7 +165,7 @@
   color: var(--color-on-primary);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .student-deadline-page .deadline-calendar__toolbar {
     padding: var(--space-3) var(--space-5);
     display: flex;
@@ -209,7 +209,7 @@
   scrollbar-color: var(--color-secondary-btn-border) var(--color-neutral-bg);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .student-deadline-page .calendar-scroll {
     padding: var(--space-3) var(--space-5) var(--space-2);
   }
@@ -516,7 +516,7 @@
   line-height: 1.45;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .student-deadline-page .deadline-calendar__legend {
     padding: var(--space-2) var(--space-5) var(--space-3);
   }

@@ -278,7 +278,7 @@
   display: block;
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 47.99875rem) {
   .teacher-request-detail-page .request-proposal-dialog .topic-dialog__header {
     padding-inline: var(--space-4);
   }

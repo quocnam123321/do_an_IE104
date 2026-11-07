@@ -47,7 +47,7 @@
 }
 :where(.teacher-workspace-page) .site-footer { font-size: var(--text-base); }
 :where(.teacher-workspace-page) .site-footer__columns .site-footer__information h2 { font-size: var(--text-base); }
-@media (max-width: 767.98px) {
+@media (max-width: 47.99875rem) {
   :where(.teacher-workspace-page) .site-footer__columns .site-footer__information { padding-left: 0; }
 }
 :where(.teacher-workspace-page) .site-footer img.site-footer__logo {
@@ -239,14 +239,14 @@ body:where(.teacher-workspace-page) {
   padding-inline: var(--space-8);
 }
 
-@media (max-width: 1023.98px) {
+@media (max-width: 63.99875rem) {
   :where(.teacher-workspace-page) .site-header__inner,
 :where(.teacher-workspace-page) .site-footer__inner {
     padding-inline: var(--space-6);
   }
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 47.99875rem) {
   :where(.teacher-workspace-page) .main-content {
     padding-block: var(--space-4) var(--space-8);
   }
@@ -553,7 +553,7 @@ body:where(.teacher-workspace-page) {
   display: none;
 }
 
-@media (max-width: 1099.98px) {
+@media (max-width: 68.74875rem) {
   :where(.teacher-workspace-page) .site-header__inner {
     gap: var(--space-3);
   }
@@ -884,7 +884,7 @@ body:where(.teacher-workspace-page) {
   color: var(--color-primary-active);
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 47.99875rem) {
   :where(.teacher-workspace-page) .page-header {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
@@ -960,7 +960,7 @@ body:where(.teacher-workspace-page) {
   font-variant-numeric: tabular-nums;
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 47.99875rem) {
   :where(.teacher-workspace-page) .topic-tabs__list {
     gap: var(--space-1);
   }
@@ -1166,7 +1166,7 @@ body:where(.teacher-workspace-page) {
   color: var(--color-muted-foreground);
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 47.99875rem) {
   :where(.teacher-workspace-page) .site-footer__columns {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-6);

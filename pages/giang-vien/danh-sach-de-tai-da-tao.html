@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="../../assets/css/teacher-created-topics.css?v=20261030-align-1" />
     <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
+    <script src="../../assets/js/topic-list.js" defer></script>
   </head>
 
   <body class="teacher-workspace-page teacher-topic-list-page teacher-created-topics-page">
@@ -411,7 +412,7 @@
               </form>
             </details>
           </aside>
-          <section class="topic-results" aria-labelledby="topic-results-title">
+          <section class="topic-results" aria-labelledby="topic-results-title" data-topic-results>
             <div class="topic-toolbar">
               <div class="topic-toolbar__search">
                 <label class="visually-hidden" for="topic-search">Tìm kiếm đề tài</label>
@@ -419,7 +420,7 @@
                 <input type="search" id="topic-search" name="topic_search" form="topic-filter-form" placeholder="Tìm theo tên hoặc mã đề tài…" aria-describedby="topic-preview-note" />
               </div>
               <div class="topic-toolbar__sort">
-                <label class="visually-hidden" for="topic-sort">Sắp xếp đề tài</label>
+                <label class="visually-hidden" for="topic-sort">Sắp xếp theo ngày tạo hoặc tên đề tài</label>
                 <select id="topic-sort" name="topic_sort" form="topic-filter-form" aria-describedby="topic-preview-note">
                   <option value="newest" selected>Sắp xếp: Mới nhất</option>
                   <option value="oldest">Sắp xếp: Cũ nhất</option>
@@ -430,12 +431,14 @@
             </div>
             <header class="topic-results__header">
               <h2 id="topic-results-title">Danh sách đề tài đã tạo</h2>
+              <p class="topic-list__status" data-topic-count role="status" hidden></p>
+              <noscript><p class="topic-list__status">Bật JavaScript để tìm kiếm, lọc và sắp xếp đề tài.</p></noscript>
             </header>
             <p id="topic-scroll-help" class="visually-hidden">Danh sách có thanh cuộn riêng. Dùng phím mũi tên hoặc Page Down để xem các đề tài bên dưới.</p>
             <div class="topic-list-scroll" role="region" tabindex="0" aria-labelledby="topic-results-title" aria-describedby="topic-scroll-help">
               <ul class="topic-list">
                 <li>
-                  <article class="topic-card" aria-labelledby="topic-1-title">
+                  <article class="topic-card" aria-labelledby="topic-1-title" data-topic-id="DA001" data-topic-type="course" data-course="web" data-status="open" data-hoc-ky="2026-2027-1">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -470,7 +473,7 @@
                   </article>
                 </li>
                 <li>
-                  <article class="topic-card" aria-labelledby="topic-2-title">
+                  <article class="topic-card" aria-labelledby="topic-2-title" data-topic-id="DA002" data-topic-type="course" data-course="database" data-status="open" data-hoc-ky="2026-2027-1">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -505,7 +508,7 @@
                   </article>
                 </li>
                 <li>
-                  <article class="topic-card" aria-labelledby="topic-3-title">
+                  <article class="topic-card" aria-labelledby="topic-3-title" data-topic-id="DA003" data-topic-type="course" data-course="software" data-status="closed" data-hoc-ky="2026-2027-1">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -540,7 +543,7 @@
                   </article>
                 </li>
                 <li>
-                  <article class="topic-card" aria-labelledby="topic-4-title">
+                  <article class="topic-card" aria-labelledby="topic-4-title" data-topic-id="DA004" data-topic-type="course" data-course="web" data-status="open" data-hoc-ky="2026-2027-1">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -575,7 +578,7 @@
                   </article>
                 </li>
                 <li>
-                  <article class="topic-card" aria-labelledby="topic-5-title">
+                  <article class="topic-card" aria-labelledby="topic-5-title" data-topic-id="DA005" data-topic-type="course" data-course="database" data-status="closed" data-hoc-ky="2026-2027-1">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -612,7 +615,6 @@
               </ul>
             </div>
             <div class="topic-results__footer">
-              <p class="topic-results__count">Hiển thị 1–5 trên 12 đề tài</p>
               <nav class="pagination" aria-label="Phân trang đề tài" aria-describedby="topic-preview-note">
                 <ul class="pagination__list">
                   <li><button class="pagination__button" type="button" aria-label="Trang trước" disabled>‹</button></li>
@@ -623,7 +625,7 @@
                 </ul>
               </nav>
             </div>
-            <p id="topic-preview-note" class="topic-toolbar__note">Dữ liệu minh họa · Tìm kiếm, lọc, sắp xếp và chuyển trang chưa được kết nối.</p>
+            <p id="topic-preview-note" class="topic-toolbar__note">Danh sách dùng dữ liệu minh họa.</p>
           </section>
         </div>
       </div>

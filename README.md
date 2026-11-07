@@ -1,111 +1,68 @@
 # Website quản lý đồ án và khóa luận — IE104, Nhóm 7
 
-Website dành cho sinh viên và giảng viên, xây dựng bằng HTML, CSS và
-JavaScript thuần. Danh mục HTML bên dưới giữ mốc **23/10/2026**;
-các mục và hướng dẫn về hai khung mẫu đã được gỡ ngày **04/11/2026**.
-Xem [index.html](index.html) để mở các trang hiện có.
-
-Đây là giai đoạn dựng khung HTML. Tên mẫu, ô trống, ảnh giữ chỗ và dữ liệu
-minh họa được giữ để thể hiện cấu trúc; không yêu cầu dữ liệu đầy đủ.
-Các biểu mẫu, thông báo trạng thái và hộp xác nhận chưa kết nối xử lý nghiệp vụ.
+Website phục vụ sinh viên và giảng viên theo dõi đề tài, đăng ký, đề xuất,
+tiến độ và bài nộp. Dự án dùng HTML5, CSS3 và JavaScript thuần. Bản hiện tại
+chạy trên trình duyệt với dữ liệu minh họa.
 
 ## Mở dự án
 
-Mở [index.html](index.html) bằng trình duyệt để truy cập danh mục các trang.
-Không cần cài thư viện hoặc chạy bước build. Có thể dùng Live Server từ
-thư mục gốc repo khi phát triển.
+Mở [index.html](index.html) để vào danh mục màn hình. Có thể dùng Live Server
+từ gốc repo khi phát triển. Dự án không cần cài thư viện hoặc chạy bước build.
 
-## Cây file HTML tham khảo
+## Cấu trúc mã nguồn
 
-```text
-do_an_IE104/
-├── index.html
-└── pages/
-    ├── chung/                              # 10 trang
-    │   ├── dang-nhap.html
-    │   ├── quen-mat-khau.html
-    │   ├── gioi-thieu.html
-    │   ├── lien-he.html
-    │   ├── thong-bao.html
-    │   ├── chi-tiet-thong-bao-01.html
-    │   ├── chi-tiet-thong-bao-02.html
-    │   ├── chi-tiet-thong-bao-03.html
-    │   ├── chi-tiet-thong-bao-04.html
-    │   └── chi-tiet-thong-bao-05.html
-    ├── sinh-vien/                          # 9 trang
-    │   ├── tong-quan-sinh-vien.html
-    │   ├── dang-ky-de-tai.html
-    │   ├── chi-tiet-de-tai-mo-dang-ky.html
-    │   ├── tao-de-xuat.html
-    │   ├── de-tai-cua-toi-sinh-vien.html
-    │   ├── chi-tiet-dang-ky-va-de-xuat-sinh-vien.html
-    │   ├── chi-tiet-de-tai-sinh-vien.html
-    │   ├── lich-han-nop.html
-    │   └── ho-so-ca-nhan.html
-    └── giang-vien/                         # 11 trang
-        ├── tong-quan-giang-vien.html
-        ├── danh-sach-de-tai-dang-huong-dan.html
-        ├── danh-sach-de-tai-da-tao.html
-        ├── tao-de-tai-giang-vien.html
-        ├── chi-tiet-de-tai-da-tao-giang-vien.html
-        ├── chinh-sua-de-tai-giang-vien.html
-        ├── chi-tiet-de-tai-dang-huong-dan-giang-vien.html
-        ├── yeu-cau-cho-duyet.html
-        ├── chi-tiet-de-xuat-giang-vien.html
-        ├── han-nop-cua-sinh-vien.html
-        └── ho-so-ca-nhan-giang-vien.html
-```
+Danh mục dưới đây đối chiếu mã nguồn ngày **07/11/2026**. Repo có 37 file HTML,
+gồm trang danh mục và 36 trang theo nhóm.
 
-`assets/images/images.jpg` là logo đang sử dụng. `assets/css/` và
-`assets/js/` dành cho các giai đoạn tiếp theo; chưa có CSS bố cục chung
-hoặc JavaScript nghiệp vụ. Một số trang có CSS nội tuyến tối thiểu phục vụ
-chọn nội dung theo fragment hoặc giữ cấu trúc hiện có.
+| Thư mục | Nội dung |
+| --- | --- |
+| [pages/chung/](pages/chung/) | 11 trang: Đăng nhập, Quên mật khẩu, Giới thiệu, Hướng nghiên cứu, Liên hệ, danh sách và 5 bài Thông báo |
+| [pages/sinh-vien/](pages/sinh-vien/) | 15 trang: Tổng quan, Đăng ký đề tài, Đề tài của tôi, Tạo đề xuất, Lịch hạn nộp, Hồ sơ và các trang chi tiết mẫu |
+| [pages/giang-vien/](pages/giang-vien/) | 10 trang: Tổng quan, quản lý đề tài đang hướng dẫn/đã tạo, tạo/sửa đề tài, yêu cầu chờ duyệt, chi tiết và Hồ sơ |
+| [assets/css/](assets/css/) | Token, CSS nền, thành phần dùng chung và stylesheet theo trang hoặc nhóm chức năng |
+| [assets/js/](assets/js/) | Script điều hướng, tab, hộp thoại, lọc đề tài, biểu mẫu và lịch mẫu |
+| [assets/fonts/](assets/fonts/) và [assets/images/](assets/images/) | Font Be Vietnam Pro lưu cục bộ, logo, ảnh minh họa và icon |
 
-File trùng `chi-tiet-de-tai-dang-ky.html` ở gốc đã được loại bỏ; dùng
-[Chi tiết đề tài mở đăng ký](pages/sinh-vien/chi-tiet-de-tai-mo-dang-ky.html).
-Các file hướng dẫn Codex cục bộ không thuộc cây mã nguồn giao diện ở trên.
+Danh mục đầy đủ, các biến thể mẫu và ID chuyển phần nằm trong
+[Hướng dẫn sử dụng khung trang](docs/Huong_dan_su_dung_khung_trang.md).
 
-## Các luồng khung hiện có
+## Các luồng giao diện
 
-- Chung: [Đăng nhập](pages/chung/dang-nhap.html) →
-  [Quên mật khẩu](pages/chung/quen-mat-khau.html);
-  [Giới thiệu](pages/chung/gioi-thieu.html),
+- **Chung:** [Đăng nhập](pages/chung/dang-nhap.html) → [Quên mật khẩu](pages/chung/quen-mat-khau.html).
+  Các trang công khai gồm [Giới thiệu](pages/chung/gioi-thieu.html),
+  [Hướng nghiên cứu](pages/chung/huong-nghien-cuu.html),
   [Thông báo](pages/chung/thong-bao.html) và [Liên hệ](pages/chung/lien-he.html).
-- Sinh viên: [Đăng ký đề tài](pages/sinh-vien/dang-ky-de-tai.html) → chi tiết
-  đăng ký hoặc [Tạo đề xuất](pages/sinh-vien/tao-de-xuat.html);
-  [Đề tài của tôi](pages/sinh-vien/de-tai-cua-toi-sinh-vien.html) →
-  [Chi tiết đề tài](pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html), gồm bốn phần
-  Tổng quan (`#tong-quan`), Tiến độ (`#tien-do`), Bài nộp (`#bai-nop`),
-  Kết quả đánh giá (`#ket-qua-danh-gia`) trong cùng một file, và hồ sơ
-  đăng ký/đề xuất. [Lịch hạn nộp](pages/sinh-vien/lich-han-nop.html)
-  có liên kết mở biểu mẫu bài nộp mẫu.
-- Giảng viên: Quản lý đề tài → [Đề tài đang hướng dẫn](pages/giang-vien/danh-sach-de-tai-dang-huong-dan.html)
-  hoặc [Đề tài đã tạo](pages/giang-vien/danh-sach-de-tai-da-tao.html);
-  [Yêu cầu chờ duyệt](pages/giang-vien/yeu-cau-cho-duyet.html) →
-  [Chi tiết yêu cầu](pages/giang-vien/chi-tiet-de-xuat-giang-vien.html);
-  [Hạn nộp của sinh viên](pages/giang-vien/han-nop-cua-sinh-vien.html) mở từ Tổng quan.
+- **Sinh viên:** [Đăng ký đề tài](pages/sinh-vien/dang-ky-de-tai.html) → xem chi tiết hoặc
+  [Tạo đề xuất](pages/sinh-vien/tao-de-xuat.html).
+  [Đề tài của tôi](pages/sinh-vien/de-tai-cua-toi-sinh-vien.html) dẫn tới chi tiết
+  đề tài và hồ sơ đăng ký/đề xuất mẫu. [Lịch hạn nộp](pages/sinh-vien/lich-han-nop.html)
+  hiển thị sự kiện mẫu theo tháng.
+- **Giảng viên:** Quản lý đề tài mở [Đề tài đang hướng dẫn](pages/giang-vien/danh-sach-de-tai-dang-huong-dan.html),
+  có lối sang [Đề tài đã tạo](pages/giang-vien/danh-sach-de-tai-da-tao.html)
+  để tạo hoặc sửa đề tài. [Yêu cầu chờ duyệt](pages/giang-vien/yeu-cau-cho-duyet.html)
+  dẫn tới [chi tiết đề xuất mẫu](pages/giang-vien/chi-tiet-de-xuat-giang-vien.html).
+  Hạn và bài nộp nằm trong chi tiết đề tài đang hướng dẫn.
+- **Chi tiết đề tài:** Sinh viên và giảng viên có bốn phần Tổng quan, Tiến độ,
+  Bài nộp và Kết quả đánh giá. Hồ sơ cá nhân dùng trang riêng theo vai trò.
 
-Danh sách Yêu cầu chờ duyệt đang trình bày đề xuất theo wireframe hiện hành;
-khung chi tiết có cả đăng ký (`#dk001`) và đề xuất (`#dx001`). Tên file chi
-tiết yêu cầu vẫn là `chi-tiet-de-xuat-giang-vien.html` để giữ đường dẫn của dự án.
+## JavaScript và giới hạn bản demo
 
-## Quy ước và giới hạn
+- Các trang dùng cùng script chỉ báo điều hướng. Tab Giới thiệu, tab chi tiết
+  đề tài và hiện/ẩn mật khẩu hoạt động trên trình duyệt.
+- Tìm kiếm, lọc và sắp xếp dữ liệu mẫu hoạt động ở Đăng ký đề tài, Đề tài của tôi,
+  Đề tài đang hướng dẫn và Đề tài đã tạo. Ô tìm kiếm chấp nhận tiếng Việt không dấu.
+- Tạo đề xuất hỗ trợ tìm/chọn giảng viên và cập nhật lựa chọn môn học theo loại đề tài.
+- Hộp thoại dùng nút HTML `command`/`commandfor`. Các trang nạp
+  `dialog-commands.js` có xử lý dự phòng khi trình duyệt thiếu hỗ trợ các lệnh này.
+- Lịch hạn nộp chuyển tháng và hiển thị sự kiện mẫu với mốc “hôm nay”
+  cố định là 18/10/2026. Các lựa chọn đề tài dùng chung dữ liệu mẫu.
+- Các tác vụ như đăng nhập, phân quyền, khôi phục mật khẩu, gửi liên hệ,
+  lưu đăng ký/đề xuất, duyệt, lưu bài nộp và đánh giá chưa có xử lý thực.
+  Repo hiện chưa có backend, cơ sở dữ liệu hoặc lưu trữ dùng chung.
+  Chuyển Việt/Anh, phân trang dữ liệu và lọc yêu cầu chờ duyệt vẫn cần xử lý.
+  Phân công trang chung và giảng viên được theo dõi ở tab
+  **Task JavaScript** của bảng quản lý nhóm.
 
-- Trang theo vai trò đặt trong `pages/sinh-vien/` hoặc `pages/giang-vien/`;
-  trang công khai trong `pages/chung/`. Hồ sơ cá nhân có bản riêng theo vai trò.
-- Tên file dùng chữ thường, không dấu, nối bằng dấu gạch ngang.
-- Dùng đường dẫn tương đối và dấu `/`: cùng thư mục dùng `ten-trang.html`,
-  trang chung dùng `../chung/...`, tài nguyên dùng `../../assets/...`.
-- Khi tạo trang mới, tham khảo trang hiện có cùng vai trò; cập nhật đường
-  dẫn và menu cho trang mới. Sửa một trang không tự đồng bộ các trang khác.
-- HTML hiện có các mẫu rỗng, lỗi, thành công, khóa và hộp xác nhận cho những
-  luồng liên quan. Nhiều mẫu nằm trong `<template>` hoặc `<dialog>` đóng,
-  dành cho bước nối tương tác sau này.
-- Chưa có xác thực thật, khôi phục mật khẩu, gửi email, lưu dữ liệu, upload
-  máy chủ, backend hoặc cơ sở dữ liệu. Không dùng sự hiện diện của nút/form
-  làm bằng chứng chức năng nghiệp vụ đã hoàn thành.
-- Chưa có CSS bố cục responsive dùng chung. Kiểm tra hiện tại tập trung
-  cấu trúc HTML, nhãn biểu mẫu, đường dẫn và điều hướng theo vai trò.
-
-Xem [Hướng dẫn sử dụng khung trang](docs/Huong_dan_su_dung_khung_trang.md)
-để tra danh mục, anchor, nguồn wireframe và cách tạo trang tiếp theo.
+Khi sửa giao diện, tham khảo [PRODUCT.md](PRODUCT.md), [DESIGN.md](DESIGN.md)
+và trang cùng vai trò. Dùng đường dẫn tương đối, tên file chữ thường không dấu,
+và kiểm tra lại liên kết, bàn phím và các kích thước màn hình có liên quan.

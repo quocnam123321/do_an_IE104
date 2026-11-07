@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css" />
     <link rel="stylesheet" href="../../assets/css/teacher-created-detail.css?v=20261030-2" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
+    <script src="../../assets/js/dialog-commands.js" defer></script>
   </head>
   <body class="teacher-workspace-page teacher-created-detail-page">
     <a class="skip-link" href="#main-content">
@@ -303,7 +304,7 @@
         </template>
       </div>
     </main>
-    <!-- Hộp thoại HTML gốc: mở/đóng bằng command/commandfor, không dùng CSS/JS.
+    <!-- Hộp thoại HTML gốc mở bằng command/commandfor và đóng bằng form method="dialog".
          Các nút xác nhận disabled vì chưa có xử lý thay đổi trạng thái đề tài. -->
     <dialog class="confirmation-dialog" id="close-registration" aria-labelledby="close-registration-title" aria-describedby="close-registration-description">
       <h2 id="close-registration-title">Đóng đăng ký đề tài?</h2>

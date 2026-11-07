@@ -7,9 +7,15 @@
       name="description"
       content="Các trang HTML hiện có của website quản lý đồ án và khóa luận, nhóm 7, IE104."
     />
-    <title>Trang chủ | Quản lý đồ án</title>
+    <title>Danh mục màn hình | Quản lý đồ án</title>
+    <link rel="stylesheet" href="assets/css/tokens.css" />
+    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="assets/css/components.css" />
+    <link rel="stylesheet" href="assets/css/common.css" />
+    <link rel="stylesheet" href="assets/css/page-directory.css" />
+    <script src="assets/js/nav-indicator.js" defer></script>
   </head>
-  <body>
+  <body class="common-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
     <header class="site-header">
       <div class="site-header__inner">
@@ -17,106 +23,115 @@
           <img class="site-brand__logo" src="assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="48" height="48" />
           <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
         </a>
-        <nav class="main-nav" aria-label="Điều hướng công khai">
-          <ul class="main-nav__list">
-            <li class="main-nav__item">
-              <a class="main-nav__link" href="pages/chung/gioi-thieu.html">Giới thiệu</a>
-            </li>
-            <li class="main-nav__item">
-              <a class="main-nav__link" href="pages/chung/thong-bao.html">Thông báo</a>
-            </li>
+        <details class="site-navigation" open>
+          <summary class="site-navigation__toggle" aria-label="Mở hoặc thu gọn điều hướng chính">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+            <span>Menu</span>
+          </summary>
+          <nav class="main-nav" aria-label="Điều hướng công khai" data-nav-indicator>
+            <ul class="main-nav__list">
+              <li class="main-nav__item"><a class="main-nav__link" href="pages/chung/gioi-thieu.html"><span class="main-nav__text">Giới thiệu</span></a></li>
+              <li class="main-nav__item"><a class="main-nav__link" href="pages/chung/thong-bao.html"><span class="main-nav__text">Thông báo</span></a></li>
               <li class="main-nav__item"><a class="main-nav__link" href="pages/chung/huong-nghien-cuu.html"><span class="main-nav__text">Hướng nghiên cứu</span></a></li>
-
-            <li class="main-nav__item">
-              <a class="main-nav__link" href="pages/chung/lien-he.html">Liên hệ</a>
-            </li>
-            <li class="main-nav__item">
-              <a class="main-nav__login" href="pages/chung/dang-nhap.html">Đăng nhập</a>
-            </li>
-          </ul>
-        </nav>
+              <li class="main-nav__item"><a class="main-nav__link" href="pages/chung/lien-he.html"><span class="main-nav__text">Liên hệ</span></a></li>
+            </ul>
+            <span class="main-nav__indicator" aria-hidden="true"></span>
+          </nav>
+        </details>
+        <a class="site-header__login" href="pages/chung/dang-nhap.html">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h5v16h-5M4 12h11M10 7l5 5-5 5" /></svg>
+          <span>Đăng nhập</span>
+        </a>
       </div>
     </header>
-    <main id="main-content" class="main-content" tabindex="-1">
+    <main id="main-content" class="main-content page-directory" tabindex="-1">
       <div class="page-container">
         <header class="page-header">
           <h1 class="page-header__title">Quản lý đồ án và khóa luận</h1>
-          <p>Đồ án IE104 — Nhóm 7, Trường Đại học Công nghệ Thông tin.</p>
+          <p class="page-header__description">Đồ án IE104 — Nhóm 7, Trường Đại học Công nghệ Thông tin.</p>
         </header>
         <p class="demo-notice">
           Bản HTML với dữ liệu minh họa. Các thao tác đăng ký, chỉnh sửa và đăng
           xuất chưa được xử lý.
         </p>
-        <section aria-labelledby="common-pages-title">
-          <h2 id="common-pages-title">Trang dùng chung</h2>
-          <ul>
-            <li><a href="pages/chung/gioi-thieu.html">Giới thiệu (công khai)</a></li>
-            <li><a href="pages/chung/thong-bao.html">Thông báo chung</a></li>
-            <li><a href="pages/chung/huong-nghien-cuu.html">Hướng nghiên cứu</a></li>
-            <li><a href="pages/chung/huong-nghien-cuu.html">Hướng nghiên cứu</a></li>
-            <li><a href="pages/chung/lien-he.html">Liên hệ</a></li>
-            <li><a href="pages/chung/dang-nhap.html">Đăng nhập</a></li>
-            <li><a href="pages/chung/quen-mat-khau.html">Quên mật khẩu</a></li>
-          </ul>
-        </section>
-        <section aria-labelledby="student-pages-title">
-          <h2 id="student-pages-title">Sinh viên</h2>
-          <ul>
-            <li><a href="pages/sinh-vien/tong-quan-sinh-vien.html">Tổng quan</a></li>
-            <li><a href="pages/sinh-vien/dang-ky-de-tai.html">Đăng ký đề tài</a></li>
-            <li><a href="pages/sinh-vien/tao-de-xuat.html">Tạo đề xuất</a></li>
-            <li><a href="pages/sinh-vien/de-tai-cua-toi-sinh-vien.html">Đề tài của tôi</a></li>
-            <li>
-              <a href="pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html">Chi tiết đề tài</a>
-              — <a href="pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#tong-quan">Tổng quan</a>,
-              <a href="pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#tien-do">Tiến độ</a>,
-              <a href="pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#bai-nop">Bài nộp</a>,
-              <a href="pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#ket-qua-danh-gia">Kết quả đánh giá</a>
-            </li>
-            <li>
-              <a href="pages/sinh-vien/chi-tiet-de-tai-mo-dang-ky.html"
-                >Chi tiết đề tài DT001</a
-              >
-            </li>
-            <li>
-              <a href="pages/sinh-vien/chi-tiet-dang-ky-va-de-xuat-sinh-vien.html"
-                >Chi tiết đăng ký và đề xuất mẫu</a
-              >
-            </li>
-            <li><a href="pages/sinh-vien/lich-han-nop.html">Lịch hạn nộp</a></li>
-            <li><a href="pages/sinh-vien/ho-so-ca-nhan.html">Hồ sơ cá nhân</a></li>
-          </ul>
-        </section>
-        <section aria-labelledby="lecturer-pages-title">
-          <h2 id="lecturer-pages-title">Giảng viên</h2>
-          <ul>
-            <li><a href="pages/giang-vien/tong-quan-giang-vien.html">Tổng quan giảng viên</a></li>
-            <li><a href="pages/giang-vien/danh-sach-de-tai-dang-huong-dan.html">Đề tài đang hướng dẫn</a></li>
-            <li><a href="pages/giang-vien/danh-sach-de-tai-da-tao.html">Đề tài đã tạo</a></li>
-            <li><a href="pages/giang-vien/chi-tiet-de-xuat-giang-vien.html">Chi tiết yêu cầu đăng ký / đề xuất</a></li>
-            <li><a href="pages/giang-vien/yeu-cau-cho-duyet.html">Yêu cầu chờ duyệt</a></li>
-            <li>
-              <a href="pages/giang-vien/chi-tiet-de-tai-dang-huong-dan-giang-vien.html">Chi tiết đề tài đang hướng dẫn</a>
-            </li>
-            <li><a href="pages/giang-vien/tao-de-tai-giang-vien.html">Tạo đề tài</a></li>
-            <li>
-              <a href="pages/giang-vien/chi-tiet-de-tai-da-tao-giang-vien.html">
-                Chi tiết đề tài đã tạo (khung HTML)
-              </a>
-            </li>
-            <li>
-              <a href="pages/giang-vien/chinh-sua-de-tai-giang-vien.html">
-                Chỉnh sửa đề tài (khung HTML)
-              </a>
-            </li>
-            <li><a href="pages/giang-vien/ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a></li>
-          </ul>
-        </section>
+        <div class="page-directory__groups">
+          <section aria-labelledby="common-pages-title">
+            <h2 id="common-pages-title">Trang dùng chung</h2>
+            <ul>
+              <li><a href="pages/chung/gioi-thieu.html">Giới thiệu (công khai)</a></li>
+              <li><a href="pages/chung/thong-bao.html">Thông báo chung</a></li>
+              <li><a href="pages/chung/huong-nghien-cuu.html">Hướng nghiên cứu</a></li>
+              <li><a href="pages/chung/lien-he.html">Liên hệ</a></li>
+              <li><a href="pages/chung/dang-nhap.html">Đăng nhập</a></li>
+              <li><a href="pages/chung/quen-mat-khau.html">Quên mật khẩu</a></li>
+            </ul>
+          </section>
+          <section aria-labelledby="student-pages-title">
+            <h2 id="student-pages-title">Sinh viên</h2>
+            <ul>
+              <li><a href="pages/sinh-vien/tong-quan-sinh-vien.html">Tổng quan</a></li>
+              <li><a href="pages/sinh-vien/dang-ky-de-tai.html">Đăng ký đề tài</a></li>
+              <li><a href="pages/sinh-vien/tao-de-xuat.html">Tạo đề xuất</a></li>
+              <li><a href="pages/sinh-vien/de-tai-cua-toi-sinh-vien.html">Đề tài của tôi</a></li>
+              <li>
+                <a href="pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html">Chi tiết đề tài</a>
+                — <a href="pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#tong-quan">Tổng quan</a>,
+                <a href="pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#tien-do">Tiến độ</a>,
+                <a href="pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#bai-nop">Bài nộp</a>,
+                <a href="pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#ket-qua-danh-gia">Kết quả đánh giá</a>
+              </li>
+              <li>
+                <a href="pages/sinh-vien/chi-tiet-de-tai-dang-thuc-hien-da002.html">Chi tiết đề tài đang thực hiện DA002</a>
+              </li>
+              <li>
+                Chi tiết đề tài mở đăng ký:
+                <a href="pages/sinh-vien/chi-tiet-de-tai-mo-dang-ky.html">DT001</a>,
+                <a href="pages/sinh-vien/chi-tiet-de-tai-mo-dang-ky-dt003.html">DT003</a>,
+                <a href="pages/sinh-vien/chi-tiet-de-tai-mo-dang-ky-dt004.html">DT004</a>,
+                <a href="pages/sinh-vien/chi-tiet-de-tai-mo-dang-ky-mau04.html">Mẫu 04</a>,
+                <a href="pages/sinh-vien/chi-tiet-de-tai-mo-dang-ky-mau05.html">Mẫu 05</a>
+              </li>
+              <li><a href="pages/sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html">Chi tiết đề tài chờ duyệt</a></li>
+              <li>
+                <a href="pages/sinh-vien/chi-tiet-dang-ky-va-de-xuat-sinh-vien.html"
+                  >Chi tiết đăng ký và đề xuất mẫu</a
+                >
+              </li>
+              <li><a href="pages/sinh-vien/lich-han-nop.html">Lịch hạn nộp</a></li>
+              <li><a href="pages/sinh-vien/ho-so-ca-nhan.html">Hồ sơ cá nhân</a></li>
+            </ul>
+          </section>
+          <section aria-labelledby="lecturer-pages-title">
+            <h2 id="lecturer-pages-title">Giảng viên</h2>
+            <ul>
+              <li><a href="pages/giang-vien/tong-quan-giang-vien.html">Tổng quan giảng viên</a></li>
+              <li><a href="pages/giang-vien/danh-sach-de-tai-dang-huong-dan.html">Đề tài đang hướng dẫn</a></li>
+              <li><a href="pages/giang-vien/danh-sach-de-tai-da-tao.html">Đề tài đã tạo</a></li>
+              <li><a href="pages/giang-vien/chi-tiet-de-xuat-giang-vien.html">Chi tiết yêu cầu đăng ký / đề xuất</a></li>
+              <li><a href="pages/giang-vien/yeu-cau-cho-duyet.html">Yêu cầu chờ duyệt</a></li>
+              <li>
+                <a href="pages/giang-vien/chi-tiet-de-tai-dang-huong-dan-giang-vien.html">Chi tiết đề tài đang hướng dẫn</a>
+              </li>
+              <li><a href="pages/giang-vien/tao-de-tai-giang-vien.html">Tạo đề tài</a></li>
+              <li>
+                <a href="pages/giang-vien/chi-tiet-de-tai-da-tao-giang-vien.html">
+                  Chi tiết đề tài đã tạo (khung HTML)
+                </a>
+              </li>
+              <li>
+                <a href="pages/giang-vien/chinh-sua-de-tai-giang-vien.html">
+                  Chỉnh sửa đề tài (khung HTML)
+                </a>
+              </li>
+              <li><a href="pages/giang-vien/ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a></li>
+            </ul>
+          </section>
+        </div>
       </div>
     </main>
     <footer class="site-footer">
       <div class="site-footer__inner">
-        <p>© 2026 · Hệ thống quản lý đồ án / khóa luận</p>
+        <p class="site-footer__copyright">© 2026 · Hệ thống quản lý đồ án / khóa luận</p>
       </div>
     </footer>
   </body>

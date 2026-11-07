@@ -19,7 +19,7 @@
   color: var(--color-muted-foreground);
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 47.99875rem) {
   .teacher-pending-proposals-page .topic-card__status {
     border: 1px solid var(--color-warning-border);
   }

@@ -3,3 +3,6 @@
 /.codex/
 /.impeccable/
 /backup-css-*/
+
+# Chromium debug log
+/debug.log
