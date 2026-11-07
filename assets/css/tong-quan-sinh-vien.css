@@ -15,7 +15,7 @@
   gap: var(--space-4);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .student-overview-page .page-content {
     gap: var(--space-5);
   }
@@ -36,19 +36,19 @@
   align-items: stretch;
 }
 
-@media (min-width: 360px) {
+@media (min-width: 22.5rem) {
   .student-overview-page .dashboard-summary__items {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 640px) {
+@media (min-width: 40rem) {
   .student-overview-page .dashboard-summary__items {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 64rem) {
   .student-overview-page .dashboard-summary__items {
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: var(--space-4);
@@ -108,7 +108,7 @@
   text-decoration: underline;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .student-overview-page .summary-card__title {
     padding: 0.5rem 0.875rem;
   }
@@ -150,7 +150,7 @@
   gap: var(--space-2) var(--space-4);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .student-overview-page .dashboard-section__header {
     padding: 0.6875rem var(--space-5);
   }
@@ -162,7 +162,7 @@
   font-weight: var(--font-weight-bold);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .student-overview-page .dashboard-section__header h2 {
     font-size: var(--font-size-section-title);
   }
@@ -202,7 +202,7 @@
   gap: var(--space-3);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .student-overview-page .dashboard-section__body {
     padding: var(--space-4) var(--space-5);
   }
@@ -222,7 +222,7 @@
   padding: var(--space-1) 0;
 }
 
-@media (min-width: 560px) {
+@media (min-width: 35rem) {
   .student-overview-page .registration-status__figure {
     flex-direction: row;
     justify-content: center;
@@ -231,7 +231,7 @@
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 64rem) {
   .student-overview-page .registration-status__figure {
     gap: 3.5rem;
   }
@@ -243,7 +243,7 @@
   flex-shrink: 0;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .student-overview-page .registration-status__chart {
     width: 11rem; /* 176px trên tablet & máy tính — gọn, không chiếm phần lớn màn hình */
   }
@@ -288,7 +288,7 @@
   gap: var(--space-2);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .student-overview-page .registration-status__legend ul {
     gap: var(--space-3);
   }
@@ -349,7 +349,7 @@
   gap: var(--space-3);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .student-overview-page .topic-progress__list {
     padding: var(--space-4) var(--space-5);
   }
@@ -467,7 +467,7 @@
   color: var(--color-on-primary);
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .student-overview-page .topic-progress__item {
     display: grid;
     grid-template-columns: minmax(0, 1.45fr) minmax(11rem, 1fr) auto;
@@ -504,7 +504,7 @@
   min-width: 0;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 48rem) {
   .student-overview-page .recent-requests__list {
     padding: var(--space-4) var(--space-5);
     grid-template-columns: repeat(2, minmax(0, 1fr));

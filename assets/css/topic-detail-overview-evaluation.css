@@ -545,7 +545,7 @@
   #evaluation-section .evaluation-form__publish { width: 100%; }
 }
 
-@media (max-width: 1023.98px) {
+@media (max-width: 63.99875rem) {
   .topic-summary {
     grid-template-columns: minmax(12rem, 0.7fr) minmax(0, 1.5fr);
     gap: var(--space-4);
@@ -556,7 +556,7 @@
   }
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 47.99875rem) {
   .topic-summary {
     grid-template-columns: minmax(0, 1fr);
     padding: var(--space-4);
@@ -581,7 +581,7 @@
 }
 
 /* Khi chiều rộng không đủ cho môn học dài, giữ đủ bốn trường theo một cột. */
-@media (max-width: 479.98px) {
+@media (max-width: 29.99875rem) {
   .topic-summary__details {
     grid-template-columns: minmax(0, 1fr);
   }

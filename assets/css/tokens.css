@@ -44,6 +44,8 @@
   --header-login-active: #992719;
   --font-size-body: 1rem;
   --font-size-secondary: .875rem;
+  --font-small: var(--font-size-secondary);
+  --leading-relaxed: 1.625;
   --font-size-page-title: 1.75rem;
   --font-size-section-title: 1.25rem;
   --control-min-height: 2.75rem;

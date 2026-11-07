@@ -7,7 +7,11 @@
     <title>
       Hồ sơ cá nhân giảng viên | Quản lý đồ án và khóa luận tốt nghiệp
     </title>
-    <link rel="stylesheet" href="../../assets/css/breadcrumb.css" />
+    <link rel="stylesheet" href="../../assets/css/tokens.css" />
+    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../assets/css/components.css" />
+    <script src="../../assets/js/nav-indicator.js" defer></script>
+    <script src="../../assets/js/dialog-commands.js" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">
@@ -24,26 +28,27 @@
             KHÓA LUẬN TỐT NGHIỆP
           </span>
         </a>
-        <nav aria-label="Điều hướng giảng viên" class="main-nav">
+        <details class="site-navigation" open>
+          <summary class="site-navigation__toggle">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            Menu
+          </summary>
+        <nav aria-label="Điều hướng giảng viên" class="main-nav" data-nav-indicator>
           <ul class="main-nav__list">
             <li class="main-nav__item">
-              <a class="main-nav__link" href="tong-quan-giang-vien.html">
-                Tổng quan
-              </a>
+              <a class="main-nav__link" href="tong-quan-giang-vien.html"><span class="main-nav__text">Tổng quan</span></a>
             </li>
             <li class="main-nav__item">
-              <a class="main-nav__link" id="topic-management-label" href="danh-sach-de-tai-dang-huong-dan.html">Quản lý đề tài</a>
+              <a class="main-nav__link" id="topic-management-label" href="danh-sach-de-tai-dang-huong-dan.html"><span class="main-nav__text">Quản lý đề tài</span></a>
             </li>
             <li class="main-nav__item">
-              <a class="main-nav__link" href="yeu-cau-cho-duyet.html">
-                Yêu cầu chờ duyệt
-              </a>
+              <a class="main-nav__link" href="yeu-cau-cho-duyet.html"><span class="main-nav__text">Yêu cầu chờ duyệt</span></a>
             </li>
             <li class="main-nav__item">
               <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="common-navigation-label">
-                  Chung
-                </summary>
+                <summary class="main-nav__label" id="common-navigation-label"><span class="main-nav__text">Chung</span></summary>
                 <ul aria-labelledby="common-navigation-label" class="main-nav__sublist">
                   <li class="main-nav__subitem">
                     <a class="main-nav__link" href="../chung/gioi-thieu.html">
@@ -64,13 +69,14 @@
               </details>
             </li>
             <li class="main-nav__item">
-              <a class="main-nav__link" href="ho-so-ca-nhan-giang-vien.html" aria-current="page">Hồ sơ cá nhân</a>
+              <a class="main-nav__link" href="ho-so-ca-nhan-giang-vien.html" aria-current="page"><span class="main-nav__text">Hồ sơ cá nhân</span></a>
             </li>
           </ul>
         </nav>
+        </details>
       </div>
     </header>
-    <!-- HTML thuần: không CSS, không JavaScript. Giá trị hồ sơ là nhãn minh họa theo WF.
+    <!-- Giá trị hồ sơ là dữ liệu minh họa theo wireframe.
          command/commandfor dùng tính năng HTML có sẵn trên trình duyệt hỗ trợ.
          Các thao tác lưu dữ liệu và hiện mật khẩu chưa kết nối nên để disabled. -->
     <!-- NỘI DUNG RIÊNG CỦA TỪNG TRANG -->

@@ -15,6 +15,7 @@
   <link href="../../assets/css/teacher-dialogs.css?v=20261030-1" rel="stylesheet"/>
   <link href="../../assets/css/teacher-request-detail.css?v=20261030-shared-dialogs-4" rel="stylesheet"/>
    <script src="../../assets/js/nav-indicator.js" defer></script>
+   <script src="../../assets/js/dialog-commands.js" defer></script>
  </head>
  <body class="teacher-workspace-page teacher-request-detail-page">
   <a class="skip-link" href="#main-content">
@@ -414,7 +415,7 @@
     </div>
    </div>
   </main>
-  <!-- Dialog HTML gốc: mở và đóng bằng command/commandfor, không dùng CSS/JS.
+  <!-- Hộp thoại mở và đóng bằng command/commandfor.
          Submit xác nhận disabled khi chưa có xử lý nghiệp vụ. method=dialog không gửi dữ liệu.
          Khi tích hợp, máy chủ phải kiểm tra lý do từ chối và quyền xử lý đề xuất. -->
   <dialog aria-describedby="reject-proposal-question" aria-labelledby="reject-proposal-title" class="topic-dialog request-proposal-dialog topic-dialog--danger" id="reject-proposal-dialog">

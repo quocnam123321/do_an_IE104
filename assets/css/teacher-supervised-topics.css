@@ -56,7 +56,7 @@
   bottom: -1px;
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 47.99875rem) {
   .teacher-topic-list-page .topic-tabs__list {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -117,7 +117,7 @@
   }
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 47.99875rem) {
   .teacher-topic-list-page .topic-list-scroll {
     max-block-size: 40rem;
     padding-block: var(--space-2);
@@ -701,7 +701,7 @@
    8. RESPONSIVE: LAPTOP NHỎ / IPAD NGANG (1024px – 1239px)
    Giữ bộ lọc bên trái, co nhẹ khung ảnh và cột thao tác để thông tin rộng rãi.
    -------------------------------------------------------------------------- */
-@media (max-width: 1239.98px) and (min-width: 1024px) {
+@media (max-width: 77.49875rem) and (min-width: 64rem) {
   .topic-list-layout {
     grid-template-columns: 15rem minmax(0, 1fr);
     gap: var(--space-4);
@@ -726,7 +726,7 @@
    9. RESPONSIVE: TABLET DỌC (768px – 1023px)
    Đặt bộ lọc có thể thu gọn phía trên để danh sách thẻ ngang đủ chỗ đọc.
    -------------------------------------------------------------------------- */
-@media (max-width: 1023.98px) {
+@media (max-width: 63.99875rem) {
   .topic-list-layout {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-4);
@@ -745,7 +745,7 @@
   }
 }
 
-@media (max-width: 1023.98px) and (min-width: 768px) {
+@media (max-width: 63.99875rem) and (min-width: 48rem) {
   .topic-filters__form {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-6);
@@ -787,7 +787,7 @@
    10. RESPONSIVE: ĐIỆN THOẠI (< 768px — áp dụng mục 6.1 & 7 DESIGN.md)
    Thứ tự: Bộ lọc -> Tìm kiếm -> Sắp xếp (rộng bằng tìm kiếm) -> Danh sách 1 cột
    -------------------------------------------------------------------------- */
-@media (max-width: 767.98px) {
+@media (max-width: 47.99875rem) {
   .topic-filters {
     padding: var(--space-4);
   }
@@ -858,7 +858,7 @@
 }
 
 /* Màn hình cực hẹp hoặc zoom lớn trên điện thoại nhỏ: đưa nhãn về luồng dọc để không che ảnh */
-@media (max-width: 349.98px) {
+@media (max-width: 21.87375rem) {
   .topic-card__status {
     position: static;
     width: 100%;

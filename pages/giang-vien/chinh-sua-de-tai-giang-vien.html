@@ -8,7 +8,10 @@
       content="Chỉnh sửa thông tin, nội dung, điều kiện và thời gian đăng ký của đề tài do giảng viên tạo."
     />
     <title>Chỉnh sửa đề tài | Quản lý đồ án và khóa luận tốt nghiệp</title>
-    <link rel="stylesheet" href="../../assets/css/breadcrumb.css" />
+    <link rel="stylesheet" href="../../assets/css/tokens.css" />
+    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../assets/css/components.css" />
+    <script src="../../assets/js/nav-indicator.js" defer></script>
   </head>
 
   <body>
@@ -21,14 +24,21 @@
           <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
           <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
         </a>
-        <nav class="main-nav" aria-label="Điều hướng giảng viên">
+        <details class="site-navigation" open>
+          <summary class="site-navigation__toggle">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+            Menu
+          </summary>
+        <nav class="main-nav" aria-label="Điều hướng giảng viên" data-nav-indicator>
           <ul class="main-nav__list">
             <li class="main-nav__item">
-              <a class="main-nav__link" href="tong-quan-giang-vien.html">Tổng quan</a>
+              <a class="main-nav__link" href="tong-quan-giang-vien.html"><span class="main-nav__text">Tổng quan</span></a>
             </li>
             <li class="main-nav__item">
               <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="topic-management-label" aria-current="location">Quản lý đề tài</summary>
+                <summary class="main-nav__label" id="topic-management-label" aria-current="location"><span class="main-nav__text">Quản lý đề tài</span></summary>
                 <ul class="main-nav__sublist" aria-labelledby="topic-management-label">
                   <li class="main-nav__subitem"><a class="main-nav__link" href="danh-sach-de-tai-dang-huong-dan.html">Đề tài đang hướng dẫn</a></li>
                   <li class="main-nav__subitem"><a class="main-nav__link" href="danh-sach-de-tai-da-tao.html">Đề tài đã tạo</a></li>
@@ -36,11 +46,11 @@
               </details>
             </li>
             <li class="main-nav__item">
-              <a class="main-nav__link" href="yeu-cau-cho-duyet.html">Yêu cầu chờ duyệt</a>
+              <a class="main-nav__link" href="yeu-cau-cho-duyet.html"><span class="main-nav__text">Yêu cầu chờ duyệt</span></a>
             </li>
             <li class="main-nav__item">
               <details class="main-nav__disclosure">
-                <summary class="main-nav__label" id="common-navigation-label">Chung</summary>
+                <summary class="main-nav__label" id="common-navigation-label"><span class="main-nav__text">Chung</span></summary>
                 <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
@@ -50,6 +60,7 @@
             </li>
           </ul>
         </nav>
+        </details>
         <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
         <div class="account-menu">
           <details class="account-menu__disclosure">

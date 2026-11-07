@@ -1,5 +1,5 @@
 ﻿/* Danh sách giảng viên theo ảnh tham khảo; dùng hệ thống token chung. */
-.research-banner { display:flex; align-items:center; justify-content:space-between; gap:var(--space-8); min-height:11rem; padding:var(--space-8); border:1px solid var(--color-border); border-radius:var(--radius-surface); background:linear-gradient(90deg,var(--color-surface) 10%,rgb(255 255 255 / .94) 40%,rgb(255 255 255 / .55)),url('../images/research-campus.png') right center / cover; }
+.research-banner { display:flex; align-items:center; justify-content:space-between; gap:var(--space-8); min-height:11rem; padding:var(--space-8); border:1px solid var(--color-border); border-radius:var(--radius-surface); background:linear-gradient(90deg,var(--color-surface) 10%,rgb(255 255 255 / .94) 40%,rgb(255 255 255 / .55)),url('../images/research-campus.webp') right center / cover; }
 .common-page .research-banner h1 { font-size:clamp(1.5rem,2.6vw,2.5rem); font-weight:700; }
 .common-page .research-banner p { margin:0; color:var(--color-muted-foreground); }
 .common-page .research-banner .research-motto { flex:0 0 14rem; color:var(--color-brand); font-style:italic; text-align:right; }

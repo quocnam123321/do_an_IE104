@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="../../assets/css/teacher-supervised-topics.css?v=20261102-filter-borderless-6" />
     <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
+    <script src="../../assets/js/topic-list.js" defer></script>
   </head>
 
   <body class="teacher-workspace-page teacher-topic-list-page">
@@ -491,10 +492,10 @@
             </details>
           </aside>
 
-          <section class="topic-results" aria-labelledby="topic-results-title">
+          <section class="topic-results" aria-labelledby="topic-results-title" data-topic-results>
             <div class="topic-toolbar">
               <div class="topic-toolbar__search">
-                <label class="visually-hidden" for="topic-search">Tìm kiếm đề tài</label>
+                <label class="visually-hidden" for="topic-search">Tìm theo tên đề tài, mã đề tài hoặc tên nhóm</label>
                 <svg
                   class="topic-toolbar__search-icon"
                   viewBox="0 0 24 24"
@@ -513,7 +514,7 @@
                   id="topic-search"
                   name="topic_search"
                   form="topic-filter-form"
-                  placeholder="Tìm tên/mã đề tài, tên nhóm hoặc MSSV…"
+                  placeholder="Tìm theo tên đề tài, mã đề tài hoặc tên nhóm…"
                 />
               </div>
 
@@ -524,8 +525,7 @@
                   name="topic_sort"
                   form="topic-filter-form"
                 >
-                  <option value="newest" selected>Sắp xếp: Mới nhất</option>
-                  <option value="oldest">Sắp xếp: Cũ nhất</option>
+                  <option value="default" selected>Sắp xếp: Thứ tự mặc định</option>
                   <option value="name-asc">Sắp xếp: Tên A–Z</option>
                 </select>
                 <svg
@@ -546,13 +546,15 @@
 
             <div class="topic-results__header">
               <h2 id="topic-results-title">Danh sách đề tài đang hướng dẫn</h2>
+              <p class="topic-list__status" data-topic-count role="status" hidden></p>
+              <noscript><p class="topic-list__status">Bật JavaScript để tìm kiếm, lọc và sắp xếp đề tài.</p></noscript>
             </div>
 
             <p id="topic-scroll-help" class="visually-hidden">Danh sách có thanh cuộn riêng. Dùng phím mũi tên hoặc Page Down để xem các đề tài bên dưới.</p>
             <div class="topic-list-scroll" role="region" tabindex="0" aria-labelledby="topic-results-title" aria-describedby="topic-scroll-help">
               <div class="topic-list">
                 <!-- Thẻ mẫu 1 -->
-                <article class="topic-card" aria-labelledby="topic-1-title">
+                <article class="topic-card" aria-labelledby="topic-1-title" data-topic-id="DA001" data-topic-type="course" data-role="primary" data-hoc-ky="2026-2027-1" data-course="web">
                   <div class="topic-card__media">
                     <div
                       class="topic-card__image-placeholder"
@@ -647,7 +649,7 @@
                           <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                           <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                         </svg>
-                        <span class="topic-card__meta-text">
+                        <span class="topic-card__meta-text" data-topic-search-term>
                           <span class="visually-hidden">Nhóm thực hiện: </span>Nhóm 01
                         </span>
                       </li>
@@ -678,7 +680,7 @@
                 </article>
 
                 <!-- Thẻ mẫu 2 -->
-                <article class="topic-card" aria-labelledby="topic-2-title">
+                <article class="topic-card" aria-labelledby="topic-2-title" data-topic-id="DA002" data-topic-type="course" data-role="secondary" data-hoc-ky="2026-2027-1" data-course="database">
                   <div class="topic-card__media">
                     <div
                       class="topic-card__image-placeholder"
@@ -773,7 +775,7 @@
                           <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                           <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                         </svg>
-                        <span class="topic-card__meta-text">
+                        <span class="topic-card__meta-text" data-topic-search-term>
                           <span class="visually-hidden">Nhóm thực hiện: </span>Nhóm 02
                         </span>
                       </li>
@@ -804,7 +806,7 @@
                 </article>
 
                 <!-- Thẻ mẫu 3 -->
-                <article class="topic-card" aria-labelledby="topic-3-title">
+                <article class="topic-card" aria-labelledby="topic-3-title" data-topic-id="KLTN003" data-topic-type="thesis" data-role="primary" data-hoc-ky="2026-2027-1">
                   <div class="topic-card__media">
                     <div
                       class="topic-card__image-placeholder"
@@ -899,7 +901,7 @@
                           <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                           <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                         </svg>
-                        <span class="topic-card__meta-text">
+                        <span class="topic-card__meta-text" data-topic-search-term>
                           <span class="visually-hidden">Nhóm thực hiện: </span>Nhóm 03
                         </span>
                       </li>
@@ -930,7 +932,7 @@
                 </article>
 
                 <!-- Thẻ mẫu 4 -->
-                <article class="topic-card" aria-labelledby="topic-4-title">
+                <article class="topic-card" aria-labelledby="topic-4-title" data-topic-id="DATN004" data-topic-type="graduation" data-role="secondary" data-hoc-ky="2026-2027-1">
                   <div class="topic-card__media">
                     <div
                       class="topic-card__image-placeholder"
@@ -1025,7 +1027,7 @@
                           <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                           <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                         </svg>
-                        <span class="topic-card__meta-text">
+                        <span class="topic-card__meta-text" data-topic-search-term>
                           <span class="visually-hidden">Nhóm thực hiện: </span>Nhóm 04
                         </span>
                       </li>
@@ -1056,7 +1058,7 @@
                 </article>
 
                 <!-- Thẻ mẫu 5 -->
-                <article class="topic-card" aria-labelledby="topic-5-title">
+                <article class="topic-card" aria-labelledby="topic-5-title" data-topic-id="DA005" data-topic-type="course" data-role="primary" data-hoc-ky="2026-2027-1" data-course="software">
                   <div class="topic-card__media">
                     <div
                       class="topic-card__image-placeholder"
@@ -1151,7 +1153,7 @@
                           <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
                           <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                         </svg>
-                        <span class="topic-card__meta-text">
+                        <span class="topic-card__meta-text" data-topic-search-term>
                           <span class="visually-hidden">Nhóm thực hiện: </span>Nhóm 05
                         </span>
                       </li>
@@ -1184,7 +1186,6 @@
             </div>
 
             <div class="topic-results__footer">
-              <p class="topic-results__count">Hiển thị 1–5 trên 5 kết quả</p>
               <!-- Phân trang nhất quán với 5/5 kết quả trên trang 1; chưa có xử lý chuyển trang. -->
               <nav class="pagination" aria-label="Phân trang đề tài">
                 <ul class="pagination__list">

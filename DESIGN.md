@@ -125,6 +125,7 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 
 ## 6. Bố cục và responsive
 
+- Các media query theo chiều rộng dùng `rem` để đáp ứng cỡ chữ mặc định của trình duyệt. Khi chuyển từ `px`, giữ nguyên ngưỡng của từng bố cục với cỡ chữ mặc định 16px.
 - **Đã chốt trên máy tính:** tại trang cần lọc, đặt khối bộ lọc phía trên hàng tìm kiếm/sắp xếp; danh sách kết quả bên dưới sử dụng chiều rộng khung nội dung. Không bố trí panel lọc bên trái. Chỉ hiện bộ lọc ở trang có nhu cầu lọc.
 
 ### 6.1. Danh sách đề xuất trên điện thoại — đã chốt
@@ -277,5 +278,4 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 - Dùng font Be Vietnam Pro 400/500/600/700 cục bộ trong `assets/fonts/be-vietnam-pro/` theo `base.css` vừa pull, không tiếp tục tải Google Fonts cho ba trang này.
 - Màu/font/control và khung nội dung dùng bộ mới trong `tokens.css`: khung tối đa 80rem, lề 2rem (1rem dưới 48rem). Đây là kích thước dựng thử, không thay đổi quyết định màu/font đã chốt. CSS riêng giữ bố cục nội dung hiện có; không định nghĩa lại bộ màu và header/footer.
 - Các token phụ còn cần cho CSS cũ được tập trung trong `tokens.css`: chữ caption 12px, spacing 20/40px, bo nhãn 4px, cặp viền trạng thái và transition. Chúng là lựa chọn dựng thử; số liệu thống kê và kích thước lịch vẫn nằm trong CSS riêng.
-- `components.css` hỗ trợ cả markup mới (`.site-navigation`, `nav-indicator.js`) và markup cũ (`.site-header__menu` đứng cạnh nav, `main-nav.js`), không sửa script. Menu cũ thu gọn dưới 68rem theo breakpoint header mới; luôn có gạch xanh dưới mục đang chọn, nền không tô xanh. Giữ nguyên ID, liên kết và dữ liệu.
-- Các mô tả hiện trạng ở phần trước về việc chưa có CSS chung/font cục bộ là ghi nhận trước khi pull; mục này ghi hiện trạng sau đồng bộ trong phạm vi ba trang trên. Hook tự động tiếp tục tắt.
+- Header dùng chung `<details class="site-navigation" open>`, `components.css` và `nav-indicator.js`. Dưới 68rem, script thu gọn menu khi mở trang, còn HTML vẫn cho người dùng mở và đóng menu khi tắt JavaScript. Mục hiện tại dùng gạch xanh dưới nhãn.
