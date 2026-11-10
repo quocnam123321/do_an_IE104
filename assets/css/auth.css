@@ -319,7 +319,9 @@
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   align-items: stretch;
   gap: 0;
-  min-height: calc(100svh - 5rem);
+  /* This sign-in page has no site header or footer. Allow taller content to scroll. */
+  min-height: 100vh;
+  min-height: 100svh;
 }
 .login-introduction {
   min-width: 0;
