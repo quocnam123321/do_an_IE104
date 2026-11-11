@@ -78,23 +78,17 @@
 }
 
 .login-panel__header {
-  margin-bottom: 2rem;
+  margin-bottom: var(--page-heading-gap);
 }
 
 .login-panel__header h1,
 .recovery-panel h1 {
-  margin: 0 0 0.75rem;
+  margin: 0;
   color: var(--color-heading);
   font-size: 1.75rem;
   font-weight: 600;
   line-height: 1.35;
   text-wrap: balance;
-}
-
-.login-panel__header p {
-  margin: 0;
-  color: var(--color-muted-foreground);
-  line-height: 1.75;
 }
 
 .login-form,
@@ -228,11 +222,7 @@
   background: var(--color-surface);
 }
 
-.recovery-panel > p:not(.demo-notice) {
-  margin: 0 0 1.75rem;
-  color: var(--color-muted-foreground);
-  line-height: 1.75;
-}
+.recovery-panel h1 { margin-bottom: var(--page-heading-gap); }
 
 .recovery-form > a {
   display: inline-flex;
@@ -294,7 +284,7 @@
   }
 
   .login-panel__header {
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--page-heading-gap);
   }
 
   .recovery-page {
@@ -377,7 +367,7 @@
   margin: auto;
 }
 .common-page .login-page--portal .login-panel__header h1 { font-size: 2.25rem; color: var(--color-heading); font-weight: 700; }
-.login-page--portal .login-panel__header { margin-bottom: 2rem; }
+.login-page--portal .login-panel__header { margin-bottom: var(--page-heading-gap); }
 .login-page--portal .login-form { gap: 1rem; }
 .login-page--portal .login-form input { background: var(--color-surface); color: var(--color-foreground); caret-color: var(--color-primary); }
 .login-page--portal .password-field__toggle { color: var(--color-muted-foreground); }

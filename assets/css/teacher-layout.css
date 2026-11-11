@@ -32,7 +32,6 @@
 :where(.teacher-workspace-page) .account-menu__list { width: auto; }
 :where(.teacher-workspace-page) .breadcrumb__item + .breadcrumb__item::before { margin-right: 0; }
 :where(.teacher-workspace-page) .page-header { margin-top: 0; }
-:where(.teacher-workspace-page) .page-header__description { margin-top: 0; }
 :where(.teacher-workspace-page) .site-footer__inner { display: block; }
 :where(.teacher-workspace-page) .site-footer__brand { padding: 0; }
 :where(.teacher-workspace-page) .site-footer__name { margin-bottom: 0; }
@@ -818,17 +817,16 @@ body:where(.teacher-workspace-page) {
   font-weight: var(--weight-medium);
 }
 
-/* Đầu trang nội dung: Tiêu đề + mô tả bên trái, nút hành động bên phải */
+/* Đầu trang nội dung: Tiêu đề bên trái, nút hành động bên phải */
 :where(.teacher-workspace-page) .page-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas:
-    "title action"
-    "desc  action";
+    "title action";
   align-items: center;
   column-gap: var(--space-6);
   row-gap: var(--space-2);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--page-heading-gap);
 }
 
 :where(.teacher-workspace-page) .page-header__title {
@@ -837,13 +835,6 @@ body:where(.teacher-workspace-page) {
   font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-tight);
   color: var(--color-heading);
-}
-
-:where(.teacher-workspace-page) .page-header__description {
-  grid-area: desc;
-  max-width: 65ch;
-  font-size: var(--text-base);
-  color: var(--color-muted-foreground);
 }
 
 :where(.teacher-workspace-page) .page-header__action {
@@ -887,12 +878,13 @@ body:where(.teacher-workspace-page) {
 @media (max-width: 47.99875rem) {
   :where(.teacher-workspace-page) .page-header {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-areas:
-      "title"
-      "desc"
-      "action";
+    grid-template-areas: "title";
     row-gap: var(--space-2);
-    margin-bottom: var(--space-4);
+    margin-bottom: var(--page-heading-gap);
+  }
+
+  :where(.teacher-workspace-page) .page-header:has(> .page-header__action, > .page-header__actions) {
+    grid-template-areas: "title" "action";
   }
 
   :where(.teacher-workspace-page) .page-header__title {

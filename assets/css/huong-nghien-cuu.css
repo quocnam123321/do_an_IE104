@@ -32,3 +32,6 @@
 .research-stats strong { align-self:center; }
 .research-stats > div > span:last-child { grid-column:1 / -1; }
 .research-stat-icon { display:grid; place-items:center; width:3rem; height:3rem; border-radius:var(--radius-control); background:var(--color-neutral-bg); }
+
+/* Không giữ khoảng trống của mô tả đã bỏ dưới tiêu đề. */
+.common-page .research-banner h1 { margin: 0; }

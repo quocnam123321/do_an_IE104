@@ -77,7 +77,7 @@
 }
 
 .student-overview-page .summary-card__count {
-  padding: var(--space-2) var(--space-3) 0.125rem;
+  padding: var(--space-3);
   font-size: var(--text-stat-mobile);
   line-height: 1.15;
   font-variant-numeric: tabular-nums;
@@ -88,38 +88,14 @@
   font-weight: var(--font-weight-bold);
 }
 
-.student-overview-page .summary-card__link {
-  margin-top: auto;
-  min-height: 2.25rem;
-  padding: var(--space-1) var(--space-3) var(--space-2);
-  display: inline-flex;
-  align-items: center;
-  align-self: flex-start;
-  gap: var(--space-1);
-  color: var(--color-primary);
-  font-size: var(--font-size-secondary);
-  font-weight: var(--font-weight-medium);
-  text-decoration: none;
-  overflow-wrap: anywhere;
-}
-
-.student-overview-page .summary-card__link:hover {
-  color: var(--color-primary-hover);
-  text-decoration: underline;
-}
-
 @media (min-width: 48rem) {
   .student-overview-page .summary-card__title {
     padding: 0.5rem 0.875rem;
   }
 
   .student-overview-page .summary-card__count {
-    padding: 0.625rem 0.875rem 0.125rem;
+    padding: 0.875rem;
     font-size: var(--text-stat-desktop);
-  }
-
-  .student-overview-page .summary-card__link {
-    padding: 0.25rem 0.875rem 0.5rem;
   }
 }
 

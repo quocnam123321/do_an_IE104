@@ -1,5 +1,5 @@
 /* Bốn mục dùng fragment + :target có sẵn; không thêm JavaScript dữ liệu. */
-.active-topic-page .page-header { margin-block: var(--space-4); }
+.active-topic-page .page-header { margin-block: var(--space-4) var(--page-heading-gap); }
 .active-topic-page .back-navigation { margin-block: var(--space-4); font-size: var(--font-size-secondary); }
 .active-project-name { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-3); color: var(--color-heading); font-weight: 600; }
 .active-project-status { padding: var(--space-1) var(--space-3); border-radius: var(--radius-control); background: var(--color-info-bg); color: var(--color-info-fg); font-size: .75rem; font-weight: 500; }

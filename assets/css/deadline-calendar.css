@@ -48,19 +48,31 @@
 }
 
 /* Thanh tiêu đề khu vực đồng bộ với trang Tổng quan sinh viên */
-.student-deadline-page .deadline-calendar > h2 {
+.student-deadline-page .deadline-calendar__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
   padding: 0.625rem var(--space-4);
   background-color: var(--color-neutral-bg);
   border-bottom: 1px solid var(--color-border);
   border-radius: calc(var(--radius-surface) - 1px) calc(var(--radius-surface) - 1px) 0 0;
+}
+
+.student-deadline-page .deadline-calendar__header h2 {
+  margin: 0;
   color: var(--color-heading);
   font-size: var(--font-size-body);
   font-weight: var(--font-weight-bold);
 }
 
 @media (min-width: 48rem) {
-  .student-deadline-page .deadline-calendar > h2 {
+  .student-deadline-page .deadline-calendar__header {
     padding: 0.6875rem var(--space-5);
+  }
+
+  .student-deadline-page .deadline-calendar__header h2 {
     font-size: var(--font-size-section-title);
   }
 }
@@ -204,14 +216,14 @@
   overflow-x: auto;
   overflow-y: visible;
   -webkit-overflow-scrolling: touch;
-  padding: var(--space-3) var(--space-4) var(--space-2);
+  padding: var(--space-3) var(--space-4) var(--space-4);
   scrollbar-width: thin;
   scrollbar-color: var(--color-secondary-btn-border) var(--color-neutral-bg);
 }
 
 @media (min-width: 48rem) {
   .student-deadline-page .calendar-scroll {
-    padding: var(--space-3) var(--space-5) var(--space-2);
+    padding: var(--space-3) var(--space-5) var(--space-5);
   }
 }
 
@@ -350,23 +362,13 @@
   transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.student-deadline-page .calendar-event strong {
-  color: var(--color-heading);
-  font-weight: var(--font-weight-bold);
-}
-
 /* Loại sự kiện 1: Hạn Bài nộp (.calendar-event--submission)
-   Dấu hiệu ngoài màu sắc: viền liền + vạch nhấn trái 4px + ký hiệu vuông "▪ " */
+   Viền liền phân biệt với viền nét đứt của Hạn đề tài; không thêm ký hiệu trong thẻ. */
 .student-deadline-page .calendar-event--submission {
   background-color: var(--color-info-bg);
   border: 1px solid var(--color-info-border);
   border-left: 4px solid var(--color-primary);
   color: var(--color-foreground);
-}
-
-.student-deadline-page .calendar-event--submission strong::before {
-  content: "▪ ";
-  color: var(--color-primary);
 }
 
 .student-deadline-page .calendar-event--submission:hover {
@@ -375,8 +377,8 @@
   color: var(--color-heading);
 }
 
-.student-deadline-page .calendar-event--submission:hover strong,
-.student-deadline-page .calendar-entry:focus-within > .calendar-event--submission strong {
+.student-deadline-page .calendar-event--submission:hover,
+.student-deadline-page .calendar-entry:focus-within > .calendar-event--submission {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -388,17 +390,12 @@
 }
 
 /* Loại sự kiện 2: Hạn đề tài (.calendar-event--topic)
-   Dấu hiệu ngoài màu sắc: viền nét đứt (dashed) + vạch nhấn trái 4px + ký hiệu thoi "◆ " */
+   Viền nét đứt phân biệt với viền liền của Bài nộp; không thêm ký hiệu trong thẻ. */
 .student-deadline-page .calendar-event--topic {
   background-color: var(--color-warning-bg);
   border: 1px dashed var(--color-warning-border);
   border-left: 4px solid var(--color-warning-fg);
   color: var(--color-foreground);
-}
-
-.student-deadline-page .calendar-event--topic strong::before {
-  content: "◆ ";
-  color: var(--color-warning-fg);
 }
 
 /* Hộp xem trước sự kiện (.calendar-preview) do deadline-calendar.js khởi tạo */
@@ -505,21 +502,46 @@
   color: var(--color-on-primary);
 }
 
-/* Chú giải dưới bảng lịch (.deadline-calendar__legend) */
+/* Chú giải trên thanh tiêu đề, bên ngoài vùng cuộn ngang của bảng lịch. */
 .student-deadline-page .deadline-calendar__legend {
-  padding: var(--space-2) var(--space-4) var(--space-3);
-  border-top: 1px solid var(--color-border);
-  background-color: var(--color-background);
-  border-radius: 0 0 calc(var(--radius-surface) - 1px) calc(var(--radius-surface) - 1px);
-  color: var(--color-muted-foreground);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-5);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-foreground);
   font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-medium);
   line-height: 1.45;
 }
 
-@media (min-width: 48rem) {
-  .student-deadline-page .deadline-calendar__legend {
-    padding: var(--space-2) var(--space-5) var(--space-3);
-  }
+.student-deadline-page .deadline-calendar__legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.student-deadline-page .deadline-calendar__swatch {
+  flex: 0 0 1rem;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 0.1875rem;
+}
+
+.student-deadline-page .deadline-calendar__swatch--submission {
+  background-color: var(--color-primary);
+}
+
+.student-deadline-page .deadline-calendar__swatch--topic {
+  background-color: var(--color-warning-fg);
+}
+
+@media (max-width: 35rem) {
+  .student-deadline-page .deadline-calendar__legend { width: 100%; }
 }
 
 @media (forced-colors: active) {

@@ -310,7 +310,7 @@
 @media (max-width: 74.99rem) {
   .teacher-created-detail-page .page-header {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-areas: "title" "desc" "action";
+    grid-template-areas: "title" "action";
   }
 
   .teacher-created-detail-page .page-header__actions {

@@ -97,12 +97,8 @@ h1, h2, h3 { overflow-wrap: anywhere; }
   margin-inline: auto;
   padding-inline: var(--page-gutter);
 }
-.page-header { margin-block: var(--space-6) var(--space-8); }
+.page-header { margin-block: var(--space-6) var(--page-heading-gap); }
 .page-header__title { font-size: var(--font-size-page-title); font-weight: 700; }
-.page-header__description {
-  margin-top: var(--space-2);
-  color: var(--color-muted-foreground);
-}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }

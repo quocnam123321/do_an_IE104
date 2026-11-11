@@ -104,7 +104,8 @@
   font-size: var(--font-small);
   line-height: 1.65;
 }
-.common-page .page-header { margin-bottom: 2rem; }
+.common-page .page-header { margin-bottom: var(--page-heading-gap); }
+.common-page .page-header h1 { margin: 0; }
 .common-page .pagination ul { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; list-style: none; }
 .common-page .pagination [aria-current="page"] { display: grid; place-items: center; min-width: 2.75rem; min-height: 2.75rem; border-radius: var(--radius-control); background: var(--color-primary); color: var(--color-on-primary); }
 .common-page .empty-state { padding: 3rem 1.5rem; text-align: center; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-card); }

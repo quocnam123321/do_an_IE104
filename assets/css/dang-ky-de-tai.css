@@ -14,7 +14,7 @@
 #attachment-note, .proposal-form__selected-supervisor, #proposal-required-note { color: var(--color-muted-foreground); font-size: var(--font-size-secondary); }
 .page-back-link, .page-back { display: inline-block; margin-top: var(--space-4); font-size: var(--font-size-secondary); }
 .page-back-link + .page-header { margin-top: var(--space-3); }
-.description { margin-bottom: var(--space-8); }
+.registration-page .page-back + .page-header { margin-top: var(--space-4); }
 
 /* WF mới nhất: tìm kiếm phía trên; bộ lọc trái, danh sách phải. */
 .topics-layout { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: var(--space-4) var(--space-6); align-items: start; }

@@ -17,7 +17,7 @@
 
 .page-header--detail {
   display: block;
-  margin-block: var(--space-4);
+  margin-block: var(--space-4) var(--page-heading-gap);
 }
 
 .page-header__topic-name {
@@ -318,7 +318,6 @@
   color: var(--color-disabled-fg);
   cursor: not-allowed;
 }
-
 
 /* --------------------------------------------------------------------------
    8e. KẾT QUẢ ĐÁNH GIÁ — bố cục đã duyệt, chưa xử lý tính/lưu điểm

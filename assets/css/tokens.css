@@ -60,6 +60,7 @@
   --space-12: 3rem;
   --content-max-width: 80rem;
   --page-gutter: 2rem;
+  --page-heading-gap: var(--space-6);
   --shadow-floating: 0 12px 32px rgb(15 23 42 / .14);
   /* Bổ sung cho các trang tổng quan và lịch cũ; giá trị dựng thử. */
   --text-xs: .75rem;
@@ -86,6 +87,7 @@
   :root {
     --font-size-page-title: 1.5rem;
     --page-gutter: 1rem;
+    --page-heading-gap: var(--space-4);
   }
 }
 
