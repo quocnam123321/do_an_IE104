@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Thông báo chung về đăng ký đề tài, lịch báo cáo, hướng dẫn và biểu mẫu đồ án, khóa luận tốt nghiệp." />
+    <meta name="description" content="Thông báo về kế hoạch học vụ, báo cáo, nộp bài, lịch bảo vệ và tổng kết đồ án, khóa luận tốt nghiệp." />
     <title>Thông báo | Quản lý đồ án và khóa luận</title>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261111-heading-sync-1" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
-    <link rel="stylesheet" href="../../assets/css/common.css?v=20261111-heading-sync-1" />
+    <link rel="stylesheet" href="../../assets/css/common.css?v=20261112-notification-scroll-3" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
   </head>
   <body class="common-page">
@@ -56,116 +56,210 @@
           <h1 id="notification-list-title">Tất cả thông báo</h1>
         </header>
 
-        <!-- Bộ lọc dạng nút trên desktop và ô chọn trên mobile.
-             Chưa có xử lý lọc dữ liệu hoặc đổi tiêu đề. -->
-        <section class="notification-tools" aria-label="Lọc theo loại thông báo" aria-describedby="demo-notice">
-          <div class="notification-categories notification-categories--desktop" role="group" aria-label="Loại thông báo">
-            <button type="button" data-category="all" aria-pressed="true" disabled>Tất cả</button>
-            <button type="button" data-category="dang-ky-de-tai" aria-pressed="false" disabled>Đăng ký đề tài</button>
-            <button type="button" data-category="lich-bao-cao" aria-pressed="false" disabled>Lịch báo cáo</button>
-            <button type="button" data-category="huong-dan" aria-pressed="false" disabled>Hướng dẫn</button>
-            <button type="button" data-category="bieu-mau" aria-pressed="false" disabled>Biểu mẫu</button>
-          </div>
-          <div class="notification-categories notification-categories--mobile">
-            <label for="notification-category">Loại thông báo</label>
-            <select id="notification-category" name="loai-thong-bao" disabled>
-              <option value="all" selected>Tất cả loại</option>
-              <option value="dang-ky-de-tai">Đăng ký đề tài</option>
-              <option value="lich-bao-cao">Lịch báo cáo</option>
-              <option value="huong-dan">Hướng dẫn</option>
-              <option value="bieu-mau">Biểu mẫu</option>
-            </select>
-          </div>
-        </section>
-        <p id="demo-notice" class="demo-notice">Nội dung và ngày đăng là dữ liệu minh họa; bộ lọc và phân trang chưa được xử lý.</p>
+        <nav class="notification-tools" aria-label="Lọc theo loại thông báo">
+          <ul class="notification-categories">
+            <li><a class="button" href="thong-bao.html" aria-current="true">Tất cả</a></li>
+            <li><a class="button" href="thong-bao-ke-hoach-hoc-vu.html">Kế hoạch học vụ</a></li>
+            <li><a class="button" href="thong-bao-bao-cao-nop-bai.html">Báo cáo &amp; nộp bài</a></li>
+            <li><a class="button" href="thong-bao-lich-bao-ve.html">Lịch bảo vệ</a></li>
+            <li><a class="button" href="thong-bao-tong-ket-vinh-danh.html">Tổng kết &amp; vinh danh</a></li>
+          </ul>
+          <details class="notification-tools__mobile">
+            <summary>Loại thông báo · Tất cả</summary>
+            <ul class="notification-categories">
+              <li><a class="button" href="thong-bao.html" aria-current="true">Tất cả</a></li>
+              <li><a class="button" href="thong-bao-ke-hoach-hoc-vu.html">Kế hoạch học vụ</a></li>
+              <li><a class="button" href="thong-bao-bao-cao-nop-bai.html">Báo cáo &amp; nộp bài</a></li>
+              <li><a class="button" href="thong-bao-lich-bao-ve.html">Lịch bảo vệ</a></li>
+              <li><a class="button" href="thong-bao-tong-ket-vinh-danh.html">Tổng kết &amp; vinh danh</a></li>
+            </ul>
+          </details>
+        </nav>
 
         <!-- Một danh sách nội dung dùng chung cho desktop và mobile. -->
         <section class="notification-list" aria-labelledby="notification-list-title">
           <ol class="notification-list__items">
             <li>
-              <article id="thong-bao-01" class="notification-card" data-category="dang-ky-de-tai" aria-labelledby="notification-01-title">
-                <a class="notification-card__image" href="chi-tiet-thong-bao-01.html" aria-label="Đọc thông báo: Kế hoạch đăng ký đề tài học kỳ I năm học 2026–2027">
-                  <span class="notification-image-placeholder" aria-hidden="true">Ảnh thông báo</span>
-                </a>
-                <div class="notification-card__content">
-                  <h2 id="notification-01-title"><a href="chi-tiet-thong-bao-01.html">Kế hoạch đăng ký đề tài học kỳ I năm học 2026–2027</a></h2>
-                  <p><time class="notification-card__date" datetime="2026-10-10">10/10/2026</time></p>
-                  <p class="notification-card__summary">Thông tin về đợt đăng ký, các bước thực hiện và lưu ý dành cho sinh viên.</p>
-                </div>
-              </article>
+              <a class="notification-card__link" href="chi-tiet-thong-bao-01.html" aria-labelledby="notification-01-title">
+                <article id="thong-bao-01" class="notification-card" data-category="tong-ket-vinh-danh" aria-labelledby="notification-01-title">
+                  <div class="notification-card__image">
+                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
+                  </div>
+                  <div class="notification-card__content">
+                    <h2 id="notification-01-title">[KH&amp;KTTT] VINH DANH SINH VIÊN ĐẠT ĐIỂM KLTN CAO NHẤT HKII NĂM HỌC 2025-2026</h2>
+                    <p><time class="notification-card__date" datetime="2026-06-26">26-06-2026</time></p>
+                    <p class="notification-card__summary">VINH DANH SINH VIÊN ĐẠT ĐIỂM KLTN CAO NHẤT HKII NĂM HỌC 2025-2026 Khoa KH&amp;KTTT nhiệt liệt chúc mừng các bạn sinh viên các hệ đào tạo đã đạt điểm cao nhất tại Hội đồng bảo vệ KLTN vào Học kỳ II Năm học 2025-2026. Thông tin c...</p>
+                  </div>
+                </article>
+              </a>
             </li>
             <li>
-              <article id="thong-bao-02" class="notification-card" data-category="huong-dan" aria-labelledby="notification-02-title">
-                <a class="notification-card__image" href="chi-tiet-thong-bao-02.html" aria-label="Đọc thông báo: Hướng dẫn cập nhật tiến độ và nộp báo cáo">
-                  <span class="notification-image-placeholder" aria-hidden="true">Ảnh thông báo</span>
-                </a>
-                <div class="notification-card__content">
-                  <h2 id="notification-02-title"><a href="chi-tiet-thong-bao-02.html">Hướng dẫn cập nhật tiến độ và nộp báo cáo</a></h2>
-                  <p><time class="notification-card__date" datetime="2026-10-09">09/10/2026</time></p>
-                  <p class="notification-card__summary">Các bước cập nhật tiến độ và chuẩn bị báo cáo theo hướng dẫn của giảng viên.</p>
-                </div>
-              </article>
+              <a class="notification-card__link" href="chi-tiet-thong-bao-02.html" aria-labelledby="notification-02-title">
+                <article id="thong-bao-02" class="notification-card" data-category="lich-bao-ve" aria-labelledby="notification-02-title">
+                  <div class="notification-card__image">
+                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
+                  </div>
+                  <div class="notification-card__content">
+                    <h2 id="notification-02-title">[KH&amp;KTTT] THÔNG BÁO THỜI GIAN BẢO VỆ KHÓA LUẬN TỐT NGHIỆP HỌC KỲ II NĂM HỌC 2025-2026</h2>
+                    <p><time class="notification-card__date" datetime="2026-06-24">24-06-2026</time></p>
+                    <p class="notification-card__summary">Chào các bạn sinh viên, Khoa Khoa học và Kỹ thuật Thông tin, thông báo đến các bạn thời gian bảo vệ khóa luận tốt nghiệp Học kỳ II, Năm học 2025-2026, cụ thể: - Thời gian: 08:00, thứ Năm, ngày 25 tháng 06 năm 2026 - Địa điểm: Các phòng tầng 3 và 4,...</p>
+                  </div>
+                </article>
+              </a>
             </li>
             <li>
-              <article id="thong-bao-03" class="notification-card" data-category="lich-bao-cao" aria-labelledby="notification-03-title">
-                <a class="notification-card__image" href="chi-tiet-thong-bao-03.html" aria-label="Đọc thông báo: Lịch báo cáo tiến độ đồ án đợt 1">
-                  <span class="notification-image-placeholder" aria-hidden="true">Ảnh thông báo</span>
-                </a>
-                <div class="notification-card__content">
-                  <h2 id="notification-03-title"><a href="chi-tiet-thong-bao-03.html">Lịch báo cáo tiến độ đồ án đợt 1</a></h2>
-                  <p><time class="notification-card__date" datetime="2026-10-08">08/10/2026</time></p>
-                  <p class="notification-card__summary">Thông tin về lịch báo cáo, nội dung cần chuẩn bị và hình thức trình bày.</p>
-                </div>
-              </article>
+              <a class="notification-card__link" href="chi-tiet-thong-bao-03.html" aria-labelledby="notification-03-title">
+                <article id="thong-bao-03" class="notification-card" data-category="ke-hoach-hoc-vu" aria-labelledby="notification-03-title">
+                  <div class="notification-card__image">
+                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
+                  </div>
+                  <div class="notification-card__content">
+                    <h2 id="notification-03-title">[KH&amp;KTTT] KẾ HOẠCH THỰC HIỆN HỌC PHẦN ĐỒ ÁN_HKI_NH2025 - 2026</h2>
+                    <p><time class="notification-card__date" datetime="2025-09-19">19-09-2025</time></p>
+                    <p class="notification-card__summary">Chào các bạn sinh viên, Khoa KH&amp;KTTT chuyển đến các bạn thông báo về Kế hoạch thực hiện học phần Đồ án_HKI_NH2025 - 2026, cụ thể: KẾ HOẠCH THỰC HIỆN HỌC PHẦN ĐỒ ÁN DS207.Q11 - IE207.Q11 HK 1- NĂM HỌC 2025- 2026 STT GI...</p>
+                  </div>
+                </article>
+              </a>
             </li>
             <li>
-              <article id="thong-bao-04" class="notification-card" data-category="bieu-mau" aria-labelledby="notification-04-title">
-                <a class="notification-card__image" href="chi-tiet-thong-bao-04.html" aria-label="Đọc thông báo: Biểu mẫu đề cương đồ án và khóa luận">
-                  <span class="notification-image-placeholder" aria-hidden="true">Ảnh thông báo</span>
-                </a>
-                <div class="notification-card__content">
-                  <h2 id="notification-04-title"><a href="chi-tiet-thong-bao-04.html">Biểu mẫu đề cương đồ án và khóa luận</a></h2>
-                  <p><time class="notification-card__date" datetime="2026-10-06">06/10/2026</time></p>
-                  <p class="notification-card__summary">Các mẫu tài liệu tham khảo để chuẩn bị đề cương và trình bày báo cáo.</p>
-                </div>
-              </article>
+              <a class="notification-card__link" href="chi-tiet-thong-bao-04.html" aria-labelledby="notification-04-title">
+                <article id="thong-bao-04" class="notification-card" data-category="ke-hoach-hoc-vu" aria-labelledby="notification-04-title">
+                  <div class="notification-card__image">
+                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
+                  </div>
+                  <div class="notification-card__content">
+                    <h2 id="notification-04-title">[KH&amp;KTTT] THÔNG BÁO KẾ HOẠCH THỰC HIỆN KLTN HỌC KỲ I NĂM HỌC 2025 - 2026</h2>
+                    <p><time class="notification-card__date" datetime="2025-08-15">15-08-2025</time></p>
+                    <p class="notification-card__summary">Chào các bạn sinh viên, Khoa KH&amp;KTTT chuyển đến các bạn sinh viên kế hoạch thực hiện KLTN HKI NH 2025 - 2026 với các thông tin như sau: KẾ HOẠCH THỰC HIỆN KHÓA LUẬN TỐT NGHIỆP HỌC KỲ I NĂM HỌC 2025-2026 STT NỘI DUNG TH...</p>
+                  </div>
+                </article>
+              </a>
             </li>
             <li>
-              <article id="thong-bao-05" class="notification-card" data-category="huong-dan" aria-labelledby="notification-05-title">
-                <a class="notification-card__image" href="chi-tiet-thong-bao-05.html" aria-label="Đọc thông báo: Quy trình đăng ký đề tài">
-                  <span class="notification-image-placeholder" aria-hidden="true">Ảnh thông báo</span>
-                </a>
-                <div class="notification-card__content">
-                  <h2 id="notification-05-title"><a href="chi-tiet-thong-bao-05.html">Quy trình đăng ký đề tài</a></h2>
-                  <p><time class="notification-card__date" datetime="2026-10-05">05/10/2026</time></p>
-                  <p class="notification-card__summary">Tìm hiểu các bước lựa chọn đề tài và theo dõi kết quả đăng ký.</p>
-                </div>
-              </article>
+              <a class="notification-card__link" href="chi-tiet-thong-bao-05.html" aria-labelledby="notification-05-title">
+                <article id="thong-bao-05" class="notification-card" data-category="lich-bao-ve" aria-labelledby="notification-05-title">
+                  <div class="notification-card__image">
+                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
+                  </div>
+                  <div class="notification-card__content">
+                    <h2 id="notification-05-title">[KH&amp;KTTT] THÔNG TIN HỘI ĐỒNG BẢO VỆ KHÓA LUẬN TỐT NGHIỆP HỌC KỲ II NĂM HỌC 2024-2025</h2>
+                    <p><time class="notification-card__date" datetime="2025-07-14">14-07-2025</time></p>
+                    <p class="notification-card__summary">Chào các bạn sinh viên, Khoa Khoa học và Kỹ thuật Thông tin, thông báo đến các bạn thời gian bảo vệ khóa luận tốt nghiệp Học kỳ II, Năm học 2024-2025, cụ thể: - Thời gian: 08:00, Thứ 3, ngày 15 tháng 07 năm 2025; - Địa điểm: Các phòng tầng 2, tầng...</p>
+                  </div>
+                </article>
+              </a>
+            </li>
+            <li>
+              <a class="notification-card__link" href="chi-tiet-thong-bao-06.html" aria-labelledby="notification-06-title">
+                <article id="thong-bao-06" class="notification-card" data-category="bao-cao-nop-bai" aria-labelledby="notification-06-title">
+                  <div class="notification-card__image">
+                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
+                  </div>
+                  <div class="notification-card__content">
+                    <h2 id="notification-06-title">[KH&amp;KTTT] THÔNG BÁO KẾT QUẢ BÁO CÁO TIẾN ĐỘ GIỮA KỲ KLTN_HKII_NH 22024 - 2025</h2>
+                    <p><time class="notification-card__date" datetime="2025-05-07">07-05-2025</time></p>
+                    <p class="notification-card__summary">Chào các bạn sinh viên, Khoa Khoa học và Kỹ thuật Thông tin chuyển đến các bạn sinh viên kết quả báo cáo giữa kỳ , các bạn xem qua tại LINK. Các bạn SV điều chỉnh theo góp ý của Hội đồng. Một số lưu ý dành cho các bạn sinh viên: 1. Đổi tên đề tài...</p>
+                  </div>
+                </article>
+              </a>
+            </li>
+            <li>
+              <a class="notification-card__link" href="chi-tiet-thong-bao-07.html" aria-labelledby="notification-07-title">
+                <article id="thong-bao-07" class="notification-card" data-category="tong-ket-vinh-danh" aria-labelledby="notification-07-title">
+                  <div class="notification-card__image">
+                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
+                  </div>
+                  <div class="notification-card__content">
+                    <h2 id="notification-07-title">[KH&amp;KTTT] TỔNG KẾT LỄ BẢO VỆ KLTN HKI NH 2024 - 2025</h2>
+                    <p><time class="notification-card__date" datetime="2025-02-13">13-02-2025</time></p>
+                    <p class="notification-card__summary">Vào lúc 07:30 sáng ngày 13 tháng 02 năm 2025 tại tầng 10 và tầng 11 tòa nhà E, trường Đại học Công nghệ Thông tin, ĐHQG TP.HCM, Khoa Khoa học và Kỹ thuật Thông tin đã diễn ra Hội đồng bảo vệ KLTN. Các bạn sinh viên đã tham gia trình bày và bảo vệ...</p>
+                  </div>
+                </article>
+              </a>
+            </li>
+            <li>
+              <a class="notification-card__link" href="chi-tiet-thong-bao-08.html" aria-labelledby="notification-08-title">
+                <article id="thong-bao-08" class="notification-card" data-category="lich-bao-ve" aria-labelledby="notification-08-title">
+                  <div class="notification-card__image">
+                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
+                  </div>
+                  <div class="notification-card__content">
+                    <h2 id="notification-08-title">[KH&amp;KTTT] HỘI ĐỒNG BẢO VỆ KLTN HKI NH 2024 - 2025</h2>
+                    <p><time class="notification-card__date" datetime="2025-02-12">12-02-2025</time></p>
+                    <p class="notification-card__summary">Kính gửi các bạn sinh viên, Khoa KH&amp;KTTT thông tin đến các bạn về Hội đồng bảo vệ KHTN - HKI - Năm học 2024 - 2025, cụ thể: - Thời gian: Bắt đầu từ lúc 07:30, Thứ 5, ngày 13 tháng 02 năm 2025. - Địa điểm: Tại c ác phòng E10.1, E10....</p>
+                  </div>
+                </article>
+              </a>
+            </li>
+            <li>
+              <a class="notification-card__link" href="chi-tiet-thong-bao-09.html" aria-labelledby="notification-09-title">
+                <article id="thong-bao-09" class="notification-card" data-category="ke-hoach-hoc-vu" aria-labelledby="notification-09-title">
+                  <div class="notification-card__image">
+                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
+                  </div>
+                  <div class="notification-card__content">
+                    <h2 id="notification-09-title">[KH&amp;KTTT] KẾ HOẠCH HỌC VỤ ĐỒ ÁN HKII NĂM HỌC 2024 - 2025</h2>
+                    <p><time class="notification-card__date" datetime="2025-01-22">22-01-2025</time></p>
+                    <p class="notification-card__summary">Chào các bạn sinh viên, Khoa KH&amp;KTTT chuyển đến các bạn thông báo kế hoạch học vụ thực hiện Đồ Án - HKII - NH 2024 - 2025, cụ thể: KẾ HOẠCH THỰC HIỆN HỌC PHẦN ĐỒ ÁN MÃ MÔN: DS207- IE207 HK 2- NĂM HỌC 2024- 2025 STT GIAI ĐOẠN NỘI DUN...</p>
+                  </div>
+                </article>
+              </a>
+            </li>
+            <li>
+              <a class="notification-card__link" href="chi-tiet-thong-bao-10.html" aria-labelledby="notification-10-title">
+                <article id="thong-bao-10" class="notification-card" data-category="ke-hoach-hoc-vu" aria-labelledby="notification-10-title">
+                  <div class="notification-card__image">
+                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
+                  </div>
+                  <div class="notification-card__content">
+                    <h2 id="notification-10-title">[KH&amp;KTTT] THÔNG BÁO HỌC VỤ KLTN_HKII_NH 2024 - 2025</h2>
+                    <p><time class="notification-card__date" datetime="2025-01-22">22-01-2025</time></p>
+                    <p class="notification-card__summary">Chào các bạn sinh viên Khoa KH&amp;KTTT chuyển đến các bạn thông báo học vụ thực hiện KLTN - HKII - NH 2024 - 2025, cụ thể: KẾ HOẠCH THỰC HIỆN KHÓA LUẬN TỐT NGHIỆP HỌC KỲ II NĂM HỌC 2024 - 2025 STT NỘI DUNG THỰC HIỆN THỜI GIAN G...</p>
+                  </div>
+                </article>
+              </a>
+            </li>
+            <li>
+              <a class="notification-card__link" href="chi-tiet-thong-bao-11.html" aria-labelledby="notification-11-title">
+                <article id="thong-bao-11" class="notification-card" data-category="bao-cao-nop-bai" aria-labelledby="notification-11-title">
+                  <div class="notification-card__image">
+                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
+                  </div>
+                  <div class="notification-card__content">
+                    <h2 id="notification-11-title">[KH&amp;KTTT] THÔNG BÁO HĐ BÁO CÁO GIỮA KỲ KLTN HKI NH 2024-2025</h2>
+                    <p><time class="notification-card__date" datetime="2024-11-07">07-11-2024</time></p>
+                    <p class="notification-card__summary">Kính gửi các bạn sinh viên, Khoa KH&amp;KTTT chuyển đến các bạn sinh viên thông tin báo cáo giữa kỳ, cụ thể: 1. Thông tin Hội đồng báo cáo Các bạn sinh viên xem danh sách HĐ báo cáo, chi tiết tại LINK ; 2. Nội dung báo cáo Theo như nội dung của...</p>
+                  </div>
+                </article>
+              </a>
+            </li>
+            <li>
+              <a class="notification-card__link" href="chi-tiet-thong-bao-12.html" aria-labelledby="notification-12-title">
+                <article id="thong-bao-12" class="notification-card" data-category="ke-hoach-hoc-vu" aria-labelledby="notification-12-title">
+                  <div class="notification-card__image">
+                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
+                  </div>
+                  <div class="notification-card__content">
+                    <h2 id="notification-12-title">[KH&amp;KTTT] THÔNG BÁO THỰC HIỆN KLTN HKI NĂM HỌC 2024 - 2025</h2>
+                    <p><time class="notification-card__date" datetime="2024-08-22">22-08-2024</time></p>
+                    <p class="notification-card__summary">Kính gửi các bạn sinh viên, Khoa Khoa học và Kỹ thuật Thông tin gửi đến các bạn thông báo về tiến trình thực hiện KLTN, Học kỳ I, Năm học 2024 - 2025, cụ thể: KẾ HOẠCH THỰC HIỆN KHÓA LUẬN TỐT NGHIỆP HỌC KỲ I NĂM HỌC 2024 - 2025 STT N...</p>
+                  </div>
+                </article>
+              </a>
             </li>
           </ol>
           <div class="notification-list__footer">
-            <p>Hiển thị 1–5 trong 5 thông báo</p>
-            <nav class="pagination" aria-label="Phân trang thông báo" aria-describedby="demo-notice">
+            <p>Hiển thị 1–12 trong 24 thông báo</p>
+            <nav class="pagination" aria-label="Phân trang thông báo">
               <ul>
                 <li><button type="button" disabled>Trước</button></li>
                 <li><span aria-current="page" aria-label="Trang 1">1</span></li>
-                <li><button type="button" disabled>Sau</button></li>
+                <li><a class="button" href="thong-bao-trang-2.html" aria-label="Trang 2">2</a></li>
+                <li><a class="button" href="thong-bao-trang-2.html" rel="next" aria-label="Trang sau">Sau</a></li>
               </ul>
             </nav>
           </div>
         </section>
-        <template id="announcements-empty-template">
-          <section class="empty-state" aria-labelledby="announcements-empty-title">
-            <h2 id="announcements-empty-title">Chưa có thông báo</h2>
-            <p>Các thông báo sẽ hiển thị tại đây.</p>
-          </section>
-        </template>
-        <template id="announcements-no-results-template">
-          <section class="empty-state" aria-labelledby="announcements-no-results-title">
-            <h2 id="announcements-no-results-title">Không có thông báo thuộc loại đã chọn</h2>
-            <p>Chọn loại khác hoặc Tất cả để xem các thông báo.</p>
-          </section>
-        </template>
       </div>
     </main>
 

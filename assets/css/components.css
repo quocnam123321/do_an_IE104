@@ -1,7 +1,7 @@
 @import url("breadcrumb.css");
 
-/* Nút quay lại dùng chung cho các trang chi tiết đề tài của hai vai trò. */
-:where(.active-topic-page, .teacher-workspace-page) .back-navigation > .back-link {
+/* Nút quay lại dùng chung cho các trang chi tiết đề tài và thông báo. */
+:where(.active-topic-page, .teacher-workspace-page, .notification-detail-page) .back-navigation > .back-link {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -19,19 +19,19 @@
     color var(--duration-fast) var(--ease-standard);
 }
 
-:where(.active-topic-page, .teacher-workspace-page) .back-navigation .back-link__icon {
+:where(.active-topic-page, .teacher-workspace-page, .notification-detail-page) .back-navigation .back-link__icon {
   flex: 0 0 auto;
   width: 1rem;
   height: 1rem;
 }
 
-:where(.active-topic-page, .teacher-workspace-page) .back-navigation > .back-link:hover {
+:where(.active-topic-page, .teacher-workspace-page, .notification-detail-page) .back-navigation > .back-link:hover {
   border-color: var(--color-primary);
   background: var(--color-primary-tint);
   color: var(--color-primary-hover);
 }
 
-:where(.active-topic-page, .teacher-workspace-page) .back-navigation > .back-link:active {
+:where(.active-topic-page, .teacher-workspace-page, .notification-detail-page) .back-navigation > .back-link:active {
   background: var(--color-info-hover-bg);
 }
 
