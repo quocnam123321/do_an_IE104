@@ -32,28 +32,6 @@
 :where(.teacher-workspace-page) .account-menu__list { width: auto; }
 :where(.teacher-workspace-page) .breadcrumb__item + .breadcrumb__item::before { margin-right: 0; }
 :where(.teacher-workspace-page) .page-header { margin-top: 0; }
-:where(.teacher-workspace-page) .site-footer__inner { display: block; }
-:where(.teacher-workspace-page) .site-footer__brand { padding: 0; }
-:where(.teacher-workspace-page) .site-footer__name { margin-bottom: 0; }
-:where(.teacher-workspace-page) .site-footer__about { margin: 0; }
-:where(.teacher-workspace-page) .site-footer__about > div + div { margin-top: 0; }
-:where(.teacher-workspace-page) .site-footer__columns .site-footer__information {
-  display: block;
-  padding-block: 0;
-  padding-right: 0;
-  border: 0;
-  padding-left: var(--space-8);
-}
-:where(.teacher-workspace-page) .site-footer { font-size: var(--text-base); }
-:where(.teacher-workspace-page) .site-footer__columns .site-footer__information h2 { font-size: var(--text-base); }
-@media (max-width: 47.99875rem) {
-  :where(.teacher-workspace-page) .site-footer__columns .site-footer__information { padding-left: 0; }
-}
-:where(.teacher-workspace-page) .site-footer img.site-footer__logo {
-  width: 2.75rem;
-  height: 2.75rem;
-}
-
 /* ==========================================================================
    BASE — Thiết lập nền tảng, typography gốc, trợ năng và bề mặt trình duyệt
    ========================================================================== */
@@ -230,8 +208,7 @@ body:where(.teacher-workspace-page) {
   outline: none;
 }
 
-:where(.teacher-workspace-page) .site-header__inner,
-:where(.teacher-workspace-page) .site-footer__inner {
+:where(.teacher-workspace-page) .site-header__inner {
   width: 100%;
   max-width: var(--container-max-width);
   margin-inline: auto;
@@ -239,8 +216,7 @@ body:where(.teacher-workspace-page) {
 }
 
 @media (max-width: 63.99875rem) {
-  :where(.teacher-workspace-page) .site-header__inner,
-:where(.teacher-workspace-page) .site-footer__inner {
+  :where(.teacher-workspace-page) .site-header__inner {
     padding-inline: var(--space-6);
   }
 }
@@ -250,8 +226,7 @@ body:where(.teacher-workspace-page) {
     padding-block: var(--space-4) var(--space-8);
   }
 
-  :where(.teacher-workspace-page) .site-header__inner,
-:where(.teacher-workspace-page) .site-footer__inner {
+  :where(.teacher-workspace-page) .site-header__inner {
     padding-inline: var(--space-4);
   }
 }
@@ -1068,117 +1043,7 @@ body:where(.teacher-workspace-page) {
   color: var(--color-on-primary);
 }
 
-/* --------------------------------------------------------------------------
-   7. CHÂN TRANG (FOOTER)
-   -------------------------------------------------------------------------- */
-:where(.teacher-workspace-page) .site-footer {
-  margin-top: auto;
-  background-color: var(--color-surface);
-  border-top: 1px solid var(--color-border);
-}
-
-:where(.teacher-workspace-page) .site-footer__columns {
-  display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--space-8);
-  padding-block: var(--space-8);
-}
-
-:where(.teacher-workspace-page) .site-footer__brand {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  column-gap: var(--space-3);
-  row-gap: var(--space-4);
-  align-items: center;
-}
-
-:where(.teacher-workspace-page) .site-footer__logo {
-  width: 2.75rem;
-  height: 2.75rem;
-  object-fit: contain;
-}
-
-:where(.teacher-workspace-page) .site-footer__name {
-  font-size: var(--text-sm);
-  font-weight: var(--weight-bold);
-  line-height: 1.35;
-  color: var(--color-brand);
-}
-
-:where(.teacher-workspace-page) .site-footer__about {
-  grid-column: 1 / -1;
-  display: grid;
-  gap: var(--space-3);
-}
-
-:where(.teacher-workspace-page) .site-footer__about dt {
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  color: var(--color-heading);
-}
-
-:where(.teacher-workspace-page) .site-footer__about dd {
-  margin-top: 0.125rem;
-  font-size: var(--text-sm);
-  color: var(--color-muted-foreground);
-}
-
-:where(.teacher-workspace-page) .site-footer__information {
-  position: relative;
-  padding-left: var(--space-8);
-}
-
-:where(.teacher-workspace-page) .site-footer__information::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: 1px;
-  background-color: var(--color-border);
-}
-
-:where(.teacher-workspace-page) .site-footer__information h2 {
-  font-size: var(--text-base);
-  font-weight: var(--weight-semibold);
-  color: var(--color-heading);
-  margin-bottom: var(--space-2);
-}
-
-:where(.teacher-workspace-page) .site-footer__information p {
-  font-size: var(--text-sm);
-  color: var(--color-muted-foreground);
-}
-
-:where(.teacher-workspace-page) .site-footer__copyright {
-  padding-block: var(--space-4);
-  border-top: 1px solid var(--color-border);
-  text-align: center;
-  font-size: var(--text-sm);
-  color: var(--color-muted-foreground);
-}
-
-@media (max-width: 47.99875rem) {
-  :where(.teacher-workspace-page) .site-footer__columns {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-6);
-    padding-block: var(--space-6);
-  }
-
-  :where(.teacher-workspace-page) .site-footer__information {
-    padding-left: 0;
-    padding-top: var(--space-4);
-  }
-
-  :where(.teacher-workspace-page) .site-footer__information::before {
-    top: 0;
-    right: 0;
-    bottom: auto;
-    left: 0;
-    width: auto;
-    height: 1px;
-  }
-}
+/* Footer dùng mẫu chung trong components.css. */
 
 @media (prefers-reduced-motion: reduce) {
   :where(.teacher-workspace-page) .main-nav__link,

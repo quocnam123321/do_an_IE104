@@ -113,8 +113,6 @@
 .common-page dialog::backdrop { background: rgb(15 23 42 / 0.4); }
 
 /* Header và footer dùng components.css như các trang vai trò. */
-.common-page .site-footer a { color: var(--color-muted-foreground); text-decoration: none; }
-.common-page .site-footer a:hover { color: var(--color-primary); text-decoration: underline; }
 .notifications-page, .notification-detail-page { padding-block: 2rem 4rem; }
 .notifications-page .page-header h1 { margin: 0; }
 .notification-tools { margin-bottom: var(--space-6); }
