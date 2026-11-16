@@ -242,3 +242,22 @@
   .student-proposal-page .proposal-form :is(input, select, textarea, button, label, a),
   .student-proposal-page .supervisor-dialog :is(button, input) { transition: none; }
 }
+.proposal-field-error { color: var(--color-danger-fg); font-size: var(--font-size-secondary); }
+.proposal-form [aria-invalid="true"] { border-color: var(--color-danger-fg); }
+#proposal-result { padding: var(--space-4); background: var(--color-info-bg); color: var(--color-info-fg); border-radius: var(--radius-control); }
+#proposal-confirm-dialog { width: min(40rem, calc(100% - 2rem)); max-height: calc(100svh - 2rem); overflow-y: auto; }
+#proposal-confirm-dialog dl, #saved-proposal dl { display: grid; gap: var(--space-4); margin-block: var(--space-4); }
+#proposal-confirm-dialog dt, #saved-proposal dt { font-weight: 600; }
+#proposal-confirm-dialog dd, #saved-proposal dd { margin: var(--space-1) 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.proposal-review-actions { display: flex; justify-content: flex-end; gap: var(--space-3); flex-wrap: wrap; }
+#proposal-confirm-dialog [data-confirm-proposal] { background: var(--color-primary); color: var(--color-on-primary); border-color: var(--color-primary); }
+#saved-proposal h3 { margin-block: var(--space-4); overflow-wrap: anywhere; }
+.saved-proposal-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-bottom: var(--space-4); }
+.saved-proposal-actions[hidden] { display: none; }
+.saved-proposal-actions :is(a, button), [data-remove-proposal-attachment] { display: inline-flex; align-items: center; justify-content: center; min-height: var(--control-min-height); padding: var(--space-2) var(--space-4); border: 1px solid var(--color-control-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-foreground); font: inherit; text-decoration: none; cursor: pointer; }
+[data-remove-proposal-attachment][hidden] { display: none; }
+.saved-proposal-actions [data-edit-proposal] { background: var(--color-primary); color: var(--color-on-primary); border-color: var(--color-primary); }
+.saved-proposal-actions [data-open-withdraw]:hover, #withdraw-proposal-dialog [data-confirm-withdraw]:hover { color: var(--color-danger-fg); border-color: var(--color-danger-fg); }
+#withdraw-proposal-dialog { width: min(36rem, calc(100% - 2rem)); max-height: calc(100svh - 2rem); overflow-y: auto; overflow-wrap: anywhere; }
+[data-proposal-result] { padding: var(--space-4); margin-bottom: var(--space-4); border-radius: var(--radius-control); background: var(--color-info-bg); color: var(--color-info-fg); }
+

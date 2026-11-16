@@ -10,15 +10,22 @@
     <title>
       Chi tiết đề tài MẪU-04 | Quản lý đồ án
     </title>
-    <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
+    <link rel="stylesheet" href="../../assets/css/tokens.css" />
+    <link rel="stylesheet" href="../../assets/css/base.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
-    <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css" />
-    <link rel="stylesheet" href="../../assets/css/student-topic-overview.css" />
+    <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
-  </head>
-  <body class="registration-page student-topic-overview-page">
+  <script src="../../assets/js/data/mock-data.js" defer></script>
+<script src="../../assets/js/services/storage.js" defer></script>
+<script src="../../assets/js/shared/validation.js" defer></script>
+<script src="../../assets/js/services/registration-service.js" defer></script>
+<script src="../../assets/js/pages/student/topic-enrollment.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/topic-enrollment.css">
+<link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css" />
+<link rel="stylesheet" href="../../assets/css/student-topic-overview.css" />
+<script src="../../assets/js/dialog-commands.js" defer></script>
+</head>
+  <body class="registration-page">
     <a class="skip-link" href="#main-content">
       Chuyển đến nội dung chính
     </a>
@@ -127,63 +134,80 @@
             </li>
           </ol>
         </nav>
-        <p class="back-navigation">
-          <a class="back-link" href="dang-ky-de-tai.html">
-            <svg class="back-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m7 7-7-7 7-7" /></svg>
-            <span>Quay lại danh sách đề tài</span>
+        <p class="page-back">
+          <a href="dang-ky-de-tai.html">
+            ← Quay lại danh sách đề tài
           </a>
         </p>
-        <header class="page-header student-topic-overview-header">
-          <h1 class="page-header__title">Chi tiết đề tài</h1>
-          <p class="student-topic-overview-name"><span>Đề tài minh họa 4</span><span class="topic-summary__status">Mở đăng ký</span></p>
-        </header>
+        <h1 class="page-header__title">
+          Chi tiết đề tài
+        </h1>
+        <p class="description page-header__description">
+          Xem thông tin đề tài và điều kiện trước khi đăng ký.
+        </p>
         <article aria-label="Đề tài minh họa 4">
-          <section class="topic-summary" aria-labelledby="topic-summary-title">
-            <div class="topic-summary__image topic-summary__image--logo">
+          <div class="detail-layout">
+            <div class="detail-body">
+          <div class="overview">
+            <div class="topic-image topic-image--uit">
               <img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" />
             </div>
-            <div class="topic-summary__content">
-              <div class="topic-summary__heading"><h2 class="topic-summary__title" id="topic-summary-title">Đề tài minh họa 4</h2><span class="topic-summary__status">Mở đăng ký</span></div>
-              <dl class="topic-summary__details">
-                <div class="topic-summary__field"><dt>Mã đề tài</dt><dd>MẪU-04</dd></div>
-                <div class="topic-summary__field"><dt>Loại đề tài</dt><dd>Khóa luận tốt nghiệp</dd></div>
-                <div class="topic-summary__field"><dt>Môn học</dt><dd>Không áp dụng</dd></div>
-                <div class="topic-summary__field"><dt>Học kỳ / Năm học</dt><dd>Học kỳ 7 • 2026–2027</dd></div>
-                <div class="topic-summary__field"><dt>Hình thức</dt><dd>Theo nhóm</dd></div>
+            <div class="summary">
+              <h2>
+                Đề tài minh họa 4
+              </h2>
+              <dl class="summary__meta">
+                <div><dt>Mã đề tài</dt><dd>MẪU-04</dd></div>
+                <div><dt>Loại đề tài</dt><dd>Khóa luận tốt nghiệp</dd></div>
+                <div><dt>Môn học</dt><dd>Không áp dụng</dd></div>
+                <div><dt>Hình thức</dt><dd>Theo nhóm</dd></div>
+                <div><dt>Học kỳ</dt><dd>7</dd></div>
+                <div><dt>Năm học</dt><dd>2026 - 2027</dd></div>
               </dl>
             </div>
-          </section>
-          <div class="topic-overview-layout">
-            <div class="topic-overview-layout__main">
-
-              <section class="panel topic-overview-card">
-                <h2>
+          </div>
+              <section class="panel supervisor" aria-labelledby="supervisor-title">
+                <h3 id="supervisor-title">Giảng viên hướng dẫn</h3>
+                <div class="supervisor__profile">
+                  <img src="../../assets/images/student-avatar.svg" alt="Ảnh đại diện giảng viên giữ chỗ" width="40" height="40" />
+                  <div>
+                    <h4>Trần Thị B</h4>
+                    <p>Học vị: Thạc sĩ</p>
+                  </div>
+                </div>
+                <dl>
+                  <div class="supervisor__info-row supervisor__info-row--stacked"><dt>Lĩnh vực chuyên môn</dt><dd>Khoa học dữ liệu, hệ thống thông tin</dd></div>
+                  <div class="supervisor__info-row supervisor__info-row--stacked"><dt>Email</dt><dd>tranthib@example.com</dd></div>
+                </dl>
+              </section>
+              <section class="panel">
+                <h3>
                   Mô tả đề tài
-                </h2>
+                </h3>
                 <div class="content-box">
                   Xây dựng hệ thống thông tin tổng hợp dữ liệu học tập mẫu, hỗ trợ tra cứu và trực quan hóa các chỉ số trên giao diện web.
                 </div>
               </section>
-              <section class="panel topic-overview-card">
-                <h2>
+              <section class="panel">
+                <h3>
                   Mục tiêu
-                </h2>
+                </h3>
                 <div class="content-box">
                   <ul><li>Tổ chức dữ liệu học tập mẫu theo cấu trúc rõ ràng.</li><li>Hỗ trợ tra cứu và trình bày dữ liệu bằng bảng, biểu đồ.</li><li>Vận dụng kiến thức phân tích và thiết kế hệ thống.</li></ul>
                 </div>
               </section>
-              <section class="panel topic-overview-card">
-                <h2>
+              <section class="panel">
+                <h3>
                   Kết quả dự kiến
-                </h2>
+                </h3>
                 <div class="content-box">
                   <p>Đề tài minh họa 4, mã nguồn, cơ sở dữ liệu mẫu, báo cáo và hướng dẫn sử dụng.</p>
                 </div>
               </section>
-              <section class="panel topic-overview-card">
-                <h2>
+              <section class="panel">
+                <h3>
                   Yêu cầu đối với sinh viên
-                </h2>
+                </h3>
                 <div class="content-box">
                   <ul>
                     <li>
@@ -201,8 +225,8 @@
                   </ul>
                 </div>
               </section>
-              <section class="panel topic-overview-card" aria-labelledby="topic-attachments-title">
-                <h2 id="topic-attachments-title">Tài liệu đính kèm</h2>
+              <section class="panel" aria-labelledby="topic-attachments-title">
+                <h3 id="topic-attachments-title">Tài liệu đính kèm</h3>
                 <ul class="topic-attachments">
                   <li>
                     <span class="topic-attachments__file"><svg class="topic-attachments__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg><span>Đề cương đề tài.pdf</span></span>
@@ -211,23 +235,9 @@
                 </ul>
               </section>
             </div>
-            <div class="topic-overview-layout__aside">
-              <section class="panel topic-overview-card supervisor" aria-labelledby="supervisor-title">
-                <h2 id="supervisor-title">Giảng viên hướng dẫn</h2>
-                <div class="supervisor__profile">
-                  <span class="supervisor__avatar" aria-hidden="true">GV</span>
-                  <div>
-                    <h3>Trần Thị B</h3>
-                    <p>Học vị: Thạc sĩ</p>
-                  </div>
-                </div>
-                <dl>
-                  <div class="supervisor__info-row supervisor__info-row--stacked"><dt>Lĩnh vực chuyên môn</dt><dd>Khoa học dữ liệu, hệ thống thông tin</dd></div>
-                  <div class="supervisor__info-row supervisor__info-row--stacked"><dt>Email</dt><dd>tranthib@example.com</dd></div>
-                </dl>
-              </section>
-              <aside class="registration-notes topic-overview-card" aria-labelledby="registration-notes-title">
-                <h2 id="registration-notes-title">Lưu ý khi đăng ký</h2>
+            <div class="detail-sidebar">
+              <aside class="registration-notes" aria-labelledby="registration-notes-title">
+                <h3 id="registration-notes-title">Lưu ý khi đăng ký</h3>
                 <ol>
                   <li><span>Đọc kỹ yêu cầu trước khi đăng ký.</span></li>
                   <li><span>Kiểm tra thông tin và thành viên nhóm.</span></li>
@@ -235,11 +245,11 @@
                   <li><span>Theo dõi phản hồi trong “Đề tài của tôi”.</span></li>
                 </ol>
               </aside>
-              <section id="topic-registration" class="panel topic-overview-card" aria-labelledby="registration-title">
-              <h2 id="registration-title">
+              <section id="topic-registration" class="panel" aria-labelledby="registration-title">
+              <h3 id="registration-title">
                 Thông tin đăng ký
-              </h2>
-              <form class="registration-form">
+              </h3>
+              <form class="registration-form" data-topic-id="MẪU-04">
                 <p class="registration-form__group-size">Nhóm gồm 2 - 3 thành viên</p>
                 <div>
                   <label for="group-name">
@@ -404,15 +414,10 @@
         <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
-    <dialog id="registration-confirm-dialog" class="confirmation-dialog" aria-labelledby="registration-confirm-title">
-      <h2 id="registration-confirm-title">Xác nhận đăng ký đề tài</h2>
-      <p>Kiểm tra thông tin nhóm và thành viên trước khi gửi yêu cầu đến giảng viên.</p>
-      <dl>
-        <div><dt>Đề tài</dt><dd>[Tên đề tài]</dd></div>
-        <div><dt>Nhóm</dt><dd>[Tên nhóm và danh sách thành viên]</dd></div>
-      </dl>
-      <form method="dialog"><button type="submit">Quay lại chỉnh sửa</button></form>
-      <button type="button" disabled>Xác nhận gửi đăng ký</button>
+    <dialog id="registration-confirm-dialog" class="confirmation-dialog registration-review" aria-labelledby="registration-confirm-title">
+      <header><h2 id="registration-confirm-title">Xác nhận đăng ký thử</h2><button type="button" commandfor="registration-confirm-dialog" command="close" aria-label="Đóng xác nhận đăng ký">×</button></header>
+      <div data-registration-review></div>
+      <footer><button type="button" commandfor="registration-confirm-dialog" command="close">Quay lại chỉnh sửa</button><button type="button" data-confirm-registration disabled>Lưu đăng ký thử</button></footer>
     </dialog>
   </body>
 </html>

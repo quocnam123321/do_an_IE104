@@ -2,6 +2,7 @@
 
 <html lang="vi">
   <head>
+<script src="../../assets/js/proposal-store.js" defer></script>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta
@@ -26,10 +27,6 @@
       .request-detail-skip {
         display: none;
       }
-      .request-detail__feedback p {
-        overflow-wrap: anywhere;
-        white-space: pre-wrap;
-      }
       .request-detail-page:has(.request-detail:target, .request-detail :target)
         > .skip-link--default {
         display: none;
@@ -51,14 +48,22 @@
         display: inline;
       }
     </style>
-    <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/components.css" />
+    <link rel="stylesheet" href="../../assets/css/breadcrumb.css" />
+      <link rel="stylesheet" href="../../assets/css/tokens.css">
+    <link rel="stylesheet" href="../../assets/css/base.css">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css">
     <script src="../../assets/js/nav-indicator.js" defer></script>
-    <script src="../../assets/js/proposal-store.js" defer></script>
-    <script src="../../assets/js/student-proposal-status.js" defer></script>
-  </head>
-  <body class="request-detail-page">
+    <script src="../../assets/js/data/student-requests.js" defer></script>
+    <script src="../../assets/js/services/storage.js" defer></script>
+    <script src="../../assets/js/shared/validation.js" defer></script>
+    <script src="../../assets/js/services/request-service.js" defer></script>
+    <link rel="stylesheet" href="../../assets/css/student-requests.css">
+    <script src="../../assets/js/pages/student/requests.js" defer></script>
+  
+<script src="../../assets/js/dialog-commands.js" defer></script>
+</head>
+  <body class="registration-page my-topics-page request-detail-page">
     <a
       class="skip-link request-detail-skip request-detail-skip--dk001"
       href="#dk001"
@@ -174,8 +179,11 @@
           </ol>
         </nav>
         <div class="page-content">
+          <p data-request-result role="status" tabindex="-1"></p>
+          <noscript><p>Bật JavaScript để cập nhật yêu cầu thử theo dữ liệu đã lưu.</p></noscript>
           <section class="request-detail-notice" aria-labelledby="request-selection-title">
-            <header class="page-header"><h1 id="request-selection-title">Chi tiết yêu cầu đăng ký và đề xuất</h1></header>
+            <h1 id="request-selection-title">Chi tiết yêu cầu đăng ký và đề xuất</h1>
+            <p>Chọn yêu cầu để xem thông tin đã gửi và phản hồi của giảng viên.</p>
             <ul>
               <li><a href="#dk001">DK001 — Đăng ký theo nhóm · Chờ duyệt</a></li>
               <li><a href="#dk002">DK002 — Đăng ký cá nhân · Đã duyệt</a></li>
@@ -185,8 +193,9 @@
           </section>
           <!-- Giữ dữ liệu các yêu cầu hiện có. Khung cá nhân và theo nhóm dùng cùng cấu trúc xử lý. -->
           <article id="dk001" class="request-detail" data-request-id="DK001" data-request-type="dang-ky" data-request-status="cho-duyet" data-request-mode="nhom" aria-labelledby="dk001-title" tabindex="-1">
-            <header class="request-detail__header page-header">
+            <header class="request-detail__header">
               <h2 id="dk001-title">Chi tiết yêu cầu đăng ký</h2>
+              <p>Xem lại thông tin đăng ký đã gửi và tình trạng xét duyệt.</p>
               <a class="request-detail__back" href="de-tai-cua-toi-sinh-vien.html#dang-ky-va-de-xuat">← Danh sách đăng ký và đề xuất</a>
             </header>
             <section class="request-detail__overview" aria-labelledby="dk001-request-title">
@@ -310,8 +319,9 @@
             </details>
           </article>
           <article id="dk002" class="request-detail" data-request-id="DK002" data-request-type="dang-ky" data-request-status="da-duyet" data-request-mode="ca-nhan" aria-labelledby="dk002-title" tabindex="-1">
-            <header class="request-detail__header page-header">
+            <header class="request-detail__header">
               <h2 id="dk002-title">Chi tiết yêu cầu đăng ký</h2>
+              <p>Xem lại thông tin đăng ký đã gửi và tình trạng xét duyệt.</p>
               <a class="request-detail__back" href="de-tai-cua-toi-sinh-vien.html#dang-ky-va-de-xuat">← Danh sách đăng ký và đề xuất</a>
             </header>
             <section class="request-detail__overview" aria-labelledby="dk002-request-title">
@@ -343,8 +353,9 @@
             <p class="request-detail__notice">Yêu cầu đã được duyệt, không thể chỉnh sửa.</p>
           </article>
           <article id="dx001" class="request-detail" data-request-id="DX001" data-request-type="de-xuat" data-request-status="cho-duyet" data-request-mode="nhom" aria-labelledby="dx001-title" tabindex="-1">
-            <header class="request-detail__header page-header">
+            <header class="request-detail__header">
               <h2 id="dx001-title">Chi tiết đề xuất</h2>
+              <p>Xem lại nội dung đề xuất đã gửi và phản hồi của giảng viên.</p>
               <a class="request-detail__back" href="de-tai-cua-toi-sinh-vien.html#dang-ky-va-de-xuat">← Danh sách đăng ký và đề xuất</a>
             </header>
             <section class="request-detail__overview" aria-labelledby="dx001-request-title">
@@ -352,7 +363,7 @@
               <dl class="request-detail__meta">
                 <div><dt>Mã đề xuất</dt><dd>DX001</dd></div>
                 <div><dt>Hình thức</dt><dd>Nhóm</dd></div>
-                <div><dt>Trạng thái</dt><dd data-proposal-request-status>Chờ duyệt</dd></div>
+                <div><dt>Trạng thái</dt><dd>Chờ duyệt</dd></div>
               </dl>
               <p class="request-detail__topic">Đề tài: Cổng thông tin nghiên cứu sinh viên</p>
             </section>
@@ -378,8 +389,8 @@
                 </section>
                 <section id="dx001-phan-hoi-giang-vien" class="request-detail__feedback" aria-labelledby="dx001-feedback-title">
                   <h3 id="dx001-feedback-title">Phản hồi của giảng viên</h3>
-                  <p data-proposal-request-feedback role="status">Chưa có kết quả xét duyệt.</p>
-                  <p data-proposal-demo-note>Kết quả và ý kiến sẽ hiển thị tại đây sau khi giảng viên xét duyệt.</p>
+                  <p>Chưa có kết quả xét duyệt.</p>
+                  <p>Kết quả và ý kiến sẽ hiển thị tại đây sau khi giảng viên xét duyệt.</p>
                 </section>
               </aside>
             </div>
@@ -525,8 +536,9 @@
             </details>
           </article>
           <article id="dx002" class="request-detail" data-request-id="DX002" data-request-type="de-xuat" data-request-status="yeu-cau-chinh-sua" data-request-mode="nhom" aria-labelledby="dx002-title" tabindex="-1">
-            <header class="request-detail__header page-header">
+            <header class="request-detail__header">
               <h2 id="dx002-title">Chi tiết đề xuất</h2>
+              <p>Xem lại nội dung đề xuất đã gửi và phản hồi của giảng viên.</p>
               <a class="request-detail__back" href="de-tai-cua-toi-sinh-vien.html#dang-ky-va-de-xuat">← Danh sách đăng ký và đề xuất</a>
             </header>
             <section class="request-detail__overview" aria-labelledby="dx002-request-title">
@@ -909,5 +921,10 @@ Giúp sinh viên tìm nhóm theo môn học và nhu cầu học tập; tạo gia
         <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
+  <dialog id="request-action-dialog" class="confirmation-dialog" aria-labelledby="request-action-title">
+      <h2 id="request-action-title">Xác nhận thao tác</h2><div data-request-review></div>
+      <p data-request-action-error role="alert" tabindex="-1" hidden></p>
+      <footer><button type="button" command="close" commandfor="request-action-dialog">Quay lại</button><button type="button" data-request-confirm>Xác nhận</button></footer>
+    </dialog>
   </body>
 </html>
