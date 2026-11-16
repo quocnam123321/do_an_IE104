@@ -7,6 +7,8 @@
 .proposal-status[data-status="approved"] { background: var(--color-info-bg); color: var(--color-info-fg); }
 .my-topics-page .topic-card__decision { margin-top: var(--space-3); font-size: var(--font-size-secondary); line-height: 1.6; overflow-wrap: anywhere; white-space: pre-wrap; }
 .pending-proposal-page .pending-proposal-notice { overflow-wrap: anywhere; white-space: pre-wrap; }
+
+.my-topics-page .topic-card__status--withdrawn { background: var(--color-neutral-bg); color: var(--color-muted-foreground); }
 .requests { margin-top: var(--space-6); padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); }
 .requests > summary { color: var(--color-heading); font-weight: 600; cursor: pointer; }
 .requests > p { margin-block: var(--space-4); color: var(--color-muted-foreground); }
