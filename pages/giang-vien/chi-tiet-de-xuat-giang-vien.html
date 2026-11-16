@@ -16,6 +16,8 @@
   <link href="../../assets/css/teacher-request-detail.css?v=20261030-shared-dialogs-4" rel="stylesheet"/>
    <script src="../../assets/js/nav-indicator.js" defer></script>
    <script src="../../assets/js/dialog-commands.js" defer></script>
+   <script src="../../assets/js/proposal-store.js" defer></script>
+   <script src="../../assets/js/proposal-detail.js" defer></script>
  </head>
  <body class="teacher-workspace-page teacher-request-detail-page">
   <a class="skip-link" href="#main-content">
@@ -207,9 +209,7 @@
     </button>
    </form>
   </dialog>
-  <!-- HTML thuần. Trang chi tiết mẫu giữ đúng dữ liệu của WF phiên bản 2.
-         Tên/MSSV tại đây khác mẫu danh sách: Trần Phú Nguyên / 23520001.
-         Chưa có xử lý chọn đề xuất theo mã, gửi quyết định hay lưu lý do từ chối. -->
+  <!-- JavaScript chọn đúng hồ sơ theo mã và lưu quyết định demo trên trình duyệt. -->
   <main class="main-content" id="main-content" tabindex="-1">
    <div class="page-container">
     <nav aria-label="Đường dẫn" class="breadcrumb">
@@ -250,6 +250,9 @@
       </p>
      </div>
     </header>
+    <p class="proposal-demo-note">Dữ liệu minh họa. Quyết định chỉ lưu trên trình duyệt này khi cho phép lưu trữ; chưa gửi tới máy chủ.</p>
+    <p class="proposal-feedback" id="proposal-decision-feedback" role="status" tabindex="-1"></p>
+    <p class="proposal-feedback" id="proposal-not-found" hidden>Không tìm thấy đề xuất theo mã đã chọn. Hãy quay lại danh sách yêu cầu chờ duyệt.</p>
     <div class="page-content request-detail">
      <section aria-labelledby="proposal-topic-title" class="request-topic">
       <div aria-hidden="true" class="request-topic__image">
@@ -314,7 +317,7 @@
           Họ tên:
          </dt>
          <dd>
-          Trần Phú Nguyên
+          Nguyễn Văn A
          </dd>
         </div>
         <div>
@@ -322,7 +325,7 @@
           MSSV:
          </dt>
          <dd>
-          23520001
+          22520001
          </dd>
         </div>
         <div>
@@ -390,7 +393,7 @@
       </button>
      </section>
      <div aria-label="Xử lý đề xuất" class="request-detail__actions" role="group">
-      <button aria-controls="reject-proposal-dialog" aria-haspopup="dialog" class="request-action request-action--reject" command="show-modal" commandfor="reject-proposal-dialog" type="button">
+      <button aria-controls="reject-proposal-dialog" aria-haspopup="dialog" class="request-action request-action--reject" command="show-modal" commandfor="reject-proposal-dialog" disabled="" type="button">
        <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
         <path d="M6 6l12 12M18 6 6 18">
         </path>
@@ -399,7 +402,7 @@
         Từ chối
        </span>
       </button>
-      <button aria-controls="approve-proposal-dialog" aria-haspopup="dialog" class="request-action request-action--approve" command="show-modal" commandfor="approve-proposal-dialog" type="button">
+      <button aria-controls="approve-proposal-dialog" aria-haspopup="dialog" class="request-action request-action--approve" command="show-modal" commandfor="approve-proposal-dialog" disabled="" type="button">
        <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
         <path d="m5 12 4 4L19 6">
         </path>
@@ -409,12 +412,17 @@
        </span>
       </button>
      </div>
+     <section aria-labelledby="proposal-result-title" id="proposal-result" hidden>
+      <h2 id="proposal-result-title">Kết quả xử lý</h2>
+      <p data-proposal-result></p>
+      <p data-proposal-reason></p>
+      <p data-proposal-decision-time></p>
+     </section>
+     <p><a id="proposal-student-preview" href="../sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=DX-GV001">Xem kết quả ở giao diện sinh viên (demo)</a></p>
     </div>
    </div>
   </main>
-  <!-- Hộp thoại mở và đóng bằng command/commandfor.
-         Submit xác nhận disabled khi chưa có xử lý nghiệp vụ. method=dialog không gửi dữ liệu.
-         Khi tích hợp, máy chủ phải kiểm tra lý do từ chối và quyền xử lý đề xuất. -->
+  <!-- Không có JavaScript thì nút xác nhận giữ vô hiệu hóa. -->
   <dialog aria-describedby="reject-proposal-question" aria-labelledby="reject-proposal-title" class="topic-dialog request-proposal-dialog topic-dialog--danger" id="reject-proposal-dialog">
    <header class="topic-dialog__header">
     <h2 id="reject-proposal-title">
@@ -445,19 +453,20 @@
      <label for="rejection-reason">
       Lý do từ chối *
      </label>
-     <textarea aria-describedby="rejection-reason-hint" autofocus="" id="rejection-reason" minlength="10" name="rejection-reason" placeholder="Nhập lý do từ chối để sinh viên biết và điều chỉnh đề xuất" required="" rows="4"></textarea>
+     <textarea aria-describedby="rejection-reason-hint rejection-reason-error" autofocus="" id="rejection-reason" minlength="10" name="rejection-reason" placeholder="Nhập lý do từ chối để sinh viên biết và điều chỉnh đề xuất" required="" rows="4"></textarea>
     </p>
-    <p class="rejection-reason-error" id="rejection-reason-error" role="alert">
+    <p class="rejection-reason-error" id="rejection-reason-error" role="alert" hidden>
      Vui lòng nhập lý do từ chối từ 10 ký tự.
     </p>
     <p class="topic-dialog__notice" id="rejection-reason-hint">
-     Ít nhất 10 ký tự. Chức năng gửi quyết định chưa được kết nối.
+     Ít nhất 10 ký tự, không tính khoảng trắng ở hai đầu. Lý do chỉ lưu trong bản demo trên trình duyệt.
     </p>
+    <p class="proposal-form-error" data-decision-error role="alert" hidden></p>
     <div class="topic-dialog__actions">
      <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="reject-proposal-dialog" type="button">
       Hủy
      </button>
-     <button class="topic-dialog__btn topic-dialog__btn--danger" disabled="" title="Chức năng từ chối và gửi lý do chưa được kết nối" type="submit">
+     <button class="topic-dialog__btn topic-dialog__btn--danger" disabled="" type="submit">
       Xác nhận từ chối
      </button>
     </div>
@@ -492,14 +501,15 @@
     <p class="topic-dialog__desc" id="approve-proposal-description">
      Sau khi duyệt, đề tài sẽ chuyển sang trạng thái
      <strong>
-      Đang thực hiện.
+      Đang thực hiện trong bản demo.
      </strong>
     </p>
+    <p class="proposal-form-error" data-decision-error role="alert" hidden></p>
     <div class="topic-dialog__actions">
      <button autofocus="" class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="approve-proposal-dialog" type="button">
       Hủy
      </button>
-     <button class="topic-dialog__btn topic-dialog__btn--primary" disabled="" title="Chức năng duyệt và cập nhật trạng thái đề tài chưa được kết nối" type="submit">
+     <button class="topic-dialog__btn topic-dialog__btn--primary" disabled="" type="submit">
       Xác nhận duyệt
      </button>
     </div>

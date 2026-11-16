@@ -67,7 +67,8 @@
   min-width: 0;
 }
 
-#topic-summary-title {
+#topic-summary-title,
+.topic-summary .topic-summary__title {
   min-width: 0;
   font-size: 1.625rem;
   font-weight: var(--weight-bold);
@@ -571,7 +572,8 @@
     align-items: flex-start;
   }
 
-  #topic-summary-title {
+  #topic-summary-title,
+  .topic-summary .topic-summary__title {
     font-size: var(--text-xl);
   }
 

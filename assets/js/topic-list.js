@@ -20,7 +20,7 @@
     .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
   const collator = new Intl.Collator('vi', { numeric: true });
 
-  const topics = Array.from(list.children, (item) => {
+  const readTopics = () => Array.from(list.children, (item) => {
     const card = item.matches('.topic-card') ? item : item.querySelector('.topic-card');
     const title = card.querySelector('.topic-card__title').textContent.trim();
     const extraTerms = Array.from(card.querySelectorAll('[data-topic-search-term]'),
@@ -34,6 +34,7 @@
       fields: new Map(filters.map((name) => [name, card.getAttribute(`data-${name}`)])),
     };
   });
+  let topics = readTopics();
 
   const orders = {
     'name-asc': (first, second) => collator.compare(first.title, second.title),
@@ -84,6 +85,12 @@
   });
   // Sự kiện reset xảy ra trước khi trình duyệt khôi phục giá trị mặc định.
   form.addEventListener('reset', () => window.setTimeout(render, 0));
+  // Các màn nối dữ liệu demo có thể thêm thẻ hoặc cập nhật trạng thái từ tab khác.
+  document.addEventListener('ie104:topics-updated', () => {
+    topics = readTopics();
+    previousOrder = undefined;
+    render();
+  });
 
   const inProgress = form.querySelector('#status-in-progress');
   if (inProgress && window.location.hash === '#de-tai-dang-thuc-hien') {

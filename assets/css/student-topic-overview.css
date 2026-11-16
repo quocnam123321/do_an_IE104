@@ -1,0 +1,131 @@
+/* Chi tiết mở đăng ký và đề xuất tái sử dụng Tổng quan của Đề tài của tôi. */
+.student-topic-overview-page .back-navigation {
+  margin-block: var(--space-4);
+  font-size: var(--font-size-secondary);
+}
+
+.student-topic-overview-page .page-header {
+  margin-block: var(--space-4) var(--page-heading-gap);
+}
+
+.student-topic-overview-name {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  color: var(--color-heading);
+  font-weight: var(--weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+.student-topic-overview-page .topic-summary__image--logo {
+  padding: var(--space-4);
+  border: 1px solid var(--media-placeholder-border);
+}
+
+.student-topic-overview-page .topic-summary__image--logo img {
+  object-fit: contain;
+}
+
+.student-topic-overview-page .topic-overview-card :is(p, .content-box) {
+  font-size: var(--text-base);
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.student-topic-overview-page .topic-overview-card :is(ul, ol) {
+  overflow-wrap: anywhere;
+}
+
+.student-topic-overview-page .supervisor__profile h3 {
+  margin: 0 0 var(--space-1);
+  font-size: var(--text-base);
+  font-weight: var(--weight-bold);
+}
+
+.student-topic-overview-page :is(.supervisor__avatar, .proposal-recipient__avatar) {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-full);
+  background: var(--color-neutral-bg);
+  color: var(--color-foreground);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+/* Chỉ gỡ bố cục cũ tại trang đề xuất, giữ các hook trạng thái và hộp thoại. */
+.student-topic-overview-page .pending-proposal-header {
+  display: block;
+}
+
+.student-topic-overview-page .pending-proposal-header__title {
+  display: block;
+}
+
+.student-topic-overview-page .pending-proposal-header__actions {
+  margin-top: var(--space-4);
+}
+
+.student-topic-overview-page .pending-proposal {
+  display: block;
+}
+
+.student-topic-overview-page .pending-proposal > .topic-summary {
+  padding: var(--space-6);
+}
+
+.student-topic-overview-page .topic-summary__field dt {
+  color: var(--color-muted-foreground);
+  font-weight: var(--weight-regular);
+}
+
+.student-topic-overview-page .topic-summary__field dt::after {
+  content: none;
+}
+
+.student-topic-overview-page .topic-summary__status[data-status="pending"] {
+  background: var(--color-warning-bg);
+  color: var(--color-warning-fg);
+}
+
+.student-topic-overview-page .topic-summary__status[data-status="rejected"] {
+  background: var(--color-danger-bg);
+  color: var(--color-danger-fg);
+}
+
+.student-topic-overview-page .proposal-recipient__profile {
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.student-topic-overview-page .proposal-recipient dl {
+  min-width: 0;
+}
+
+.student-topic-overview-page .proposal-recipient dl > div {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-1);
+}
+
+.student-topic-overview-page .proposal-recipient dd {
+  font-size: var(--text-base);
+}
+
+@media (max-width: 47.99875rem) {
+  .student-topic-overview-page .topic-overview-card {
+    padding: var(--space-4);
+  }
+
+  .student-topic-overview-page .pending-proposal > .topic-summary {
+    padding: var(--space-4);
+  }
+
+  .student-topic-overview-page .proposal-recipient__profile {
+    flex-wrap: wrap;
+  }
+}

@@ -268,14 +268,38 @@
 }
 
 .teacher-request-detail-page .rejection-reason-error {
-  display: none;
   margin: 0;
   font-size: var(--text-sm);
   color: var(--color-danger-fg);
 }
 
-.teacher-request-detail-page #reject-proposal-form:has(#rejection-reason:user-invalid) .rejection-reason-error {
-  display: block;
+.teacher-request-detail-page #rejection-reason[aria-invalid="true"] {
+  border-color: var(--color-danger-fg);
+}
+
+.teacher-request-detail-page :is(.proposal-demo-note, .proposal-feedback) {
+  margin-bottom: var(--space-4);
+  overflow-wrap: anywhere;
+  color: var(--color-muted-foreground);
+}
+
+.teacher-request-detail-page .proposal-feedback:empty {
+  display: none;
+}
+
+.teacher-request-detail-page .proposal-form-error {
+  color: var(--color-danger-fg);
+  overflow-wrap: anywhere;
+}
+
+.teacher-request-detail-page .status-badge[data-status="approved"] {
+  background: var(--color-success-bg);
+  color: var(--color-success-fg);
+}
+
+.teacher-request-detail-page .status-badge[data-status="rejected"] {
+  background: var(--color-danger-bg);
+  color: var(--color-danger-fg);
 }
 
 @media (max-width: 47.99875rem) {

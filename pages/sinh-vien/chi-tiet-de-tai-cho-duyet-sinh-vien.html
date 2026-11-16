@@ -10,10 +10,14 @@
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css?v=20261111-heading-sync-1" />
     <link rel="stylesheet" href="../../assets/css/de-tai-cua-toi.css" />
+    <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css" />
+    <link rel="stylesheet" href="../../assets/css/student-topic-overview.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <script src="../../assets/js/dialog-commands.js" defer></script>
+    <script src="../../assets/js/proposal-store.js" defer></script>
+    <script src="../../assets/js/student-proposal-status.js" defer></script>
   </head>
-  <body class="registration-page my-topics-page pending-proposal-page">
+  <body class="registration-page my-topics-page pending-proposal-page student-topic-overview-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
     <header class="site-header">
       <div class="site-header__inner">
@@ -98,9 +102,20 @@
             <li class="breadcrumb__item" aria-current="page">Chi tiết đề tài</li>
           </ol>
         </nav>
-        <a class="page-back-link" href="de-tai-cua-toi-sinh-vien.html">← Quay lại Đề tài của tôi</a>
-        <header class="page-header pending-proposal-header">
-          <div class="pending-proposal-header__title"><h1>Chi tiết đề tài</h1><span class="proposal-status">Chờ duyệt</span></div>
+        <p class="back-navigation">
+          <a class="back-link" href="de-tai-cua-toi-sinh-vien.html">
+            <svg class="back-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m7 7-7-7 7-7" /></svg>
+            <span>Quay lại Đề tài của tôi</span>
+          </a>
+        </p>
+        <header class="page-header student-topic-overview-header pending-proposal-header">
+          <div class="pending-proposal-header__title">
+            <h1 class="page-header__title">Chi tiết đề tài</h1>
+            <p class="student-topic-overview-name">
+              <span data-proposal-name>Cổng thông tin nghiên cứu sinh viên</span>
+              <span class="proposal-status topic-summary__status" data-proposal-status data-status="pending">Chờ duyệt</span>
+            </p>
+          </div>
           <div class="pending-proposal-header__actions">
             <a href="chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#dx001-chinh-sua">Chỉnh sửa đề tài</a>
             <button type="button" commandfor="withdraw-proposal-dialog" command="show-modal" aria-haspopup="dialog" aria-controls="withdraw-proposal-dialog">Rút đề xuất</button>
@@ -109,46 +124,54 @@
         <p class="pending-proposal-notice" role="status">Đề xuất đang chờ giảng viên xét duyệt. Bạn chưa thể bắt đầu thực hiện đề tài.</p>
         <!-- Dữ liệu minh họa DX001, đồng nhất với đề xuất trong Đề tài của tôi. -->
         <article id="dx001" class="pending-proposal" aria-labelledby="proposal-topic-title">
-          <section class="pending-proposal-summary" aria-labelledby="proposal-topic-title">
-            <div class="topic-image topic-image--uit"><img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" /></div>
-            <div class="pending-proposal-summary__content">
-              <h2 id="proposal-topic-title">Cổng thông tin nghiên cứu sinh viên</h2>
-              <dl class="pending-proposal-summary__meta">
-                <div><dt>Loại đề tài</dt><dd>Đồ án môn học</dd></div>
-                <div><dt>Môn học</dt><dd>IE104 — Internet và Công nghệ Web</dd></div>
-                <div><dt>Học kỳ</dt><dd>6</dd></div>
-                <div><dt>Năm học</dt><dd>2026–2027</dd></div>
+          <section class="topic-summary" aria-labelledby="proposal-topic-title">
+            <div class="topic-summary__image topic-summary__image--logo"><img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" /></div>
+            <div class="topic-summary__content">
+              <div class="topic-summary__heading">
+                <h2 id="proposal-topic-title" class="topic-summary__title">Cổng thông tin nghiên cứu sinh viên</h2>
+                <span class="proposal-status topic-summary__status" data-proposal-status data-status="pending">Chờ duyệt</span>
+              </div>
+              <dl class="topic-summary__details">
+                <div class="topic-summary__field"><dt>Mã đề xuất</dt><dd data-proposal-summary-field="id">DX001</dd></div>
+                <div class="topic-summary__field"><dt>Loại đề tài</dt><dd data-proposal-summary-field="type">Đồ án môn học</dd></div>
+                <div class="topic-summary__field"><dt>Môn học</dt><dd data-proposal-summary-field="course">IE104 — Internet và Công nghệ Web</dd></div>
+                <div class="topic-summary__field"><dt>Học kỳ / Năm học</dt><dd data-proposal-summary-field="semester">Học kỳ 6 • 2026–2027</dd></div>
               </dl>
             </div>
           </section>
-          <section class="proposal-recipient" aria-labelledby="proposal-recipient-title">
-            <h2 id="proposal-recipient-title">Giảng viên nhận đề xuất</h2>
-            <div class="proposal-recipient__profile">
-              <span class="proposal-recipient__avatar" aria-hidden="true">NA</span>
-              <dl>
-                <div><dt>Họ tên</dt><dd>Nguyễn Văn A</dd></div>
-                <div><dt>Vai trò được đề xuất</dt><dd>Hướng dẫn chính</dd></div>
-                <div><dt>Ngày gửi đề xuất</dt><dd><time datetime="2026-10-11T16:00:00+07:00">11/10/2026 - 16:00</time></dd></div>
-              </dl>
+          <div class="topic-overview-layout">
+            <div class="topic-overview-layout__main">
+              <section class="proposal-description topic-description topic-overview-card" aria-labelledby="proposal-description-title">
+                <h2 id="proposal-description-title">Mô tả đề tài</h2>
+                <p>Xây dựng cổng thông tin giúp sinh viên tra cứu công trình nghiên cứu, tìm đề tài quan tâm và tìm nhóm cùng thực hiện nghiên cứu.</p>
+              </section>
+              <section class="proposal-objectives topic-objectives topic-overview-card" aria-labelledby="proposal-objectives-title">
+                <h2 id="proposal-objectives-title">Mục tiêu</h2>
+                <p>Tập trung thông tin công trình nghiên cứu và hỗ trợ sinh viên tìm nhóm theo lĩnh vực quan tâm.</p>
+              </section>
+              <section class="proposal-outcomes topic-outcomes topic-overview-card" aria-labelledby="proposal-outcomes-title">
+                <h2 id="proposal-outcomes-title">Kết quả dự kiến</h2>
+                <p>Cổng thông tin có chức năng tra cứu nghiên cứu, tìm nhóm theo lĩnh vực, kèm mã nguồn, dữ liệu mẫu và báo cáo.</p>
+              </section>
             </div>
-          </section>
-          <section class="proposal-description" aria-labelledby="proposal-description-title">
-            <h2 id="proposal-description-title">Mô tả đề tài</h2>
-            <p>Xây dựng cổng thông tin giúp sinh viên tra cứu công trình nghiên cứu, tìm đề tài quan tâm và tìm nhóm cùng thực hiện nghiên cứu.</p>
-          </section>
-          <section class="proposal-objectives" aria-labelledby="proposal-objectives-title">
-            <h2 id="proposal-objectives-title">Mục tiêu</h2>
-            <p>Tập trung thông tin công trình nghiên cứu và hỗ trợ sinh viên tìm nhóm theo lĩnh vực quan tâm.</p>
-          </section>
-          <section class="proposal-outcomes" aria-labelledby="proposal-outcomes-title">
-            <h2 id="proposal-outcomes-title">Kết quả dự kiến</h2>
-            <p>Cổng thông tin có chức năng tra cứu nghiên cứu, tìm nhóm theo lĩnh vực, kèm mã nguồn, dữ liệu mẫu và báo cáo.</p>
-          </section>
-          <section class="proposal-attachments" aria-labelledby="proposal-attachments-title">
-            <h2 id="proposal-attachments-title">Tài liệu đính kèm</h2>
-            <div class="proposal-attachments__item"><span class="topic-attachments__file"><svg class="topic-attachments__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg><span>De_cuong_de_tai.pdf</span></span><button type="button" disabled>Tải xuống</button></div>
-            
-          </section>
+            <aside class="topic-overview-layout__aside" aria-label="Giảng viên nhận đề xuất và tài liệu đính kèm">
+              <section class="proposal-recipient topic-overview-card" aria-labelledby="proposal-recipient-title">
+                <h2 id="proposal-recipient-title">Giảng viên nhận đề xuất</h2>
+                <div class="proposal-recipient__profile">
+                  <span class="proposal-recipient__avatar" aria-hidden="true">NA</span>
+                  <dl>
+                    <div><dt>Họ tên</dt><dd>Nguyễn Văn A</dd></div>
+                    <div><dt>Vai trò được đề xuất</dt><dd>Hướng dẫn chính</dd></div>
+                    <div><dt>Ngày gửi đề xuất</dt><dd><time datetime="2026-10-11T16:00:00+07:00">11/10/2026 - 16:00</time></dd></div>
+                  </dl>
+                </div>
+              </section>
+              <section class="proposal-attachments topic-overview-card" aria-labelledby="proposal-attachments-title">
+                <h2 id="proposal-attachments-title">Tài liệu đính kèm</h2>
+                <div class="proposal-attachments__item"><span class="topic-attachments__file"><svg class="topic-attachments__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg><span>De_cuong_de_tai.pdf</span></span><button type="button" disabled>Tải xuống</button></div>
+              </section>
+            </aside>
+          </div>
         </article>
       </div>
     </main>

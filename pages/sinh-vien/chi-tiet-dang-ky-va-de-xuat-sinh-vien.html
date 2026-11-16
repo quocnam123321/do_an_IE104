@@ -26,6 +26,10 @@
       .request-detail-skip {
         display: none;
       }
+      .request-detail__feedback p {
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+      }
       .request-detail-page:has(.request-detail:target, .request-detail :target)
         > .skip-link--default {
         display: none;
@@ -51,6 +55,8 @@
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
+    <script src="../../assets/js/proposal-store.js" defer></script>
+    <script src="../../assets/js/student-proposal-status.js" defer></script>
   </head>
   <body class="request-detail-page">
     <a
@@ -346,7 +352,7 @@
               <dl class="request-detail__meta">
                 <div><dt>Mã đề xuất</dt><dd>DX001</dd></div>
                 <div><dt>Hình thức</dt><dd>Nhóm</dd></div>
-                <div><dt>Trạng thái</dt><dd>Chờ duyệt</dd></div>
+                <div><dt>Trạng thái</dt><dd data-proposal-request-status>Chờ duyệt</dd></div>
               </dl>
               <p class="request-detail__topic">Đề tài: Cổng thông tin nghiên cứu sinh viên</p>
             </section>
@@ -372,8 +378,8 @@
                 </section>
                 <section id="dx001-phan-hoi-giang-vien" class="request-detail__feedback" aria-labelledby="dx001-feedback-title">
                   <h3 id="dx001-feedback-title">Phản hồi của giảng viên</h3>
-                  <p>Chưa có kết quả xét duyệt.</p>
-                  <p>Kết quả và ý kiến sẽ hiển thị tại đây sau khi giảng viên xét duyệt.</p>
+                  <p data-proposal-request-feedback role="status">Chưa có kết quả xét duyệt.</p>
+                  <p data-proposal-demo-note>Kết quả và ý kiến sẽ hiển thị tại đây sau khi giảng viên xét duyệt.</p>
                 </section>
               </aside>
             </div>
