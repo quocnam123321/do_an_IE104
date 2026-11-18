@@ -227,11 +227,38 @@
 .notification-detail__header { padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--color-border); }
 .notification-detail__header h1 { margin-bottom: 1rem; }
 .notification-detail__header p { color: var(--color-muted-foreground); font-size: var(--font-small); margin: 0; }
-.notification-detail__content { max-width: 72ch; }
+.notification-detail__content { max-width: 72ch; overflow-wrap: anywhere; }
 .notification-detail__content :is(ul, ol) { padding-left: 1.5rem; }
 .notification-detail__content li { margin-bottom: 0.5rem; }
 .notification-detail__content > :last-child { margin-bottom: 0; }
 .notification-detail__content h2 { margin-top: 2rem; }
+
+.notification-figure { margin: var(--space-5) 0; }
+.notification-figure img { margin-inline: auto; border-radius: var(--radius-control); }
+.notification-figure > a { display: block; width: fit-content; max-width: 100%; margin-inline: auto; }
+.notification-figure figcaption {
+  margin-top: var(--space-2);
+  color: var(--color-muted-foreground);
+  font-size: var(--font-small);
+  text-align: center;
+}
+
+.notification-table { margin: var(--space-5) 0; overflow-x: auto; overflow-wrap: normal; }
+.notification-table table { width: 100%; min-width: 32rem; border-collapse: collapse; }
+.notification-table caption {
+  padding-bottom: var(--space-2);
+  color: var(--color-heading);
+  font-weight: 600;
+  text-align: left;
+}
+.notification-table :is(th, td) {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+}
+.notification-table th { color: var(--color-heading); }
+.notification-table thead th { background: var(--color-neutral-bg); }
 .notification-attachments { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); }
 .related-notifications { min-width: 0; padding-top: 0.5rem; }
 .related-notifications > h2 { margin-bottom: 1.25rem; }
