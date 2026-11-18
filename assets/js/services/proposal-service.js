@@ -80,7 +80,7 @@
   function update(id, input, revision) {
     const records = app.storage.readProposals();
     const previous = getEditable(records, id, revision);
-    const checked = validate(input);
+    const checked = validate(input.outline === undefined && previous.outline ? { ...input, outline: previous.outline } : input);
     if (checked.errors.length) throw new Error(checked.errors[0].message);
     const value = checked.value;
     rejectDuplicate(records, value, id);
@@ -124,7 +124,7 @@
         courseLabel: record.courseLabel, semester: record.semester, academicYear: record.academicYear,
         supervisionRole: 'huong-dan-chinh', supervisionRoleLabel: 'Hướng dẫn chính',
         studentName: student.name, studentId: student.code, submittedAt: record.createdAt,
-        description: record.description, objectives: record.objectives, outcomes: record.outcomes,
+        description: record.description, objectives: record.objectives, outcomes: record.outcomes, outline: record.outline ? clone(record.outline) : null,
         attachment: record.attachment?.name || '', lecturerId: record.lecturerId || assignedLecturer(record),
         reason: record.decision?.reason || '', decidedAt: record.decision?.decidedAt || '',
       };

@@ -75,6 +75,11 @@
     if (['approved-proposal', 'approved-registration'].includes(current.project.source)) {
       for (const [name, value] of [['Mô tả đề tài', current.project.description], ['Mục tiêu', current.project.objectives], ['Kết quả dự kiến', current.project.outcomes]]) card.append(el('h3', name), el('p', value));
     }
+    if (current.project.outline && app.shared?.proposalOutline) {
+      const outlinePanel = el('section');
+      app.shared.proposalOutline.render(outlinePanel, current.project);
+      card.append(outlinePanel);
+    }
     const lecturers = current.team.supervisorIds.map(id => current.project.lecturerId === id ? current.project.lecturer : app.data.projectLecturers.find(item => item.id === id)?.name || id);
     card.append(el('h3', 'Giảng viên hướng dẫn'), el('p', lecturers.join(' - ')));
     overview.replaceChildren(card);

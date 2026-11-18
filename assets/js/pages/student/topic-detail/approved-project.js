@@ -21,6 +21,14 @@
       text('.project-description__text', project.description);
       text('.project-objectives__text', project.objectives);
       text('.project-outcomes__text', project.outcomes);
+      let outlinePanel = root.querySelector('[data-proposal-outline-view]');
+      if (!outlinePanel) {
+        outlinePanel = document.createElement('section');
+        outlinePanel.dataset.proposalOutlineView = '';
+        outlinePanel.className = 'proposal-outline-panel';
+        document.querySelector('.project-outcomes').after(outlinePanel);
+      }
+      app.shared?.proposalOutline?.render(outlinePanel, project);
       text('.project-team__name', project.groupName);
       const instructors = document.querySelector('.supervisor-list');
       const item = document.createElement('li');

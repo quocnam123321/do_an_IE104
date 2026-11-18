@@ -17,12 +17,12 @@
         status: 'dang-thuc-hien', statusLabel: 'Đang thực hiện', groupName: `Nhóm của ${student.name}`,
         lecturer: record.supervisorName, lecturerLabel: 'Giảng viên hướng dẫn', roleLabel: 'Hướng dẫn chính',
         lecturerId: record.decision.lecturerId, createdAt: record.decision.decidedAt,
-        description: record.description, objectives: record.objectives, outcomes: record.outcomes,
+        description: record.description, objectives: record.objectives, outcomes: record.outcomes, outline: record.outline ? clone(record.outline) : null,
         detailUrl: studentUrl(id), requestDetailUrl: `chi-tiet-de-xuat-da-luu.html?proposal=${encodeURIComponent(record.id)}`,
       };
       return {
         project,
-        team: { projectId: id, maxMembers: 4, members: [{ ...student, role: 'nhom-truong' }], supervisorIds: [record.decision.lecturerId], invitations: [] },
+        team: { projectId: id, maxMembers: 4, members: record.outline ? clone(record.outline.members) : [{ ...student, role: 'nhom-truong' }], supervisorIds: [record.decision.lecturerId], invitations: [] },
         progress: { projectId: id, revision: 0, tasks: [], history: [] },
       };
     });

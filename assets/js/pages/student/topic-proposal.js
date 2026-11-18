@@ -4,6 +4,8 @@
   const dialog = document.getElementById('proposal-confirm-dialog');
   if (!form || !service || !dialog) return;
   const fields = Object.fromEntries(Object.entries({ title: 'topic-name', type: 'topic-type', courseId: 'course', semester: 'semester', academicYear: 'academic-year', description: 'topic-description', objectives: 'topic-objectives', outcomes: 'expected-results', supervisorId: 'add-supervisor', attachment: 'proposal-attachment' }).map(([key, id]) => [key, document.getElementById(id)]));
+  const outline = globalThis.IE104.ui?.proposalOutline;
+  const fieldFor = key => fields[key] || outline?.getField(key);
   const fixedCourse = document.getElementById('fixed-course');
   const status = document.getElementById('course-status');
   const supervisorId = document.getElementById('supervisor-id');
@@ -12,6 +14,11 @@
   const error = document.getElementById('proposal-error');
   const reviewError = dialog.querySelector('[data-proposal-error]');
   const result = document.getElementById('proposal-result');
+  if (form.querySelector('[data-proposal-outline]') && (!outline || !globalThis.IE104.shared?.proposalOutline)) {
+    error.textContent = 'Chưa tải đủ biểu mẫu đề cương. Hãy tải lại trang trước khi gửi.';
+    error.hidden = false;
+    return;
+  }
   const regularOptions = Array.from(fields.courseId.options, option => option.cloneNode(true));
   let courseIsFixed = false;
   let pending = null;
@@ -42,6 +49,7 @@
     fields.attachment.value = '';
     retainedAttachment = original.attachment;
     showAttachment();
+    outline?.fill(original);
   }
 
   function updateCourse() {
@@ -61,11 +69,12 @@
     fields.courseId.disabled = fixed;
     fixedCourse.disabled = !fixed;
     courseIsFixed = fixed;
+    outline?.setType(type);
   }
 
   function clearErrors() {
     form.querySelectorAll('[data-proposal-field-error]').forEach(node => node.remove());
-    Object.values(fields).forEach(field => {
+    form.querySelectorAll('input, select, textarea, [tabindex="-1"]').forEach(field => {
       field.removeAttribute('aria-invalid');
       const descriptions = (field.getAttribute('aria-describedby') || '').split(' ').filter(id => id && !id.startsWith('proposal-field-error-'));
       if (descriptions.length) field.setAttribute('aria-describedby', descriptions.join(' '));
@@ -75,14 +84,15 @@
   }
 
   function readInput() {
-    return { ...Object.fromEntries(Object.entries(fields).filter(([key]) => !['supervisorId', 'attachment'].includes(key)).map(([key, field]) => [key, field.value])), supervisorId: supervisorId.value, attachment: fields.attachment.files[0] || retainedAttachment };
+    return { ...Object.fromEntries(Object.entries(fields).filter(([key]) => !['supervisorId', 'attachment'].includes(key)).map(([key, field]) => [key, field.value])), supervisorId: supervisorId.value, attachment: fields.attachment.files[0] || retainedAttachment, ...(outline ? { outline: outline.read() } : {}) };
   }
 
   function showErrors(errors) {
     error.textContent = 'Vui lòng kiểm tra các thông tin được đánh dấu bên dưới.';
     error.hidden = false;
     errors.forEach(({ field: key, message }) => {
-      const field = fields[key];
+      const field = fieldFor(key) || document.getElementById('proposal-members');
+      field.closest('details')?.setAttribute('open', '');
       const note = document.createElement('p');
       note.id = `proposal-field-error-${key}`;
       note.dataset.proposalFieldError = '';
@@ -92,7 +102,7 @@
       field.setAttribute('aria-invalid', 'true');
       field.setAttribute('aria-describedby', `${field.getAttribute('aria-describedby') || ''} ${note.id}`.trim());
     });
-    fields[errors[0].field].focus();
+    (fieldFor(errors[0].field) || error).focus();
   }
 
   function review(value) {
@@ -100,6 +110,7 @@
     list.replaceChildren();
     const type = service.catalog.types[value.type];
     const rows = [['Tên đề tài', value.title], ['Loại đề tài', type.label], ['Môn học', type.courses[value.courseId]], ['Học kỳ - Năm học', `${value.semester === 'he' ? 'Hè' : value.semester} - ${value.academicYear}`], ['Giảng viên', service.catalog.supervisors[value.supervisorId]], ['Mô tả', value.description], ['Mục tiêu', value.objectives], ['Kết quả dự kiến', value.outcomes], ['Tài liệu', value.attachment ? `${value.attachment.name} (${value.attachment.size} byte). Chỉ lưu thông tin tệp, chưa lưu nội dung tệp.` : 'Không đính kèm']];
+    rows.push(...(globalThis.IE104.shared?.proposalOutline?.fields(value) || []));
     rows.forEach(([label, text]) => {
       const row = document.createElement('div');
       const term = document.createElement('dt');
@@ -152,6 +163,7 @@
     clearErrors();
     if (editing) { fillOriginal(); return; }
     retainedAttachment = null;
+    outline?.fill();
     showAttachment();
     supervisorId.value = '';
     document.getElementById('selected-supervisor').textContent = 'Chưa chọn giảng viên';
