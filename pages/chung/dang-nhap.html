@@ -12,8 +12,10 @@
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/common.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/auth.css?v=20261118-login-portal-4" />
+    <link rel="stylesheet" href="../../assets/css/auth.css?v=20261118-google-login" />
     <script src="../../assets/js/password-toggle.js" defer></script>
+    <script src="../../assets/js/demo-login.js?v=20261118-demo-login" defer></script>
+    <script src="../../assets/js/google-login.js?v=20261118-google-login" defer></script>
   </head>
   <body class="common-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
@@ -309,14 +311,38 @@
           <div class="login-card">
             <header class="login-panel__header">
               <h1 id="login-title">Đăng nhập</h1>
-              <p id="login-help" class="login-form__help">
-                Đăng nhập bằng tài khoản sinh viên hoặc giảng viên để tiếp tục công
-                việc của bạn.
-              </p>
             </header>
 
-            <!-- Chưa nối backend. Không gửi hoặc lưu thông tin đăng nhập ở bản HTML. -->
-            <form class="login-form" aria-describedby="login-help login-status">
+            <div class="demo-notice" id="login-demo">
+              <svg class="demo-notice__icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 16v-4" />
+                <path d="M12 8h.01" />
+              </svg>
+              <div class="login-demo__details">
+                <strong class="login-demo__title">Tài khoản mẫu</strong>
+                <dl>
+                  <div>
+                    <dt>Sinh viên:</dt>
+                    <dd><strong data-demo-destination="../sinh-vien/tong-quan-sinh-vien.html" data-uit-email-domain="gm.uit.edu.vn">sinhvien</strong></dd>
+                  </div>
+                  <div>
+                    <dt>Giảng viên:</dt>
+                    <dd><strong data-demo-destination="../giang-vien/tong-quan-giang-vien.html" data-uit-email-domain="uit.edu.vn">giangvien</strong></dd>
+                  </div>
+                  <div>
+                    <dt>Mật khẩu chung:</dt>
+                    <dd><strong id="demo-password">Demo1234</strong></dd>
+                  </div>
+                </dl>
+              </div>
+            </div>
+
+            <noscript>
+              <p class="form-error">Bật JavaScript để đăng nhập bằng tài khoản mẫu.</p>
+            </noscript>
+
+            <form class="login-form" id="demo-login-form" method="post" aria-labelledby="login-title" aria-describedby="login-demo">
               <div class="form-field">
                 <label for="username">Tài khoản</label>
                 <div class="login-input-wrap">
@@ -332,6 +358,7 @@
                     autocomplete="username"
                     autocapitalize="none"
                     spellcheck="false"
+                    aria-describedby="login-error"
                     required
                   />
                 </div>
@@ -351,6 +378,7 @@
                     type="password"
                     placeholder="Nhập mật khẩu"
                     autocomplete="current-password"
+                    aria-describedby="login-error"
                     required
                   />
                   <button
@@ -377,26 +405,31 @@
                 <a href="quen-mat-khau.html">Quên mật khẩu?</a>
               </p>
 
-              <p id="login-error" class="form-error" role="alert" hidden></p>
-              <p id="login-result" class="form-result" role="status" hidden></p>
+              <p id="login-error" class="form-error login-error" role="alert"></p>
 
-              <button class="login-form__submit" type="button" disabled>
+              <button class="login-form__submit" type="submit" disabled>
                 Đăng nhập
               </button>
-
-              <p id="login-status" class="demo-notice">
-                <svg class="demo-notice__icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="9" />
-                  <path d="M12 16v-4" />
-                  <path d="M12 8h.01" />
-                </svg>
-                <span>Đây là giao diện HTML minh họa. Chức năng đăng nhập chưa được kết nối.</span>
-              </p>
             </form>
+
+            <div class="login-alternative">
+              <p class="login-alternative__divider">hoặc</p>
+              <button id="login-google" class="login-alternative__google" type="button" aria-describedby="login-google-hint login-google-error" disabled>
+                <svg aria-hidden="true" width="20" height="20" viewBox="0 0 48 48">
+                  <path fill="#4285f4" d="M43.6 24.5c0-1.4-.1-2.8-.4-4.1H24v7.7h11a9.4 9.4 0 0 1-4.1 6.2v5.1h6.6c3.9-3.6 6.1-8.8 6.1-14.9Z" />
+                  <path fill="#34a853" d="M24 44c5.5 0 10.2-1.8 13.5-4.6l-6.6-5.1c-1.8 1.2-4.1 1.9-6.9 1.9-5.3 0-9.8-3.6-11.4-8.4H5.8V33A20 20 0 0 0 24 44Z" />
+                  <path fill="#fbbc05" d="M12.6 27.8a12 12 0 0 1 0-7.6V15H5.8a20 20 0 0 0 0 18l6.8-5.2Z" />
+                  <path fill="#ea4335" d="M24 11.8c3 0 5.7 1 7.8 3.1l5.8-5.8C34.1 5.9 29.5 4 24 4A20 20 0 0 0 5.8 15l6.8 5.2c1.6-4.8 6.1-8.4 11.4-8.4Z" />
+                </svg>
+                Đăng nhập bằng Google
+              </button>
+              <p class="login-alternative__hint" id="login-google-hint" role="status">Đăng nhập Google chưa khả dụng.</p>
+              <p id="login-google-error" class="form-error login-error" role="alert"></p>
+            </div>
           </div>
 
           <p class="login-panel__support">
-            Cần hỗ trợ hoặc có góp ý về hệ thống?
+            Cần hỗ trợ?
             <a href="lien-he.html">Liên hệ với nhóm phát triển</a>
           </p>
         </section>

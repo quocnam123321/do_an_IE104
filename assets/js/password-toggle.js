@@ -6,7 +6,9 @@
 
     function setVisible(visible) {
       input.type = visible ? "text" : "password";
-      const label = visible ? "Ẩn mật khẩu" : "Hiện mật khẩu";
+      const action = visible ? "Ẩn mật khẩu" : "Hiện mật khẩu";
+      const fieldLabel = toggle.dataset.passwordLabel;
+      const label = fieldLabel ? `${action} ${fieldLabel}` : action;
       toggle.setAttribute("aria-label", label);
       toggle.setAttribute("title", label);
       toggle.setAttribute("aria-pressed", String(visible));
