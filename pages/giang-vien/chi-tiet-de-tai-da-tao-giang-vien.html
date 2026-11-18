@@ -14,8 +14,13 @@
     <link rel="stylesheet" href="../../assets/css/teacher-created-detail.css?v=20261111-heading-sync-1" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <script src="../../assets/js/dialog-commands.js" defer></script>
-  </head>
-  <body class="teacher-workspace-page teacher-created-detail-page">
+  
+<script src="../../assets/js/data/lecturer-topics.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/lecturer-topic-routing.css">
+<script src="../../assets/js/pages/lecturer/created-topic.js" defer></script>
+</head>
+  <body class="teacher-workspace-page teacher-created-detail-page" data-lecturer-topic-view="detail">
     <a class="skip-link" href="#main-content">
       Chuyển đến nội dung chính
     </a>
@@ -302,7 +307,7 @@
           <button class="registration-reopen-button" type="button" commandfor="reopen-registration" command="show-modal" aria-haspopup="dialog" aria-controls="reopen-registration">Mở lại đăng ký</button>
         </template>
       </div>
-    </main>
+    <noscript><style>main .page-container > :not(noscript) { display:none !important; }</style><p>Bật JavaScript để xem đúng đề tài theo mã đã chọn. <a href="danh-sach-de-tai-da-tao.html">Quay lại danh sách đề tài</a></p></noscript></main>
     <!-- Hộp thoại HTML gốc mở bằng command/commandfor và đóng bằng form method="dialog".
          Các nút xác nhận disabled vì chưa có xử lý thay đổi trạng thái đề tài. -->
     <dialog class="confirmation-dialog" id="close-registration" aria-labelledby="close-registration-title" aria-describedby="close-registration-description">

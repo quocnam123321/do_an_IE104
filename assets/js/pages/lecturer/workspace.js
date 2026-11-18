@@ -1,6 +1,7 @@
 (() => {
   const app = globalThis.IE104;
   const service = app?.services?.teaching;
+  const topics = app?.services?.lecturerTopics;
   if (!service) return;
   const el = (tag, text, className) => {
     const node = document.createElement(tag);
@@ -31,7 +32,7 @@
   const select = el('select');
   select.id = 'teaching-project';
   label.htmlFor = select.id;
-  const projects = service.listProjects();
+  const projects = topics ? topics.workspaceChoices() : service.listProjects();
   projects.forEach(project => select.add(new Option(project.label, project.id)));
   let projectId = new URLSearchParams(location.search).get('project') || 'GV-DT001-N01';
   select.value = projectId;
@@ -44,14 +45,26 @@
   function overviewView(current) {
     if (current.projectId === 'GV-DT001-N01') {
       overview.replaceChildren(...[...overviewTemplate.childNodes].map(node => node.cloneNode(true)));
+      const title = overview.querySelector('.topic-summary h2');
+      if (title) title.textContent = current.project.title;
+      const badge = overview.querySelector('.topic-summary__status');
+      if (badge) {
+        const label = el('span', 'Trạng thái đề tài: ', 'visually-hidden');
+        badge.replaceChildren(label, document.createTextNode(current.project.statusLabel));
+        badge.dataset.status = current.project.status;
+      }
+      const fields = [current.project.topicId, current.project.typeLabel, current.project.courseLabel, `Học kỳ ${current.project.semester} - ${current.project.academicYear}`];
+      overview.querySelectorAll('.topic-summary dd').forEach((node, index) => { node.textContent = fields[index]; });
       return;
     }
     const card = el('section', '', 'teaching-card');
+    if (current.readOnly) card.dataset.catalogOnly = 'true';
     card.append(el('h2', current.project.title));
     const dl = el('dl', '', 'teaching-metadata');
-    const fields = [['Mã đề tài', current.project.topicId || current.project.id], ['Nhóm thực hiện', current.project.groupName], ['Trạng thái', current.project.statusLabel || 'Đang thực hiện'], ['Học kỳ', current.project.semester], ['Năm học', current.project.academicYear]];
+    const fields = [['Mã đề tài', current.project.topicId || current.project.id], ['Loại đề tài', current.project.typeLabel], ['Môn học', current.project.courseLabel || current.project.courseId || 'Không áp dụng'], ['Vai trò hướng dẫn', current.project.roleLabel || 'Chưa có thông tin'], ['Nhóm thực hiện', current.project.groupName], ['Trạng thái', current.project.statusLabel || 'Đang thực hiện'], ['Học kỳ', current.project.semester], ['Năm học', current.project.academicYear]];
     fields.forEach(([name, value]) => { const row = el('div'); row.append(el('dt', name), el('dd', value)); dl.append(row); });
     card.append(dl, el('h3', 'Nhóm thực hiện'));
+    if (!current.team.members.length) card.append(el('p', 'Chưa có thông tin thành viên nhóm.'));
     current.team.members.forEach(member => card.append(el('p', `${member.name} - ${member.code}${member.role === 'nhom-truong' ? ' - Nhóm trưởng' : ''}`)));
     const lecturers = current.team.supervisorIds.map(id => app.data.projectLecturers.find(item => item.id === id)?.name || id);
     card.append(el('h3', 'Giảng viên hướng dẫn'), el('p', lecturers.join(' - ')));
@@ -63,13 +76,15 @@
   }
   function refresh() {
     try {
-      state = service.getState(projectId);
+      state = topics ? topics.workspaceState(projectId) : service.getState(projectId);
       document.querySelector('.page-header__topic-name').textContent = state.project.title;
       overviewView(state);
       subscribers.forEach(render => render(state));
       notify(state.warning || (app.ui.lecturerWorkspace.dirty ? 'Đánh giá đang có thay đổi chưa lưu. Dữ liệu mới ở tab khác sẽ không ghi đè phần đang nhập.' : 'Dữ liệu mẫu. Thay đổi được lưu trên trình duyệt này.'));
       select.value = projectId;
       document.body.dataset.projectId = projectId;
+      const back = document.querySelector('.back-navigation .back-link');
+      if (back && topics) back.href = topics.returnUrl('supervised', new URLSearchParams(location.search).get('return'), location.href);
     } catch (failure) {
       state = null;
       overview.replaceChildren(el('p', failure.message, 'teaching-notice'));
@@ -81,6 +96,7 @@
     if (saving) return;
     try {
       if (!state || snapshot.projectId !== projectId) throw new Error('Đề tài đã thay đổi. Hãy mở lại hộp thoại.');
+      if (state.readOnly) throw new Error('Đề tài này chưa có dữ liệu xử lý. Hiện chỉ được xem thông tin trong danh mục.');
       saving = true;
       operation(snapshot);
       dialog?.close();

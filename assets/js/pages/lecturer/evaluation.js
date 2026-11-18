@@ -25,6 +25,7 @@
     }
     panel.replaceChildren();
     if (!state) return;
+    if (state.readOnly) { panel.append(el('p', 'Chưa có dữ liệu đánh giá của đề tài này.', 'teaching-card')); return; }
     current = state;
     loadedRevision = state.revision;
     loadedProject = state.projectId;

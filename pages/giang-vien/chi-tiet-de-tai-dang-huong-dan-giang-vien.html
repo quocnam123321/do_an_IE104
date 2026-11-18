@@ -19,6 +19,7 @@
     <script src="../../assets/js/shared/teacher-detail-tabs.js" defer></script>
     <script src="../../assets/js/shared/dialog-commands.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/teaching-workspace.css">
+<link rel="stylesheet" href="../../assets/css/lecturer-topic-routing.css">
 </head>
   <body class="teacher-workspace-page">
     <a class="skip-link" href="#main-content">
@@ -3586,7 +3587,7 @@
           </section>
         </div>
       </div>
-    </main>
+    <noscript><style>.teacher-workspace-page [data-detail-panels], .teacher-workspace-page [data-detail-tabs], .teacher-workspace-page .page-header__topic-name {display:none!important;}</style><p>Bật JavaScript để xem đúng dữ liệu của nhóm đã chọn.</p></noscript></main>
     <!-- Các dialog dùng HTML command/commandfor. Nút gửi/lưu/xóa/công bố disabled
          cho tới khi có xử lý dữ liệu; method=dialog không gửi nội dung lên URL/máy chủ. -->
     <!-- Hộp thoại chỉ xem: readonly, không có nút lưu và không gửi dữ liệu. -->
@@ -7317,7 +7318,9 @@
   <script src="../../assets/js/services/teaching-service.js" defer></script>
   <script src="../../assets/js/services/submission-file-service.js" defer></script>
   <script src="../../assets/js/shared/download-file.js" defer></script>
-  <script src="../../assets/js/pages/lecturer/workspace.js" defer></script>
+  <script src="../../assets/js/data/lecturer-topics.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
+<script src="../../assets/js/pages/lecturer/workspace.js" defer></script>
   <script src="../../assets/js/pages/lecturer/submissions.js" defer></script>
   <script src="../../assets/js/pages/lecturer/progress.js" defer></script>
   <script src="../../assets/js/pages/lecturer/evaluation.js" defer></script>

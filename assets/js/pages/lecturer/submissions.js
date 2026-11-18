@@ -56,8 +56,8 @@
     panel.replaceChildren();
     if (!state) return;
     const toolbar = el('div', '', 'teaching-toolbar');
-    toolbar.append(el('h2', 'Yêu cầu bài nộp'), button('+ Tạo yêu cầu', () => editRequirement(null), !state.canManageRequirements), button(state.submissionsLocked ? 'Mở nhận bài toàn đề tài' : 'Khóa nhận bài toàn đề tài', () => lock(null, !state.submissionsLocked), state.submissionsLocked && !state.canManageRequirements));
-    panel.append(toolbar, el('p', state.submissionsLocked ? 'Toàn bộ đề tài đang khóa nhận bài.' : state.canManageRequirements ? 'Đang mở nhận bài theo từng yêu cầu.' : 'Đề tài đã hoàn thành. Không mở nhận bài mới.'));
+    toolbar.append(el('h2', 'Yêu cầu bài nộp'), button('+ Tạo yêu cầu', () => editRequirement(null), !state.canManageRequirements), button(state.submissionsLocked ? 'Mở nhận bài toàn đề tài' : 'Khóa nhận bài toàn đề tài', () => lock(null, !state.submissionsLocked), state.readOnly || (state.submissionsLocked && !state.canManageRequirements)));
+    panel.append(toolbar, el('p', state.readOnly ? 'Chưa có dữ liệu yêu cầu và bài nộp cho nhóm này.' : state.submissionsLocked ? 'Toàn bộ đề tài đang khóa nhận bài.' : state.canManageRequirements ? 'Đang mở nhận bài theo từng yêu cầu.' : 'Đề tài đã hoàn thành. Không mở nhận bài mới.'));
     const requirements = state.requirements.filter(item => !item.deletedAt);
     const stage = item => {
       const linked = state.submissions.filter(submission => submission.requirementId === item.id);

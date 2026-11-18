@@ -12,9 +12,14 @@
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
-  </head>
+  
+<script src="../../assets/js/data/lecturer-topics.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/lecturer-topic-routing.css">
+<script src="../../assets/js/pages/lecturer/created-topic.js" defer></script>
+</head>
 
-  <body>
+  <body data-lecturer-topic-view="edit">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
 
     <!-- ĐẦU TRANG -->
@@ -457,7 +462,7 @@
           </form>
         </div>
       </div>
-    </main>
+    <noscript><style>main .page-container > :not(noscript) { display:none !important; }</style><p>Bật JavaScript để xem đúng đề tài theo mã đã chọn. <a href="danh-sach-de-tai-da-tao.html">Quay lại danh sách đề tài</a></p></noscript></main>
 
     <!-- CHÂN TRANG CHUNG -->
     <footer class="site-footer">
