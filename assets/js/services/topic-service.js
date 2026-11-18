@@ -21,7 +21,7 @@
     const statuses = filters.statuses || [];
     const semesters = filters.semesters || [];
     const results = source.filter(topic => {
-      const matchesKeyword = !keyword || normalizeText(`${topic.id} ${topic.title}`).includes(keyword);
+      const matchesKeyword = !keyword || normalizeText(`${topic.code || topic.id} ${topic.title}`).includes(keyword);
       const matchesLecturer = !lecturer || normalizeText(topic.lecturer) === lecturer;
       const matchesType = !types.length || types.includes(topic.type);
       const matchesCourse = !courses.length || courses.includes(topic.courseId);
@@ -55,7 +55,13 @@
   }
 
   function listOpenTopics(filters, pagination) {
-    return listTopics(app.data?.openTopics || [], filters, pagination);
+    const samples = app.data?.openTopics || [];
+    try {
+      const topics = globalThis.TeacherTopicStore?.studentTopics(samples) || samples;
+      return listTopics(topics.filter(topic => topic.status !== 'closed'), filters, pagination);
+    } catch (error) {
+      return { ...listTopics([], filters, pagination), warning: 'Không đọc được trạng thái đăng ký. ' + error.message };
+    }
   }
 
   function listMyTopics(filters, pagination) {

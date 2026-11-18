@@ -123,7 +123,7 @@
       render({ focusPagination: true });
     });
     window.addEventListener('pageshow', applyFilters);
-    window.addEventListener('storage', event => { if ([globalThis.IE104?.storage?.registrationKey, globalThis.IE104?.storage?.proposalKey, globalThis.IE104?.storage?.requestKey, null].includes(event.key) || event.key?.startsWith('ie104.proposal-decision.v1.')) applyFilters(); });
+    window.addEventListener('storage', event => { if ([globalThis.IE104?.storage?.registrationKey, globalThis.IE104?.storage?.proposalKey, globalThis.IE104?.storage?.requestKey, config.storageKey, null].includes(event.key) || event.key?.startsWith('ie104.proposal-decision.v1.')) applyFilters(); });
     form.dataset.topicsInitialized = 'true';
     applyFilters();
   }

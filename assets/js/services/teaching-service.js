@@ -15,8 +15,20 @@
     return { project, team, initialEvaluation, criteria };
   }
 
+  function supervisedProjects() {
+    const lecturerId = actor()?.id;
+    return [...app.data.myTopics, ...(app.data.lecturerProjects || [])].flatMap(project => {
+      const position = app.data.projectTeams.find(team => team.projectId === project.id)?.supervisorIds.indexOf(lecturerId);
+      return position >= 0 ? [{ project, role: position === 0 ? 'primary' : 'secondary' }] : [];
+    });
+  }
+
   function listProjects() {
-    return [...app.data.myTopics, ...(app.data.lecturerProjects || [])].filter(project => app.data.projectTeams.some(team => team.projectId === project.id && team.supervisorIds.includes(actor()?.id))).map(project => ({ id: project.id, title: project.title, label: `${project.topicId || project.id} - ${project.title} - ${project.groupName}` }));
+    return supervisedProjects().map(({ project }) => ({ id: project.id, title: project.title, label: `${project.topicId || project.id} - ${project.title} - ${project.groupName}` }));
+  }
+
+  function listActiveProjects() {
+    return supervisedProjects().filter(({ project }) => project.status === 'dang-thuc-hien').map(clone);
   }
 
   function stateFrom(projectId, records) {
@@ -190,5 +202,5 @@
     return { allowed: true, late: now.getTime() > Date.parse(requirement.deadline), reason: '' };
   }
 
-  app.services.teaching = { listProjects, getState, getSubmission, validateRequirement, saveRequirement, deleteRequirement, setLocked, addProgressReview, saveFeedback, validateEvaluation, saveDraft, publish, submissionAccess };
+  app.services.teaching = { listProjects, listActiveProjects, getState, getSubmission, validateRequirement, saveRequirement, deleteRequirement, setLocked, addProgressReview, saveFeedback, validateEvaluation, saveDraft, publish, submissionAccess };
 })();

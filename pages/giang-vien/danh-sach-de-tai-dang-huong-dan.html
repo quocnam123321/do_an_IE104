@@ -16,6 +16,12 @@
     <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <script src="../../assets/js/proposal-store.js" defer></script>
+    <script src="../../assets/js/data/mock-data.js" defer></script>
+    <script src="../../assets/js/data/student-projects.js" defer></script>
+    <script src="../../assets/js/data/student-progress.js" defer></script>
+    <script src="../../assets/js/data/teaching-data.js" defer></script>
+    <script src="../../assets/js/services/teaching-service.js" defer></script>
+    <script src="../../assets/js/teacher-topic-store.js" defer></script>
     <script src="../../assets/js/teacher-approved-proposals.js" defer></script>
     <script src="../../assets/js/topic-list.js" defer></script>
   </head>
@@ -260,13 +266,13 @@
             <li>
               <a class="topic-tabs__link" href="danh-sach-de-tai-dang-huong-dan.html" aria-current="page">
                 <span>Đề tài đang hướng dẫn</span>
-                <span class="topic-tabs__count">(5)</span>
+                <span class="topic-tabs__count" data-topic-tab-count="teaching"></span>
               </a>
             </li>
             <li>
               <a class="topic-tabs__link" href="danh-sach-de-tai-da-tao.html">
                 <span>Đề tài đã tạo</span>
-                <span class="topic-tabs__count">(12)</span>
+                <span class="topic-tabs__count" data-topic-tab-count="created"></span>
               </a>
             </li>
           </ul>
@@ -1185,7 +1191,6 @@
             </div>
 
             <div class="topic-results__footer">
-              <!-- Phân trang nhất quán với 5/5 kết quả trên trang 1; chưa có xử lý chuyển trang. -->
               <nav class="pagination" aria-label="Phân trang đề tài">
                 <ul class="pagination__list">
                   <li>
