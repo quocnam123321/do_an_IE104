@@ -83,6 +83,7 @@
   }
   if (mode === 'detail') {
     window.addEventListener('pageshow',render);
+    document.addEventListener('ie104:lecturer-topic-state-changed',render);
     window.addEventListener('storage',event => { if (event.key === globalThis.IE104.services.lecturerTopicRepository?.key || event.key === null) render(); });
   }
   render();

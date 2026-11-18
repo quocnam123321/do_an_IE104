@@ -9,7 +9,7 @@
     const title = document.createElement('h3');
     title.textContent = record.topic.title;
     const details = document.createElement('dl');
-    const fields = [['Mã yêu cầu', record.id], ['Mã đề tài', record.topic.id], ['Nhóm', record.groupName], ['Trạng thái mẫu', 'Chờ duyệt'], ['Ngày lưu', new Date(record.createdAt).toLocaleString('vi-VN')]];
+    const fields = [['Mã yêu cầu', record.id], ['Mã đề tài', record.topic.displayId || record.topic.id], ['Nhóm', record.groupName], ['Trạng thái mẫu', 'Chờ duyệt'], ['Ngày lưu', new Date(record.createdAt).toLocaleString('vi-VN')]];
     if (record.message) fields.push(['Lời nhắn', record.message]);
     fields.forEach(([label, value]) => {
       const row = document.createElement('div');

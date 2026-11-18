@@ -7,7 +7,16 @@
     const initial = app.data.lecturerTopics || [];
     if (kind !== 'created' || !app.services.lecturerTopicRepository) return initial;
     const saved = app.services.lecturerTopicRepository.read();
-    return [...initial.filter(topic => topic.kind !== 'created' || !saved.some(record => record.id === topic.id)), ...saved];
+    const merged = initial.map(topic => {
+      const changed = topic.kind === 'created' && saved.find(record => record.id === topic.id);
+      if (changed && changed.ownerId !== topic.ownerId) throw new Error('Dữ liệu người sở hữu đề tài đã lưu không hợp lệ.');
+      return changed ? { ...topic, ...changed } : topic;
+    });
+    for (const topic of saved) if (!initial.some(seed => seed.kind === 'created' && seed.id === topic.id)) {
+      if (topic.patchOnly) throw new Error('Không tìm thấy nguồn của trạng thái đăng ký đã lưu.');
+      merged.push(topic);
+    }
+    return merged;
   };
 
   function list(kind) {
@@ -64,5 +73,5 @@
     };
   }
 
-  app.services.lecturerTopics = { list, get, detailUrl, returnUrl, workspaceChoices, workspaceState };
+  app.services.lecturerTopics = { list, get, detailUrl, returnUrl, workspaceChoices, workspaceState, allCreated: () => clone(records('created').filter(topic => topic.kind === 'created')) };
 })();

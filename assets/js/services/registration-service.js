@@ -3,7 +3,7 @@
   app.services = app.services || {};
 
   function getTopic(id) {
-    return app.data.openTopics.find(topic => topic.id === id);
+    return app.data.openTopics.find(topic => topic.id === id) || app.services.publishedTopics?.get(id);
   }
 
   function getRules(id) {
@@ -18,8 +18,9 @@
     return app.storage.readRegistrations().find(record => record.id === id);
   }
 
-  function create(id, payload) {
-    const topic = getTopic(id);
+  function create(id, payload, expectedRevision) {
+    let topic = getTopic(id);
+    if (topic?.source === 'lecturer-created') topic = app.services.publishedTopics.requireOpen(id,expectedRevision);
     if (!topic) throw new Error('Không tìm thấy đề tài để đăng ký.');
     const validation = app.validation.validateRegistration(payload, getRules(id));
     if (validation.errors.length) {
@@ -33,6 +34,7 @@
     const record = {
       id: `DK-${suffix}`,
       topic: { ...topic },
+      ...(topic.source === 'lecturer-created' ? { catalogRevision:topic.revision, lecturerId:topic.ownerId } : {}),
       ...validation.value,
       status: 'cho-duyet',
       createdAt: new Date().toISOString(),
@@ -41,12 +43,21 @@
     return record;
   }
 
+  async function submit(id,payload,revision) {
+    const commit = () => create(id,payload,revision);
+    if (!globalThis.navigator?.locks?.request) return commit();
+    const lockRegistration = () => navigator.locks.request(app.storage.registrationKey,commit);
+    const topic = getTopic(id);
+    return topic?.source === 'lecturer-created' ? navigator.locks.request(app.services.lecturerTopicRepository.key,lockRegistration) : lockRegistration();
+  }
+
   function listMyTopics() {
     return app.storage.readRegistrations().map(record => {
       const topic = getTopic(record.topic.id) || record.topic;
       return {
         id: topic.id,
         requestId: record.id,
+        displayId: topic.displayId || topic.id,
         title: topic.title,
         type: topic.type === 'khoa-luan' ? 'khoa-luan' : 'do-an',
         typeLabel: topic.typeLabel,
@@ -64,5 +75,5 @@
     });
   }
 
-  app.services.registrations = { getTopic, getRules, findByTopic, findById, create, listMyTopics };
+  app.services.registrations = { getTopic, getRules, findByTopic, findById, create, submit, listMyTopics };
 })();

@@ -55,7 +55,10 @@
   }
 
   function listOpenTopics(filters, pagination) {
-    return listTopics(app.data?.openTopics || [], filters, pagination);
+    let published = []; let warning = '';
+    try { published = app.services.publishedTopics?.list() || []; }
+    catch (failure) { warning = failure.message; }
+    return { ...listTopics([...(app.data?.openTopics || []),...published],filters,pagination), warning };
   }
 
   function listMyTopics(filters, pagination) {

@@ -4,7 +4,8 @@
   const service = app?.services?.registrations;
   if (!form || !service) return;
   const topicId = form.dataset.topicId;
-  const rules = service.getRules(topicId);
+  if (!topicId) return;
+  let rules = service.getRules(topicId);
   const extra = document.getElementById('additional-members');
   const template = document.getElementById('registration-member-template');
   const add = form.querySelector('.add-member');
@@ -16,6 +17,8 @@
   const resultBox = document.getElementById('registration-result');
   let nextIndex = 3;
   let pending;
+  let pendingRevision;
+  let availabilityError = false;
   let saving = false;
 
   function cards() {
@@ -103,7 +106,13 @@
       } else {
         form.hidden = false;
         resultBox.hidden = true;
-        submit.disabled = false;
+        const topic = service.getTopic(topicId);
+        rules = service.getRules(topicId);
+        refreshMembers();
+        const unavailable = topic?.source === 'lecturer-created' && !topic.availability.allowed;
+        submit.disabled = unavailable;
+        if (unavailable) { availabilityError = true; errorBox.textContent = topic.availability.reason; errorBox.hidden = false; add.disabled = true; if (dialog.open) dialog.close(); }
+        else if (availabilityError) { errorBox.hidden = true; availabilityError = false; }
       }
     } catch (error) {
       errorBox.textContent = error.message;
@@ -113,6 +122,15 @@
   }
 
   function showReview() {
+    let current;
+    try {
+      current = service.getTopic(topicId);
+      if (current?.source === 'lecturer-created') {
+        if (!current.availability.allowed) throw new Error(current.availability.reason);
+        rules = service.getRules(topicId);
+        pendingRevision = current.revision;
+      }
+    } catch (failure) { errorBox.textContent = failure.message; errorBox.hidden = false; return; }
     const checked = app.validation.validateRegistration(readValue(), rules);
     if (checked.errors.length) return showErrors(checked.errors);
     clearErrors();
@@ -149,12 +167,12 @@
   });
   submit.addEventListener('click', showReview);
   form.addEventListener('submit', event => { event.preventDefault(); if (!submit.disabled) showReview(); });
-  confirm.addEventListener('click', () => {
+  confirm.addEventListener('click', async () => {
     if (saving || !pending) return;
     saving = true;
     confirm.disabled = true;
     try {
-      const record = service.create(topicId, pending);
+      const record = await service.submit(topicId,pending,pendingRevision);
       dialog.close();
       showSaved(record);
     } catch (error) {
@@ -167,7 +185,13 @@
     }
   });
   window.addEventListener('pageshow', checkExisting);
-  window.addEventListener('storage', event => { if (event.key === app.storage.registrationKey || event.key === null) checkExisting(); });
+  window.addEventListener('storage', event => {
+    if (event.key === app.services.lecturerTopicRepository?.key || event.key === null) {
+      if (dialog.open && form.dataset.catalogSource === 'lecturer-created') { dialog.close(); pending = null; }
+      checkExisting();
+    } else if (event.key === app.storage.registrationKey) checkExisting();
+  });
+  window.addEventListener('ie104:published-topics-updated',checkExisting);
   form.noValidate = true;
   refreshMembers();
   checkExisting();

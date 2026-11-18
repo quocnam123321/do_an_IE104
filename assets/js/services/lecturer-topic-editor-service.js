@@ -59,7 +59,7 @@
     const now = new Date();
     const createdAt = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
     const record = {
-      ...previous, id: previous?.id || value.id, kind: 'created', ownerId: actor.id,
+      ...previous, patchOnly: false, id: previous?.id || value.id, kind: 'created', ownerId: actor.id,
       title: value.title, topicType: value.topicType, typeLabel: catalog.types[value.topicType], course: value.course, courseLabel: catalog.courses[value.course] || '',
       semester: value.semester, academicYear: value.academicYear, description: value.description,
       ...Object.fromEntries(['objectives', 'outcomes', 'requirements'].map(field => [field, value[field].split(/\r?\n/).map(text).filter(Boolean)])),
@@ -75,5 +75,28 @@
     repository.write([...saved.filter(topic => topic.id !== record.id), record]);
     return JSON.parse(JSON.stringify(record));
   }
-  app.services.lecturerTopicEditor = { catalog, validate, create: (input, files, owner) => save(null, input, null, files, owner), update: (id, input, revision, files, owner) => save(id, input, revision, files, owner) };
+  function setRegistration(id, open, deadline, revision, expectedOwner) {
+    const actor = app.data.currentLecturer;
+    if (!actor?.id || actor.id !== expectedOwner) throw new Error('Giảng viên hiện tại đã thay đổi.');
+    if (typeof open !== 'boolean') throw new Error('Trạng thái đăng ký không hợp lệ.');
+    const repository = app.services.lecturerTopicRepository;
+    const saved = repository.read(); const topic = app.services.lecturerTopics.get('created',id);
+    if (!Number.isInteger(revision) || revision !== (topic.revision || 0)) throw new Error('Đề tài đã đổi ở tab khác. Hãy mở lại hộp xác nhận.');
+    let registration;
+    if (open) {
+      if (!app.services.publishedTopics.complete(topic)) throw new Error('Bổ sung đầy đủ thông tin đề tài trong trang Chỉnh sửa trước khi mở đăng ký.');
+      const converted = date(deadline);
+      if (!converted || Date.parse(converted) <= Date.now()) throw new Error('Hạn đăng ký mới phải là ngày giờ hợp lệ trong tương lai.');
+      if (topic.registration.opensAt && Date.parse(topic.registration.opensAt) >= Date.parse(converted)) throw new Error('Hạn đóng phải sau thời điểm mở đăng ký.');
+      registration = { ...topic.registration, deadline:converted };
+    }
+    const previous = saved.find(record => record.id === id);
+    const record = previous && !previous.patchOnly ? { ...previous } : { id, kind:'created', ownerId:actor.id, patchOnly:true };
+    if (previous?.registration && record.patchOnly) record.registration = previous.registration;
+    Object.assign(record,{ status:open?'open':'closed',statusLabel:open?'Đang mở đăng ký':'Đã đóng đăng ký',revision:(topic.revision||0)+1,updatedAt:new Date().toISOString() });
+    if (registration) record.registration = registration;
+    repository.write([...saved.filter(item => item.id !== id),record]);
+    return app.services.lecturerTopics.get('created',id);
+  }
+  app.services.lecturerTopicEditor = { catalog, validate, setRegistration, create: (input, files, owner) => save(null, input, null, files, owner), update: (id, input, revision, files, owner) => save(id, input,revision,files,owner) };
 })();
