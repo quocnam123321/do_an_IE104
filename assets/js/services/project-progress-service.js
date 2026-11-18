@@ -5,7 +5,7 @@
   const newId = prefix => `${prefix}-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`}`;
 
   function stateFrom(projectId, records) {
-    const initial = app.data.projectProgress.find(item => item.projectId === projectId);
+    const initial = app.data.projectProgress.find(item => item.projectId === projectId) || app.services.approvedProjects?.get(projectId)?.progress;
     if (!initial) throw new Error('Không tìm thấy dữ liệu tiến độ của đề tài.');
     return clone(records.find(item => item.projectId === projectId) || initial);
   }

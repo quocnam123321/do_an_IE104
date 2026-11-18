@@ -6,7 +6,7 @@
   const actor = () => app.data.currentLecturer;
 
   function context(projectId, checkActor = true) {
-    const project = app.data.myTopics.find(item => item.id === projectId) || app.data.lecturerProjects?.find(item => item.id === projectId);
+    const project = app.data.myTopics.find(item => item.id === projectId) || app.data.lecturerProjects?.find(item => item.id === projectId) || app.services.approvedProjects?.get(projectId)?.project;
     if (!project) throw new Error('Không tìm thấy đề tài cần quản lý.');
     const team = app.services.projectTeams.getState(projectId);
     if (checkActor && !team.supervisorIds.includes(actor()?.id)) throw new Error('Giảng viên hiện tại không hướng dẫn đề tài này.');
@@ -15,8 +15,9 @@
     return { project, team, initialEvaluation, criteria };
   }
 
-  function listProjects() {
-    return [...app.data.myTopics, ...(app.data.lecturerProjects || [])].filter(project => app.data.projectTeams.some(team => team.projectId === project.id && team.supervisorIds.includes(actor()?.id))).map(project => ({ id: project.id, title: project.title, label: `${project.topicId || project.id} - ${project.title} - ${project.groupName}` }));
+  function listProjects(includeApproved = true) {
+    const initial = [...app.data.myTopics, ...(app.data.lecturerProjects || [])].filter(project => app.data.projectTeams.some(team => team.projectId === project.id && team.supervisorIds.includes(actor()?.id)));
+    return [...initial, ...(includeApproved ? app.services.approvedProjects?.list('lecturer') || [] : [])].map(project => ({ id: project.id, title: project.title, label: `${project.topicId || project.id} - ${project.title} - ${project.groupName}` }));
   }
 
   function stateFrom(projectId, records) {

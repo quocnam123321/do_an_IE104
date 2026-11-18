@@ -5,8 +5,11 @@
   const normalize = value => String(value).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
 
   function getDefinition(projectId) {
-    const project = app.data.myTopics.find(item => item.id === projectId) || app.data.lecturerProjects?.find(item => item.id === projectId);
-    const team = app.data.projectTeams.find(item => item.projectId === projectId);
+    const existingProject = app.data.myTopics.find(item => item.id === projectId) || app.data.lecturerProjects?.find(item => item.id === projectId);
+    const existingTeam = app.data.projectTeams.find(item => item.projectId === projectId);
+    const approved = !existingProject || !existingTeam ? app.services.approvedProjects?.get(projectId) : null;
+    const project = existingProject || approved?.project;
+    const team = existingTeam || approved?.team;
     if (!project || !team) throw new Error('Không tìm thấy thông tin nhóm của đề tài.');
     return { project, team };
   }

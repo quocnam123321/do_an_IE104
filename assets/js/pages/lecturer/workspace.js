@@ -32,8 +32,14 @@
   const select = el('select');
   select.id = 'teaching-project';
   label.htmlFor = select.id;
-  const projects = topics ? topics.workspaceChoices() : service.listProjects();
-  projects.forEach(project => select.add(new Option(project.label, project.id)));
+  let projects;
+  let catalogWarning = '';
+  function refreshChoices() {
+    catalogWarning = '';
+    try { projects = topics ? topics.workspaceChoices() : service.listProjects(); }
+    catch (failure) { projects = service.listProjects(false); catalogWarning = failure.message; }
+    select.replaceChildren(...projects.map(project => new Option(project.label, project.id)));
+  }
   let projectId = new URLSearchParams(location.search).get('project') || 'GV-DT001-N01';
   select.value = projectId;
   header.append(label, select, notice);
@@ -66,7 +72,10 @@
     card.append(dl, el('h3', 'Nhóm thực hiện'));
     if (!current.team.members.length) card.append(el('p', 'Chưa có thông tin thành viên nhóm.'));
     current.team.members.forEach(member => card.append(el('p', `${member.name} - ${member.code}${member.role === 'nhom-truong' ? ' - Nhóm trưởng' : ''}`)));
-    const lecturers = current.team.supervisorIds.map(id => app.data.projectLecturers.find(item => item.id === id)?.name || id);
+    if (current.project.source === 'approved-proposal') {
+      for (const [name, value] of [['Mô tả đề tài', current.project.description], ['Mục tiêu', current.project.objectives], ['Kết quả dự kiến', current.project.outcomes]]) card.append(el('h3', name), el('p', value));
+    }
+    const lecturers = current.team.supervisorIds.map(id => current.project.lecturerId === id ? current.project.lecturer : app.data.projectLecturers.find(item => item.id === id)?.name || id);
     card.append(el('h3', 'Giảng viên hướng dẫn'), el('p', lecturers.join(' - ')));
     overview.replaceChildren(card);
   }
@@ -76,17 +85,21 @@
   }
   function refresh() {
     try {
+      refreshChoices();
       state = topics ? topics.workspaceState(projectId) : service.getState(projectId);
       document.querySelector('.page-header__topic-name').textContent = state.project.title;
       overviewView(state);
       subscribers.forEach(render => render(state));
-      notify(state.warning || (app.ui.lecturerWorkspace.dirty ? 'Đánh giá đang có thay đổi chưa lưu. Dữ liệu mới ở tab khác sẽ không ghi đè phần đang nhập.' : 'Dữ liệu mẫu. Thay đổi được lưu trên trình duyệt này.'));
+      notify(state.warning || catalogWarning || (app.ui.lecturerWorkspace.dirty ? 'Đánh giá đang có thay đổi chưa lưu. Dữ liệu mới ở tab khác sẽ không ghi đè phần đang nhập.' : 'Dữ liệu mẫu. Thay đổi được lưu trên trình duyệt này.'));
       select.value = projectId;
       document.body.dataset.projectId = projectId;
       const back = document.querySelector('.back-navigation .back-link');
       if (back && topics) back.href = topics.returnUrl('supervised', new URLSearchParams(location.search).get('return'), location.href);
     } catch (failure) {
       state = null;
+      document.querySelector('.page-header__topic-name').textContent = 'Không thể mở đề tài';
+      delete document.body.dataset.projectId;
+      select.value = projectId;
       overview.replaceChildren(el('p', failure.message, 'teaching-notice'));
       subscribers.forEach(render => render(null));
       notify(failure.message, true);
@@ -168,7 +181,7 @@
   });
   app.ui ||= {};
   app.ui.lecturerWorkspace = { el, button, field, date, region, modal, commit, notify, refresh, service, get state() { return state; }, subscribe(render) { subscribers.push(render); if (state) render(state); }, dirty: false };
-  window.addEventListener('storage', event => { if ([app.storage.teachingKey, app.storage.progressKey, app.storage.teamKey, null].includes(event.key)) refresh(); });
+  window.addEventListener('storage', event => { if ([app.storage.teachingKey, app.storage.progressKey, app.storage.teamKey, app.storage.proposalKey, null].includes(event.key)) refresh(); });
   window.addEventListener('pageshow', refresh);
   window.addEventListener('beforeunload', event => { if (app.ui.lecturerWorkspace.dirty) { event.preventDefault(); event.returnValue = ''; } });
   refresh();

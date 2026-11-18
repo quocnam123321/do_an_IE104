@@ -31,6 +31,12 @@
       details.append(row);
     });
     content.replaceChildren(title, details);
+    if (record.status === 'da-duyet' && globalThis.IE104.services.approvedProjects) {
+      const link = document.createElement('a');
+      link.href = globalThis.IE104.services.approvedProjects.studentUrl(globalThis.IE104.services.approvedProjects.projectIdFor(record.id));
+      link.textContent = 'Mở đề tài và nhóm thực hiện';
+      content.append(link);
+    }
     displayed = record;
     actions.hidden = record.status !== 'cho-duyet';
     document.querySelector('[data-edit-proposal]').href = `tao-de-xuat.html?proposal=${encodeURIComponent(record.id)}`;

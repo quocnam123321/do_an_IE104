@@ -81,7 +81,7 @@
 
   function recent(topics) {
     const legacy = list().map(record => ({ id: record.id, requestId: record.id, title: record.title, status: record.status, statusLabel: labels[record.status], createdAt: record.resubmittedAt || record.createdAt, requestType: record.kind === 'dang-ky' ? 'Đăng ký đề tài' : 'Đề xuất đề tài', feedback: record.feedback, detailUrl: `chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#${record.id.toLowerCase()}` }));
-    const current = topics.filter(topic => topic.requestId && !app.data.initialRequests.some(record => record.id === topic.requestId)).map(topic => ({ ...topic, statusLabel: topic.requestStatusLabel || topic.statusLabel, feedback: topic.feedback || '', requestType: topic.requestId.startsWith('DK-') ? 'Đăng ký đề tài' : 'Đề xuất đề tài' }));
+    const current = topics.filter(topic => topic.requestId && !app.data.initialRequests.some(record => record.id === topic.requestId)).map(topic => ({ ...topic, detailUrl: topic.requestDetailUrl || topic.detailUrl, statusLabel: topic.requestStatusLabel || topic.statusLabel, feedback: topic.feedback || '', requestType: topic.requestId.startsWith('DK-') ? 'Đăng ký đề tài' : 'Đề xuất đề tài' }));
     return [...legacy, ...current].sort((first, second) => Date.parse(second.createdAt) - Date.parse(first.createdAt) || first.id.localeCompare(second.id));
   }
 
