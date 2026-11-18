@@ -8,6 +8,7 @@
   const setText = (selector, value) => document.querySelectorAll(selector).forEach(node => { node.textContent = value || missing; });
   const listUrl = service.returnUrl('created', params.get('return'), location.href);
   document.body.classList.add('lecturer-routing-page');
+  function render() {
   try {
     const topic = service.get('created', id);
     document.title = `${topic.title} | ${mode === 'edit' ? 'Chỉnh sửa' : 'Chi tiết'} đề tài`;
@@ -41,12 +42,12 @@
     } else {
       setText('#topic-summary-title', topic.title);
       document.querySelectorAll('.topic-summary__image[role="img"]').forEach(image => image.setAttribute('aria-label', `Chưa có ảnh đại diện cho đề tài ${topic.title}`));
-      const fields = [topic.id, topic.typeLabel, topic.courseLabel, `Học kỳ ${topic.semester}`, topic.academicYear];
+      const fields = [topic.id, topic.typeLabel, topic.courseLabel || (topic.topicType === 'course' ? missing : 'Không áp dụng'), `Học kỳ ${topic.semester}`, topic.academicYear];
       document.querySelectorAll('.topic-summary__meta dd').forEach((node, index) => { node.textContent = fields[index] || missing; });
       const supervisor = ['name', 'faculty', 'email', 'research'];
       document.querySelectorAll('.topic-supervisor__details dd').forEach((node, index) => { node.textContent = topic.supervisor?.[supervisor[index]] || missing; });
       const avatar = document.querySelector('.topic-supervisor__avatar');
-      if (avatar && !topic.supervisor) { avatar.textContent = 'GV'; avatar.setAttribute('aria-label', 'Chưa có thông tin giảng viên hướng dẫn'); }
+      if (avatar) { const parts = topic.supervisor?.name?.trim().split(/\s+/) || []; avatar.textContent = parts.length ? `${parts[0][0]}${parts.at(-1)[0]}` : 'GV'; avatar.setAttribute('aria-label', parts.length ? `Ảnh đại diện mặc định của ${topic.supervisor.name}` : 'Chưa có thông tin giảng viên hướng dẫn'); }
       setText('.topic-description p', topic.description);
       [['.topic-objectives ul', topic.objectives], ['.topic-outcomes ul', topic.outcomes], ['.topic-requirements ul', topic.requirements]].forEach(([selector, items]) => {
         const list = document.querySelector(selector);
@@ -55,7 +56,7 @@
       });
       setText('.topic-registration__members', topic.registration ? `Nhóm gồm ${topic.registration.minMembers} - ${topic.registration.maxMembers} sinh viên` : missing);
       setText('.topic-registration dd', topic.registration?.deadline ? new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh' }).format(new Date(topic.registration.deadline)) : missing);
-      setText('.topic-attachments__file', topic.attachmentName || 'Chưa có tài liệu đính kèm');
+      setText('.topic-attachments__file span', topic.attachmentName || 'Chưa có tài liệu đính kèm');
       const badge = document.querySelector('.created-detail-heading .status-badge');
       if (badge) { badge.textContent = topic.statusLabel; badge.className = `status-badge status-badge--${topic.status}`; }
       document.querySelectorAll('.registration-close-button').forEach(button => { button.hidden = topic.status !== 'open'; });
@@ -69,6 +70,7 @@
       if (edit) { const url = new URL('chinh-sua-de-tai-giang-vien.html', location.href); url.searchParams.set('topic', topic.id); url.searchParams.set('return', listUrl); edit.href = url.href; }
     }
     document.body.dataset.topicRouteState = 'ready';
+    document.dispatchEvent(new Event('ie104:lecturer-topic-rendered'));
   } catch (failure) {
     const container = document.querySelector('main .page-container');
     const title = document.createElement('h1'); title.textContent = 'Không thể mở đề tài';
@@ -78,4 +80,10 @@
     document.title = 'Không thể mở đề tài';
     document.body.dataset.topicRouteState = 'error';
   }
+  }
+  if (mode === 'detail') {
+    window.addEventListener('pageshow',render);
+    window.addEventListener('storage',event => { if (event.key === globalThis.IE104.services.lecturerTopicRepository?.key || event.key === null) render(); });
+  }
+  render();
 })();

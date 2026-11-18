@@ -15,8 +15,15 @@
       .topic-form :is(input, select, textarea) { max-inline-size: 100%; }
     </style>
     <script src="../../assets/js/nav-indicator.js" defer></script>
-  </head>
-  <body>
+  <script src="../../assets/js/data/lecturer-topics.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-file-service.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
+<script src="../../assets/js/pages/lecturer/topic-editor.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/lecturer-topic-editor.css">
+</head>
+  <body data-lecturer-topic-editor="create">
     <a class="skip-link" href="#main-content">
       Chuyển đến nội dung chính
     </a>
@@ -146,7 +153,7 @@
         </header>
         <div class="page-content">
           <!-- HTML thuần. Các lựa chọn danh mục là dữ liệu minh họa.
-               Chưa có endpoint tạo đề tài: nút submit disabled ngăn gửi biểu mẫu, kể cả Enter.
+               Form chỉ bật khi JavaScript đã khởi tạo đủ chức năng lưu.
                Khi tích hợp cần kiểm tra số thành viên tối thiểu <= tối đa, hạn đăng ký và tệp trên máy chủ. -->
           <form class="topic-form" id="create-topic-form" aria-label="Tạo đề tài mới" aria-describedby="topic-form-notice" method="post" enctype="multipart/form-data">
             <fieldset class="topic-form__basic">
@@ -214,22 +221,22 @@
               <legend>Số thành viên</legend>
               <p><label for="minimum-members">Tối thiểu / nhóm *</label><input id="minimum-members" name="minimum-members" type="number" min="1" step="1" value="2" aria-describedby="members-hint" required/></p>
               <p><label for="maximum-members">Tối đa / nhóm *</label><input id="maximum-members" name="maximum-members" type="number" min="1" step="1" value="3" aria-describedby="members-hint" required/></p>
-              <p id="members-hint">Mỗi nhóm gồm 2–3 sinh viên.</p>
+              <p id="members-hint">Nhập số nguyên; số tối đa không nhỏ hơn số tối thiểu.</p>
             </fieldset>
             <fieldset class="topic-form__image">
               <legend>Ảnh đề tài</legend>
               <div class="topic-image-placeholder" role="img" aria-label="Chưa có ảnh minh họa đề tài">Ảnh minh họa đề tài</div>
               <p><label for="topic-image">Tải ảnh lên</label><input id="topic-image" name="topic-image" type="file" accept="image/png,image/jpeg" aria-describedby="topic-image-hint"/></p>
-              <p id="topic-image-hint">Chưa có ảnh, dùng ảnh mặc định của hệ thống. PNG/JPG, tối đa 5 MB, tỷ lệ khuyến nghị 16:9.</p>
+              <p id="topic-image-hint">Chưa có ảnh, dùng ảnh mặc định của hệ thống. PNG/JPG, tối đa 5 MB, khung xem trước vuông 1:1.</p>
             </fieldset>
             <fieldset class="topic-form__attachment">
               <legend>Tài liệu đính kèm</legend>
               <p><label for="topic-attachment">Tải tài liệu lên</label><input id="topic-attachment" name="topic-attachment" type="file" aria-describedby="topic-attachment-hint"/></p>
               <p>Chưa có tài liệu đính kèm.</p>
-              <p id="topic-attachment-hint">Đề cương hoặc tài liệu mô tả đề tài (không bắt buộc).</p>
+              <p id="topic-attachment-hint">PDF/DOC/DOCX/TXT không quá 10 MB (không bắt buộc).</p>
             </fieldset>
             <p class="topic-form__field"><label for="registration-closes">Hạn đăng ký *</label><input id="registration-closes" name="registration-closes" type="datetime-local" required/></p>
-            <p id="topic-form-notice">* Thông tin bắt buộc</p>
+            <p id="topic-form-notice">* Thông tin bắt buộc. Dữ liệu demo lưu trên trình duyệt này.</p>
             <div class="topic-form__actions">
               <a class="topic-form__cancel" href="danh-sach-de-tai-da-tao.html">Hủy</a>
               <button class="topic-form__submit" type="submit" disabled title="Chức năng tạo và lưu đề tài chưa được kết nối">Tạo đề tài</button>

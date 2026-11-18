@@ -3,14 +3,19 @@
   app.services ||= {};
   const clone = value => JSON.parse(JSON.stringify(value));
   const actorId = () => app.data.currentLecturer?.id;
-  const records = () => app.data.lecturerTopics || [];
+  const records = kind => {
+    const initial = app.data.lecturerTopics || [];
+    if (kind !== 'created' || !app.services.lecturerTopicRepository) return initial;
+    const saved = app.services.lecturerTopicRepository.read();
+    return [...initial.filter(topic => topic.kind !== 'created' || !saved.some(record => record.id === topic.id)), ...saved];
+  };
 
   function list(kind) {
-    return clone(records().filter(record => record.kind === kind && record.ownerId === actorId()));
+    return clone(records(kind).filter(record => record.kind === kind && record.ownerId === actorId()));
   }
 
   function get(kind, id) {
-    const record = records().find(item => item.kind === kind && item.id === id);
+    const record = records(kind).find(item => item.kind === kind && item.id === id);
     if (!record) throw new Error('Không tìm thấy đề tài theo mã đã chọn.');
     if (record.ownerId !== actorId()) throw new Error('Giảng viên hiện tại không được xem đề tài này.');
     return clone(record);
@@ -41,7 +46,7 @@
   }
 
   function workspaceState(projectId) {
-    const definition = records().find(record => record.kind === 'supervised' && record.workspaceId === projectId);
+    const definition = records('supervised').find(record => record.kind === 'supervised' && record.workspaceId === projectId);
     if (!definition) return app.services.teaching.getState(projectId);
     const topic = get('supervised', definition.id);
     const project = { ...topic, id: projectId, topicId: topic.id };

@@ -6,7 +6,10 @@
   const template = container?.querySelector('.topic-card')?.cloneNode(true);
   if (!container || !template) return;
   function render() {
-    const topics = service.list(kind);
+    let topics;
+    const results = container.closest('[data-topic-results]');
+    try { topics = service.list(kind); if (results) delete results.dataset.topicSourceError; }
+    catch (failure) { container.replaceChildren(); if (results) results.dataset.topicSourceError = failure.message; return; }
     container.querySelectorAll('.topic-card:not([data-approved-proposal])').forEach(card => {
       if (!topics.some(topic => topic.id === card.dataset.topicId)) card.remove();
     });
@@ -22,16 +25,18 @@
       card.querySelector('.topic-card__image-placeholder')?.setAttribute('aria-label', `Chưa có ảnh đại diện cho đề tài ${topic.title}`);
       card.dataset.topicType = topic.topicType;
       card.dataset.course = topic.course;
-      card.dataset.hocKy = `${topic.academicYear}-${topic.semester}`;
+      card.dataset.hocKy = `${topic.academicYear}-${topic.semester === 'summer' ? '3' : topic.semester}`;
       card.dataset.status = kind === 'created' ? topic.status : 'in-progress';
       if (topic.role) card.dataset.role = topic.role;
       const values = [
         `Mã đề tài: ${topic.id}`,
         `${topic.course ? 'Môn học' : 'Hình thức tốt nghiệp'}: ${topic.course ? topic.courseLabel : topic.typeLabel}`,
-        `Học kỳ ${topic.semester} - ${topic.academicYear}`,
+        `Học kỳ ${topic.semester === 'summer' ? 'hè' : topic.semester} - ${topic.academicYear}`,
         kind === 'created' ? `Ngày tạo: ${topic.createdAt.split('-').reverse().join('/')}` : `Nhóm thực hiện: ${topic.groupName}`,
       ];
       card.querySelectorAll('.topic-card__meta-text').forEach((node, index) => { node.textContent = values[index]; });
+      const date = card.querySelector('time[datetime]'); if (date) date.dateTime = topic.createdAt;
+      card.dataset.createdAt = topic.createdAt;
       const badge = card.querySelector('.topic-card__status');
       badge.textContent = kind === 'created' ? topic.statusLabel : topic.roleLabel;
       badge.className = `topic-card__status topic-card__status--${kind === 'created' ? topic.status : topic.role}`;
@@ -40,6 +45,7 @@
       link.href = url.href;
       link.setAttribute('aria-label', `Xem chi tiết ${topic.title}`);
     });
+    document.dispatchEvent(new Event('ie104:lecturer-topics-rendered'));
   }
   function refreshReturn(event) {
     const link = event.target.closest('.topic-card__detail-link');
@@ -48,10 +54,18 @@
     url.searchParams.set('return', location.pathname.split('/').pop() + location.search);
     link.href = url.href;
   }
+  const createReturn = event => {
+    const link = event.target.closest('a[href^="tao-de-tai-giang-vien.html"]');
+    if (!link || kind !== 'created') return;
+    const url = new URL(link.href); url.searchParams.set('return',location.pathname.split('/').pop()+location.search); link.href = url.href;
+  };
+  document.addEventListener('pointerdown',createReturn); document.addEventListener('click',createReturn);
   container.addEventListener('click', refreshReturn);
   container.addEventListener('pointerdown', refreshReturn);
   document.addEventListener('ie104:topics-updated', render);
   document.addEventListener('ie104:lecturer-topics-updated', () => { render(); document.dispatchEvent(new Event('ie104:topics-updated')); });
+  window.addEventListener('storage',event => { if (event.key === globalThis.IE104.services.lecturerTopicRepository?.key || event.key === null) document.dispatchEvent(new Event('ie104:lecturer-topics-updated')); });
+  window.addEventListener('pageshow',() => document.dispatchEvent(new Event('ie104:lecturer-topics-updated')));
   render();
   document.body.dataset.lecturerTopicsReady = 'true';
 })();

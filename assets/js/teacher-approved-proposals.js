@@ -11,6 +11,7 @@
       const card = template.cloneNode(true);
       card.hidden = false;
       card.dataset.approvedProposal = record.id;
+      card.dataset.createdAt = record.decidedAt || record.submittedAt || "";
       card.dataset.topicId = record.topicId;
       card.dataset.status = record.topicStatus;
       card.dataset.topicType = { 'do-an-mon-hoc': 'course', 'do-an-tot-nghiep': 'graduation', 'khoa-luan': 'thesis' }[record.topicType];
