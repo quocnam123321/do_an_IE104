@@ -77,7 +77,10 @@
     let saved = [];
     try { saved = window.IE104?.services?.proposals?.listForLecturer() || []; }
     catch (error) { readError = error.message; }
-    return [...initial, ...saved];
+    let registrations = [];
+    try { registrations = window.IE104?.services?.registrations?.listForLecturer() || []; }
+    catch (error) { readError = error.message; }
+    return [...initial, ...saved, ...registrations];
   }
 
   function notify() {
@@ -86,7 +89,7 @@
 
   async function decide(id, status, reason = '', revision) {
     if (!seeds.some(record => record.id === id)) {
-      const service = window.IE104?.services?.proposals;
+      const service = window.IE104?.services?.registrations?.listForLecturer().some(record => record.id === id) ? window.IE104.services.registrations : window.IE104?.services?.proposals;
       if (!service) throw new Error('Không tìm thấy đề xuất.');
       return service.decide(id, status, reason, revision);
     }
@@ -110,10 +113,11 @@
   }
 
   window.addEventListener('storage', (event) => {
-    if (event.key === null || event.key.startsWith(prefix) || event.key === window.IE104?.storage?.proposalKey) notify();
+    if (event.key === null || event.key.startsWith(prefix) || event.key === window.IE104?.storage?.proposalKey || event.key === window.IE104?.storage?.registrationKey) notify();
   });
   window.addEventListener('pageshow', notify);
   window.addEventListener('ie104:proposals-updated', notify);
+  window.addEventListener('ie104:registrations-updated', notify);
   window.IE104Proposals = Object.freeze({
     getAll,
     get: (id) => getAll().find((record) => record.id === id),

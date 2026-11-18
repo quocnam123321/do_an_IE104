@@ -108,7 +108,7 @@
       status: record.status === 'da-duyet' ? 'dang-thuc-hien' : record.status, statusLabel: record.status === 'da-duyet' ? 'Đang thực hiện' : labels[record.status], requestStatusLabel: labels[record.status], feedback: record.decision?.reason || '', createdAt: record.createdAt,
       detailUrl: `chi-tiet-de-xuat-da-luu.html?proposal=${encodeURIComponent(record.id)}`,
     }));
-    return [...pending, ...(approved?.list('student') || []).map(project => ({ ...project, requestStatusLabel: 'Đã duyệt', feedback: '' }))];
+    return [...pending, ...(approved?.list('student') || []).filter(project => project.source === 'approved-proposal').map(project => ({ ...project, requestStatusLabel: 'Đã duyệt', feedback: '' }))];
   }
 
   function listForLecturer() {

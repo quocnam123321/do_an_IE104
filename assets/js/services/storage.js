@@ -10,7 +10,24 @@
       const parsed = JSON.parse(value);
       if (parsed.version !== 1 || !Array.isArray(parsed.records)) throw new Error();
       const valid = parsed.records.every(record => record && typeof record.id === 'string' && record.topic && typeof record.topic.id === 'string' && typeof record.topic.title === 'string' && typeof record.groupName === 'string' && typeof record.createdAt === 'string' && Number.isFinite(Date.parse(record.createdAt)) && Array.isArray(record.members) && record.members.every(member => typeof member.code === 'string' && typeof member.name === 'string' && ['nhom-truong', 'thanh-vien'].includes(member.role)));
-      if (!valid) throw new Error();
+      const ids = new Set();
+      const statesValid = parsed.records.every(record => {
+        if (!record || ids.has(record.id)) return false;
+        ids.add(record.id);
+        if (!['cho-duyet', 'da-duyet', 'tu-choi'].includes(record.status)) return false;
+        if (record.revision !== undefined && (!Number.isInteger(record.revision) || record.revision < 0)) return false;
+        if (record.lecturerId !== undefined && (typeof record.lecturerId !== 'string' || !record.lecturerId.trim())) return false;
+        if (record.status !== 'cho-duyet') {
+          const decision = record.decision;
+          if (!decision || !record.lecturerId || decision.lecturerId !== record.lecturerId || !Number.isFinite(Date.parse(decision.decidedAt)) ||
+              typeof decision.reason !== 'string' || decision.registrationRevision !== record.revision - 1 ||
+              (record.status === 'tu-choi' && decision.reason.trim().length < 10)) return false;
+        }
+        return Array.isArray(record.members) && record.members.length > 0 &&
+          record.members.filter(member => member?.role === 'nhom-truong').length === 1 &&
+          new Set(record.members.map(member => member?.code)).size === record.members.length;
+      });
+      if (!valid || !statesValid) throw new Error();
       return parsed.records;
     } catch {
       throw new Error('Không đọc được đăng ký đã lưu trên trình duyệt. Dữ liệu cũ chưa bị thay thế.');

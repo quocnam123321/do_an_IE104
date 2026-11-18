@@ -72,7 +72,7 @@
     card.append(dl, el('h3', 'Nhóm thực hiện'));
     if (!current.team.members.length) card.append(el('p', 'Chưa có thông tin thành viên nhóm.'));
     current.team.members.forEach(member => card.append(el('p', `${member.name} - ${member.code}${member.role === 'nhom-truong' ? ' - Nhóm trưởng' : ''}`)));
-    if (current.project.source === 'approved-proposal') {
+    if (['approved-proposal', 'approved-registration'].includes(current.project.source)) {
       for (const [name, value] of [['Mô tả đề tài', current.project.description], ['Mục tiêu', current.project.objectives], ['Kết quả dự kiến', current.project.outcomes]]) card.append(el('h3', name), el('p', value));
     }
     const lecturers = current.team.supervisorIds.map(id => current.project.lecturerId === id ? current.project.lecturer : app.data.projectLecturers.find(item => item.id === id)?.name || id);
@@ -181,7 +181,7 @@
   });
   app.ui ||= {};
   app.ui.lecturerWorkspace = { el, button, field, date, region, modal, commit, notify, refresh, service, get state() { return state; }, subscribe(render) { subscribers.push(render); if (state) render(state); }, dirty: false };
-  window.addEventListener('storage', event => { if ([app.storage.teachingKey, app.storage.progressKey, app.storage.teamKey, app.storage.proposalKey, null].includes(event.key)) refresh(); });
+  window.addEventListener('storage', event => { if ([app.storage.teachingKey, app.storage.progressKey, app.storage.teamKey, app.storage.proposalKey, app.storage.registrationKey, null].includes(event.key)) refresh(); });
   window.addEventListener('pageshow', refresh);
   window.addEventListener('beforeunload', event => { if (app.ui.lecturerWorkspace.dirty) { event.preventDefault(); event.returnValue = ''; } });
   refresh();

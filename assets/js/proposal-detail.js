@@ -51,7 +51,43 @@
       for (const dialog of dialogs) if (dialog.open) dialog.close();
       return;
     }
-    document.title = `${record.id} — ${record.title} | Chi tiết đề xuất`;
+    const registration = record.source === 'registration';
+    document.querySelector('.request-detail-heading h1').textContent = registration ? 'Chi tiết đăng ký đề tài' : 'Chi tiết đề xuất đề tài';
+    text('#proposal-student-title', registration ? 'Nhóm trưởng gửi đăng ký' : 'Sinh viên gửi đề xuất');
+    actions.querySelector('.request-action--approve span').textContent = registration ? 'Duyệt đăng ký' : 'Duyệt đề xuất';
+    for (const [index, action] of ['Duyệt', 'Từ chối'].entries()) {
+      dialogs[index].querySelector('h2').textContent = `${action} ${registration ? 'đăng ký' : 'đề xuất'}`;
+      dialogs[index].querySelector('.topic-dialog__desc').textContent = `Bạn có chắc muốn ${action.toLocaleLowerCase('vi')} ${registration ? 'đăng ký' : 'đề xuất'} này?`;
+      dialogs[index].querySelector('.topic-dialog__close').setAttribute('aria-label', `Đóng hộp thoại ${action.toLocaleLowerCase('vi')} ${registration ? 'đăng ký' : 'đề xuất'}`);
+      const label = dialogs[index].querySelector('.topic-dialog__info-row span').firstChild;
+      label.textContent = registration ? 'Đăng ký: ' : 'Đề xuất: ';
+    }
+    let group = content.querySelector('[data-registration-group]');
+    if (!group) {
+      group = document.createElement('section');
+      group.dataset.registrationGroup = '';
+      group.className = 'request-student panel';
+      content.querySelector('.request-student').after(group);
+    }
+    group.hidden = !registration;
+    group.replaceChildren();
+    if (registration) {
+      const heading = document.createElement('h2');
+      heading.textContent = `Nhóm đăng ký: ${record.groupName}`;
+      const members = document.createElement('ul');
+      record.members.forEach(member => {
+        const item = document.createElement('li');
+        item.textContent = `${member.name} - ${member.code} - ${member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên'}`;
+        members.append(item);
+      });
+      group.append(heading, members);
+      if (record.message) {
+        const message = document.createElement('p');
+        message.textContent = `Lời nhắn: ${record.message}`;
+        group.append(message);
+      }
+    }
+    document.title = `${record.id} — ${record.title} | Chi tiết ${registration ? 'đăng ký' : 'đề xuất'}`;
     content.dataset.proposalId = record.id;
     displayedRevision = record.revision;
     badge.textContent = labels[record.status];
@@ -74,7 +110,8 @@
     text('.request-objectives p', record.objectives);
     text('.request-outcomes p', record.outcomes);
     text('.request-attachments__file span', record.attachment);
-    document.getElementById('proposal-student-preview').href = record.source === 'student' ? `../sinh-vien/chi-tiet-de-xuat-da-luu.html?proposal=${encodeURIComponent(record.id)}` : `../sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=${encodeURIComponent(record.id)}`;
+    content.querySelector('.request-attachments').hidden = registration;
+    document.getElementById('proposal-student-preview').href = registration ? `../sinh-vien/chi-tiet-dang-ky-da-luu.html?registration=${encodeURIComponent(record.id)}` : record.source === 'student' ? `../sinh-vien/chi-tiet-de-xuat-da-luu.html?proposal=${encodeURIComponent(record.id)}` : `../sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=${encodeURIComponent(record.id)}`;
     for (const form of forms) {
       form.querySelector('strong').textContent = `${record.id} — ${record.title}`;
       form.querySelector('button[type="submit"]').disabled = busy || record.status !== 'pending';

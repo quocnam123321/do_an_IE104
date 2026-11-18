@@ -73,6 +73,6 @@
     root.hidden = false;
     document.body.dataset.approvedState = 'ready';
   });
-  window.addEventListener('storage', event => { if ([app.storage.proposalKey, app.storage.teamKey, null].includes(event.key)) refresh(); });
+  window.addEventListener('storage', event => { if ([app.storage.proposalKey, app.storage.registrationKey, app.storage.teamKey, null].includes(event.key)) refresh(); });
   window.addEventListener('pageshow', refresh);
 })();
