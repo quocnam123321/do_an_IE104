@@ -1,8 +1,14 @@
 /* Mục vai trò trang Giới thiệu. Preview là minh họa HTML/CSS, không có control giả. */
 .about-audiences .about-audiences__navigation {
+  --audience-tab-active-bg: var(--color-primary);
+  --audience-tab-active-shadow: 0 6px 16px rgb(29 78 216 / 0.22);
   position: relative;
   isolation: isolate;
   margin-bottom: var(--space-8);
+}
+.about-audiences__navigation:has(#role-tab-department[aria-selected="true"]) {
+  --audience-tab-active-bg: var(--color-neutral-fg);
+  --audience-tab-active-shadow: 0 6px 16px rgb(51 65 85 / 0.18);
 }
 .about-audiences .about-audiences__navigation ul {
   width: min(100%, 52rem);
@@ -29,8 +35,12 @@
 .about-audiences .about-audiences__navigation a:not([aria-selected="true"]):hover {
   background: var(--color-info-hover-bg);
 }
+.about-audiences__navigation #role-tab-department:not([aria-selected="true"]):hover {
+  background: var(--color-border);
+  color: var(--color-neutral-fg);
+}
 .about-audiences .about-audiences__navigation a[aria-selected="true"] {
-  background: var(--color-primary);
+  background: var(--audience-tab-active-bg);
   color: var(--color-on-primary);
 }
 .about-audiences--pill-visible .about-audiences__navigation a[aria-selected="true"] {
@@ -48,8 +58,8 @@
   width: var(--tab-pill-w, 0px);
   height: var(--tab-pill-h, 0px);
   border-radius: var(--radius-full);
-  background: var(--color-primary);
-  box-shadow: 0 6px 16px rgb(29 78 216 / 0.22);
+  background: var(--audience-tab-active-bg);
+  box-shadow: var(--audience-tab-active-shadow);
   pointer-events: none;
   opacity: 0;
   transform: translate3d(var(--tab-pill-x, 0px), var(--tab-pill-y, 0px), 0);
@@ -58,12 +68,30 @@
   opacity: 1;
 }
 
+.about-audiences .about-audience__coming-soon {
+  border-color: var(--color-border-strong);
+  background: var(--color-neutral-bg);
+}
+
 .about-audiences .about-audience__content {
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   gap: var(--space-8);
   min-height: 0;
 }
-.about-audiences .about-audience__preview { margin: 0; }
+.about-audiences .about-audience__preview {
+  container-type: inline-size;
+  margin: 0;
+  padding: 0;
+  border-color: var(--color-secondary-btn-border);
+  background: var(--color-surface);
+  box-shadow: 0 8px 20px rgb(15 23 42 / 0.08);
+}
+.about-audiences .about-audience__preview > figcaption {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+}
+.about-audiences .about-audience__preview > figcaption::before { display: none; }
 .about-audiences .about-audience__benefits {
   gap: var(--space-4);
   margin: 0;
@@ -109,24 +137,10 @@
 .audience-benefit-icon svg { display: block; width: 1.5rem; height: 1.5rem; }
 
 /* Chữ thu nhỏ chỉ thuộc minh họa aria-hidden, không phải nội dung/tác vụ của trang. */
-.about-audiences .about-audience__preview--student {
-  container-type: inline-size;
-  padding: var(--space-1);
-  border: 1px solid var(--color-info-border);
-  border-radius: var(--radius-control);
-  background: var(--color-info-border);
-  box-shadow: 0 10px 26px rgb(15 23 42 / 0.08);
-}
-.about-audiences .about-audience__preview--student > figcaption {
-  min-height: 0;
-  padding: 0;
-  border: 0;
-}
-.about-audiences .about-audience__preview--student > figcaption::before { display: none; }
 .audience-dashboard {
   overflow: hidden;
   min-width: 0;
-  border-radius: var(--radius-small);
+  border-radius: calc(var(--radius-control) - 1px);
   background: var(--color-background);
   color: var(--color-foreground);
   font-size: 0.55rem;
@@ -135,20 +149,6 @@
   font-variant-numeric: tabular-nums;
 }
 .audience-dashboard p { margin: 0; }
-.audience-dashboard__chrome {
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  height: 2em;
-  padding-inline: 0.65em;
-  background: var(--color-info-border);
-}
-.audience-dashboard__chrome span {
-  width: 0.65em;
-  height: 0.65em;
-  border-radius: 50%;
-  background: var(--color-surface);
-}
 /* Thu nhỏ header desktop theo khung rộng 80em để không co/dồn menu.
    1.25cqw giữ đúng tỷ lệ ở mọi chiều rộng của ảnh minh họa. */
 .audience-dashboard__site-header {
@@ -261,22 +261,6 @@
 .audience-dashboard__progress .progress-bookshop { width: 40%; }
 .audience-dashboard__percent { padding: 0.1em 0.45em; border-radius: 1em; background: var(--color-info-bg); color: var(--color-primary); text-align: center; white-space: nowrap; }
 
-/* Giảng viên: khung trung tính, không có viền xanh hoặc thanh ba chấm. */
-.about-audiences .about-audience__preview--lecturer {
-  container-type: inline-size;
-  padding: 0;
-  border: 1px solid var(--color-secondary-btn-border);
-  border-radius: var(--radius-control);
-  background: var(--color-surface);
-  box-shadow: 0 8px 20px rgb(15 23 42 / 0.08);
-}
-.about-audiences .about-audience__preview--lecturer > figcaption {
-  min-height: 0;
-  padding: 0;
-  border: 0;
-}
-.about-audiences .about-audience__preview--lecturer > figcaption::before { display: none; }
-.audience-dashboard--lecturer { border-radius: calc(var(--radius-control) - 1px); }
 .audience-dashboard--lecturer .audience-dashboard__stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .audience-dashboard--lecturer .chart-active { stroke: var(--color-primary); }
 .audience-dashboard--lecturer .chart-open { stroke: var(--color-warning-fg); }
@@ -332,6 +316,8 @@
     transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1),
       width 320ms cubic-bezier(0.22, 1, 0.36, 1),
       height 320ms cubic-bezier(0.22, 1, 0.36, 1),
+      background-color 200ms ease,
+      box-shadow 200ms ease,
       opacity 180ms ease;
   }
 
@@ -396,7 +382,7 @@
   .about-audiences .about-audiences__navigation a { flex-direction: column; gap: var(--space-1); padding: var(--space-2); border-radius: var(--radius-control); font-size: var(--font-size-secondary); }
   .about-audiences .about-audiences__navigation ul { border-radius: var(--radius-surface); }
   .about-audiences__pill { border-radius: var(--radius-control); }
-  .about-audiences .about-audiences__navigation a svg { display: none; }
+  .about-audiences .about-audiences__navigation a svg { width: 1.125rem; height: 1.125rem; }
   .about-audiences .about-audience__benefits li { grid-template-columns: 2.5rem minmax(0, 1fr); gap: var(--space-3); }
   .audience-benefit-icon, .about-audiences .about-audience__benefits > li > img { width: 2.5rem; height: 2.5rem; }
   .about-audiences .about-audience__benefits strong { font-size: 1rem; }

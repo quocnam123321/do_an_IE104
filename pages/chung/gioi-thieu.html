@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/common.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/information.css?v=20261118-about-section-order-1" />
-    <link rel="stylesheet" href="../../assets/css/about-audiences.css?v=20261118-motion-3" />
+    <link rel="stylesheet" href="../../assets/css/information.css?v=20261118-feature-no-index-1" />
+    <link rel="stylesheet" href="../../assets/css/about-audiences.css?v=20261118-student-frame-1" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <script src="../../assets/js/about-tabs.js?v=20261118-motion-2" defer></script>
     <script src="../../assets/js/about-features.js?v=20261118-feedback-1" defer></script>
@@ -864,18 +864,24 @@
             <ul>
               <li><a id="role-tab-student" href="#vai-tro-sinh-vien"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="m12 3-11 6 11 6 9-4.91V17h2V9L12 3Z"/><path d="M5 13v5c4 3 10 3 14 0v-5l-7 3.82L5 13Z"/></svg><span>Sinh viên</span></a></li>
               <li><a id="role-tab-lecturer" href="#vai-tro-giang-vien"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3h12v13H11m5 0 3 5m-3-5-2 5"/><circle cx="5" cy="6" r="2"/><path d="M2 21v-9h6v9M5 12v9m3-9 5-4"/></svg><span>Giảng viên</span></a></li>
-              <li><a id="role-tab-department" href="#vai-tro-bo-mon-khoa">Bộ môn / Khoa</a></li>
+              <li>
+                <a id="role-tab-department" href="#vai-tro-bo-mon-khoa">
+                  <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 21h18M5 21V8l7-4 7 4v13M9 10v1m6-1v1m-6 2v1m6-1v1m-5 7v-4h4v4" />
+                  </svg>
+                  <span>Bộ môn / Khoa</span>
+                </a>
+              </li>
             </ul>
           </nav>
           <!-- Chỉ panel đang chọn hiển thị khi các tab đã được khởi tạo. -->
           <section id="vai-tro-sinh-vien" class="about-audience" aria-labelledby="student-role-title">
             <h3 id="student-role-title">Sinh viên</h3>
             <div class="about-audience__content">
-              <figure class="about-audience__preview about-audience__preview--student">
+              <figure class="about-audience__preview">
                 <figcaption class="visually-hidden">Minh họa Tổng quan sinh viên: 6 đề tài, 2 đang thực hiện; 3 đã duyệt, 2 chờ duyệt, 1 đã từ chối. Tiến độ hai đề tài mẫu là 23% và 40%.</figcaption>
                 <!-- Minh họa HTML/CSS theo giao diện hiện có, không phải màn hình tương tác hoặc dữ liệu trực tiếp. -->
                 <div class="audience-dashboard" aria-hidden="true">
-                  <div class="audience-dashboard__chrome"><span></span><span></span><span></span></div>
                   <div class="audience-dashboard__site-header">
                     <div class="audience-dashboard__brand">
                       <img src="../../assets/images/images.jpg" alt="" width="40" height="40" />
@@ -1034,102 +1040,84 @@
           </header>
           <div class="about-features__list">
             <article class="feature-card feature-card--registration">
-              <div class="feature-card__top">
-                <span class="feature-card__icon" aria-hidden="true">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                    <path d="M14 2v6h6" />
-                    <path class="feature-icon__line feature-icon__line--1" pathLength="1" d="M8 13h8" />
-                    <path class="feature-icon__line feature-icon__line--2" pathLength="1" d="M8 17h5" />
-                  </svg>
-                </span>
-                <span class="feature-card__index" aria-hidden="true">01</span>
-              </div>
+              <span class="feature-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <path d="M14 2v6h6" />
+                  <path class="feature-icon__line feature-icon__line--1" pathLength="1" d="M8 13h8" />
+                  <path class="feature-icon__line feature-icon__line--2" pathLength="1" d="M8 17h5" />
+                </svg>
+              </span>
               <h3>Đăng ký đề tài</h3>
               <p>Tra cứu danh sách đề tài mở theo môn học hoặc chủ động gửi đề xuất mới đến giảng viên.</p>
               <span class="feature-card__accent" aria-hidden="true"></span>
             </article>
 
             <article class="feature-card feature-card--progress">
-              <div class="feature-card__top">
-                <span class="feature-card__icon" aria-hidden="true">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
-                    <path class="feature-icon__bar feature-icon__bar--1" d="M5 19V6" />
-                    <path class="feature-icon__bar feature-icon__bar--2" d="M11 19v-9" />
-                    <path class="feature-icon__bar feature-icon__bar--3" d="M17 19v-5" />
-                    <path d="M21 19H3" />
-                  </svg>
-                </span>
-                <span class="feature-card__index" aria-hidden="true">02</span>
-              </div>
+              <span class="feature-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <path class="feature-icon__bar feature-icon__bar--1" d="M5 19V6" />
+                  <path class="feature-icon__bar feature-icon__bar--2" d="M11 19v-9" />
+                  <path class="feature-icon__bar feature-icon__bar--3" d="M17 19v-5" />
+                  <path d="M21 19H3" />
+                </svg>
+              </span>
               <h3>Quản lý tiến độ</h3>
               <p>Theo dõi công việc trực quan theo từng giai đoạn, phân công thành viên và kiểm soát hạn mục tiêu.</p>
               <span class="feature-card__accent" aria-hidden="true"></span>
             </article>
 
             <article class="feature-card feature-card--submission">
-              <div class="feature-card__top">
-                <span class="feature-card__icon" aria-hidden="true">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
-                    <g class="feature-icon__arrow">
-                      <path d="M12 16V4" />
-                      <path d="m7 9 5-5 5 5" />
-                    </g>
-                    <path d="M20 16v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2" />
-                  </svg>
-                </span>
-                <span class="feature-card__index" aria-hidden="true">03</span>
-              </div>
+              <span class="feature-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <g class="feature-icon__arrow">
+                    <path d="M12 16V4" />
+                    <path d="m7 9 5-5 5 5" />
+                  </g>
+                  <path d="M20 16v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2" />
+                </svg>
+              </span>
               <h3>Nộp bài và phản hồi</h3>
               <p>Quản lý tập trung các đợt nộp báo cáo và lưu trữ nhận xét trực tiếp từ giảng viên hướng dẫn.</p>
               <span class="feature-card__accent" aria-hidden="true"></span>
             </article>
 
             <article class="feature-card feature-card--calendar">
-              <div class="feature-card__top">
-                <span class="feature-card__icon" aria-hidden="true">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
-                    <rect x="3" y="5" width="18" height="16" rx="2" />
-                    <g class="feature-icon__pins">
-                      <path d="M16 3v4" />
-                      <path d="M8 3v4" />
-                    </g>
-                    <path d="M3 10h18" />
-                  </svg>
-                </span>
-                <span class="feature-card__index" aria-hidden="true">04</span>
-              </div>
+              <span class="feature-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <rect x="3" y="5" width="18" height="16" rx="2" />
+                  <g class="feature-icon__pins">
+                    <path d="M16 3v4" />
+                    <path d="M8 3v4" />
+                  </g>
+                  <path d="M3 10h18" />
+                </svg>
+              </span>
               <h3>Lịch và hạn nộp</h3>
               <p>Quan sát lịch tháng rõ ràng giữa hạn bài nộp và hạn đề tài để chủ động sắp xếp thời gian.</p>
               <span class="feature-card__accent" aria-hidden="true"></span>
             </article>
 
             <article class="feature-card feature-card--notice">
-              <div class="feature-card__top">
-                <span class="feature-card__icon" aria-hidden="true">
-                  <svg class="feature-icon__bell" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
-                    <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
-                    <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
-                  </svg>
-                </span>
-                <span class="feature-card__index" aria-hidden="true">05</span>
-              </div>
+              <span class="feature-card__icon" aria-hidden="true">
+                <svg class="feature-icon__bell" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                </svg>
+              </span>
               <h3>Thông báo</h3>
               <p>Cập nhật kịp thời kế hoạch học vụ, đợt báo cáo định kỳ và lịch bảo vệ từ Khoa.</p>
               <span class="feature-card__accent" aria-hidden="true"></span>
             </article>
 
             <article class="feature-card feature-card--evaluation">
-              <div class="feature-card__top">
-                <span class="feature-card__icon" aria-hidden="true">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                    <path d="M14 2v6h6" />
-                    <path class="feature-icon__check" pathLength="1" d="m9 15 2 2 4-4" />
-                  </svg>
-                </span>
-                <span class="feature-card__index" aria-hidden="true">06</span>
-              </div>
+              <span class="feature-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <path d="M14 2v6h6" />
+                  <path class="feature-icon__check" pathLength="1" d="m9 15 2 2 4-4" />
+                </svg>
+              </span>
               <h3>Kết quả đánh giá</h3>
               <p>Tra cứu điểm thành phần theo trọng số tiêu chí cùng nhận xét tổng kết cuối kỳ.</p>
               <span class="feature-card__accent" aria-hidden="true"></span>
@@ -1223,7 +1211,7 @@
         <section id="cam-nhan-sinh-vien" class="about-feedback" aria-labelledby="feedback-title">
           <header class="section-header">
             <h2 id="feedback-title">Trải nghiệm từ góc nhìn sinh viên</h2>
-            <p>Lướt ngang hoặc dùng nút điều hướng để xem chia sẻ minh họa theo từng luồng công việc</p>
+            <p>Lướt ngang hoặc dùng nút điều hướng để xem chia sẻ minh họa theo từng loại đề tài</p>
           </header>
 
           <div class="about-feedback__viewport" data-feedback-viewport>
@@ -1241,17 +1229,17 @@
                         <path d="M10.5 6.5C7.5 8.2 6 10.6 6 13.8c0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8L10.5 6.5zm8 0c-3 1.7-4.5 4.1-4.5 7.3 0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8l-2.4-1.3z" />
                       </svg>
                     </span>
-                    <span class="feedback-card__tag">Đồ án môn học · IE104</span>
+                    <span class="feedback-card__tag">Đồ án môn học</span>
                   </div>
                   <blockquote class="feedback-card__quote">
-                    “Danh sách đề tài mở có sẵn bộ lọc theo môn học và giảng viên giúp nhóm mình tìm được hướng đề tài phù hợp ngay trong tuần đầu học kỳ.”
+                    “Nhờ lọc theo môn học và giảng viên, nhóm mình dễ so sánh các đề tài đang mở. Từ đó, cả nhóm chọn được đề tài vừa sức.”
                   </blockquote>
                 </div>
                 <div class="feedback-card__author">
                   <span class="feedback-card__avatar" aria-hidden="true">MA</span>
                   <div class="feedback-card__meta">
                     <h3>Nguyễn Minh Anh</h3>
-                    <p>Sinh viên Khóa 2024 · Khoa KH&amp;KTTT</p>
+                    <p>Lớp CNTT2024.2</p>
                   </div>
                 </div>
                 <span class="feedback-card__accent" aria-hidden="true"></span>
@@ -1265,17 +1253,17 @@
                         <path d="M10.5 6.5C7.5 8.2 6 10.6 6 13.8c0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8L10.5 6.5zm8 0c-3 1.7-4.5 4.1-4.5 7.3 0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8l-2.4-1.3z" />
                       </svg>
                     </span>
-                    <span class="feedback-card__tag">Đồ án chuyên ngành</span>
+                    <span class="feedback-card__tag">Đồ án tốt nghiệp</span>
                   </div>
                   <blockquote class="feedback-card__quote">
-                    “Bảng công việc Kanban 3 cột và lịch hạn nộp tách màu rõ ràng giúp các thành viên trong nhóm luôn nắm sát tiến độ từng tuần.”
+                    “Theo dõi từng mốc trên bảng công việc giúp mình biết bản thử nghiệm còn phần nào cần hoàn thiện.”
                   </blockquote>
                 </div>
                 <div class="feedback-card__author">
                   <span class="feedback-card__avatar" aria-hidden="true">TN</span>
                   <div class="feedback-card__meta">
                     <h3>Trần Phú Nguyên</h3>
-                    <p>Sinh viên Khóa 2023 · Khoa KH&amp;KTTT</p>
+                    <p>Lớp CNTT2023.1</p>
                   </div>
                 </div>
                 <span class="feedback-card__accent" aria-hidden="true"></span>
@@ -1289,17 +1277,17 @@
                         <path d="M10.5 6.5C7.5 8.2 6 10.6 6 13.8c0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8L10.5 6.5zm8 0c-3 1.7-4.5 4.1-4.5 7.3 0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8l-2.4-1.3z" />
                       </svg>
                     </span>
-                    <span class="feedback-card__tag">Khóa luận tốt nghiệp · KLTN</span>
+                    <span class="feedback-card__tag">Khóa luận tốt nghiệp</span>
                   </div>
                   <blockquote class="feedback-card__quote">
-                    “Mọi nhận xét của giảng viên hướng dẫn đều lưu ngay theo từng đợt nộp báo cáo, rất tiện khi nhóm cần đối chiếu để chỉnh sửa cuối kỳ.”
+                    “Khi sửa khóa luận, mình muốn xem góp ý của giảng viên cạnh từng bản thảo để dễ đối chiếu.”
                   </blockquote>
                 </div>
                 <div class="feedback-card__author">
                   <span class="feedback-card__avatar" aria-hidden="true">TV</span>
                   <div class="feedback-card__meta">
                     <h3>Lê Thảo Vy</h3>
-                    <p>Sinh viên Khóa 2022 · Khoa KH&amp;KTTT</p>
+                    <p>Lớp CNVN2023.2</p>
                   </div>
                 </div>
                 <span class="feedback-card__accent" aria-hidden="true"></span>
@@ -1313,17 +1301,17 @@
                         <path d="M10.5 6.5C7.5 8.2 6 10.6 6 13.8c0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8L10.5 6.5zm8 0c-3 1.7-4.5 4.1-4.5 7.3 0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8l-2.4-1.3z" />
                       </svg>
                     </span>
-                    <span class="feedback-card__tag">Đề xuất đề tài mới</span>
+                    <span class="feedback-card__tag">Đồ án môn học</span>
                   </div>
                   <blockquote class="feedback-card__quote">
-                    “Khi nhóm muốn chủ động đề xuất hướng đề tài riêng, biểu mẫu tạo đề xuất và trạng thái chờ giảng viên xét duyệt hiển thị rất rõ ràng.”
+                    “Mẫu đề xuất giúp nhóm mình trình bày rõ ý tưởng và phạm vi đồ án trước khi gửi giảng viên.”
                   </blockquote>
                 </div>
                 <div class="feedback-card__author">
                   <span class="feedback-card__avatar" aria-hidden="true">QH</span>
                   <div class="feedback-card__meta">
                     <h3>Phạm Quốc Huy</h3>
-                    <p>Sinh viên Khóa 2023 · Khoa KH&amp;KTTT</p>
+                    <p>Lớp CNTT2025.1</p>
                   </div>
                 </div>
                 <span class="feedback-card__accent" aria-hidden="true"></span>
@@ -1337,17 +1325,17 @@
                         <path d="M10.5 6.5C7.5 8.2 6 10.6 6 13.8c0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8L10.5 6.5zm8 0c-3 1.7-4.5 4.1-4.5 7.3 0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8l-2.4-1.3z" />
                       </svg>
                     </span>
-                    <span class="feedback-card__tag">Đồ án tốt nghiệp · DATN</span>
+                    <span class="feedback-card__tag">Đồ án tốt nghiệp</span>
                   </div>
                   <blockquote class="feedback-card__quote">
-                    “Phần kết quả đánh giá cuối kỳ tách rõ điểm theo từng tiêu chí Nội dung, Sản phẩm và Báo cáo kèm nhận xét chi tiết của giảng viên.”
+                    “Trước buổi bảo vệ, mình muốn xem lại các yêu cầu để kiểm tra sản phẩm và báo cáo đã đủ chưa.”
                   </blockquote>
                 </div>
                 <div class="feedback-card__author">
                   <span class="feedback-card__avatar" aria-hidden="true">KN</span>
                   <div class="feedback-card__meta">
                     <h3>Hoàng Khánh Ngân</h3>
-                    <p>Sinh viên Khóa 2022 · Khoa KH&amp;KTTT</p>
+                    <p>Lớp CNVN2023.1</p>
                   </div>
                 </div>
                 <span class="feedback-card__accent" aria-hidden="true"></span>
@@ -1361,17 +1349,17 @@
                         <path d="M10.5 6.5C7.5 8.2 6 10.6 6 13.8c0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8L10.5 6.5zm8 0c-3 1.7-4.5 4.1-4.5 7.3 0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8l-2.4-1.3z" />
                       </svg>
                     </span>
-                    <span class="feedback-card__tag">Thông báo học vụ</span>
+                    <span class="feedback-card__tag">Khóa luận tốt nghiệp</span>
                   </div>
                   <blockquote class="feedback-card__quote">
-                    “Chuyên mục thông báo phân nhóm sẵn Kế hoạch học vụ, Báo cáo &amp; nộp bài và Lịch bảo vệ giúp mình tra cứu mốc quan trọng rất nhanh.”
+                    “Mình xem lịch hạn nộp để chia thời gian cho khảo sát, phân tích và hoàn thiện bản thảo.”
                   </blockquote>
                 </div>
                 <div class="feedback-card__author">
                   <span class="feedback-card__avatar" aria-hidden="true">ĐK</span>
                   <div class="feedback-card__meta">
                     <h3>Đỗ Đăng Khoa</h3>
-                    <p>Sinh viên Khóa 2024 · Khoa KH&amp;KTTT</p>
+                    <p>Lớp CNTT2023.2</p>
                   </div>
                 </div>
                 <span class="feedback-card__accent" aria-hidden="true"></span>

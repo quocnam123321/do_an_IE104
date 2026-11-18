@@ -561,15 +561,9 @@
   pointer-events: none;
   transition: opacity 220ms ease;
 }
-.feature-card__top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-4);
-  margin-bottom: 1.125rem;
-}
 .feature-card__icon {
   display: grid;
+  margin-bottom: 1.125rem;
   place-items: center;
   flex-shrink: 0;
   width: 2.875rem;
@@ -581,15 +575,6 @@
 }
 .feature-card__icon svg {
   display: block;
-}
-.feature-card__index {
-  color: var(--color-control-border);
-  font-size: var(--font-size-secondary);
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  font-variant-numeric: tabular-nums;
-  user-select: none;
-  transition: color 220ms ease;
 }
 .about-page .feature-card h3 {
   margin: 0 0 0.625rem;
@@ -652,9 +637,6 @@
     color: var(--color-on-primary);
     box-shadow: 0 6px 14px rgb(29 78 216 / 0.22);
   }
-  .about-page .feature-card:hover .feature-card__index {
-    color: var(--color-primary);
-  }
   .about-page .feature-card:hover > .feature-card__accent {
     transform: scaleX(1);
   }
@@ -676,10 +658,6 @@
       color 220ms ease,
       box-shadow 220ms ease;
   }
-  .feature-card__index {
-    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
-      color 220ms ease;
-  }
 
   @media (hover: hover) and (pointer: fine) {
     .about-page .feature-card:hover {
@@ -687,9 +665,6 @@
     }
     .about-page .feature-card:hover .feature-card__icon {
       transform: translateY(-1px) scale(1.05);
-    }
-    .about-page .feature-card:hover .feature-card__index {
-      transform: translateY(-1px);
     }
     .feature-card--registration:hover .feature-icon__line--1 {
       animation: feature-stroke-draw 360ms cubic-bezier(0.22, 1, 0.36, 1);
