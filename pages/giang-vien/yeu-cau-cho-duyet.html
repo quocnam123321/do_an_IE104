@@ -18,6 +18,11 @@
    <script src="../../assets/js/nav-indicator.js" defer></script>
    <script src="../../assets/js/proposal-store.js" defer></script>
    <script src="../../assets/js/pending-proposals.js" defer></script>
+  <link href="../../assets/css/supervision-invitations.css" rel="stylesheet"/>
+  <script src="../../assets/js/supervision-store.js" defer></script>
+  <script src="../../assets/js/detail-tabs.js" defer></script>
+  <script src="../../assets/js/supervision-attachment-ui.js" defer></script>
+  <script src="../../assets/js/supervision-inbox.js" defer></script>
  </head>
  <body class="teacher-workspace-page teacher-topic-list-page teacher-pending-proposals-page">
   <a class="skip-link" href="#main-content">
@@ -231,8 +236,17 @@
       Yêu cầu chờ duyệt
      </h1>
     </header>
+    <nav class="supervision-tabs" aria-label="Nội dung yêu cầu chờ duyệt" data-detail-tabs>
+     <a class="topic-tabs__link" href="#de-xuat-cho-duyet">Đề xuất chờ duyệt</a>
+     <a class="topic-tabs__link" href="#loi-moi-huong-dan" id="supervision-tab">
+      Lời mời hướng dẫn
+      <span class="supervision-tabs__count" data-supervision-count aria-hidden="true" hidden></span>
+      <span class="visually-hidden" data-supervision-count-label></span>
+     </a>
+    </nav>
+    <div data-detail-panels>
     <!-- Dữ liệu minh họa được nối theo mã hồ sơ bằng pending-proposals.js. -->
-    <div class="page-content pending-proposals-layout topic-list-layout">
+    <div class="page-content pending-proposals-layout topic-list-layout" id="de-xuat-cho-duyet" data-detail-panel>
      <aside aria-labelledby="proposal-filters-title" class="proposal-filters topic-filters">
       <!-- Các nhóm lọc kết hợp với tìm kiếm, sắp xếp và phân trang. -->
       <details class="topic-filters__disclosure" open="">
@@ -849,6 +863,11 @@
        Dữ liệu minh họa trên trình duyệt · 5 đề xuất mỗi trang. Hồ sơ thiếu ngày gửi giữ thứ tự mẫu và xếp cuối khi sắp xếp theo ngày.
       </p>
      </section>
+    </div>
+    <section id="loi-moi-huong-dan" class="supervision supervision-section" aria-labelledby="supervision-tab" data-detail-panel data-supervision-role="teacher">
+     <div class="supervision__body" data-supervision-inbox></div>
+     <noscript><p>Cần bật JavaScript để xem lời mời hướng dẫn.</p></noscript>
+    </section>
     </div>
    </div>
   </main>

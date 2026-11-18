@@ -4,7 +4,7 @@
   const container = document.querySelector('.student-detail-panels, [data-detail-panels]');
   if (!nav || !container) return;
   const links = [...nav.querySelectorAll('.detail-tabs-link, .topic-tabs__link[href^="#"]')];
-  const panels = [...container.querySelectorAll(':scope > .student-detail-panel, :scope > .topic-panel')];
+  const panels = [...container.querySelectorAll(':scope > :is([data-detail-panel], .student-detail-panel, .topic-panel)')];
   const targetForHash = hash => {
     try {
       return document.getElementById(decodeURIComponent(hash.slice(1)));

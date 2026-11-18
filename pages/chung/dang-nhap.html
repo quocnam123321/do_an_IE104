@@ -12,8 +12,10 @@
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/common.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/auth.css?v=20261118-login-portal-4" />
+    <link rel="stylesheet" href="../../assets/css/auth.css?v=20261119-invitations" />
     <script src="../../assets/js/password-toggle.js" defer></script>
+    <script src="../../assets/js/supervision-entry.js" defer></script>
+    <script src="../../assets/js/supervision-login.js" defer></script>
   </head>
   <body class="common-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
@@ -313,10 +315,23 @@
                 Đăng nhập bằng tài khoản sinh viên hoặc giảng viên để tiếp tục công
                 việc của bạn.
               </p>
+              <p id="invitation-login-context" class="login-form__help login-invitation__context" hidden></p>
             </header>
 
+            <div id="invitation-login" class="login-invitation" hidden>
+              <p id="invitation-login-help" class="login-invitation__help">
+                Bản demo sử dụng tài khoản sinh viên Nguyễn Minh Anh (24520001).
+              </p>
+              <p id="invitation-login-error" class="form-error" role="alert" hidden></p>
+              <button id="invitation-login-submit" class="login-form__submit button--primary" type="button"
+                aria-describedby="invitation-login-context invitation-login-help" hidden>
+                Đăng nhập bằng tài khoản mẫu
+              </button>
+              <a class="login-invitation__back" href="huong-nghien-cuu.html">Quay lại Hướng nghiên cứu</a>
+            </div>
+
             <!-- Chưa nối backend. Không gửi hoặc lưu thông tin đăng nhập ở bản HTML. -->
-            <form class="login-form" aria-describedby="login-help login-status">
+            <form id="login-form" class="login-form" aria-describedby="login-help login-status">
               <div class="form-field">
                 <label for="username">Tài khoản</label>
                 <div class="login-input-wrap">

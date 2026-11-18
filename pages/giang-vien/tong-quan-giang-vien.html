@@ -13,7 +13,10 @@
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1" />
     <link rel="stylesheet" href="../../assets/css/tong-quan-giang-vien.css?v=20261117-department-1" />
+    <link rel="stylesheet" href="../../assets/css/supervision-invitations.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
+    <script src="../../assets/js/supervision-store.js" defer></script>
+    <script src="../../assets/js/supervision-shortcut.js" defer></script>
   </head>
 
   <body class="lecturer-overview-page">
@@ -225,6 +228,15 @@
               </ul>
             </div>
             <p id="lecturer-welcome-demo" class="visually-hidden">Thông tin giảng viên minh họa, chưa kết nối tài khoản đăng nhập.</p>
+          </section>
+          <section class="supervision supervision__panel supervision-shortcut" aria-labelledby="supervision-shortcut-title" data-supervision-shortcut="teacher">
+            <div class="supervision__topline">
+              <div>
+                <h2 class="supervision__heading" id="supervision-shortcut-title">Lời mời cần phản hồi</h2>
+                <p class="supervision__hint" data-supervision-summary role="status">Xem lời mời hướng dẫn trong bản demo.</p>
+              </div>
+              <a class="supervision__button" href="yeu-cau-cho-duyet.html#loi-moi-huong-dan">Xem lời mời</a>
+            </div>
           </section>
           <section
             class="dashboard-summary"

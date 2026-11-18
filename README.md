@@ -28,10 +28,22 @@ Chưa có backend, cơ sở dữ liệu hoặc đồng bộ giữa người dùn
 phân quyền, gửi đăng ký/đề xuất, upload, đánh giá và gửi email chưa xử lý thực.
 Chưa triển khai chuyển Việt/Anh. Lịch mẫu cố định “hôm nay” là 18/10/2026.
 
-Kiểm thử kho quyết định demo bằng Node.js, không cần thư viện:
+### Demo Liên hệ xin hướng dẫn
+
+1. Mở [Hướng nghiên cứu](pages/chung/huong-nghien-cuu.html) qua Live Server. Chọn **Liên hệ xin hướng dẫn** và, nếu được chuyển đến Đăng nhập, chọn **Đăng nhập bằng tài khoản mẫu**. Điền và gửi lời mời.
+2. Trên tab thứ hai cùng địa chỉ máy chủ, mở [Yêu cầu chờ duyệt → Lời mời hướng dẫn](pages/giang-vien/yeu-cau-cho-duyet.html#loi-moi-huong-dan). Chọn giảng viên đã nhận lời mời và trả lời.
+3. Trên tab sinh viên, xem và trả lời trong [Đề tài của tôi → Lời mời hướng dẫn](pages/sinh-vien/de-tai-cua-toi-sinh-vien.html#loi-moi-huong-dan). Giảng viên có thể **Đồng ý hướng dẫn** hoặc **Từ chối** và kèm lời nhắn. Sau khi đồng ý, sinh viên có thể mở **Tạo đề xuất** với giảng viên đã điền sẵn.
+
+Phiên sinh viên mẫu lưu trong tab. Lời mời và phản hồi lưu bằng `localStorage` và đồng bộ giữa các tab cùng nguồn URL. Quyết định kết thúc trao đổi trên lời mời. Việc đồng ý hướng dẫn ghi nhận trong lời mời, còn việc gửi đề xuất chính thức vẫn theo luồng riêng.
+
+Tab **Lời mời hướng dẫn** cũng mở được từ **Tổng quan** của mỗi vai trò. Sinh viên thấy phản hồi gần nhất. Giảng viên thấy số lời mời demo đang chờ phản hồi.
+
+Mỗi lời mời hoặc phản hồi có thể đính kèm một tệp tối đa 10 MB. Bản demo lưu tệp trong IndexedDB. Hai vai trò có thể tải tệp từ cuộc trao đổi khi dùng cùng trình duyệt và cùng nguồn URL.
+
+Kiểm thử kho dữ liệu demo bằng Node.js, không cần thư viện:
 
 ```sh
-node --test tests/proposal-store.test.cjs
+node --test tests/proposal-store.test.cjs tests/supervision-store.test.cjs
 ```
 
 Hướng dẫn phát triển nằm trong **AGENTS.md, PRODUCT.md và DESIGN.md ở thư mục cha**;

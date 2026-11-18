@@ -11,6 +11,31 @@
   const normalize = (value) => value.toLocaleLowerCase('vi').normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
 
+  const invitationId = new URLSearchParams(location.search).get('loi-moi');
+  if (invitationId && window.IE104SupervisionEntry?.hasStudentSession()) {
+    const store = window.IE104Supervision;
+    let accepted;
+    try {
+      accepted = store.getAll().find(({ id, status, student }) =>
+        id === invitationId && status === 'accepted' && student.id === store.student.id);
+    } catch {
+      savedLabel.textContent = 'Không đọc được lời mời đã lưu. Bạn có thể chọn giảng viên thủ công.';
+    }
+    if (accepted) {
+      const option = options[0].cloneNode(true);
+      const radio = option.querySelector('input');
+      radio.id = 'supervisor-from-invitation';
+      radio.value = accepted.teacher.id;
+      option.htmlFor = radio.id;
+      option.querySelector('.supervisor-dialog__name').textContent = accepted.teacher.name;
+      option.querySelector('.supervisor-dialog__specialty').textContent = 'Đã đồng ý hướng dẫn';
+      dialog.querySelector('#supervisor-list').prepend(option);
+      options.unshift(option);
+      savedId.value = accepted.teacher.id;
+      savedLabel.textContent = accepted.teacher.name;
+    }
+  }
+
   function updateSelection() {
     const selected = dialog.querySelector('input[type="radio"]:checked');
     confirmButton.disabled = !selected;

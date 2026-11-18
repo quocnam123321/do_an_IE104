@@ -102,6 +102,34 @@
     };
   });
 
+  const invitationEntry = window.IE104SupervisionEntry;
+  if (invitationEntry) {
+    const invitationLinks = cards.map((card) => {
+      const heading = card.querySelector('h2');
+      if (!heading || !card.id) return null;
+
+      heading.id ||= `${card.id}-name`;
+      const actions = document.createElement('div');
+      actions.className = 'research-card__contact';
+      const link = document.createElement('a');
+      link.className = 'research-card__contact-link';
+      link.textContent = 'Liên hệ xin hướng dẫn';
+      link.setAttribute('aria-describedby', heading.id);
+      actions.append(link);
+      card.append(actions);
+      return { id: card.id, link };
+    }).filter(Boolean);
+
+    const updateInvitationLinks = () => {
+      const destination = invitationEntry.hasStudentSession()
+        ? invitationEntry.getComposeUrl
+        : invitationEntry.getLoginUrl;
+      invitationLinks.forEach(({ id, link }) => { link.href = destination(id); });
+    };
+    updateInvitationLinks();
+    window.addEventListener('pageshow', updateInvitationLinks);
+  }
+
   const grid = cards[0].parentElement;
   const cardAnimations = new WeakMap();
   const pendingCards = new Set();
