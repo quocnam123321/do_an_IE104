@@ -57,7 +57,7 @@
         item.hidden = false;
         const card = $('.topic-card', item);
         Object.assign(card.dataset, { topicId: topic.id, topicType: topic.type, course: topic.course,
-          status: topic.status, hocKy: topic.year + '-' + topic.semester });
+          status: topic.status, hocKy: topic.year + '-' + (topic.semester === 'summer' ? '3' : topic.semester) });
         const title = $('.topic-card__title', card);
         title.textContent = topic.name;
         title.id = 'created-topic-' + items.length;
@@ -68,6 +68,7 @@
           metadata[index].replaceChildren(...(hiddenLabel ? [hiddenLabel] : []), document.createTextNode(text));
         }
         setMeta(0, topic.code);
+        metadata[0].setAttribute('data-topic-search-term', '');
         setMeta(1, label('course', topic.course));
         setMeta(2, label('semester', topic.semester) + ' • ' + label('year', topic.year));
         const time = $('time', card);
@@ -86,9 +87,12 @@
       document.dispatchEvent(new Event('ie104:topics-updated'));
     }
     render();
-    window.addEventListener('storage', event => {
-      if (event.key !== store.key && event.key !== null) return;
+    function refreshList() {
       try { records = store.read(); render(); } catch (e) { error(e.message); }
+    }
+    window.addEventListener('pageshow', event => { if (event.persisted) refreshList(); });
+    window.addEventListener('storage', event => {
+      if (event.key === store.key || event.key === null) refreshList();
     });
     return;
   }
@@ -122,9 +126,65 @@
     if (topic.image) imageIn($('.topic-summary__image'), topic.image, 'Ảnh minh họa ' + topic.name);
     $('.topic-edit-link').href = 'chinh-sua-de-tai-giang-vien.html?id=' + encodeURIComponent(topic.id);
     const badge = $('.created-detail-heading .status-badge');
-    badge.textContent = topic.status === 'closed' ? 'Đã đóng đăng ký' : 'Đang mở đăng ký';
-    badge.className = 'status-badge status-badge--' + (topic.status === 'closed' ? 'closed' : 'open');
-    document.querySelectorAll('.confirmation-dialog strong').forEach(strong => strong.textContent = topic.name);
+    const trigger = $('.registration-close-button');
+    const dialogs = { open: $('#reopen-registration'), closed: $('#close-registration') };
+    let current = topic;
+    let revision;
+    let saving = false;
+    function renderStatus() {
+      trigger.disabled = !current || saving;
+      if (!current) return;
+      const closed = current.status === 'closed';
+      const target = closed ? 'open' : 'closed';
+      badge.textContent = closed ? 'Đã đóng đăng ký' : 'Đang mở đăng ký';
+      badge.className = 'status-badge status-badge--' + current.status;
+      trigger.className = closed ? 'registration-reopen-button' : 'registration-close-button';
+      trigger.textContent = closed ? 'Mở lại đăng ký' : 'Đóng đăng ký';
+      trigger.setAttribute('commandfor', dialogs[target].id);
+      trigger.setAttribute('aria-controls', dialogs[target].id);
+      for (const dialog of Object.values(dialogs)) $('strong', dialog).textContent = current.name;
+    }
+    function refreshStatus() {
+      try {
+        current = store.read().find(record => record.id === topic.id);
+        if (!current) error('Không tìm thấy đề tài.');
+      } catch (e) {
+        current = undefined;
+        error(e.message);
+      }
+      renderStatus();
+    }
+    trigger.addEventListener('click', () => { revision = current.revision; });
+    for (const [status, dialog] of Object.entries(dialogs)) {
+      const confirm = $('button[type="button"]', dialog);
+      confirm.disabled = false;
+      confirm.removeAttribute('title');
+      dialog.addEventListener('cancel', event => { if (saving) event.preventDefault(); });
+      confirm.addEventListener('click', async () => {
+        if (!dialog.open || saving) return;
+        const cancel = $('button[value="cancel"]', dialog);
+        saving = confirm.disabled = cancel.disabled = true;
+        renderStatus();
+        try {
+          current = await store.setRegistrationStatus(topic.id, revision, status);
+          message.setAttribute('role', 'status');
+          message.textContent = (status === 'closed' ? 'Đã đóng đăng ký. ' : 'Đã mở lại đăng ký. ') + demo;
+        } catch (e) {
+          refreshStatus();
+          error(e.message);
+        } finally {
+          saving = confirm.disabled = cancel.disabled = false;
+          renderStatus();
+          dialog.close();
+          trigger.focus();
+        }
+      });
+    }
+    renderStatus();
+    window.addEventListener('pageshow', event => { if (event.persisted) refreshStatus(); });
+    window.addEventListener('storage', event => {
+      if (event.key === store.key || event.key === null) refreshStatus();
+    });
     const attachmentName = $('.topic-attachments__file span');
     const download = $('.topic-attachments__download');
     attachmentName.textContent = topic.attachment?.name || 'Chưa có tài liệu đính kèm';

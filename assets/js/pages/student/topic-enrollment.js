@@ -3,8 +3,8 @@
   const form = document.querySelector('.registration-form');
   const service = app?.services?.registrations;
   if (!form || !service) return;
-  const topicId = form.dataset.topicId;
-  const rules = service.getRules(topicId);
+  const store = globalThis.TeacherTopicStore;
+  const topicId = (store && new URLSearchParams(location.search).get('topic')) ?? form.dataset.topicId;
   const extra = document.getElementById('additional-members');
   const template = document.getElementById('registration-member-template');
   const add = form.querySelector('.add-member');
@@ -14,6 +14,12 @@
   const confirm = dialog.querySelector('[data-confirm-registration]');
   const errorBox = document.getElementById('registration-error');
   const resultBox = document.getElementById('registration-result');
+  const closedState = document.getElementById('registration-closed-template')?.content.firstElementChild.cloneNode(true);
+  if (closedState) {
+    closedState.hidden = true;
+    form.after(closedState);
+  }
+  let rules;
   let nextIndex = 3;
   let pending;
   let saving = false;
@@ -94,18 +100,66 @@
     errorBox.hidden = true;
   }
 
+  function renderTopic(topic) {
+    const record = topic.record;
+    const summary = document.querySelector('.summary');
+    const article = summary.closest('article');
+    article.setAttribute('aria-label', topic.title);
+    document.title = topic.title + ' | Chi tiết đề tài';
+    summary.querySelector('h2').textContent = topic.title;
+    const values = [topic.code, topic.typeLabel, topic.courseLabel, 'Theo nhóm', topic.semester, topic.academicYear];
+    summary.querySelectorAll('.summary__meta dd').forEach((value, index) => { value.textContent = values[index]; });
+    article.querySelectorAll('.detail-body .content-box').forEach((box, index) => {
+      const field = ['description', 'objectives', 'outcomes', 'requirements'][index];
+      box.replaceChildren(...(record[field] || 'Chưa có thông tin').split('\n').map(text => {
+        const paragraph = document.createElement('p');
+        paragraph.textContent = text;
+        return paragraph;
+      }));
+    });
+    const image = article.querySelector('.topic-image img');
+    image.parentElement.classList.toggle('topic-image--uit', !record.image);
+    if (record.image) {
+      image.src = record.image;
+      image.alt = 'Ảnh minh họa ' + topic.title;
+    } else {
+      image.src = '../../assets/images/uit-logo.png';
+      image.alt = 'Logo Trường Đại học Công nghệ Thông tin - UIT';
+    }
+    const supervisor = article.querySelector('.supervisor');
+    supervisor.querySelector('h4').textContent = topic.lecturer;
+    supervisor.querySelector('.supervisor__profile p').hidden = topic.id !== 'DT001';
+    supervisor.querySelector('dl').hidden = topic.id !== 'DT001';
+    article.querySelector('[aria-labelledby="topic-attachments-title"]').hidden = topic.id !== 'DT001';
+    form.querySelector('.registration-form__group-size').textContent = `Nhóm gồm ${rules.minMembers} - ${rules.maxMembers} thành viên`;
+  }
+
   function checkExisting() {
     try {
+      const topic = service.getTopic(topicId);
+      document.querySelector('.detail-body').hidden = Boolean(store && !topic);
+      if (!topic) throw new Error('Không tìm thấy đề tài để đăng ký.');
+      rules = topic.registrationRules;
+      if (topic.record) renderTopic(topic);
+      refreshMembers();
+      if (closedState) closedState.hidden = topic.status !== 'closed';
       const record = service.findByTopic(topicId);
+      errorBox.hidden = true;
       if (record) {
         if (dialog.open) dialog.close();
         showSaved(record);
       } else {
-        form.hidden = false;
+        const closed = topic.status === 'closed';
+        if (closed && dialog.open) dialog.close();
+        form.hidden = closed;
         resultBox.hidden = true;
-        submit.disabled = false;
+        submit.disabled = closed;
       }
     } catch (error) {
+      if (dialog.open) dialog.close();
+      if (closedState) closedState.hidden = true;
+      form.hidden = true;
+      resultBox.hidden = true;
       errorBox.textContent = error.message;
       errorBox.hidden = false;
       submit.disabled = true;
@@ -113,12 +167,21 @@
   }
 
   function showReview() {
+    let topic;
+    try {
+      topic = service.getTopic(topicId);
+    } catch {
+      checkExisting();
+      return;
+    }
+    if (!topic || topic.status === 'closed') return checkExisting();
+    rules = topic.registrationRules;
     const checked = app.validation.validateRegistration(readValue(), rules);
     if (checked.errors.length) return showErrors(checked.errors);
     clearErrors();
     pending = checked.value;
     review.replaceChildren();
-    const lines = [service.getTopic(topicId).title, `Nhóm: ${pending.groupName}`, ...pending.members.map(member => `${member.code} - ${member.name} - ${member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên'}`)];
+    const lines = [topic.title, `Nhóm: ${pending.groupName}`, ...pending.members.map(member => `${member.code} - ${member.name} - ${member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên'}`)];
     if (pending.message) lines.push(`Lời nhắn: ${pending.message}`);
     lines.forEach(text => { const line = document.createElement('p'); line.textContent = text; review.append(line); });
     confirm.disabled = false;
@@ -160,16 +223,21 @@
     } catch (error) {
       dialog.close();
       if (error.fields) showErrors(error.fields);
-      else { errorBox.textContent = error.message; errorBox.hidden = false; }
+      else {
+        checkExisting();
+        errorBox.textContent = error.message;
+        errorBox.hidden = false;
+      }
     } finally {
       saving = false;
       confirm.disabled = false;
     }
   });
   window.addEventListener('pageshow', checkExisting);
-  window.addEventListener('storage', event => { if (event.key === app.storage.registrationKey || event.key === null) checkExisting(); });
+  window.addEventListener('storage', event => {
+    if (event.key === app.storage.registrationKey || event.key === store?.key || event.key === null) checkExisting();
+  });
   form.noValidate = true;
-  refreshMembers();
   checkExisting();
   form.dataset.enrollmentReady = 'true';
 })();

@@ -12,7 +12,7 @@
     title.textContent = topic.title;
     article.setAttribute('aria-labelledby', title.id);
     article.dataset.topicId = topic.id;
-    values[0].textContent = `${topic.id} - ${topic.typeLabel}`;
+    values[0].textContent = `${topic.code || topic.id} - ${topic.typeLabel}`;
     values[1].textContent = topic.courseLabel;
     values[2].textContent = `Học kỳ ${topic.semester}`;
     values[3].textContent = topic.lecturer;
@@ -23,6 +23,7 @@
 
   app.ui.initTopicList({
     query: app.services.topics.listOpenTopics,
+    storageKey: globalThis.TeacherTopicStore?.key,
     createCard,
     emptyTitle: 'Chưa có đề tài mở đăng ký',
     emptyDescription: 'Các đề tài sẽ xuất hiện ở đây khi được mở đăng ký.',

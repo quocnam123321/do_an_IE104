@@ -196,7 +196,51 @@
       return copy(next);
     };
     // Serialize writes across tabs when supported; revision also guards stale edits.
+    return withWriteLock(write);
+  }
+  function withWriteLock(write) {
     return window.navigator?.locks?.request ? window.navigator.locks.request(key, write) : write();
   }
-  window.TeacherTopicStore = { key, catalogs, read, validate, save };
+  async function setRegistrationStatus(id, revision, status) {
+    return withWriteLock(() => {
+      if (status !== 'open' && status !== 'closed') throw new Error('Trạng thái đăng ký không hợp lệ.');
+      const records = read();
+      const topic = records.find(record => record.id === id);
+      if (!topic || topic.revision !== revision || topic.status === status) {
+        throw new Error('Trạng thái đề tài đã thay đổi. Hãy kiểm tra và xác nhận lại.');
+      }
+      const next = { ...topic, status, revision: revision + 1, updated: new Date().toISOString() };
+      window.localStorage.setItem(key, JSON.stringify(records.map(record => record.id === id ? next : record)));
+      return next;
+    });
+  }
+  function studentTopics(samples) {
+    const library = samples.find(topic => topic.id === 'DT001');
+    const types = { course: 'do-an-mon-hoc', graduation: 'do-an-tot-nghiep', thesis: 'khoa-luan' };
+    const courses = { web: 'IE104', database: 'co-so-du-lieu', software: 'cong-nghe-phan-mem' };
+    const managed = read().map(record => {
+      // Preserve the existing student identifier used by saved registrations.
+      const sample = record.id === 'DA001' ? library : undefined;
+      const id = sample?.id || record.id;
+      return {
+        id,
+        code: sample?.id || record.code,
+        title: record.name,
+        type: types[record.type],
+        typeLabel: catalogs.type[record.type],
+        courseId: courses[record.course],
+        courseLabel: record.course === 'web' && library ? library.courseLabel : catalogs.course[record.course],
+        semester: record.semester,
+        academicYear: record.year,
+        lecturer: sample?.lecturer || 'Nguyễn Văn Minh',
+        createdAt: record.created,
+        detailUrl: sample?.detailUrl || 'chi-tiet-de-tai-mo-dang-ky.html?topic=' + encodeURIComponent(id),
+        registrationRules: { minMembers: Number(record.minimum), maxMembers: Number(record.maximum) },
+        status: record.status,
+        record,
+      };
+    });
+    return [...samples.filter(topic => topic.id !== 'DT001'), ...managed];
+  }
+  window.TeacherTopicStore = { key, catalogs, read, validate, save, setRegistrationStatus, studentTopics };
 })();

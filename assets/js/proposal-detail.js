@@ -21,14 +21,22 @@
   });
   let busy = false;
 
-  // Chỉ nhận đường quay về danh sách hiện tại; không nhận URL bên ngoài.
+  // Giới hạn đường quay về ở hai danh sách nội bộ có thể mở đề xuất.
   try {
-    const target = new URL(params.get('return') || 'yeu-cau-cho-duyet.html', window.location.href);
-    const allowed = new URL('yeu-cau-cho-duyet.html', window.location.href);
-    if (target.origin === allowed.origin && target.protocol === allowed.protocol && target.pathname === allowed.pathname) {
-      document.querySelectorAll('.back-link, .breadcrumb a[href="yeu-cau-cho-duyet.html"]').forEach((link) => {
-        link.href = `yeu-cau-cho-duyet.html${target.search}`;
-      });
+    const pending = 'yeu-cau-cho-duyet.html';
+    const teaching = 'danh-sach-de-tai-dang-huong-dan.html';
+    const target = new URL(params.get('return') || pending, location.href);
+    const matches = path => target.origin === location.origin && target.protocol === location.protocol &&
+      target.pathname === new URL(path, location.href).pathname;
+    const fromTeaching = matches(teaching) && store.get(id)?.status === 'approved';
+    if (matches(pending) || fromTeaching) {
+      const back = document.querySelector('.back-link');
+      const crumb = document.querySelector('.breadcrumb a[href="yeu-cau-cho-duyet.html"]');
+      back.href = crumb.href = (fromTeaching ? teaching : pending) + target.search;
+      if (fromTeaching) {
+        back.querySelector('span').textContent = 'Quay lại Đề tài đang hướng dẫn';
+        crumb.textContent = 'Đề tài đang hướng dẫn';
+      }
     }
   } catch { /* URL không hợp lệ: giữ liên kết HTML về danh sách. */ }
 

@@ -3,7 +3,11 @@
   app.services = app.services || {};
 
   function getTopic(id) {
-    return app.data.openTopics.find(topic => topic.id === id);
+    const samples = app.data.openTopics;
+    const sample = samples.find(topic => topic.id === id);
+    if (sample && id !== 'DT001') return sample;
+    const topics = globalThis.TeacherTopicStore?.studentTopics(samples) || samples;
+    return topics.find(topic => topic.id === id);
   }
 
   function getRules(id) {
@@ -21,7 +25,9 @@
   function create(id, payload) {
     const topic = getTopic(id);
     if (!topic) throw new Error('Không tìm thấy đề tài để đăng ký.');
-    const validation = app.validation.validateRegistration(payload, getRules(id));
+    if (topic.status === 'closed') throw new Error('Đề tài đã đóng đăng ký.');
+    const { record: topicDetails, ...snapshot } = topic;
+    const validation = app.validation.validateRegistration(payload, topic.registrationRules);
     if (validation.errors.length) {
       const error = new Error('Vui lòng kiểm tra thông tin nhóm.');
       error.fields = validation.errors;
@@ -32,7 +38,7 @@
     const suffix = globalThis.crypto?.randomUUID?.() || `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
     const record = {
       id: `DK-${suffix}`,
-      topic: { ...topic },
+      topic: snapshot,
       ...validation.value,
       status: 'cho-duyet',
       createdAt: new Date().toISOString(),
@@ -43,7 +49,7 @@
 
   function listMyTopics() {
     return app.storage.readRegistrations().map(record => {
-      const topic = getTopic(record.topic.id) || record.topic;
+      const topic = record.topic;
       return {
         id: topic.id,
         requestId: record.id,
