@@ -6,19 +6,7 @@
 
   function recordsFrom(saved) {
     if (saved.some(record => !app.data.initialRequests.some(initial => initial.id === record.id && initial.kind === record.kind))) throw new Error('Dữ liệu yêu cầu đã lưu không khớp danh mục hiện tại.');
-    return app.data.initialRequests.map(initial => {
-      const record = clone({ ...initial, ...(saved.find(item => item.id === initial.id) || {}), allowedModes: initial.allowedModes });
-      const store = globalThis.IE104Proposals;
-      if (record.id !== 'DX001' || !store) return record;
-      const decision = store.get('DX001');
-      if (store.getError()) throw new Error(store.getError());
-      if (decision && ['approved', 'rejected'].includes(decision.status) && record.status !== 'da-rut' && !record.deletedAt) {
-        record.status = decision.status === 'approved' ? 'da-duyet' : 'tu-choi';
-        record.feedback = decision.status === 'approved' ? 'Đề xuất đã được giảng viên duyệt.' : decision.reason;
-        record.decidedAt = decision.decidedAt;
-      }
-      return record;
-    });
+    return app.data.initialRequests.map(initial => clone({ ...initial, ...(saved.find(record => record.id === initial.id) || {}), allowedModes: initial.allowedModes }));
   }
 
   function list(includeDeleted = false) {
@@ -87,13 +75,13 @@
       const record = requests.find(item => item.id === topic.id);
       if (!record) return [{ ...topic }];
       if (record.deletedAt) return [];
-      return [{ ...topic, title: record.title, type: record.type, typeLabel: record.typeLabel, courseId: record.courseId, lecturer: record.lecturerName, feedback: record.feedback, status: record.status === 'da-duyet' ? 'dang-thuc-hien' : record.status, statusLabel: record.status === 'da-duyet' ? 'Đang thực hiện' : labels[record.status] }];
+      return [{ ...topic, title: record.title, type: record.type, typeLabel: record.typeLabel, courseId: record.courseId, lecturer: record.lecturerName, status: record.status, statusLabel: labels[record.status] }];
     });
   }
 
   function recent(topics) {
-    const legacy = list().map(record => ({ id: record.id, requestId: record.id, title: record.title, status: record.status === 'da-duyet' ? 'dang-thuc-hien' : record.status, statusLabel: record.status === 'da-duyet' ? 'Đang thực hiện' : labels[record.status], createdAt: record.resubmittedAt || record.createdAt, requestType: record.kind === 'dang-ky' ? 'Đăng ký đề tài' : 'Đề xuất đề tài', feedback: record.feedback, detailUrl: `chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#${record.id.toLowerCase()}` }));
-    const current = topics.filter(topic => topic.requestId && !app.data.initialRequests.some(record => record.id === topic.requestId)).map(topic => ({ ...topic, feedback: '', requestType: topic.requestId.startsWith('DK-') ? 'Đăng ký đề tài' : 'Đề xuất đề tài' }));
+    const legacy = list().map(record => ({ id: record.id, requestId: record.id, title: record.title, status: record.status, statusLabel: labels[record.status], createdAt: record.resubmittedAt || record.createdAt, requestType: record.kind === 'dang-ky' ? 'Đăng ký đề tài' : 'Đề xuất đề tài', feedback: record.feedback, detailUrl: `chi-tiet-dang-ky-va-de-xuat-sinh-vien.html#${record.id.toLowerCase()}` }));
+    const current = topics.filter(topic => topic.requestId && !app.data.initialRequests.some(record => record.id === topic.requestId)).map(topic => ({ ...topic, statusLabel: topic.requestStatusLabel || topic.statusLabel, feedback: topic.feedback || '', requestType: topic.requestId.startsWith('DK-') ? 'Đăng ký đề tài' : 'Đề xuất đề tài' }));
     return [...legacy, ...current].sort((first, second) => Date.parse(second.createdAt) - Date.parse(first.createdAt) || first.id.localeCompare(second.id));
   }
 

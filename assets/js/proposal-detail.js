@@ -5,7 +5,7 @@
   if (!store || !content) return;
 
   const params = new URLSearchParams(window.location.search);
-  const id = params.has('ma') ? params.get('ma').trim().toUpperCase() : 'DX-GV001';
+  const id = params.has('ma') ? params.get('ma').trim() : 'DX-GV001';
   const badge = document.querySelector('.request-detail-heading .status-badge');
   const feedback = document.getElementById('proposal-decision-feedback');
   const actions = content.querySelector('.request-detail__actions');
@@ -14,12 +14,17 @@
   const result = document.getElementById('proposal-result');
   const forms = ['approve', 'reject'].map((action) => document.getElementById(`${action}-proposal-form`));
   const dialogs = forms.map((form) => form.closest('dialog'));
-  const labels = { pending: 'Chờ duyệt', approved: 'Đã duyệt', rejected: 'Từ chối' };
+  const labels = { pending: 'Chờ duyệt', approved: 'Đã duyệt', rejected: 'Từ chối', withdrawn: 'Đã rút' };
   const dateFormat = new Intl.DateTimeFormat('vi-VN', {
     year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
     timeZone: 'Asia/Ho_Chi_Minh',
   });
   let busy = false;
+  let displayedRevision;
+  let pendingRevision;
+  for (const dialog of dialogs) dialog.addEventListener('beforetoggle', event => {
+    if (event.newState === 'open') pendingRevision = displayedRevision;
+  });
 
   // Chỉ nhận đường quay về danh sách hiện tại; không nhận URL bên ngoài.
   try {
@@ -48,6 +53,7 @@
     }
     document.title = `${record.id} — ${record.title} | Chi tiết đề xuất`;
     content.dataset.proposalId = record.id;
+    displayedRevision = record.revision;
     badge.textContent = labels[record.status];
     badge.dataset.status = record.status;
     text('#proposal-topic-title', `${record.id} — ${record.title}`);
@@ -68,7 +74,7 @@
     text('.request-objectives p', record.objectives);
     text('.request-outcomes p', record.outcomes);
     text('.request-attachments__file span', record.attachment);
-    document.getElementById('proposal-student-preview').href = `../sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=${encodeURIComponent(record.id)}`;
+    document.getElementById('proposal-student-preview').href = record.source === 'student' ? `../sinh-vien/chi-tiet-de-xuat-da-luu.html?proposal=${encodeURIComponent(record.id)}` : `../sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=${encodeURIComponent(record.id)}`;
     for (const form of forms) {
       form.querySelector('strong').textContent = `${record.id} — ${record.title}`;
       form.querySelector('button[type="submit"]').disabled = busy || record.status !== 'pending';
@@ -77,7 +83,7 @@
     for (const button of actions.querySelectorAll('button')) button.disabled = busy || record.status !== 'pending';
     result.hidden = record.status === 'pending';
     text('[data-proposal-result]', record.status === 'approved'
-      ? `${record.topicId} — ${record.title}: Đang thực hiện.` : 'Đề xuất đã bị từ chối.');
+      ? `${record.topicId} — ${record.title}: Đang thực hiện.` : record.status === 'withdrawn' ? 'Sinh viên đã rút đề xuất.' : 'Đề xuất đã bị từ chối.');
     text('[data-proposal-reason]', record.reason ? `Lý do từ chối: ${record.reason}` : '');
     content.querySelector('[data-proposal-reason]').hidden = !record.reason;
     text('[data-proposal-decision-time]', record.decidedAt ? `Thời điểm xử lý: ${dateFormat.format(new Date(record.decidedAt))}. Chỉ lưu trong bản demo trên trình duyệt.` : '');
@@ -115,7 +121,7 @@
       form.setAttribute('aria-busy', 'true');
       render();
       try {
-        await store.decide(id, reject ? 'rejected' : 'approved', reason.value);
+        await store.decide(id, reject ? 'rejected' : 'approved', reason.value, pendingRevision ?? displayedRevision);
         form.closest('dialog').close();
         feedback.textContent = `Đã lưu quyết định ${reject ? 'từ chối' : 'duyệt'} ${id} trong bản demo trên trình duyệt.`;
         feedback.focus();

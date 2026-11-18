@@ -66,7 +66,7 @@
 
   function getAll() {
     readError = '';
-    return seeds.map((seed) => {
+    const initial = seeds.filter(() => !window.IE104?.data?.currentLecturer || window.IE104.data.currentLecturer.id === 'GV001').map((seed) => {
       let decision;
       try { decision = readDecision(seed.id); }
       catch { readError = 'Không đọc được dữ liệu đã lưu. Kiểm tra quyền lưu trữ của trình duyệt trước khi xử lý đề xuất.'; }
@@ -74,14 +74,24 @@
       record.topicStatus = record.status === 'approved' ? 'in-progress' : record.status;
       return record;
     });
+    let saved = [];
+    try { saved = window.IE104?.services?.proposals?.listForLecturer() || []; }
+    catch (error) { readError = error.message; }
+    return [...initial, ...saved];
   }
 
   function notify() {
     for (const listener of listeners) listener();
   }
 
-  async function decide(id, status, reason = '') {
+  async function decide(id, status, reason = '', revision) {
+    if (!seeds.some(record => record.id === id)) {
+      const service = window.IE104?.services?.proposals;
+      if (!service) throw new Error('Không tìm thấy đề xuất.');
+      return service.decide(id, status, reason, revision);
+    }
     const save = () => {
+      if (window.IE104?.data?.currentLecturer && window.IE104.data.currentLecturer.id !== 'GV001') throw new Error('Giảng viên hiện tại không được xử lý đề xuất này.');
       if (!seeds.some((record) => record.id === id)) throw new Error('Không tìm thấy đề xuất.');
       if (!['approved', 'rejected'].includes(status)) throw new Error('Quyết định không hợp lệ.');
       const trimmedReason = reason.trim();
@@ -100,9 +110,10 @@
   }
 
   window.addEventListener('storage', (event) => {
-    if (event.key === null || event.key.startsWith(prefix)) notify();
+    if (event.key === null || event.key.startsWith(prefix) || event.key === window.IE104?.storage?.proposalKey) notify();
   });
   window.addEventListener('pageshow', notify);
+  window.addEventListener('ie104:proposals-updated', notify);
   window.IE104Proposals = Object.freeze({
     getAll,
     get: (id) => getAll().find((record) => record.id === id),

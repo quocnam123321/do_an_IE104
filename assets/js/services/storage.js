@@ -30,7 +30,10 @@
   function isProposalRecord(record) {
     const strings = ['id', 'title', 'type', 'typeLabel', 'courseId', 'courseLabel', 'semester', 'academicYear', 'description', 'objectives', 'outcomes', 'supervisorId', 'supervisorName', 'createdAt'];
     if (!record || !strings.every(key => typeof record[key] === 'string' && record[key].trim())) return false;
-    if (!Number.isFinite(Date.parse(record.createdAt)) || !['cho-duyet', 'da-rut'].includes(record.status)) return false;
+    if (!Number.isFinite(Date.parse(record.createdAt)) || !['cho-duyet', 'da-rut', 'da-duyet', 'tu-choi'].includes(record.status)) return false;
+    if (['da-duyet', 'tu-choi'].includes(record.status) && (!record.decision || !Number.isFinite(Date.parse(record.decision.decidedAt)) || typeof record.decision.lecturerId !== 'string' || typeof record.decision.reason !== 'string' || record.decision.proposalRevision !== record.revision - 1 || (record.status === 'tu-choi' && record.decision.reason.trim().length < 10))) return false;
+    if (record.student !== undefined && (!record.student || typeof record.student.code !== 'string' || !record.student.code.trim() || typeof record.student.name !== 'string' || !record.student.name.trim())) return false;
+    if (record.lecturerId !== undefined && (typeof record.lecturerId !== 'string' || !record.lecturerId.trim())) return false;
     if (record.revision !== undefined && (!Number.isInteger(record.revision) || record.revision < 0)) return false;
     if (!['updatedAt', 'withdrawnAt'].every(key => record[key] === undefined || (typeof record[key] === 'string' && Number.isFinite(Date.parse(record[key]))))) return false;
     return record.attachment === null || Boolean(record.attachment && typeof record.attachment.name === 'string' && Number.isFinite(record.attachment.size) && record.attachment.size >= 0);
@@ -43,7 +46,7 @@
       if (raw === null) return [];
       const parsed = JSON.parse(raw);
       if (parsed.version !== 1 || !Array.isArray(parsed.records)) throw new Error();
-      if (!parsed.records.every(isProposalRecord)) throw new Error();
+      if (!parsed.records.every(isProposalRecord) || new Set(parsed.records.map(record => record.id)).size !== parsed.records.length) throw new Error();
       return parsed.records;
     } catch {
       throw new Error('Không đọc được đề xuất đã lưu. Dữ liệu cũ chưa bị thay thế.');

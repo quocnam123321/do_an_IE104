@@ -17,7 +17,8 @@
     const title = document.createElement('h3');
     title.textContent = record.title;
     const details = document.createElement('dl');
-    const fields = [['Mã đề xuất thử', record.id], ['Trạng thái mẫu', record.status === 'da-rut' ? 'Đã rút' : 'Chờ duyệt'], ['Loại đề tài', record.typeLabel], ['Môn học', record.courseLabel], ['Học kỳ - Năm học', `${record.semester === 'he' ? 'Hè' : record.semester} - ${record.academicYear}`], ['Giảng viên nhận đề xuất', record.supervisorName], ['Ngày lưu', new Date(record.createdAt).toLocaleString('vi-VN')], ['Mô tả', record.description], ['Mục tiêu', record.objectives], ['Kết quả dự kiến', record.outcomes], ['Tài liệu đính kèm', record.attachment ? `${record.attachment.name} (${record.attachment.size} byte). Chỉ lưu thông tin tệp, chưa lưu nội dung tệp.` : 'Không đính kèm']];
+    const fields = [['Mã đề xuất thử', record.id], ['Trạng thái mẫu', service.labels[record.status]], ['Loại đề tài', record.typeLabel], ['Môn học', record.courseLabel], ['Học kỳ - Năm học', `${record.semester === 'he' ? 'Hè' : record.semester} - ${record.academicYear}`], ['Giảng viên nhận đề xuất', record.supervisorName], ['Ngày lưu', new Date(record.createdAt).toLocaleString('vi-VN')], ['Mô tả', record.description], ['Mục tiêu', record.objectives], ['Kết quả dự kiến', record.outcomes], ['Tài liệu đính kèm', record.attachment ? `${record.attachment.name} (${record.attachment.size} byte). Chỉ lưu thông tin tệp, chưa lưu nội dung tệp.` : 'Không đính kèm']];
+    if (record.decision) { fields.push(['Ngày xét duyệt', new Date(record.decision.decidedAt).toLocaleString('vi-VN')]); if (record.decision.reason) fields.push(['Lý do từ chối', record.decision.reason]); }
     if (record.updatedAt) fields.push(['Lần sửa gần nhất', new Date(record.updatedAt).toLocaleString('vi-VN')]);
     if (record.withdrawnAt) fields.push(['Ngày rút', new Date(record.withdrawnAt).toLocaleString('vi-VN')]);
     fields.forEach(([label, value]) => {
@@ -71,6 +72,7 @@
     }
   });
   window.addEventListener('pageshow', refresh);
+  window.addEventListener('ie104:proposals-updated', refresh);
   window.addEventListener('storage', event => {
     if (event.key === globalThis.IE104.storage.proposalKey || event.key === null) refresh();
   });

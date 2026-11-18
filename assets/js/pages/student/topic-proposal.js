@@ -118,7 +118,7 @@
     try {
       original = service.findById(editId);
       if (!original) throw new Error('Không tìm thấy đề xuất đã lưu trên trình duyệt này.');
-      if (original.status !== 'cho-duyet') throw new Error('Đề xuất đã rút, bạn chỉ có thể xem lại thông tin.');
+      if (original.status !== 'cho-duyet') throw new Error('Đề xuất đã rút hoặc đã được xét duyệt, bạn chỉ có thể xem lại thông tin.');
       fillOriginal();
       document.getElementById('proposal-title').textContent = 'Chỉnh sửa đề xuất';
       document.title = 'Chỉnh sửa đề xuất | Quản lý đồ án';
@@ -180,7 +180,7 @@
       form.querySelectorAll('fieldset').forEach(fieldset => { fieldset.disabled = true; });
       submit.disabled = true;
       submit.textContent = editing ? 'Đã lưu thay đổi' : 'Đã lưu đề xuất thử';
-      result.replaceChildren(document.createTextNode(editing ? 'Đã lưu thay đổi trên trình duyệt này. Chưa gửi đến giảng viên. ' : 'Đã lưu đề xuất thử trên trình duyệt này. Chưa gửi đến giảng viên. '));
+      result.replaceChildren(document.createTextNode(editing ? 'Đã lưu thay đổi trên trình duyệt này. Đã đưa vào hàng chờ của giảng viên trong bản demo cùng trình duyệt. ' : 'Đã lưu đề xuất thử trên trình duyệt này. Đã đưa vào hàng chờ của giảng viên trong bản demo cùng trình duyệt. '));
       const link = document.createElement('a');
       link.href = `chi-tiet-de-xuat-da-luu.html?proposal=${encodeURIComponent(record.id)}`;
       link.textContent = 'Xem đề xuất đã lưu';
