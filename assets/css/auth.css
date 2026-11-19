@@ -238,6 +238,7 @@
 
 #recovery-masked-email {
   display: block;
+  overflow-wrap: anywhere;
 }
 
 .recovery-panel__intro img {
@@ -374,12 +375,18 @@
   font-size: var(--font-small);
 }
 
-.recovery-otp__status:empty {
+.recovery-otp__status:empty,
+.recovery-form__error:empty {
   position: absolute;
   width: 1px;
   height: 1px;
   overflow: hidden;
   clip-path: inset(50%);
+}
+
+.common-page .recovery-form__error {
+  margin: 0;
+  font-size: var(--font-small);
 }
 
 .recovery-strength {
@@ -414,8 +421,7 @@
   background: var(--strength-color);
 }
 
-.common-page .recovery-reset__hint,
-.common-page .recovery-reset__result {
+.common-page .recovery-reset__hint {
   margin: 0;
   font-size: var(--font-small);
 }
