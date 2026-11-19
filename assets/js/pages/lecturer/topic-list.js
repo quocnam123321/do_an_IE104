@@ -26,7 +26,7 @@
       card.dataset.topicType = topic.topicType;
       card.dataset.course = topic.course;
       card.dataset.hocKy = `${topic.academicYear}-${topic.semester === 'summer' ? '3' : topic.semester}`;
-      card.dataset.status = kind === 'created' ? topic.status : 'in-progress';
+      card.dataset.status = kind === 'created' ? topic.status : topic.status === 'hoan-thanh' ? 'completed' : 'in-progress';
       if (topic.role) card.dataset.role = topic.role;
       const values = [
         `Mã đề tài: ${topic.id}`,
@@ -34,6 +34,10 @@
         `Học kỳ ${topic.semester === 'summer' ? 'hè' : topic.semester} - ${topic.academicYear}`,
         kind === 'created' ? `Ngày tạo: ${topic.createdAt.split('-').reverse().join('/')}` : `Nhóm thực hiện: ${topic.groupName}`,
       ];
+      if (topic.sourceRecord) {
+        values.splice(0, values.length, `Mã đề tài: ${topic.id}`, `Tác giả: ${topic.sourceRecord.authors.join(', ')}`,
+          `GVHD theo nguồn: ${topic.sourceRecord.advisors.join(', ') || 'Chưa công bố trong nguồn'}`, `${topic.typeLabel}${topic.sourceRecord.cohort ? ' - Khóa ' + topic.sourceRecord.cohort : ' - Năm ' + topic.sourceRecord.year}`);
+      }
       card.querySelectorAll('.topic-card__meta-text').forEach((node, index) => { node.textContent = values[index]; });
       const date = card.querySelector('time[datetime]'); if (date) date.dateTime = topic.createdAt;
       card.dataset.createdAt = topic.createdAt;

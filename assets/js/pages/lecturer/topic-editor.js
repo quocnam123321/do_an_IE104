@@ -36,8 +36,8 @@
     error.replaceChildren(list); error.hidden = false; (fields[errors[0]?.field] || error).focus();
   }
   try {
-    if (editing) original = app.services.lecturerTopics.get('created', new URLSearchParams(location.search).get('topic') ?? 'DA001');
-    select(fields.topicType, service.catalog.types, original?.topicType);
+    if (editing) original = app.services.lecturerTopics.get('created', new URLSearchParams(location.search).get('topic') ?? app.data.lecturerRealDefaultTopicId ?? 'DA001');
+    select(fields.topicType, { ...service.catalog.types, ...(original?.sourceRecord?.type === 'Luận văn thạc sĩ' ? { thesis: 'Luận văn thạc sĩ' } : {}) }, original?.topicType);
     select(fields.course, service.catalog.courses, original?.course);
     select(fields.semester, service.catalog.semesters, original?.semester);
     select(fields.academicYear, Object.fromEntries(service.catalog.years.map(year => [year,year])), original?.academicYear);
@@ -76,7 +76,7 @@
     const courseState = () => { fields.course.disabled = fields.topicType.value !== 'course'; if (fields.course.disabled) fields.course.value = ''; };
     fields.topicType.addEventListener('change', courseState); courseState();
     form.noValidate = true; submit.disabled = false; submit.removeAttribute('title');
-    status.textContent = 'Bản demo: dữ liệu và tệp lưu trên trình duyệt này.';
+    status.textContent = '';
     form.dataset.topicEditorReady = 'true';
   } catch (failure) { submit.disabled = true; showErrors([{ message: failure.message }]); return; }
   form.addEventListener('input', () => { dirty = true; });

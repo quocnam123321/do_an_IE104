@@ -14,6 +14,8 @@
     <script src="../../assets/js/nav-indicator.js" defer></script>
   
 <script src="../../assets/js/data/lecturer-topics.js" defer></script>
+<script src="../../assets/js/data/lecturer-source-data.js" defer></script>
+<script src="../../assets/js/data/lecturer-real-data.js" defer></script>
 <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
 <script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
 <link rel="stylesheet" href="../../assets/css/lecturer-topic-routing.css">
@@ -22,6 +24,7 @@
 <script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
 <script src="../../assets/js/pages/lecturer/topic-editor.js" defer></script>
 <link rel="stylesheet" href="../../assets/css/lecturer-topic-editor.css">
+<link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
 </head>
 
   <body class="topic-editor-page" data-lecturer-topic-view="edit">
@@ -138,11 +141,7 @@
         </header>
 
         <div class="page-content">
-          <p class="demo-notice">
-            Bản HTML mẫu, chưa kết nối dữ liệu đề tài. Các trường được để trống,
-            dùng placeholder hoặc hiển thị “Chưa có thông tin”. Biểu mẫu chưa lưu
-            thay đổi.
-          </p>
+          
 
           <form
             id="topic-edit-form"
@@ -499,5 +498,6 @@
         <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
-  </body>
+  <script src="../../assets/js/pages/lecturer/source-metadata.js" defer></script>
+</body>
 </html>

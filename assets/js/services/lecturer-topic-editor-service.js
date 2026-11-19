@@ -60,7 +60,7 @@
     const createdAt = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
     const record = {
       ...previous, patchOnly: false, id: previous?.id || value.id, kind: 'created', ownerId: actor.id,
-      title: value.title, topicType: value.topicType, typeLabel: catalog.types[value.topicType], course: value.course, courseLabel: catalog.courses[value.course] || '',
+      title: value.title, topicType: value.topicType, typeLabel: previous?.sourceRecord?.type === 'Luận văn thạc sĩ' && value.topicType === previous.topicType ? previous.typeLabel : catalog.types[value.topicType], course: value.course, courseLabel: catalog.courses[value.course] || '',
       semester: value.semester, academicYear: value.academicYear, description: value.description,
       ...Object.fromEntries(['objectives', 'outcomes', 'requirements'].map(field => [field, value[field].split(/\r?\n/).map(text).filter(Boolean)])),
       domain: value.domain, technologies: value.technologies,

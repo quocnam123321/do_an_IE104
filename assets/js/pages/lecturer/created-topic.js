@@ -4,7 +4,7 @@
   if (!service || !mode) return;
   const missing = 'Chưa có thông tin';
   const params = new URLSearchParams(location.search);
-  const id = params.has('topic') ? params.get('topic') : 'DA001';
+  const id = params.has('topic') ? params.get('topic') : (globalThis.IE104.data.lecturerRealDefaultTopicId || 'DA001');
   const setText = (selector, value) => document.querySelectorAll(selector).forEach(node => { node.textContent = value || missing; });
   const listUrl = service.returnUrl('created', params.get('return'), location.href);
   document.body.classList.add('lecturer-routing-page');

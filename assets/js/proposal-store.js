@@ -6,7 +6,7 @@
   const courseProject = { topicType: 'do-an-mon-hoc', topicTypeLabel: 'Đồ án môn học' };
   const primary = { supervisionRole: 'huong-dan-chinh', supervisionRoleLabel: 'Hướng dẫn chính' };
   const secondary = { supervisionRole: 'dong-huong-dan', supervisionRoleLabel: 'Đồng hướng dẫn' };
-  const seeds = [
+  const legacySeeds = [
     {
       ...courseProject, ...primary, id: 'DX-GV001', topicId: 'DT-GV001',
       title: 'Website quản lý thư viện', studentName: 'Nguyễn Văn A', studentId: '22520001',
@@ -49,6 +49,7 @@
       attachment: 'De_cuong_de_tai.pdf',
     },
   ].map((record) => ({ submittedAt: '', semester: '', academicYear: '', ...record }));
+  const seeds = window.IE104?.data?.lecturerRealProposalSeeds || legacySeeds;
   const listeners = new Set();
   let readError = '';
 

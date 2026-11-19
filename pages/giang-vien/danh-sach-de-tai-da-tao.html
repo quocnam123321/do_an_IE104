@@ -18,6 +18,8 @@
     <script src="../../assets/js/nav-indicator.js" defer></script>
     
 <script src="../../assets/js/data/lecturer-topics.js" defer></script>
+<script src="../../assets/js/data/lecturer-source-data.js" defer></script>
+<script src="../../assets/js/data/lecturer-real-data.js" defer></script>
 <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
 <script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
 <script src="../../assets/js/pages/lecturer/topic-list.js" defer></script>
@@ -26,6 +28,7 @@
 <script src="../../assets/js/shared/download-file.js" defer></script>
 <script src="../../assets/js/pages/lecturer/topic-media.js" defer></script>
 <link rel="stylesheet" href="../../assets/css/lecturer-topic-editor.css">
+<link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
 </head>
 
   <body class="teacher-workspace-page teacher-topic-list-page teacher-created-topics-page" data-lecturer-list="created">
@@ -309,7 +312,7 @@
                     <div class="topic-filters__option">
                       <label for="topic-type-thesis">
                         <input type="checkbox" id="topic-type-thesis" name="topic-type" value="thesis" />
-                        <span class="topic-filters__option-text">Khóa luận</span>
+                        <span class="topic-filters__option-text">Khóa luận / Luận văn</span>
                       </label>
                     </div>
                   </div>
@@ -633,7 +636,7 @@
                 </ul>
               </nav>
             </div>
-            <p id="topic-preview-note" class="topic-toolbar__note">Danh sách dùng dữ liệu minh họa.</p>
+            
           </section>
         </div>
       </div>
@@ -671,5 +674,6 @@
         <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
-  </body>
+  <script src="../../assets/js/pages/lecturer/source-metadata.js" defer></script>
+</body>
 </html>

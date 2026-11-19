@@ -105,7 +105,7 @@
       requestList.append(card);
     });
     if (!pending.length) requestList.append(make('p', errors.length ? 'Chưa đọc đủ danh sách yêu cầu.' : 'Không có yêu cầu chờ duyệt.'));
-    status.textContent = errors.length ? [...new Set(errors)].join(' ') : 'Số liệu từ bản demo trên trình duyệt. Tổng gồm đề tài đã tạo và các mục đang hướng dẫn.';
+    status.textContent = errors.length ? [...new Set(errors)].join(' ') : 'Tổng gồm đề tài đã tạo và các mục đang hướng dẫn.';
   }
   window.addEventListener('storage', render);
   ['pageshow', 'ie104:proposals-updated', 'ie104:registrations-updated', 'ie104:lecturer-topics-updated'].forEach(event => window.addEventListener(event, render));

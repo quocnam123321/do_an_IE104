@@ -16,6 +16,8 @@
     <script src="../../assets/js/dialog-commands.js" defer></script>
   
 <script src="../../assets/js/data/lecturer-topics.js" defer></script>
+<script src="../../assets/js/data/lecturer-source-data.js" defer></script>
+<script src="../../assets/js/data/lecturer-real-data.js" defer></script>
 <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
 <script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
 <link rel="stylesheet" href="../../assets/css/lecturer-topic-routing.css">
@@ -28,6 +30,7 @@
 <script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
 <script src="../../assets/js/pages/lecturer/topic-registration-state.js" defer></script>
 <link rel="stylesheet" href="../../assets/css/published-topic.css">
+<link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
 </head>
   <body class="teacher-workspace-page teacher-created-detail-page" data-lecturer-topic-view="detail">
     <a class="skip-link" href="#main-content">
@@ -308,7 +311,7 @@
             <button class="topic-attachments__download" type="button" disabled title="Chưa có tệp tài liệu thực để tải xuống"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/></svg><span>Tải xuống</span></button>
           </section>
         </div>
-        <p class="created-detail-note">Bản xem giao diện với dữ liệu mẫu. Đổi trạng thái đăng ký và tải tài liệu chưa được kết nối.</p>
+        
         <!-- Biến thể đóng đăng ký dành cho tích hợp: thay nhãn trạng thái và nút đóng
              bằng nội dung template này. HTML thuần không tự đổi hoặc lưu trạng thái. -->
         <template id="registration-closed-template">
@@ -367,5 +370,6 @@
         <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
-  </body>
+  <script src="../../assets/js/pages/lecturer/source-metadata.js" defer></script>
+</body>
 </html>

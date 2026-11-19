@@ -13,6 +13,7 @@
       return changed ? { ...topic, ...changed } : topic;
     });
     for (const topic of saved) if (!initial.some(seed => seed.kind === 'created' && seed.id === topic.id)) {
+      if (app.data.lecturerRealMode && topic.patchOnly && app.data.lecturerLegacyTopics?.some(seed => seed.kind === 'created' && seed.id === topic.id && seed.ownerId === topic.ownerId)) continue;
       if (topic.patchOnly) throw new Error('Không tìm thấy nguồn của trạng thái đăng ký đã lưu.');
       merged.push(topic);
     }
@@ -49,6 +50,7 @@
     const catalog = list('supervised');
     const choices = catalog.map(record => ({ id: record.workspaceId, label: `${record.id} - ${record.title} - ${record.groupName}` }));
     app.services.teaching.listProjects().forEach(project => {
+      if (app.data.lecturerRealMode && app.data.myTopics.some(topic => topic.id === project.id)) return;
       if (!choices.some(choice => choice.id === project.id)) choices.push({ id: project.id, label: project.label });
     });
     return choices;

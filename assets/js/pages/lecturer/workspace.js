@@ -40,7 +40,7 @@
     catch (failure) { projects = service.listProjects(false); catalogWarning = failure.message; }
     select.replaceChildren(...projects.map(project => new Option(project.label, project.id)));
   }
-  let projectId = new URLSearchParams(location.search).get('project') || 'GV-DT001-N01';
+  let projectId = new URLSearchParams(location.search).get('project') || app.data.lecturerRealDefaultProjectId || 'GV-DT001-N01';
   select.value = projectId;
   header.append(label, select, notice);
   const subscribers = [];
@@ -65,7 +65,8 @@
     }
     const card = el('section', '', 'teaching-card');
     if (current.readOnly) card.dataset.catalogOnly = 'true';
-    card.append(el('h2', current.project.title));
+    const cover = el('img', null, 'gv-default-cover'); cover.src = '../../assets/images/uit-logo.png'; cover.alt = 'Ảnh UIT mặc định';
+    card.append(cover, el('h2', current.project.title));
     const dl = el('dl', '', 'teaching-metadata');
     const fields = [['Mã đề tài', current.project.topicId || current.project.id], ['Loại đề tài', current.project.typeLabel], ['Môn học', current.project.courseLabel || current.project.courseId || 'Không áp dụng'], ['Vai trò hướng dẫn', current.project.roleLabel || 'Chưa có thông tin'], ['Nhóm thực hiện', current.project.groupName], ['Trạng thái', current.project.statusLabel || 'Đang thực hiện'], ['Học kỳ', current.project.semester], ['Năm học', current.project.academicYear]];
     fields.forEach(([name, value]) => { const row = el('div'); row.append(el('dt', name), el('dd', value)); dl.append(row); });
@@ -81,7 +82,7 @@
       card.append(outlinePanel);
     }
     const lecturers = current.team.supervisorIds.map(id => current.project.lecturerId === id ? current.project.lecturer : app.data.projectLecturers.find(item => item.id === id)?.name || id);
-    card.append(el('h3', 'Giảng viên hướng dẫn'), el('p', lecturers.join(' - ')));
+    card.append(el('h3', current.project.sourceRecord ? 'GVHD theo hồ sơ UIT' : 'Giảng viên hướng dẫn'), el('p', current.project.sourceRecord ? (current.project.sourceRecord.advisors.join(' - ') || 'Chưa công bố trong nguồn') : lecturers.join(' - ')));
     overview.replaceChildren(card);
   }
   function notify(message, failure = false) {
@@ -95,7 +96,7 @@
       document.querySelector('.page-header__topic-name').textContent = state.project.title;
       overviewView(state);
       subscribers.forEach(render => render(state));
-      notify(state.warning || catalogWarning || (app.ui.lecturerWorkspace.dirty ? 'Đánh giá đang có thay đổi chưa lưu. Dữ liệu mới ở tab khác sẽ không ghi đè phần đang nhập.' : 'Dữ liệu mẫu. Thay đổi được lưu trên trình duyệt này.'));
+      notify(state.warning || catalogWarning || (app.ui.lecturerWorkspace.dirty ? 'Đánh giá đang có thay đổi chưa lưu. Dữ liệu mới ở tab khác sẽ không ghi đè phần đang nhập.' : app.data.lecturerRealMode ? '' : 'Dữ liệu mẫu. Thay đổi được lưu trên trình duyệt này.'));
       select.value = projectId;
       document.body.dataset.projectId = projectId;
       const back = document.querySelector('.back-navigation .back-link');

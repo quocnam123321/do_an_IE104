@@ -16,12 +16,15 @@
     </style>
     <script src="../../assets/js/nav-indicator.js" defer></script>
   <script src="../../assets/js/data/lecturer-topics.js" defer></script>
+<script src="../../assets/js/data/lecturer-source-data.js" defer></script>
+<script src="../../assets/js/data/lecturer-real-data.js" defer></script>
 <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
 <script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
 <script src="../../assets/js/services/lecturer-topic-file-service.js" defer></script>
 <script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
 <script src="../../assets/js/pages/lecturer/topic-editor.js" defer></script>
 <link rel="stylesheet" href="../../assets/css/lecturer-topic-editor.css">
+<link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
 </head>
   <body data-lecturer-topic-editor="create">
     <a class="skip-link" href="#main-content">
@@ -236,7 +239,7 @@
               <p id="topic-attachment-hint">PDF/DOC/DOCX/TXT không quá 10 MB (không bắt buộc).</p>
             </fieldset>
             <p class="topic-form__field"><label for="registration-closes">Hạn đăng ký *</label><input id="registration-closes" name="registration-closes" type="datetime-local" required/></p>
-            <p id="topic-form-notice">* Thông tin bắt buộc. Dữ liệu demo lưu trên trình duyệt này.</p>
+            <p id="topic-form-notice">* Thông tin bắt buộc.</p>
             <div class="topic-form__actions">
               <a class="topic-form__cancel" href="danh-sach-de-tai-da-tao.html">Hủy</a>
               <button class="topic-form__submit" type="submit" disabled title="Chức năng tạo và lưu đề tài chưa được kết nối">Tạo đề tài</button>
@@ -277,5 +280,6 @@
         <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
-  </body>
+  <script src="../../assets/js/pages/lecturer/source-metadata.js" defer></script>
+</body>
 </html>

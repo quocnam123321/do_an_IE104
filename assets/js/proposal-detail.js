@@ -5,7 +5,7 @@
   if (!store || !content) return;
 
   const params = new URLSearchParams(window.location.search);
-  const id = params.has('ma') ? params.get('ma').trim() : 'DX-GV001';
+  const id = params.has('ma') ? params.get('ma').trim() : (window.IE104?.data?.lecturerRealProposalSeeds?.[0]?.id || 'DX-GV001');
   const badge = document.querySelector('.request-detail-heading .status-badge');
   const feedback = document.getElementById('proposal-decision-feedback');
   const actions = content.querySelector('.request-detail__actions');
@@ -120,6 +120,7 @@
     text('.request-attachments__file span', record.attachment);
     content.querySelector('.request-attachments').hidden = registration;
     document.getElementById('proposal-student-preview').href = registration ? `../sinh-vien/chi-tiet-dang-ky-da-luu.html?registration=${encodeURIComponent(record.id)}` : record.source === 'student' ? `../sinh-vien/chi-tiet-de-xuat-da-luu.html?proposal=${encodeURIComponent(record.id)}` : `../sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=${encodeURIComponent(record.id)}`;
+    document.getElementById('proposal-student-preview').hidden = record.source === 'uit-demo';
     for (const form of forms) {
       form.querySelector('strong').textContent = `${record.id} — ${record.title}`;
       form.querySelector('button[type="submit"]').disabled = busy || record.status !== 'pending';
@@ -131,7 +132,7 @@
       ? `${record.topicId} — ${record.title}: Đang thực hiện.` : record.status === 'withdrawn' ? 'Sinh viên đã rút đề xuất.' : 'Đề xuất đã bị từ chối.');
     text('[data-proposal-reason]', record.reason ? `Lý do từ chối: ${record.reason}` : '');
     content.querySelector('[data-proposal-reason]').hidden = !record.reason;
-    text('[data-proposal-decision-time]', record.decidedAt ? `Thời điểm xử lý: ${dateFormat.format(new Date(record.decidedAt))}. Chỉ lưu trong bản demo trên trình duyệt.` : '');
+    text('[data-proposal-decision-time]', record.decidedAt ? `Thời điểm xử lý: ${dateFormat.format(new Date(record.decidedAt))}.` : '');
     if (store.getError()) feedback.textContent = store.getError();
     if (!busy && record.status !== 'pending') {
       const wasOpen = dialogs.some((dialog) => dialog.open);
@@ -168,7 +169,7 @@
       try {
         await store.decide(id, reject ? 'rejected' : 'approved', reason.value, pendingRevision ?? displayedRevision);
         form.closest('dialog').close();
-        feedback.textContent = `Đã lưu quyết định ${reject ? 'từ chối' : 'duyệt'} ${id} trong bản demo trên trình duyệt.`;
+        feedback.textContent = `Đã lưu quyết định ${reject ? 'từ chối' : 'duyệt'} ${id}.`;
         feedback.focus();
       } catch (failure) {
         error.textContent = failure.name === 'SecurityError' || failure.name === 'QuotaExceededError'
