@@ -33,3 +33,60 @@
   .profile-details__item { grid-template-columns: 1fr; gap: .2rem; }
   .lecturer-profile-page .page-container { padding: 1rem; }
 }
+
+.lecturer-profile__avatar-panel {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  background: var(--color-surface);
+  text-align: center;
+}
+.lecturer-profile__avatar-panel .profile-avatar {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+}
+.lecturer-profile__avatar-panel .profile-avatar__placeholder {
+  display: grid;
+  place-items: center;
+  width: 5rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--color-info-bg);
+  color: var(--color-info-fg);
+}
+.lecturer-profile__avatar-panel .profile-avatar__placeholder:not(:has(img)) {
+  padding: var(--space-2);
+  font-size: var(--font-size-secondary);
+  line-height: var(--line-height-tight);
+}
+
+.lecturer-profile.profile-layout {
+  grid-template-columns: 12rem minmax(0, 1fr);
+  align-items: start;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+.lecturer-profile .profile-details.profile-details--lecturer {
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  background: var(--color-surface);
+}
+.lecturer-profile .profile-field dd { margin: 0; }
+.lecturer-profile-page :is(#profile-edit-form, .change-password-form) label {
+  color: var(--color-heading);
+  font-weight: var(--font-weight-semibold);
+}
+@media (max-width: 42rem) {
+  .lecturer-profile.profile-layout { grid-template-columns: minmax(0, 1fr); }
+}

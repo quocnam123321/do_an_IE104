@@ -24,10 +24,11 @@
 <script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
 <script src="../../assets/js/pages/lecturer/topic-editor.js" defer></script>
 <link rel="stylesheet" href="../../assets/css/lecturer-topic-editor.css">
+    <link rel="stylesheet" href="../../assets/css/teacher-topic-forms.css" />
 <link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
 </head>
 
-  <body class="topic-editor-page" data-lecturer-topic-view="edit">
+  <body class="topic-editor-page teacher-topic-form-page" data-lecturer-topic-view="edit">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
 
     <!-- ĐẦU TRANG -->
@@ -145,16 +146,16 @@
 
           <form
             id="topic-edit-form"
-            class="topic-edit-form"
+            class="topic-edit-form teacher-topic-form"
             method="post"
             aria-describedby="topic-required-notice topic-save-notice"
           >
             <p id="topic-required-notice" class="topic-edit-form__required-note">
               Trường có dấu * là bắt buộc.
             </p>
-            <div class="topic-edit-form__overview">
+            <div class="topic-edit-form__overview teacher-topic-form__layout">
               <section
-                class="topic-edit-form__basic"
+                class="topic-edit-form__basic teacher-topic-form__panel"
                 aria-labelledby="basic-information-title"
               >
                 <h2 id="basic-information-title">Thông tin cơ bản</h2>
@@ -182,7 +183,7 @@
                   />
                 </div>
 
-                <div class="topic-edit-form__row">
+                <div class="topic-edit-form__row teacher-topic-form__grid">
                   <div class="topic-edit-form__field">
                     <label for="loai-de-tai">
                       Loại đề tài <span aria-hidden="true">*</span>
@@ -201,7 +202,7 @@
                   </div>
                 </div>
 
-                <div class="topic-edit-form__row">
+                <div class="topic-edit-form__row teacher-topic-form__grid">
                   <div class="topic-edit-form__field">
                     <label for="hoc-ky">
                       Học kỳ <span aria-hidden="true">*</span>
@@ -220,7 +221,7 @@
                   </div>
                 </div>
 
-                <div class="topic-edit-form__row">
+                <div class="topic-edit-form__row teacher-topic-form__grid">
                   <div class="topic-edit-form__field">
                     <label for="linh-vuc">Lĩnh vực</label>
                     <input id="linh-vuc" name="linh-vuc" type="text" maxlength="100">
@@ -239,7 +240,7 @@
 
               <aside class="topic-edit-form__sidebar" aria-label="Ảnh và giảng viên hướng dẫn">
                 <section
-                  class="topic-edit-form__image"
+                  class="topic-edit-form__image teacher-topic-form__panel"
                   aria-labelledby="topic-image-title"
                 >
                   <h2 id="topic-image-title">Ảnh minh họa đề tài</h2>
@@ -263,7 +264,7 @@
                 </section>
 
                 <section
-                  class="topic-edit-form__lecturer"
+                  class="topic-edit-form__lecturer teacher-topic-form__panel"
                   aria-labelledby="topic-lecturer-title"
                 >
                   <h2 id="topic-lecturer-title">Giảng viên hướng dẫn</h2>
@@ -305,7 +306,7 @@
             </div>
 
             <section
-              class="topic-edit-form__content"
+              class="topic-edit-form__content teacher-topic-form__panel"
               aria-labelledby="topic-content-title"
             >
               <h2 id="topic-content-title">Nội dung đề tài</h2>
@@ -349,14 +350,14 @@
               </div>
             </section>
 
-            <section class="topic-edit-form__content"><h2>Kết quả dự kiến</h2><div class="topic-edit-form__field"><label for="ket-qua-du-kien">Kết quả dự kiến *</label><textarea id="ket-qua-du-kien" name="ket-qua-du-kien" rows="4" required></textarea></div></section>
-<section class="topic-edit-form__content" data-editor-attachment><h2>Tài liệu đính kèm</h2><p>PDF/DOC/DOCX/TXT không quá 10 MB.</p></section>
+            <section class="topic-edit-form__content teacher-topic-form__panel"><h2>Kết quả dự kiến</h2><div class="topic-edit-form__field"><label for="ket-qua-du-kien">Kết quả dự kiến *</label><textarea id="ket-qua-du-kien" name="ket-qua-du-kien" rows="4" required></textarea></div></section>
+<section class="topic-edit-form__content teacher-topic-form__panel" data-editor-attachment><h2>Tài liệu đính kèm</h2><p>PDF/DOC/DOCX/TXT không quá 10 MB.</p></section>
 <section
-              class="topic-edit-form__conditions"
+              class="topic-edit-form__conditions teacher-topic-form__panel"
               aria-labelledby="registration-conditions-title"
             >
               <h2 id="registration-conditions-title">Điều kiện đăng ký</h2>
-              <div class="topic-edit-form__row">
+              <div class="topic-edit-form__row teacher-topic-form__grid">
                 <div class="topic-edit-form__field">
                   <label for="so-thanh-vien-toi-thieu">
                     Số thành viên tối thiểu / nhóm <span aria-hidden="true">*</span>
@@ -389,14 +390,14 @@
             </section>
 
             <section
-              class="topic-edit-form__schedule"
+              class="topic-edit-form__schedule teacher-topic-form__panel"
               aria-labelledby="topic-schedule-title"
             >
               <h2 id="topic-schedule-title">Thời gian đăng ký và thực hiện</h2>
               <p id="topic-timezone-notice">
                 Thời gian được hiểu theo múi giờ Việt Nam (UTC+07:00).
               </p>
-              <div class="topic-edit-form__row">
+              <div class="topic-edit-form__row teacher-topic-form__grid">
                 <div class="topic-edit-form__field">
                   <label for="mo-dang-ky-luc">
                     Mở đăng ký từ 
@@ -422,7 +423,7 @@
                 </div>
               </div>
 
-              <div class="topic-edit-form__row">
+              <div class="topic-edit-form__row teacher-topic-form__grid">
                 <div class="topic-edit-form__field">
                   <label for="ngay-bat-dau-thuc-hien">Ngày bắt đầu thực hiện</label>
                   <input
@@ -449,7 +450,7 @@
               Thay đổi chỉ được lưu khi bạn xác nhận Lưu thay đổi.
             </p>
             <div class="topic-edit-form__actions">
-              <a class="topic-edit-form__cancel" href="chi-tiet-de-tai-da-tao-giang-vien.html">Hủy</a>
+              <a class="topic-edit-form__cancel teacher-topic-form__button" href="chi-tiet-de-tai-da-tao-giang-vien.html">Hủy</a>
               <button
                 class="topic-edit-form__save"
                 type="submit"
