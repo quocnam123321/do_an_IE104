@@ -15,6 +15,8 @@
       .topic-form :is(input, select, textarea) { max-inline-size: 100%; }
     </style>
     <script src="../../assets/js/nav-indicator.js" defer></script>
+    <script src="../../assets/js/data/student-projects.js" defer></script>
+    <script src="../../assets/js/pages/lecturer/profile-fields.js" defer></script>
     <script src="../../assets/js/teacher-topic-store.js" defer></script>
     <script src="../../assets/js/teacher-topic-workflow.js" defer></script>
   </head>
@@ -188,13 +190,13 @@
               <div class="topic-supervisor__content">
                 <div class="topic-supervisor__avatar" role="img" aria-label="Ảnh đại diện giảng viên chưa được cung cấp">Ảnh đại diện giảng viên</div>
                 <dl class="topic-supervisor__details">
-                  <div><dt>Họ tên:</dt><dd>Tên giảng viên</dd></div>
-                  <div><dt>Khoa/Bộ môn:</dt><dd>Tên khoa/bộ môn</dd></div>
-                  <div><dt>Email liên hệ:</dt><dd>email@truong.edu.vn</dd></div>
-                  <div><dt>Hướng nghiên cứu:</dt><dd>Hướng nghiên cứu của giảng viên</dd></div>
+                  <div><dt>Họ tên:</dt><dd data-lecturer-profile-field="name">Chưa có thông tin</dd></div>
+                  <div><dt>Khoa/Bộ môn:</dt><dd data-lecturer-profile-field="faculty-department">Chưa có thông tin</dd></div>
+                  <div><dt>Email liên hệ:</dt><dd data-lecturer-profile-field="email">Chưa có thông tin</dd></div>
+                  <div><dt>Hướng nghiên cứu:</dt><dd data-lecturer-profile-field="research">Chưa có thông tin</dd></div>
                 </dl>
               </div>
-              <p class="topic-supervisor__note">Thông tin lấy từ hồ sơ giảng viên.</p>
+              <p class="topic-supervisor__note">Thông tin lấy từ hồ sơ giảng viên demo.</p>
             </section>
             <div class="topic-form__field">
               <label for="topic-description">Mô tả đề tài *</label>

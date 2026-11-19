@@ -262,15 +262,19 @@
 }
 
 .lecturer-overview-page .topic-status__chart circle:nth-of-type(1) {
-  stroke: var(--color-primary); /* Đang thực hiện: 6 (50%) */
+  stroke: var(--color-primary);
 }
 
 .lecturer-overview-page .topic-status__chart circle:nth-of-type(2) {
-  stroke: var(--color-warning-fg); /* Đang mở đăng ký: 4 (33,3%) */
+  stroke: var(--color-warning-fg);
 }
 
 .lecturer-overview-page .topic-status__chart circle:nth-of-type(3) {
-  stroke: var(--color-success-fg); /* Hoàn thành: 2 (16,7%) */
+  stroke: var(--color-success-fg);
+}
+
+.lecturer-overview-page .topic-status__chart circle:nth-of-type(4) {
+  stroke: var(--color-neutral-fg);
 }
 
 .lecturer-overview-page .topic-status__chart text:nth-of-type(1),
@@ -279,10 +283,9 @@
   font-weight: var(--font-weight-bold);
 }
 
-.lecturer-overview-page .topic-status__chart text:nth-of-type(3),
-.lecturer-overview-page .topic-status__chart text:nth-of-type(4),
-.lecturer-overview-page .topic-status__chart text:nth-of-type(5) {
+.lecturer-overview-page .topic-status__percent {
   fill: var(--color-surface);
+  font-size: 14px;
   font-weight: var(--font-weight-bold);
 }
 
@@ -333,6 +336,10 @@
 
 .lecturer-overview-page .topic-status__legend > div:nth-child(3)::before {
   background-color: var(--color-success-fg);
+}
+
+.lecturer-overview-page .topic-status__legend > div:nth-child(4)::before {
+  background-color: var(--color-neutral-fg);
 }
 
 .lecturer-overview-page .topic-status__legend dt {

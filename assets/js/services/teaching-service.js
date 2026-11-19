@@ -28,7 +28,11 @@
   }
 
   function listActiveProjects() {
-    return supervisedProjects().filter(({ project }) => project.status === 'dang-thuc-hien').map(clone);
+    return listSupervisedProjects().filter(({ project }) => project.status === 'dang-thuc-hien');
+  }
+
+  function listSupervisedProjects() {
+    return supervisedProjects().map(clone);
   }
 
   function stateFrom(projectId, records) {
@@ -202,5 +206,5 @@
     return { allowed: true, late: now.getTime() > Date.parse(requirement.deadline), reason: '' };
   }
 
-  app.services.teaching = { listProjects, listActiveProjects, getState, getSubmission, validateRequirement, saveRequirement, deleteRequirement, setLocked, addProgressReview, saveFeedback, validateEvaluation, saveDraft, publish, submissionAccess };
+  app.services.teaching = { listProjects, listActiveProjects, listSupervisedProjects, getState, getSubmission, validateRequirement, saveRequirement, deleteRequirement, setLocked, addProgressReview, saveFeedback, validateEvaluation, saveDraft, publish, submissionAccess };
 })();
