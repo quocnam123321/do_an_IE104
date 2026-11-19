@@ -208,7 +208,7 @@
     maximum: 'so-thanh-vien-toi-da', opens: 'mo-dang-ky-luc', closes: 'dong-dang-ky-luc', starts: 'ngay-bat-dau-thuc-hien',
     ends: 'han-hoan-thanh-de-tai', field: 'linh-vuc', technology: 'cong-nghe-goi-y',
   } : {
-    code: 'topic-code', name: 'topic-name', type: 'topic-type', course: 'course', semester: 'semester', year: 'academic-year',
+    name: 'topic-name', type: 'topic-type', course: 'course', semester: 'semester', year: 'academic-year',
     description: 'topic-description', objectives: 'topic-objectives', outcomes: 'topic-outcomes', requirements: 'topic-requirements',
     minimum: 'minimum-members', maximum: 'maximum-members', closes: 'registration-closes',
   };
@@ -221,6 +221,18 @@
     if (editForm) control.value = topic[key] || '';
   }
   if (fields.field && topic.field) fields.field.add(new Option(topic.field, topic.field, true, true));
+  if (createForm) {
+    const hint = $('#topic-code-hint', createForm);
+    const refreshCodeHint = () => {
+      const prefix = store.codePrefixes[fields.type.value];
+      hint.textContent = prefix
+        ? `Mã có tiền tố ${prefix} sẽ được cấp khi lưu thành công.`
+        : 'Chọn loại đề tài để xác định tiền tố mã.';
+    };
+    fields.type.addEventListener('change', refreshCodeHint);
+    window.addEventListener('pageshow', refreshCodeHint);
+    refreshCodeHint();
+  }
   const defaultTopic = { id: '', code: '', name: '', type: '', course: '', semester: '', year: '', description: '', objectives: '',
     outcomes: '', requirements: '', minimum: '2', maximum: '3', opens: '', closes: '', starts: '', ends: '', image: '', attachment: null, status: 'open' };
   const original = editForm ? topic : defaultTopic;

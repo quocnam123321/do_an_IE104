@@ -133,6 +133,7 @@
   }
   ];
   const key = 'ie104.teacher-topic-records.v1';
+  const codePrefixes = Object.freeze({ course: 'DA', graduation: 'DATN', thesis: 'KL' });
   const copy = value => JSON.parse(JSON.stringify(value));
   const catalogs = {
     type: { course: 'Đồ án môn học', graduation: 'Đồ án tốt nghiệp', thesis: 'Khóa luận' },
@@ -165,13 +166,15 @@
   }
   function validate(t, records, mode) {
     const errors = {};
-    const required = ['code', 'name', 'type', 'course', 'semester', 'year', 'description', 'objectives', 'requirements', 'minimum', 'maximum', 'closes'];
+    const required = ['name', 'type', 'course', 'semester', 'year', 'description', 'objectives', 'requirements', 'minimum', 'maximum', 'closes'];
     // Keep each existing form's required fields; do not add fields to either page.
-    required.push(...(mode === 'edit' ? ['opens', 'ends'] : ['outcomes']));
+    required.push(...(mode === 'edit' ? ['code', 'opens', 'ends'] : ['outcomes']));
     for (const k of required) if (!String(t[k] ?? '').trim()) errors[k] = 'Vui lòng nhập thông tin bắt buộc.';
     for (const [k, values] of Object.entries(catalogs)) if (!Object.hasOwn(values, t[k])) errors[k] = 'Vui lòng chọn giá trị hợp lệ.';
-    if (records.some(r => r.id !== t.id && r.code.trim().toLocaleLowerCase('vi') === String(t.code).trim().toLocaleLowerCase('vi'))) errors.code = 'Mã đề tài đã tồn tại.';
-    if (String(t.code).length > 60) errors.code = 'Mã đề tài tối đa 60 ký tự.';
+    if (mode === 'edit') {
+      if (records.some(r => r.id !== t.id && r.code.trim().toLocaleLowerCase('vi') === String(t.code).trim().toLocaleLowerCase('vi'))) errors.code = 'Mã đề tài đã tồn tại.';
+      if (String(t.code).length > 60) errors.code = 'Mã đề tài tối đa 60 ký tự.';
+    }
     if (String(t.name).length > 300) errors.name = 'Tên đề tài tối đa 300 ký tự.';
     for (const k of ['description', 'objectives', 'requirements', 'outcomes']) if (String(t[k] || '').length > 10000) errors[k] = 'Nội dung tối đa 10.000 ký tự.';
     for (const k of ['minimum', 'maximum']) if (!Number.isSafeInteger(Number(t[k])) || Number(t[k]) < 1) errors[k] = 'Số thành viên phải là số nguyên dương.';
@@ -182,6 +185,19 @@
     if (t.starts && t.ends && t.starts + 'T00:00' >= t.ends) errors.starts = 'Ngày bắt đầu phải trước hạn hoàn thành.';
     return errors;
   }
+  function nextCode(type, records) {
+    const prefix = codePrefixes[type];
+    const pattern = new RegExp('^' + prefix + '(\\d+)$', 'i');
+    let largest = 0n;
+    for (const record of records) {
+      const suffix = pattern.exec(record.code.trim())?.[1];
+      if (suffix && BigInt(suffix) > largest) largest = BigInt(suffix);
+    }
+    const code = prefix + String(largest + 1n).padStart(3, '0');
+    if (code.length > 60) throw new Error('Đã hết mã đề tài có thể cấp cho loại này.');
+    return code;
+  }
+
   async function save(topic, revision, mode) {
     const write = () => {
       const records = read();
@@ -192,6 +208,7 @@
       if (old && old.code !== topic.code) throw new Error('Không được đổi mã đề tài khi chỉnh sửa.');
       if (Object.keys(validate(topic, records, mode)).length) throw new Error('Dữ liệu chưa hợp lệ. Vui lòng kiểm tra lại.');
       const next = { ...copy(topic), revision: revision + 1, updated: new Date().toISOString() };
+      if (!old) next.code = nextCode(topic.type, records);
       window.localStorage.setItem(key, JSON.stringify(old ? records.map(t => t.id === next.id ? next : t) : [...records, next]));
       return copy(next);
     };
@@ -242,5 +259,5 @@
     });
     return [...samples.filter(topic => topic.id !== 'DT001'), ...managed];
   }
-  window.TeacherTopicStore = { key, catalogs, read, validate, save, setRegistrationStatus, studentTopics };
+  window.TeacherTopicStore = { key, catalogs, codePrefixes, read, validate, save, setRegistrationStatus, studentTopics };
 })();

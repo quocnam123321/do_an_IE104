@@ -155,7 +155,7 @@
           <form class="topic-form" id="create-topic-form" aria-label="Tạo đề tài mới" aria-describedby="topic-form-notice" method="post" enctype="multipart/form-data">
             <fieldset class="topic-form__basic">
               <legend>Thông tin cơ bản</legend>
-              <p><label for="topic-code">Mã đề tài *</label><input id="topic-code" name="topic-code" type="text" placeholder="Nhập mã đề tài" required/></p>
+              <p><label for="topic-code">Mã đề tài</label><input id="topic-code" type="text" placeholder="Tự động cấp khi lưu" aria-describedby="topic-code-hint" readonly/><span id="topic-code-hint" role="status">Chọn loại đề tài để xác định tiền tố mã.</span></p>
               <p><label for="topic-name">Tên đề tài *</label><input id="topic-name" name="topic-name" type="text" placeholder="Nhập tên đề tài" required/></p>
               <p><label for="topic-type">Loại đề tài *</label>
                 <select id="topic-type" name="topic-type" required>
