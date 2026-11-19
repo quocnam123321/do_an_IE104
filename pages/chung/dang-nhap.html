@@ -14,8 +14,8 @@
     <link rel="stylesheet" href="../../assets/css/common.css?v=20261111-heading-sync-1" />
     <link rel="stylesheet" href="../../assets/css/auth.css?v=20261118-google-login" />
     <script src="../../assets/js/password-toggle.js" defer></script>
-    <script src="../../assets/js/demo-login.js?v=20261118-demo-login" defer></script>
-    <script src="../../assets/js/google-login.js?v=20261118-google-login" defer></script>
+    <script src="../../assets/js/demo-login.js?v=20261119-otp" defer></script>
+    <script src="../../assets/js/google-login.js?v=20261119-otp" defer></script>
   </head>
   <body class="common-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
@@ -324,11 +324,11 @@
                 <dl>
                   <div>
                     <dt>Sinh viên:</dt>
-                    <dd><strong data-demo-destination="../sinh-vien/tong-quan-sinh-vien.html" data-uit-email-domain="gm.uit.edu.vn">sinhvien</strong></dd>
+                    <dd><strong data-demo-destination="../sinh-vien/tong-quan-sinh-vien.html" data-uit-email-domain="gm.uit.edu.vn" data-website-role="student">sinhvien</strong></dd>
                   </div>
                   <div>
                     <dt>Giảng viên:</dt>
-                    <dd><strong data-demo-destination="../giang-vien/tong-quan-giang-vien.html" data-uit-email-domain="uit.edu.vn">giangvien</strong></dd>
+                    <dd><strong data-demo-destination="../giang-vien/tong-quan-giang-vien.html" data-uit-email-domain="uit.edu.vn" data-website-role="lecturer">giangvien</strong></dd>
                   </div>
                   <div>
                     <dt>Mật khẩu chung:</dt>
@@ -344,7 +344,7 @@
 
             <form class="login-form" id="demo-login-form" method="post" aria-labelledby="login-title" aria-describedby="login-demo">
               <div class="form-field">
-                <label for="username">Tài khoản</label>
+                <label for="username">Email hoặc tài khoản mẫu</label>
                 <div class="login-input-wrap">
                   <svg class="login-input-wrap__icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="8" r="4" />
@@ -354,7 +354,7 @@
                     id="username"
                     name="tai-khoan"
                     type="text"
-                    placeholder="Nhập tài khoản"
+                    placeholder="Nhập email hoặc tên tài khoản"
                     autocomplete="username"
                     autocapitalize="none"
                     spellcheck="false"

@@ -25,29 +25,16 @@
   ]);
 
   try {
-    const { firebaseConfig } = await import("./firebase-config.js?v=20261118-google-login");
-    if (!firebaseConfig?.apiKey || !firebaseConfig.authDomain || !firebaseConfig.projectId || !firebaseConfig.appId) {
-      hint.textContent = "Đăng nhập Google chưa được cấu hình.";
-      return;
-    }
-
     hint.textContent = "Đang kết nối với Firebase…";
-    const [{ initializeApp }, authSdk] = await Promise.all([
-      import("https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js"),
-      import("https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js"),
-    ]);
-    const { initializeAuth, browserSessionPersistence, browserPopupRedirectResolver, GoogleAuthProvider, signInWithPopup, signOut } =
-      authSdk;
-    const auth = initializeAuth(initializeApp(firebaseConfig), {
-      persistence: browserSessionPersistence,
-      popupRedirectResolver: browserPopupRedirectResolver,
-    });
-    auth.languageCode = "vi";
+    const { getFirebaseAuth } = await import("./firebase-client.js?v=20261119-otp");
+    const { auth, sdk } = await getFirebaseAuth();
+    const { GoogleAuthProvider, signInWithPopup, signOut } = sdk;
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
 
     button.addEventListener("click", async () => {
-      if (button.getAttribute("aria-disabled") === "true") return;
+      if (button.getAttribute("aria-disabled") === "true"
+          || document.getElementById("demo-login-form")?.getAttribute("aria-busy") === "true") return;
       button.setAttribute("aria-disabled", "true");
       error.textContent = "";
       hint.textContent = "Đang chờ đăng nhập Google…";
