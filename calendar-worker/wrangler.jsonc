@@ -1,0 +1,23 @@
+{
+  "name": "ie104-calendar",
+  "main": "index.mjs",
+  "compatibility_date": "2026-05-22",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": false,
+  "observability": {
+    "enabled": true,
+    "logs": { "enabled": true, "invocation_logs": false }
+  },
+  "vars": {
+    "CALENDAR_SITE_URL": "https://ie104-calendar-demo.pages.dev/",
+    "GOOGLE_CALENDAR_CLIENT_ID": "703213546600-dk69cvgjtcglncsmqkqqqn7neae6dlks.apps.googleusercontent.com",
+    "GOOGLE_CALENDAR_REDIRECT_URI": "https://ie104-calendar.ntranphu230606.workers.dev/oauth/callback"
+  },
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "ie104-calendar",
+    "database_id": "ee6c067f-44e3-4e65-a61e-826d75f12b14"
+  }],
+  "triggers": { "crons": ["*/2 * * * *"] }
+}
