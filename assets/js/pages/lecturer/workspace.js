@@ -28,21 +28,8 @@
   notice.setAttribute('role', 'status');
   notice.tabIndex = -1;
   const header = document.querySelector('.page-header');
-  const label = el('label', 'Đề tài / Nhóm thực hiện', 'teaching-project-label');
-  const select = el('select');
-  select.id = 'teaching-project';
-  label.htmlFor = select.id;
-  let projects;
-  let catalogWarning = '';
-  function refreshChoices() {
-    catalogWarning = '';
-    try { projects = topics ? topics.workspaceChoices() : service.listProjects(); }
-    catch (failure) { projects = service.listProjects(false); catalogWarning = failure.message; }
-    select.replaceChildren(...projects.map(project => new Option(project.label, project.id)));
-  }
-  let projectId = new URLSearchParams(location.search).get('project') || app.data.lecturerRealDefaultProjectId || 'GV-DT001-N01';
-  select.value = projectId;
-  header.append(label, select, notice);
+  const projectId = new URLSearchParams(location.search).get('project') || app.data.lecturerRealDefaultProjectId || 'GV-DT001-N01';
+  header.append(notice);
   const subscribers = [];
   let state = null;
   let saving = false;
@@ -91,13 +78,11 @@
   }
   function refresh() {
     try {
-      refreshChoices();
       state = topics ? topics.workspaceState(projectId) : service.getState(projectId);
       document.querySelector('.page-header__topic-name').textContent = state.project.title;
       overviewView(state);
       subscribers.forEach(render => render(state));
-      notify(state.warning || catalogWarning || (app.ui.lecturerWorkspace.dirty ? 'Đánh giá đang có thay đổi chưa lưu. Dữ liệu mới ở tab khác sẽ không ghi đè phần đang nhập.' : app.data.lecturerRealMode ? '' : 'Dữ liệu mẫu. Thay đổi được lưu trên trình duyệt này.'));
-      select.value = projectId;
+      notify(state.warning || (app.ui.lecturerWorkspace.dirty ? 'Đánh giá đang có thay đổi chưa lưu. Dữ liệu mới ở tab khác sẽ không ghi đè phần đang nhập.' : app.data.lecturerRealMode ? '' : 'Dữ liệu mẫu. Thay đổi được lưu trên trình duyệt này.'));
       document.body.dataset.projectId = projectId;
       const back = document.querySelector('.back-navigation .back-link');
       if (back && topics) back.href = topics.returnUrl('supervised', new URLSearchParams(location.search).get('return'), location.href);
@@ -175,16 +160,6 @@
     parent.append(label, input);
     return input;
   }
-  select.addEventListener('change', () => {
-    if (document.querySelector('.teaching-dialog[open]')) return;
-    if (app.ui.lecturerWorkspace.dirty && !window.confirm('Bỏ thay đổi đánh giá chưa lưu để đổi đề tài?')) { select.value = projectId; return; }
-    app.ui.lecturerWorkspace.dirty = false;
-    projectId = select.value;
-    const url = new URL(location.href);
-    url.searchParams.set('project', projectId);
-    history.replaceState(history.state, '', url);
-    refresh();
-  });
   app.ui ||= {};
   app.ui.lecturerWorkspace = { el, button, field, date, region, modal, commit, notify, refresh, service, get state() { return state; }, subscribe(render) { subscribers.push(render); if (state) render(state); }, dirty: false };
   window.addEventListener('storage', event => { if ([app.storage.teachingKey, app.storage.progressKey, app.storage.teamKey, app.storage.proposalKey, app.storage.registrationKey, null].includes(event.key)) refresh(); });

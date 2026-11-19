@@ -13,6 +13,12 @@
   const result = panel.querySelector('[data-progress-result]');
   const dialogs = { add: document.getElementById('task-add-popover'), edit: document.getElementById('task-edit-cv-01'), remove: document.getElementById('task-delete-cv-01'), update: document.getElementById('progress-update-popover') };
   const labels = { 'chua-thuc-hien': 'Chưa thực hiện', 'dang-thuc-hien': 'Đang thực hiện', 'da-hoan-thanh': 'Đã hoàn thành' };
+  const summaryText = document.createElement('p');
+  panel.querySelector('#overall-progress').setAttribute('aria-label', 'Tiến độ tổng thể');
+  summaryText.className = 'student-progress-summary';
+  panel.querySelector('.overall-progress-bar').after(summaryText);
+  list.removeAttribute('tabindex');
+  list.setAttribute('aria-label', 'Công việc theo trạng thái');
   let state = null;
   let pending = null;
   let saving = false;
@@ -54,20 +60,24 @@
     try {
       state = service.getState(projectId);
       const permissions = service.getPermissions(state);
-      notice.textContent = permissions.reason || (permissions.manage ? 'Nhóm trưởng quản lý công việc và cập nhật tiến độ. Thao tác thử chỉ lưu trên trình duyệt.' : 'Bạn được cập nhật công việc được phân công. Chỉ nhóm trưởng được thêm, sửa hoặc xóa công việc.');
+      notice.textContent = state.team.project.status !== 'dang-thuc-hien' ? '' : permissions.reason || (permissions.manage ? 'Nhóm trưởng quản lý công việc và cập nhật tiến độ. Thao tác thử chỉ lưu trên trình duyệt.' : 'Bạn được cập nhật công việc được phân công. Chỉ nhóm trưởng được thêm, sửa hoặc xóa công việc.');
+      notice.hidden = !notice.textContent;
       addButton.disabled = !permissions.manage;
       updateButton.disabled = !state.tasks.some(task => service.canUpdateTask(state, task));
       const summary = service.summarize(state);
       panel.querySelector('#overall-progress').value = summary.percent;
       panel.querySelector('#overall-progress').textContent = `${summary.percent}%`;
       panel.querySelector('.overall-progress__text').textContent = `${summary.percent}%`;
+      summaryText.textContent = `${summary.percent}% hoàn thành - ${summary.completed}/${summary.total} công việc đã hoàn thành`;
+      if (summary.method === 'completed-ratio') summaryText.textContent += '. Tính theo số công việc đã hoàn thành; một số công việc chưa có phần trăm cụ thể.';
       panel.querySelectorAll('.progress-stat-item dd').forEach((node, index) => { node.textContent = [summary.total, summary.completed, summary.remaining][index]; });
-      list.replaceChildren(...state.tasks.map((task, index) => {
+      const taskItems = state.tasks.map((task, index) => {
         const item = cardTemplate.cloneNode(true);
         const article = item.querySelector('article');
         const title = item.querySelector('h3');
         article.id = `task-record-${index}`;
         article.dataset.taskId = task.id;
+        item.dataset.taskStatus = task.status;
         title.id = `task-record-${index}-title`;
         title.textContent = task.title;
         article.setAttribute('aria-labelledby', title.id);
@@ -76,7 +86,7 @@
         paragraphs[0].textContent = `Người phụ trách: ${assignee?.name || 'Không còn trong nhóm'} - ${task.assigneeCode}`;
         paragraphs[1].textContent = `Hạn hoàn thành dự kiến: ${dateText(task.deadline)}`;
         const status = document.createElement('p');
-        status.textContent = `${labels[task.status]} - ${task.percent === null ? 'Chưa có % cụ thể' : `${task.percent}%`}`;
+        status.textContent = task.percent === null ? 'Chưa có phần trăm cụ thể' : `${task.percent}%`;
         item.querySelector('.task-card__content').append(status);
         item.querySelectorAll('.task-card__actions button').forEach((button, buttonIndex) => {
           button.removeAttribute('command');
@@ -87,8 +97,30 @@
           button.disabled = !permissions.manage;
         });
         return item;
+      });
+      list.replaceChildren(...Object.entries(labels).map(([status, label]) => {
+        const column = document.createElement('li');
+        column.className = 'student-progress-column';
+        const heading = document.createElement('h3');
+        const items = taskItems.filter(item => item.dataset.taskStatus === status);
+        heading.id = `progress-column-${status}`;
+        heading.textContent = `${label} (${items.length})`;
+        const columnList = document.createElement('ul');
+        columnList.className = 'student-progress-column__list';
+        columnList.tabIndex = 0;
+        columnList.setAttribute('aria-labelledby', heading.id);
+        items.forEach(item => {
+          const oldTitle = item.querySelector('h3');
+          const title = document.createElement('h4');
+          title.id = oldTitle.id; title.textContent = oldTitle.textContent; oldTitle.replaceWith(title);
+          columnList.append(item);
+        });
+        if (!items.length) {
+          const empty = document.createElement('li'); empty.textContent = 'Chưa có công việc.'; columnList.append(empty);
+        }
+        column.append(heading, columnList);
+        return column;
       }));
-      if (!state.tasks.length) { const empty = document.createElement('li'); empty.textContent = 'Chưa có công việc.'; list.append(empty); }
       history.replaceChildren(...state.history.map((entry, index) => {
         const item = historyTemplate.cloneNode(true);
         const title = item.querySelector('h3');
