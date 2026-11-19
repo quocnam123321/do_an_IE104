@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../../assets/css/base.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/ho-so-ca-nhan.css" />
-    <script src="../../assets/js/nav-indicator.js" defer></script>
+    <script src="../../assets/js/shared/nav-indicator.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/student-profile.css">
     <script src="../../assets/js/data/student-profile.js" defer></script>
     <script src="../../assets/js/services/storage.js" defer></script>
@@ -21,9 +21,7 @@
     <script src="../../assets/js/pages/student/profile.js" defer></script>
     <script src="../../assets/js/pages/student/profile-avatar.js" defer></script>
     <script src="../../assets/js/pages/common/password-toggle.js" defer></script>
-  
-<script src="../../assets/js/dialog-commands.js" defer></script>
-</head>
+  </head>
 
   <body class="student-profile-page">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
@@ -149,14 +147,14 @@
                 <div class="profile-field"><dt>Khóa học</dt><dd id="profile-cohort" class="profile-value">2024</dd></div>
               </dl>
             </section>
+          </div>
+        </div>
             <p id="profile-save-status" role="status"></p>
             <p id="avatar-status" role="status"></p>
             <div class="profile-actions">
               <button type="button" commandfor="profile-password-dialog" command="show-modal" aria-haspopup="dialog" aria-controls="profile-password-dialog">Đổi mật khẩu</button>
               <button id="profile-edit-button" type="button" commandfor="profile-edit-dialog" command="show-modal" aria-haspopup="dialog" aria-controls="profile-edit-dialog">Chỉnh sửa thông tin</button>
             </div>
-          </div>
-        </div>
 
         <!-- Hộp thoại chỉnh sửa thông tin: khung HTML, chưa xử lý lưu dữ liệu. -->
         <dialog id="profile-edit-dialog" class="profile-dialog" aria-labelledby="profile-edit-title" aria-describedby="profile-edit-notice">
@@ -273,33 +271,18 @@
     <!-- CHÂN TRANG CHUNG -->
     <footer class="site-footer">
       <div class="site-footer__inner">
-        <div class="site-footer__columns">
-          <div class="site-footer__brand">
-            <a href="../chung/gioi-thieu.html">
-              <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40" />
-            </a>
-            <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</p>
-            <dl class="site-footer__about">
-              <div>
-                <dt><a href="../chung/gioi-thieu.html">Thông tin trang web</a></dt>
-                <dd>Trường Đại học Công nghệ Thông tin</dd>
-              </div>
-              <div>
-                <dt><a href="../chung/gioi-thieu.html#team-title">Thông tin nhóm</a></dt>
-                <dd>Đồ án IE104 — Nhóm 7</dd>
-              </div>
-            </dl>
-          </div>
-          <section class="site-footer__information site-footer__terms" aria-labelledby="footer-terms-title">
-            <h2 id="footer-terms-title">Điều khoản sử dụng</h2>
-            <p>Đang cập nhật.</p>
-          </section>
-          <section class="site-footer__information site-footer__policies" aria-labelledby="footer-policies-title">
-            <h2 id="footer-policies-title">Quy chế, chính sách bảo mật</h2>
-            <p>Đang cập nhật.</p>
-          </section>
+        <div class="site-footer__brand">
+          <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN</p>
+          <p>Trường Đại học Công nghệ Thông tin</p>
         </div>
-        <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
+        <ul class="site-footer__information" aria-label="Thông tin và quy định">
+          <li><span>Điều khoản sử dụng (đang cập nhật)</span></li>
+          <li><span>Quy chế đồ án / khóa luận (đang cập nhật)</span></li>
+          <li><span>Chính sách bảo mật (đang cập nhật)</span></li>
+        </ul>
+        <p class="site-footer__copyright">
+          © 2026 - Hệ thống quản lý đồ án / khóa luận
+        </p>
       </div>
     </footer>
   </body>
