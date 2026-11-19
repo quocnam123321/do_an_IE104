@@ -15,8 +15,19 @@
       .topic-form :is(input, select, textarea) { max-inline-size: 100%; }
     </style>
     <script src="../../assets/js/nav-indicator.js" defer></script>
-  </head>
-  <body>
+  <script src="../../assets/js/data/lecturer-topics.js" defer></script>
+<script src="../../assets/js/data/lecturer-source-data.js" defer></script>
+<script src="../../assets/js/data/lecturer-real-data.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-file-service.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
+<script src="../../assets/js/pages/lecturer/topic-editor.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/lecturer-topic-editor.css">
+    <link rel="stylesheet" href="../../assets/css/teacher-topic-forms.css" />
+<link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
+</head>
+  <body data-lecturer-topic-editor="create">
     <a class="skip-link" href="#main-content">
       Chuyển đến nội dung chính
     </a>
@@ -146,13 +157,15 @@
         </header>
         <div class="page-content">
           <!-- HTML thuần. Các lựa chọn danh mục là dữ liệu minh họa.
-               Chưa có endpoint tạo đề tài: nút submit disabled ngăn gửi biểu mẫu, kể cả Enter.
+               Form chỉ bật khi JavaScript đã khởi tạo đủ chức năng lưu.
                Khi tích hợp cần kiểm tra số thành viên tối thiểu <= tối đa, hạn đăng ký và tệp trên máy chủ. -->
-          <form class="topic-form" id="create-topic-form" aria-label="Tạo đề tài mới" aria-describedby="topic-form-notice" method="post" enctype="multipart/form-data">
-            <fieldset class="topic-form__basic">
+          <form class="topic-form teacher-topic-form" id="create-topic-form" aria-label="Tạo đề tài mới" aria-describedby="topic-form-notice" method="post" enctype="multipart/form-data">
+            <div class="teacher-topic-form__layout">
+            <fieldset class="topic-form__basic teacher-topic-form__panel">
               <legend>Thông tin cơ bản</legend>
               <p><label for="topic-code">Mã đề tài *</label><input id="topic-code" name="topic-code" type="text" placeholder="Nhập mã đề tài" required/></p>
               <p><label for="topic-name">Tên đề tài *</label><input id="topic-name" name="topic-name" type="text" placeholder="Nhập tên đề tài" required/></p>
+              <div class="teacher-topic-form__grid">
               <p><label for="topic-type">Loại đề tài *</label>
                 <select id="topic-type" name="topic-type" required>
                   <option value="" selected>Chọn loại đề tài</option>
@@ -180,8 +193,9 @@
                   <option value="" selected>Chọn năm học</option><option value="2026-2027">2026–2027</option>
                 </select>
               </p>
+              </div>
             </fieldset>
-            <section class="topic-supervisor" aria-labelledby="create-supervisor-title">
+            <section class="topic-supervisor teacher-topic-form__panel" aria-labelledby="create-supervisor-title">
               <h2 id="create-supervisor-title">Giảng viên hướng dẫn</h2>
               <div class="topic-supervisor__content">
                 <div class="topic-supervisor__avatar" role="img" aria-label="Ảnh đại diện giảng viên chưa được cung cấp">Ảnh đại diện giảng viên</div>
@@ -194,6 +208,9 @@
               </div>
               <p class="topic-supervisor__note">Thông tin lấy từ hồ sơ giảng viên.</p>
             </section>
+            </div>
+            <section class="teacher-topic-form__panel" aria-labelledby="topic-editor-content-title">
+            <h2 id="topic-editor-content-title">Nội dung đề tài</h2>
             <div class="topic-form__field">
               <label for="topic-description">Mô tả đề tài *</label>
               <textarea id="topic-description" name="topic-description" rows="3" placeholder="Giới thiệu bối cảnh, đối tượng và vấn đề cần giải quyết" required></textarea>
@@ -210,28 +227,31 @@
               <label for="topic-requirements">Yêu cầu đối với sinh viên *</label>
               <textarea id="topic-requirements" name="topic-requirements" rows="3" placeholder="Nhập kiến thức, kỹ năng và điều kiện tham gia" required></textarea>
             </div>
-            <fieldset class="topic-form__members">
+            </section>
+            <fieldset class="topic-form__members teacher-topic-form__panel">
               <legend>Số thành viên</legend>
               <p><label for="minimum-members">Tối thiểu / nhóm *</label><input id="minimum-members" name="minimum-members" type="number" min="1" step="1" value="2" aria-describedby="members-hint" required/></p>
               <p><label for="maximum-members">Tối đa / nhóm *</label><input id="maximum-members" name="maximum-members" type="number" min="1" step="1" value="3" aria-describedby="members-hint" required/></p>
-              <p id="members-hint">Mỗi nhóm gồm 2–3 sinh viên.</p>
+              <p id="members-hint">Nhập số nguyên; số tối đa không nhỏ hơn số tối thiểu.</p>
             </fieldset>
-            <fieldset class="topic-form__image">
+            <div class="teacher-topic-form__grid">
+            <fieldset class="topic-form__image teacher-topic-form__panel">
               <legend>Ảnh đề tài</legend>
               <div class="topic-image-placeholder" role="img" aria-label="Chưa có ảnh minh họa đề tài">Ảnh minh họa đề tài</div>
               <p><label for="topic-image">Tải ảnh lên</label><input id="topic-image" name="topic-image" type="file" accept="image/png,image/jpeg" aria-describedby="topic-image-hint"/></p>
-              <p id="topic-image-hint">Chưa có ảnh, dùng ảnh mặc định của hệ thống. PNG/JPG, tối đa 5 MB, tỷ lệ khuyến nghị 16:9.</p>
+              <p id="topic-image-hint">Chưa có ảnh, dùng ảnh mặc định của hệ thống. PNG/JPG, tối đa 5 MB, khung xem trước vuông 1:1.</p>
             </fieldset>
-            <fieldset class="topic-form__attachment">
+            <fieldset class="topic-form__attachment teacher-topic-form__panel">
               <legend>Tài liệu đính kèm</legend>
               <p><label for="topic-attachment">Tải tài liệu lên</label><input id="topic-attachment" name="topic-attachment" type="file" aria-describedby="topic-attachment-hint"/></p>
               <p>Chưa có tài liệu đính kèm.</p>
-              <p id="topic-attachment-hint">Đề cương hoặc tài liệu mô tả đề tài (không bắt buộc).</p>
+              <p id="topic-attachment-hint">PDF/DOC/DOCX/TXT không quá 10 MB (không bắt buộc).</p>
             </fieldset>
+            </div>
             <p class="topic-form__field"><label for="registration-closes">Hạn đăng ký *</label><input id="registration-closes" name="registration-closes" type="datetime-local" required/></p>
-            <p id="topic-form-notice">* Thông tin bắt buộc</p>
+            <p id="topic-form-notice">* Thông tin bắt buộc.</p>
             <div class="topic-form__actions">
-              <a class="topic-form__cancel" href="danh-sach-de-tai-da-tao.html">Hủy</a>
+              <a class="topic-form__cancel teacher-topic-form__button" href="danh-sach-de-tai-da-tao.html">Hủy</a>
               <button class="topic-form__submit" type="submit" disabled title="Chức năng tạo và lưu đề tài chưa được kết nối">Tạo đề tài</button>
             </div>
           </form>
@@ -270,5 +290,6 @@
         <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
-  </body>
+  <script src="../../assets/js/pages/lecturer/source-metadata.js" defer></script>
+</body>
 </html>

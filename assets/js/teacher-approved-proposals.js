@@ -11,6 +11,7 @@
       const card = template.cloneNode(true);
       card.hidden = false;
       card.dataset.approvedProposal = record.id;
+      card.dataset.createdAt = record.decidedAt || record.submittedAt || "";
       card.dataset.topicId = record.topicId;
       card.dataset.status = record.topicStatus;
       card.dataset.topicType = { 'do-an-mon-hoc': 'course', 'do-an-tot-nghiep': 'graduation', 'khoa-luan': 'thesis' }[record.topicType];
@@ -31,8 +32,8 @@
         .forEach((value, index) => { meta.querySelectorAll('.topic-card__meta-text')[index].textContent = value; });
       card.querySelector('.topic-card__status').textContent = 'Đang thực hiện';
       const link = card.querySelector('.topic-card__detail-link');
-      link.href = `chi-tiet-de-xuat-giang-vien.html?ma=${encodeURIComponent(record.id)}`;
-      link.querySelector('span').textContent = 'Xem đề xuất đã duyệt';
+      link.href = ['student', 'registration'].includes(record.source) && window.IE104?.services?.approvedProjects ? window.IE104.services.approvedProjects.lecturerUrl(record.topicId) : `chi-tiet-de-xuat-giang-vien.html?ma=${encodeURIComponent(record.id)}`;
+      link.querySelector('span').textContent = ['student', 'registration'].includes(record.source) && window.IE104?.services?.approvedProjects ? 'Xem chi tiết' : 'Xem đề xuất đã duyệt';
       list.append(card);
     }
     document.dispatchEvent(new Event('ie104:topics-updated'));

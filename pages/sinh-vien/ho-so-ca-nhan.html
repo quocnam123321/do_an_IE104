@@ -8,15 +8,22 @@
       content="Xem và cập nhật thông tin cá nhân của bạn."
     />
     <title>Hồ sơ cá nhân | Quản lý đồ án</title>
-    <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
+    <link rel="stylesheet" href="../../assets/css/tokens.css" />
+    <link rel="stylesheet" href="../../assets/css/base.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/ho-so-ca-nhan.css" />
-    <script src="../../assets/js/nav-indicator.js" defer></script>
-    <script src="../../assets/js/dialog-commands.js" defer></script>
+    <script src="../../assets/js/shared/nav-indicator.js" defer></script>
+    <link rel="stylesheet" href="../../assets/css/student-profile.css">
+    <script src="../../assets/js/data/student-profile.js" defer></script>
+    <script src="../../assets/js/services/storage.js" defer></script>
+    <script src="../../assets/js/services/profile-service.js" defer></script>
+    <script src="../../assets/js/services/avatar-service.js" defer></script>
+    <script src="../../assets/js/pages/student/profile.js" defer></script>
+    <script src="../../assets/js/pages/student/profile-avatar.js" defer></script>
+    <script src="../../assets/js/pages/common/password-toggle.js" defer></script>
   </head>
 
-  <body>
+  <body class="student-profile-page">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
 
     <!-- ĐẦU TRANG -->
@@ -115,8 +122,12 @@
 
         <header class="page-header">
           <h1 class="page-header__title">Hồ sơ cá nhân</h1>
+          <p class="page-header__description">
+            Xem và cập nhật thông tin cá nhân của bạn.
+          </p>
         </header>
 
+        <!-- Các hộp thoại dùng command/commandfor của HTML để mở và đóng trên trình duyệt hỗ trợ. -->
         <div class="page-content profile-layout">
           <aside class="profile-avatar" aria-label="Ảnh đại diện">
             <img id="profile-avatar" src="../../assets/images/student-avatar.svg" alt="Ảnh đại diện sinh viên" width="100" height="100" />
@@ -136,13 +147,14 @@
                 <div class="profile-field"><dt>Khóa học</dt><dd id="profile-cohort" class="profile-value">2024</dd></div>
               </dl>
             </section>
+          </div>
+        </div>
             <p id="profile-save-status" role="status"></p>
+            <p id="avatar-status" role="status"></p>
             <div class="profile-actions">
               <button type="button" commandfor="profile-password-dialog" command="show-modal" aria-haspopup="dialog" aria-controls="profile-password-dialog">Đổi mật khẩu</button>
               <button id="profile-edit-button" type="button" commandfor="profile-edit-dialog" command="show-modal" aria-haspopup="dialog" aria-controls="profile-edit-dialog">Chỉnh sửa thông tin</button>
             </div>
-          </div>
-        </div>
 
         <!-- Hộp thoại chỉnh sửa thông tin: khung HTML, chưa xử lý lưu dữ liệu. -->
         <dialog id="profile-edit-dialog" class="profile-dialog" aria-labelledby="profile-edit-title" aria-describedby="profile-edit-notice">
@@ -156,15 +168,15 @@
                 <legend>Thông tin có thể chỉnh sửa</legend>
                 <div class="profile-field">
                   <label for="profile-edit-name">Họ và tên *</label>
-                  <input id="profile-edit-name" name="name" type="text" autocomplete="name" value="Nguyễn Minh Anh" required />
+                  <input id="profile-edit-name" aria-describedby="profile-edit-error" name="name" type="text" autocomplete="name" value="Nguyễn Minh Anh" required />
                 </div>
                 <div class="profile-field">
                   <label for="profile-edit-email">Email</label>
-                  <input id="profile-edit-email" name="email" type="email" autocomplete="email" placeholder="Nhập địa chỉ email" />
+                  <input id="profile-edit-email" aria-describedby="profile-edit-error" name="email" type="email" autocomplete="email" placeholder="Nhập địa chỉ email" />
                 </div>
                 <div class="profile-field">
                   <label for="profile-edit-phone">Số điện thoại</label>
-                  <input id="profile-edit-phone" name="phone" type="tel" autocomplete="tel" placeholder="Nhập số điện thoại" />
+                  <input id="profile-edit-phone" aria-describedby="profile-edit-error" name="phone" type="tel" autocomplete="tel" placeholder="Nhập số điện thoại" />
                 </div>
               </fieldset>
               <fieldset>
@@ -191,7 +203,7 @@
                 </div>
               </fieldset>
               <p>* Thông tin bắt buộc</p>
-              <p id="profile-edit-notice">Khung HTML chưa lưu thay đổi. Thông tin sinh viên do nhà trường quản lý và chỉ được xem.</p>
+              <p id="profile-edit-notice">Thay đổi chỉ lưu thử trên trình duyệt này. Mã số sinh viên, khoa, ngành, lớp và khóa học chỉ được xem.</p>
               <p id="profile-edit-error" role="alert" hidden></p>
             </div>
             <footer>
@@ -209,28 +221,29 @@
               <div class="password-field">
                 <label for="profile-password-current">Mật khẩu hiện tại</label>
                 <div class="password-input">
-                  <input id="profile-password-current" name="current-password" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu hiện tại" required />
-                  <button type="button" class="password-toggle" aria-controls="profile-password-current" aria-label="Hiện mật khẩu hiện tại (chưa hỗ trợ)" aria-describedby="profile-password-notice" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <input id="profile-password-current" aria-describedby="profile-password-error profile-password-notice" name="current-password" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu hiện tại" required />
+                  <button type="button" class="password-toggle password-field__toggle" aria-controls="profile-password-current" aria-label="Hiện mật khẩu hiện tại (chưa hỗ trợ)" aria-describedby="profile-password-notice" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
                 </div>
               </div>
               <div class="password-field">
                 <label for="profile-password-new">Mật khẩu mới</label>
                 <div class="password-input">
-                  <input id="profile-password-new" name="new-password" type="password" autocomplete="new-password" placeholder="Nhập mật khẩu mới" required />
-                  <button type="button" class="password-toggle" aria-controls="profile-password-new" aria-label="Hiện mật khẩu mới (chưa hỗ trợ)" aria-describedby="profile-password-notice" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <input id="profile-password-new" aria-describedby="profile-password-error profile-password-notice" name="new-password" type="password" autocomplete="new-password" placeholder="Nhập mật khẩu mới" required />
+                  <button type="button" class="password-toggle password-field__toggle" aria-controls="profile-password-new" aria-label="Hiện mật khẩu mới (chưa hỗ trợ)" aria-describedby="profile-password-notice" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
                 </div>
               </div>
               <div class="password-field">
                 <label for="profile-password-confirm">Xác nhận mật khẩu mới</label>
                 <div class="password-input">
-                  <input id="profile-password-confirm" name="confirm-password" type="password" autocomplete="new-password" placeholder="Nhập lại mật khẩu mới" required />
-                  <button type="button" class="password-toggle" aria-controls="profile-password-confirm" aria-label="Hiện xác nhận mật khẩu mới (chưa hỗ trợ)" aria-describedby="profile-password-notice" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <input id="profile-password-confirm" aria-describedby="profile-password-error profile-password-notice" name="confirm-password" type="password" autocomplete="new-password" placeholder="Nhập lại mật khẩu mới" required />
+                  <button type="button" class="password-toggle password-field__toggle" aria-controls="profile-password-confirm" aria-label="Hiện xác nhận mật khẩu mới (chưa hỗ trợ)" aria-describedby="profile-password-notice" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
                 </div>
               </div>
               <p id="profile-password-notice">Bản minh họa: chưa kết nối hệ thống để kiểm tra hoặc cập nhật mật khẩu.</p>
               <p id="profile-password-error" role="alert"></p>
+              <p id="profile-password-status" role="status"></p>
             </div>
-            <footer><button type="button" commandfor="profile-password-dialog" command="close">Hủy</button><button id="password-submit" type="submit" disabled>Đổi mật khẩu</button></footer>
+            <footer><button type="button" commandfor="profile-password-dialog" command="close">Hủy</button><button id="password-submit" type="submit" disabled>Kiểm tra thông tin</button></footer>
           </form>
         </dialog>
         <!-- Trạng thái thành công: chỉ hiển thị sau khi hệ thống xác nhận đổi mật khẩu. -->
@@ -247,7 +260,7 @@
             <p>Ảnh xem trước</p>
             <label class="avatar-file-label" for="avatar-file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-5 5 5-5 5 5M4 15v6h16v-6"/></svg>Chọn ảnh từ máy</label>
             <input id="avatar-file" name="avatar" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="avatar-note avatar-error" />
-            <p id="avatar-note">Chọn ảnh JPG, PNG hoặc WebP. Khung HTML chưa xử lý xem trước hoặc lưu ảnh.</p>
+            <p id="avatar-note">Chọn ảnh JPG, PNG hoặc WebP không quá 2 MB. Ảnh chỉ lưu thử trên trình duyệt này.</p>
             <p id="avatar-error" role="alert"></p>
           </div>
           <footer><button type="button" commandfor="profile-avatar-dialog" command="close">Hủy</button><button id="avatar-save" type="button" disabled>Lưu thay đổi</button></footer>
@@ -258,33 +271,18 @@
     <!-- CHÂN TRANG CHUNG -->
     <footer class="site-footer">
       <div class="site-footer__inner">
-        <div class="site-footer__columns">
-          <div class="site-footer__brand">
-            <a href="../chung/gioi-thieu.html">
-              <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40" />
-            </a>
-            <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</p>
-            <dl class="site-footer__about">
-              <div>
-                <dt><a href="../chung/gioi-thieu.html">Thông tin trang web</a></dt>
-                <dd>Trường Đại học Công nghệ Thông tin</dd>
-              </div>
-              <div>
-                <dt><a href="../chung/gioi-thieu.html#team-title">Thông tin nhóm</a></dt>
-                <dd>Đồ án IE104 — Nhóm 7</dd>
-              </div>
-            </dl>
-          </div>
-          <section class="site-footer__information site-footer__terms" aria-labelledby="footer-terms-title">
-            <h2 id="footer-terms-title">Điều khoản sử dụng</h2>
-            <p>Đang cập nhật.</p>
-          </section>
-          <section class="site-footer__information site-footer__policies" aria-labelledby="footer-policies-title">
-            <h2 id="footer-policies-title">Quy chế, chính sách bảo mật</h2>
-            <p>Đang cập nhật.</p>
-          </section>
+        <div class="site-footer__brand">
+          <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN</p>
+          <p>Trường Đại học Công nghệ Thông tin</p>
         </div>
-        <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
+        <ul class="site-footer__information" aria-label="Thông tin và quy định">
+          <li><span>Điều khoản sử dụng (đang cập nhật)</span></li>
+          <li><span>Quy chế đồ án / khóa luận (đang cập nhật)</span></li>
+          <li><span>Chính sách bảo mật (đang cập nhật)</span></li>
+        </ul>
+        <p class="site-footer__copyright">
+          © 2026 - Hệ thống quản lý đồ án / khóa luận
+        </p>
       </div>
     </footer>
   </body>

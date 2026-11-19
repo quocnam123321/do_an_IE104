@@ -172,7 +172,7 @@
       : '0 đề xuất chờ duyệt phù hợp';
     empty.textContent = pending.length
       ? 'Không tìm thấy đề xuất phù hợp. Thử từ khóa khác hoặc xóa bộ lọc.'
-      : 'Không còn đề xuất chờ duyệt trong dữ liệu demo.';
+      : 'Không còn đề xuất chờ duyệt.';
     empty.hidden = matching.length > 0;
     viewport.hidden = matching.length === 0;
     viewport.scrollTop = 0;

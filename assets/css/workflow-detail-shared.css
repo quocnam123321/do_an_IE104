@@ -1,0 +1,110 @@
+.workflow-dialog { width: min(40rem,calc(100% - 2rem)); max-height: calc(100svh - 2rem); margin: auto; padding: 0; overflow: auto; border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); color: var(--color-foreground); }
+.workflow-dialog::backdrop { background: rgb(15 23 42 / .42); backdrop-filter: blur(3px); }
+.workflow-dialog > header { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); padding: var(--space-6); border-bottom: 1px solid var(--color-border); }
+.workflow-dialog h2 { margin: 0; font-size: var(--font-size-section-title); color: var(--color-heading); }
+.workflow-dialog__body { display: grid; gap: var(--space-4); padding: var(--space-6); }
+.workflow-dialog__body label { display: block; font-weight: 600; margin-bottom: var(--space-2); }
+.workflow-dialog__body :is(input,textarea) { box-sizing: border-box; width: 100%; min-width: 0; min-height: var(--control-min-height); padding: .75rem; border: 1px solid var(--color-control-border); border-radius: var(--radius-control); color: var(--color-foreground); background: var(--color-neutral-bg); font: inherit; }
+.workflow-dialog textarea { resize: vertical; }
+.workflow-history h3 { margin: 0 0 var(--space-2); font-size: 1rem; color: var(--color-heading); }
+.workflow-history__list { margin: 0; padding: 0; list-style: none; }
+.workflow-history__list > li + li { border-top: 1px solid var(--color-border); }
+.workflow-history summary { padding: var(--space-3) .25rem; cursor: pointer; border-radius: var(--radius-control); }
+.workflow-history summary:hover { background: var(--color-info-bg); }
+.workflow-history summary::marker { color: var(--color-primary); }
+.workflow-history__summary { display: inline-grid; grid-template-columns: minmax(0,1fr) auto; gap: .25rem var(--space-3); width: calc(100% - 1.5rem); vertical-align: top; }
+.workflow-history__author { grid-column: 1; overflow-wrap: anywhere; font-weight: 600; }
+.workflow-history time { grid-column: 1; color: var(--color-muted-foreground); font-size: .875rem; }
+.workflow-history__percent { grid-column: 2; grid-row: 1/3; align-self: center; font-weight: 600; color: var(--color-primary); }
+.workflow-history__content { margin: 0 0 var(--space-3); padding: 0 var(--space-4); white-space: pre-wrap; overflow-wrap: anywhere; }
+.workflow-dialog .teaching-fields { padding: var(--space-6); }
+.workflow-dialog .topic-dialog__actions { padding: var(--space-4) var(--space-6) var(--space-6); margin: 0; }
+#tien-do .teaching-board-card:has(.workflow-task-open) { padding: 0; }
+#tien-do .task-popover { background: var(--color-surface); }
+#tien-do .task-popover > header { padding-bottom: var(--space-4); border-bottom: 1px solid var(--color-border); }
+#tien-do .task-popover::backdrop { background: rgb(15 23 42 / .42); backdrop-filter: blur(3px); }
+.workflow-delete-confirm > header :is(h2,h3) { color: var(--color-danger-fg); }
+.workflow-delete-confirm button[type="submit"]:not(:disabled) { color: var(--color-on-primary); background: var(--color-danger-fg); border-color: var(--color-danger-fg); }
+.workflow-dialog .teaching-fields :is(input,select,textarea) { min-height: var(--control-min-height); border: 1px solid var(--color-control-border); border-radius: var(--radius-control); padding: .75rem; background: var(--color-surface); color: var(--color-foreground); font: inherit; }
+.workflow-dialog > footer { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-3); padding: var(--space-4) var(--space-6) var(--space-6); }
+.workflow-dialog button { min-height: var(--control-min-height); padding: .65rem 1rem; border: 1px solid var(--color-control-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-foreground); font: inherit; cursor: pointer; }
+.workflow-dialog .workflow-dialog__close { border-color: transparent; font-size: 1.5rem; padding: .25rem .75rem; }
+.workflow-dialog .workflow-dialog__primary { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
+.workflow-dialog button:disabled { opacity: .6; cursor: not-allowed; }
+.workflow-dialog :focus-visible, .workflow-task-open:focus-visible, .student-task-open:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
+#tien-do .student-progress-column:nth-child(1), #tien-do .teaching-column:nth-child(1) { background: var(--color-neutral-bg); }
+#tien-do .student-progress-column:nth-child(2), #tien-do .teaching-column:nth-child(2) { background: var(--color-info-bg); }
+#tien-do .student-progress-column:nth-child(3), #tien-do .teaching-column:nth-child(3) { background: var(--color-success-bg); }
+#tien-do .task-card { position: relative; padding: 0; gap: 0; }
+#tien-do .student-task-open, #tien-do .workflow-task-open { display: block; box-sizing: border-box; width: 100%; text-align: left; padding: var(--space-4); border: 0; border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-foreground); font: inherit; cursor: pointer; }
+#tien-do .student-task-open:hover, #tien-do .workflow-task-open:hover { background: var(--color-info-bg); outline: 1px solid var(--color-primary); }
+#tien-do .workflow-task-open h4 { margin-block: 0 var(--space-3); font-size: 1rem; }
+#tien-do .workflow-task-open p { margin-block: var(--space-2); }
+#tien-do .task-card__actions:empty { display: none; }
+#tien-do .student-task-remove { position: absolute; right: var(--space-3); top: var(--space-3); min-width: var(--control-min-height); color: var(--color-danger-fg); border-color: var(--color-danger-fg); background: var(--color-surface); }
+#tien-do[data-task-delete-mode="true"] .student-task-open { padding-right: 4.5rem; }
+#tien-do .student-task-mode { margin-left: auto; }
+#tien-do .student-task-mode[data-mode="delete"] { color: var(--color-danger-fg); border-color: var(--color-danger-fg); }
+#tien-do .student-task-mode[data-mode="done"] { background: var(--color-primary); color: var(--color-on-primary); border-color: var(--color-primary); }
+#tien-do .student-delete-mode-label { padding: .2rem .6rem; border: 1px solid var(--color-danger-fg); border-radius: var(--radius-control); color: var(--color-danger-fg); font-size: .875rem; }
+#submissions-section .submission-board__columns--requirements { grid-template-columns: repeat(2,minmax(18rem,1fr)); }
+#submissions-section .submission-board__columns--files { grid-template-columns: repeat(2,minmax(18rem,1fr)); }
+#submissions-section .submission-board { max-width: 100%; overflow-x: auto; }
+#submissions-section .submission-column__viewport { max-height: 36rem; overflow-y: auto; }
+@media(max-width:52rem) { #tien-do .teaching-board { grid-template-columns: minmax(0,1fr); } }
+@media(max-width:35rem) { .workflow-dialog > header,.workflow-dialog__body { padding: var(--space-4); } .workflow-dialog > footer { padding: var(--space-4); } }
+:is(.active-topic-page,.teacher-workspace-page) .workflow-dialog { width: min(40rem,calc(100% - 2rem)); padding: 0; }
+:is(.active-topic-page,.teacher-workspace-page) .workflow-dialog > header { margin: 0; padding: var(--space-6); }
+:is(.active-topic-page,.teacher-workspace-page) .workflow-dialog__body label { font-size: 1rem; font-weight: 600; margin-bottom: var(--space-2); }
+:is(.active-topic-page,.teacher-workspace-page) .workflow-dialog__body :is(input,textarea) { background: var(--color-neutral-bg); padding: .75rem; }
+:is(.active-topic-page,.teacher-workspace-page) .workflow-dialog > footer { margin: 0; padding: var(--space-4) var(--space-6) var(--space-6); border: 0; }
+#bai-nop .teaching-board-card:has(.workflow-requirement-open) { position: relative; padding: 0; }
+#bai-nop .workflow-requirement-open { width: 100%; text-align: left; padding: var(--space-4); border: 0; border-radius: var(--radius-control); font: inherit; color: inherit; background: var(--color-surface); cursor: pointer; }
+#bai-nop .workflow-requirement-open h5 { margin: 0 0 var(--space-2); font-size: 1rem; }
+#bai-nop .workflow-requirement-open:focus-visible { outline: 2px solid var(--color-focus); outline-offset: -2px; }
+#bai-nop .workflow-requirement-remove { position: absolute; right: .5rem; top: .5rem; color: var(--color-danger-fg); border-color: var(--color-danger-fg); background: var(--color-surface); }
+#bai-nop .teaching-board-card:has(.workflow-requirement-remove) .workflow-requirement-open { padding-right: 4rem; }
+#bai-nop .workflow-delete-mode[aria-pressed="false"] { color: var(--color-danger-fg); border-color: var(--color-danger-fg); }
+#bai-nop .workflow-delete-mode[aria-pressed="true"] { background: var(--color-primary); color: var(--color-on-primary); border-color: var(--color-primary); }
+#bai-nop .student-delete-mode-label { display: inline-block; margin-left: var(--space-3); padding: .2rem .6rem; border: 1px solid var(--color-danger-fg); border-radius: var(--radius-control); color: var(--color-danger-fg); font-size: .875rem; }
+#bai-nop [data-workflow-board="requirements"] .teaching-column:nth-child(2) { background: var(--color-info-bg); }
+#bai-nop [data-workflow-board="submissions"] .teaching-column:nth-child(1) { background: var(--color-warning-bg); }
+#bai-nop [data-workflow-board="submissions"] .teaching-column:nth-child(2) { background: var(--color-success-bg); }
+.workflow-state-icon { flex: 0 0 auto; width: 1.1rem; height: 1.1rem; margin-right: .5rem; vertical-align: -.2rem; }
+#tien-do .workflow-field-label { display: block; color: var(--color-muted-foreground); font-size: .875rem; }
+#tien-do .workflow-field-value { display: block; white-space: pre-line; overflow-wrap: anywhere; margin-top: .2rem; }
+#tien-do .student-progress-column > h3, #tien-do .teaching-column > h3, #bai-nop .teaching-column > h4 { display: flex; align-items: center; }
+#bai-nop .teaching-column { padding: .75rem; }
+#bai-nop .teaching-column-list { max-height: 36rem; padding-right: .5rem; }
+#bai-nop .workflow-requirement-open { padding: .75rem; }
+#bai-nop .workflow-card-date { margin: 0; font-size: .875rem; color: var(--color-muted-foreground); display: flex; align-items: center; }
+#bai-nop :is(.workflow-card-date,.workflow-submission-file,.workflow-submission-date) > span { min-width: 0; overflow-wrap: anywhere; }
+#bai-nop [data-submission-id] { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: .4rem .75rem; padding: .75rem; align-items: start; }
+#bai-nop [data-submission-id] > h5 { grid-column: 1/-1; grid-row: 1; margin: 0; padding-right: 7rem; font-size: 1rem; }
+#bai-nop .workflow-due-badge { grid-column: 2; grid-row: 1; justify-self: end; padding: .2rem .5rem; border-radius: var(--radius-control); font-size: .75rem; color: var(--color-success-fg); background: var(--color-success-bg); }
+#bai-nop .workflow-due-badge[data-late="true"] { color: var(--color-danger-fg); background: var(--color-danger-bg); }
+#bai-nop .workflow-submission-file, #bai-nop .workflow-submission-date { margin: 0; font-size: .875rem; color: var(--color-muted-foreground); display: flex; align-items: center; min-width: 0; overflow-wrap: anywhere; }
+#bai-nop .workflow-submission-file { grid-column: 1; grid-row: 2; }
+#bai-nop .workflow-submission-date { grid-column: 1; grid-row: 3; }
+#bai-nop .workflow-submission-actions { grid-column: 2; grid-row: 2/4; display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: .5rem; max-width: 18rem; }
+#bai-nop .workflow-submission-actions button { margin: 0; }
+#bai-nop .workflow-submission-actions .workflow-feedback-button { color: var(--color-on-primary); background: var(--color-primary); border-color: var(--color-primary); }
+#bai-nop .workflow-submission-actions [data-file-status="missing"], #bai-nop .workflow-submission-actions [data-file-status="ready"] { display: none; }
+@media(max-width:75rem) { #bai-nop .workflow-submission-actions { grid-column: 1/-1; grid-row: 4; max-width: none; justify-content: flex-start; } }
+@media(max-width:52rem) {
+  #bai-nop [data-submission-id] { grid-template-columns: minmax(0,1fr); }
+  #bai-nop [data-submission-id] > h5 { grid-column: 1; grid-row: 1; padding-right: 0; }
+  #bai-nop .workflow-due-badge { grid-column: 1; grid-row: 2; justify-self: start; }
+  #bai-nop .workflow-submission-file { grid-column: 1; grid-row: 3; }
+  #bai-nop .workflow-submission-date { grid-column: 1; grid-row: 4; }
+  #bai-nop .workflow-submission-actions { grid-column: 1; grid-row: 5; }
+}
+.teacher-workspace-page .workflow-dialog .workflow-dialog__close { border-color: transparent; font-size: 1.5rem; }
+.active-topic-page #tien-do[data-progress-ready] .task-list-section { padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); }
+#tien-do .section-header { gap: var(--space-3); }
+#tien-do .section-header > h2 { margin-right: auto; }
+#tien-do .section-header > .student-task-mode { margin-left: 0; }
+#tien-do .teaching-card > .teaching-board { margin-bottom: 0; }
+#bai-nop .workflow-overdue-badge { display: inline-block; margin-top: .5rem; padding: .2rem .5rem; border-radius: var(--radius-control); color: var(--color-danger-fg); background: var(--color-danger-bg); font-size: .75rem; }
+#bai-nop button.workflow-primary-action, .active-topic-page #tien-do button.btn-add-task { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
+#bai-nop button.workflow-primary-action:not(:disabled):hover, .active-topic-page #tien-do button.btn-add-task:not(:disabled):hover { background: var(--color-primary-hover); border-color: var(--color-primary-hover); color: var(--color-on-primary); }

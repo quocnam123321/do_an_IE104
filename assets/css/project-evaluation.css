@@ -1,0 +1,3 @@
+.active-topic-page #ket-qua-danh-gia .evaluation-content > section[hidden] { display: none; }
+.active-topic-page #ket-qua-danh-gia :is(.lecturer-feedback__content, .evaluation-attachments__name) { white-space: pre-wrap; overflow-wrap: anywhere; }
+.active-topic-page #ket-qua-danh-gia .evaluation-attachment-note { color: var(--color-muted-foreground); font-size: var(--font-size-secondary); margin-top: var(--space-2); }

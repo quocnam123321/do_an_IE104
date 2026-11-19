@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Đăng ký đã lưu | Đề tài của tôi</title>
+<link rel="stylesheet" href="../../assets/css/tokens.css">
+<link rel="stylesheet" href="../../assets/css/base.css">
+<link rel="stylesheet" href="../../assets/css/components.css">
+<link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css">
+<link rel="stylesheet" href="../../assets/css/topic-enrollment.css">
+<script src="../../assets/js/shared/nav-indicator.js" defer></script>
+<script src="../../assets/js/data/mock-data.js" defer></script>
+<script src="../../assets/js/services/storage.js" defer></script>
+<script src="../../assets/js/shared/validation.js" defer></script>
+<script src="../../assets/js/data/proposal-actors.js" defer></script>
+<script src="../../assets/js/services/registration-service.js" defer></script>
+<script src="../../assets/js/pages/student/registration-receipt.js" defer></script>
+</head><body class="registration-page">
+<a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+<header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-sinh-vien.html">
+          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
+          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
+        </a>
+        <details class="site-navigation" open>
+          <summary class="site-navigation__toggle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Menu</summary>
+        <nav class="main-nav" aria-label="Điều hướng sinh viên" data-nav-indicator>
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html"><span class="main-nav__text">Tổng quan</span></a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="dang-ky-de-tai.html"><span class="main-nav__text">Đăng ký đề tài</span></a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html" aria-current="page"><span class="main-nav__text">Đề tài của tôi</span></a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="lich-han-nop.html"><span class="main-nav__text">Lịch hạn nộp</span></a>
+            </li>
+            <li class="main-nav__item">
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__label" id="common-navigation-label"><span class="main-nav__text">Chung</span></summary>
+                <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+          <span class="main-nav__indicator" aria-hidden="true"></span>
+        </nav>
+        </details>
+        <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
+        <div class="account-menu">
+          <details class="account-menu__disclosure">
+            <summary class="account-menu__toggle" aria-label="Mở menu tài khoản sinh viên">
+              <span class="account-menu__avatar" aria-hidden="true">SV</span>
+              <span class="account-menu__label">Tài khoản sinh viên</span>
+            </summary>
+            <ul id="account-dropdown" class="account-menu__list">
+              <li>
+                <a class="account-menu__profile" href="ho-so-ca-nhan.html">Hồ sơ cá nhân</a>
+              </li>
+              <li>
+                <button
+                  class="account-menu__logout"
+                  type="button"
+                  aria-controls="logout-dialog"
+                  aria-describedby="logout-notice"
+                  disabled
+                >
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
+        </div>
+      </div>
+    </header>
+<main id="main-content" class="main-content" tabindex="-1"><div class="page-container">
+<a class="page-back-link" href="de-tai-cua-toi-sinh-vien.html">← Quay lại Đề tài của tôi</a>
+<header class="page-header"><h1 class="page-header__title">Đăng ký đã lưu</h1><p class="page-header__description">Bản đăng ký thử trên trình duyệt này.</p></header>
+<section id="saved-registration" class="panel" aria-live="polite"><h2>Thông tin đăng ký</h2><div data-receipt-content></div></section>
+<noscript><p>Bật JavaScript để xem đăng ký đã lưu trên trình duyệt.</p></noscript>
+</div></main><footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__brand">
+          <p class="site-footer__name">
+            QUẢN LÝ ĐỒ ÁN
+            &amp;
+            KHÓA LUẬN
+          </p>
+          <p>Thông tin trang web: Trường Đại học Công nghệ Thông tin</p>
+          <p>Thông tin nhóm: Đồ án IE104 — Nhóm 7</p>
+        </div>
+        <ul class="site-footer__information" aria-label="Thông tin và quy định">
+          <li>
+            <span>
+              Điều khoản sử dụng (đang cập nhật)
+            </span>
+          </li>
+          <li>
+            <span>
+              Quy chế đồ án / khóa luận (đang cập nhật)
+            </span>
+          </li>
+          <li>
+            <span>
+              Chính sách bảo mật (đang cập nhật)
+            </span>
+          </li>
+        </ul>
+        <p class="site-footer__copyright">
+          © 2026 - Hệ thống quản lý đồ án / khóa luận
+        </p>
+      </div>
+    </footer><dialog id="logout-dialog" class="confirmation-dialog" aria-labelledby="logout-title">
+  <h2 id="logout-title">Xác nhận đăng xuất</h2>
+  <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+  <button type="button" command="close" commandfor="logout-dialog">Hủy</button>
+  <button type="button" disabled>Xác nhận đăng xuất</button>
+</dialog>
+</body></html>

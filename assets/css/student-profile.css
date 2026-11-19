@@ -1,0 +1,6 @@
+.student-profile-page :is(#profile-edit-error, #profile-password-error, #avatar-error, .profile-feedback-error) { color: var(--color-danger-fg); }
+.student-profile-page :is(#avatar-status, #profile-password-status):empty { display: none; }
+.student-profile-page :is(#profile-save-status, #avatar-status) { overflow-wrap: anywhere; }
+.student-profile-page [aria-invalid="true"] { border-color: var(--color-danger-fg); }
+.student-profile-page .profile-dialog { max-height: calc(100svh - 2rem); overflow-y: auto; }
+.student-profile-page #avatar-preview { object-fit: cover; }

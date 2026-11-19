@@ -1,5 +1,9 @@
 /* Danh sách sinh viên: Đăng ký đề tài và Đề tài của tôi dùng chung bố cục/thẻ.
    Hai trang danh sách nạp file; không thay form tạo đề xuất hay trang chi tiết. */
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-results-summary { margin: 0; color: var(--color-muted-foreground); font-size: var(--font-size-secondary); }
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-list-empty { display: grid; justify-items: center; align-content: center; gap: var(--space-4); min-height: 18rem; padding: var(--space-6); border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); text-align: center; }
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-list-empty h3 { font-size: var(--font-size-section-title); color: var(--color-heading); }
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-list-empty p { color: var(--color-muted-foreground); font-size: var(--font-size-secondary); }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .registration-heading {
   display: flex;
   align-items: center;

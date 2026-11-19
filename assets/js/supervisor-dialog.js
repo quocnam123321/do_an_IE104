@@ -12,7 +12,8 @@
     .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
 
   const invitationId = new URLSearchParams(location.search).get('loi-moi');
-  if (invitationId && window.IE104SupervisionEntry?.hasStudentSession()) {
+  const editing = new URLSearchParams(location.search).has('proposal');
+  if (invitationId && !editing && window.IE104SupervisionEntry?.hasStudentSession()) {
     const store = window.IE104Supervision;
     let accepted;
     try {
@@ -22,17 +23,17 @@
       savedLabel.textContent = 'Không đọc được lời mời đã lưu. Bạn có thể chọn giảng viên thủ công.';
     }
     if (accepted) {
-      const option = options[0].cloneNode(true);
-      const radio = option.querySelector('input');
-      radio.id = 'supervisor-from-invitation';
-      radio.value = accepted.teacher.id;
-      option.htmlFor = radio.id;
-      option.querySelector('.supervisor-dialog__name').textContent = accepted.teacher.name;
-      option.querySelector('.supervisor-dialog__specialty').textContent = 'Đã đồng ý hướng dẫn';
-      dialog.querySelector('#supervisor-list').prepend(option);
-      options.unshift(option);
-      savedId.value = accepted.teacher.id;
-      savedLabel.textContent = accepted.teacher.name;
+      const teacher = accepted.teacher;
+      const catalog = window.IE104?.services?.proposals?.catalog.supervisors;
+      if (catalog?.[teacher.id] === teacher.name) {
+        savedId.value = teacher.id;
+        savedLabel.textContent = teacher.name;
+      } else {
+        const note = document.createElement('p');
+        note.className = 'proposal-form__selected-supervisor';
+        note.textContent = `${teacher.name} đã đồng ý hướng dẫn. Giảng viên này chưa có trong danh mục nhận đề xuất thử.`;
+        savedLabel.after(note);
+      }
     }
   }
 

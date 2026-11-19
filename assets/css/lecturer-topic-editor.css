@@ -1,0 +1,35 @@
+.topic-editor-error { margin-block: var(--space-4); color: var(--color-danger-fg); }
+.topic-editor-error a { color: inherit; }
+.topic-editor-status { margin-block: var(--space-3); overflow-wrap: anywhere; }
+.topic-editor-page [aria-invalid="true"] { border-color: var(--color-danger-fg); }
+.topic-editor-page input[type="file"] { max-width: 100%; }
+.topic-editor-page .topic-image-placeholder,
+.topic-editor-page .topic-image__placeholder { aspect-ratio: 1; overflow: hidden; }
+.topic-editor-page .topic-image-placeholder img,
+.topic-editor-page .topic-image__placeholder img,
+[data-topic-image] img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.topic-editor-page form[aria-busy="true"] { cursor: progress; }
+.topic-editor-page :is(.topic-form,.topic-edit-form) { display: grid; gap: var(--space-5); }
+.topic-editor-page :is(.topic-form,.topic-edit-form) :is(section,fieldset) { min-width: 0; margin: 0; padding: var(--space-6); border: 1px solid var(--color-border); border-radius: var(--radius-lg); background: var(--color-surface); }
+.topic-editor-page :is(.topic-form,.topic-edit-form) legend { padding-inline: var(--space-2); font-weight: 600; }
+.topic-editor-page :is(.topic-form,.topic-edit-form) h2 { font-size: var(--font-size-section-title); margin-bottom: var(--space-4); }
+.topic-editor-page :is(.topic-edit-form__overview,.topic-edit-form__row) { display: grid; gap: var(--space-5); min-width: 0; }
+.topic-editor-page :is(.topic-edit-form__field,.topic-form__field,fieldset > p) { display: grid; gap: var(--space-2); margin-block: var(--space-3); min-width: 0; }
+.topic-editor-page :is(.topic-form,.topic-edit-form) label { display: block; font-weight: 500; }
+.topic-editor-page :is(.topic-form,.topic-edit-form) :is(input,select,textarea) { box-sizing: border-box; width: 100%; min-width: 0; min-height: 2.75rem; padding: .625rem .75rem; border: 1px solid var(--color-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-foreground); font: inherit; }
+.topic-editor-page :is(.topic-form,.topic-edit-form) textarea { min-height: 9rem; resize: vertical; }
+.topic-editor-page :is(.topic-form,.topic-edit-form) input[readonly] { background: var(--color-neutral-bg); }
+.topic-editor-page :is(.topic-form,.topic-edit-form) button,
+.topic-editor-page :is(.topic-form__cancel,.topic-edit-form__cancel) { min-height: 2.75rem; padding: .625rem 1rem; border: 1px solid var(--color-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-foreground); font: inherit; cursor: pointer; text-align: center; text-decoration: none; }
+.topic-editor-page :is(.topic-form__submit,.topic-edit-form__save) { background: var(--color-primary) !important; border-color: var(--color-primary) !important; color: var(--button-primary-fg) !important; font-weight: 600 !important; }
+.topic-editor-page :is(.topic-form__submit,.topic-edit-form__save):hover:not(:disabled) { background: var(--color-primary-hover) !important; }
+.topic-editor-page :is(.topic-form,.topic-edit-form) :disabled { opacity: .6; cursor: not-allowed; }
+.topic-editor-page :is(.topic-form,.topic-edit-form) :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+.topic-editor-page :is(.topic-form__actions,.topic-edit-form__actions) { display: flex; gap: var(--space-3); flex-wrap: wrap; justify-content: flex-end; }
+.topic-editor-page :is(.topic-image-placeholder,.topic-image__placeholder) { display: grid; place-items: center; max-width: 20rem; width: 100%; background: var(--color-neutral-bg); border-radius: var(--radius-control); }
+.topic-editor-page .topic-image { margin: 0 0 var(--space-4); }
+.topic-editor-page :is(.topic-form__image,.topic-form__attachment,.topic-edit-form__image,[data-editor-attachment]) > p { margin-block: var(--space-3); }
+@media (min-width: 48rem) { .topic-editor-page .topic-edit-form__row { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+@media (min-width: 64rem) { .topic-editor-page .topic-edit-form__overview { grid-template-columns: minmax(0,2fr) minmax(0,1fr); align-items: start; } .topic-editor-page .topic-edit-form__basic { grid-row: span 2; } }
+
+.topic-editor-page :is(.topic-form,.topic-edit-form) [aria-invalid="true"] { border-color: var(--color-danger-fg); }

@@ -1,0 +1,9 @@
+.student-deadline-page .calendar-event { text-align: left; cursor: pointer; }
+.student-deadline-page .calendar-event--task { background: var(--color-info-bg); border: 1px solid var(--color-info-border); border-left: 4px solid var(--color-info-fg); }
+.student-deadline-page #calendar-event-dialog { width: min(36rem, calc(100% - 2rem)); max-height: calc(100svh - 2rem); overflow-y: auto; overflow-wrap: anywhere; }
+.student-deadline-page #calendar-event-dialog dl { display: grid; gap: var(--space-2); margin-block: var(--space-4); }
+.student-deadline-page #calendar-event-dialog dd { margin: 0 0 var(--space-3); }
+.student-deadline-page [data-calendar-status] { margin-block: var(--space-3); font-size: var(--font-size-secondary); }
+.student-deadline-page .calendar-event-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: var(--space-3); }
+.student-deadline-page [data-calendar-detail] { display: inline-flex; align-items: center; min-height: var(--control-min-height); }
+.student-deadline-page [data-calendar-detail][hidden] { display: none; }

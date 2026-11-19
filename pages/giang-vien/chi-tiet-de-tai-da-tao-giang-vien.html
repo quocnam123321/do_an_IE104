@@ -14,8 +14,26 @@
     <link rel="stylesheet" href="../../assets/css/teacher-created-detail.css?v=20261111-heading-sync-1" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <script src="../../assets/js/dialog-commands.js" defer></script>
-  </head>
-  <body class="teacher-workspace-page teacher-created-detail-page">
+  
+<script src="../../assets/js/data/lecturer-topics.js" defer></script>
+<script src="../../assets/js/data/lecturer-source-data.js" defer></script>
+<script src="../../assets/js/data/lecturer-real-data.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/lecturer-topic-routing.css">
+<script src="../../assets/js/pages/lecturer/created-topic.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-file-service.js" defer></script>
+<script src="../../assets/js/shared/download-file.js" defer></script>
+<script src="../../assets/js/pages/lecturer/topic-media.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/lecturer-topic-editor.css">
+<script src="../../assets/js/services/published-topic-service.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
+<script src="../../assets/js/pages/lecturer/topic-registration-state.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/published-topic.css">
+<link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
+<link rel="stylesheet" href="../../assets/css/topic-media-shared.css">
+</head>
+  <body class="teacher-workspace-page teacher-created-detail-page" data-lecturer-topic-view="detail">
     <a class="skip-link" href="#main-content">
       Chuyển đến nội dung chính
     </a>
@@ -294,7 +312,7 @@
             <button class="topic-attachments__download" type="button" disabled title="Chưa có tệp tài liệu thực để tải xuống"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"/></svg><span>Tải xuống</span></button>
           </section>
         </div>
-        <p class="created-detail-note">Bản xem giao diện với dữ liệu mẫu. Đổi trạng thái đăng ký và tải tài liệu chưa được kết nối.</p>
+        
         <!-- Biến thể đóng đăng ký dành cho tích hợp: thay nhãn trạng thái và nút đóng
              bằng nội dung template này. HTML thuần không tự đổi hoặc lưu trạng thái. -->
         <template id="registration-closed-template">
@@ -302,7 +320,7 @@
           <button class="registration-reopen-button" type="button" commandfor="reopen-registration" command="show-modal" aria-haspopup="dialog" aria-controls="reopen-registration">Mở lại đăng ký</button>
         </template>
       </div>
-    </main>
+    <noscript><style>main .page-container > :not(noscript) { display:none !important; }</style><p>Bật JavaScript để xem đúng đề tài theo mã đã chọn. <a href="danh-sach-de-tai-da-tao.html">Quay lại danh sách đề tài</a></p></noscript></main>
     <!-- Hộp thoại HTML gốc mở bằng command/commandfor và đóng bằng form method="dialog".
          Các nút xác nhận disabled vì chưa có xử lý thay đổi trạng thái đề tài. -->
     <dialog class="confirmation-dialog" id="close-registration" aria-labelledby="close-registration-title" aria-describedby="close-registration-description">
@@ -353,5 +371,6 @@
         <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
-  </body>
+  <script src="../../assets/js/pages/lecturer/source-metadata.js" defer></script>
+</body>
 </html>

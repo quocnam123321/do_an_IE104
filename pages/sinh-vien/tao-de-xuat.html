@@ -5,18 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Tạo và gửi đề xuất đề tài mới đến giảng viên hướng dẫn." />
     <title>Đề xuất đề tài | Quản lý đồ án</title>
-    <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
+    <link rel="stylesheet" href="../../assets/css/tokens.css" />
+    <link rel="stylesheet" href="../../assets/css/base.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
-    <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css?v=20261111-heading-sync-1" />
-    <script src="../../assets/js/nav-indicator.js" defer></script>
+    <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css" />
+    <script src="../../assets/js/shared/proposal-outline.js" defer></script>
+<script src="../../assets/js/nav-indicator.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/supervisor-dialog.css" />
-    <link rel="stylesheet" href="../../assets/css/student-topic-proposal.css?v=20261102-2" />
     <script src="../../assets/js/supervision-entry.js" defer></script>
     <script src="../../assets/js/supervision-store.js" defer></script>
+    <link rel="stylesheet" href="../../assets/css/student-topic-proposal.css?v=20261116-1" />
+    <script src="../../assets/js/services/storage.js" defer></script>
+    <script src="../../assets/js/shared/validation.js" defer></script>
+    <script src="../../assets/js/data/proposal-actors.js" defer></script>
+    <script src="../../assets/js/services/proposal-service.js" defer></script>
     <script src="../../assets/js/supervisor-dialog.js" defer></script>
-    <script src="../../assets/js/student-topic-proposal.js?v=20261102-1" defer></script>
-  </head>
+    <script src="../../assets/js/pages/student/proposal-outline.js" defer></script>
+<script src="../../assets/js/pages/student/topic-proposal.js?v=20261115-1" defer></script>
+
+<script src="../../assets/js/dialog-commands.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/proposal-outline.css">
+</head>
   <body class="registration-page student-proposal-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
     <header class="site-header">
@@ -96,10 +105,10 @@
         <a class="page-back-link" href="dang-ky-de-tai.html"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 5-7 7 7 7M5 12h14" /></svg>Quay lại danh sách</a>
         <header class="page-header">
           <h1 id="proposal-title" class="page-header__title">Đề xuất đề tài</h1>
+          <p class="page-header__description">Điền thông tin bên dưới để gửi đề xuất đề tài đến giảng viên.</p>
         </header>
 
         <div class="page-content proposal-layout">
-          <!-- Khung HTML: bổ sung xử lý gửi, kiểm tra giảng viên và dữ liệu danh mục sau. -->
           <form id="proposal-form" class="proposal-form" aria-labelledby="proposal-title" aria-describedby="proposal-required-note">
             <p id="proposal-error" class="form-error" role="alert" hidden>Vui lòng kiểm tra thông tin bắt buộc và giảng viên hướng dẫn.</p>
             <p id="proposal-result" class="form-result" role="status" hidden>Đề xuất đã được ghi nhận.</p>
@@ -107,7 +116,7 @@
               <fieldset class="proposal-form__section">
                 <legend>Thông tin đề tài</legend>
                 <div class="proposal-form__field">
-                  <label for="topic-name">Tên đề tài <span class="proposal-form__required" aria-hidden="true">*</span></label>
+                  <label for="topic-name">Tên đề tài tiếng Việt <span class="proposal-form__required" aria-hidden="true">*</span></label>
                   <input id="topic-name" name="ten-de-tai" type="text" placeholder="Nhập tên đề tài bạn muốn đề xuất" required />
                 </div>
                 <div class="proposal-form__row">
@@ -124,7 +133,7 @@
                     <label for="course">Môn học <span class="proposal-form__required" aria-hidden="true">*</span></label>
                     <select id="course" name="mon-hoc" aria-describedby="course-status" required>
                       <option value="" selected disabled>Chọn môn học</option>
-                      <option value="IE104">IE104 · Internet và Công nghệ Web</option>
+                      <option value="IE104">IE104 - Internet và Công nghệ Web</option>
                     </select>
                     <!-- Select bị khóa không được đưa vào FormData; input này giữ mã môn tương ứng. -->
                     <input id="fixed-course" name="mon-hoc" type="hidden" value="" disabled />
@@ -150,16 +159,26 @@
                 <!-- IE104 là lựa chọn mẫu; danh mục đầy đủ sẽ được nối khi tích hợp dữ liệu. -->
               </fieldset>
 
-              <fieldset class="proposal-form__section">
+              <fieldset class="proposal-form__section" data-proposal-outline aria-label="Thông tin bổ sung đề tài">
+
+<div class="proposal-form__field"><label for="outline-englishTitle">Tên đề tài tiếng Anh <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label><input id="outline-englishTitle" data-outline-field="englishTitle" type="text" maxlength="250"></div>
+<div class="proposal-form__row"><div class="proposal-form__field"><label for="outline-startDate">Ngày bắt đầu dự kiến <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label><input id="outline-startDate" data-outline-field="startDate" type="date" maxlength="250"></div><div class="proposal-form__field"><label for="outline-endDate">Ngày kết thúc dự kiến <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label><input id="outline-endDate" data-outline-field="endDate" type="date" maxlength="250"></div></div>
+</fieldset>
+<fieldset class="proposal-form__section"><legend>Sinh viên thực hiện</legend>
+<div class="proposal-form__field"><div id="proposal-members" tabindex="-1" aria-label="Danh sách sinh viên thực hiện"></div></div>
+<button id="proposal-add-member" class="proposal-outline-button" type="button" disabled>Thêm thành viên</button>
+
+</fieldset>
+<fieldset class="proposal-form__section">
                 <legend>Nội dung đề xuất</legend>
                 <div class="proposal-form__field">
-                  <label for="topic-description">Mô tả đề tài <span class="proposal-form__required" aria-hidden="true">*</span></label>
-                  <textarea id="topic-description" name="mo-ta-de-tai" rows="3" placeholder="Giới thiệu ý tưởng và vấn đề cần giải quyết" required></textarea>
+                  <label for="topic-description">Tổng quan đề tài <span class="proposal-form__required" aria-hidden="true">*</span></label>
+                  <textarea id="topic-description" name="mo-ta-de-tai" rows="3" placeholder="Nêu bối cảnh, sản phẩm/nghiên cứu liên quan, thực trạng và lý do thực hiện đề tài" required></textarea>
                 </div>
                 <div class="proposal-form__row">
                   <div class="proposal-form__field">
                     <label for="topic-objectives">Mục tiêu <span class="proposal-form__required" aria-hidden="true">*</span></label>
-                    <textarea id="topic-objectives" name="muc-tieu" rows="3" placeholder="Nêu rõ mục tiêu của đề tài" required></textarea>
+                    <textarea id="topic-objectives" name="muc-tieu" rows="3" placeholder="Nêu mục tiêu cụ thể và điểm cải tiến so với thực trạng" required></textarea>
                   </div>
                   <div class="proposal-form__field">
                     <label for="expected-results">Kết quả dự kiến <span class="proposal-form__required" aria-hidden="true">*</span></label>
@@ -168,6 +187,7 @@
                 </div>
               </fieldset>
 
+<fieldset class="proposal-form__section"><legend>Phương pháp và kế hoạch</legend><div class="proposal-form__field"><label for="outline-method">Phương pháp thực hiện <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label><textarea id="outline-method" data-outline-field="method" rows="4" maxlength="10000"></textarea></div><div class="proposal-form__field"><label for="outline-scope">Nội dung chính, phạm vi và cách đánh giá <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label><textarea id="outline-scope" data-outline-field="scope" rows="4" maxlength="10000"></textarea></div><div class="proposal-form__field"><label for="outline-plan">Kế hoạch thực hiện và phân công <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label><textarea id="outline-plan" data-outline-field="plan" rows="4" maxlength="10000"></textarea></div></fieldset>
               <fieldset class="proposal-form__section">
                 <legend>Thông tin hướng dẫn</legend>
                 <div class="proposal-form__field">
@@ -176,12 +196,16 @@
                   <p id="selected-supervisor" class="proposal-form__selected-supervisor" aria-live="polite">Chưa chọn giảng viên</p>
                   <input id="supervisor-id" name="ma-giang-vien" type="hidden" value="" />
                 </div>
+<div class="proposal-form__row"><div class="proposal-form__field"><label for="outline-supervisor-degree">Học vị GVHD chính</label><input id="outline-supervisor-degree" data-outline-field="supervisor.degree" type="text" maxlength="250"></div><div class="proposal-form__field"><label for="outline-supervisor-workplace">Đơn vị công tác GVHD chính</label><input id="outline-supervisor-workplace" data-outline-field="supervisor.workplace" type="text" maxlength="250"></div></div>
+<details class="proposal-secondary"><summary>Thông tin người hướng dẫn phụ (nếu có)</summary><div class="proposal-form__field"><label for="outline-secondarySupervisor-name">Họ tên người hướng dẫn phụ</label><input id="outline-secondarySupervisor-name" data-outline-field="secondarySupervisor.name" type="text" maxlength="250"></div><div class="proposal-form__field"><label for="outline-secondarySupervisor-degree">Học vị người hướng dẫn phụ</label><input id="outline-secondarySupervisor-degree" data-outline-field="secondarySupervisor.degree" type="text" maxlength="250"></div><div class="proposal-form__field"><label for="outline-secondarySupervisor-workplace">Đơn vị công tác người hướng dẫn phụ</label><input id="outline-secondarySupervisor-workplace" data-outline-field="secondarySupervisor.workplace" type="text" maxlength="250"></div></details>
                 <div class="proposal-form__field">
                   <label for="proposal-attachment">Tài liệu đính kèm</label>
                   <div class="proposal-form__attachment">
-                    <input id="proposal-attachment" name="tai-lieu-dinh-kem" type="file" />
+                    <input id="proposal-attachment" name="tai-lieu-dinh-kem" type="file" aria-describedby="proposal-attachment-status" />
                     <label class="proposal-form__file-button" for="proposal-attachment"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-6 6 6-6 6 6M5 16v5h14v-5" /></svg>Chọn tệp</label>
                   </div>
+                  <p id="proposal-attachment-status" aria-live="polite">Chưa chọn tệp</p>
+                  <button type="button" data-remove-proposal-attachment hidden>Bỏ tệp đính kèm</button>
                 </div>
               </fieldset>
             </div>
@@ -317,14 +341,14 @@
     </dialog>
 
     <dialog id="proposal-confirm-dialog" class="confirmation-dialog" aria-labelledby="proposal-confirm-title">
-      <h2 id="proposal-confirm-title">Xác nhận gửi đề xuất</h2>
-      <p>Kiểm tra nội dung và giảng viên hướng dẫn trước khi gửi.</p>
-      <dl>
-        <div><dt>Tên đề tài</dt><dd>[Tên đề tài đề xuất]</dd></div>
-        <div><dt>Giảng viên hướng dẫn</dt><dd>[Giảng viên được chọn]</dd></div>
-      </dl>
-      <form method="dialog"><button type="submit">Quay lại chỉnh sửa</button></form>
-      <button type="button" disabled>Xác nhận gửi đề xuất</button>
+      <h2 id="proposal-confirm-title">Xác nhận đề xuất thử</h2>
+      <p>Đề xuất sẽ vào hàng chờ giảng viên trong bản demo trên trình duyệt này, chưa gửi qua máy chủ.</p>
+      <dl data-proposal-review></dl>
+      <p data-proposal-error class="proposal-field-error" role="alert" tabindex="-1" hidden></p>
+      <div class="proposal-review-actions">
+        <button type="button" command="close" commandfor="proposal-confirm-dialog">Quay lại chỉnh sửa</button>
+        <button type="button" data-confirm-proposal>Lưu đề xuất thử</button>
+      </div>
     </dialog>
 
     <!-- Hộp thoại tài khoản dùng chung với header sinh viên. -->

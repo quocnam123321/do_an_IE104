@@ -12,9 +12,23 @@
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
-  </head>
+  
+<script src="../../assets/js/data/lecturer-topics.js" defer></script>
+<script src="../../assets/js/data/lecturer-source-data.js" defer></script>
+<script src="../../assets/js/data/lecturer-real-data.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/lecturer-topic-routing.css">
+<script src="../../assets/js/pages/lecturer/created-topic.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-file-service.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
+<script src="../../assets/js/pages/lecturer/topic-editor.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/lecturer-topic-editor.css">
+    <link rel="stylesheet" href="../../assets/css/teacher-topic-forms.css" />
+<link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
+</head>
 
-  <body>
+  <body class="topic-editor-page teacher-topic-form-page" data-lecturer-topic-view="edit">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
 
     <!-- ĐẦU TRANG -->
@@ -128,24 +142,20 @@
         </header>
 
         <div class="page-content">
-          <p class="demo-notice">
-            Bản HTML mẫu, chưa kết nối dữ liệu đề tài. Các trường được để trống,
-            dùng placeholder hoặc hiển thị “Chưa có thông tin”. Biểu mẫu chưa lưu
-            thay đổi.
-          </p>
+          
 
           <form
             id="topic-edit-form"
-            class="topic-edit-form"
+            class="topic-edit-form teacher-topic-form"
             method="post"
             aria-describedby="topic-required-notice topic-save-notice"
           >
             <p id="topic-required-notice" class="topic-edit-form__required-note">
               Trường có dấu * là bắt buộc.
             </p>
-            <div class="topic-edit-form__overview">
+            <div class="topic-edit-form__overview teacher-topic-form__layout">
               <section
-                class="topic-edit-form__basic"
+                class="topic-edit-form__basic teacher-topic-form__panel"
                 aria-labelledby="basic-information-title"
               >
                 <h2 id="basic-information-title">Thông tin cơ bản</h2>
@@ -173,7 +183,7 @@
                   />
                 </div>
 
-                <div class="topic-edit-form__row">
+                <div class="topic-edit-form__row teacher-topic-form__grid">
                   <div class="topic-edit-form__field">
                     <label for="loai-de-tai">
                       Loại đề tài <span aria-hidden="true">*</span>
@@ -192,7 +202,7 @@
                   </div>
                 </div>
 
-                <div class="topic-edit-form__row">
+                <div class="topic-edit-form__row teacher-topic-form__grid">
                   <div class="topic-edit-form__field">
                     <label for="hoc-ky">
                       Học kỳ <span aria-hidden="true">*</span>
@@ -211,12 +221,10 @@
                   </div>
                 </div>
 
-                <div class="topic-edit-form__row">
+                <div class="topic-edit-form__row teacher-topic-form__grid">
                   <div class="topic-edit-form__field">
                     <label for="linh-vuc">Lĩnh vực</label>
-                    <select id="linh-vuc" name="linh-vuc">
-                      <option value="" selected>Chọn lĩnh vực</option>
-                    </select>
+                    <input id="linh-vuc" name="linh-vuc" type="text" maxlength="100">
                   </div>
                   <div class="topic-edit-form__field">
                     <label for="cong-nghe-goi-y">Công nghệ gợi ý</label>
@@ -232,7 +240,7 @@
 
               <aside class="topic-edit-form__sidebar" aria-label="Ảnh và giảng viên hướng dẫn">
                 <section
-                  class="topic-edit-form__image"
+                  class="topic-edit-form__image teacher-topic-form__panel"
                   aria-labelledby="topic-image-title"
                 >
                   <h2 id="topic-image-title">Ảnh minh họa đề tài</h2>
@@ -251,12 +259,12 @@
                     </button>
                   </div>
                   <p id="topic-image-notice" class="topic-image__notice">
-                    Chưa có ảnh minh họa. Chưa có xử lý thay, gỡ và lưu ảnh.
+                    PNG/JPG không quá 5 MB; khung xem trước vuông 1:1.
                   </p>
                 </section>
 
                 <section
-                  class="topic-edit-form__lecturer"
+                  class="topic-edit-form__lecturer teacher-topic-form__panel"
                   aria-labelledby="topic-lecturer-title"
                 >
                   <h2 id="topic-lecturer-title">Giảng viên hướng dẫn</h2>
@@ -298,7 +306,7 @@
             </div>
 
             <section
-              class="topic-edit-form__content"
+              class="topic-edit-form__content teacher-topic-form__panel"
               aria-labelledby="topic-content-title"
             >
               <h2 id="topic-content-title">Nội dung đề tài</h2>
@@ -342,12 +350,14 @@
               </div>
             </section>
 
-            <section
-              class="topic-edit-form__conditions"
+            <section class="topic-edit-form__content teacher-topic-form__panel"><h2>Kết quả dự kiến</h2><div class="topic-edit-form__field"><label for="ket-qua-du-kien">Kết quả dự kiến *</label><textarea id="ket-qua-du-kien" name="ket-qua-du-kien" rows="4" required></textarea></div></section>
+<section class="topic-edit-form__content teacher-topic-form__panel" data-editor-attachment><h2>Tài liệu đính kèm</h2><p>PDF/DOC/DOCX/TXT không quá 10 MB.</p></section>
+<section
+              class="topic-edit-form__conditions teacher-topic-form__panel"
               aria-labelledby="registration-conditions-title"
             >
               <h2 id="registration-conditions-title">Điều kiện đăng ký</h2>
-              <div class="topic-edit-form__row">
+              <div class="topic-edit-form__row teacher-topic-form__grid">
                 <div class="topic-edit-form__field">
                   <label for="so-thanh-vien-toi-thieu">
                     Số thành viên tối thiểu / nhóm <span aria-hidden="true">*</span>
@@ -380,24 +390,23 @@
             </section>
 
             <section
-              class="topic-edit-form__schedule"
+              class="topic-edit-form__schedule teacher-topic-form__panel"
               aria-labelledby="topic-schedule-title"
             >
               <h2 id="topic-schedule-title">Thời gian đăng ký và thực hiện</h2>
               <p id="topic-timezone-notice">
                 Thời gian được hiểu theo múi giờ Việt Nam (UTC+07:00).
               </p>
-              <div class="topic-edit-form__row">
+              <div class="topic-edit-form__row teacher-topic-form__grid">
                 <div class="topic-edit-form__field">
                   <label for="mo-dang-ky-luc">
-                    Mở đăng ký từ <span aria-hidden="true">*</span>
+                    Mở đăng ký từ 
                   </label>
                   <input
                     id="mo-dang-ky-luc"
                     name="mo-dang-ky-luc"
                     type="datetime-local"
                     aria-describedby="topic-timezone-notice"
-                    required
                   />
                 </div>
                 <div class="topic-edit-form__field">
@@ -414,7 +423,7 @@
                 </div>
               </div>
 
-              <div class="topic-edit-form__row">
+              <div class="topic-edit-form__row teacher-topic-form__grid">
                 <div class="topic-edit-form__field">
                   <label for="ngay-bat-dau-thuc-hien">Ngày bắt đầu thực hiện</label>
                   <input
@@ -425,24 +434,23 @@
                 </div>
                 <div class="topic-edit-form__field">
                   <label for="han-hoan-thanh-de-tai">
-                    Hạn hoàn thành đề tài <span aria-hidden="true">*</span>
+                    Hạn hoàn thành đề tài 
                   </label>
                   <input
                     id="han-hoan-thanh-de-tai"
                     name="han-hoan-thanh-de-tai"
                     type="datetime-local"
                     aria-describedby="topic-timezone-notice"
-                    required
                   />
                 </div>
               </div>
             </section>
 
             <p id="topic-save-notice" class="topic-edit-form__notice">
-              Chưa có xử lý kiểm tra dữ liệu và lưu thay đổi đề tài.
+              Thay đổi chỉ được lưu khi bạn xác nhận Lưu thay đổi.
             </p>
             <div class="topic-edit-form__actions">
-              <a class="topic-edit-form__cancel" href="chi-tiet-de-tai-da-tao-giang-vien.html">Hủy</a>
+              <a class="topic-edit-form__cancel teacher-topic-form__button" href="chi-tiet-de-tai-da-tao-giang-vien.html">Hủy</a>
               <button
                 class="topic-edit-form__save"
                 type="submit"
@@ -457,7 +465,7 @@
           </form>
         </div>
       </div>
-    </main>
+    <noscript><style>main .page-container > :not(noscript) { display:none !important; }</style><p>Bật JavaScript để xem đúng đề tài theo mã đã chọn. <a href="danh-sach-de-tai-da-tao.html">Quay lại danh sách đề tài</a></p></noscript></main>
 
     <!-- CHÂN TRANG CHUNG -->
     <footer class="site-footer">
@@ -491,5 +499,6 @@
         <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
-  </body>
+  <script src="../../assets/js/pages/lecturer/source-metadata.js" defer></script>
+</body>
 </html>

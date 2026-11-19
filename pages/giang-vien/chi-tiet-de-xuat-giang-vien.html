@@ -14,11 +14,23 @@
   <link href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1" rel="stylesheet"/>
   <link href="../../assets/css/teacher-dialogs.css?v=20261030-1" rel="stylesheet"/>
   <link href="../../assets/css/teacher-request-detail.css?v=20261030-shared-dialogs-4" rel="stylesheet"/>
-   <script src="../../assets/js/nav-indicator.js" defer></script>
+   <script src="../../assets/js/shared/proposal-outline.js" defer></script>
+<script src="../../assets/js/nav-indicator.js" defer></script>
    <script src="../../assets/js/dialog-commands.js" defer></script>
-   <script src="../../assets/js/proposal-store.js" defer></script>
+   <script src="../../assets/js/data/proposal-actors.js" defer></script>
+<script src="../../assets/js/data/lecturer-source-data.js" defer></script>
+<script src="../../assets/js/data/lecturer-real-data.js" defer></script>
+<script src="../../assets/js/services/storage.js" defer></script>
+<script src="../../assets/js/shared/validation.js" defer></script>
+<script src="../../assets/js/services/proposal-service.js" defer></script>
+<script src="../../assets/js/services/registration-service.js" defer></script>
+    <script src="../../assets/js/proposal-store.js" defer></script>
    <script src="../../assets/js/proposal-detail.js" defer></script>
- </head>
+ <style>[data-registration-group] { overflow-wrap: anywhere; } [data-registration-group] ul { display: grid; gap: .5rem; }</style>
+<link rel="stylesheet" href="../../assets/css/proposal-outline.css">
+<link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
+<link rel="stylesheet" href="../../assets/css/topic-media-shared.css">
+</head>
  <body class="teacher-workspace-page teacher-request-detail-page">
   <a class="skip-link" href="#main-content">
    Chuyển đến nội dung chính
@@ -250,7 +262,7 @@
       </p>
      </div>
     </header>
-    <p class="proposal-demo-note">Dữ liệu minh họa. Quyết định chỉ lưu trên trình duyệt này khi cho phép lưu trữ; chưa gửi tới máy chủ.</p>
+    
     <p class="proposal-feedback" id="proposal-decision-feedback" role="status" tabindex="-1"></p>
     <p class="proposal-feedback" id="proposal-not-found" hidden>Không tìm thấy đề xuất theo mã đã chọn. Hãy quay lại danh sách yêu cầu chờ duyệt.</p>
     <div class="page-content request-detail">
@@ -459,7 +471,7 @@
      Vui lòng nhập lý do từ chối từ 10 ký tự.
     </p>
     <p class="topic-dialog__notice" id="rejection-reason-hint">
-     Ít nhất 10 ký tự, không tính khoảng trắng ở hai đầu. Lý do chỉ lưu trong bản demo trên trình duyệt.
+     Ít nhất 10 ký tự, không tính khoảng trắng ở hai đầu. 
     </p>
     <p class="proposal-form-error" data-decision-error role="alert" hidden></p>
     <div class="topic-dialog__actions">
@@ -501,7 +513,7 @@
     <p class="topic-dialog__desc" id="approve-proposal-description">
      Sau khi duyệt, đề tài sẽ chuyển sang trạng thái
      <strong>
-      Đang thực hiện trong bản demo.
+      Đang thực hiện.
      </strong>
     </p>
     <p class="proposal-form-error" data-decision-error role="alert" hidden></p>
@@ -547,5 +559,6 @@
         <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
- </body>
+ <script src="../../assets/js/pages/lecturer/source-metadata.js" defer></script>
+</body>
 </html>

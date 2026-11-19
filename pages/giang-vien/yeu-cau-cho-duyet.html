@@ -16,14 +16,23 @@
   <link href="../../assets/css/teacher-pending-proposals.css?v=20261030-align-1" rel="stylesheet"/>
     <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css" />
    <script src="../../assets/js/nav-indicator.js" defer></script>
-   <script src="../../assets/js/proposal-store.js" defer></script>
+   <script src="../../assets/js/data/proposal-actors.js" defer></script>
+<script src="../../assets/js/data/lecturer-source-data.js" defer></script>
+<script src="../../assets/js/data/lecturer-real-data.js" defer></script>
+<script src="../../assets/js/services/storage.js" defer></script>
+<script src="../../assets/js/shared/validation.js" defer></script>
+<script src="../../assets/js/services/proposal-service.js" defer></script>
+<script src="../../assets/js/services/registration-service.js" defer></script>
+    <script src="../../assets/js/proposal-store.js" defer></script>
    <script src="../../assets/js/pending-proposals.js" defer></script>
   <link href="../../assets/css/supervision-invitations.css" rel="stylesheet"/>
   <script src="../../assets/js/supervision-store.js" defer></script>
   <script src="../../assets/js/detail-tabs.js" defer></script>
   <script src="../../assets/js/supervision-attachment-ui.js" defer></script>
   <script src="../../assets/js/supervision-inbox.js" defer></script>
- </head>
+  <link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
+<link rel="stylesheet" href="../../assets/css/topic-media-shared.css">
+</head>
  <body class="teacher-workspace-page teacher-topic-list-page teacher-pending-proposals-page">
   <a class="skip-link" href="#main-content">
    Chuyển đến nội dung chính
@@ -237,7 +246,7 @@
      </h1>
     </header>
     <nav class="supervision-tabs" aria-label="Nội dung yêu cầu chờ duyệt" data-detail-tabs>
-     <a class="topic-tabs__link" href="#de-xuat-cho-duyet">Đề xuất chờ duyệt</a>
+     <a class="topic-tabs__link" href="#de-xuat-cho-duyet">Đăng ký và đề xuất</a>
      <a class="topic-tabs__link" href="#loi-moi-huong-dan" id="supervision-tab">
       Lời mời hướng dẫn
       <span class="supervision-tabs__count" data-supervision-count aria-hidden="true" hidden></span>
@@ -425,7 +434,7 @@
       </div>
       <div class="topic-results__header">
        <h2 id="pending-proposals-title">
-        Danh sách đề xuất chờ duyệt
+        Danh sách đăng ký và đề xuất chờ duyệt
        </h2>
       </div>
       <p class="proposal-empty" id="proposal-empty" role="status" hidden="">
@@ -860,7 +869,7 @@
        </nav>
       </div>
       <p class="proposal-preview-note" id="proposal-preview-note">
-       Dữ liệu minh họa trên trình duyệt · 5 đề xuất mỗi trang. Hồ sơ thiếu ngày gửi giữ thứ tự mẫu và xếp cuối khi sắp xếp theo ngày.
+       5 đề xuất mỗi trang. Hồ sơ thiếu ngày gửi giữ thứ tự mẫu và xếp cuối khi sắp xếp theo ngày.
       </p>
      </section>
     </div>
@@ -903,5 +912,6 @@
         <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
- </body>
+ <script src="../../assets/js/pages/lecturer/source-metadata.js" defer></script>
+</body>
 </html>

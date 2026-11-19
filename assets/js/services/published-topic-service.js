@@ -1,0 +1,44 @@
+(() => {
+  const app = globalThis.IE104 = globalThis.IE104 || {};
+  app.services ||= {};
+  const publicId = topic => `GV:${topic.ownerId}:${topic.id}`;
+  const hasText = value => typeof value === 'string' && Boolean(value.trim());
+  function complete(topic) {
+    return topic && ['id','ownerId','title','typeLabel','topicType','academicYear','createdAt','description'].every(field => hasText(topic[field])) && ['course','graduation','thesis'].includes(topic.topicType) && (topic.topicType !== 'course' || hasText(topic.course)) && ['objectives','outcomes','requirements'].every(field => Array.isArray(topic[field]) && topic[field].length && topic[field].every(hasText)) && hasText(topic.supervisor?.name) && ['1','2','summer'].includes(String(topic.semester)) && Number.isFinite(Date.parse(topic.createdAt)) && topic.registration && Number.isInteger(topic.registration.minMembers) && topic.registration.minMembers > 0 && Number.isInteger(topic.registration.maxMembers) && topic.registration.maxMembers >= topic.registration.minMembers && topic.registration.maxMembers <= 100 && Number.isFinite(Date.parse(topic.registration.deadline)) && (!topic.registration.opensAt || (Number.isFinite(Date.parse(topic.registration.opensAt)) && Date.parse(topic.registration.opensAt) < Date.parse(topic.registration.deadline)));
+  }
+  function availability(topic, now = new Date()) {
+    if (!complete(topic)) return { allowed:false, reason:'Đề tài chưa có đủ thông tin để nhận đăng ký.', label:'Chưa đủ thông tin' };
+    if (topic.status !== 'open') return { allowed:false, reason:'Giảng viên đã đóng đăng ký đề tài này.', label:'Đã đóng đăng ký' };
+    if (Date.parse(topic.registration.deadline) <= now.getTime()) return { allowed:false, reason:'Đề tài đã hết hạn đăng ký.', label:'Đã hết hạn' };
+    if (topic.registration.opensAt && Date.parse(topic.registration.opensAt) > now.getTime()) return { allowed:false, reason:'Chưa đến thời điểm mở đăng ký đề tài.', label:'Chưa mở đăng ký' };
+    return { allowed:true, reason:'', label:'Mở đăng ký' };
+  }
+  function project(topic, now) {
+    return {
+      id:publicId(topic), displayId:topic.id, catalogId:topic.id, source:'lecturer-created', ownerId:topic.ownerId,
+      title:topic.title, type:({course:'do-an-mon-hoc',graduation:'do-an-tot-nghiep',thesis:'khoa-luan'})[topic.topicType], typeLabel:topic.typeLabel,
+      courseId:({web:'IE104',database:'co-so-du-lieu',software:'cong-nghe-phan-mem'})[topic.course] || topic.course, courseLabel:topic.courseLabel || 'Không áp dụng',
+      semester:topic.semester === 'summer' ? 'he' : topic.semester, academicYear:topic.academicYear, lecturer:topic.supervisor.name,
+      createdAt:topic.createdAt, revision:topic.revision || 0, description:topic.description,
+      objectives:[...topic.objectives], outcomes:[...topic.outcomes], requirements:[...topic.requirements], supervisor:{...topic.supervisor},
+      registrationRules:{minMembers:topic.registration.minMembers,maxMembers:topic.registration.maxMembers}, registration:{...topic.registration},
+      availability:availability(topic,now), imageRef:topic.imageRef || null, attachmentRef:topic.attachmentRef || null, attachmentName:topic.attachmentName || '',
+      detailUrl:`chi-tiet-de-tai-gv-mo-dang-ky.html?topic=${encodeURIComponent(publicId(topic))}`,
+    };
+  }
+  function get(id, now = new Date()) {
+    const topic = app.services.lecturerTopics.allCreated().find(item => publicId(item) === id);
+    return complete(topic) ? project(topic,now) : null;
+  }
+  function list(now = new Date()) {
+    return app.services.lecturerTopics.allCreated().filter(topic => availability(topic,now).allowed).map(topic => project(topic,now));
+  }
+  function requireOpen(id, revision, now = new Date()) {
+    const topic = get(id,now);
+    if (!topic) throw new Error('Không tìm thấy đề tài GV có đủ thông tin để đăng ký.');
+    if (!topic.availability.allowed) throw new Error(topic.availability.reason);
+    if (!Number.isInteger(revision) || revision !== topic.revision) throw new Error('Thông tin hoặc điều kiện đăng ký đã thay đổi. Hãy đọc lại trước khi xác nhận.');
+    return topic;
+  }
+  app.services.publishedTopics = { get, list, requireOpen, complete, availability, publicId };
+})();
