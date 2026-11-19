@@ -1,7 +1,6 @@
 (() => {
   const app = globalThis.IE104 = globalThis.IE104 || {};
   app.data = app.data || {};
-  app.data.currentLecturer = { id: 'GV001', name: 'Nguyễn Văn An' };
   app.data.lecturerProjects = [{ id: 'GV-DT001-N01', topicId: 'DT001', title: 'Website quản lý thư viện', groupName: 'Nhóm 01', status: 'dang-thuc-hien', typeLabel: 'Đồ án môn học', courseId: 'IE104', courseLabel: 'IE104 - Internet và Công nghệ Web', semester: 1, academicYear: '2026-2027' }];
   app.data.projectTeams.push({ projectId: 'GV-DT001-N01', maxMembers: 4, supervisorIds: ['GV001'], invitations: [], members: [{ code: '22520001', name: 'Nguyễn Văn An', role: 'nhom-truong' }, { code: '22520002', name: 'Trần Thị Bình', role: 'thanh-vien' }, { code: '22520003', name: 'Lê Văn Cường', role: 'thanh-vien' }] });
   app.data.projectProgress.push({
