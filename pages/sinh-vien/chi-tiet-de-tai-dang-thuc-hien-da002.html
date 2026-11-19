@@ -41,10 +41,11 @@
 <link rel="stylesheet" href="../../assets/css/components.css" />
 <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css" />
 <link rel="stylesheet" href="../../assets/css/de-tai-dang-thuc-hien.css" />
-<script src="../../assets/js/nav-indicator.js" defer></script>
+<script src="../../assets/js/shared/nav-indicator.js" defer></script>
 <script src="../../assets/js/shared/detail-tabs.js" defer></script>
 <link rel="stylesheet" href="../../assets/css/project-team.css">
 <script src="../../assets/js/data/mock-data.js" defer></script>
+<script src="../../assets/js/shared/workflow-dialog.js" defer></script>
 <script src="../../assets/js/data/student-projects.js" defer></script>
 <script src="../../assets/js/services/storage.js" defer></script>
 <script src="../../assets/js/services/project-team-service.js" defer></script>
@@ -57,10 +58,13 @@
 <script src="../../assets/js/data/student-evaluations.js" defer></script>
 <script src="../../assets/js/services/evaluation-service.js" defer></script>
 <script src="../../assets/js/pages/student/topic-detail/evaluation.js" defer></script>
-<link rel="stylesheet" href="../../assets/css/topic-detail-boards.css" />
-<link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css" />
-<link rel="stylesheet" href="../../assets/css/student-topic-detail.css" />
+<link rel="stylesheet" href="../../assets/css/topic-detail-boards.css">
+<link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css">
+<link rel="stylesheet" href="../../assets/css/student-topic-detail.css">
 <script src="../../assets/js/dialog-commands.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/topic-media-shared.css">
+
+<link rel="stylesheet" href="../../assets/css/workflow-detail-shared.css">
 </head>
   <body class="registration-page active-topic-page" data-project-id="DA002">
     <a class="skip-link skip-link--default" href="#main-content">Chuyển đến nội dung chính</a>
@@ -1401,26 +1405,7 @@
                         </li>
                       </ul>
                     </div>
-                  </section>
-                  <section aria-labelledby="requirements-submitted-title" class="task-column submission-column submission-column--info">
-                    <h4 class="task-column__title" id="requirements-submitted-title">
-                      <svg aria-hidden="true" class="task-column__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="9">
-                        </circle>
-                        <path d="M12 7v5l3 2">
-                        </path>
-                      </svg>
-                      <span>
-                        Đã nộp
-                      </span>
-                      <span class="task-column__count">
-                        (2)
-                      </span>
-                    </h4>
-                    <div aria-labelledby="requirements-submitted-title" class="submission-column__viewport" role="region" tabindex="0">
-                      <ul aria-label="5 thẻ đầu tiên" class="task-column__list submission-column__list">
-                        <li>
-                          <article class="requirement-board-card" id="requirement-2">
+                  </section><section class="task-column submission-column submission-column--info" aria-label="Đã nộp"><h4 class="task-column__title"><svg aria-hidden="true" class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Đã nộp <span class="task-column__count">(2)</span></h4><div class="submission-column__viewport" tabindex="0" role="region" aria-label="Yêu cầu đã có bài nộp"><ul class="task-column__list submission-column__list"><li><article class="requirement-board-card" id="requirement-2">
                             <button aria-controls="submission-requirements-2" aria-describedby="requirement-2-deadline" aria-haspopup="dialog" aria-labelledby="required-submission-2-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-2" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="required-submission-2-title">
@@ -1442,10 +1427,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                        <li>
-                          <article class="requirement-board-card" id="requirement-4">
+                          </article></li><li><article class="requirement-board-card" id="requirement-4">
                             <button aria-controls="submission-requirements-4" aria-describedby="requirement-4-deadline" aria-haspopup="dialog" aria-labelledby="required-submission-4-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-4" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="required-submission-4-title">
@@ -1467,37 +1449,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                      </ul>
-                    </div>
-                  </section>
-                  <section aria-labelledby="requirements-done-title" class="task-column submission-column submission-column--success">
-                    <h4 class="task-column__title" id="requirements-done-title">
-                      <svg aria-hidden="true" class="task-column__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="9">
-                        </circle>
-                        <path d="m8 12 3 3 5-6">
-                        </path>
-                      </svg>
-                      <span>
-                        Đã phản hồi
-                      </span>
-                      <span class="task-column__count">
-                        (0)
-                      </span>
-                    </h4>
-                    <div aria-labelledby="requirements-done-title" class="submission-column__viewport" role="region" tabindex="0">
-                      <ul aria-label="5 thẻ đầu tiên" class="task-column__list submission-column__list">
-                        <li>
-                          <p class="student-board-note">
-                            Chưa có yêu cầu ở trạng thái này.
-                          </p>
-                        </li>
-                      </ul>
-                    </div>
-                  </section>
-                </div>
+                          </article></li></ul></div></section></div>
               </div>
             </section>
             <section aria-labelledby="submissions-title" class="submissions">
@@ -1621,7 +1573,7 @@
                                   </path>
                                 </svg>
                                 <span>
-                                  Trễ hạn
+                                  Đã nộp trễ
                                 </span>
                               </span>
                             </header>
@@ -1792,7 +1744,7 @@
                                   </path>
                                 </svg>
                                 <span>
-                                  Trễ hạn
+                                  Đã nộp trễ
                                 </span>
                               </span>
                             </header>

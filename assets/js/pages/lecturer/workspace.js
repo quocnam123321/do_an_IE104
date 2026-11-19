@@ -16,7 +16,10 @@
     node.addEventListener('click', action);
     return node;
   };
-  const date = value => new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh' }).format(new Date(value));
+  const date = value => {
+    const parts = Object.fromEntries(new Intl.DateTimeFormat('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', hourCycle:'h23', timeZone:'Asia/Ho_Chi_Minh' }).formatToParts(new Date(value)).map(part => [part.type,part.value]));
+    return `${parts.day}/${parts.month}/${parts.year} - ${parts.hour}:${parts.minute}`;
+  };
   const region = (sectionId, anchorId) => {
     const section = document.getElementById(sectionId);
     const node = el('div');
@@ -136,7 +139,11 @@
       event.preventDefault();
       commit(snapshot, captured => submit(new FormData(form), captured), dialog);
     });
-    dialog.append(heading, form);
+    dialog.classList.add('workflow-dialog');
+    const dialogHeader = el('header');
+    const dialogClose = button('×', () => dialog.close()); dialogClose.classList.add('workflow-dialog__close'); dialogClose.setAttribute('aria-label', 'Đóng hộp thoại');
+    dialogHeader.append(heading, dialogClose);
+    dialog.append(dialogHeader, form);
     document.body.append(dialog);
     dialog.addEventListener('close', () => dialog.remove(), { once: true });
     dialog.addEventListener('keydown', event => {

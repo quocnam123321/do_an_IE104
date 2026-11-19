@@ -2,7 +2,7 @@
   const app = globalThis.IE104 = globalThis.IE104 || {};
   app.data = app.data || {};
   const names = ['Khảo sát yêu cầu', 'Phân tích chức năng', 'Thiết kế giao diện', 'Xây dựng chức năng', 'Kiểm thử và hoàn thiện báo cáo'];
-  app.data.projectProgress = ['DA001', 'DA002'].map(projectId => ({
+  app.data.projectProgress = ['DA001', 'DA002', 'DA005'].map(projectId => ({
     projectId,
     revision: 0,
     tasks: [

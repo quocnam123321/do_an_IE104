@@ -41,10 +41,11 @@
 <link rel="stylesheet" href="../../assets/css/components.css" />
 <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css" />
 <link rel="stylesheet" href="../../assets/css/de-tai-dang-thuc-hien.css" />
-<script src="../../assets/js/nav-indicator.js" defer></script>
+<script src="../../assets/js/shared/nav-indicator.js" defer></script>
 <script src="../../assets/js/shared/detail-tabs.js" defer></script>
 <link rel="stylesheet" href="../../assets/css/project-team.css">
 <script src="../../assets/js/data/mock-data.js" defer></script>
+<script src="../../assets/js/shared/workflow-dialog.js" defer></script>
 <script src="../../assets/js/data/student-projects.js" defer></script>
 <script src="../../assets/js/services/storage.js" defer></script>
 <script src="../../assets/js/services/project-team-service.js" defer></script>
@@ -57,10 +58,13 @@
 <script src="../../assets/js/data/student-evaluations.js" defer></script>
 <script src="../../assets/js/services/evaluation-service.js" defer></script>
 <script src="../../assets/js/pages/student/topic-detail/evaluation.js" defer></script>
-<link rel="stylesheet" href="../../assets/css/topic-detail-boards.css" />
-<link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css" />
-<link rel="stylesheet" href="../../assets/css/student-topic-detail.css" />
+<link rel="stylesheet" href="../../assets/css/topic-detail-boards.css">
+<link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css">
+<link rel="stylesheet" href="../../assets/css/student-topic-detail.css">
 <script src="../../assets/js/dialog-commands.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/topic-media-shared.css">
+
+<link rel="stylesheet" href="../../assets/css/workflow-detail-shared.css">
 </head>
   <body class="registration-page active-topic-page" data-project-id="DA001">
     <a class="skip-link skip-link--default" href="#main-content">Chuyển đến nội dung chính</a>
@@ -1290,9 +1294,7 @@
             <p class="visually-hidden" id="submission-board-help">
               Bản mẫu trình bày. Mỗi cột hiển thị 5 thẻ đầu; cuộn dọc để xem các thẻ tiếp theo. Bảng hẹp có thể cuộn ngang bằng bàn phím hoặc vuốt. Bấm thẻ yêu cầu để xem chi tiết và mở hộp nộp bài. Tải tệp và lưu dữ liệu chưa được kết nối.
             </p>
-            <p class="submission-board-demo-note">
-              Dữ liệu mẫu kiểm thử: mỗi cột có 9 thẻ với tiêu đề dài ngắn khác nhau.
-            </p>
+            
             <section aria-labelledby="requirements-title" class="requirements">
               <header class="requirements__header">
                 <h3 class="requirements__title" id="requirements-title">
@@ -1331,7 +1333,7 @@
                                     </path>
                                   </svg>
                                   <span>
-                                    Quá hạn
+                                    Quá hạn · Chưa nộp
                                   </span>
                                 </span>
                               </span>
@@ -1392,7 +1394,7 @@
                                     </path>
                                   </svg>
                                   <span>
-                                    Quá hạn
+                                    Quá hạn · Chưa nộp
                                   </span>
                                 </span>
                               </span>
@@ -1543,26 +1545,7 @@
                         </li>
                       </ul>
                     </div>
-                  </section>
-                  <section aria-labelledby="requirements-submitted-title" class="task-column submission-column submission-column--info">
-                    <h4 class="task-column__title" id="requirements-submitted-title">
-                      <svg aria-hidden="true" class="task-column__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24">
-                        <circle cx="12" cy="12" r="9">
-                        </circle>
-                        <path d="M12 7v5l3 2">
-                        </path>
-                      </svg>
-                      <span>
-                        Đã nộp
-                      </span>
-                      <span class="task-column__count">
-                        (9)
-                      </span>
-                    </h4>
-                    <div aria-labelledby="requirements-submitted-title" class="submission-column__viewport" role="region" tabindex="0">
-                      <ul aria-label="5 thẻ đầu tiên" class="task-column__list submission-column__list">
-                        <li>
-                          <article class="requirement-board-card" id="requirement-2">
+                  </section><section class="task-column submission-column submission-column--info" aria-label="Đã nộp"><h4 class="task-column__title"><svg aria-hidden="true" class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Đã nộp <span class="task-column__count">(18)</span></h4><div class="submission-column__viewport" tabindex="0" role="region" aria-label="Yêu cầu đã có bài nộp"><ul class="task-column__list submission-column__list"><li><article class="requirement-board-card" id="requirement-2">
                             <button aria-controls="submission-requirements-2" aria-describedby="requirement-2-deadline" aria-haspopup="dialog" aria-labelledby="requirement-2-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-2" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="requirement-2-title">
@@ -1584,10 +1567,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                        <li>
-                          <article class="requirement-board-card" id="requirement-4">
+                          </article></li><li><article class="requirement-board-card" id="requirement-4">
                             <button aria-controls="submission-requirements-4" aria-describedby="requirement-4-deadline" aria-haspopup="dialog" aria-labelledby="requirement-4-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-4" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="requirement-4-title">
@@ -1609,10 +1589,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                        <li>
-                          <article class="requirement-board-card" id="requirement-6">
+                          </article></li><li><article class="requirement-board-card" id="requirement-6">
                             <button aria-controls="submission-requirements-6" aria-describedby="requirement-6-deadline" aria-haspopup="dialog" aria-labelledby="requirement-6-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-6" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="requirement-6-title">
@@ -1634,10 +1611,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                        <li>
-                          <article class="requirement-board-card" id="requirement-13">
+                          </article></li><li><article class="requirement-board-card" id="requirement-13">
                             <button aria-controls="submission-requirements-13" aria-describedby="requirement-13-deadline" aria-haspopup="dialog" aria-labelledby="requirement-13-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-13" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="requirement-13-title">
@@ -1659,10 +1633,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                        <li>
-                          <article class="requirement-board-card" id="requirement-14">
+                          </article></li><li><article class="requirement-board-card" id="requirement-14">
                             <button aria-controls="submission-requirements-14" aria-describedby="requirement-14-deadline" aria-haspopup="dialog" aria-labelledby="requirement-14-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-14" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="requirement-14-title">
@@ -1684,12 +1655,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                      </ul>
-                      <ul aria-label="Các thẻ tiếp theo" class="task-column__list submission-column__list submission-column__overflow">
-                        <li>
-                          <article class="requirement-board-card" id="requirement-15">
+                          </article></li><li><article class="requirement-board-card" id="requirement-15">
                             <button aria-controls="submission-requirements-15" aria-describedby="requirement-15-deadline" aria-haspopup="dialog" aria-labelledby="requirement-15-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-15" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="requirement-15-title">
@@ -1711,10 +1677,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                        <li>
-                          <article class="requirement-board-card" id="requirement-16">
+                          </article></li><li><article class="requirement-board-card" id="requirement-16">
                             <button aria-controls="submission-requirements-16" aria-describedby="requirement-16-deadline" aria-haspopup="dialog" aria-labelledby="requirement-16-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-16" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="requirement-16-title">
@@ -1736,10 +1699,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                        <li>
-                          <article class="requirement-board-card submission-board-sample-card">
+                          </article></li><li><article class="requirement-board-card submission-board-sample-card">
                             <h5 class="requirement-board-card__title">Tổng hợp kết quả kiểm thử tích hợp</h5>
                             <p class="requirement-board-card__deadline">
                               <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -1749,10 +1709,7 @@
                               <span class="visually-hidden">Hạn nộp:</span>
                               <time datetime="2026-11-18T23:59">18/11/2026 · 23:59</time>
                             </p>
-                          </article>
-                        </li>
-                        <li>
-                          <article class="requirement-board-card submission-board-sample-card">
+                          </article></li><li><article class="requirement-board-card submission-board-sample-card">
                             <h5 class="requirement-board-card__title">Đối chiếu giao diện trên máy tính, máy tính bảng và điện thoại</h5>
                             <p class="requirement-board-card__deadline">
                               <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -1762,30 +1719,7 @@
                               <span class="visually-hidden">Hạn nộp:</span>
                               <time datetime="2026-11-20T23:59">20/11/2026 · 23:59</time>
                             </p>
-                          </article>
-                        </li>
-                      </ul>
-                    </div>
-                  </section>
-                  <section aria-labelledby="requirements-done-title" class="task-column submission-column submission-column--success">
-                    <h4 class="task-column__title" id="requirements-done-title">
-                      <svg aria-hidden="true" class="task-column__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewbox="0 0 24 24">
-                        <circle cx="12" cy="12" r="9">
-                        </circle>
-                        <path d="m8 12 3 3 5-6">
-                        </path>
-                      </svg>
-                      <span>
-                        Đã phản hồi
-                      </span>
-                      <span class="task-column__count">
-                        (9)
-                      </span>
-                    </h4>
-                    <div aria-labelledby="requirements-done-title" class="submission-column__viewport" role="region" tabindex="0">
-                      <ul aria-label="5 thẻ đầu tiên" class="task-column__list submission-column__list">
-                        <li>
-                          <article class="requirement-board-card" id="requirement-1">
+                          </article></li><li><article class="requirement-board-card" id="requirement-1">
                             <button aria-controls="submission-requirements-1" aria-describedby="requirement-1-deadline" aria-haspopup="dialog" aria-labelledby="requirement-1-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-1" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="requirement-1-title">
@@ -1807,10 +1741,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                        <li>
-                          <article class="requirement-board-card" id="requirement-7">
+                          </article></li><li><article class="requirement-board-card" id="requirement-7">
                             <button aria-controls="submission-requirements-7" aria-describedby="requirement-7-deadline" aria-haspopup="dialog" aria-labelledby="requirement-7-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-7" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="requirement-7-title">
@@ -1832,10 +1763,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                        <li>
-                          <article class="requirement-board-card" id="requirement-17">
+                          </article></li><li><article class="requirement-board-card" id="requirement-17">
                             <button aria-controls="submission-requirements-17" aria-describedby="requirement-17-deadline" aria-haspopup="dialog" aria-labelledby="requirement-17-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-17" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="requirement-17-title">
@@ -1857,10 +1785,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                        <li>
-                          <article class="requirement-board-card" id="requirement-18">
+                          </article></li><li><article class="requirement-board-card" id="requirement-18">
                             <button aria-controls="submission-requirements-18" aria-describedby="requirement-18-deadline" aria-haspopup="dialog" aria-labelledby="requirement-18-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-18" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="requirement-18-title">
@@ -1882,10 +1807,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                        <li>
-                          <article class="requirement-board-card" id="requirement-19">
+                          </article></li><li><article class="requirement-board-card" id="requirement-19">
                             <button aria-controls="submission-requirements-19" aria-describedby="requirement-19-deadline" aria-haspopup="dialog" aria-labelledby="requirement-19-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-19" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="requirement-19-title">
@@ -1907,12 +1829,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                      </ul>
-                      <ul aria-label="Các thẻ tiếp theo" class="task-column__list submission-column__list submission-column__overflow">
-                        <li>
-                          <article class="requirement-board-card" id="requirement-20">
+                          </article></li><li><article class="requirement-board-card" id="requirement-20">
                             <button aria-controls="submission-requirements-20" aria-describedby="requirement-20-deadline" aria-haspopup="dialog" aria-labelledby="requirement-20-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-20" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="requirement-20-title">
@@ -1934,10 +1851,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                        <li>
-                          <article class="requirement-board-card" id="requirement-21">
+                          </article></li><li><article class="requirement-board-card" id="requirement-21">
                             <button aria-controls="submission-requirements-21" aria-describedby="requirement-21-deadline" aria-haspopup="dialog" aria-labelledby="requirement-21-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-21" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="requirement-21-title">
@@ -1959,10 +1873,7 @@
                                 </time>
                               </span>
                             </button>
-                          </article>
-                        </li>
-                        <li>
-                          <article class="requirement-board-card submission-board-sample-card">
+                          </article></li><li><article class="requirement-board-card submission-board-sample-card">
                             <h5 class="requirement-board-card__title">Rà soát báo cáo phân tích hệ thống</h5>
                             <p class="requirement-board-card__deadline">
                               <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -1972,10 +1883,7 @@
                               <span class="visually-hidden">Hạn nộp:</span>
                               <time datetime="2026-10-23T23:59">23/10/2026 · 23:59</time>
                             </p>
-                          </article>
-                        </li>
-                        <li>
-                          <article class="requirement-board-card submission-board-sample-card">
+                          </article></li><li><article class="requirement-board-card submission-board-sample-card">
                             <h5 class="requirement-board-card__title">Hoàn thiện sơ đồ chức năng theo góp ý của giảng viên</h5>
                             <p class="requirement-board-card__deadline">
                               <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -1985,12 +1893,7 @@
                               <span class="visually-hidden">Hạn nộp:</span>
                               <time datetime="2026-10-25T23:59">25/10/2026 · 23:59</time>
                             </p>
-                          </article>
-                        </li>
-                      </ul>
-                    </div>
-                  </section>
-                </div>
+                          </article></li></ul></div></section></div>
               </div>
             </section>
             <section aria-labelledby="submissions-title" class="submissions">
@@ -2074,9 +1977,7 @@
                                     Tải xuống
                                   </span>
                                 </button>
-                                <span class="student-submission-awaiting">
-                                  Chờ giảng viên phản hồi
-                                </span>
+                                
                               </div>
                             </div>
                           </article>
@@ -2137,9 +2038,7 @@
                                     Tải xuống
                                   </span>
                                 </button>
-                                <span class="student-submission-awaiting">
-                                  Chờ giảng viên phản hồi
-                                </span>
+                                
                               </div>
                             </div>
                           </article>
@@ -2200,9 +2099,7 @@
                                     Tải xuống
                                   </span>
                                 </button>
-                                <span class="student-submission-awaiting">
-                                  Chờ giảng viên phản hồi
-                                </span>
+                                
                               </div>
                             </div>
                           </article>
@@ -2221,7 +2118,7 @@
                                   </path>
                                 </svg>
                                 <span>
-                                  Trễ hạn
+                                  Đã nộp trễ
                                 </span>
                               </span>
                             </header>
@@ -2263,9 +2160,7 @@
                                     Tải xuống
                                   </span>
                                 </button>
-                                <span class="student-submission-awaiting">
-                                  Chờ giảng viên phản hồi
-                                </span>
+                                
                               </div>
                             </div>
                           </article>
@@ -2326,9 +2221,7 @@
                                     Tải xuống
                                   </span>
                                 </button>
-                                <span class="student-submission-awaiting">
-                                  Chờ giảng viên phản hồi
-                                </span>
+                                
                               </div>
                             </div>
                           </article>
@@ -2391,9 +2284,7 @@
                                     Tải xuống
                                   </span>
                                 </button>
-                                <span class="student-submission-awaiting">
-                                  Chờ giảng viên phản hồi
-                                </span>
+                                
                               </div>
                             </div>
                           </article>
@@ -2454,9 +2345,7 @@
                                     Tải xuống
                                   </span>
                                 </button>
-                                <span class="student-submission-awaiting">
-                                  Chờ giảng viên phản hồi
-                                </span>
+                                
                               </div>
                             </div>
                           </article>
@@ -2517,9 +2406,7 @@
                                     Tải xuống
                                   </span>
                                 </button>
-                                <span class="student-submission-awaiting">
-                                  Chờ giảng viên phản hồi
-                                </span>
+                                
                               </div>
                             </div>
                           </article>
@@ -2580,9 +2467,7 @@
                                     Tải xuống
                                   </span>
                                 </button>
-                                <span class="student-submission-awaiting">
-                                  Chờ giảng viên phản hồi
-                                </span>
+                                
                               </div>
                             </div>
                           </article>
@@ -2684,7 +2569,7 @@
                                   </path>
                                 </svg>
                                 <span>
-                                  Trễ hạn
+                                  Đã nộp trễ
                                 </span>
                               </span>
                             </header>

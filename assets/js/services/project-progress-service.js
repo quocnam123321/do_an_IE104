@@ -79,10 +79,15 @@
   }
 
   function deleteTask(projectId, taskId, revision) {
+    return deleteTasks(projectId, [taskId], revision);
+  }
+
+  function deleteTasks(projectId, taskIds, revision) {
     return mutate(projectId, revision, (state, team, permission) => {
       if (!permission.manage) throw new Error('Chỉ nhóm trưởng được xóa công việc.');
-      if (!state.tasks.some(task => task.id === taskId)) throw new Error('Công việc không còn tồn tại.');
-      state.tasks = state.tasks.filter(task => task.id !== taskId);
+      if (!Array.isArray(taskIds) || !taskIds.length || new Set(taskIds).size !== taskIds.length) throw new Error('Chọn ít nhất một công việc hợp lệ để xóa.');
+      if (taskIds.some(id => typeof id !== 'string' || !state.tasks.some(task => task.id === id))) throw new Error('Công việc không còn tồn tại.');
+      state.tasks = state.tasks.filter(task => !taskIds.includes(task.id));
     });
   }
 
@@ -107,5 +112,5 @@
     return { total, completed, remaining: total - completed, percent: total ? Math.round(partialsKnown ? state.tasks.reduce((sum, task) => sum + task.percent, 0) / total : completed / total * 100) : 0, method: partialsKnown ? 'task-average' : 'completed-ratio' };
   }
 
-  app.services.projectProgress = { getState, getPermissions, canUpdateTask, validateTask, validateUpdate, saveTask, deleteTask, updateProgress, summarize };
+  app.services.projectProgress = { getState, getPermissions, canUpdateTask, validateTask, validateUpdate, saveTask, deleteTask, deleteTasks, updateProgress, summarize };
 })();

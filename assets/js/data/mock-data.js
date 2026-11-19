@@ -144,6 +144,22 @@
     "statusLabel": "Hoàn thành",
     "createdAt": "2025-10-09",
     "detailUrl": null
-  }
+  },
+{
+  "id": "DA005",
+  "title": "Website quản lý hoạt động học tập",
+  "type": "do-an",
+  "typeLabel": "Đồ án môn học",
+  "courseId": "IE104",
+  "semester": 4,
+  "academicYear": "2026-2027",
+  "lecturer": "Nguyễn Văn An",
+  "lecturerLabel": "Giảng viên hướng dẫn",
+  "groupName": "Nhóm 7 - Study UIT",
+  "status": "dang-thuc-hien",
+  "statusLabel": "Đang thực hiện",
+  "createdAt": "2026-11-19",
+  "detailUrl": "chi-tiet-de-tai-dang-thuc-hien-da005.html#tong-quan"
+}
 ];
 })();
