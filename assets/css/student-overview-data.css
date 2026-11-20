@@ -1,0 +1,7 @@
+.student-overview-page [data-overview-notice]:empty { display: none; }
+.student-overview-page :is(.registration-status__figure, .topic-progress__list, .recent-requests__list)[hidden] { display: none; }
+.student-overview-page .overview-empty { padding: var(--space-4); color: var(--color-muted-foreground); }
+.student-overview-page .registration-chart-withdrawn { stroke: var(--color-muted-foreground); }
+.student-overview-page .registration-status__item--withdrawn::before { background: var(--color-muted-foreground); }
+.student-overview-page .request-card__status--withdrawn { background: var(--color-neutral-bg); color: var(--color-muted-foreground); }
+.student-overview-page :is(.request-card__header h3, .topic-progress__info h3) { overflow-wrap: anywhere; }

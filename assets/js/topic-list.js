@@ -8,8 +8,40 @@
   const list = results.querySelector('.topic-list');
   if (!status || !list) return;
 
+  const teachingCount = document.querySelector('[data-topic-tab-count="teaching"]');
+  const createdCount = document.querySelector('[data-topic-tab-count="created"]');
+  const teacherTopics = window.TeacherTopicStore;
+  const proposals = window.IE104Proposals;
+  const teaching = window.IE104?.services?.teaching;
+
+  function refreshTabCounts() {
+    if (teachingCount && teaching && proposals) {
+      const approved = proposals.getAll().filter(record => record.status === 'approved').length;
+      teachingCount.textContent = `(${teaching.listActiveProjects().length + approved})`;
+    }
+    if (createdCount && teacherTopics) {
+      try {
+        createdCount.textContent = `(${teacherTopics.read().length})`;
+      } catch {
+        createdCount.textContent = '';
+      }
+    }
+  }
+
+  proposals?.subscribe(refreshTabCounts);
+  window.addEventListener('pageshow', refreshTabCounts);
+  window.addEventListener('storage', event => {
+    if (event.key === teacherTopics?.key || event.key === null) refreshTabCounts();
+  });
+  refreshTabCounts();
+
   const viewport = list.closest('.topic-list-scroll') || list;
   const pagination = results.querySelector('.pagination');
+  const pager = pagination?.querySelector('.pagination__list');
+  const previous = pager?.firstElementChild;
+  const next = pager?.lastElementChild;
+  const pageSize = 5;
+  let page = 1;
   const controls = Array.from(form.elements).filter((control) => control.matches('input, select'));
   const filters = [...new Set(controls
     .filter((control) => control.type === 'checkbox' ||
@@ -24,7 +56,7 @@
     const card = item.matches('.topic-card') ? item : item.querySelector('.topic-card');
     const title = card.querySelector('.topic-card__title').textContent.trim();
     const extraTerms = Array.from(card.querySelectorAll('[data-topic-search-term]'),
-      (field) => field.textContent);
+      field => field.dataset.topicSearchTerm || field.textContent);
 
     return {
       item,
@@ -41,54 +73,90 @@
     newest: (first, second) => second.date.localeCompare(first.date),
     oldest: (first, second) => first.date.localeCompare(second.date),
   };
-  let previousOrder;
-
-  function render() {
+  function render(focusPage = false) {
     const data = new FormData(form);
     const terms = normalize(search.value).split(/\s+/).filter(Boolean);
     const selected = filters.map((name) => [name, data.getAll(name).filter(Boolean)]);
-    let visibleCount = 0;
-
-    for (const topic of topics) {
+    const matches = topics.filter(topic => {
       // Kết hợp các nhóm lọc, chấp nhận bất kỳ lựa chọn nào trong cùng nhóm.
       const matchesFilters = selected.every(([name, values]) =>
         !values.length || values.includes(topic.fields.get(name)));
       const matchesSearch = terms.every((term) => topic.terms.includes(term));
-      topic.item.hidden = !matchesFilters || !matchesSearch;
-      if (!topic.item.hidden) visibleCount += 1;
-    }
-
+      return matchesFilters && matchesSearch;
+    });
     const order = data.get('topic_sort');
-    if (order !== previousOrder) {
-      const sorted = orders[order] ? [...topics].sort(orders[order]) : topics;
-      for (const topic of sorted) list.append(topic.item);
-      previousOrder = order;
+    if (orders[order]) matches.sort(orders[order]);
+    const total = matches.length;
+    const pageCount = pager ? Math.max(1, Math.ceil(total / pageSize)) : 1;
+    page = Math.min(page, pageCount);
+    const start = (page - 1) * pageSize;
+    const visible = pager ? matches.slice(start, start + pageSize) : matches;
+    for (const topic of topics) topic.item.hidden = true;
+    for (const topic of visible) {
+      topic.item.hidden = false;
+      list.append(topic.item);
     }
-
-    const message = visibleCount
-      ? `${visibleCount}/${topics.length} đề tài minh họa`
-      : 'Không tìm thấy đề tài phù hợp. Thử từ khóa khác hoặc xóa bộ lọc.';
+    const message = total
+      ? `Hiển thị ${start + 1}–${start + visible.length} / ${total} đề tài. Trang ${page}/${pageCount}.`
+      : topics.length ? 'Không tìm thấy đề tài phù hợp. Thử từ khóa khác hoặc xóa bộ lọc.' : 'Chưa có đề tài trong danh sách này.';
     if (status.textContent !== message) status.textContent = message;
-    status.toggleAttribute('data-empty', visibleCount === 0);
-    viewport.hidden = visibleCount === 0;
-    if (pagination) pagination.hidden = visibleCount < topics.length;
+    status.toggleAttribute('data-empty', total === 0);
+    viewport.hidden = total === 0;
+    if (pager) {
+      const before = previous.querySelector('button');
+      const after = next.querySelector('button');
+      before.disabled = page === 1;
+      before.dataset.page = page - 1;
+      after.disabled = page === pageCount;
+      after.dataset.page = page + 1;
+      const numbers = Array.from({ length: pageCount }, (_, index) => {
+        const number = index + 1;
+        const item = document.createElement('li');
+        const current = number === page;
+        const control = document.createElement(current ? 'span' : 'button');
+        control.textContent = number;
+        control.className = current ? 'pagination__current' : 'pagination__button';
+        control.setAttribute('aria-label', `Trang ${number}`);
+        if (current) {
+          control.setAttribute('aria-current', 'page');
+          control.tabIndex = -1;
+        } else {
+          control.type = 'button';
+          control.dataset.page = number;
+        }
+        item.append(control);
+        return item;
+      });
+      pager.replaceChildren(previous, ...numbers, next);
+      pagination.hidden = total === 0;
+      if (focusPage) pager.querySelector('[aria-current="page"]').focus({ preventScroll: true });
+    }
     viewport.scrollTop = 0;
   }
 
-  search.addEventListener('input', render);
+  function applyFilters() {
+    page = 1;
+    render();
+  }
+  pager?.addEventListener('click', event => {
+    const button = event.target.closest('button[data-page]');
+    if (!button || button.disabled) return;
+    page = Number(button.dataset.page);
+    render(true);
+  });
+  search.addEventListener('input', applyFilters);
   for (const control of controls) {
-    if (control !== search) control.addEventListener('change', render);
+    if (control !== search) control.addEventListener('change', applyFilters);
   }
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    render();
+    applyFilters();
   });
   // Sự kiện reset xảy ra trước khi trình duyệt khôi phục giá trị mặc định.
-  form.addEventListener('reset', () => window.setTimeout(render, 0));
+  form.addEventListener('reset', () => window.setTimeout(applyFilters, 0));
   // Các màn nối dữ liệu demo có thể thêm thẻ hoặc cập nhật trạng thái từ tab khác.
   document.addEventListener('ie104:topics-updated', () => {
     topics = readTopics();
-    previousOrder = undefined;
     render();
   });
 

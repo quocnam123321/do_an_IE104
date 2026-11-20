@@ -9,15 +9,21 @@
       name="description"
     />
     <title>Đăng ký đề tài | Quản lý đồ án</title>
-    <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
+    <link rel="stylesheet" href="../../assets/css/tokens.css" />
+    <link rel="stylesheet" href="../../assets/css/base.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
-    <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css?v=20261111-heading-sync-1" />
+    <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css" />
     <link rel="stylesheet" href="../../assets/css/student-topic-registration.css" />
     <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
-    <script src="../../assets/js/topic-list.js" defer></script>
-  </head>
+    <script src="../../assets/js/data/mock-data.js" defer></script>
+    <script src="../../assets/js/teacher-topic-store.js" defer></script>
+    <script src="../../assets/js/services/topic-service.js" defer></script>
+    <script src="../../assets/js/shared/topic-list.js" defer></script>
+    <script src="../../assets/js/pages/student/topic-registration.js" defer></script>
+  
+<script src="../../assets/js/dialog-commands.js" defer></script>
+</head>
   <body class="registration-page student-topic-registration-page">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
     <!-- ĐẦU TRANG CHUNG CHO SINH VIÊN -->
@@ -115,11 +121,13 @@
         <header class="page-header registration-heading">
           <div class="registration-heading__copy">
             <h1 class="page-header__title">Đề tài mở đăng ký</h1>
+            <p class="page-header__description">
+              Tìm kiếm và xem các đề tài đang mở đăng ký.
+            </p>
           </div>
           <a class="topics__create-proposal" href="tao-de-xuat.html"><span aria-hidden="true">+</span> Tạo đề xuất</a>
         </header>
         <div class="page-content">
-          <!-- Khung HTML theo wireframe. Tìm kiếm, lọc và phân trang chưa có xử lý. -->
           <div class="topics-layout">
             <details class="topic-filter-panel" open>
               <summary id="filter-title"><svg class="topic-filter-panel__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 4h18l-7 9v7l-4-2v-5L3 4Z" /></svg><span>Bộ lọc</span><svg class="topic-filter-panel__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg></summary>
@@ -202,14 +210,20 @@
                   <legend>Sắp xếp</legend>
                   <div class="topic-filters__options">
                   <div class="topic-filters__option">
-                    <label for="sort-default">
-                      <input id="sort-default" name="topic_sort" type="radio" value="default" checked />
-                      <span class="topic-filters__option-text">Thứ tự mặc định</span>
+                    <label for="sort-newest">
+                      <input id="sort-newest" name="sap-xep" type="radio" value="moi-nhat" checked />
+                      <span class="topic-filters__option-text">Mới nhất</span>
+                    </label>
+                  </div>
+                  <div class="topic-filters__option">
+                    <label for="sort-oldest">
+                      <input id="sort-oldest" name="sap-xep" type="radio" value="cu-nhat" />
+                      <span class="topic-filters__option-text">Cũ nhất</span>
                     </label>
                   </div>
                   <div class="topic-filters__option">
                     <label for="sort-name">
-                      <input id="sort-name" name="topic_sort" type="radio" value="name-asc" />
+                      <input id="sort-name" name="sap-xep" type="radio" value="ten-a-z" />
                       <span class="topic-filters__option-text">Tên A–Z</span>
                     </label>
                   </div>
@@ -220,7 +234,7 @@
             </details>
 
 
-            <section class="topics topics-layout__main" aria-labelledby="topic-list-title" data-topic-results>
+            <section class="topics topics-layout__main" aria-labelledby="topic-list-title">
               <div class="topic-search" role="search" aria-label="Tìm kiếm và chọn giảng viên cho đề tài mở đăng ký">
                 <div class="topic-filters__field topic-search__query">
                   <label for="topic-search">Tìm kiếm theo tên hoặc mã đề tài</label>
@@ -232,6 +246,7 @@
                   <select id="lecturer-filter" name="giang-vien" form="topic-filter-form">
                     <option value="">Tất cả giảng viên</option>
                     <option value="Nguyễn Văn A">Nguyễn Văn A</option>
+                    <option value="Nguyễn Văn Minh">Nguyễn Văn Minh</option>
                     <option value="Lê Văn C">Lê Văn C</option>
                     <option value="Trần Thị B">Trần Thị B</option>
                     <option value="Phạm Minh D">Phạm Minh D</option>
@@ -240,12 +255,10 @@
               </div>
               <header class="topics__header">
                 <h2 id="topic-list-title">Danh sách đề tài mở đăng ký</h2>
-                <p class="topic-list__status" data-topic-count role="status" hidden></p>
               </header>
-              <noscript><p class="topic-list__status">Bật JavaScript để tìm kiếm, lọc và sắp xếp đề tài.</p></noscript>
-              <ul class="topic-list" tabindex="0" aria-labelledby="topic-list-title">
+              <ul class="topic-list" tabindex="0" aria-label="Danh sách 5 đề tài minh họa, cuộn để xem thêm">
                 <li class="topic-list__item">
-                  <article class="topic-card" aria-labelledby="topic-title-dt001" data-topic-id="DT001" data-status="mo-dang-ky" data-loai-de-tai="do-an-mon-hoc" data-mon-hoc="IE104" data-giang-vien="Nguyễn Văn A">
+                  <article class="topic-card" aria-labelledby="topic-title-dt001" data-topic-id="DT001" data-status="mo-dang-ky">
                     <div class="topic-card__image topic-image--uit">
                       <img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" />
                     </div>
@@ -265,7 +278,7 @@
                   </article>
                 </li>
                 <li class="topic-list__item">
-                  <article class="topic-card" aria-labelledby="topic-title-dt003" data-topic-id="DT003" data-status="mo-dang-ky" data-loai-de-tai="do-an-mon-hoc" data-mon-hoc="IE104" data-giang-vien="Lê Văn C">
+                  <article class="topic-card" aria-labelledby="topic-title-dt003" data-topic-id="DT003" data-status="mo-dang-ky">
                     <div class="topic-card__image topic-image--uit">
                       <img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" />
                     </div>
@@ -286,7 +299,7 @@
                   </article>
                 </li>
                 <li class="topic-list__item">
-                  <article class="topic-card" aria-labelledby="topic-title-dt004" data-topic-id="DT004" data-status="mo-dang-ky" data-loai-de-tai="khoa-luan" data-giang-vien="Nguyễn Văn A">
+                  <article class="topic-card" aria-labelledby="topic-title-dt004" data-topic-id="DT004" data-status="mo-dang-ky">
                     <div class="topic-card__image topic-image--uit">
                       <img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" />
                     </div>
@@ -307,7 +320,7 @@
                   </article>
                 </li>
                 <li class="topic-list__item">
-                  <article class="topic-card" aria-labelledby="topic-title-demo004" data-topic-id="MẪU-04" data-status="mo-dang-ky" data-loai-de-tai="khoa-luan" data-giang-vien="Trần Thị B">
+                  <article class="topic-card" aria-labelledby="topic-title-demo004" data-topic-id="MẪU-04" data-status="mo-dang-ky">
                     <div class="topic-card__image topic-image--uit">
                       <img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" />
                     </div>
@@ -328,7 +341,7 @@
                   </article>
                 </li>
                 <li class="topic-list__item">
-                  <article class="topic-card" aria-labelledby="topic-title-demo005" data-topic-id="MẪU-05" data-status="mo-dang-ky" data-loai-de-tai="khoa-luan" data-giang-vien="Phạm Minh D">
+                  <article class="topic-card" aria-labelledby="topic-title-demo005" data-topic-id="MẪU-05" data-status="mo-dang-ky">
                     <div class="topic-card__image topic-image--uit">
                       <img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" />
                     </div>
@@ -349,7 +362,6 @@
                   </article>
                 </li>
               </ul>
-              <!-- Phân trang minh họa, chưa nối dữ liệu các trang khác. -->
               <nav class="pagination" aria-label="Phân trang đề tài mở đăng ký">
                 <ul class="pagination__list">
                   <li><button class="pagination__button" type="button" aria-label="Trang trước" disabled>‹</button></li>
@@ -361,12 +373,19 @@
               </nav>
             </section>
           </div>
-          <!-- Khung trạng thái dùng khi nối nguồn dữ liệu. -->
+          <!-- Các biến thể khung danh sách, chưa có xử lý lọc hoặc tải dữ liệu. -->
           <template id="topics-empty-template">
             <section class="empty-state" aria-label="Danh sách đề tài trống">
               <h2>Chưa có đề tài mở đăng ký</h2>
               <p>Các đề tài sẽ xuất hiện tại đây khi được mở đăng ký.</p>
               <a href="tao-de-xuat.html">Tạo đề xuất mới</a>
+            </section>
+          </template>
+          <template id="topics-no-results-template">
+            <section class="empty-state" aria-label="Không có kết quả tìm kiếm">
+              <h2>Không tìm thấy đề tài phù hợp</h2>
+              <p>Thử thay đổi từ khóa hoặc bộ lọc.</p>
+              <a href="dang-ky-de-tai.html">Xóa bộ lọc</a>
             </section>
           </template>
           <template id="topics-error-template">
