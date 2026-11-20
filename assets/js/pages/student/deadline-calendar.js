@@ -88,7 +88,9 @@
     render();
   }
 
-  document.querySelectorAll('.deadline-calendar__toolbar :is(button, input, select)').forEach(control => { control.disabled = false; });
+  document.querySelectorAll(
+    '.deadline-calendar__toolbar :is(input, select, .deadline-calendar__previous, .deadline-calendar__next, .deadline-calendar__today)'
+  ).forEach(control => { control.disabled = false; });
   month.value = service.today().slice(0, 7);
   month.min = '0001-01';
   month.max = '9999-12';
