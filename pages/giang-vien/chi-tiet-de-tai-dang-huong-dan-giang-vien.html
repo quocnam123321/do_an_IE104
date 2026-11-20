@@ -1,25 +1,23 @@
-<!DOCTYPE html>
-<html lang="vi">
-  <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <meta content="Thông tin, tiến độ, bài nộp và đánh giá đề tài đang hướng dẫn." name="description"/>
+<!doctype html>
+<html lang="vi"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Thông tin, tiến độ, bài nộp và đánh giá đề tài đang hướng dẫn." name="description">
     <title>
       Chi tiết đề tài đang hướng dẫn | Quản lý đồ án
     </title>
-    <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261111-heading-sync-1"/>
-    <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1"/>
-    <link rel="stylesheet" href="../../assets/css/components.css"/>
-    <link rel="stylesheet" href="../../assets/css/teacher-workspace-layout.css" />
-    <link rel="stylesheet" href="../../assets/css/teacher-dialogs.css?v=20261030-1"/>
-    <link rel="stylesheet" href="../../assets/css/topic-detail-boards.css"/>
-    <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css"/>
-    <link rel="stylesheet" href="../../assets/css/teacher-workspace-detail.css"/>
-    <script src="../../assets/js/shared/nav-indicator.js" defer></script>
-    <script src="../../assets/js/shared/teacher-detail-tabs.js" defer></script>
-    <script src="../../assets/js/shared/dialog-commands.js" defer></script>
-    <link rel="stylesheet" href="../../assets/css/teaching-workspace.css">
-</head>
+    <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261111-heading-sync-1">
+    <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
+    <link rel="stylesheet" href="../../assets/css/teacher-dialogs.css?v=20261030-1">
+    <link rel="stylesheet" href="../../assets/css/topic-detail-boards.css">
+    <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css">
+    <link rel="stylesheet" href="../../assets/css/teacher-topic-detail.css?v=20261111-heading-sync-1">
+    <script src="../../assets/js/uit-lecturer-catalog.js" defer=""></script><script src="../../assets/js/nav-indicator.js" defer=""></script>
+    <script src="../../assets/js/detail-tabs.js" defer=""></script>
+    <script src="../../assets/js/dialog-commands.js" defer=""></script>
+  <script src="../../assets/js/uit-lecturer-view.js" defer=""></script><link rel="stylesheet" href="../../assets/css/uit-restored-submissions.css"></head>
   <body class="teacher-workspace-page">
     <a class="skip-link" href="#main-content">
       Chuyển đến nội dung chính
@@ -27,14 +25,14 @@
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-brand" href="tong-quan-giang-vien.html">
-          <img alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" class="site-brand__logo" height="70" src="../../assets/images/images.jpg" width="70"/>
+          <img alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" class="site-brand__logo" height="70" src="../../assets/images/images.jpg" width="70">
           <span class="site-brand__name">
             QUẢN LÝ ĐỒ ÁN VÀ
-            <br/>
+            <br>
             KHÓA LUẬN TỐT NGHIỆP
           </span>
         </a>
-        <nav aria-label="Điều hướng giảng viên" class="main-nav" data-nav-indicator>
+        <nav aria-label="Điều hướng giảng viên" class="main-nav" data-nav-indicator="">
           <ul class="main-nav__list">
             <li class="main-nav__item">
               <a class="main-nav__link" href="tong-quan-giang-vien.html">
@@ -54,7 +52,7 @@
                 <summary class="main-nav__label" id="common-navigation-label">
                   <span>Chung</span>
                   <svg class="main-nav__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="m6 9 6 6 6-6"/>
+                    <path d="m6 9 6 6 6-6"></path>
                   </svg>
                 </summary>
                 <ul aria-labelledby="common-navigation-label" class="main-nav__sublist">
@@ -84,12 +82,12 @@
             <summary aria-label="Mở menu tài khoản giảng viên" class="account-menu__toggle">
               <span aria-hidden="true" class="account-menu__avatar">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
-                  <circle cx="12" cy="7" r="4"/>
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
                 </svg>
               </span>
               <svg class="account-menu__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="m6 9 6 6 6-6"/>
+                <path d="m6 9 6 6 6-6"></path>
               </svg>
               <span class="account-menu__label">
                 Tài khoản giảng viên
@@ -114,9 +112,9 @@
           <details class="mobile-nav__disclosure">
             <summary class="mobile-nav__toggle" aria-label="Mở menu điều hướng">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <line x1="4" y1="6" x2="20" y2="6"/>
-                <line x1="4" y1="12" x2="20" y2="12"/>
-                <line x1="4" y1="18" x2="20" y2="18"/>
+                <line x1="4" y1="6" x2="20" y2="6"></line>
+                <line x1="4" y1="12" x2="20" y2="12"></line>
+                <line x1="4" y1="18" x2="20" y2="18"></line>
               </svg>
               <span>Menu</span>
             </summary>
@@ -153,7 +151,7 @@
                     <a class="mobile-nav__link" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
                   </li>
                   <li>
-                    <button class="mobile-nav__logout" type="button" disabled title="Chức năng đăng xuất chưa được kết nối">Đăng xuất</button>
+                    <button class="mobile-nav__logout" type="button" disabled="" title="Chức năng đăng xuất chưa được kết nối">Đăng xuất</button>
                   </li>
                 </ul>
               </div>
@@ -196,7 +194,7 @@
         <p class="back-navigation">
           <a class="back-link" href="danh-sach-de-tai-dang-huong-dan.html">
             <svg class="back-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M19 12H5m7 7-7-7 7-7"/>
+              <path d="M19 12H5m7 7-7-7 7-7"></path>
             </svg>
             <span>Quay lại Quản lý đề tài</span>
           </a>
@@ -205,7 +203,7 @@
           <h1 class="page-header__title">Chi tiết đề tài</h1>
           <p class="page-header__topic-name">Website quản lý thư viện</p>
         </header>
-        <nav class="topic-tabs topic-tabs--detail" data-detail-tabs aria-label="Các mục chi tiết đề tài">
+        <nav class="topic-tabs topic-tabs--detail" data-detail-tabs="" aria-label="Các mục chi tiết đề tài">
           <ul class="topic-tabs__list">
             <li class="topic-tabs__item"><a class="topic-tabs__link" href="#tong-quan">Tổng quan</a></li>
             <li class="topic-tabs__item"><a class="topic-tabs__link" href="#tien-do">Tiến độ</a></li>
@@ -213,23 +211,14 @@
             <li class="topic-tabs__item"><a class="topic-tabs__link" href="#ket-qua-danh-gia">Kết quả đánh giá</a></li>
           </ul>
         </nav>
-        <div class="page-content" data-detail-panels>
+        <div class="page-content" data-detail-panels="">
           <section class="topic-panel" id="overview-section" aria-label="Tổng quan">
             <div id="tong-quan" tabindex="-1">
               <section class="topic-summary" aria-labelledby="topic-summary-title">
                 <div class="topic-summary__image" role="img" aria-label="Chưa có ảnh đại diện cho đề tài Website quản lý thư viện">
-                  <svg
-                    class="topic-summary__placeholder-icon"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.6"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/>
-                    <path d="M9 13h6M9 16h4"/>
+                  <svg class="topic-summary__placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+                    <path d="M9 13h6M9 16h4"></path>
                   </svg>
                 </div>
                 <div class="topic-summary__content">
@@ -314,10 +303,10 @@
                       <div class="topic-milestones__item">
                         <span class="topic-milestones__icon" aria-hidden="true">
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                            <line x1="16" y1="2" x2="16" y2="6"/>
-                            <line x1="8" y1="2" x2="8" y2="6"/>
-                            <line x1="3" y1="10" x2="21" y2="10"/>
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
                           </svg>
                         </span>
                         <div class="topic-milestones__text">
@@ -328,10 +317,10 @@
                       <div class="topic-milestones__item">
                         <span class="topic-milestones__icon" aria-hidden="true">
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                            <line x1="16" y1="2" x2="16" y2="6"/>
-                            <line x1="8" y1="2" x2="8" y2="6"/>
-                            <line x1="3" y1="10" x2="21" y2="10"/>
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
                           </svg>
                         </span>
                         <div class="topic-milestones__text">
@@ -342,10 +331,10 @@
                       <div class="topic-milestones__item">
                         <span class="topic-milestones__icon" aria-hidden="true">
                           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                            <line x1="16" y1="2" x2="16" y2="6"/>
-                            <line x1="8" y1="2" x2="8" y2="6"/>
-                            <line x1="3" y1="10" x2="21" y2="10"/>
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
                           </svg>
                         </span>
                         <div class="topic-milestones__text">
@@ -366,7 +355,7 @@
                 <header class="progress-overview__header">
                   <h3 id="progress-title" class="progress-overview__title">Tiến độ tổng thể</h3>
                   <button class="progress-overview__review" type="button" command="show-modal" commandfor="progress-review" aria-controls="progress-review" aria-haspopup="dialog">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><path d="M8 9h8M8 13h5"></path></svg>
                     <span>Gửi nhận xét về tiến độ</span>
                   </button>
                 </header>
@@ -375,9 +364,9 @@
                   <label class="progress-overview__percent" for="topic-progress">23% hoàn thành</label>
                 </div>
                 <dl class="progress-overview__stats">
-                  <div class="progress-stat"><dt><svg class="progress-stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg><span>Tổng công việc</span></dt><dd>13</dd></div>
-                  <div class="progress-stat"><dt><svg class="progress-stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><span>Đã hoàn thành</span></dt><dd>3</dd></div>
-                  <div class="progress-stat"><dt><svg class="progress-stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Còn lại</span></dt><dd>10</dd></div>
+                  <div class="progress-stat"><dt><svg class="progress-stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6M8 13h8M8 17h6"></path></svg><span>Tổng công việc</span></dt><dd>13</dd></div>
+                  <div class="progress-stat"><dt><svg class="progress-stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg><span>Đã hoàn thành</span></dt><dd>3</dd></div>
+                  <div class="progress-stat"><dt><svg class="progress-stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg><span>Còn lại</span></dt><dd>10</dd></div>
                 </dl>
               </section>
               <section class="progress-tasks" aria-labelledby="tasks-title">
@@ -386,16 +375,16 @@
                 <div class="task-board" role="region" aria-label="Các cột công việc" aria-describedby="task-board-help" tabindex="0">
                   <div class="task-board__columns">
                   <section class="task-column task-column--not-started" aria-labelledby="task-column-not-started-title">
-                    <h4 id="task-column-not-started-title" class="task-column__title"><svg class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg><span>Chưa bắt đầu</span><span class="task-column__count"><span class="visually-hidden">Số công việc: </span>(4)</span></h4>
+                    <h4 id="task-column-not-started-title" class="task-column__title"><svg class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12"></path><path d="M3 6h.01M3 12h.01M3 18h.01"></path></svg><span>Chưa bắt đầu</span><span class="task-column__count"><span class="visually-hidden">Số công việc: </span>(4)</span></h4>
                     <ul class="task-column__list" tabindex="0" aria-labelledby="task-column-not-started-title" aria-describedby="task-board-help">
                     <li>
                       <article class="task-card task-card--overdue" aria-labelledby="task-1-title">
                         <header class="task-card__header">
                           <h5 id="task-1-title" class="task-card__title">Kiểm thử chức năng mượn trả</h5>
-                          <span class="task-card__overdue"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Quá hạn</span></span>
+                          <span class="task-card__overdue"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg><span>Quá hạn</span></span>
                         </header>
                         <div class="task-card__footer">
-                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-10-24">24/10/2026</time></p>
+                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-10-24">24/10/2026</time></p>
                           <div class="task-assignees" role="group" aria-label="Thành viên phụ trách công việc Kiểm thử chức năng mượn trả"><button class="task-assignee" type="button" popovertarget="progress-member-binh" aria-haspopup="dialog" aria-label="Xem thông tin Trần Thị Bình, mã số sinh viên 22520002" title="Trần Thị Bình"><span class="task-assignee__avatar task-assignee__avatar--binh" aria-hidden="true">TB</span></button><button class="task-assignee" type="button" popovertarget="progress-member-cuong" aria-haspopup="dialog" aria-label="Xem thông tin Lê Văn Cường, mã số sinh viên 22520003" title="Lê Văn Cường"><span class="task-assignee__avatar task-assignee__avatar--cuong" aria-hidden="true">LC</span></button></div>
                         </div>
                       </article>
@@ -407,7 +396,7 @@
 
                         </header>
                         <div class="task-card__footer">
-                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-11-15">15/11/2026</time></p>
+                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-11-15">15/11/2026</time></p>
                           <div class="task-assignees" role="group" aria-label="Thành viên phụ trách công việc Tích hợp tìm kiếm sách"><button class="task-assignee" type="button" popovertarget="progress-member-an" aria-haspopup="dialog" aria-label="Xem thông tin Nguyễn Văn An, mã số sinh viên 22520001" title="Nguyễn Văn An"><span class="task-assignee__avatar task-assignee__avatar--an" aria-hidden="true">NA</span></button><button class="task-assignee" type="button" popovertarget="progress-member-binh" aria-haspopup="dialog" aria-label="Xem thông tin Trần Thị Bình, mã số sinh viên 22520002" title="Trần Thị Bình"><span class="task-assignee__avatar task-assignee__avatar--binh" aria-hidden="true">TB</span></button></div>
                         </div>
                       </article>
@@ -419,7 +408,7 @@
 
                         </header>
                         <div class="task-card__footer">
-                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-12-10">10/12/2026</time></p>
+                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-12-10">10/12/2026</time></p>
                           <div class="task-assignees" role="group" aria-label="Thành viên phụ trách công việc Viết tài liệu hướng dẫn"><button class="task-assignee" type="button" popovertarget="progress-member-an" aria-haspopup="dialog" aria-label="Xem thông tin Nguyễn Văn An, mã số sinh viên 22520001" title="Nguyễn Văn An"><span class="task-assignee__avatar task-assignee__avatar--an" aria-hidden="true">NA</span></button></div>
                         </div>
                       </article>
@@ -431,7 +420,7 @@
 
                         </header>
                         <div class="task-card__footer">
-                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-12-20">20/12/2026</time></p>
+                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-12-20">20/12/2026</time></p>
                           <div class="task-assignees" role="group" aria-label="Thành viên phụ trách công việc Chuẩn bị báo cáo cuối kỳ"><button class="task-assignee" type="button" popovertarget="progress-member-an" aria-haspopup="dialog" aria-label="Xem thông tin Nguyễn Văn An, mã số sinh viên 22520001" title="Nguyễn Văn An"><span class="task-assignee__avatar task-assignee__avatar--an" aria-hidden="true">NA</span></button><button class="task-assignee" type="button" popovertarget="progress-member-binh" aria-haspopup="dialog" aria-label="Xem thông tin Trần Thị Bình, mã số sinh viên 22520002" title="Trần Thị Bình"><span class="task-assignee__avatar task-assignee__avatar--binh" aria-hidden="true">TB</span></button><button class="task-assignee task-assignee--third" type="button" popovertarget="progress-member-cuong" aria-haspopup="dialog" aria-label="Xem thông tin Lê Văn Cường, mã số sinh viên 22520003" title="Lê Văn Cường"><span class="task-assignee__avatar task-assignee__avatar--cuong" aria-hidden="true">LC</span></button><button class="task-assignee task-assignee--more" type="button" popovertarget="progress-member-cuong" aria-haspopup="dialog" aria-label="Xem 1 thành viên còn lại: Lê Văn Cường" title="1 thành viên còn lại"><span class="task-assignee__avatar task-assignee__avatar--more" aria-hidden="true">+1</span></button></div>
                         </div>
                       </article>
@@ -439,7 +428,7 @@
                     </ul>
                   </section>
                   <section class="task-column task-column--in-progress" aria-labelledby="task-column-in-progress-title">
-                    <h4 id="task-column-in-progress-title" class="task-column__title"><svg class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Đang thực hiện</span><span class="task-column__count"><span class="visually-hidden">Số công việc: </span>(6)</span></h4>
+                    <h4 id="task-column-in-progress-title" class="task-column__title"><svg class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg><span>Đang thực hiện</span><span class="task-column__count"><span class="visually-hidden">Số công việc: </span>(6)</span></h4>
                     <ul class="task-column__list" tabindex="0" aria-labelledby="task-column-in-progress-title" aria-describedby="task-board-help">
                     <li>
                       <article class="task-card" aria-labelledby="task-5-title">
@@ -448,7 +437,7 @@
 
                         </header>
                         <div class="task-card__footer">
-                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-11-10">10/11/2026</time></p>
+                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-11-10">10/11/2026</time></p>
                           <div class="task-assignees" role="group" aria-label="Thành viên phụ trách công việc Xây dựng giao diện quản lý sách"><button class="task-assignee" type="button" popovertarget="progress-member-an" aria-haspopup="dialog" aria-label="Xem thông tin Nguyễn Văn An, mã số sinh viên 22520001" title="Nguyễn Văn An"><span class="task-assignee__avatar task-assignee__avatar--an" aria-hidden="true">NA</span></button><button class="task-assignee" type="button" popovertarget="progress-member-binh" aria-haspopup="dialog" aria-label="Xem thông tin Trần Thị Bình, mã số sinh viên 22520002" title="Trần Thị Bình"><span class="task-assignee__avatar task-assignee__avatar--binh" aria-hidden="true">TB</span></button></div>
                         </div>
                       </article>
@@ -457,10 +446,10 @@
                       <article class="task-card task-card--overdue" aria-labelledby="task-6-title">
                         <header class="task-card__header">
                           <h5 id="task-6-title" class="task-card__title">Thiết kế cơ sở dữ liệu</h5>
-                          <span class="task-card__overdue"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Quá hạn</span></span>
+                          <span class="task-card__overdue"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg><span>Quá hạn</span></span>
                         </header>
                         <div class="task-card__footer">
-                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-10-25">25/10/2026</time></p>
+                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-10-25">25/10/2026</time></p>
                           <div class="task-assignees" role="group" aria-label="Thành viên phụ trách công việc Thiết kế cơ sở dữ liệu"><button class="task-assignee" type="button" popovertarget="progress-member-an" aria-haspopup="dialog" aria-label="Xem thông tin Nguyễn Văn An, mã số sinh viên 22520001" title="Nguyễn Văn An"><span class="task-assignee__avatar task-assignee__avatar--an" aria-hidden="true">NA</span></button><button class="task-assignee" type="button" popovertarget="progress-member-cuong" aria-haspopup="dialog" aria-label="Xem thông tin Lê Văn Cường, mã số sinh viên 22520003" title="Lê Văn Cường"><span class="task-assignee__avatar task-assignee__avatar--cuong" aria-hidden="true">LC</span></button></div>
                         </div>
                       </article>
@@ -472,7 +461,7 @@
 
                         </header>
                         <div class="task-card__footer">
-                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-11-12">12/11/2026</time></p>
+                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-11-12">12/11/2026</time></p>
                           <div class="task-assignees" role="group" aria-label="Thành viên phụ trách công việc Xây dựng API mượn trả"><button class="task-assignee" type="button" popovertarget="progress-member-an" aria-haspopup="dialog" aria-label="Xem thông tin Nguyễn Văn An, mã số sinh viên 22520001" title="Nguyễn Văn An"><span class="task-assignee__avatar task-assignee__avatar--an" aria-hidden="true">NA</span></button><button class="task-assignee" type="button" popovertarget="progress-member-cuong" aria-haspopup="dialog" aria-label="Xem thông tin Lê Văn Cường, mã số sinh viên 22520003" title="Lê Văn Cường"><span class="task-assignee__avatar task-assignee__avatar--cuong" aria-hidden="true">LC</span></button></div>
                         </div>
                       </article>
@@ -484,7 +473,7 @@
 
                         </header>
                         <div class="task-card__footer">
-                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-11-08">08/11/2026</time></p>
+                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-11-08">08/11/2026</time></p>
                           <div class="task-assignees" role="group" aria-label="Thành viên phụ trách công việc Xử lý đăng nhập và phân quyền"><button class="task-assignee" type="button" popovertarget="progress-member-an" aria-haspopup="dialog" aria-label="Xem thông tin Nguyễn Văn An, mã số sinh viên 22520001" title="Nguyễn Văn An"><span class="task-assignee__avatar task-assignee__avatar--an" aria-hidden="true">NA</span></button></div>
                         </div>
                       </article>
@@ -496,7 +485,7 @@
 
                         </header>
                         <div class="task-card__footer">
-                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-11-18">18/11/2026</time></p>
+                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-11-18">18/11/2026</time></p>
                           <div class="task-assignees" role="group" aria-label="Thành viên phụ trách công việc Tích hợp quản lý bạn đọc"><button class="task-assignee" type="button" popovertarget="progress-member-binh" aria-haspopup="dialog" aria-label="Xem thông tin Trần Thị Bình, mã số sinh viên 22520002" title="Trần Thị Bình"><span class="task-assignee__avatar task-assignee__avatar--binh" aria-hidden="true">TB</span></button><button class="task-assignee" type="button" popovertarget="progress-member-cuong" aria-haspopup="dialog" aria-label="Xem thông tin Lê Văn Cường, mã số sinh viên 22520003" title="Lê Văn Cường"><span class="task-assignee__avatar task-assignee__avatar--cuong" aria-hidden="true">LC</span></button></div>
                         </div>
                       </article>
@@ -508,7 +497,7 @@
 
                         </header>
                         <div class="task-card__footer">
-                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-11-22">22/11/2026</time></p>
+                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-11-22">22/11/2026</time></p>
                           <div class="task-assignees" role="group" aria-label="Thành viên phụ trách công việc Xây dựng thống kê mượn trả"><button class="task-assignee" type="button" popovertarget="progress-member-binh" aria-haspopup="dialog" aria-label="Xem thông tin Trần Thị Bình, mã số sinh viên 22520002" title="Trần Thị Bình"><span class="task-assignee__avatar task-assignee__avatar--binh" aria-hidden="true">TB</span></button><button class="task-assignee" type="button" popovertarget="progress-member-cuong" aria-haspopup="dialog" aria-label="Xem thông tin Lê Văn Cường, mã số sinh viên 22520003" title="Lê Văn Cường"><span class="task-assignee__avatar task-assignee__avatar--cuong" aria-hidden="true">LC</span></button></div>
                         </div>
                       </article>
@@ -516,7 +505,7 @@
                     </ul>
                   </section>
                   <section class="task-column task-column--done" aria-labelledby="task-column-done-title">
-                    <h4 id="task-column-done-title" class="task-column__title"><svg class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><span>Đã hoàn thành</span><span class="task-column__count"><span class="visually-hidden">Số công việc: </span>(3)</span></h4>
+                    <h4 id="task-column-done-title" class="task-column__title"><svg class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg><span>Đã hoàn thành</span><span class="task-column__count"><span class="visually-hidden">Số công việc: </span>(3)</span></h4>
                     <ul class="task-column__list" tabindex="0" aria-labelledby="task-column-done-title" aria-describedby="task-board-help">
                     <li>
                       <article class="task-card" aria-labelledby="task-10-title">
@@ -525,7 +514,7 @@
 
                         </header>
                         <div class="task-card__footer">
-                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-10-15">15/10/2026</time></p>
+                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-10-15">15/10/2026</time></p>
                           <div class="task-assignees" role="group" aria-label="Thành viên phụ trách công việc Khảo sát và phân tích yêu cầu"><button class="task-assignee" type="button" popovertarget="progress-member-an" aria-haspopup="dialog" aria-label="Xem thông tin Nguyễn Văn An, mã số sinh viên 22520001" title="Nguyễn Văn An"><span class="task-assignee__avatar task-assignee__avatar--an" aria-hidden="true">NA</span></button><button class="task-assignee" type="button" popovertarget="progress-member-binh" aria-haspopup="dialog" aria-label="Xem thông tin Trần Thị Bình, mã số sinh viên 22520002" title="Trần Thị Bình"><span class="task-assignee__avatar task-assignee__avatar--binh" aria-hidden="true">TB</span></button></div>
                         </div>
                       </article>
@@ -537,7 +526,7 @@
 
                         </header>
                         <div class="task-card__footer">
-                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-10-10">10/10/2026</time></p>
+                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-10-10">10/10/2026</time></p>
                           <div class="task-assignees" role="group" aria-label="Thành viên phụ trách công việc Lập kế hoạch thực hiện đề tài"><button class="task-assignee" type="button" popovertarget="progress-member-an" aria-haspopup="dialog" aria-label="Xem thông tin Nguyễn Văn An, mã số sinh viên 22520001" title="Nguyễn Văn An"><span class="task-assignee__avatar task-assignee__avatar--an" aria-hidden="true">NA</span></button><button class="task-assignee" type="button" popovertarget="progress-member-binh" aria-haspopup="dialog" aria-label="Xem thông tin Trần Thị Bình, mã số sinh viên 22520002" title="Trần Thị Bình"><span class="task-assignee__avatar task-assignee__avatar--binh" aria-hidden="true">TB</span></button><button class="task-assignee task-assignee--third" type="button" popovertarget="progress-member-cuong" aria-haspopup="dialog" aria-label="Xem thông tin Lê Văn Cường, mã số sinh viên 22520003" title="Lê Văn Cường"><span class="task-assignee__avatar task-assignee__avatar--cuong" aria-hidden="true">LC</span></button><button class="task-assignee task-assignee--more" type="button" popovertarget="progress-member-cuong" aria-haspopup="dialog" aria-label="Xem 1 thành viên còn lại: Lê Văn Cường" title="1 thành viên còn lại"><span class="task-assignee__avatar task-assignee__avatar--more" aria-hidden="true">+1</span></button></div>
                         </div>
                       </article>
@@ -549,7 +538,7 @@
 
                         </header>
                         <div class="task-card__footer">
-                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-10-18">18/10/2026</time></p>
+                          <p class="task-card__deadline"><svg class="task-card__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M16 3v4M8 3v4M3 11h18"></path></svg><span class="visually-hidden">Hạn hoàn thành: </span><time datetime="2026-10-18">18/10/2026</time></p>
                           <div class="task-assignees" role="group" aria-label="Thành viên phụ trách công việc Hoàn thiện sơ đồ use case"><button class="task-assignee" type="button" popovertarget="progress-member-cuong" aria-haspopup="dialog" aria-label="Xem thông tin Lê Văn Cường, mã số sinh viên 22520003" title="Lê Văn Cường"><span class="task-assignee__avatar task-assignee__avatar--cuong" aria-hidden="true">LC</span></button></div>
                         </div>
                       </article>
@@ -566,7 +555,7 @@
                   <p class="progress-member-popover__id"><span class="visually-hidden">Mã số sinh viên: </span>22520001</p>
                   <p class="progress-member-popover__role"><span class="visually-hidden">Vai trò trong nhóm: </span>Nhóm trưởng</p>
                 </div>
-                <button class="progress-member-popover__close" type="button" popovertarget="progress-member-an" popovertargetaction="hide" aria-label="Đóng thông tin Nguyễn Văn An"><svg class="progress-member-popover__close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+                <button class="progress-member-popover__close" type="button" popovertarget="progress-member-an" popovertargetaction="hide" aria-label="Đóng thông tin Nguyễn Văn An"><svg class="progress-member-popover__close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg></button>
               </div>
               <div id="progress-member-binh" class="progress-member-popover" popover="auto" role="dialog" aria-labelledby="progress-member-binh-name">
                 <span class="progress-member-popover__avatar task-assignee__avatar--binh" aria-hidden="true">TB</span>
@@ -575,7 +564,7 @@
                   <p class="progress-member-popover__id"><span class="visually-hidden">Mã số sinh viên: </span>22520002</p>
                   <p class="progress-member-popover__role"><span class="visually-hidden">Vai trò trong nhóm: </span>Thành viên</p>
                 </div>
-                <button class="progress-member-popover__close" type="button" popovertarget="progress-member-binh" popovertargetaction="hide" aria-label="Đóng thông tin Trần Thị Bình"><svg class="progress-member-popover__close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+                <button class="progress-member-popover__close" type="button" popovertarget="progress-member-binh" popovertargetaction="hide" aria-label="Đóng thông tin Trần Thị Bình"><svg class="progress-member-popover__close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg></button>
               </div>
               <div id="progress-member-cuong" class="progress-member-popover" popover="auto" role="dialog" aria-labelledby="progress-member-cuong-name">
                 <span class="progress-member-popover__avatar task-assignee__avatar--cuong" aria-hidden="true">LC</span>
@@ -584,7 +573,7 @@
                   <p class="progress-member-popover__id"><span class="visually-hidden">Mã số sinh viên: </span>22520003</p>
                   <p class="progress-member-popover__role"><span class="visually-hidden">Vai trò trong nhóm: </span>Thành viên</p>
                 </div>
-                <button class="progress-member-popover__close" type="button" popovertarget="progress-member-cuong" popovertargetaction="hide" aria-label="Đóng thông tin Lê Văn Cường"><svg class="progress-member-popover__close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+                <button class="progress-member-popover__close" type="button" popovertarget="progress-member-cuong" popovertargetaction="hide" aria-label="Đóng thông tin Lê Văn Cường"><svg class="progress-member-popover__close-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg></button>
               </div>
             </div>
           </section>
@@ -856,8 +845,8 @@
                         <h5 class="requirement-board-card__title">Rà soát quy trình đăng nhập và phân quyền</h5>
                         <p class="requirement-board-card__deadline">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <rect height="16" rx="2" width="18" x="3" y="5"/>
-                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                            <rect height="16" rx="2" width="18" x="3" y="5"></rect>
+                            <path d="M16 3v4M8 3v4M3 11h18"></path>
                           </svg>
                           <span class="visually-hidden">Hạn nộp:</span>
                           <time datetime="2026-12-22T23:59">22/12/2026 · 23:59</time>
@@ -869,8 +858,8 @@
                         <h5 class="requirement-board-card__title">Chuẩn bị bộ kiểm thử cho chức năng tra cứu, mượn và trả sách</h5>
                         <p class="requirement-board-card__deadline">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <rect height="16" rx="2" width="18" x="3" y="5"/>
-                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                            <rect height="16" rx="2" width="18" x="3" y="5"></rect>
+                            <path d="M16 3v4M8 3v4M3 11h18"></path>
                           </svg>
                           <span class="visually-hidden">Hạn nộp:</span>
                           <time datetime="2026-12-27T23:59">27/12/2026 · 23:59</time>
@@ -891,9 +880,7 @@
                   <span>
                     Đã nộp
                   </span>
-                  <span class="task-column__count">
-                    (9)
-                  </span>
+                  <span class="task-column__count">(18)</span>
                 </h4>
                 <div aria-labelledby="requirements-submitted-title" class="submission-column__viewport" role="region" tabindex="0">
                   <ul aria-label="5 thẻ đầu tiên" class="task-column__list submission-column__list">
@@ -1079,8 +1066,8 @@
                         <h5 class="requirement-board-card__title">Tổng hợp kết quả kiểm thử tích hợp</h5>
                         <p class="requirement-board-card__deadline">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <rect height="16" rx="2" width="18" x="3" y="5"/>
-                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                            <rect height="16" rx="2" width="18" x="3" y="5"></rect>
+                            <path d="M16 3v4M8 3v4M3 11h18"></path>
                           </svg>
                           <span class="visually-hidden">Hạn nộp:</span>
                           <time datetime="2026-11-18T23:59">18/11/2026 · 23:59</time>
@@ -1092,35 +1079,15 @@
                         <h5 class="requirement-board-card__title">Đối chiếu giao diện trên máy tính, máy tính bảng và điện thoại</h5>
                         <p class="requirement-board-card__deadline">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <rect height="16" rx="2" width="18" x="3" y="5"/>
-                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                            <rect height="16" rx="2" width="18" x="3" y="5"></rect>
+                            <path d="M16 3v4M8 3v4M3 11h18"></path>
                           </svg>
                           <span class="visually-hidden">Hạn nộp:</span>
                           <time datetime="2026-11-20T23:59">20/11/2026 · 23:59</time>
                         </p>
                       </article>
                     </li>
-                  </ul>
-                </div>
-              </section>
-              <section aria-labelledby="requirements-done-title" class="task-column submission-column submission-column--success">
-                <h4 class="task-column__title" id="requirements-done-title">
-                  <svg aria-hidden="true" class="task-column__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="9">
-                    </circle>
-                    <path d="m8 12 3 3 5-6">
-                    </path>
-                  </svg>
-                  <span>
-                    Đã phản hồi
-                  </span>
-                  <span class="task-column__count">
-                    (9)
-                  </span>
-                </h4>
-                <div aria-labelledby="requirements-done-title" class="submission-column__viewport" role="region" tabindex="0">
-                  <ul aria-label="5 thẻ đầu tiên" class="task-column__list submission-column__list">
-                    <li>
+                  <li>
                       <article class="requirement-board-card" id="requirement-1">
                         <button aria-controls="view-requirement-1" aria-describedby="requirement-1-deadline" aria-haspopup="dialog" aria-labelledby="requirement-1-title" class="requirement-board-card__open" command="show-modal" commandfor="view-requirement-1" type="button">
                           <span class="requirement-board-card__header">
@@ -1144,8 +1111,7 @@
                           </span>
                         </button>
                       </article>
-                    </li>
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card" id="requirement-7">
                         <button aria-controls="view-requirement-7" aria-describedby="requirement-7-deadline" aria-haspopup="dialog" aria-labelledby="requirement-7-title" class="requirement-board-card__open" command="show-modal" commandfor="view-requirement-7" type="button">
                           <span class="requirement-board-card__header">
@@ -1169,8 +1135,7 @@
                           </span>
                         </button>
                       </article>
-                    </li>
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card" id="requirement-17">
                         <button aria-controls="view-requirement-17" aria-describedby="requirement-17-deadline" aria-haspopup="dialog" aria-labelledby="requirement-17-title" class="requirement-board-card__open" command="show-modal" commandfor="view-requirement-17" type="button">
                           <span class="requirement-board-card__header">
@@ -1194,8 +1159,7 @@
                           </span>
                         </button>
                       </article>
-                    </li>
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card" id="requirement-18">
                         <button aria-controls="view-requirement-18" aria-describedby="requirement-18-deadline" aria-haspopup="dialog" aria-labelledby="requirement-18-title" class="requirement-board-card__open" command="show-modal" commandfor="view-requirement-18" type="button">
                           <span class="requirement-board-card__header">
@@ -1219,8 +1183,7 @@
                           </span>
                         </button>
                       </article>
-                    </li>
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card" id="requirement-19">
                         <button aria-controls="view-requirement-19" aria-describedby="requirement-19-deadline" aria-haspopup="dialog" aria-labelledby="requirement-19-title" class="requirement-board-card__open" command="show-modal" commandfor="view-requirement-19" type="button">
                           <span class="requirement-board-card__header">
@@ -1244,10 +1207,7 @@
                           </span>
                         </button>
                       </article>
-                    </li>
-                  </ul>
-                  <ul aria-label="Các thẻ tiếp theo" class="task-column__list submission-column__list submission-column__overflow">
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card" id="requirement-20">
                         <button aria-controls="view-requirement-20" aria-describedby="requirement-20-deadline" aria-haspopup="dialog" aria-labelledby="requirement-20-title" class="requirement-board-card__open" command="show-modal" commandfor="view-requirement-20" type="button">
                           <span class="requirement-board-card__header">
@@ -1271,8 +1231,7 @@
                           </span>
                         </button>
                       </article>
-                    </li>
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card" id="requirement-21">
                         <button aria-controls="view-requirement-21" aria-describedby="requirement-21-deadline" aria-haspopup="dialog" aria-labelledby="requirement-21-title" class="requirement-board-card__open" command="show-modal" commandfor="view-requirement-21" type="button">
                           <span class="requirement-board-card__header">
@@ -1296,36 +1255,34 @@
                           </span>
                         </button>
                       </article>
-                    </li>
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card submission-board-sample-card">
                         <h5 class="requirement-board-card__title">Rà soát báo cáo phân tích hệ thống</h5>
                         <p class="requirement-board-card__deadline">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <rect height="16" rx="2" width="18" x="3" y="5"/>
-                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                            <rect height="16" rx="2" width="18" x="3" y="5"></rect>
+                            <path d="M16 3v4M8 3v4M3 11h18"></path>
                           </svg>
                           <span class="visually-hidden">Hạn nộp:</span>
                           <time datetime="2026-10-23T23:59">23/10/2026 · 23:59</time>
                         </p>
                       </article>
-                    </li>
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card submission-board-sample-card">
                         <h5 class="requirement-board-card__title">Hoàn thiện sơ đồ chức năng theo góp ý của giảng viên</h5>
                         <p class="requirement-board-card__deadline">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <rect height="16" rx="2" width="18" x="3" y="5"/>
-                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                            <rect height="16" rx="2" width="18" x="3" y="5"></rect>
+                            <path d="M16 3v4M8 3v4M3 11h18"></path>
                           </svg>
                           <span class="visually-hidden">Hạn nộp:</span>
                           <time datetime="2026-10-25T23:59">25/10/2026 · 23:59</time>
                         </p>
                       </article>
-                    </li>
-                  </ul>
+                    </li></ul>
                 </div>
               </section>
+              
             </div>
           </div>
         </div>
@@ -1628,8 +1585,8 @@
                         <h5 class="requirement-board-card__title">Rà soát quy trình đăng nhập và phân quyền</h5>
                         <p class="requirement-board-card__deadline">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <rect height="16" rx="2" width="18" x="3" y="5"/>
-                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                            <rect height="16" rx="2" width="18" x="3" y="5"></rect>
+                            <path d="M16 3v4M8 3v4M3 11h18"></path>
                           </svg>
                           <span class="visually-hidden">Hạn nộp:</span>
                           <time datetime="2026-12-22T23:59">22/12/2026 · 23:59</time>
@@ -1641,8 +1598,8 @@
                         <h5 class="requirement-board-card__title">Chuẩn bị bộ kiểm thử cho chức năng tra cứu, mượn và trả sách</h5>
                         <p class="requirement-board-card__deadline">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <rect height="16" rx="2" width="18" x="3" y="5"/>
-                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                            <rect height="16" rx="2" width="18" x="3" y="5"></rect>
+                            <path d="M16 3v4M8 3v4M3 11h18"></path>
                           </svg>
                           <span class="visually-hidden">Hạn nộp:</span>
                           <time datetime="2026-12-27T23:59">27/12/2026 · 23:59</time>
@@ -1663,9 +1620,7 @@
                   <span>
                     Đã nộp
                   </span>
-                  <span class="task-column__count">
-                    (9)
-                  </span>
+                  <span class="task-column__count">(18)</span>
                 </h4>
                 <div aria-labelledby="requirements-delete-submitted-title" class="submission-column__viewport" role="region" tabindex="0">
                   <ul aria-label="5 thẻ đầu tiên" class="task-column__list submission-column__list">
@@ -1893,8 +1848,8 @@
                         <h5 class="requirement-board-card__title">Tổng hợp kết quả kiểm thử tích hợp</h5>
                         <p class="requirement-board-card__deadline">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <rect height="16" rx="2" width="18" x="3" y="5"/>
-                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                            <rect height="16" rx="2" width="18" x="3" y="5"></rect>
+                            <path d="M16 3v4M8 3v4M3 11h18"></path>
                           </svg>
                           <span class="visually-hidden">Hạn nộp:</span>
                           <time datetime="2026-11-18T23:59">18/11/2026 · 23:59</time>
@@ -1906,35 +1861,15 @@
                         <h5 class="requirement-board-card__title">Đối chiếu giao diện trên máy tính, máy tính bảng và điện thoại</h5>
                         <p class="requirement-board-card__deadline">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <rect height="16" rx="2" width="18" x="3" y="5"/>
-                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                            <rect height="16" rx="2" width="18" x="3" y="5"></rect>
+                            <path d="M16 3v4M8 3v4M3 11h18"></path>
                           </svg>
                           <span class="visually-hidden">Hạn nộp:</span>
                           <time datetime="2026-11-20T23:59">20/11/2026 · 23:59</time>
                         </p>
                       </article>
                     </li>
-                  </ul>
-                </div>
-              </section>
-              <section aria-labelledby="requirements-delete-done-title" class="task-column submission-column submission-column--success">
-                <h4 class="task-column__title" id="requirements-delete-done-title">
-                  <svg aria-hidden="true" class="task-column__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="9">
-                    </circle>
-                    <path d="m8 12 3 3 5-6">
-                    </path>
-                  </svg>
-                  <span>
-                    Đã phản hồi
-                  </span>
-                  <span class="task-column__count">
-                    (9)
-                  </span>
-                </h4>
-                <div aria-labelledby="requirements-delete-done-title" class="submission-column__viewport" role="region" tabindex="0">
-                  <ul aria-label="5 thẻ đầu tiên" class="task-column__list submission-column__list">
-                    <li>
+                  <li>
                       <article class="requirement-board-card requirement-board-card--delete" id="requirement-delete-mode-1">
                         <div class="requirement-board-card__content">
                           <span class="requirement-board-card__header">
@@ -1964,8 +1899,7 @@
                           </svg>
                         </button>
                       </article>
-                    </li>
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card requirement-board-card--delete" id="requirement-delete-mode-7">
                         <div class="requirement-board-card__content">
                           <span class="requirement-board-card__header">
@@ -1995,8 +1929,7 @@
                           </svg>
                         </button>
                       </article>
-                    </li>
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card requirement-board-card--delete" id="requirement-delete-mode-17">
                         <div class="requirement-board-card__content">
                           <span class="requirement-board-card__header">
@@ -2026,8 +1959,7 @@
                           </svg>
                         </button>
                       </article>
-                    </li>
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card requirement-board-card--delete" id="requirement-delete-mode-18">
                         <div class="requirement-board-card__content">
                           <span class="requirement-board-card__header">
@@ -2057,8 +1989,7 @@
                           </svg>
                         </button>
                       </article>
-                    </li>
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card requirement-board-card--delete" id="requirement-delete-mode-19">
                         <div class="requirement-board-card__content">
                           <span class="requirement-board-card__header">
@@ -2088,10 +2019,7 @@
                           </svg>
                         </button>
                       </article>
-                    </li>
-                  </ul>
-                  <ul aria-label="Các thẻ tiếp theo" class="task-column__list submission-column__list submission-column__overflow">
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card requirement-board-card--delete" id="requirement-delete-mode-20">
                         <div class="requirement-board-card__content">
                           <span class="requirement-board-card__header">
@@ -2121,8 +2049,7 @@
                           </svg>
                         </button>
                       </article>
-                    </li>
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card requirement-board-card--delete" id="requirement-delete-mode-21">
                         <div class="requirement-board-card__content">
                           <span class="requirement-board-card__header">
@@ -2152,36 +2079,34 @@
                           </svg>
                         </button>
                       </article>
-                    </li>
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card submission-board-sample-card">
                         <h5 class="requirement-board-card__title">Rà soát báo cáo phân tích hệ thống</h5>
                         <p class="requirement-board-card__deadline">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <rect height="16" rx="2" width="18" x="3" y="5"/>
-                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                            <rect height="16" rx="2" width="18" x="3" y="5"></rect>
+                            <path d="M16 3v4M8 3v4M3 11h18"></path>
                           </svg>
                           <span class="visually-hidden">Hạn nộp:</span>
                           <time datetime="2026-10-23T23:59">23/10/2026 · 23:59</time>
                         </p>
                       </article>
-                    </li>
-                    <li>
+                    </li><li>
                       <article class="requirement-board-card submission-board-sample-card">
                         <h5 class="requirement-board-card__title">Hoàn thiện sơ đồ chức năng theo góp ý của giảng viên</h5>
                         <p class="requirement-board-card__deadline">
                           <svg aria-hidden="true" class="submission-board__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-                            <rect height="16" rx="2" width="18" x="3" y="5"/>
-                            <path d="M16 3v4M8 3v4M3 11h18"/>
+                            <rect height="16" rx="2" width="18" x="3" y="5"></rect>
+                            <path d="M16 3v4M8 3v4M3 11h18"></path>
                           </svg>
                           <span class="visually-hidden">Hạn nộp:</span>
                           <time datetime="2026-10-25T23:59">25/10/2026 · 23:59</time>
                         </p>
                       </article>
-                    </li>
-                  </ul>
+                    </li></ul>
                 </div>
               </section>
+              
             </div>
           </div>
         </div>
@@ -3531,7 +3456,7 @@
                   <div><dt>Nhóm thực hiện</dt><dd>Nhóm 01</dd></div>
                   <div>
                     <dt>Trạng thái đánh giá</dt>
-                    <dd><span class="evaluation-info__status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Chưa công bố</span></dd>
+                    <dd><span class="evaluation-info__status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Chưa công bố</span></dd>
                   </div>
                 </dl>
               </section>
@@ -3549,17 +3474,17 @@
                       <tr>
                         <th scope="row" id="criterion-1">Nội dung</th>
                         <td>Mức độ đáp ứng yêu cầu đề tài</td><td>40%</td>
-                        <td><label class="visually-hidden" for="score-1">Điểm Nội dung / 10</label><input id="score-1" name="score-1" type="number" min="0" max="10" step="0.1" inputmode="decimal" placeholder="Nhập điểm" required/></td>
+                        <td><label class="visually-hidden" for="score-1">Điểm Nội dung / 10</label><input id="score-1" name="score-1" type="number" min="0" max="10" step="0.1" inputmode="decimal" placeholder="Nhập điểm" required=""></td>
                       </tr>
                       <tr>
                         <th scope="row" id="criterion-2">Sản phẩm</th>
                         <td>Chất lượng và tính hoàn thiện</td><td>40%</td>
-                        <td><label class="visually-hidden" for="score-2">Điểm Sản phẩm / 10</label><input id="score-2" name="score-2" type="number" min="0" max="10" step="0.1" inputmode="decimal" placeholder="Nhập điểm" required/></td>
+                        <td><label class="visually-hidden" for="score-2">Điểm Sản phẩm / 10</label><input id="score-2" name="score-2" type="number" min="0" max="10" step="0.1" inputmode="decimal" placeholder="Nhập điểm" required=""></td>
                       </tr>
                       <tr>
                         <th scope="row" id="criterion-3">Báo cáo</th>
                         <td>Trình bày và bảo vệ kết quả</td><td>20%</td>
-                        <td><label class="visually-hidden" for="score-3">Điểm Báo cáo / 10</label><input id="score-3" name="score-3" type="number" min="0" max="10" step="0.1" inputmode="decimal" placeholder="Nhập điểm" required/></td>
+                        <td><label class="visually-hidden" for="score-3">Điểm Báo cáo / 10</label><input id="score-3" name="score-3" type="number" min="0" max="10" step="0.1" inputmode="decimal" placeholder="Nhập điểm" required=""></td>
                       </tr>
                     </tbody>
                   </table>
@@ -3578,7 +3503,7 @@
                 </section>
                 <div class="evaluation-form__actions">
                   <!-- Nút submit mặc định disabled chặn gửi form bằng Enter. -->
-                  <button type="submit" hidden disabled aria-hidden="true" tabindex="-1">Lưu đánh giá</button>
+                  <button type="submit" hidden="" disabled="" aria-hidden="true" tabindex="-1">Lưu đánh giá</button>
                   <button class="evaluation-form__publish" type="button" command="show-modal" commandfor="publish-evaluation" aria-controls="publish-evaluation" aria-haspopup="dialog">Công bố đánh giá</button>
                 </div>
               </form>
@@ -3609,7 +3534,7 @@
       <label for="view-name-1">
         Tên bài nộp
       </label>
-      <input id="view-name-1" readonly="" type="text" value="Báo cáo đề cương và kế hoạch thực hiện"/>
+      <input id="view-name-1" readonly="" type="text" value="Báo cáo đề cương và kế hoạch thực hiện">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-1">
@@ -3621,7 +3546,7 @@
       <label for="view-deadline-1">
         Hạn nộp
       </label>
-      <input id="view-deadline-1" readonly="" type="text" value="15/10/2026 · 23:59"/>
+      <input id="view-deadline-1" readonly="" type="text" value="15/10/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-1-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -3655,7 +3580,7 @@
       <label for="view-name-2">
         Tên bài nộp
       </label>
-      <input id="view-name-2" readonly="" type="text" value="Tài liệu đặc tả yêu cầu phần mềm"/>
+      <input id="view-name-2" readonly="" type="text" value="Tài liệu đặc tả yêu cầu phần mềm">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-2">
@@ -3667,7 +3592,7 @@
       <label for="view-deadline-2">
         Hạn nộp
       </label>
-      <input id="view-deadline-2" readonly="" type="text" value="05/11/2026 · 23:59"/>
+      <input id="view-deadline-2" readonly="" type="text" value="05/11/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-2-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -3701,7 +3626,7 @@
       <label for="view-name-3">
         Tên bài nộp
       </label>
-      <input id="view-name-3" readonly="" type="text" value="Thiết kế cơ sở dữ liệu và kiến trúc hệ thống"/>
+      <input id="view-name-3" readonly="" type="text" value="Thiết kế cơ sở dữ liệu và kiến trúc hệ thống">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-3">
@@ -3713,7 +3638,7 @@
       <label for="view-deadline-3">
         Hạn nộp
       </label>
-      <input id="view-deadline-3" readonly="" type="text" value="25/10/2026 · 23:59"/>
+      <input id="view-deadline-3" readonly="" type="text" value="25/10/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-3-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -3747,7 +3672,7 @@
       <label for="view-name-4">
         Tên bài nộp
       </label>
-      <input id="view-name-4" readonly="" type="text" value="Báo cáo tiến độ giai đoạn 1"/>
+      <input id="view-name-4" readonly="" type="text" value="Báo cáo tiến độ giai đoạn 1">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-4">
@@ -3759,7 +3684,7 @@
       <label for="view-deadline-4">
         Hạn nộp
       </label>
-      <input id="view-deadline-4" readonly="" type="text" value="20/10/2026 · 23:59"/>
+      <input id="view-deadline-4" readonly="" type="text" value="20/10/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-4-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -3793,7 +3718,7 @@
       <label for="view-name-5">
         Tên bài nộp
       </label>
-      <input id="view-name-5" readonly="" type="text" value="Báo cáo kết quả thử nghiệm và mã nguồn"/>
+      <input id="view-name-5" readonly="" type="text" value="Báo cáo kết quả thử nghiệm và mã nguồn">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-5">
@@ -3805,7 +3730,7 @@
       <label for="view-deadline-5">
         Hạn nộp
       </label>
-      <input id="view-deadline-5" readonly="" type="text" value="15/12/2026 · 23:59"/>
+      <input id="view-deadline-5" readonly="" type="text" value="15/12/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-5-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -3839,7 +3764,7 @@
       <label for="view-name-6">
         Tên bài nộp
       </label>
-      <input id="view-name-6" readonly="" type="text" value="Thiết kế giao diện hệ thống"/>
+      <input id="view-name-6" readonly="" type="text" value="Thiết kế giao diện hệ thống">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-6">
@@ -3851,7 +3776,7 @@
       <label for="view-deadline-6">
         Hạn nộp
       </label>
-      <input id="view-deadline-6" readonly="" type="text" value="19/10/2026 · 23:59"/>
+      <input id="view-deadline-6" readonly="" type="text" value="19/10/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-6-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -3881,12 +3806,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-6-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-6"/>
+    <input name="requirement-id" type="hidden" value="requirement-6">
     <p class="topic-dialog__field">
       <label for="edit-name-6">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-6" name="edit-name" required="" type="text" value="Thiết kế giao diện hệ thống"/>
+      <input autofocus="" id="edit-name-6" name="edit-name" required="" type="text" value="Thiết kế giao diện hệ thống">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-6">
@@ -3898,7 +3823,7 @@
       <label for="edit-deadline-6">
         Hạn nộp
       </label>
-      <input id="edit-deadline-6" name="edit-deadline" required="" type="datetime-local" value="2026-10-19T23:59"/>
+      <input id="edit-deadline-6" name="edit-deadline" required="" type="datetime-local" value="2026-10-19T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-6" type="button">
@@ -3925,7 +3850,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-6-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-6"/>
+    <input name="requirement-id" type="hidden" value="requirement-6">
     <p class="topic-dialog__desc" id="delete-description-6">
       “
       <strong>
@@ -3962,7 +3887,7 @@
       <label for="view-name-7">
         Tên bài nộp
       </label>
-      <input id="view-name-7" readonly="" type="text" value="Kết quả kiểm thử phiên bản thử nghiệm"/>
+      <input id="view-name-7" readonly="" type="text" value="Kết quả kiểm thử phiên bản thử nghiệm">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-7">
@@ -3974,7 +3899,7 @@
       <label for="view-deadline-7">
         Hạn nộp
       </label>
-      <input id="view-deadline-7" readonly="" type="text" value="21/10/2026 · 23:59"/>
+      <input id="view-deadline-7" readonly="" type="text" value="21/10/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-7-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -4004,12 +3929,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-7-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-7"/>
+    <input name="requirement-id" type="hidden" value="requirement-7">
     <p class="topic-dialog__field">
       <label for="edit-name-7">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-7" name="edit-name" required="" type="text" value="Kết quả kiểm thử phiên bản thử nghiệm"/>
+      <input autofocus="" id="edit-name-7" name="edit-name" required="" type="text" value="Kết quả kiểm thử phiên bản thử nghiệm">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-7">
@@ -4021,7 +3946,7 @@
       <label for="edit-deadline-7">
         Hạn nộp
       </label>
-      <input id="edit-deadline-7" name="edit-deadline" required="" type="datetime-local" value="2026-10-21T23:59"/>
+      <input id="edit-deadline-7" name="edit-deadline" required="" type="datetime-local" value="2026-10-21T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-7" type="button">
@@ -4048,7 +3973,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-7-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-7"/>
+    <input name="requirement-id" type="hidden" value="requirement-7">
     <p class="topic-dialog__desc" id="delete-description-7">
       “
       <strong>
@@ -4069,28 +3994,28 @@
 <dialog class="topic-dialog progress-review-dialog" id="progress-review" aria-labelledby="progress-review-title" aria-describedby="progress-review-note">
       <header class="topic-dialog__header">
         <h2 id="progress-review-title">Nhận xét về tiến độ</h2>
-        <button class="progress-review-dialog__close" type="button" command="close" commandfor="progress-review" aria-label="Đóng hộp thoại nhận xét về tiến độ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+        <button class="progress-review-dialog__close" type="button" command="close" commandfor="progress-review" aria-label="Đóng hộp thoại nhận xét về tiến độ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
       </header>
       <form id="progress-review-form" method="dialog" class="topic-dialog__form">
-        <p class="progress-review-dialog__field"><label for="progress-review-content">Nội dung nhận xét</label><textarea id="progress-review-content" name="progress-review-content" rows="6" placeholder="Nhập nhận xét về tiến độ của nhóm sinh viên" required autofocus></textarea></p>
+        <p class="progress-review-dialog__field"><label for="progress-review-content">Nội dung nhận xét</label><textarea id="progress-review-content" name="progress-review-content" rows="6" placeholder="Nhập nhận xét về tiến độ của nhóm sinh viên" required="" autofocus=""></textarea></p>
         <p class="progress-review-dialog__note" id="progress-review-note">Bản xem trước: chức năng gửi nhận xét chưa được kết nối, nội dung chưa được lưu.</p>
-        <div class="topic-dialog__actions"><button class="progress-review-dialog__cancel" type="button" command="close" commandfor="progress-review">Hủy</button> <button class="progress-review-dialog__submit" type="submit" disabled title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Gửi nhận xét</button></div>
+        <div class="topic-dialog__actions"><button class="progress-review-dialog__cancel" type="button" command="close" commandfor="progress-review">Hủy</button> <button class="progress-review-dialog__submit" type="submit" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Gửi nhận xét</button></div>
       </form>
     </dialog>
         <dialog class="topic-dialog" id="create-requirement" aria-labelledby="create-requirement-title">
       <header class="topic-dialog__header">
         <h2 id="create-requirement-title">Tạo yêu cầu bài nộp</h2>
         <button class="topic-dialog__close" type="button" command="close" commandfor="create-requirement" aria-label="Đóng hộp thoại tạo yêu cầu bài nộp">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </header>
       <form id="create-requirement-form" method="dialog" class="topic-dialog__form">
-        <p class="topic-dialog__field"><label for="create-name">Tên bài nộp</label><input id="create-name" name="create-name" type="text" placeholder="Ví dụ: Báo cáo giữa kỳ" required autofocus/></p>
-        <p class="topic-dialog__field"><label for="create-content">Nội dung yêu cầu</label><textarea id="create-content" name="create-content" rows="4" placeholder="Nhập chi tiết các tiêu chí và yêu cầu cho bài nộp..." required></textarea></p>
-        <p class="topic-dialog__field"><label for="create-deadline">Hạn nộp</label><input id="create-deadline" name="create-deadline" type="datetime-local" required/></p>
+        <p class="topic-dialog__field"><label for="create-name">Tên bài nộp</label><input id="create-name" name="create-name" type="text" placeholder="Ví dụ: Báo cáo giữa kỳ" required="" autofocus=""></p>
+        <p class="topic-dialog__field"><label for="create-content">Nội dung yêu cầu</label><textarea id="create-content" name="create-content" rows="4" placeholder="Nhập chi tiết các tiêu chí và yêu cầu cho bài nộp..." required=""></textarea></p>
+        <p class="topic-dialog__field"><label for="create-deadline">Hạn nộp</label><input id="create-deadline" name="create-deadline" type="datetime-local" required=""></p>
         <div class="topic-dialog__actions">
           <button class="topic-dialog__btn topic-dialog__btn--secondary" type="button" command="close" commandfor="create-requirement">Hủy</button>
-          <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Tạo yêu cầu</button>
+          <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Tạo yêu cầu</button>
         </div>
       </form>
     </dialog>
@@ -4098,17 +4023,17 @@
       <header class="topic-dialog__header">
         <h2 id="edit-requirement-1-title">Sửa yêu cầu bài nộp</h2>
         <button class="topic-dialog__close" type="button" command="close" commandfor="edit-requirement-1" aria-label="Đóng hộp thoại sửa yêu cầu bài nộp 1">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </header>
       <form id="edit-requirement-1-form" method="dialog" class="topic-dialog__form">
-        <input type="hidden" name="requirement-id" value="requirement-1"/>
-        <p class="topic-dialog__field"><label for="edit-name-1">Tên bài nộp</label><input id="edit-name-1" name="edit-name" type="text" value="Báo cáo đề cương và kế hoạch thực hiện" required autofocus/></p>
-        <p class="topic-dialog__field"><label for="edit-content-1">Nội dung yêu cầu</label><textarea id="edit-content-1" name="edit-content" rows="4" required>Bản kế hoạch chi tiết các giai đoạn, mục tiêu đồ án và phân công trách nhiệm nhóm.</textarea></p>
-        <p class="topic-dialog__field"><label for="edit-deadline-1">Hạn nộp</label><input id="edit-deadline-1" name="edit-deadline" type="datetime-local" value="2026-10-15T23:59" required/></p>
+        <input type="hidden" name="requirement-id" value="requirement-1">
+        <p class="topic-dialog__field"><label for="edit-name-1">Tên bài nộp</label><input id="edit-name-1" name="edit-name" type="text" value="Báo cáo đề cương và kế hoạch thực hiện" required="" autofocus=""></p>
+        <p class="topic-dialog__field"><label for="edit-content-1">Nội dung yêu cầu</label><textarea id="edit-content-1" name="edit-content" rows="4" required="">Bản kế hoạch chi tiết các giai đoạn, mục tiêu đồ án và phân công trách nhiệm nhóm.</textarea></p>
+        <p class="topic-dialog__field"><label for="edit-deadline-1">Hạn nộp</label><input id="edit-deadline-1" name="edit-deadline" type="datetime-local" value="2026-10-15T23:59" required=""></p>
         <div class="topic-dialog__actions">
           <button class="topic-dialog__btn topic-dialog__btn--secondary" type="button" command="close" commandfor="edit-requirement-1">Hủy</button>
-          <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Lưu thay đổi</button>
+          <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Lưu thay đổi</button>
         </div>
       </form>
     </dialog>
@@ -4116,15 +4041,15 @@
       <header class="topic-dialog__header">
         <h2 id="delete-requirement-1-title">Xóa yêu cầu bài nộp?</h2>
         <button class="topic-dialog__close" type="button" command="close" commandfor="delete-requirement-1" aria-label="Đóng hộp thoại xóa yêu cầu bài nộp 1">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </header>
       <form id="delete-requirement-1-form" method="dialog" class="topic-dialog__form">
-        <input type="hidden" name="requirement-id" value="requirement-1"/>
+        <input type="hidden" name="requirement-id" value="requirement-1">
         <p class="topic-dialog__desc" id="delete-description-1">“<strong>Báo cáo đề cương và kế hoạch thực hiện</strong>” sẽ được xóa khỏi danh sách yêu cầu bài nộp. Hành động này không thể hoàn tác.</p>
         <div class="topic-dialog__actions">
           <button class="topic-dialog__btn topic-dialog__btn--secondary" type="button" command="close" commandfor="delete-requirement-1">Hủy</button>
-          <button class="topic-dialog__btn topic-dialog__btn--danger" type="submit" disabled title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Xóa yêu cầu</button>
+          <button class="topic-dialog__btn topic-dialog__btn--danger" type="submit" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Xóa yêu cầu</button>
         </div>
       </form>
     </dialog>
@@ -4132,17 +4057,17 @@
       <header class="topic-dialog__header">
         <h2 id="edit-requirement-2-title">Sửa yêu cầu bài nộp</h2>
         <button class="topic-dialog__close" type="button" command="close" commandfor="edit-requirement-2" aria-label="Đóng hộp thoại sửa yêu cầu bài nộp 2">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </header>
       <form id="edit-requirement-2-form" method="dialog" class="topic-dialog__form">
-        <input type="hidden" name="requirement-id" value="requirement-2"/>
-        <p class="topic-dialog__field"><label for="edit-name-2">Tên bài nộp</label><input id="edit-name-2" name="edit-name" type="text" value="Tài liệu đặc tả yêu cầu phần mềm" required autofocus/></p>
-        <p class="topic-dialog__field"><label for="edit-content-2">Nội dung yêu cầu</label><textarea id="edit-content-2" name="edit-content" rows="4" required>Đặc tả yêu cầu phần mềm chi tiết, sơ đồ ca sử dụng và kiến trúc hệ thống quản lý thư viện.</textarea></p>
-        <p class="topic-dialog__field"><label for="edit-deadline-2">Hạn nộp</label><input id="edit-deadline-2" name="edit-deadline" type="datetime-local" value="2026-11-05T23:59" required/></p>
+        <input type="hidden" name="requirement-id" value="requirement-2">
+        <p class="topic-dialog__field"><label for="edit-name-2">Tên bài nộp</label><input id="edit-name-2" name="edit-name" type="text" value="Tài liệu đặc tả yêu cầu phần mềm" required="" autofocus=""></p>
+        <p class="topic-dialog__field"><label for="edit-content-2">Nội dung yêu cầu</label><textarea id="edit-content-2" name="edit-content" rows="4" required="">Đặc tả yêu cầu phần mềm chi tiết, sơ đồ ca sử dụng và kiến trúc hệ thống quản lý thư viện.</textarea></p>
+        <p class="topic-dialog__field"><label for="edit-deadline-2">Hạn nộp</label><input id="edit-deadline-2" name="edit-deadline" type="datetime-local" value="2026-11-05T23:59" required=""></p>
         <div class="topic-dialog__actions">
           <button class="topic-dialog__btn topic-dialog__btn--secondary" type="button" command="close" commandfor="edit-requirement-2">Hủy</button>
-          <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Lưu thay đổi</button>
+          <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Lưu thay đổi</button>
         </div>
       </form>
     </dialog>
@@ -4150,15 +4075,15 @@
       <header class="topic-dialog__header">
         <h2 id="delete-requirement-2-title">Xóa yêu cầu bài nộp?</h2>
         <button class="topic-dialog__close" type="button" command="close" commandfor="delete-requirement-2" aria-label="Đóng hộp thoại xóa yêu cầu bài nộp 2">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </header>
       <form id="delete-requirement-2-form" method="dialog" class="topic-dialog__form">
-        <input type="hidden" name="requirement-id" value="requirement-2"/>
+        <input type="hidden" name="requirement-id" value="requirement-2">
         <p class="topic-dialog__desc" id="delete-description-2">“<strong>Tài liệu đặc tả yêu cầu phần mềm</strong>” sẽ được xóa khỏi danh sách yêu cầu bài nộp. Hành động này không thể hoàn tác.</p>
         <div class="topic-dialog__actions">
           <button class="topic-dialog__btn topic-dialog__btn--secondary" type="button" command="close" commandfor="delete-requirement-2">Hủy</button>
-          <button class="topic-dialog__btn topic-dialog__btn--danger" type="submit" disabled title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Xóa yêu cầu</button>
+          <button class="topic-dialog__btn topic-dialog__btn--danger" type="submit" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Xóa yêu cầu</button>
         </div>
       </form>
     </dialog>
@@ -4166,17 +4091,17 @@
       <header class="topic-dialog__header">
         <h2 id="edit-requirement-3-title">Sửa yêu cầu bài nộp</h2>
         <button class="topic-dialog__close" type="button" command="close" commandfor="edit-requirement-3" aria-label="Đóng hộp thoại sửa yêu cầu bài nộp 3">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </header>
       <form id="edit-requirement-3-form" method="dialog" class="topic-dialog__form">
-        <input type="hidden" name="requirement-id" value="requirement-3"/>
-        <p class="topic-dialog__field"><label for="edit-name-3">Tên bài nộp</label><input id="edit-name-3" name="edit-name" type="text" value="Thiết kế cơ sở dữ liệu và kiến trúc hệ thống" required autofocus/></p>
-        <p class="topic-dialog__field"><label for="edit-content-3">Nội dung yêu cầu</label><textarea id="edit-content-3" name="edit-content" rows="4" required>Sơ đồ quan hệ thực thể (ERD), thiết kế bảng dữ liệu và kiến trúc ứng dụng web.</textarea></p>
-        <p class="topic-dialog__field"><label for="edit-deadline-3">Hạn nộp</label><input id="edit-deadline-3" name="edit-deadline" type="datetime-local" value="2026-10-25T23:59" required/></p>
+        <input type="hidden" name="requirement-id" value="requirement-3">
+        <p class="topic-dialog__field"><label for="edit-name-3">Tên bài nộp</label><input id="edit-name-3" name="edit-name" type="text" value="Thiết kế cơ sở dữ liệu và kiến trúc hệ thống" required="" autofocus=""></p>
+        <p class="topic-dialog__field"><label for="edit-content-3">Nội dung yêu cầu</label><textarea id="edit-content-3" name="edit-content" rows="4" required="">Sơ đồ quan hệ thực thể (ERD), thiết kế bảng dữ liệu và kiến trúc ứng dụng web.</textarea></p>
+        <p class="topic-dialog__field"><label for="edit-deadline-3">Hạn nộp</label><input id="edit-deadline-3" name="edit-deadline" type="datetime-local" value="2026-10-25T23:59" required=""></p>
         <div class="topic-dialog__actions">
           <button class="topic-dialog__btn topic-dialog__btn--secondary" type="button" command="close" commandfor="edit-requirement-3">Hủy</button>
-          <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Lưu thay đổi</button>
+          <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Lưu thay đổi</button>
         </div>
       </form>
     </dialog>
@@ -4184,15 +4109,15 @@
       <header class="topic-dialog__header">
         <h2 id="delete-requirement-3-title">Xóa yêu cầu bài nộp?</h2>
         <button class="topic-dialog__close" type="button" command="close" commandfor="delete-requirement-3" aria-label="Đóng hộp thoại xóa yêu cầu bài nộp 3">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </header>
       <form id="delete-requirement-3-form" method="dialog" class="topic-dialog__form">
-        <input type="hidden" name="requirement-id" value="requirement-3"/>
+        <input type="hidden" name="requirement-id" value="requirement-3">
         <p class="topic-dialog__desc" id="delete-description-3">“<strong>Thiết kế cơ sở dữ liệu và kiến trúc hệ thống</strong>” sẽ được xóa khỏi danh sách yêu cầu bài nộp. Hành động này không thể hoàn tác.</p>
         <div class="topic-dialog__actions">
           <button class="topic-dialog__btn topic-dialog__btn--secondary" type="button" command="close" commandfor="delete-requirement-3">Hủy</button>
-          <button class="topic-dialog__btn topic-dialog__btn--danger" type="submit" disabled title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Xóa yêu cầu</button>
+          <button class="topic-dialog__btn topic-dialog__btn--danger" type="submit" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Xóa yêu cầu</button>
         </div>
       </form>
     </dialog>
@@ -4200,17 +4125,17 @@
       <header class="topic-dialog__header">
         <h2 id="edit-requirement-4-title">Sửa yêu cầu bài nộp</h2>
         <button class="topic-dialog__close" type="button" command="close" commandfor="edit-requirement-4" aria-label="Đóng hộp thoại sửa yêu cầu bài nộp 4">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </header>
       <form id="edit-requirement-4-form" method="dialog" class="topic-dialog__form">
-        <input type="hidden" name="requirement-id" value="requirement-4"/>
-        <p class="topic-dialog__field"><label for="edit-name-4">Tên bài nộp</label><input id="edit-name-4" name="edit-name" type="text" value="Báo cáo tiến độ giai đoạn 1" required autofocus/></p>
-        <p class="topic-dialog__field"><label for="edit-content-4">Nội dung yêu cầu</label><textarea id="edit-content-4" name="edit-content" rows="4" required>Báo cáo kết quả xây dựng giao diện người dùng và kiểm thử khả năng tương thích.</textarea></p>
-        <p class="topic-dialog__field"><label for="edit-deadline-4">Hạn nộp</label><input id="edit-deadline-4" name="edit-deadline" type="datetime-local" value="2026-10-20T23:59" required/></p>
+        <input type="hidden" name="requirement-id" value="requirement-4">
+        <p class="topic-dialog__field"><label for="edit-name-4">Tên bài nộp</label><input id="edit-name-4" name="edit-name" type="text" value="Báo cáo tiến độ giai đoạn 1" required="" autofocus=""></p>
+        <p class="topic-dialog__field"><label for="edit-content-4">Nội dung yêu cầu</label><textarea id="edit-content-4" name="edit-content" rows="4" required="">Báo cáo kết quả xây dựng giao diện người dùng và kiểm thử khả năng tương thích.</textarea></p>
+        <p class="topic-dialog__field"><label for="edit-deadline-4">Hạn nộp</label><input id="edit-deadline-4" name="edit-deadline" type="datetime-local" value="2026-10-20T23:59" required=""></p>
         <div class="topic-dialog__actions">
           <button class="topic-dialog__btn topic-dialog__btn--secondary" type="button" command="close" commandfor="edit-requirement-4">Hủy</button>
-          <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Lưu thay đổi</button>
+          <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Lưu thay đổi</button>
         </div>
       </form>
     </dialog>
@@ -4218,15 +4143,15 @@
       <header class="topic-dialog__header">
         <h2 id="delete-requirement-4-title">Xóa yêu cầu bài nộp?</h2>
         <button class="topic-dialog__close" type="button" command="close" commandfor="delete-requirement-4" aria-label="Đóng hộp thoại xóa yêu cầu bài nộp 4">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </header>
       <form id="delete-requirement-4-form" method="dialog" class="topic-dialog__form">
-        <input type="hidden" name="requirement-id" value="requirement-4"/>
+        <input type="hidden" name="requirement-id" value="requirement-4">
         <p class="topic-dialog__desc" id="delete-description-4">“<strong>Báo cáo tiến độ giai đoạn 1</strong>” sẽ được xóa khỏi danh sách yêu cầu bài nộp. Hành động này không thể hoàn tác.</p>
         <div class="topic-dialog__actions">
           <button class="topic-dialog__btn topic-dialog__btn--secondary" type="button" command="close" commandfor="delete-requirement-4">Hủy</button>
-          <button class="topic-dialog__btn topic-dialog__btn--danger" type="submit" disabled title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Xóa yêu cầu</button>
+          <button class="topic-dialog__btn topic-dialog__btn--danger" type="submit" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Xóa yêu cầu</button>
         </div>
       </form>
     </dialog>
@@ -4234,17 +4159,17 @@
       <header class="topic-dialog__header">
         <h2 id="edit-requirement-5-title">Sửa yêu cầu bài nộp</h2>
         <button class="topic-dialog__close" type="button" command="close" commandfor="edit-requirement-5" aria-label="Đóng hộp thoại sửa yêu cầu bài nộp 5">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </header>
       <form id="edit-requirement-5-form" method="dialog" class="topic-dialog__form">
-        <input type="hidden" name="requirement-id" value="requirement-5"/>
-        <p class="topic-dialog__field"><label for="edit-name-5">Tên bài nộp</label><input id="edit-name-5" name="edit-name" type="text" value="Báo cáo kết quả thử nghiệm và mã nguồn" required autofocus/></p>
-        <p class="topic-dialog__field"><label for="edit-content-5">Nội dung yêu cầu</label><textarea id="edit-content-5" name="edit-content" rows="4" required>Báo cáo kết quả kiểm thử đơn vị, kiểm thử tích hợp và toàn bộ mã nguồn nguồn hoàn chỉnh.</textarea></p>
-        <p class="topic-dialog__field"><label for="edit-deadline-5">Hạn nộp</label><input id="edit-deadline-5" name="edit-deadline" type="datetime-local" value="2026-12-15T23:59" required/></p>
+        <input type="hidden" name="requirement-id" value="requirement-5">
+        <p class="topic-dialog__field"><label for="edit-name-5">Tên bài nộp</label><input id="edit-name-5" name="edit-name" type="text" value="Báo cáo kết quả thử nghiệm và mã nguồn" required="" autofocus=""></p>
+        <p class="topic-dialog__field"><label for="edit-content-5">Nội dung yêu cầu</label><textarea id="edit-content-5" name="edit-content" rows="4" required="">Báo cáo kết quả kiểm thử đơn vị, kiểm thử tích hợp và toàn bộ mã nguồn nguồn hoàn chỉnh.</textarea></p>
+        <p class="topic-dialog__field"><label for="edit-deadline-5">Hạn nộp</label><input id="edit-deadline-5" name="edit-deadline" type="datetime-local" value="2026-12-15T23:59" required=""></p>
         <div class="topic-dialog__actions">
           <button class="topic-dialog__btn topic-dialog__btn--secondary" type="button" command="close" commandfor="edit-requirement-5">Hủy</button>
-          <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Lưu thay đổi</button>
+          <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Lưu thay đổi</button>
         </div>
       </form>
     </dialog>
@@ -4252,15 +4177,15 @@
       <header class="topic-dialog__header">
         <h2 id="delete-requirement-5-title">Xóa yêu cầu bài nộp?</h2>
         <button class="topic-dialog__close" type="button" command="close" commandfor="delete-requirement-5" aria-label="Đóng hộp thoại xóa yêu cầu bài nộp 5">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
         </button>
       </header>
       <form id="delete-requirement-5-form" method="dialog" class="topic-dialog__form">
-        <input type="hidden" name="requirement-id" value="requirement-5"/>
+        <input type="hidden" name="requirement-id" value="requirement-5">
         <p class="topic-dialog__desc" id="delete-description-5">“<strong>Báo cáo kết quả thử nghiệm và mã nguồn</strong>” sẽ được xóa khỏi danh sách yêu cầu bài nộp. Hành động này không thể hoàn tác.</p>
         <div class="topic-dialog__actions">
           <button class="topic-dialog__btn topic-dialog__btn--secondary" type="button" command="close" commandfor="delete-requirement-5">Hủy</button>
-          <button class="topic-dialog__btn topic-dialog__btn--danger" type="submit" disabled title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Xóa yêu cầu</button>
+          <button class="topic-dialog__btn topic-dialog__btn--danger" type="submit" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Xóa yêu cầu</button>
         </div>
       </form>
     </dialog>
@@ -4279,12 +4204,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-1-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-1"/>
+    <input name="submission-id" type="hidden" value="submission-1">
     <p class="topic-dialog__field">
       <label for="submission-choice-1">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-choice-1" name="submission-choice" readonly="" type="text" value="Báo cáo đề cương và kế hoạch thực hiện"/>
+      <input id="submission-choice-1" name="submission-choice" readonly="" type="text" value="Báo cáo đề cương và kế hoạch thực hiện">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -4347,12 +4272,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-2-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-2"/>
+    <input name="submission-id" type="hidden" value="submission-2">
     <p class="topic-dialog__field">
       <label for="submission-choice-2">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-choice-2" name="submission-choice" readonly="" type="text" value="Tài liệu đặc tả yêu cầu phần mềm"/>
+      <input id="submission-choice-2" name="submission-choice" readonly="" type="text" value="Tài liệu đặc tả yêu cầu phần mềm">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -4415,12 +4340,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-3-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-3"/>
+    <input name="submission-id" type="hidden" value="submission-3">
     <p class="topic-dialog__field">
       <label for="submission-choice-3">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-choice-3" name="submission-choice" readonly="" type="text" value="Thiết kế giao diện hệ thống"/>
+      <input id="submission-choice-3" name="submission-choice" readonly="" type="text" value="Thiết kế giao diện hệ thống">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -4483,12 +4408,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-4-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-4"/>
+    <input name="submission-id" type="hidden" value="submission-4">
     <p class="topic-dialog__field">
       <label for="submission-choice-4">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-choice-4" name="submission-choice" readonly="" type="text" value="Báo cáo tiến độ giai đoạn 1"/>
+      <input id="submission-choice-4" name="submission-choice" readonly="" type="text" value="Báo cáo tiến độ giai đoạn 1">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -4551,12 +4476,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-5-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-5"/>
+    <input name="submission-id" type="hidden" value="submission-5">
     <p class="topic-dialog__field">
       <label for="submission-choice-5">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-choice-5" name="submission-choice" readonly="" type="text" value="Kết quả kiểm thử phiên bản thử nghiệm"/>
+      <input id="submission-choice-5" name="submission-choice" readonly="" type="text" value="Kết quả kiểm thử phiên bản thử nghiệm">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -4613,7 +4538,7 @@
         <p>Bạn muốn công bố đánh giá cho nhóm này?</p>
         <dl class="topic-dialog__submission-info"><div><dt>Đề tài</dt><dd>Website quản lý thư viện</dd></div><div><dt>Nhóm thực hiện</dt><dd>Nhóm 01</dd></div><div><dt>Điểm tổng kết</dt><dd>Chưa tính / 10</dd></div></dl>
         <p id="publish-description">Sau khi công bố, tất cả thành viên của nhóm sẽ xem được điểm và nhận xét.</p>
-        <div class="topic-dialog__actions"><button class="topic-dialog__btn topic-dialog__btn--secondary" type="button" command="close" commandfor="publish-evaluation">Hủy</button> <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Xác nhận công bố</button></div>
+        <div class="topic-dialog__actions"><button class="topic-dialog__btn topic-dialog__btn--secondary" type="button" command="close" commandfor="publish-evaluation">Hủy</button> <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Xác nhận công bố</button></div>
       </form>
     </dialog>
     <!-- CHÂN TRANG CHUNG -->
@@ -4622,7 +4547,7 @@
         <div class="site-footer__columns">
           <div class="site-footer__brand">
             <a href="../chung/gioi-thieu.html">
-              <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40" />
+              <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40">
             </a>
             <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</p>
             <dl class="site-footer__about">
@@ -4645,7 +4570,7 @@
             <p>Đang cập nhật.</p>
           </section>
         </div>
-        <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
+        <p class="site-footer__copyright">Copyright © 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
   <dialog aria-describedby="view-requirement-8-notice" aria-labelledby="view-requirement-8-title" class="topic-dialog requirement-view-dialog" id="view-requirement-8">
@@ -4667,7 +4592,7 @@
       <label for="view-name-8">
         Tên bài nộp
       </label>
-      <input id="view-name-8" readonly="" type="text" value="Đặc tả chức năng tìm kiếm"/>
+      <input id="view-name-8" readonly="" type="text" value="Đặc tả chức năng tìm kiếm">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-8">
@@ -4679,7 +4604,7 @@
       <label for="view-deadline-8">
         Hạn nộp
       </label>
-      <input id="view-deadline-8" readonly="" type="text" value="01/11/2026 · 23:59"/>
+      <input id="view-deadline-8" readonly="" type="text" value="01/11/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-8-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -4710,12 +4635,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-8-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-8"/>
+    <input name="requirement-id" type="hidden" value="requirement-8">
     <p class="topic-dialog__field">
       <label for="edit-name-8">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-8" name="edit-name" required="" type="text" value="Đặc tả chức năng tìm kiếm"/>
+      <input autofocus="" id="edit-name-8" name="edit-name" required="" type="text" value="Đặc tả chức năng tìm kiếm">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-8">
@@ -4727,7 +4652,7 @@
       <label for="edit-deadline-8">
         Hạn nộp
       </label>
-      <input id="edit-deadline-8" name="edit-deadline" required="" type="datetime-local" value="2026-11-01T23:59"/>
+      <input id="edit-deadline-8" name="edit-deadline" required="" type="datetime-local" value="2026-11-01T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-8" type="button">
@@ -4755,7 +4680,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-8-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-8"/>
+    <input name="requirement-id" type="hidden" value="requirement-8">
     <p class="topic-dialog__desc" id="delete-description-8">
       “
       <strong>
@@ -4793,7 +4718,7 @@
       <label for="view-name-9">
         Tên bài nộp
       </label>
-      <input id="view-name-9" readonly="" type="text" value="Thiết kế sơ đồ dữ liệu"/>
+      <input id="view-name-9" readonly="" type="text" value="Thiết kế sơ đồ dữ liệu">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-9">
@@ -4805,7 +4730,7 @@
       <label for="view-deadline-9">
         Hạn nộp
       </label>
-      <input id="view-deadline-9" readonly="" type="text" value="12/11/2026 · 23:59"/>
+      <input id="view-deadline-9" readonly="" type="text" value="12/11/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-9-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -4836,12 +4761,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-9-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-9"/>
+    <input name="requirement-id" type="hidden" value="requirement-9">
     <p class="topic-dialog__field">
       <label for="edit-name-9">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-9" name="edit-name" required="" type="text" value="Thiết kế sơ đồ dữ liệu"/>
+      <input autofocus="" id="edit-name-9" name="edit-name" required="" type="text" value="Thiết kế sơ đồ dữ liệu">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-9">
@@ -4853,7 +4778,7 @@
       <label for="edit-deadline-9">
         Hạn nộp
       </label>
-      <input id="edit-deadline-9" name="edit-deadline" required="" type="datetime-local" value="2026-11-12T23:59"/>
+      <input id="edit-deadline-9" name="edit-deadline" required="" type="datetime-local" value="2026-11-12T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-9" type="button">
@@ -4881,7 +4806,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-9-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-9"/>
+    <input name="requirement-id" type="hidden" value="requirement-9">
     <p class="topic-dialog__desc" id="delete-description-9">
       “
       <strong>
@@ -4919,7 +4844,7 @@
       <label for="view-name-10">
         Tên bài nộp
       </label>
-      <input id="view-name-10" readonly="" type="text" value="Kiểm thử phân quyền người dùng"/>
+      <input id="view-name-10" readonly="" type="text" value="Kiểm thử phân quyền người dùng">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-10">
@@ -4931,7 +4856,7 @@
       <label for="view-deadline-10">
         Hạn nộp
       </label>
-      <input id="view-deadline-10" readonly="" type="text" value="20/11/2026 · 23:59"/>
+      <input id="view-deadline-10" readonly="" type="text" value="20/11/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-10-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -4962,12 +4887,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-10-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-10"/>
+    <input name="requirement-id" type="hidden" value="requirement-10">
     <p class="topic-dialog__field">
       <label for="edit-name-10">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-10" name="edit-name" required="" type="text" value="Kiểm thử phân quyền người dùng"/>
+      <input autofocus="" id="edit-name-10" name="edit-name" required="" type="text" value="Kiểm thử phân quyền người dùng">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-10">
@@ -4979,7 +4904,7 @@
       <label for="edit-deadline-10">
         Hạn nộp
       </label>
-      <input id="edit-deadline-10" name="edit-deadline" required="" type="datetime-local" value="2026-11-20T23:59"/>
+      <input id="edit-deadline-10" name="edit-deadline" required="" type="datetime-local" value="2026-11-20T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-10" type="button">
@@ -5007,7 +4932,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-10-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-10"/>
+    <input name="requirement-id" type="hidden" value="requirement-10">
     <p class="topic-dialog__desc" id="delete-description-10">
       “
       <strong>
@@ -5045,7 +4970,7 @@
       <label for="view-name-11">
         Tên bài nộp
       </label>
-      <input id="view-name-11" readonly="" type="text" value="Tài liệu hướng dẫn sử dụng"/>
+      <input id="view-name-11" readonly="" type="text" value="Tài liệu hướng dẫn sử dụng">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-11">
@@ -5057,7 +4982,7 @@
       <label for="view-deadline-11">
         Hạn nộp
       </label>
-      <input id="view-deadline-11" readonly="" type="text" value="05/12/2026 · 23:59"/>
+      <input id="view-deadline-11" readonly="" type="text" value="05/12/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-11-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -5088,12 +5013,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-11-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-11"/>
+    <input name="requirement-id" type="hidden" value="requirement-11">
     <p class="topic-dialog__field">
       <label for="edit-name-11">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-11" name="edit-name" required="" type="text" value="Tài liệu hướng dẫn sử dụng"/>
+      <input autofocus="" id="edit-name-11" name="edit-name" required="" type="text" value="Tài liệu hướng dẫn sử dụng">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-11">
@@ -5105,7 +5030,7 @@
       <label for="edit-deadline-11">
         Hạn nộp
       </label>
-      <input id="edit-deadline-11" name="edit-deadline" required="" type="datetime-local" value="2026-12-05T23:59"/>
+      <input id="edit-deadline-11" name="edit-deadline" required="" type="datetime-local" value="2026-12-05T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-11" type="button">
@@ -5133,7 +5058,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-11-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-11"/>
+    <input name="requirement-id" type="hidden" value="requirement-11">
     <p class="topic-dialog__desc" id="delete-description-11">
       “
       <strong>
@@ -5171,7 +5096,7 @@
       <label for="view-name-12">
         Tên bài nộp
       </label>
-      <input id="view-name-12" readonly="" type="text" value="Báo cáo tổng kết đề tài"/>
+      <input id="view-name-12" readonly="" type="text" value="Báo cáo tổng kết đề tài">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-12">
@@ -5183,7 +5108,7 @@
       <label for="view-deadline-12">
         Hạn nộp
       </label>
-      <input id="view-deadline-12" readonly="" type="text" value="20/12/2026 · 23:59"/>
+      <input id="view-deadline-12" readonly="" type="text" value="20/12/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-12-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -5214,12 +5139,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-12-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-12"/>
+    <input name="requirement-id" type="hidden" value="requirement-12">
     <p class="topic-dialog__field">
       <label for="edit-name-12">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-12" name="edit-name" required="" type="text" value="Báo cáo tổng kết đề tài"/>
+      <input autofocus="" id="edit-name-12" name="edit-name" required="" type="text" value="Báo cáo tổng kết đề tài">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-12">
@@ -5231,7 +5156,7 @@
       <label for="edit-deadline-12">
         Hạn nộp
       </label>
-      <input id="edit-deadline-12" name="edit-deadline" required="" type="datetime-local" value="2026-12-20T23:59"/>
+      <input id="edit-deadline-12" name="edit-deadline" required="" type="datetime-local" value="2026-12-20T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-12" type="button">
@@ -5259,7 +5184,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-12-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-12"/>
+    <input name="requirement-id" type="hidden" value="requirement-12">
     <p class="topic-dialog__desc" id="delete-description-12">
       “
       <strong>
@@ -5297,7 +5222,7 @@
       <label for="view-name-13">
         Tên bài nộp
       </label>
-      <input id="view-name-13" readonly="" type="text" value="Kiểm thử chức năng mượn trả"/>
+      <input id="view-name-13" readonly="" type="text" value="Kiểm thử chức năng mượn trả">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-13">
@@ -5309,7 +5234,7 @@
       <label for="view-deadline-13">
         Hạn nộp
       </label>
-      <input id="view-deadline-13" readonly="" type="text" value="28/10/2026 · 23:59"/>
+      <input id="view-deadline-13" readonly="" type="text" value="28/10/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-13-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -5340,12 +5265,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-13-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-13"/>
+    <input name="requirement-id" type="hidden" value="requirement-13">
     <p class="topic-dialog__field">
       <label for="edit-name-13">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-13" name="edit-name" required="" type="text" value="Kiểm thử chức năng mượn trả"/>
+      <input autofocus="" id="edit-name-13" name="edit-name" required="" type="text" value="Kiểm thử chức năng mượn trả">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-13">
@@ -5357,7 +5282,7 @@
       <label for="edit-deadline-13">
         Hạn nộp
       </label>
-      <input id="edit-deadline-13" name="edit-deadline" required="" type="datetime-local" value="2026-10-28T23:59"/>
+      <input id="edit-deadline-13" name="edit-deadline" required="" type="datetime-local" value="2026-10-28T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-13" type="button">
@@ -5385,7 +5310,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-13-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-13"/>
+    <input name="requirement-id" type="hidden" value="requirement-13">
     <p class="topic-dialog__desc" id="delete-description-13">
       “
       <strong>
@@ -5423,7 +5348,7 @@
       <label for="view-name-14">
         Tên bài nộp
       </label>
-      <input id="view-name-14" readonly="" type="text" value="Thiết kế trang quản lý bạn đọc"/>
+      <input id="view-name-14" readonly="" type="text" value="Thiết kế trang quản lý bạn đọc">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-14">
@@ -5435,7 +5360,7 @@
       <label for="view-deadline-14">
         Hạn nộp
       </label>
-      <input id="view-deadline-14" readonly="" type="text" value="06/11/2026 · 23:59"/>
+      <input id="view-deadline-14" readonly="" type="text" value="06/11/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-14-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -5466,12 +5391,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-14-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-14"/>
+    <input name="requirement-id" type="hidden" value="requirement-14">
     <p class="topic-dialog__field">
       <label for="edit-name-14">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-14" name="edit-name" required="" type="text" value="Thiết kế trang quản lý bạn đọc"/>
+      <input autofocus="" id="edit-name-14" name="edit-name" required="" type="text" value="Thiết kế trang quản lý bạn đọc">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-14">
@@ -5483,7 +5408,7 @@
       <label for="edit-deadline-14">
         Hạn nộp
       </label>
-      <input id="edit-deadline-14" name="edit-deadline" required="" type="datetime-local" value="2026-11-06T23:59"/>
+      <input id="edit-deadline-14" name="edit-deadline" required="" type="datetime-local" value="2026-11-06T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-14" type="button">
@@ -5511,7 +5436,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-14-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-14"/>
+    <input name="requirement-id" type="hidden" value="requirement-14">
     <p class="topic-dialog__desc" id="delete-description-14">
       “
       <strong>
@@ -5549,7 +5474,7 @@
       <label for="view-name-15">
         Tên bài nộp
       </label>
-      <input id="view-name-15" readonly="" type="text" value="Đánh giá hiệu năng hệ thống"/>
+      <input id="view-name-15" readonly="" type="text" value="Đánh giá hiệu năng hệ thống">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-15">
@@ -5561,7 +5486,7 @@
       <label for="view-deadline-15">
         Hạn nộp
       </label>
-      <input id="view-deadline-15" readonly="" type="text" value="10/11/2026 · 23:59"/>
+      <input id="view-deadline-15" readonly="" type="text" value="10/11/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-15-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -5592,12 +5517,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-15-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-15"/>
+    <input name="requirement-id" type="hidden" value="requirement-15">
     <p class="topic-dialog__field">
       <label for="edit-name-15">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-15" name="edit-name" required="" type="text" value="Đánh giá hiệu năng hệ thống"/>
+      <input autofocus="" id="edit-name-15" name="edit-name" required="" type="text" value="Đánh giá hiệu năng hệ thống">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-15">
@@ -5609,7 +5534,7 @@
       <label for="edit-deadline-15">
         Hạn nộp
       </label>
-      <input id="edit-deadline-15" name="edit-deadline" required="" type="datetime-local" value="2026-11-10T23:59"/>
+      <input id="edit-deadline-15" name="edit-deadline" required="" type="datetime-local" value="2026-11-10T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-15" type="button">
@@ -5637,7 +5562,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-15-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-15"/>
+    <input name="requirement-id" type="hidden" value="requirement-15">
     <p class="topic-dialog__desc" id="delete-description-15">
       “
       <strong>
@@ -5675,7 +5600,7 @@
       <label for="view-name-16">
         Tên bài nộp
       </label>
-      <input id="view-name-16" readonly="" type="text" value="Hoàn thiện báo cáo thực nghiệm"/>
+      <input id="view-name-16" readonly="" type="text" value="Hoàn thiện báo cáo thực nghiệm">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-16">
@@ -5687,7 +5612,7 @@
       <label for="view-deadline-16">
         Hạn nộp
       </label>
-      <input id="view-deadline-16" readonly="" type="text" value="15/11/2026 · 23:59"/>
+      <input id="view-deadline-16" readonly="" type="text" value="15/11/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-16-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -5718,12 +5643,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-16-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-16"/>
+    <input name="requirement-id" type="hidden" value="requirement-16">
     <p class="topic-dialog__field">
       <label for="edit-name-16">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-16" name="edit-name" required="" type="text" value="Hoàn thiện báo cáo thực nghiệm"/>
+      <input autofocus="" id="edit-name-16" name="edit-name" required="" type="text" value="Hoàn thiện báo cáo thực nghiệm">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-16">
@@ -5735,7 +5660,7 @@
       <label for="edit-deadline-16">
         Hạn nộp
       </label>
-      <input id="edit-deadline-16" name="edit-deadline" required="" type="datetime-local" value="2026-11-15T23:59"/>
+      <input id="edit-deadline-16" name="edit-deadline" required="" type="datetime-local" value="2026-11-15T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-16" type="button">
@@ -5763,7 +5688,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-16-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-16"/>
+    <input name="requirement-id" type="hidden" value="requirement-16">
     <p class="topic-dialog__desc" id="delete-description-16">
       “
       <strong>
@@ -5801,7 +5726,7 @@
       <label for="view-name-17">
         Tên bài nộp
       </label>
-      <input id="view-name-17" readonly="" type="text" value="Khảo sát quy trình thư viện"/>
+      <input id="view-name-17" readonly="" type="text" value="Khảo sát quy trình thư viện">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-17">
@@ -5813,7 +5738,7 @@
       <label for="view-deadline-17">
         Hạn nộp
       </label>
-      <input id="view-deadline-17" readonly="" type="text" value="12/10/2026 · 23:59"/>
+      <input id="view-deadline-17" readonly="" type="text" value="12/10/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-17-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -5844,12 +5769,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-17-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-17"/>
+    <input name="requirement-id" type="hidden" value="requirement-17">
     <p class="topic-dialog__field">
       <label for="edit-name-17">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-17" name="edit-name" required="" type="text" value="Khảo sát quy trình thư viện"/>
+      <input autofocus="" id="edit-name-17" name="edit-name" required="" type="text" value="Khảo sát quy trình thư viện">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-17">
@@ -5861,7 +5786,7 @@
       <label for="edit-deadline-17">
         Hạn nộp
       </label>
-      <input id="edit-deadline-17" name="edit-deadline" required="" type="datetime-local" value="2026-10-12T23:59"/>
+      <input id="edit-deadline-17" name="edit-deadline" required="" type="datetime-local" value="2026-10-12T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-17" type="button">
@@ -5889,7 +5814,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-17-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-17"/>
+    <input name="requirement-id" type="hidden" value="requirement-17">
     <p class="topic-dialog__desc" id="delete-description-17">
       “
       <strong>
@@ -5927,7 +5852,7 @@
       <label for="view-name-18">
         Tên bài nộp
       </label>
-      <input id="view-name-18" readonly="" type="text" value="Phân tích yêu cầu người dùng"/>
+      <input id="view-name-18" readonly="" type="text" value="Phân tích yêu cầu người dùng">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-18">
@@ -5939,7 +5864,7 @@
       <label for="view-deadline-18">
         Hạn nộp
       </label>
-      <input id="view-deadline-18" readonly="" type="text" value="14/10/2026 · 23:59"/>
+      <input id="view-deadline-18" readonly="" type="text" value="14/10/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-18-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -5970,12 +5895,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-18-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-18"/>
+    <input name="requirement-id" type="hidden" value="requirement-18">
     <p class="topic-dialog__field">
       <label for="edit-name-18">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-18" name="edit-name" required="" type="text" value="Phân tích yêu cầu người dùng"/>
+      <input autofocus="" id="edit-name-18" name="edit-name" required="" type="text" value="Phân tích yêu cầu người dùng">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-18">
@@ -5987,7 +5912,7 @@
       <label for="edit-deadline-18">
         Hạn nộp
       </label>
-      <input id="edit-deadline-18" name="edit-deadline" required="" type="datetime-local" value="2026-10-14T23:59"/>
+      <input id="edit-deadline-18" name="edit-deadline" required="" type="datetime-local" value="2026-10-14T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-18" type="button">
@@ -6015,7 +5940,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-18-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-18"/>
+    <input name="requirement-id" type="hidden" value="requirement-18">
     <p class="topic-dialog__desc" id="delete-description-18">
       “
       <strong>
@@ -6053,7 +5978,7 @@
       <label for="view-name-19">
         Tên bài nộp
       </label>
-      <input id="view-name-19" readonly="" type="text" value="Thiết kế sơ đồ use case"/>
+      <input id="view-name-19" readonly="" type="text" value="Thiết kế sơ đồ use case">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-19">
@@ -6065,7 +5990,7 @@
       <label for="view-deadline-19">
         Hạn nộp
       </label>
-      <input id="view-deadline-19" readonly="" type="text" value="16/10/2026 · 23:59"/>
+      <input id="view-deadline-19" readonly="" type="text" value="16/10/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-19-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -6096,12 +6021,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-19-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-19"/>
+    <input name="requirement-id" type="hidden" value="requirement-19">
     <p class="topic-dialog__field">
       <label for="edit-name-19">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-19" name="edit-name" required="" type="text" value="Thiết kế sơ đồ use case"/>
+      <input autofocus="" id="edit-name-19" name="edit-name" required="" type="text" value="Thiết kế sơ đồ use case">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-19">
@@ -6113,7 +6038,7 @@
       <label for="edit-deadline-19">
         Hạn nộp
       </label>
-      <input id="edit-deadline-19" name="edit-deadline" required="" type="datetime-local" value="2026-10-16T23:59"/>
+      <input id="edit-deadline-19" name="edit-deadline" required="" type="datetime-local" value="2026-10-16T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-19" type="button">
@@ -6141,7 +6066,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-19-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-19"/>
+    <input name="requirement-id" type="hidden" value="requirement-19">
     <p class="topic-dialog__desc" id="delete-description-19">
       “
       <strong>
@@ -6179,7 +6104,7 @@
       <label for="view-name-20">
         Tên bài nộp
       </label>
-      <input id="view-name-20" readonly="" type="text" value="Kế hoạch phân công công việc"/>
+      <input id="view-name-20" readonly="" type="text" value="Kế hoạch phân công công việc">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-20">
@@ -6191,7 +6116,7 @@
       <label for="view-deadline-20">
         Hạn nộp
       </label>
-      <input id="view-deadline-20" readonly="" type="text" value="18/10/2026 · 23:59"/>
+      <input id="view-deadline-20" readonly="" type="text" value="18/10/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-20-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -6222,12 +6147,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-20-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-20"/>
+    <input name="requirement-id" type="hidden" value="requirement-20">
     <p class="topic-dialog__field">
       <label for="edit-name-20">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-20" name="edit-name" required="" type="text" value="Kế hoạch phân công công việc"/>
+      <input autofocus="" id="edit-name-20" name="edit-name" required="" type="text" value="Kế hoạch phân công công việc">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-20">
@@ -6239,7 +6164,7 @@
       <label for="edit-deadline-20">
         Hạn nộp
       </label>
-      <input id="edit-deadline-20" name="edit-deadline" required="" type="datetime-local" value="2026-10-18T23:59"/>
+      <input id="edit-deadline-20" name="edit-deadline" required="" type="datetime-local" value="2026-10-18T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-20" type="button">
@@ -6267,7 +6192,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-20-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-20"/>
+    <input name="requirement-id" type="hidden" value="requirement-20">
     <p class="topic-dialog__desc" id="delete-description-20">
       “
       <strong>
@@ -6305,7 +6230,7 @@
       <label for="view-name-21">
         Tên bài nộp
       </label>
-      <input id="view-name-21" readonly="" type="text" value="Biên bản họp nhóm"/>
+      <input id="view-name-21" readonly="" type="text" value="Biên bản họp nhóm">
     </p>
     <p class="topic-dialog__field">
       <label for="view-content-21">
@@ -6317,7 +6242,7 @@
       <label for="view-deadline-21">
         Hạn nộp
       </label>
-      <input id="view-deadline-21" readonly="" type="text" value="20/10/2026 · 23:59"/>
+      <input id="view-deadline-21" readonly="" type="text" value="20/10/2026 · 23:59">
     </p>
     <p class="topic-dialog__notice" id="view-requirement-21-notice">
       Chỉ xem thông tin yêu cầu bài nộp
@@ -6348,12 +6273,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="edit-requirement-21-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-21"/>
+    <input name="requirement-id" type="hidden" value="requirement-21">
     <p class="topic-dialog__field">
       <label for="edit-name-21">
         Tên bài nộp
       </label>
-      <input autofocus="" id="edit-name-21" name="edit-name" required="" type="text" value="Biên bản họp nhóm"/>
+      <input autofocus="" id="edit-name-21" name="edit-name" required="" type="text" value="Biên bản họp nhóm">
     </p>
     <p class="topic-dialog__field">
       <label for="edit-content-21">
@@ -6365,7 +6290,7 @@
       <label for="edit-deadline-21">
         Hạn nộp
       </label>
-      <input id="edit-deadline-21" name="edit-deadline" required="" type="datetime-local" value="2026-10-20T23:59"/>
+      <input id="edit-deadline-21" name="edit-deadline" required="" type="datetime-local" value="2026-10-20T23:59">
     </p>
     <div class="topic-dialog__actions">
       <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="edit-requirement-21" type="button">
@@ -6393,7 +6318,7 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="delete-requirement-21-form" method="dialog">
-    <input name="requirement-id" type="hidden" value="requirement-21"/>
+    <input name="requirement-id" type="hidden" value="requirement-21">
     <p class="topic-dialog__desc" id="delete-description-21">
       “
       <strong>
@@ -6427,12 +6352,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-6-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-6"/>
+    <input name="submission-id" type="hidden" value="submission-6">
     <p class="topic-dialog__field">
       <label for="submission-choice-6">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-choice-6" name="submission-choice" readonly="" type="text" value="Kiểm thử chức năng mượn trả"/>
+      <input id="submission-choice-6" name="submission-choice" readonly="" type="text" value="Kiểm thử chức năng mượn trả">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -6496,12 +6421,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-7-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-7"/>
+    <input name="submission-id" type="hidden" value="submission-7">
     <p class="topic-dialog__field">
       <label for="submission-choice-7">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-choice-7" name="submission-choice" readonly="" type="text" value="Thiết kế trang quản lý bạn đọc"/>
+      <input id="submission-choice-7" name="submission-choice" readonly="" type="text" value="Thiết kế trang quản lý bạn đọc">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -6565,12 +6490,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-8-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-8"/>
+    <input name="submission-id" type="hidden" value="submission-8">
     <p class="topic-dialog__field">
       <label for="submission-choice-8">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-choice-8" name="submission-choice" readonly="" type="text" value="Đánh giá hiệu năng hệ thống"/>
+      <input id="submission-choice-8" name="submission-choice" readonly="" type="text" value="Đánh giá hiệu năng hệ thống">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -6634,12 +6559,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-9-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-9"/>
+    <input name="submission-id" type="hidden" value="submission-9">
     <p class="topic-dialog__field">
       <label for="submission-choice-9">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-choice-9" name="submission-choice" readonly="" type="text" value="Hoàn thiện báo cáo thực nghiệm"/>
+      <input id="submission-choice-9" name="submission-choice" readonly="" type="text" value="Hoàn thiện báo cáo thực nghiệm">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -6703,12 +6628,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-10-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-10"/>
+    <input name="submission-id" type="hidden" value="submission-10">
     <p class="topic-dialog__field">
       <label for="submission-choice-10">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-choice-10" name="submission-choice" readonly="" type="text" value="Khảo sát quy trình thư viện"/>
+      <input id="submission-choice-10" name="submission-choice" readonly="" type="text" value="Khảo sát quy trình thư viện">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -6772,12 +6697,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-11-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-11"/>
+    <input name="submission-id" type="hidden" value="submission-11">
     <p class="topic-dialog__field">
       <label for="submission-choice-11">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-choice-11" name="submission-choice" readonly="" type="text" value="Phân tích yêu cầu người dùng"/>
+      <input id="submission-choice-11" name="submission-choice" readonly="" type="text" value="Phân tích yêu cầu người dùng">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -6841,12 +6766,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-12-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-12"/>
+    <input name="submission-id" type="hidden" value="submission-12">
     <p class="topic-dialog__field">
       <label for="submission-choice-12">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-choice-12" name="submission-choice" readonly="" type="text" value="Thiết kế sơ đồ use case"/>
+      <input id="submission-choice-12" name="submission-choice" readonly="" type="text" value="Thiết kế sơ đồ use case">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -6910,12 +6835,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-13-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-13"/>
+    <input name="submission-id" type="hidden" value="submission-13">
     <p class="topic-dialog__field">
       <label for="submission-choice-13">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-choice-13" name="submission-choice" readonly="" type="text" value="Kế hoạch phân công công việc"/>
+      <input id="submission-choice-13" name="submission-choice" readonly="" type="text" value="Kế hoạch phân công công việc">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -6979,12 +6904,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-14-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-14"/>
+    <input name="submission-id" type="hidden" value="submission-14">
     <p class="topic-dialog__field">
       <label for="submission-choice-14">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-choice-14" name="submission-choice" readonly="" type="text" value="Biên bản họp nhóm"/>
+      <input id="submission-choice-14" name="submission-choice" readonly="" type="text" value="Biên bản họp nhóm">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -7048,12 +6973,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-sample-awaiting-1-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-sample-awaiting-1"/>
+    <input name="submission-id" type="hidden" value="submission-sample-awaiting-1">
     <p class="topic-dialog__field">
       <label for="submission-feedback-sample-awaiting-1-choice">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-feedback-sample-awaiting-1-choice" name="submission-choice" readonly="" type="text" value="Bản tổng hợp kết quả chạy thử"/>
+      <input id="submission-feedback-sample-awaiting-1-choice" name="submission-choice" readonly="" type="text" value="Bản tổng hợp kết quả chạy thử">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -7116,12 +7041,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-sample-awaiting-2-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-sample-awaiting-2"/>
+    <input name="submission-id" type="hidden" value="submission-sample-awaiting-2">
     <p class="topic-dialog__field">
       <label for="submission-feedback-sample-awaiting-2-choice">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-feedback-sample-awaiting-2-choice" name="submission-choice" readonly="" type="text" value="Tài liệu đối chiếu các trường hợp kiểm thử dữ liệu đầu vào"/>
+      <input id="submission-feedback-sample-awaiting-2-choice" name="submission-choice" readonly="" type="text" value="Tài liệu đối chiếu các trường hợp kiểm thử dữ liệu đầu vào">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -7184,12 +7109,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-sample-done-1-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-sample-done-1"/>
+    <input name="submission-id" type="hidden" value="submission-sample-done-1">
     <p class="topic-dialog__field">
       <label for="submission-feedback-sample-done-1-choice">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-feedback-sample-done-1-choice" name="submission-choice" readonly="" type="text" value="Bản hiệu chỉnh báo cáo tiến độ"/>
+      <input id="submission-feedback-sample-done-1-choice" name="submission-choice" readonly="" type="text" value="Bản hiệu chỉnh báo cáo tiến độ">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -7252,12 +7177,12 @@
     </button>
   </header>
   <form class="topic-dialog__form" id="submission-feedback-sample-done-2-form" method="dialog">
-    <input name="submission-id" type="hidden" value="submission-sample-done-2"/>
+    <input name="submission-id" type="hidden" value="submission-sample-done-2">
     <p class="topic-dialog__field">
       <label for="submission-feedback-sample-done-2-choice">
         Bài nộp đang phản hồi
       </label>
-      <input id="submission-feedback-sample-done-2-choice" name="submission-choice" readonly="" type="text" value="Báo cáo tổng hợp kết quả nghiệm thu các chức năng quản lý thư viện"/>
+      <input id="submission-feedback-sample-done-2-choice" name="submission-choice" readonly="" type="text" value="Báo cáo tổng hợp kết quả nghiệm thu các chức năng quản lý thư viện">
     </p>
     <div class="topic-dialog__submission-info">
       <p class="topic-dialog__info-row">
@@ -7306,20 +7231,6 @@
   </form>
 </dialog>
 
-  <script src="../../assets/js/data/mock-data.js" defer></script>
-  <script src="../../assets/js/data/student-projects.js" defer></script>
-  <script src="../../assets/js/data/student-progress.js" defer></script>
-  <script src="../../assets/js/data/student-evaluations.js" defer></script>
-  <script src="../../assets/js/data/teaching-data.js" defer></script>
-  <script src="../../assets/js/services/storage.js" defer></script>
-  <script src="../../assets/js/services/project-team-service.js" defer></script>
-  <script src="../../assets/js/services/project-progress-service.js" defer></script>
-  <script src="../../assets/js/services/teaching-service.js" defer></script>
-  <script src="../../assets/js/services/submission-file-service.js" defer></script>
-  <script src="../../assets/js/shared/download-file.js" defer></script>
-  <script src="../../assets/js/pages/lecturer/workspace.js" defer></script>
-  <script src="../../assets/js/pages/lecturer/submissions.js" defer></script>
-  <script src="../../assets/js/pages/lecturer/progress.js" defer></script>
-  <script src="../../assets/js/pages/lecturer/evaluation.js" defer></script>
-</body>
-</html>
+
+
+</body></html>

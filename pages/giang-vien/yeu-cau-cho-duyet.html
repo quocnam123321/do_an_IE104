@@ -1,23 +1,22 @@
-<!DOCTYPE html>
-<html lang="vi">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <meta content="Xem và xử lý các đề xuất đề tài do sinh viên gửi." name="description"/>
+<!doctype html>
+<html lang="vi"><head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="Xem và xử lý các đề xuất đề tài do sinh viên gửi." name="description">
   <title>
    Yêu cầu chờ duyệt | Quản lý đồ án
   </title>
-  <link href="../../assets/css/tokens.css?v=20261111-heading-sync-1" rel="stylesheet"/>
-  <link href="../../assets/css/base.css?v=20261111-heading-sync-1" rel="stylesheet"/>
-  <link href="../../assets/css/components.css" rel="stylesheet"/>
-  <link href="../../assets/css/breadcrumb.css" rel="stylesheet"/>
-  <link href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1" rel="stylesheet"/>
-  <link href="../../assets/css/teacher-supervised-topics.css?v=20261030-tabs-2" rel="stylesheet"/>
-  <link href="../../assets/css/teacher-pending-proposals.css?v=20261030-align-1" rel="stylesheet"/>
-    <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css" />
-   <script src="../../assets/js/nav-indicator.js" defer></script>
-   <script src="../../assets/js/proposal-store.js" defer></script>
-   <script src="../../assets/js/pending-proposals.js" defer></script>
+  <link href="../../assets/css/tokens.css?v=20261111-heading-sync-1" rel="stylesheet">
+  <link href="../../assets/css/base.css?v=20261111-heading-sync-1" rel="stylesheet">
+  <link href="../../assets/css/components.css" rel="stylesheet">
+  <link href="../../assets/css/breadcrumb.css" rel="stylesheet">
+  <link href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1" rel="stylesheet">
+  <link href="../../assets/css/teacher-supervised-topics.css?v=20261030-tabs-2" rel="stylesheet">
+  <link href="../../assets/css/teacher-pending-proposals.css?v=20261030-align-1" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css">
+   <script src="../../assets/js/uit-lecturer-catalog.js" defer=""></script><script src="../../assets/js/nav-indicator.js" defer=""></script>
+   <script src="../../assets/js/uit-proposal-store.js" defer=""></script>
+   <script src="../../assets/js/pending-proposals.js" defer=""></script>
  </head>
  <body class="teacher-workspace-page teacher-topic-list-page teacher-pending-proposals-page">
   <a class="skip-link" href="#main-content">
@@ -27,14 +26,14 @@
   <header class="site-header">
    <div class="site-header__inner">
     <a class="site-brand" href="tong-quan-giang-vien.html">
-     <img alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" class="site-brand__logo" height="70" src="../../assets/images/images.jpg" width="70"/>
+     <img alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" class="site-brand__logo" height="70" src="../../assets/images/images.jpg" width="70">
      <span class="site-brand__name">
       QUẢN LÝ ĐỒ ÁN VÀ
-      <br/>
+      <br>
       KHÓA LUẬN TỐT NGHIỆP
      </span>
     </a>
-    <nav aria-label="Điều hướng giảng viên" class="main-nav" data-nav-indicator>
+    <nav aria-label="Điều hướng giảng viên" class="main-nav" data-nav-indicator="">
      <ul class="main-nav__list">
       <li class="main-nav__item">
        <a class="main-nav__link" href="tong-quan-giang-vien.html">
@@ -260,7 +259,7 @@
          <div class="topic-filters__options">
           <div class="proposal-filters__option topic-filters__option">
            <label for="role-primary">
-            <input id="role-primary" name="supervision_role" type="checkbox" value="huong-dan-chinh"/>
+            <input id="role-primary" name="supervision_role" type="checkbox" value="huong-dan-chinh">
             <span class="topic-filters__option-text">
              Hướng dẫn chính
             </span>
@@ -268,7 +267,7 @@
           </div>
           <div class="proposal-filters__option topic-filters__option">
            <label for="role-secondary">
-            <input id="role-secondary" name="supervision_role" type="checkbox" value="dong-huong-dan"/>
+            <input id="role-secondary" name="supervision_role" type="checkbox" value="dong-huong-dan">
             <span class="topic-filters__option-text">
              Đồng hướng dẫn
             </span>
@@ -283,7 +282,7 @@
          <div class="topic-filters__options">
           <div class="proposal-filters__option topic-filters__option">
            <label for="type-course-project">
-            <input id="type-course-project" name="topic_type" type="checkbox" value="do-an-mon-hoc"/>
+            <input id="type-course-project" name="topic_type" type="checkbox" value="do-an-mon-hoc">
             <span class="topic-filters__option-text">
              Đồ án môn học
             </span>
@@ -291,7 +290,7 @@
           </div>
           <div class="proposal-filters__option topic-filters__option">
            <label for="type-graduation-project">
-            <input id="type-graduation-project" name="topic_type" type="checkbox" value="do-an-tot-nghiep"/>
+            <input id="type-graduation-project" name="topic_type" type="checkbox" value="do-an-tot-nghiep">
             <span class="topic-filters__option-text">
              Đồ án tốt nghiệp
             </span>
@@ -299,10 +298,13 @@
           </div>
           <div class="proposal-filters__option topic-filters__option">
            <label for="type-thesis">
-            <input id="type-thesis" name="topic_type" type="checkbox" value="khoa-luan"/>
+            <input id="type-thesis" name="topic_type" type="checkbox" value="khoa-luan">
             <span class="topic-filters__option-text">
              Khóa luận
             </span>
+           </label><label for="uit-filter-topic_type-luan-van-thac-si">
+            <input id="uit-filter-topic_type-luan-van-thac-si" name="topic_type" type="checkbox" value="luan-van-thac-si">
+            <span class="topic-filters__option-text">Luận văn thạc sĩ</span>
            </label>
           </div>
          </div>
@@ -314,7 +316,7 @@
   <div class="topic-filters__options">
     <div class="proposal-filters__option topic-filters__option">
     <label for="course-web">
-    <input id="course-web" name="course" type="checkbox" value="internet-va-cong-nghe-web"/>
+    <input id="course-web" name="course" type="checkbox" value="internet-va-cong-nghe-web">
     <span class="topic-filters__option-text">
     Internet và công nghệ Web
     </span>
@@ -322,7 +324,7 @@
     </div>
     <div class="proposal-filters__option topic-filters__option">
     <label for="course-database">
-    <input id="course-database" name="course" type="checkbox" value="co-so-du-lieu"/>
+    <input id="course-database" name="course" type="checkbox" value="co-so-du-lieu">
     <span class="topic-filters__option-text">
     Cơ sở dữ liệu
     </span>
@@ -330,7 +332,7 @@
     </div>
     <div class="proposal-filters__option topic-filters__option">
     <label for="course-software">
-    <input id="course-software" name="course" type="checkbox" value="cong-nghe-phan-mem"/>
+    <input id="course-software" name="course" type="checkbox" value="cong-nghe-phan-mem">
     <span class="topic-filters__option-text">
     Công nghệ phần mềm
     </span>
@@ -338,7 +340,7 @@
     </div>
     <div class="topic-filters__option">
     <label for="course-analysis">
-    <input type="checkbox" id="course-analysis" name="course" value="phan-tich-thiet-ke-he-thong" />
+    <input type="checkbox" id="course-analysis" name="course" value="phan-tich-thiet-ke-he-thong">
     <span class="topic-filters__option-text">Phân tích thiết kế hệ thống</span>
     </label>
     </div>
@@ -347,18 +349,18 @@
         <span class="topic-filters__more-label">Xem thêm</span>
         <span class="topic-filters__less-label">Ẩn bớt</span>
         <span class="visually-hidden"> môn học</span>
-        <svg class="topic-filters__more-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+        <svg class="topic-filters__more-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
       </summary>
       <div class="topic-filters__more-options">
         <div class="topic-filters__option">
         <label for="course-ecommerce">
-        <input type="checkbox" id="course-ecommerce" name="course" value="thuong-mai-dien-tu" />
+        <input type="checkbox" id="course-ecommerce" name="course" value="thuong-mai-dien-tu">
         <span class="topic-filters__option-text">Thương mại điện tử</span>
         </label>
         </div>
         <div class="topic-filters__option">
         <label for="course-it-project">
-        <input type="checkbox" id="course-it-project" name="course" value="quan-ly-du-an-cntt" />
+        <input type="checkbox" id="course-it-project" name="course" value="quan-ly-du-an-cntt">
         <span class="topic-filters__option-text">Quản lý dự án công nghệ thông tin</span>
         </label>
         </div>
@@ -386,7 +388,7 @@
         <label class="visually-hidden" for="proposal-search">
          Tìm kiếm đề xuất
         </label>
-        <input aria-describedby="proposal-preview-note" form="proposal-filter-form" id="proposal-search" name="proposal_search" placeholder="Tìm theo tên đề tài, họ tên hoặc MSSV…" type="search"/>
+        <input aria-describedby="proposal-preview-note" form="proposal-filter-form" id="proposal-search" name="proposal_search" placeholder="Tìm theo tên đề tài, họ tên hoặc MSSV…" type="search">
        </div>
        <div class="proposal-toolbar__sort topic-toolbar__sort">
         <label class="visually-hidden" for="proposal-sort">
@@ -858,7 +860,7 @@
         <div class="site-footer__columns">
           <div class="site-footer__brand">
             <a href="../chung/gioi-thieu.html">
-              <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40" />
+              <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40">
             </a>
             <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</p>
             <dl class="site-footer__about">
@@ -881,8 +883,9 @@
             <p>Đang cập nhật.</p>
           </section>
         </div>
-        <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
+        <p class="site-footer__copyright">Copyright © 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
- </body>
-</html>
+ 
+
+</body></html>

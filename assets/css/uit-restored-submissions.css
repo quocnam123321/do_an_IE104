@@ -1,0 +1,1 @@
+#submissions-section .submission-board__columns--requirements { grid-template-columns: repeat(2, minmax(17.5rem, 1fr)); }

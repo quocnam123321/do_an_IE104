@@ -15,10 +15,6 @@
       .topic-form :is(input, select, textarea) { max-inline-size: 100%; }
     </style>
     <script src="../../assets/js/nav-indicator.js" defer></script>
-    <script src="../../assets/js/data/student-projects.js" defer></script>
-    <script src="../../assets/js/pages/lecturer/profile-fields.js" defer></script>
-    <script src="../../assets/js/teacher-topic-store.js" defer></script>
-    <script src="../../assets/js/teacher-topic-workflow.js" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main-content">
@@ -155,7 +151,7 @@
           <form class="topic-form" id="create-topic-form" aria-label="Tạo đề tài mới" aria-describedby="topic-form-notice" method="post" enctype="multipart/form-data">
             <fieldset class="topic-form__basic">
               <legend>Thông tin cơ bản</legend>
-              <p><label for="topic-code">Mã đề tài</label><input id="topic-code" type="text" placeholder="Tự động cấp khi lưu" aria-describedby="topic-code-hint" readonly/><span id="topic-code-hint" role="status">Chọn loại đề tài để xác định tiền tố mã.</span></p>
+              <p><label for="topic-code">Mã đề tài *</label><input id="topic-code" name="topic-code" type="text" placeholder="Nhập mã đề tài" required/></p>
               <p><label for="topic-name">Tên đề tài *</label><input id="topic-name" name="topic-name" type="text" placeholder="Nhập tên đề tài" required/></p>
               <p><label for="topic-type">Loại đề tài *</label>
                 <select id="topic-type" name="topic-type" required>
@@ -190,13 +186,13 @@
               <div class="topic-supervisor__content">
                 <div class="topic-supervisor__avatar" role="img" aria-label="Ảnh đại diện giảng viên chưa được cung cấp">Ảnh đại diện giảng viên</div>
                 <dl class="topic-supervisor__details">
-                  <div><dt>Họ tên:</dt><dd data-lecturer-profile-field="name">Chưa có thông tin</dd></div>
-                  <div><dt>Khoa/Bộ môn:</dt><dd data-lecturer-profile-field="faculty-department">Chưa có thông tin</dd></div>
-                  <div><dt>Email liên hệ:</dt><dd data-lecturer-profile-field="email">Chưa có thông tin</dd></div>
-                  <div><dt>Hướng nghiên cứu:</dt><dd data-lecturer-profile-field="research">Chưa có thông tin</dd></div>
+                  <div><dt>Họ tên:</dt><dd>Tên giảng viên</dd></div>
+                  <div><dt>Khoa/Bộ môn:</dt><dd>Tên khoa/bộ môn</dd></div>
+                  <div><dt>Email liên hệ:</dt><dd>email@truong.edu.vn</dd></div>
+                  <div><dt>Hướng nghiên cứu:</dt><dd>Hướng nghiên cứu của giảng viên</dd></div>
                 </dl>
               </div>
-              <p class="topic-supervisor__note">Thông tin lấy từ hồ sơ giảng viên demo.</p>
+              <p class="topic-supervisor__note">Thông tin lấy từ hồ sơ giảng viên.</p>
             </section>
             <div class="topic-form__field">
               <label for="topic-description">Mô tả đề tài *</label>

@@ -1,0 +1,136 @@
+(() => {
+  'use strict';
+  const store = window.IE104Proposals;
+  const content = document.querySelector('.request-detail');
+  if (!store || !content) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const id = params.has('ma') ? params.get('ma').trim().toUpperCase() : 'DX-ISE-009';
+  const badge = document.querySelector('.request-detail-heading .status-badge');
+  const feedback = document.getElementById('proposal-decision-feedback');
+  const actions = content.querySelector('.request-detail__actions');
+  const reason = document.getElementById('rejection-reason');
+  const reasonError = document.getElementById('rejection-reason-error');
+  const result = document.getElementById('proposal-result');
+  const forms = ['approve', 'reject'].map((action) => document.getElementById(`${action}-proposal-form`));
+  const dialogs = forms.map((form) => form.closest('dialog'));
+  const labels = { pending: 'Chờ duyệt', approved: 'Đã duyệt', rejected: 'Từ chối' };
+  const dateFormat = new Intl.DateTimeFormat('vi-VN', {
+    year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
+    timeZone: 'Asia/Ho_Chi_Minh',
+  });
+  let busy = false;
+
+  // Chỉ nhận đường quay về danh sách hiện tại; không nhận URL bên ngoài.
+  try {
+    const target = new URL(params.get('return') || 'yeu-cau-cho-duyet.html', window.location.href);
+    const allowed = new URL('yeu-cau-cho-duyet.html', window.location.href);
+    if (target.origin === allowed.origin && target.protocol === allowed.protocol && target.pathname === allowed.pathname) {
+      document.querySelectorAll('.back-link, .breadcrumb a[href="yeu-cau-cho-duyet.html"]').forEach((link) => {
+        link.href = `yeu-cau-cho-duyet.html${target.search}`;
+      });
+    }
+  } catch { /* URL không hợp lệ: giữ liên kết HTML về danh sách. */ }
+
+  function text(selector, value) {
+    const node = content.querySelector(selector);
+    if (node) node.textContent = value || 'Chưa có thông tin';
+  }
+
+  function render() {
+    const record = store.get(id);
+    content.hidden = !record;
+    badge.hidden = !record;
+    document.getElementById('proposal-not-found').hidden = Boolean(record);
+    if (!record) {
+      for (const dialog of dialogs) if (dialog.open) dialog.close();
+      return;
+    }
+    document.title = `${record.id} — ${record.title} | Chi tiết đề xuất`;
+    content.dataset.proposalId = record.id;
+    badge.textContent = labels[record.status];
+    badge.dataset.status = record.status;
+    text('#proposal-topic-title', `${record.id} — ${record.title}`);
+    const topicFields = content.querySelectorAll('.request-topic__meta dd');
+    [record.topicTypeLabel, record.courseLabel, record.semester ? `Học kỳ ${record.semester}` : '', record.academicYear]
+      .forEach((value, index) => { topicFields[index].textContent = value || 'Chưa có thông tin'; });
+    const studentFields = content.querySelectorAll('.request-student__meta dd');
+    studentFields[0].textContent = record.studentName;
+    studentFields[1].textContent = record.studentId;
+    const sent = document.createElement('time');
+    if (record.submittedAt) {
+      sent.dateTime = record.submittedAt;
+      sent.textContent = dateFormat.format(new Date(record.submittedAt));
+      studentFields[2].replaceChildren(sent);
+    } else studentFields[2].textContent = 'Chưa có thông tin';
+    text('.request-student__avatar', record.studentName.split(/\s+/).slice(-2).map((part) => part[0]).join(''));
+    text('.request-description p', record.description);
+    text('.request-objectives p', record.objectives);
+    text('.request-outcomes p', record.outcomes);
+    text('.request-attachments__file span', record.attachment);
+    document.getElementById('proposal-student-preview').href = `../sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=${encodeURIComponent(record.id)}`;
+    for (const form of forms) {
+      form.querySelector('strong').textContent = `${record.id} — ${record.title}`;
+      form.querySelector('button[type="submit"]').disabled = busy || record.status !== 'pending';
+    }
+    actions.hidden = record.status !== 'pending';
+    for (const button of actions.querySelectorAll('button')) button.disabled = busy || record.status !== 'pending';
+    result.hidden = record.status === 'pending';
+    text('[data-proposal-result]', record.status === 'approved'
+      ? `${record.topicId} — ${record.title}: Đang thực hiện.` : 'Đề xuất đã bị từ chối.');
+    text('[data-proposal-reason]', record.reason ? `Lý do từ chối: ${record.reason}` : '');
+    content.querySelector('[data-proposal-reason]').hidden = !record.reason;
+    text('[data-proposal-decision-time]', record.decidedAt ? `Thời điểm xử lý: ${dateFormat.format(new Date(record.decidedAt))}. Chỉ lưu trong bản demo trên trình duyệt.` : '');
+    if (store.getError()) feedback.textContent = store.getError();
+    if (!busy && record.status !== 'pending') {
+      const wasOpen = dialogs.some((dialog) => dialog.open);
+      for (const dialog of dialogs) if (dialog.open) dialog.close();
+      if (wasOpen) {
+        feedback.textContent = 'Đề xuất đã được xử lý. Kết quả đã cập nhật bên dưới.';
+        feedback.focus();
+      }
+    }
+  }
+
+  function validateReason() {
+    const invalid = reason.value.trim().length < 10;
+    reasonError.hidden = !invalid;
+    reason.setAttribute('aria-invalid', String(invalid));
+    return !invalid;
+  }
+  reason.addEventListener('input', () => {
+    if (reason.getAttribute('aria-invalid') === 'true') validateReason();
+  });
+
+  for (const form of forms) {
+    form.noValidate = true;
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (busy) return;
+      const reject = form.id === 'reject-proposal-form';
+      const error = form.querySelector('[data-decision-error]');
+      error.hidden = true;
+      if (reject && !validateReason()) { reason.focus(); return; }
+      busy = true;
+      form.setAttribute('aria-busy', 'true');
+      render();
+      try {
+        await store.decide(id, reject ? 'rejected' : 'approved', reason.value);
+        form.closest('dialog').close();
+        feedback.textContent = `Đã lưu quyết định ${reject ? 'từ chối' : 'duyệt'} ${id} trong bản demo trên trình duyệt.`;
+        feedback.focus();
+      } catch (failure) {
+        error.textContent = failure.name === 'SecurityError' || failure.name === 'QuotaExceededError'
+          ? 'Không lưu được quyết định. Hãy cho phép lưu trữ trên trình duyệt và thử lại. Chưa cập nhật kết quả.'
+          : failure.message;
+        error.hidden = false;
+      } finally {
+        busy = false;
+        form.removeAttribute('aria-busy');
+        render();
+      }
+    });
+  }
+  store.subscribe(render);
+  render();
+})();
