@@ -1,0 +1,7 @@
+#lecturer-profile-error { color: var(--color-danger-fg); }
+#lecturer-profile-status { overflow-wrap: anywhere; }
+.lecturer-profile-page dialog:not(.profile-edit) button { min-height: var(--control-min-height); padding: .65rem 1rem; border: 1px solid var(--color-control-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-foreground); cursor: pointer; }
+.lecturer-profile-page dialog:not(.profile-edit) button:not(:disabled):hover { border-color: var(--color-primary); color: var(--color-primary); }
+.lecturer-profile-page .change-password-form input { min-height: var(--control-min-height); padding: .65rem .75rem; border: 1px solid var(--color-control-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-foreground); }
+.lecturer-profile-page .change-password-form button:disabled { cursor: not-allowed; opacity: .6; }
+.lecturer-profile-page .change-password-form label { color: var(--color-heading); font-weight: var(--font-weight-semibold); }

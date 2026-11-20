@@ -6,7 +6,7 @@
   const courseProject = { topicType: 'do-an-mon-hoc', topicTypeLabel: 'Đồ án môn học' };
   const primary = { supervisionRole: 'huong-dan-chinh', supervisionRoleLabel: 'Hướng dẫn chính' };
   const secondary = { supervisionRole: 'dong-huong-dan', supervisionRoleLabel: 'Đồng hướng dẫn' };
-  const seeds = [
+  const legacySeeds = [
     {
       ...courseProject, ...primary, id: 'DX-GV001', topicId: 'DT-GV001',
       title: 'Website quản lý thư viện', studentName: 'Nguyễn Văn A', studentId: '22520001',
@@ -49,11 +49,16 @@
       attachment: 'De_cuong_de_tai.pdf',
     },
   ].map((record) => ({ submittedAt: '', semester: '', academicYear: '', ...record }));
+  const uitSeeds = window.UITLecturerCatalog?.pending;
+  const realSeeds = window.IE104?.data?.lecturerRealProposalSeeds;
+  const seeds = uitSeeds ? [...uitSeeds, ...legacySeeds] : realSeeds || legacySeeds;
+  const canViewSeed = () => !window.IE104?.data?.currentLecturer || window.IE104.data.currentLecturer.id === 'GV001';
   const listeners = new Set();
   let readError = '';
 
   function readDecision(id) {
-    const raw = window.localStorage.getItem(prefix + id);
+    const raw = window.localStorage.getItem(prefix + id) ??
+      window.localStorage.getItem('ie104.restored-uit.proposal-decision.v1.' + id);
     if (raw === null) return null;
     const decision = JSON.parse(raw);
     if (!decision || !['approved', 'rejected'].includes(decision.status) ||
@@ -64,24 +69,51 @@
     return { status: decision.status, reason: decision.reason, decidedAt: decision.decidedAt };
   }
 
+  function seedRecord(seed) {
+    let decision;
+    try { decision = readDecision(seed.id); }
+    catch { readError = 'Không đọc được dữ liệu đã lưu. Kiểm tra quyền lưu trữ của trình duyệt trước khi xử lý đề xuất.'; }
+    const record = { ...seed, status: 'pending', reason: '', decidedAt: '', ...decision };
+    record.topicStatus = record.status === 'approved' ? 'in-progress' : record.status;
+    return record;
+  }
+
+  function getApprovedSeed(topicId) {
+    if (!canViewSeed()) return null;
+    const seed = seeds.find((record) => record.topicId === topicId) ||
+      legacySeeds.find((record) => record.topicId === topicId);
+    const record = seed && seedRecord(seed);
+    return record?.status === 'approved' ? record : null;
+  }
+
   function getAll() {
     readError = '';
-    return seeds.map((seed) => {
-      let decision;
-      try { decision = readDecision(seed.id); }
-      catch { readError = 'Không đọc được dữ liệu đã lưu. Kiểm tra quyền lưu trữ của trình duyệt trước khi xử lý đề xuất.'; }
-      const record = { ...seed, status: 'pending', reason: '', decidedAt: '', ...decision };
-      record.topicStatus = record.status === 'approved' ? 'in-progress' : record.status;
-      return record;
-    });
+    const initial = canViewSeed() ? seeds.map(seedRecord) : [];
+    // Giữ các quyết định đã duyệt từ bộ dữ liệu cũ khi dùng danh mục UIT.
+    if (realSeeds && canViewSeed()) {
+      initial.push(...legacySeeds.map(seedRecord).filter((record) => record.status === 'approved'));
+    }
+    let saved = [];
+    try { saved = window.IE104?.services?.proposals?.listForLecturer() || []; }
+    catch (error) { readError = error.message; }
+    let registrations = [];
+    try { registrations = window.IE104?.services?.registrations?.listForLecturer() || []; }
+    catch (error) { readError = error.message; }
+    return [...initial, ...saved, ...registrations];
   }
 
   function notify() {
     for (const listener of listeners) listener();
   }
 
-  async function decide(id, status, reason = '') {
+  async function decide(id, status, reason = '', revision) {
+    if (!seeds.some(record => record.id === id)) {
+      const service = window.IE104?.services?.registrations?.listForLecturer().some(record => record.id === id) ? window.IE104.services.registrations : window.IE104?.services?.proposals;
+      if (!service) throw new Error('Không tìm thấy đề xuất.');
+      return service.decide(id, status, reason, revision);
+    }
     const save = () => {
+      if (window.IE104?.data?.currentLecturer && window.IE104.data.currentLecturer.id !== 'GV001') throw new Error('Giảng viên hiện tại không được xử lý đề xuất này.');
       if (!seeds.some((record) => record.id === id)) throw new Error('Không tìm thấy đề xuất.');
       if (!['approved', 'rejected'].includes(status)) throw new Error('Quyết định không hợp lệ.');
       const trimmedReason = reason.trim();
@@ -100,12 +132,20 @@
   }
 
   window.addEventListener('storage', (event) => {
-    if (event.key === null || event.key.startsWith(prefix)) notify();
+    if (event.key === null || event.key.startsWith(prefix) || event.key === window.IE104?.storage?.proposalKey || event.key === window.IE104?.storage?.registrationKey) notify();
   });
   window.addEventListener('pageshow', notify);
+  window.addEventListener('ie104:proposals-updated', notify);
+  window.addEventListener('ie104:registrations-updated', notify);
   window.IE104Proposals = Object.freeze({
     getAll,
     get: (id) => getAll().find((record) => record.id === id),
+    getSeed: (id) => {
+      const seed = seeds.find(record => record.id === id) || legacySeeds.find(record => record.id === id);
+      return canViewSeed() && seed ? seedRecord(seed) : null;
+    },
+    getSeedDecision: readDecision,
+    getApprovedSeed,
     getError: () => readError,
     decide,
     subscribe: (listener) => { listeners.add(listener); return () => listeners.delete(listener); },

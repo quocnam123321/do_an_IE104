@@ -2,6 +2,7 @@
 
 <html lang="vi">
   <head>
+    <script src="../../assets/js/shared/topic-identity.js" defer></script>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta
@@ -15,14 +16,22 @@
     <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css" />
     <link rel="stylesheet" href="../../assets/css/student-topic-registration.css" />
     <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css" />
-    <script src="../../assets/js/nav-indicator.js" defer></script>
+    <script src="../../assets/js/shared/nav-indicator.js" defer></script>
     <script src="../../assets/js/data/mock-data.js" defer></script>
     <script src="../../assets/js/teacher-topic-store.js" defer></script>
+    <script src="../../assets/js/services/storage.js" defer></script>
+    <script src="../../assets/js/data/lecturer-topics.js" defer></script>
+    <script src="../../assets/js/uit-lecturer-catalog.js" defer></script>
+    <script src="../../assets/js/data/lecturer-merge-catalog.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
+    <script src="../../assets/js/services/published-topic-service.js" defer></script>
     <script src="../../assets/js/services/topic-service.js" defer></script>
     <script src="../../assets/js/shared/topic-list.js" defer></script>
     <script src="../../assets/js/pages/student/topic-registration.js" defer></script>
-  
-<script src="../../assets/js/dialog-commands.js" defer></script>
+  <script src="../../assets/js/services/lecturer-topic-file-service.js" defer></script>
+<script src="../../assets/js/pages/student/published-topic-media.js" defer></script>
+<link rel="stylesheet" href="../../assets/css/topic-media-shared.css">
 </head>
   <body class="registration-page student-topic-registration-page">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
@@ -54,6 +63,7 @@
                 <summary class="main-nav__label" id="common-navigation-label"><span class="main-nav__text">Chung</span></summary>
                 <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a></li>
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
                 </ul>
@@ -402,31 +412,40 @@
       <div class="site-footer__inner">
         <div class="site-footer__columns">
           <div class="site-footer__brand">
-            <a href="../chung/gioi-thieu.html">
-              <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40" />
-            </a>
-            <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</p>
+            <p class="site-footer__logo">Logo</p>
+            <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN &amp; KHÓA LUẬN</p>
             <dl class="site-footer__about">
               <div>
-                <dt><a href="../chung/gioi-thieu.html">Thông tin trang web</a></dt>
+                <dt>Thông tin trang web</dt>
                 <dd>Trường Đại học Công nghệ Thông tin</dd>
               </div>
               <div>
-                <dt><a href="../chung/gioi-thieu.html#team-title">Thông tin nhóm</a></dt>
+                <dt>Thông tin nhóm</dt>
                 <dd>Đồ án IE104 — Nhóm 7</dd>
               </div>
             </dl>
           </div>
-          <section class="site-footer__information site-footer__terms" aria-labelledby="footer-terms-title">
+          <section
+            class="site-footer__information site-footer__terms"
+            aria-labelledby="footer-terms-title"
+          >
             <h2 id="footer-terms-title">Điều khoản sử dụng</h2>
             <p>Đang cập nhật.</p>
           </section>
-          <section class="site-footer__information site-footer__policies" aria-labelledby="footer-policies-title">
+          <section
+            class="site-footer__information site-footer__policies"
+            aria-labelledby="footer-policies-title"
+          >
             <h2 id="footer-policies-title">Quy chế, chính sách bảo mật</h2>
-            <p>Đang cập nhật.</p>
+            <ul>
+              <li><span>Quy chế đồ án / khóa luận (đang cập nhật)</span></li>
+              <li><span>Chính sách bảo mật (đang cập nhật)</span></li>
+            </ul>
           </section>
         </div>
-        <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
+        <p class="site-footer__copyright">
+          Copyright © 2026 - Hệ thống quản lý đồ án / khóa luận
+        </p>
       </div>
     </footer>
   </body>

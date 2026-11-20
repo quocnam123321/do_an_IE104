@@ -1,19 +1,35 @@
 <!doctype html>
-<html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="Chỉnh sửa thông tin, nội dung, điều kiện và thời gian đăng ký của đề tài do giảng viên tạo."
-    />
+<html lang="vi"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Chỉnh sửa thông tin, nội dung, điều kiện và thời gian đăng ký của đề tài do giảng viên tạo.">
     <title>Chỉnh sửa đề tài | Quản lý đồ án và khóa luận tốt nghiệp</title>
-    <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/components.css" />
-    <script src="../../assets/js/nav-indicator.js" defer></script>
+    <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261111-heading-sync-1">
+    <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1">
+    <link rel="stylesheet" href="../../assets/css/components.css">
+    <script src="../../assets/js/nav-indicator.js" defer=""></script>
+
+    <link rel="stylesheet" href="../../assets/css/teacher-topic-forms.css" />
+    <link rel="stylesheet" href="../../assets/css/lecturer-topic-editor.css" />
+    <script src="../../assets/js/uit-lecturer-catalog.js" defer></script>
+    <script src="../../assets/js/shared/topic-identity.js" defer></script>
     <script src="../../assets/js/teacher-topic-store.js" defer></script>
-    <script src="../../assets/js/teacher-topic-workflow.js" defer></script>
+    <script src="../../assets/js/data/mock-data.js" defer></script>
+    <script src="../../assets/js/data/proposal-actors.js" defer></script>
+    <script src="../../assets/js/data/lecturer-topics.js" defer></script>
+    <script src="../../assets/js/data/lecturer-merge-catalog.js" defer></script>
+    <script src="../../assets/js/services/storage.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
+    <script src="../../assets/js/shared/validation.js" defer></script>
+    <script src="../../assets/js/services/proposal-service.js" defer></script>
+    <script src="../../assets/js/services/registration-service.js" defer></script>
+    <script src="../../assets/js/services/approved-project-service.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
+    <script src="../../assets/js/services/published-topic-service.js" defer></script>
+    <script src="../../assets/js/proposal-store.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-file-service.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
+    <script src="../../assets/js/pages/lecturer/topic-editor.js" defer></script>
   </head>
 
   <body>
@@ -23,17 +39,17 @@
     <header class="site-header">
       <div class="site-header__inner">
         <a class="site-brand" href="tong-quan-giang-vien.html">
-          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
-          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
+          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70">
+          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br>KHÓA LUẬN TỐT NGHIỆP</span>
         </a>
-        <details class="site-navigation" open>
+        <details class="site-navigation" open="">
           <summary class="site-navigation__toggle">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
-              <path d="M4 6h16M4 12h16M4 18h16" />
+              <path d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
             Menu
           </summary>
-        <nav class="main-nav" aria-label="Điều hướng giảng viên" data-nav-indicator>
+        <nav class="main-nav" aria-label="Điều hướng giảng viên" data-nav-indicator="">
           <ul class="main-nav__list">
             <li class="main-nav__item">
               <a class="main-nav__link" href="tong-quan-giang-vien.html"><span class="main-nav__text">Tổng quan</span></a>
@@ -55,6 +71,7 @@
                 <summary class="main-nav__label" id="common-navigation-label"><span class="main-nav__text">Chung</span></summary>
                 <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a></li>
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
                 </ul>
@@ -75,13 +92,7 @@
                 <a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
               </li>
               <li>
-                <button
-                  class="account-menu__logout"
-                  type="button"
-                  aria-controls="logout-dialog"
-                  aria-describedby="logout-notice"
-                  disabled
-                >
+                <button class="account-menu__logout" type="button" aria-controls="logout-dialog" aria-describedby="logout-notice" disabled="">
                   Đăng xuất
                 </button>
               </li>
@@ -91,16 +102,12 @@
         </div>
       </div>
     </header>
-    <dialog
-      id="logout-dialog"
-      class="confirmation-dialog"
-      aria-labelledby="logout-title"
-    >
+    <dialog id="logout-dialog" class="confirmation-dialog" aria-labelledby="logout-title">
       <h2 id="logout-title">Xác nhận đăng xuất</h2>
       <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
       <form method="dialog">
         <button type="submit" value="cancel">Hủy</button>
-        <button type="button" disabled>Xác nhận đăng xuất</button>
+        <button type="button" disabled="">Xác nhận đăng xuất</button>
       </form>
     </dialog>
 
@@ -136,43 +143,23 @@
             thay đổi.
           </p>
 
-          <form
-            id="topic-edit-form"
-            class="topic-edit-form"
-            method="post"
-            aria-describedby="topic-required-notice topic-save-notice"
-          >
+          <form id="topic-edit-form" class="topic-edit-form teacher-topic-form" method="post" aria-describedby="topic-required-notice topic-save-notice">
             <p id="topic-required-notice" class="topic-edit-form__required-note">
               Trường có dấu * là bắt buộc.
             </p>
-            <div class="topic-edit-form__overview">
-              <section
-                class="topic-edit-form__basic"
-                aria-labelledby="basic-information-title"
-              >
+            <div class="topic-edit-form__overview teacher-topic-form__panel">
+              <section class="topic-edit-form__basic" aria-labelledby="basic-information-title">
                 <h2 id="basic-information-title">Thông tin cơ bản</h2>
                 <div class="topic-edit-form__field">
                   <label for="ma-de-tai">Mã đề tài (chỉ đọc)</label>
-                  <input
-                    id="ma-de-tai"
-                    name="ma-de-tai"
-                    type="text"
-                    placeholder="Chưa có thông tin"
-                    readonly
-                  />
+                  <input id="ma-de-tai" name="ma-de-tai" type="text" placeholder="Chưa có thông tin" readonly="">
                 </div>
 
                 <div class="topic-edit-form__field">
                   <label for="ten-de-tai">
                     Tên đề tài <span aria-hidden="true">*</span>
                   </label>
-                  <input
-                    id="ten-de-tai"
-                    name="ten-de-tai"
-                    type="text"
-                    placeholder="Chưa có thông tin"
-                    required
-                  />
+                  <input id="ten-de-tai" name="ten-de-tai" type="text" placeholder="Chưa có thông tin" required="">
                 </div>
 
                 <div class="topic-edit-form__row">
@@ -180,16 +167,16 @@
                     <label for="loai-de-tai">
                       Loại đề tài <span aria-hidden="true">*</span>
                     </label>
-                    <select id="loai-de-tai" name="loai-de-tai" required>
-                      <option value="" selected>Chọn loại đề tài</option>
+                    <select id="loai-de-tai" name="loai-de-tai" required="">
+                      <option value="" selected="">Chọn loại đề tài</option>
                     </select>
                   </div>
                   <div class="topic-edit-form__field">
                     <label for="mon-hoc">
                       Môn học <span aria-hidden="true">*</span>
                     </label>
-                    <select id="mon-hoc" name="mon-hoc" required>
-                      <option value="" selected>Chọn môn học</option>
+                    <select id="mon-hoc" name="mon-hoc" required="">
+                      <option value="" selected="">Chọn môn học</option>
                     </select>
                   </div>
                 </div>
@@ -199,16 +186,16 @@
                     <label for="hoc-ky">
                       Học kỳ <span aria-hidden="true">*</span>
                     </label>
-                    <select id="hoc-ky" name="hoc-ky" required>
-                      <option value="" selected>Chọn học kỳ</option>
+                    <select id="hoc-ky" name="hoc-ky" required="">
+                      <option value="" selected="">Chọn học kỳ</option>
                     </select>
                   </div>
                   <div class="topic-edit-form__field">
                     <label for="nam-hoc">
                       Năm học <span aria-hidden="true">*</span>
                     </label>
-                    <select id="nam-hoc" name="nam-hoc" required>
-                      <option value="" selected>Chọn năm học</option>
+                    <select id="nam-hoc" name="nam-hoc" required="">
+                      <option value="" selected="">Chọn năm học</option>
                     </select>
                   </div>
                 </div>
@@ -217,26 +204,18 @@
                   <div class="topic-edit-form__field">
                     <label for="linh-vuc">Lĩnh vực</label>
                     <select id="linh-vuc" name="linh-vuc">
-                      <option value="" selected>Chọn lĩnh vực</option>
+                      <option value="" selected="">Chọn lĩnh vực</option>
                     </select>
                   </div>
                   <div class="topic-edit-form__field">
                     <label for="cong-nghe-goi-y">Công nghệ gợi ý</label>
-                    <input
-                      id="cong-nghe-goi-y"
-                      name="cong-nghe-goi-y"
-                      type="text"
-                      placeholder="Chưa có thông tin"
-                    />
+                    <input id="cong-nghe-goi-y" name="cong-nghe-goi-y" type="text" placeholder="Chưa có thông tin">
                   </div>
                 </div>
               </section>
 
               <aside class="topic-edit-form__sidebar" aria-label="Ảnh và giảng viên hướng dẫn">
-                <section
-                  class="topic-edit-form__image"
-                  aria-labelledby="topic-image-title"
-                >
+                <section class="topic-edit-form__image teacher-topic-form__panel" aria-labelledby="topic-image-title">
                   <h2 id="topic-image-title">Ảnh minh họa đề tài</h2>
                   <figure class="topic-image">
                     <div class="topic-image__placeholder">
@@ -245,10 +224,10 @@
                     <figcaption>Ảnh minh họa đề tài</figcaption>
                   </figure>
                   <div class="topic-image__actions" role="group" aria-label="Thao tác ảnh minh họa">
-                    <button type="button" aria-describedby="topic-image-notice" disabled>
+                    <button type="button" aria-describedby="topic-image-notice" disabled="">
                       Thay ảnh
                     </button>
-                    <button type="button" aria-describedby="topic-image-notice" disabled>
+                    <button type="button" aria-describedby="topic-image-notice" disabled="">
                       Gỡ ảnh
                     </button>
                   </div>
@@ -257,134 +236,79 @@
                   </p>
                 </section>
 
-                <section
-                  class="topic-edit-form__lecturer"
-                  aria-labelledby="topic-lecturer-title"
-                >
+                <section class="topic-edit-form__lecturer teacher-topic-form__panel" aria-labelledby="topic-lecturer-title">
                   <h2 id="topic-lecturer-title">Giảng viên hướng dẫn</h2>
                   <p>Thông tin sẽ lấy từ hồ sơ giảng viên.</p>
                   <div class="topic-edit-form__field">
                     <label for="ho-ten-giang-vien">Họ tên (chỉ đọc)</label>
-                    <input
-                      id="ho-ten-giang-vien"
-                      name="ho-ten-giang-vien"
-                      type="text"
-                      placeholder="Chưa có thông tin"
-                      readonly
-                    />
+                    <input id="ho-ten-giang-vien" name="ho-ten-giang-vien" type="text" placeholder="Chưa có thông tin" readonly="">
                   </div>
 
                   <div class="topic-edit-form__field">
                     <label for="khoa-bo-mon">Khoa / Bộ môn (chỉ đọc)</label>
-                    <input
-                      id="khoa-bo-mon"
-                      name="khoa-bo-mon"
-                      type="text"
-                      placeholder="Chưa có thông tin"
-                      readonly
-                    />
+                    <input id="khoa-bo-mon" name="khoa-bo-mon" type="text" placeholder="Chưa có thông tin" readonly="">
                   </div>
 
                   <div class="topic-edit-form__field">
                     <label for="email-lien-he">Email liên hệ (chỉ đọc)</label>
-                    <input
-                      id="email-lien-he"
-                      name="email-lien-he"
-                      type="email"
-                      placeholder="Chưa có thông tin"
-                      readonly
-                    />
+                    <input id="email-lien-he" name="email-lien-he" type="email" placeholder="Chưa có thông tin" readonly="">
                   </div>
                 </section>
               </aside>
             </div>
 
-            <section
-              class="topic-edit-form__content"
-              aria-labelledby="topic-content-title"
-            >
+            <section class="topic-edit-form__content teacher-topic-form__panel" aria-labelledby="topic-content-title">
               <h2 id="topic-content-title">Nội dung đề tài</h2>
               <div class="topic-edit-form__field">
                 <label for="mo-ta">
                   Mô tả đề tài <span aria-hidden="true">*</span>
                 </label>
-                <textarea
-                  id="mo-ta"
-                  name="mo-ta"
-                  rows="5"
-                  placeholder="Chưa có thông tin"
-                  required
-                ></textarea>
+                <textarea id="mo-ta" name="mo-ta" rows="5" placeholder="Chưa có thông tin" required=""></textarea>
               </div>
 
               <div class="topic-edit-form__field">
                 <label for="muc-tieu">
                   Mục tiêu <span aria-hidden="true">*</span>
                 </label>
-                <textarea
-                  id="muc-tieu"
-                  name="muc-tieu"
-                  rows="5"
-                  placeholder="Chưa có thông tin"
-                  required
-                ></textarea>
+                <textarea id="muc-tieu" name="muc-tieu" rows="5" placeholder="Chưa có thông tin" required=""></textarea>
               </div>
 
               <div class="topic-edit-form__field">
                 <label for="yeu-cau-thuc-hien">
                   Yêu cầu thực hiện <span aria-hidden="true">*</span>
                 </label>
-                <textarea
-                  id="yeu-cau-thuc-hien"
-                  name="yeu-cau-thuc-hien"
-                  rows="5"
-                  placeholder="Chưa có thông tin"
-                  required
-                ></textarea>
+                <textarea id="yeu-cau-thuc-hien" name="yeu-cau-thuc-hien" rows="5" placeholder="Chưa có thông tin" required=""></textarea>
               </div>
             </section>
 
-            <section
-              class="topic-edit-form__conditions"
-              aria-labelledby="registration-conditions-title"
-            >
+            <section class="topic-edit-form__content teacher-topic-form__panel" aria-labelledby="topic-outcomes-title">
+              <h2 id="topic-outcomes-title">Kết quả dự kiến</h2>
+              <label for="ket-qua-du-kien">Kết quả dự kiến *</label>
+              <textarea id="ket-qua-du-kien" name="ket-qua-du-kien" rows="4" required></textarea>
+            </section>
+            <section class="topic-edit-form__content teacher-topic-form__panel" aria-labelledby="topic-attachment-title" data-editor-attachment>
+              <h2 id="topic-attachment-title">Tài liệu đính kèm</h2>
+              <p>PDF/DOC/DOCX/TXT không quá 10 MB.</p>
+            </section>
+            <section class="topic-edit-form__conditions teacher-topic-form__panel" aria-labelledby="registration-conditions-title">
               <h2 id="registration-conditions-title">Điều kiện đăng ký</h2>
               <div class="topic-edit-form__row">
                 <div class="topic-edit-form__field">
                   <label for="so-thanh-vien-toi-thieu">
                     Số thành viên tối thiểu / nhóm <span aria-hidden="true">*</span>
                   </label>
-                  <input
-                    id="so-thanh-vien-toi-thieu"
-                    name="so-thanh-vien-toi-thieu"
-                    type="number"
-                    placeholder="Chưa có thông tin"
-                    min="1"
-                    step="1"
-                    required
-                  />
+                  <input id="so-thanh-vien-toi-thieu" name="so-thanh-vien-toi-thieu" type="number" placeholder="Chưa có thông tin" min="1" step="1" required="">
                 </div>
                 <div class="topic-edit-form__field">
                   <label for="so-thanh-vien-toi-da">
                     Số thành viên tối đa / nhóm <span aria-hidden="true">*</span>
                   </label>
-                  <input
-                    id="so-thanh-vien-toi-da"
-                    name="so-thanh-vien-toi-da"
-                    type="number"
-                    placeholder="Chưa có thông tin"
-                    min="1"
-                    step="1"
-                    required
-                  />
+                  <input id="so-thanh-vien-toi-da" name="so-thanh-vien-toi-da" type="number" placeholder="Chưa có thông tin" min="1" step="1" required="">
                 </div>
               </div>
             </section>
 
-            <section
-              class="topic-edit-form__schedule"
-              aria-labelledby="topic-schedule-title"
-            >
+            <section class="topic-edit-form__schedule teacher-topic-form__panel" aria-labelledby="topic-schedule-title">
               <h2 id="topic-schedule-title">Thời gian đăng ký và thực hiện</h2>
               <p id="topic-timezone-notice">
                 Thời gian được hiểu theo múi giờ Việt Nam (UTC+07:00).
@@ -394,48 +318,26 @@
                   <label for="mo-dang-ky-luc">
                     Mở đăng ký từ <span aria-hidden="true">*</span>
                   </label>
-                  <input
-                    id="mo-dang-ky-luc"
-                    name="mo-dang-ky-luc"
-                    type="datetime-local"
-                    aria-describedby="topic-timezone-notice"
-                    required
-                  />
+                  <input id="mo-dang-ky-luc" name="mo-dang-ky-luc" type="datetime-local" aria-describedby="topic-timezone-notice" required="">
                 </div>
                 <div class="topic-edit-form__field">
                   <label for="dong-dang-ky-luc">
                     Đóng đăng ký lúc <span aria-hidden="true">*</span>
                   </label>
-                  <input
-                    id="dong-dang-ky-luc"
-                    name="dong-dang-ky-luc"
-                    type="datetime-local"
-                    aria-describedby="topic-timezone-notice"
-                    required
-                  />
+                  <input id="dong-dang-ky-luc" name="dong-dang-ky-luc" type="datetime-local" aria-describedby="topic-timezone-notice" required="">
                 </div>
               </div>
 
               <div class="topic-edit-form__row">
                 <div class="topic-edit-form__field">
                   <label for="ngay-bat-dau-thuc-hien">Ngày bắt đầu thực hiện</label>
-                  <input
-                    id="ngay-bat-dau-thuc-hien"
-                    name="ngay-bat-dau-thuc-hien"
-                    type="date"
-                  />
+                  <input id="ngay-bat-dau-thuc-hien" name="ngay-bat-dau-thuc-hien" type="date">
                 </div>
                 <div class="topic-edit-form__field">
                   <label for="han-hoan-thanh-de-tai">
                     Hạn hoàn thành đề tài <span aria-hidden="true">*</span>
                   </label>
-                  <input
-                    id="han-hoan-thanh-de-tai"
-                    name="han-hoan-thanh-de-tai"
-                    type="datetime-local"
-                    aria-describedby="topic-timezone-notice"
-                    required
-                  />
+                  <input id="han-hoan-thanh-de-tai" name="han-hoan-thanh-de-tai" type="datetime-local" aria-describedby="topic-timezone-notice" required="">
                 </div>
               </div>
             </section>
@@ -445,12 +347,7 @@
             </p>
             <div class="topic-edit-form__actions">
               <a class="topic-edit-form__cancel" href="chi-tiet-de-tai-da-tao-giang-vien.html">Hủy</a>
-              <button
-                class="topic-edit-form__save"
-                type="submit"
-                aria-describedby="topic-save-notice"
-                disabled
-              >
+              <button class="topic-edit-form__save" type="submit" aria-describedby="topic-save-notice" disabled="">
                 Lưu thay đổi
               </button>
             </div>
@@ -467,7 +364,7 @@
         <div class="site-footer__columns">
           <div class="site-footer__brand">
             <a href="../chung/gioi-thieu.html">
-              <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40" />
+              <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40">
             </a>
             <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</p>
             <dl class="site-footer__about">
@@ -490,8 +387,9 @@
             <p>Đang cập nhật.</p>
           </section>
         </div>
-        <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
+        <p class="site-footer__copyright">Copyright © 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
-  </body>
-</html>
+  
+
+</body></html>

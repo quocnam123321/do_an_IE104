@@ -1,24 +1,41 @@
-<!DOCTYPE html>
-<html lang="vi">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-  <meta content="Xem chi tiết đề xuất đề tài do sinh viên gửi và các hộp thoại duyệt, từ chối." name="description"/>
+<!doctype html>
+<html lang="vi"><head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="Xem chi tiết đề xuất đề tài do sinh viên gửi và các hộp thoại duyệt, từ chối." name="description">
   <title>
    Chi tiết đề xuất đề tài | Quản lý đồ án
   </title>
-  <link href="../../assets/css/tokens.css?v=20261111-heading-sync-1" rel="stylesheet"/>
-  <link href="../../assets/css/base.css?v=20261111-heading-sync-1" rel="stylesheet"/>
-  <link href="../../assets/css/components.css" rel="stylesheet"/>
-  <link href="../../assets/css/breadcrumb.css" rel="stylesheet"/>
-  <link href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1" rel="stylesheet"/>
-  <link href="../../assets/css/teacher-dialogs.css?v=20261030-1" rel="stylesheet"/>
-  <link href="../../assets/css/teacher-request-detail.css?v=20261030-shared-dialogs-4" rel="stylesheet"/>
-   <script src="../../assets/js/nav-indicator.js" defer></script>
-   <script src="../../assets/js/dialog-commands.js" defer></script>
-   <script src="../../assets/js/proposal-store.js" defer></script>
-   <script src="../../assets/js/proposal-detail.js" defer></script>
- </head>
+  <link href="../../assets/css/tokens.css?v=20261111-heading-sync-1" rel="stylesheet">
+  <link href="../../assets/css/base.css?v=20261111-heading-sync-1" rel="stylesheet">
+  <link href="../../assets/css/components.css" rel="stylesheet">
+  <link href="../../assets/css/breadcrumb.css" rel="stylesheet">
+  <link href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1" rel="stylesheet">
+  <link href="../../assets/css/teacher-dialogs.css?v=20261030-1" rel="stylesheet">
+  <link href="../../assets/css/teacher-request-detail.css?v=20261030-shared-dialogs-4" rel="stylesheet">
+   <script src="../../assets/js/nav-indicator.js" defer=""></script>
+   <script src="../../assets/js/dialog-commands.js" defer=""></script>
+
+    <link rel="stylesheet" href="../../assets/css/topic-media-shared.css" />
+    <script src="../../assets/js/uit-lecturer-catalog.js" defer></script>
+    <script src="../../assets/js/shared/topic-identity.js" defer></script>
+    <script src="../../assets/js/teacher-topic-store.js" defer></script>
+    <script src="../../assets/js/data/mock-data.js" defer></script>
+    <script src="../../assets/js/data/proposal-actors.js" defer></script>
+    <script src="../../assets/js/data/lecturer-topics.js" defer></script>
+    <script src="../../assets/js/data/lecturer-merge-catalog.js" defer></script>
+    <script src="../../assets/js/services/storage.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
+    <script src="../../assets/js/shared/validation.js" defer></script>
+    <script src="../../assets/js/services/proposal-service.js" defer></script>
+    <script src="../../assets/js/services/registration-service.js" defer></script>
+    <script src="../../assets/js/services/approved-project-service.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
+    <script src="../../assets/js/services/published-topic-service.js" defer></script>
+    <script src="../../assets/js/proposal-store.js" defer></script>
+    <script src="../../assets/js/shared/proposal-outline.js" defer></script>
+    <script src="../../assets/js/proposal-detail.js" defer></script>
+  </head>
  <body class="teacher-workspace-page teacher-request-detail-page">
   <a class="skip-link" href="#main-content">
    Chuyển đến nội dung chính
@@ -27,14 +44,14 @@
   <header class="site-header">
    <div class="site-header__inner">
     <a class="site-brand" href="tong-quan-giang-vien.html">
-     <img alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" class="site-brand__logo" height="70" src="../../assets/images/images.jpg" width="70"/>
+     <img alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" class="site-brand__logo" height="70" src="../../assets/images/images.jpg" width="70">
      <span class="site-brand__name">
       QUẢN LÝ ĐỒ ÁN VÀ
-      <br/>
+      <br>
       KHÓA LUẬN TỐT NGHIỆP
      </span>
     </a>
-    <nav aria-label="Điều hướng giảng viên" class="main-nav" data-nav-indicator>
+    <nav aria-label="Điều hướng giảng viên" class="main-nav" data-nav-indicator="">
      <ul class="main-nav__list">
       <li class="main-nav__item">
        <a class="main-nav__link" href="tong-quan-giang-vien.html">
@@ -66,6 +83,11 @@
          <li class="main-nav__subitem">
           <a class="main-nav__link" href="../chung/gioi-thieu.html">
            Giới thiệu
+          </a>
+         </li>
+         <li class="main-nav__subitem">
+          <a class="main-nav__link" href="../chung/huong-nghien-cuu.html">
+           Hướng nghiên cứu
           </a>
          </li>
          <li class="main-nav__subitem">
@@ -156,6 +178,11 @@
           <li>
            <a class="mobile-nav__link" href="../chung/gioi-thieu.html">
             Giới thiệu
+           </a>
+          </li>
+          <li>
+           <a class="mobile-nav__link" href="../chung/huong-nghien-cuu.html">
+            Hướng nghiên cứu
            </a>
           </li>
           <li>
@@ -252,7 +279,7 @@
     </header>
     <p class="proposal-demo-note">Dữ liệu minh họa. Quyết định chỉ lưu trên trình duyệt này khi cho phép lưu trữ; chưa gửi tới máy chủ.</p>
     <p class="proposal-feedback" id="proposal-decision-feedback" role="status" tabindex="-1"></p>
-    <p class="proposal-feedback" id="proposal-not-found" hidden>Không tìm thấy đề xuất theo mã đã chọn. Hãy quay lại danh sách yêu cầu chờ duyệt.</p>
+    <p class="proposal-feedback" id="proposal-not-found" hidden="">Không tìm thấy đề xuất theo mã đã chọn. Hãy quay lại danh sách yêu cầu chờ duyệt.</p>
     <div class="page-content request-detail">
      <section aria-labelledby="proposal-topic-title" class="request-topic">
       <div aria-hidden="true" class="request-topic__image">
@@ -347,7 +374,7 @@
       </h2>
       <p>
        Xây dựng website hỗ trợ quản lý sách, độc giả và hoạt động mượn trả tại thư viện.
-       <br/>
+       <br>
        Hệ thống giúp tra cứu tài liệu và theo dõi tình trạng sách.
       </p>
      </section>
@@ -412,11 +439,11 @@
        </span>
       </button>
      </div>
-     <section aria-labelledby="proposal-result-title" id="proposal-result" hidden>
+     <section aria-labelledby="proposal-result-title" id="proposal-result" hidden="">
       <h2 id="proposal-result-title">Kết quả xử lý</h2>
-      <p data-proposal-result></p>
-      <p data-proposal-reason></p>
-      <p data-proposal-decision-time></p>
+      <p data-proposal-result=""></p>
+      <p data-proposal-reason=""></p>
+      <p data-proposal-decision-time=""></p>
      </section>
      <p><a id="proposal-student-preview" href="../sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=DX-GV001">Xem kết quả ở giao diện sinh viên (demo)</a></p>
     </div>
@@ -455,13 +482,13 @@
      </label>
      <textarea aria-describedby="rejection-reason-hint rejection-reason-error" autofocus="" id="rejection-reason" minlength="10" name="rejection-reason" placeholder="Nhập lý do từ chối để sinh viên biết và điều chỉnh đề xuất" required="" rows="4"></textarea>
     </p>
-    <p class="rejection-reason-error" id="rejection-reason-error" role="alert" hidden>
+    <p class="rejection-reason-error" id="rejection-reason-error" role="alert" hidden="">
      Vui lòng nhập lý do từ chối từ 10 ký tự.
     </p>
     <p class="topic-dialog__notice" id="rejection-reason-hint">
      Ít nhất 10 ký tự, không tính khoảng trắng ở hai đầu. Lý do chỉ lưu trong bản demo trên trình duyệt.
     </p>
-    <p class="proposal-form-error" data-decision-error role="alert" hidden></p>
+    <p class="proposal-form-error" data-decision-error="" role="alert" hidden=""></p>
     <div class="topic-dialog__actions">
      <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="reject-proposal-dialog" type="button">
       Hủy
@@ -504,7 +531,7 @@
       Đang thực hiện trong bản demo.
      </strong>
     </p>
-    <p class="proposal-form-error" data-decision-error role="alert" hidden></p>
+    <p class="proposal-form-error" data-decision-error="" role="alert" hidden=""></p>
     <div class="topic-dialog__actions">
      <button autofocus="" class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="approve-proposal-dialog" type="button">
       Hủy
@@ -521,7 +548,7 @@
         <div class="site-footer__columns">
           <div class="site-footer__brand">
             <a href="../chung/gioi-thieu.html">
-              <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40" />
+              <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40">
             </a>
             <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</p>
             <dl class="site-footer__about">
@@ -544,8 +571,9 @@
             <p>Đang cập nhật.</p>
           </section>
         </div>
-        <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
+        <p class="site-footer__copyright">Copyright © 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
- </body>
-</html>
+ 
+
+</body></html>

@@ -2,6 +2,7 @@
 
 <html lang="vi">
   <head>
+    <script src="../../assets/js/shared/topic-identity.js" defer></script>
 <script src="../../assets/js/proposal-store.js" defer></script>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
@@ -13,26 +14,39 @@
     <link rel="stylesheet" href="../../assets/css/tokens.css" />
     <link rel="stylesheet" href="../../assets/css/base.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
-    <link rel="stylesheet" href="../../assets/css/tong-quan-sinh-vien.css?v=20261117-welcome-1" />
+    <link rel="stylesheet" href="../../assets/css/tong-quan-sinh-vien.css?v=20261120-overview-layout" />
+    <link rel="stylesheet" href="../../assets/css/supervision-invitations.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
-  
+    <script src="../../assets/js/supervision-entry.js" defer></script>
+    <script src="../../assets/js/supervision-store.js" defer></script>
+    <script src="../../assets/js/supervision-shortcut.js" defer></script>
+
     <script src="../../assets/js/data/mock-data.js" defer></script>
     <script src="../../assets/js/data/student-projects.js" defer></script>
     <script src="../../assets/js/data/student-progress.js" defer></script>
     <script src="../../assets/js/services/storage.js" defer></script>
+<script src="../../assets/js/services/approved-project-service.js" defer></script>
     <script src="../../assets/js/shared/validation.js" defer></script>
-    <script src="../../assets/js/services/registration-service.js" defer></script>
-    <script src="../../assets/js/services/proposal-service.js" defer></script>
-    
+    <script src="../../assets/js/data/lecturer-topics.js" defer></script>
+    <script src="../../assets/js/uit-lecturer-catalog.js" defer></script>
+    <script src="../../assets/js/data/lecturer-merge-catalog.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
+<script src="../../assets/js/services/published-topic-service.js" defer></script>
+<script src="../../assets/js/services/registration-service.js" defer></script>
+    <script src="../../assets/js/data/proposal-actors.js" defer></script>
+<script src="../../assets/js/services/proposal-service.js" defer></script>
+
     <script src="../../assets/js/data/student-requests.js" defer></script>
     <script src="../../assets/js/services/request-service.js" defer></script>
     <script src="../../assets/js/services/topic-service.js" defer></script>
     <script src="../../assets/js/services/project-team-service.js" defer></script>
     <script src="../../assets/js/services/project-progress-service.js" defer></script>
-    <link rel="stylesheet" href="../../assets/css/student-overview-data.css">
+    <link rel="stylesheet" href="../../assets/css/student-overview-data.css?v=20261120-overview-layout">
     <script src="../../assets/js/services/student-overview-service.js" defer></script>
-    <script src="../../assets/js/pages/student/overview.js" defer></script>
-  
+    <script src="../../assets/js/pages/student/overview.js?v=20261120-overview-layout" defer></script>
+    <script src="../../assets/js/student-overview.js?v=20261120-student-motion" defer></script>
+
 <script src="../../assets/js/dialog-commands.js" defer></script>
 </head>
   <body class="student-overview-page">
@@ -83,6 +97,11 @@
                   <li class="main-nav__subitem">
                     <a class="main-nav__link" href="../chung/gioi-thieu.html"
                       >Giới thiệu</a
+                    >
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/huong-nghien-cuu.html"
+                      >Hướng nghiên cứu</a
                     >
                   </li>
                   <li class="main-nav__subitem">
@@ -165,15 +184,13 @@
         </nav>
         <header class="page-header">
           <h1 class="page-header__title">Tổng quan</h1>
-          <p class="page-header__description">
-            Theo dõi đề tài, yêu cầu đăng ký và các cập nhật của bạn.
-          </p>
         </header>
         <div class="page-content">
           <p data-overview-notice role="status"></p>
+          <p id="overview-preview-label" class="visually-hidden" hidden>Dữ liệu minh họa.</p>
           <noscript><p>Bật JavaScript để cập nhật số liệu Tổng quan theo dữ liệu hiện tại.</p></noscript>
           <!-- Dữ liệu minh họa theo wireframe tổng quan sinh viên phiên bản 2. -->
-          <section class="student-welcome" aria-labelledby="student-welcome-name" aria-describedby="student-welcome-demo">
+          <section class="student-welcome fade-in-up" aria-labelledby="student-welcome-name" aria-describedby="student-welcome-demo">
             <a
               class="student-welcome__avatar"
               href="ho-so-ca-nhan.html"
@@ -219,89 +236,78 @@
             </div>
             <p id="student-welcome-demo" class="visually-hidden">Thông tin sinh viên minh họa, chưa kết nối tài khoản đăng nhập.</p>
           </section>
-          <section aria-label="Thống kê đề tài" class="dashboard-summary">
+          <section class="supervision supervision__panel supervision-shortcut fade-in-up" aria-labelledby="supervision-shortcut-title" data-supervision-shortcut="student">
+            <div class="supervision__topline">
+              <div>
+                <h2 class="supervision__heading" id="supervision-shortcut-title">Lời mời hướng dẫn</h2>
+                <p class="supervision__hint" data-supervision-summary role="status">Theo dõi phản hồi của giảng viên.</p>
+              </div>
+              <a class="supervision__button" href="de-tai-cua-toi-sinh-vien.html#loi-moi-huong-dan">Xem lời mời</a>
+            </div>
+          </section>
+          <section aria-label="Thống kê đề tài" class="dashboard-summary fade-in-up">
             <div class="dashboard-summary__items">
               <article
                 aria-labelledby="total-topics-title"
                 class="summary-card summary-card--total"
               >
-                <h2 id="total-topics-title" class="summary-card__title">
-                  Tổng đề tài
-                </h2>
-                <p class="summary-card__count"><strong>—</strong></p>
-                <a
-                  class="summary-card__link"
-                  href="de-tai-cua-toi-sinh-vien.html"
-                  aria-label="Xem chi tiết: tổng đề tài"
-                  >Xem chi tiết <span aria-hidden="true">→</span></a
-                >
+                <a class="summary-card__link" href="de-tai-cua-toi-sinh-vien.html">
+                  <h2 id="total-topics-title" class="summary-card__title">
+                    Tổng đề tài
+                  </h2>
+                  <p class="summary-card__count"><strong data-preview-count="6">—</strong></p>
+                </a>
               </article>
               <article
                 aria-labelledby="active-topics-title"
                 class="summary-card summary-card--active"
               >
-                <h2 id="active-topics-title" class="summary-card__title">
-                  Đang thực hiện
-                </h2>
-                <p class="summary-card__count"><strong>—</strong></p>
-                <a
-                  class="summary-card__link"
-                  href="de-tai-cua-toi-sinh-vien.html?status=dang-thuc-hien"
-                  aria-label="Xem chi tiết: đang thực hiện"
-                  >Xem chi tiết <span aria-hidden="true">→</span></a
-                >
+                <a class="summary-card__link" href="de-tai-cua-toi-sinh-vien.html?status=dang-thuc-hien">
+                  <h2 id="active-topics-title" class="summary-card__title">
+                    Đang thực hiện
+                  </h2>
+                  <p class="summary-card__count"><strong data-preview-count="2">—</strong></p>
+                </a>
               </article>
               <article
                 aria-labelledby="approved-topics-title"
                 class="summary-card summary-card--approved"
               >
-                <h2 id="approved-topics-title" class="summary-card__title">
-                  Đã duyệt
-                </h2>
-                <p class="summary-card__count"><strong>—</strong></p>
-                <a
-                  class="summary-card__link"
-                  href="#registration-status"
-                  aria-label="Xem chi tiết: Đã duyệt"
-                  >Xem chi tiết <span aria-hidden="true">→</span></a
-                >
+                <a class="summary-card__link" href="#registration-status">
+                  <h2 id="approved-topics-title" class="summary-card__title">
+                    Đã bắt đầu
+                  </h2>
+                  <p class="summary-card__count"><strong data-preview-count="3">—</strong></p>
+                </a>
               </article>
               <article
                 aria-labelledby="pending-topics-title"
                 class="summary-card summary-card--pending"
               >
-                <h2 id="pending-topics-title" class="summary-card__title">
-                  Chờ duyệt
-                </h2>
-                <p class="summary-card__count"><strong>—</strong></p>
-                <a
-                  class="summary-card__link"
-                  href="#recent-requests"
-                  aria-label="Xem chi tiết: chờ duyệt"
-                  >Xem chi tiết <span aria-hidden="true">→</span></a
-                >
+                <a class="summary-card__link" href="#recent-requests">
+                  <h2 id="pending-topics-title" class="summary-card__title">
+                    Chờ duyệt
+                  </h2>
+                  <p class="summary-card__count"><strong data-preview-count="2">—</strong></p>
+                </a>
               </article>
               <article
                 aria-labelledby="rejected-topics-title"
                 class="summary-card summary-card--rejected"
               >
-                <h2 id="rejected-topics-title" class="summary-card__title">
-                  Đã từ chối
-                </h2>
-                <p class="summary-card__count"><strong>—</strong></p>
-                <a
-                  class="summary-card__link"
-                  href="#registration-status"
-                  aria-label="Xem chi tiết: Đã từ chối"
-                  >Xem chi tiết <span aria-hidden="true">→</span></a
-                >
+                <a class="summary-card__link" href="#registration-status">
+                  <h2 id="rejected-topics-title" class="summary-card__title">
+                    Đã từ chối
+                  </h2>
+                  <p class="summary-card__count"><strong data-preview-count="1">—</strong></p>
+                </a>
               </article>
             </div>
           </section>
 
           <section
             aria-labelledby="registration-status-title"
-            class="registration-status"
+            class="registration-status fade-in-up"
             id="registration-status"
           >
             <header class="dashboard-section__header">
@@ -322,13 +328,14 @@
                     Trạng thái đăng ký của 6 đề tài
                   </title>
                   <desc id="status-chart-description">
-                    Đã duyệt: 3 đề tài, 50%. Chờ duyệt: 2 đề tài, 33,3%. Đã từ
+                    Đã bắt đầu: 3 đề tài, 50%. Chờ duyệt: 2 đề tài, 33,3%. Đã từ
                     chối: 1 đề tài, 16,7%.
                   </desc>
                   <g
                     fill="none"
                     stroke-width="44"
                     transform="rotate(-90 120 120)"
+                    data-chart-slices
                   >
                     <circle
                       cx="120"
@@ -366,11 +373,11 @@
                       Tổng đề tài
                     </text>
                     <text x="120" y="143" font-size="32" fill="#262626">6</text>
-                    <text x="196" y="125" font-size="13" fill="#fff">50%</text>
-                    <text x="53" y="164" font-size="13" fill="#fff">33,3%</text>
-                    <text x="82" y="57" font-size="13" fill="#262626">
-                      16,7%
-                    </text>
+                  </g>
+                  <g class="registration-status__percentages" text-anchor="middle" aria-hidden="true">
+                    <text x="196" y="125" font-size="13">50%</text>
+                    <text x="53" y="164" font-size="13">33,3%</text>
+                    <text x="82" y="57" font-size="13">16,7%</text>
                   </g>
                 </svg>
                 <figcaption class="registration-status__legend">
@@ -378,7 +385,7 @@
                     <li
                       class="registration-status__item registration-status__item--approved"
                     >
-                      <strong>Đã duyệt: 3</strong>
+                      <strong>Đã bắt đầu: 3</strong>
                     </li>
                     <li
                       class="registration-status__item registration-status__item--pending"
@@ -394,14 +401,14 @@
                 </figcaption>
               </figure>
               <p class="registration-status__note">
-                Đang thực hiện là một phần của các đề tài đã duyệt.
+                Đã bắt đầu gồm đề tài đang thực hiện và đã hoàn thành.
               </p>
             </div>
           </section>
 
           <section
             aria-labelledby="topic-progress-title"
-            class="topic-progress"
+            class="topic-progress fade-in-up"
           >
             <header class="dashboard-section__header">
               <h2 id="topic-progress-title">Tiến độ đề tài đang thực hiện</h2>
@@ -417,17 +424,17 @@
                 >
                   <div class="topic-progress__info">
                     <h3 id="library-topic-title">Website quản lý thư viện</h3>
-                    <p>Nhóm 7 · Giảng viên: Nguyễn Văn A</p>
+                    <p>Nhóm 01 · Giảng viên: Nguyễn Văn An</p>
                   </div>
                   <div class="topic-progress__completion">
-                    <label for="library-progress">60% hoàn thành</label>
-                    <progress id="library-progress" value="60" max="100">
-                      60%
+                    <label for="library-progress">23% hoàn thành</label>
+                    <progress id="library-progress" value="23" max="100">
+                      23%
                     </progress>
                   </div>
                   <a
                     class="topic-progress__link"
-                    href="chi-tiet-de-tai-sinh-vien.html"
+                    href="chi-tiet-de-tai-dang-thuc-hien-da005.html"
                     aria-label="Xem đề tài: Website quản lý thư viện"
                     >Xem đề tài <span aria-hidden="true">→</span></a
                   >
@@ -439,19 +446,19 @@
                   class="topic-progress__item"
                 >
                   <div class="topic-progress__info">
-                    <h3 id="expenses-topic-title">Ứng dụng quản lý chi tiêu</h3>
-                    <p>Nhóm 3 · Giảng viên: Trần Thị B</p>
+                    <h3 id="expenses-topic-title">Website bán sách trực tuyến</h3>
+                    <p>Nhóm 3 · Giảng viên: Trần Thị Bình</p>
                   </div>
                   <div class="topic-progress__completion">
-                    <label for="expenses-progress">25% hoàn thành</label>
-                    <progress id="expenses-progress" value="25" max="100">
-                      25%
+                    <label for="expenses-progress">40% hoàn thành</label>
+                    <progress id="expenses-progress" value="40" max="100">
+                      40%
                     </progress>
                   </div>
                   <a
                     class="topic-progress__link"
-                    href="chi-tiet-de-tai-sinh-vien.html"
-                    aria-label="Xem đề tài: Ứng dụng quản lý chi tiêu"
+                    href="chi-tiet-de-tai-dang-thuc-hien-da002.html"
+                    aria-label="Xem đề tài: Website bán sách trực tuyến"
                     >Xem đề tài <span aria-hidden="true">→</span></a
                   >
                 </article>
@@ -461,7 +468,7 @@
 
           <section
             aria-labelledby="recent-title"
-            class="recent-requests"
+            class="recent-requests fade-in-up"
             id="recent-requests"
           >
             <header class="dashboard-section__header">

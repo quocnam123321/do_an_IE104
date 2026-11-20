@@ -109,4 +109,3 @@ function createRecovery({ store, secret, sendEmail, clock = Date.now }) {
 }
 
 module.exports = { createRecovery, normalizeEmail, RecoveryError };
-

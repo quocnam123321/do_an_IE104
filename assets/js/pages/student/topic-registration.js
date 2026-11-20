@@ -12,19 +12,27 @@
     title.textContent = topic.title;
     article.setAttribute('aria-labelledby', title.id);
     article.dataset.topicId = topic.id;
-    values[0].textContent = `${topic.code || topic.id} - ${topic.typeLabel}`;
+    if (topic.source === 'lecturer-created') article.dataset.publishedTopic = topic.id;
+    values[0].textContent = `${topic.displayId || topic.code || topic.id} - ${topic.typeLabel}`;
     values[1].textContent = topic.courseLabel;
-    values[2].textContent = `Học kỳ ${topic.semester}`;
+    values[2].textContent = `Học kỳ ${topic.semester === 'he' ? 'hè' : topic.semester}`;
     values[3].textContent = topic.lecturer;
     link.setAttribute('href', topic.detailUrl);
     link.setAttribute('aria-label', `Xem chi tiết ${topic.title}`);
     return item;
   }
 
+  function refreshLecturers() {
+    try { const select = document.getElementById('lecturer-filter'); for (const topic of app.services.publishedTopics?.list() || []) if (![...select.options].some(option => option.value === topic.lecturer)) select.add(new Option(topic.lecturer,topic.lecturer)); } catch {}
+  }
+  refreshLecturers();
+  window.addEventListener('storage',event => { if ([app.services.lecturerTopicRepository?.key,null].includes(event.key)) refreshLecturers(); });
+  window.addEventListener('ie104:published-topics-updated',refreshLecturers);
+
   app.ui.initTopicList({
     query: app.services.topics.listOpenTopics,
-    storageKey: globalThis.TeacherTopicStore?.key,
     createCard,
+    storageKey: globalThis.TeacherTopicStore?.key,
     emptyTitle: 'Chưa có đề tài mở đăng ký',
     emptyDescription: 'Các đề tài sẽ xuất hiện ở đây khi được mở đăng ký.',
   });

@@ -459,17 +459,8 @@
 
 /* Khung ảnh đề tài 16:9 đồng nhất cho cả ảnh thật và ảnh mặc định */
 .topic-card__media {
-  width: 100%;
-  aspect-ratio: 16 / 9;
   border-radius: var(--radius-md);
-  overflow: hidden;
   background-color: var(--media-placeholder-bg);
-}
-
-.topic-card__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .topic-card__image-placeholder {
@@ -485,6 +476,10 @@
   border-radius: var(--radius-md);
   background-color: var(--media-placeholder-bg);
   color: var(--media-placeholder-icon);
+}
+
+.topic-card__image-placeholder:has(> img) {
+  padding: 0;
 }
 
 .topic-card__placeholder-icon {
@@ -866,16 +861,94 @@
   }
 }
 
+/* --------------------------------------------------------------------------
+   11. HIỆU ỨNG QUẢN LÝ ĐỀ TÀI (ĐANG HƯỚNG DẪN & ĐÃ TẠO)
+   Phạm vi giới hạn ở hai tab danh sách quản lý đề tài của giảng viên.
+   -------------------------------------------------------------------------- */
+.teacher-topic-list-page:not(.teacher-pending-proposals-page) .topic-card:hover {
+  border-color: var(--color-primary-tint-border);
+}
+
+.teacher-topic-list-page:not(.teacher-pending-proposals-page) .topic-card:focus-within {
+  border-color: var(--color-primary);
+}
+
+.teacher-topic-list-page:not(.teacher-pending-proposals-page) .topic-card__detail-link:focus-visible svg {
+  transform: translateX(2px);
+}
+
+.teacher-topic-list-page:not(.teacher-pending-proposals-page) .topic-filters__count {
+  color: var(--color-primary);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.teacher-topic-list-page:not(.teacher-pending-proposals-page) .topic-filters__more-icon {
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (interpolate-size: allow-keywords) and selector(::details-content) {
+    .teacher-topic-list-page:not(.teacher-pending-proposals-page) :is(.topic-filters__disclosure, .topic-filters__more) {
+      interpolate-size: allow-keywords;
+    }
+
+    .teacher-topic-list-page:not(.teacher-pending-proposals-page) :is(.topic-filters__disclosure, .topic-filters__more)::details-content {
+      block-size: 0;
+      opacity: 0;
+      overflow: clip;
+      transition:
+        block-size var(--duration-fast) var(--ease-standard),
+        opacity var(--duration-fast) var(--ease-standard),
+        content-visibility var(--duration-fast) allow-discrete;
+    }
+
+    .teacher-topic-list-page:not(.teacher-pending-proposals-page) :is(.topic-filters__disclosure, .topic-filters__more)[open]::details-content {
+      block-size: auto;
+      opacity: 1;
+    }
+  }
+
+  @keyframes topic-list-page-enter {
+    from {
+      opacity: 0;
+      transform: translateY(0.3125rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .teacher-topic-list-page:not(.teacher-pending-proposals-page) .topic-list--page-entering {
+    animation: topic-list-page-enter var(--duration-fast) var(--ease-standard) both;
+  }
+
+  .teacher-topic-list-page:not(.teacher-pending-proposals-page) .topic-list--page-entering .topic-card,
+  .teacher-topic-list-page:not(.teacher-pending-proposals-page) .topic-card--page-settled,
+  .teacher-topic-list-page:not(.teacher-pending-proposals-page) .topic-card:focus-within {
+    animation: none;
+    animation-timeline: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .topic-filters__chevron,
+  .topic-filters__more-icon,
   .topic-filters__option label,
   .topic-filters__reset,
   .topic-toolbar__search input[type="search"],
   .topic-toolbar__sort select,
   .topic-card,
   .topic-card__detail-link,
-  .topic-card__detail-link svg {
+  .topic-card__detail-link svg,
+  .topic-list--page-entering {
     transition: none;
     animation: none;
+  }
+
+  .teacher-topic-list-page:not(.teacher-pending-proposals-page) .topic-card__detail-link:hover svg,
+  .teacher-topic-list-page:not(.teacher-pending-proposals-page) .topic-card__detail-link:focus-visible svg {
+    transform: none;
   }
 }

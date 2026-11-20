@@ -19,6 +19,10 @@
         node.textContent = state[key] || 'Chưa có thông tin';
         node.classList.toggle('profile-value--empty', !state[key]);
       });
+      if (status.classList.contains('profile-feedback-error')) {
+        status.textContent = '';
+        status.classList.remove('profile-feedback-error');
+      }
       open.disabled = false;
       return state;
     } catch (failure) {
@@ -33,23 +37,31 @@
   open.removeAttribute('command');
   open.removeAttribute('commandfor');
   form.noValidate = true;
+  function clearEditErrors() {
+    Object.values(fields).forEach(field => field.removeAttribute('aria-invalid'));
+    error.hidden = true;
+  }
+
   open.addEventListener('click', () => {
     const state = refresh();
     if (!state) return;
     revision = state.revision;
     status.textContent = '';
-    Object.entries(fields).forEach(([key, field]) => { field.value = state[key]; field.removeAttribute('aria-invalid'); });
-    ['code', 'faculty', 'major', 'cohort'].forEach(key => { document.getElementById(`profile-edit-${key}`).value = state[key] || 'Chưa có thông tin'; });
-    document.getElementById('profile-edit-class').value = state.className;
-    error.hidden = true;
+    Object.entries(fields).forEach(([key, field]) => { field.defaultValue = state[key]; });
+    Object.entries({ code: 'code', faculty: 'faculty', major: 'major', class: 'className', cohort: 'cohort' }).forEach(([id, key]) => {
+      document.getElementById(`profile-edit-${id}`).defaultValue = state[key] || 'Chưa có thông tin';
+    });
+    form.reset();
+    form.querySelector('.profile-edit__identity').open = false;
     submit.disabled = false;
     dialog.showModal();
+    fields.name.focus();
   });
+  form.addEventListener('reset', clearEditErrors);
   form.addEventListener('submit', event => {
     event.preventDefault();
     if (saving) return;
-    Object.values(fields).forEach(field => field.removeAttribute('aria-invalid'));
-    error.hidden = true;
+    clearEditErrors();
     const checked = service.validate(Object.fromEntries(Object.entries(fields).map(([key, field]) => [key, field.value])));
     if (checked.errors.length) {
       error.textContent = checked.errors.map(item => item.message).join(' ');

@@ -1,0 +1,198 @@
+(() => {
+  const app = globalThis.IE104 = globalThis.IE104 || {};
+  app.data ||= {};
+  app.data.currentLecturer ||= { id: 'GV001', name: 'Nguyễn Văn An' };
+  app.data.lecturerTopics = [
+  {
+    "id": "DA001",
+    "kind": "created",
+    "ownerId": "GV001",
+    "title": "Website quản lý thư viện",
+    "topicType": "course",
+    "typeLabel": "Đồ án môn học",
+    "course": "web",
+    "courseLabel": "Internet và công nghệ Web",
+    "semester": 1,
+    "academicYear": "2026-2027",
+    "status": "open",
+    "statusLabel": "Đang mở đăng ký",
+    "createdAt": "2026-10-28",
+    "description": "Xây dựng website hỗ trợ quản lý sách, bạn đọc và hoạt động mượn trả tại thư viện. Hệ thống giúp tra cứu thông tin và theo dõi tình trạng sách.",
+    "objectives": [
+      "Quản lý danh mục sách và thông tin bạn đọc",
+      "Hỗ trợ tra cứu, mượn và trả sách",
+      "Theo dõi và thống kê hoạt động thư viện"
+    ],
+    "outcomes": [
+      "Website quản lý thư viện với các chức năng cơ bản",
+      "Báo cáo và tài liệu hướng dẫn sử dụng"
+    ],
+    "requirements": [
+      "Có kiến thức HTML, CSS, JavaScript và cơ sở dữ liệu",
+      "Có khả năng làm việc nhóm và tự nghiên cứu"
+    ],
+    "supervisor": {
+      "name": "Nguyễn Văn Minh",
+      "faculty": "Khoa Hệ thống thông tin",
+      "email": "minh.nv@uit.edu.vn",
+      "research": "Hệ thống thông tin và ứng dụng web"
+    },
+    "registration": {
+      "minMembers": 2,
+      "maxMembers": 3,
+      "deadline": "2026-11-15T23:59:00+07:00"
+    },
+    "attachmentName": "Đề cương đề tài.pdf"
+  },
+  {
+    "id": "DA002",
+    "kind": "created",
+    "ownerId": "GV001",
+    "title": "Hệ thống quản lý bán hàng",
+    "topicType": "course",
+    "typeLabel": "Đồ án môn học",
+    "course": "database",
+    "courseLabel": "Cơ sở dữ liệu",
+    "semester": 1,
+    "academicYear": "2026-2027",
+    "status": "open",
+    "statusLabel": "Đang mở đăng ký",
+    "createdAt": "2026-10-26"
+  },
+  {
+    "id": "DA003",
+    "kind": "created",
+    "ownerId": "GV001",
+    "title": "Ứng dụng đặt lịch học nhóm",
+    "topicType": "course",
+    "typeLabel": "Đồ án môn học",
+    "course": "software",
+    "courseLabel": "Công nghệ phần mềm",
+    "semester": 1,
+    "academicYear": "2026-2027",
+    "status": "closed",
+    "statusLabel": "Đã đóng đăng ký",
+    "createdAt": "2026-10-24"
+  },
+  {
+    "id": "DA004",
+    "kind": "created",
+    "ownerId": "GV001",
+    "title": "Website quản lý câu lạc bộ",
+    "topicType": "course",
+    "typeLabel": "Đồ án môn học",
+    "course": "web",
+    "courseLabel": "Internet và công nghệ Web",
+    "semester": 1,
+    "academicYear": "2026-2027",
+    "status": "open",
+    "statusLabel": "Đang mở đăng ký",
+    "createdAt": "2026-10-22"
+  },
+  {
+    "id": "DA005",
+    "kind": "created",
+    "ownerId": "GV001",
+    "title": "Hệ thống hỗ trợ đăng ký học phần",
+    "topicType": "course",
+    "typeLabel": "Đồ án môn học",
+    "course": "database",
+    "courseLabel": "Cơ sở dữ liệu",
+    "semester": 1,
+    "academicYear": "2026-2027",
+    "status": "closed",
+    "statusLabel": "Đã đóng đăng ký",
+    "createdAt": "2026-10-20"
+  },
+  {
+    "id": "DA001",
+    "kind": "supervised",
+    "ownerId": "GV001",
+    "title": "Website quản lý thư viện",
+    "topicType": "course",
+    "typeLabel": "Đồ án môn học",
+    "course": "web",
+    "courseLabel": "Internet và công nghệ Web",
+    "semester": 1,
+    "academicYear": "2026-2027",
+    "workspaceId": "GV-DT001-N01",
+    "groupName": "Nhóm 01",
+    "role": "primary",
+    "roleLabel": "Hướng dẫn chính",
+    "status": "dang-thuc-hien",
+    "statusLabel": "Đang thực hiện"
+  },
+  {
+    "id": "DA002",
+    "kind": "supervised",
+    "ownerId": "GV001",
+    "title": "Ứng dụng quản lý chi tiêu",
+    "topicType": "course",
+    "typeLabel": "Đồ án môn học",
+    "course": "database",
+    "courseLabel": "Cơ sở dữ liệu",
+    "semester": 1,
+    "academicYear": "2026-2027",
+    "workspaceId": "GV-SUP-DA002",
+    "groupName": "Nhóm 02",
+    "role": "secondary",
+    "roleLabel": "Đồng hướng dẫn",
+    "status": "dang-thuc-hien",
+    "statusLabel": "Đang thực hiện"
+  },
+  {
+    "id": "KLTN003",
+    "kind": "supervised",
+    "ownerId": "GV001",
+    "title": "Hệ thống gợi ý phim",
+    "topicType": "thesis",
+    "typeLabel": "Khóa luận tốt nghiệp",
+    "course": "",
+    "courseLabel": "Không áp dụng",
+    "semester": 1,
+    "academicYear": "2026-2027",
+    "workspaceId": "GV-SUP-KLTN003",
+    "groupName": "Nhóm 03",
+    "role": "primary",
+    "roleLabel": "Hướng dẫn chính",
+    "status": "dang-thuc-hien",
+    "statusLabel": "Đang thực hiện"
+  },
+  {
+    "id": "DATN004",
+    "kind": "supervised",
+    "ownerId": "GV001",
+    "title": "Website hỗ trợ học tập",
+    "topicType": "graduation",
+    "typeLabel": "Đồ án tốt nghiệp",
+    "course": "",
+    "courseLabel": "Không áp dụng",
+    "semester": 1,
+    "academicYear": "2026-2027",
+    "workspaceId": "GV-SUP-DATN004",
+    "groupName": "Nhóm 04",
+    "role": "secondary",
+    "roleLabel": "Đồng hướng dẫn",
+    "status": "dang-thuc-hien",
+    "statusLabel": "Đang thực hiện"
+  },
+  {
+    "id": "DA005",
+    "kind": "supervised",
+    "ownerId": "GV001",
+    "title": "Ứng dụng quản lý công việc",
+    "topicType": "course",
+    "typeLabel": "Đồ án môn học",
+    "course": "software",
+    "courseLabel": "Công nghệ phần mềm",
+    "semester": 1,
+    "academicYear": "2026-2027",
+    "workspaceId": "GV-SUP-DA005",
+    "groupName": "Nhóm 05",
+    "role": "primary",
+    "roleLabel": "Hướng dẫn chính",
+    "status": "dang-thuc-hien",
+    "statusLabel": "Đang thực hiện"
+  }
+];
+})();

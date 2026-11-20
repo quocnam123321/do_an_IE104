@@ -100,7 +100,7 @@ function setup() {
   });
   context.window = context;
   const files = [
-    'teacher-topic-store', 'proposal-store', 'data/mock-data', 'data/student-projects',
+    'shared/topic-identity', 'teacher-topic-store', 'proposal-store', 'data/mock-data', 'data/student-projects',
     'data/student-progress', 'data/teaching-data', 'services/storage', 'services/project-team-service',
     'services/project-progress-service', 'services/teaching-service', 'pages/lecturer/overview',
   ];
@@ -116,17 +116,17 @@ function setup() {
 test('demo counts, chart slices and on-chart percentages agree', () => {
   const { context, counts, legend, segments, chartLabels } = setup();
   const pending = context.IE104Proposals.getAll().filter(record => record.status === 'pending').length;
-  assert.deepEqual(Object.values(counts).map(node => node.textContent), [7, 5, 1, pending]);
-  assert.deepEqual(legend.map(row => row.querySelector('dd').textContent), [1, 3, 1, 2]);
+  assert.deepEqual(Object.values(counts).map(node => node.textContent), [7, 5, 2, pending]);
+  assert.deepEqual(legend.map(row => row.querySelector('dd').textContent), [2, 2, 1, 2]);
   assert.deepEqual(chartLabels.querySelectorAll('.topic-status__percent')
-    .map(label => parseFloat(label.textContent.replace(',', '.'))), [14.3, 42.9, 14.3, 28.6]);
+    .map(label => parseFloat(label.textContent.replace(',', '.'))), [28.6, 28.6, 14.3, 28.6]);
   const circumference = segments.reduce((sum, segment) => sum + parseFloat(segment.attributes['stroke-dasharray']), 0);
   assert.ok(Math.abs(circumference - 100) < 1e-8);
 });
 
 test('progress and pending cards open the correct project and proposal IDs', () => {
   const { context, progress, pending } = setup();
-  const project = progress.children[0];
+  const project = progress.children.find(card => card.querySelector('a').href.includes('project=GV-DT001-N01'));
   assert.match(project.querySelector('a').href, /\?project=GV-DT001-N01#tien-do$/);
   const service = context.IE104.services.projectProgress;
   const meter = project.querySelectorAll('p').flatMap(node => node.querySelectorAll('progress'))[0];
@@ -138,19 +138,19 @@ test('progress and pending cards open the correct project and proposal IDs', () 
 
 test('approval refreshes counts and chart without duplicating labels', async () => {
   const { context, counts, pending, progress, chartLabels } = setup();
-  const record = context.IE104Proposals.getAll()[0];
+  const record = context.IE104Proposals.get('DX-GV002');
   const initialPending = pending.children.length;
   await context.IE104Proposals.decide(record.id, 'approved');
   assert.equal(counts.pending.textContent, initialPending - 1);
-  assert.equal(counts.supervised.textContent, 2);
+  assert.equal(counts.supervised.textContent, 3);
   assert.equal(counts.total.textContent, 8);
   assert.equal(pending.children.length, initialPending - 1);
-  const approvedCard = progress.children[1];
+  const approvedCard = progress.children.find(card => card.querySelector('a').href.includes('ma=' + record.id));
   assert.match(approvedCard.querySelector('a').href, new RegExp('ma=' + record.id + '&'));
   assert.ok(approvedCard.querySelectorAll('p').some(node => node.textContent === 'Chưa có dữ liệu tiến độ.'));
   const labels = chartLabels.querySelectorAll('.topic-status__percent');
   assert.equal(labels.length, 4);
-  assert.equal(parseInt(labels[0].textContent, 10), 25);
+  assert.equal(parseFloat(labels[0].textContent.replace(',', '.')), 37.5);
 });
 
 test('empty data hides the chart and shows separate empty messages', async () => {

@@ -2,6 +2,10 @@
   const app = globalThis.IE104 = globalThis.IE104 || {};
   app.services = app.services || {};
   const nameOrder = new Intl.Collator('vi', { sensitivity: 'base', numeric: true });
+  const projectTypeByLabel = new Map([
+    ['Đồ án môn học', 'do-an-mon-hoc'],
+    ['Đồ án tốt nghiệp', 'do-an-tot-nghiep'],
+  ]);
 
   function normalizeText(value) {
     return String(value ?? '')
@@ -21,7 +25,7 @@
     const statuses = filters.statuses || [];
     const semesters = filters.semesters || [];
     const results = source.filter(topic => {
-      const matchesKeyword = !keyword || normalizeText(`${topic.code || topic.id} ${topic.title}`).includes(keyword);
+      const matchesKeyword = !keyword || normalizeText(`${topic.id} ${topic.title}`).includes(keyword);
       const matchesLecturer = !lecturer || normalizeText(topic.lecturer) === lecturer;
       const matchesType = !types.length || types.includes(topic.type);
       const matchesCourse = !courses.length || courses.includes(topic.courseId);
@@ -55,13 +59,38 @@
   }
 
   function listOpenTopics(filters, pagination) {
-    const samples = app.data?.openTopics || [];
+    let published = [];
+    let registrations = [];
+    const warnings = [];
+    try { published = app.services.publishedTopics?.list() || []; }
+    catch (failure) { warnings.push(failure.message); }
     try {
-      const topics = globalThis.TeacherTopicStore?.studentTopics(samples) || samples;
-      return listTopics(topics.filter(topic => topic.status !== 'closed'), filters, pagination);
-    } catch (error) {
-      return { ...listTopics([], filters, pagination), warning: 'Không đọc được trạng thái đăng ký. ' + error.message };
-    }
+      registrations = (app.storage?.readRegistrations() || [])
+        .filter(record => ['da-dang-ky', 'da-duyet'].includes(record.status));
+    } catch (failure) { warnings.push(failure.message); }
+    let samples = app.data?.openTopics || [];
+    try { samples = globalThis.TeacherTopicStore?.studentTopics(samples) || samples; }
+    catch (failure) { warnings.push(failure.message); samples = []; }
+    const key = app.topicIdentity?.titleKey;
+    const registeredIds = new Set(registrations.map(record => record.topic.id));
+    const registeredNames = new Set(key ? registrations.map(record => key(record.topic.title)) : []);
+    const catalog = app.services.publishedTopics;
+    try {
+      samples = samples.filter(topic => !catalog?.findEdited(topic.title));
+    } catch (failure) { warnings.push(failure.message); }
+    const candidates = [...samples, ...published];
+    const openTopics = (app.topicIdentity?.uniqueTitles(candidates) || candidates)
+      .filter(topic => topic.status !== 'closed' && !registeredIds.has(topic.id) && !registeredNames.has(key?.(topic.title)));
+    return { ...listTopics(openTopics, filters, pagination), warning: warnings.join(' ') };
+  }
+
+  function normalizeMyTopic(topic) {
+    const type = topic.type === 'do-an' ? projectTypeByLabel.get(topic.typeLabel) || topic.type : topic.type;
+    const semester = String(topic.semester ?? '').trim();
+    // Các nguồn đã lưu dùng "he" hoặc "summer" cho kỳ thứ ba. Kỳ ngoài 1–3 chưa có thông tin để quy đổi.
+    const academicSemester = ['he', 'summer'].includes(semester) ? '3' : (/^[1-3]$/.test(semester) ? semester : '');
+    const academicYear = String(topic.academicYear ?? '').trim().replace(/\s*[-–]\s*/g, '-');
+    return { ...topic, type, semester: academicSemester, academicYear };
   }
 
   function listMyTopics(filters, pagination) {
@@ -74,7 +103,9 @@
     let initial = app.data?.myTopics || [];
     try { if (app.services.requests) initial = app.services.requests.applyToTopics(initial); }
     catch (error) { warnings.push(error.message); }
-    return { ...listTopics([...initial, ...saved], filters, pagination), warning: warnings.join(' ') };
+    const all = [...saved, ...initial];
+    const topics = (app.topicIdentity?.uniqueTitles(all) || all).map(normalizeMyTopic);
+    return { ...listTopics(topics, filters, pagination), warning: warnings.join(' ') };
   }
 
   app.services.topics = { listOpenTopics, listMyTopics, normalizeText };

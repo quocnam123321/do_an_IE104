@@ -23,10 +23,11 @@
     article.setAttribute('aria-labelledby', title.id);
     article.dataset.topicId = topic.id;
     article.dataset.status = statusStyles[topic.status];
-    values[0].textContent = `${topic.id} - ${topic.typeLabel}`;
+    values[0].textContent = `${topic.displayId || topic.id} - ${topic.typeLabel}`;
     values[1].textContent = topic.lecturer;
     values[2].textContent = topic.groupName;
-    values[3].textContent = `Học kỳ ${topic.semester === 'he' ? 'hè' : topic.semester} ${topic.academicYear}`;
+    const semester = topic.semester ? `Học kỳ ${topic.semester}` : 'Học kỳ chưa xác định';
+    values[3].textContent = [semester, topic.academicYear.replace('-', '–')].filter(Boolean).join(' • ');
     lecturerLabel.textContent = topic.lecturerLabel;
     status.className = `topic-card__status topic-card__status--${statusStyles[topic.status]}`;
     status.textContent = topic.statusLabel;
@@ -44,12 +45,6 @@
       link.disabled = true;
     }
     originalLink.replaceWith(link);
-    if (topic.id === 'DX001' && ['dang-thuc-hien', 'tu-choi'].includes(topic.status) && topic.feedback) {
-      const feedback = document.createElement('p');
-      feedback.className = 'topic-card__decision';
-      feedback.textContent = topic.status === 'tu-choi' ? `Lý do từ chối: ${topic.feedback}` : topic.feedback;
-      item.querySelector('.topic-card__content').append(feedback);
-    }
     return item;
   }
 

@@ -6,7 +6,8 @@
   const actor = () => app.data.currentLecturer;
 
   function context(projectId, checkActor = true) {
-    const project = app.data.myTopics.find(item => item.id === projectId) || app.data.lecturerProjects?.find(item => item.id === projectId);
+    const project = app.data.myTopics.find(item => item.id === projectId) || app.data.lecturerProjects?.find(item => item.id === projectId)
+      || app.services.approvedProjects?.get(projectId)?.project;
     if (!project) throw new Error('Không tìm thấy đề tài cần quản lý.');
     const team = app.services.projectTeams.getState(projectId);
     if (checkActor && !team.supervisorIds.includes(actor()?.id)) throw new Error('Giảng viên hiện tại không hướng dẫn đề tài này.');
@@ -17,10 +18,13 @@
 
   function supervisedProjects() {
     const lecturerId = actor()?.id;
-    return [...app.data.myTopics, ...(app.data.lecturerProjects || [])].flatMap(project => {
+    const initial = [...app.data.myTopics, ...(app.data.lecturerProjects || [])].flatMap(project => {
       const position = app.data.projectTeams.find(team => team.projectId === project.id)?.supervisorIds.indexOf(lecturerId);
       return position >= 0 ? [{ project, role: position === 0 ? 'primary' : 'secondary' }] : [];
     });
+    const dynamic = (app.services.approvedProjects?.list('lecturer') || []).map(project => ({ project, role: 'primary' }));
+    const projects = [...dynamic, ...initial];
+    return app.topicIdentity?.uniqueTitles(projects, entry => entry.project.title) || projects;
   }
 
   function listProjects() {

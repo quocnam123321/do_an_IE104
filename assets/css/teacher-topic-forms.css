@@ -1,0 +1,187 @@
+.teacher-topic-form-page .page-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+}
+
+.teacher-topic-form-page .topic-status {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-control);
+  color: var(--color-success-fg);
+  background: var(--color-success-bg);
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-medium);
+}
+
+.teacher-topic-form,
+.teacher-topic-form__layout,
+.teacher-topic-form__grid,
+.topic-edit-form__sidebar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-4);
+}
+
+.teacher-topic-form {
+  gap: var(--space-6);
+}
+
+.teacher-topic-form__panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  min-inline-size: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  background: var(--color-surface);
+}
+
+.teacher-topic-form__panel > :is(legend, h2) {
+  color: var(--color-heading);
+  font-size: var(--font-size-section-title);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+}
+
+fieldset.teacher-topic-form__panel > legend {
+  float: inline-start;
+  width: 100%;
+  margin-block-end: var(--space-4);
+  padding: 0;
+}
+
+.teacher-topic-form label {
+  display: block;
+  margin-block-end: var(--space-2);
+  color: var(--color-heading);
+  font-weight: var(--font-weight-semibold);
+}
+
+.teacher-topic-form :is(input, select, textarea) {
+  display: block;
+  width: 100%;
+  min-inline-size: 0;
+  min-block-size: var(--control-min-height);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+}
+
+.teacher-topic-form input[readonly] {
+  background: var(--color-neutral-bg);
+}
+
+.teacher-topic-form :is(input, select, textarea):focus {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.teacher-topic-form textarea {
+  resize: vertical;
+}
+
+.teacher-topic-form :is(input, textarea)::placeholder {
+  color: var(--color-muted-foreground);
+  opacity: 1;
+}
+
+.teacher-topic-form :is(input, select, textarea):user-invalid {
+  border-color: var(--color-danger-fg);
+}
+
+.teacher-topic-form input[type="file"] {
+  padding: var(--space-1);
+}
+
+.teacher-topic-form input::file-selector-button {
+  max-width: 100%;
+  padding: var(--space-2);
+  margin-inline-end: var(--space-2);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  color: var(--color-foreground);
+  background: var(--color-neutral-bg);
+  font: inherit;
+  cursor: pointer;
+}
+
+.teacher-topic-form input::file-selector-button:hover {
+  color: var(--color-primary);
+  background: var(--color-info-bg);
+}
+
+.teacher-topic-form__notice {
+  margin-block-end: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-info-border);
+  border-radius: var(--radius-control);
+  color: var(--color-info-fg);
+  background: var(--color-info-bg);
+}
+
+.teacher-topic-form .topic-supervisor__details dt {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+}
+
+.teacher-topic-form .topic-supervisor__details {
+  display: grid;
+  gap: var(--space-3);
+  overflow-wrap: anywhere;
+}
+
+.teacher-topic-form .topic-supervisor__details dt {
+  font-weight: var(--font-weight-medium);
+}
+
+.teacher-topic-form .topic-supervisor__details dd {
+  margin: 0;
+}
+
+.teacher-topic-form .topic-image {
+  margin: 0;
+}
+
+.teacher-topic-form .teacher-topic-form__button {
+  display: inline-flex;
+  min-block-size: var(--control-min-height);
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-secondary-btn-border);
+  border-radius: var(--radius-control);
+  color: var(--color-primary);
+  background: var(--color-surface);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+}
+
+.teacher-topic-form .teacher-topic-form__button:hover:not(:disabled) {
+  background: var(--color-info-bg);
+}
+
+.teacher-topic-form .teacher-topic-form__button:disabled {
+  color: var(--color-muted-foreground);
+  background: var(--color-neutral-bg);
+}
+
+@media (min-width: 40rem) {
+  .teacher-topic-form__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 56rem) {
+  .teacher-topic-form__layout {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: var(--space-6);
+  }
+
+  .teacher-topic-form__panel {
+    padding: var(--space-6);
+  }
+}

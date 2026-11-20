@@ -368,7 +368,7 @@
 }
 
 .lecturer-overview-page .topic-status__chart circle:nth-of-type(4) {
-  stroke: var(--color-neutral-fg);
+  stroke: var(--color-muted-foreground);
 }
 
 .lecturer-overview-page .topic-status__chart text:nth-of-type(1),
@@ -377,9 +377,8 @@
   font-weight: var(--font-weight-bold);
 }
 
-.lecturer-overview-page .topic-status__percent {
+.lecturer-overview-page .topic-status__chart .topic-status__percent {
   fill: var(--color-surface);
-  font-size: 14px;
   font-weight: var(--font-weight-bold);
 }
 
@@ -433,7 +432,7 @@
 }
 
 .lecturer-overview-page .topic-status__legend > div:nth-child(4)::before {
-  background-color: var(--color-neutral-fg);
+  background-color: var(--color-muted-foreground);
 }
 
 .lecturer-overview-page .topic-status__legend dt {

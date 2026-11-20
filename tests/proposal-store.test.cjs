@@ -5,9 +5,10 @@ const test = require('node:test');
 const vm = require('node:vm');
 const source = fs.readFileSync(path.join(__dirname, '../assets/js/proposal-store.js'), 'utf8');
 
-function setup({ storage = new Map(), blocked = false, locks } = {}) {
+function setup({ storage = new Map(), blocked = false, locks, data } = {}) {
   const events = new Map();
   const window = {
+    IE104: { data },
     localStorage: {
       getItem(key) { if (blocked) throw new Error('Storage blocked'); return storage.get(key) ?? null; },
       setItem(key, value) { if (blocked) throw new Error('Storage blocked'); storage.set(key, value); },
@@ -39,6 +40,26 @@ test('duyệt cập nhật đúng đề tài, tải lại vẫn giữ kết qu�
   assert.equal(setup({ storage }).store.get('DX001').status, 'approved');
   await assert.rejects(store.decide('DX001', 'rejected', 'Lý do từ chối hợp lệ'), /đã được xử lý/);
   assert.equal(store.get('DX-GV001').status, 'pending');
+});
+
+test('đề tài demo đã duyệt vẫn mở được sau khi chuyển sang danh mục UIT', async () => {
+  const { store: original, storage } = setup();
+  await original.decide('DX-GV005', 'approved');
+  await original.decide('DX-GV002', 'rejected', 'Cần bổ sung mục tiêu và phạm vi.');
+  const data = {
+    currentLecturer: { id: 'GV001' },
+    lecturerRealProposalSeeds: [{ id: 'DX-ISE-001', topicId: 'DT-DX-ISE-001' }],
+  };
+  const { store } = setup({ storage, data });
+  assert.deepEqual(Array.from(store.getAll(), record => record.id), ['DX-ISE-001', 'DX-GV005']);
+  assert.equal(store.getApprovedSeed('DT-GV005').id, 'DX-GV005');
+  assert.equal(store.getApprovedSeed('DT-GV002'), null);
+  assert.equal(store.getApprovedSeed('DT-GV004'), null);
+  assert.equal(store.getApprovedSeed('DT-UNKNOWN'), null);
+  await store.decide('DX-ISE-001', 'approved');
+  assert.equal(store.getApprovedSeed('DT-DX-ISE-001').id, 'DX-ISE-001');
+  data.currentLecturer = { id: 'GV002' };
+  assert.equal(store.getApprovedSeed('DT-GV005'), null);
 });
 
 test('từ chối kiểm tra lý do đã trim và chỉ ghi khi đủ điều kiện', async () => {

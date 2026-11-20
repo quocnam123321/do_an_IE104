@@ -1,0 +1,9 @@
+.lecturer-overview-page .topic-status__chart circle.overview-chart-segment-0 { stroke: var(--color-primary); }
+.lecturer-overview-page .topic-status__chart circle.overview-chart-segment-1 { stroke: var(--color-muted-foreground); }
+.lecturer-overview-page .topic-status__chart circle.overview-chart-segment-2 { stroke: var(--color-border); }
+.lecturer-overview-page .topic-status__chart circle.overview-chart-segment-3 { stroke: var(--color-success-fg); }
+.lecturer-overview-page .topic-status__legend > div.overview-legend-0::before { background: var(--color-primary); }
+.lecturer-overview-page .topic-status__legend > div.overview-legend-1::before { background: var(--color-muted-foreground); }
+.lecturer-overview-page .topic-status__legend > div.overview-legend-2::before { background: var(--color-border); }
+.lecturer-overview-page .topic-status__legend > div.overview-legend-3::before { background: var(--color-success-fg); }
+.lecturer-overview-page .overview-chart-total { fill: var(--color-foreground); font-size: 2rem; font-weight: 700; }

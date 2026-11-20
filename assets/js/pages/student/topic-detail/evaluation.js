@@ -20,7 +20,7 @@
       panel.dataset.evaluationState = result.status;
       if (result.status === 'unpublished') {
         content.replaceChildren(unpublished.content.cloneNode(true));
-        if (retrying) { const title = content.querySelector('h2'); title.tabIndex = -1; title.focus({ preventScroll: true }); }
+        if (retrying) { const title = content.querySelector('h3'); title.tabIndex = -1; title.focus({ preventScroll: true }); }
         return;
       }
       const fragment = published.content.cloneNode(true);
@@ -40,14 +40,14 @@
         });
         return row;
       }));
-      const fields = fragment.querySelectorAll('.lecturer-feedback__metadata dd');
+      const fields = fragment.querySelector('.evaluation-info__list').querySelectorAll('dd');
       fields[0].textContent = result.lecturerName;
       fields[1].textContent = result.evaluatedAt.split('-').reverse().join('/');
       fragment.querySelector('.lecturer-feedback__content p').textContent = result.feedback;
       fragment.querySelector('.evaluation-attachments__name').textContent = result.attachment?.name || 'Không có tệp đánh giá đính kèm.';
       fragment.querySelector('.evaluation-attachments__download').disabled = true;
       content.replaceChildren(fragment);
-      if (retrying) { const title = content.querySelector('h2'); title.tabIndex = -1; title.focus({ preventScroll: true }); }
+      if (retrying) { const title = content.querySelector('h3'); title.tabIndex = -1; title.focus({ preventScroll: true }); }
     } catch (failure) {
       panel.dataset.evaluationState = 'error';
       const fragment = failed.content.cloneNode(true);

@@ -279,3 +279,16 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 - Màu/font/control và khung nội dung dùng bộ mới trong `tokens.css`: khung tối đa 80rem, lề 2rem (1rem dưới 48rem). Đây là kích thước dựng thử, không thay đổi quyết định màu/font đã chốt. CSS riêng giữ bố cục nội dung hiện có; không định nghĩa lại bộ màu và header/footer.
 - Các token phụ còn cần cho CSS cũ được tập trung trong `tokens.css`: chữ caption 12px, spacing 20/40px, bo nhãn 4px, cặp viền trạng thái và transition. Chúng là lựa chọn dựng thử; số liệu thống kê và kích thước lịch vẫn nằm trong CSS riêng.
 - Header dùng chung `<details class="site-navigation" open>`, `components.css` và `nav-indicator.js`. Dưới 68rem, script thu gọn menu khi mở trang, còn HTML vẫn cho người dùng mở và đóng menu khi tắt JavaScript. Mục hiện tại dùng gạch xanh dưới nhãn.
+
+
+## Đồng bộ Tiến độ, Bài nộp và ảnh SV/GV — 19/11/2026
+
+- Tiến độ: bấm thẻ công việc để mở chi tiết, nút Sửa công việc ở cuối theo quyền; Xóa/Xong bật dấu trừ để xác nhận và xóa liên tiếp. Ba cột màu và icon giống nhau, tên người phụ trách và hạn hoàn thành xuống dòng; bảng được bao bằng block trắng. Ẩn lịch sử chung ngoài bảng và giữ dữ liệu đã lưu.
+- Hộp cập nhật tự điền trạng thái và % hiện tại của công việc được chọn, nội dung báo cáo mới trống khi mở. Chi tiết có lịch sử riêng theo task: tên/mã, giờ Việt Nam, % từng lần, mới nhất trước; details/summary mở nội dung. Chưa có lịch sử hiện trạng thái trống, không sinh người/thời gian giả.
+- Bài nộp: phía trên Chưa nộp/Đã nộp, phía dưới Chờ phản hồi/Đã phản hồi. Giữ nhãn thời hạn riêng: Quá hạn · Chưa nộp, Đã nộp trễ, Đúng hạn. Các nút có khoảng cách, Tạo yêu cầu và Thêm công việc dùng primary. Tiêu đề thẻ GV trải hàng đầu, chừa chỗ nhãn thời hạn.
+- DA005 là đề tài đang thực hiện để thử; giữ DA001/DA002 Hoàn thành. Giữ quyền, revision và quy tắc nộp muộn khi chưa khóa. Bài nộp SV chưa có xử lý tải lên thực tế.
+- Khung ảnh danh sách/chi tiết SV/GV dùng topic-media-shared.css: vuông 168px desktop, 128px dưới 64rem, contain/padding/nền chung; không đổi avatar và logo header. Giữ token, font và các sửa riêng của nhóm ngoài phạm vi.
+
+## GV phục hồi theo 1ddf0d3 — 20/11/2026
+
+Theo xác nhận của người dùng, phần GV dùng giao diện 1ddf0d3 và các thao tác của bản đó, không mang chức năng/bố cục ngày 19/11 vào. Gộp cột Đã phản hồi ở Yêu cầu bài nộp vào Đã nộp; giữ hai cột Bài nộp nhóm. Metadata: 10 đã tạo, 8 hướng dẫn, 6 chờ duyệt không giao với hướng dẫn. ISE-005 dùng vai trò Đồng hướng dẫn. Phân công task và popover theo đúng authors từng đề tài; các bước công việc là mẫu trung tính. Thông tin chưa biết dùng placeholder xxxxxxxx hoặc nội dung trong ngoặc vuông. GV phần Đề tài đã tạo dùng Nguyễn Văn A, giangvien@example.com, hướng nghiên cứu chung Khoa học dữ liệu và Hệ thống thông tin. Bỏ ghi chú nguồn/demo trên giao diện theo yêu cầu; nguồn và giới hạn ghi riêng trong docs/RESTORE-GV-2026-11-20.md. Giữ các file dùng chung của SV; hai script cần lấy từ commit cũ được tách thành uit-topic-list.js và uit-teacher-approved-proposals.js chỉ nạp bởi GV.

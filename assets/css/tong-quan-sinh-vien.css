@@ -364,9 +364,7 @@
   font-weight: var(--font-weight-bold);
 }
 
-.student-overview-page .registration-status__chart text:nth-of-type(3),
-.student-overview-page .registration-status__chart text:nth-of-type(4),
-.student-overview-page .registration-status__chart text:nth-of-type(5) {
+.student-overview-page .registration-status__chart .registration-status__percentages text {
   fill: var(--color-surface);
   font-weight: var(--font-weight-bold);
 }
@@ -691,4 +689,21 @@
 .student-overview-page .request-card__link {
   margin-top: auto;
   align-self: flex-end;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .student-overview-page .fade-in-up.is-animated:not(.is-visible):not(:focus-within) {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .student-overview-page .fade-in-up.is-animated.is-visible {
+    transition:
+      opacity 600ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .student-overview-page .fade-in-up.is-animated:focus-within {
+    transition: none;
+  }
 }

@@ -17,12 +17,13 @@
   function eventButton(event) {
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = `calendar-event calendar-event--${event.kind === 'task' ? 'task' : 'topic'}`;
+    const kind = event.kind === 'milestone' ? 'topic' : event.kind;
+    button.className = `calendar-event calendar-event--${kind}`;
     button.dataset.eventId = event.id;
     button.setAttribute('aria-haspopup', 'dialog');
     button.setAttribute('aria-controls', dialog.id);
     const title = document.createElement('strong');
-    title.textContent = event.kind === 'task' ? 'Hạn công việc' : 'Mốc đề tài';
+    title.textContent = { task: 'Hạn công việc', topic: 'Mốc đề tài', submission: 'Hạn nộp bài' }[kind];
     const text = document.createElement('span');
     text.textContent = `${event.projectId} - ${event.title}`;
     button.append(title, document.createElement('br'), text);
@@ -31,7 +32,13 @@
       dialog.querySelector('h2').textContent = event.title;
       const details = dialog.querySelector('dl');
       details.replaceChildren();
-      [['Đề tài', `${event.projectId} - ${event.projectTitle}`], ['Ngày đến hạn', event.date.split('-').reverse().join('/')], ['Theo dõi', event.closed ? 'Công việc hoặc đề tài đã hoàn tất' : 'Đang theo dõi hạn']].forEach(([label, value]) => {
+      const deadline = event.deadline
+        ? new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh' }).format(new Date(event.deadline))
+        : event.date.split('-').reverse().join('/');
+      let status = event.closed ? 'Đã hoàn tất' : 'Đang theo dõi hạn';
+      if (event.locked) status = 'Đã khóa nhận bài';
+      if (event.submitted) status = 'Đã nộp';
+      [['Đề tài', `${event.projectId} - ${event.projectTitle}`], ['Hạn', deadline], ['Theo dõi', status]].forEach(([label, value]) => {
         const term = document.createElement('dt');
         const description = document.createElement('dd');
         term.textContent = label;
@@ -88,7 +95,9 @@
     render();
   }
 
-  document.querySelectorAll('.deadline-calendar__toolbar :is(button, input, select)').forEach(control => { control.disabled = false; });
+  document.querySelectorAll(
+    '.deadline-calendar__toolbar :is(input, select, .deadline-calendar__previous, .deadline-calendar__next, .deadline-calendar__today)'
+  ).forEach(control => { control.disabled = false; });
   month.value = service.today().slice(0, 7);
   month.min = '0001-01';
   month.max = '9999-12';
@@ -102,6 +111,9 @@
     (button || month).focus({ preventScroll: true });
   });
   window.addEventListener('pageshow', render);
-  window.addEventListener('storage', event => { if ([globalThis.IE104.storage.progressKey, globalThis.IE104.storage.teamKey, null].includes(event.key)) render(); });
+  window.addEventListener('storage', event => {
+    const { progressKey, teamKey, teachingKey, proposalKey, registrationKey } = globalThis.IE104.storage;
+    if ([progressKey, teamKey, teachingKey, proposalKey, registrationKey, null].includes(event.key)) render();
+  });
   render();
 })();

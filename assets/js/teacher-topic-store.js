@@ -243,6 +243,10 @@
         id,
         code: sample?.id || record.code,
         title: record.name,
+        lecturerId: 'GV001',
+        description: record.description,
+        objectives: record.objectives,
+        outcomes: record.outcomes,
         type: types[record.type],
         typeLabel: catalogs.type[record.type],
         courseId: courses[record.course],
@@ -252,12 +256,12 @@
         lecturer: sample?.lecturer || 'Nguyễn Văn Minh',
         createdAt: record.created,
         detailUrl: sample?.detailUrl || 'chi-tiet-de-tai-mo-dang-ky.html?topic=' + encodeURIComponent(id),
-        registrationRules: { minMembers: Number(record.minimum), maxMembers: Number(record.maximum) },
+        registrationRules: { minMembers: 1, maxMembers: Number(record.maximum) },
         status: record.status,
         record,
       };
     });
     return [...samples.filter(topic => topic.id !== 'DT001'), ...managed];
   }
-  window.TeacherTopicStore = { key, catalogs, codePrefixes, read, validate, save, setRegistrationStatus, studentTopics };
+  window.TeacherTopicStore = { key, catalogs, codePrefixes, read, validate, save, setRegistrationStatus, studentTopics, nextCode };
 })();
