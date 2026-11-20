@@ -7,8 +7,30 @@
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261111-heading-sync-1">
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1">
     <link rel="stylesheet" href="../../assets/css/components.css">
-    <script src="../../assets/js/uit-lecturer-catalog.js" defer=""></script><script src="../../assets/js/nav-indicator.js" defer=""></script>
-  <script src="../../assets/js/uit-lecturer-view.js" defer=""></script></head>
+    <script src="../../assets/js/nav-indicator.js" defer=""></script>
+
+    <link rel="stylesheet" href="../../assets/css/teacher-topic-forms.css" />
+    <link rel="stylesheet" href="../../assets/css/lecturer-topic-editor.css" />
+    <script src="../../assets/js/uit-lecturer-catalog.js" defer></script>
+    <script src="../../assets/js/shared/topic-identity.js" defer></script>
+    <script src="../../assets/js/teacher-topic-store.js" defer></script>
+    <script src="../../assets/js/data/mock-data.js" defer></script>
+    <script src="../../assets/js/data/proposal-actors.js" defer></script>
+    <script src="../../assets/js/data/lecturer-topics.js" defer></script>
+    <script src="../../assets/js/data/lecturer-merge-catalog.js" defer></script>
+    <script src="../../assets/js/services/storage.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
+    <script src="../../assets/js/shared/validation.js" defer></script>
+    <script src="../../assets/js/services/proposal-service.js" defer></script>
+    <script src="../../assets/js/services/registration-service.js" defer></script>
+    <script src="../../assets/js/services/approved-project-service.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
+    <script src="../../assets/js/services/published-topic-service.js" defer></script>
+    <script src="../../assets/js/proposal-store.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-file-service.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
+    <script src="../../assets/js/pages/lecturer/topic-editor.js" defer></script>
+  </head>
 
   <body>
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
@@ -120,11 +142,11 @@
             thay đổi.
           </p>
 
-          <form id="topic-edit-form" class="topic-edit-form" method="post" aria-describedby="topic-required-notice topic-save-notice">
+          <form id="topic-edit-form" class="topic-edit-form teacher-topic-form" method="post" aria-describedby="topic-required-notice topic-save-notice">
             <p id="topic-required-notice" class="topic-edit-form__required-note">
               Trường có dấu * là bắt buộc.
             </p>
-            <div class="topic-edit-form__overview">
+            <div class="topic-edit-form__overview teacher-topic-form__panel">
               <section class="topic-edit-form__basic" aria-labelledby="basic-information-title">
                 <h2 id="basic-information-title">Thông tin cơ bản</h2>
                 <div class="topic-edit-form__field">
@@ -192,7 +214,7 @@
               </section>
 
               <aside class="topic-edit-form__sidebar" aria-label="Ảnh và giảng viên hướng dẫn">
-                <section class="topic-edit-form__image" aria-labelledby="topic-image-title">
+                <section class="topic-edit-form__image teacher-topic-form__panel" aria-labelledby="topic-image-title">
                   <h2 id="topic-image-title">Ảnh minh họa đề tài</h2>
                   <figure class="topic-image">
                     <div class="topic-image__placeholder">
@@ -213,7 +235,7 @@
                   </p>
                 </section>
 
-                <section class="topic-edit-form__lecturer" aria-labelledby="topic-lecturer-title">
+                <section class="topic-edit-form__lecturer teacher-topic-form__panel" aria-labelledby="topic-lecturer-title">
                   <h2 id="topic-lecturer-title">Giảng viên hướng dẫn</h2>
                   <p>Thông tin sẽ lấy từ hồ sơ giảng viên.</p>
                   <div class="topic-edit-form__field">
@@ -234,7 +256,7 @@
               </aside>
             </div>
 
-            <section class="topic-edit-form__content" aria-labelledby="topic-content-title">
+            <section class="topic-edit-form__content teacher-topic-form__panel" aria-labelledby="topic-content-title">
               <h2 id="topic-content-title">Nội dung đề tài</h2>
               <div class="topic-edit-form__field">
                 <label for="mo-ta">
@@ -258,7 +280,16 @@
               </div>
             </section>
 
-            <section class="topic-edit-form__conditions" aria-labelledby="registration-conditions-title">
+            <section class="topic-edit-form__content teacher-topic-form__panel" aria-labelledby="topic-outcomes-title">
+              <h2 id="topic-outcomes-title">Kết quả dự kiến</h2>
+              <label for="ket-qua-du-kien">Kết quả dự kiến *</label>
+              <textarea id="ket-qua-du-kien" name="ket-qua-du-kien" rows="4" required></textarea>
+            </section>
+            <section class="topic-edit-form__content teacher-topic-form__panel" aria-labelledby="topic-attachment-title" data-editor-attachment>
+              <h2 id="topic-attachment-title">Tài liệu đính kèm</h2>
+              <p>PDF/DOC/DOCX/TXT không quá 10 MB.</p>
+            </section>
+            <section class="topic-edit-form__conditions teacher-topic-form__panel" aria-labelledby="registration-conditions-title">
               <h2 id="registration-conditions-title">Điều kiện đăng ký</h2>
               <div class="topic-edit-form__row">
                 <div class="topic-edit-form__field">
@@ -276,7 +307,7 @@
               </div>
             </section>
 
-            <section class="topic-edit-form__schedule" aria-labelledby="topic-schedule-title">
+            <section class="topic-edit-form__schedule teacher-topic-form__panel" aria-labelledby="topic-schedule-title">
               <h2 id="topic-schedule-title">Thời gian đăng ký và thực hiện</h2>
               <p id="topic-timezone-notice">
                 Thời gian được hiểu theo múi giờ Việt Nam (UTC+07:00).

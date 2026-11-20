@@ -6,3 +6,19 @@
 
 # Chromium debug log
 /debug.log
+
+# Firebase Functions and emulator configuration
+/functions/node_modules/
+/functions/.env*
+/functions/.secret*
+/.firebase/
+firebase-debug*.log
+firestore-debug*.log
+ui-debug*.log
+
+# Cloudflare Workers local credentials and state
+/.wrangler/
+/calendar-worker/.dev.vars*
+/calendar-worker/.env*
+/calendar-worker/.wrangler/
+/calendar-worker/node_modules/

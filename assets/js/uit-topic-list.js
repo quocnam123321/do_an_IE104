@@ -104,9 +104,11 @@
     const topics = Array.from(list.children, item => {
       if (!originalOrder.has(item)) originalOrder.set(item, nextOrder++);
       const card = item.matches('.topic-card') ? item : item.querySelector('.topic-card');
-      return { item, card, title: card.querySelector('.topic-card__title').textContent.trim(), date: card.querySelector('time[datetime]')?.dateTime || '', terms: normalize([card.querySelector('.topic-card__title').textContent, card.dataset.topicId, ...Array.from(card.querySelectorAll('[data-topic-search-term]'), node => node.textContent)].join(' ')) };
+      return { item, card, title: card.querySelector('.topic-card__title').textContent.trim(), date: card.dataset.createdAt || card.querySelector('time[datetime]')?.dateTime || '', terms: normalize([card.querySelector('.topic-card__title').textContent, card.dataset.topicId, ...Array.from(card.querySelectorAll('[data-topic-search-term]'), node => node.textContent)].join(' ')) };
     });
-    const matched = topics.filter(topic => selected.every(([name, values]) => !values.length || values.includes(topic.card.getAttribute(`data-${name}`))) && terms.every(term => topic.terms.includes(term)));
+    topics.sort((a, b) => originalOrder.get(a.item) - originalOrder.get(b.item));
+    const unique = window.IE104?.topicIdentity?.uniqueTitles(topics) || topics;
+    const matched = unique.filter(topic => selected.every(([name, values]) => !values.length || values.includes(topic.card.getAttribute(`data-${name}`))) && terms.every(term => topic.terms.includes(term)));
     const order = orders[data.get('topic_sort')];
     matched.sort((a, b) => (order ? order(a, b) : 0) || originalOrder.get(a.item) - originalOrder.get(b.item));
     const totalPages = Math.ceil(matched.length / pageSize);
@@ -122,6 +124,10 @@
       topic.item.hidden = hidden;
       if (!hidden) visibleCards.push(topic.card);
     });
+    const tabCount = document.querySelector(
+      document.body.classList.contains('teacher-created-topics-page')
+        ? '[data-topic-tab-count="created"]' : '[data-topic-tab-count="teaching"]');
+    if (tabCount) tabCount.textContent = unique.length;
     status.textContent = matched.length ? `Hiển thị ${(page - 1) * pageSize + 1}–${Math.min(page * pageSize, matched.length)} trên ${matched.length} đề tài` : 'Không tìm thấy đề tài phù hợp. Thử từ khóa khác hoặc xóa bộ lọc.';
     status.hidden = false; status.toggleAttribute('data-empty', !matched.length); viewport.hidden = !matched.length;
     const pages = document.createElement('ul'); pages.className = 'pagination__list';

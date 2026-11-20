@@ -1,0 +1,6 @@
+[data-published-content][hidden] { display: none !important; }
+[data-published-availability] { margin-block: var(--space-4); }
+[data-published-availability][data-closed="true"] { color: var(--color-danger-fg); }
+[data-published-content] .content-box { white-space: pre-wrap; }
+[data-published-content] .summary__meta dd { overflow-wrap: anywhere; }
+#reopen-registration input { width: 100%; box-sizing: border-box; min-height: 2.75rem; margin-block: var(--space-3); padding: .625rem .75rem; border: 1px solid var(--color-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-foreground); font: inherit; }

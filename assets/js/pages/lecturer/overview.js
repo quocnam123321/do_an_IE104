@@ -45,7 +45,9 @@
   function progressCard(project, index) {
     const { article, link } = card('topic-progress-card', `overview-project-${index}`, project.title,
       project.topicId || project.id, 'Xem đề tài',
-      `chi-tiet-de-tai-dang-huong-dan-giang-vien.html?project=${encodeURIComponent(project.id)}#tien-do`);
+      (project.workspaceId && project.sourceRecord
+        ? app.services.lecturerTopics.detailUrl(project)
+        : `chi-tiet-de-tai-dang-huong-dan-giang-vien.html?project=${encodeURIComponent(project.id)}`) + '#tien-do');
     const group = element('p', 'Nhóm thực hiện: ' + (project.groupName || 'Chưa có nhóm thực hiện'));
     let detail;
     try {
@@ -132,27 +134,39 @@
 
   function render() {
     let created;
-    try { created = topics.read(); } catch { /* Thông báo lỗi hiển thị bên dưới. */ }
+    try { created = app.services.lecturerTopics?.list('created') || topics.read(); }
+    catch { /* Thông báo lỗi hiển thị bên dưới. */ }
     const records = proposals.getAll();
     const proposalError = proposals.getError();
     const approved = records.filter(record => record.status === 'approved');
     const pending = records.filter(record => record.status === 'pending').sort((first, second) =>
       (Date.parse(second.submittedAt) || 0) - (Date.parse(first.submittedAt) || 0));
-    const supervised = teaching.listSupervisedProjects();
-    const active = supervised.filter(({ project }) => project.status === 'dang-thuc-hien').map(({ project }) => project);
-    const completed = supervised.filter(({ project }) => project.status === 'hoan-thanh').length;
-    const inProgress = active.length + approved.length;
-    const total = created && !proposalError ? created.length + inProgress + completed : null;
-    const open = created?.filter(topic => topic.status === 'open').length;
-    const values = { total, created: created?.length, supervised: proposalError ? null : inProgress, pending: proposalError ? null : pending.length };
+    let supervised = [];
+    let progressError = '';
+    try {
+      const catalog = app.services.lecturerTopics?.list('supervised') || [];
+      supervised = [...catalog, ...teaching.listSupervisedProjects().map(({ project }) => project)];
+    } catch (failure) { progressError = failure.message; }
+    const unique = (entries, title) => app.topicIdentity?.uniqueTitles(entries, title) || entries;
+    supervised = unique(supervised);
+    const active = supervised.filter(project => project.status === 'dang-thuc-hien');
+    const completed = supervised.filter(project => project.status === 'hoan-thanh');
+    const remainingApproved = unique([...supervised, ...approved]).filter(record =>
+      approved.includes(record) && !supervised.some(project => project.id === record.topicId));
+    const inProgress = active.length + remainingApproved.length;
+    const chartCreated = unique([...active, ...completed, ...remainingApproved, ...(created || [])],
+      entry => entry.title || entry.name).filter(entry => created?.includes(entry));
+    const total = created && !proposalError && !progressError ? chartCreated.length + inProgress + completed.length : null;
+    const open = chartCreated.filter(topic => topic.status === 'open').length;
+    const values = { total, created: created?.length, supervised: proposalError || progressError ? null : inProgress, pending: proposalError ? null : pending.length };
     for (const [key, count] of Object.entries(values)) {
       select(`[aria-labelledby="${key}-count-title"] strong`).textContent = count ?? '—';
     }
-    warning.textContent = [created ? '' : 'Không đọc được danh sách đề tài đã tạo.', proposalError].filter(Boolean).join(' ');
+    warning.textContent = [created ? '' : 'Không đọc được danh sách đề tài đã tạo.', proposalError, progressError].filter(Boolean).join(' ');
     warning.hidden = !warning.textContent;
-    renderChart([inProgress, open, completed, created ? created.length - open : 0], total);
+    renderChart([inProgress, open, completed.length, chartCreated.length - open], total);
 
-    const progressCards = [...active.map(progressCard), ...approved.map((record, index) => proposalCard(record, index, false))];
+    const progressCards = [...active.map(progressCard), ...remainingApproved.map((record, index) => proposalCard(record, index, false))];
     const requestCards = proposalError ? [] : pending.map((record, index) => proposalCard(record, index, true));
     progressList.replaceChildren(...(progressCards.length ? progressCards : [element('p',
       proposalError ? 'Chưa đọc được đầy đủ đề tài đang hướng dẫn.' : 'Chưa có đề tài đang hướng dẫn.')]));
@@ -162,7 +176,8 @@
 
   proposals.subscribe(render);
   window.addEventListener('storage', event => {
-    if ([topics.key, app.storage.progressKey, app.storage.teamKey].includes(event.key)) render();
+    if ([topics.key, app.storage.progressKey, app.storage.teamKey, app.services.lecturerTopicRepository?.key, null].includes(event.key)) render();
   });
+  window.addEventListener('ie104:lecturer-topics-updated', render);
   render();
 })();

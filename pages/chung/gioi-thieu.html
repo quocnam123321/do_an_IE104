@@ -12,9 +12,11 @@
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/common.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/information.css?v=20261111-heading-sync-1" />
+    <link rel="stylesheet" href="../../assets/css/information.css?v=20261118-feature-no-index-1" />
+    <link rel="stylesheet" href="../../assets/css/about-audiences.css?v=20261118-student-frame-1" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
-    <script src="../../assets/js/about-tabs.js" defer></script>
+    <script src="../../assets/js/about-tabs.js?v=20261118-motion-2" defer></script>
+    <script src="../../assets/js/about-features.js?v=20261118-feedback-1" defer></script>
   </head>
   <body class="common-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
@@ -860,9 +862,16 @@
           </header>
           <nav class="about-audiences__navigation" aria-label="Vai trò sử dụng hệ thống">
             <ul>
-              <li><a id="role-tab-student" href="#vai-tro-sinh-vien">Sinh viên</a></li>
-              <li><a id="role-tab-lecturer" href="#vai-tro-giang-vien">Giảng viên</a></li>
-              <li><a id="role-tab-department" href="#vai-tro-bo-mon-khoa">Bộ môn / Khoa</a></li>
+              <li><a id="role-tab-student" href="#vai-tro-sinh-vien"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="m12 3-11 6 11 6 9-4.91V17h2V9L12 3Z"/><path d="M5 13v5c4 3 10 3 14 0v-5l-7 3.82L5 13Z"/></svg><span>Sinh viên</span></a></li>
+              <li><a id="role-tab-lecturer" href="#vai-tro-giang-vien"><svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3h12v13H11m5 0 3 5m-3-5-2 5"/><circle cx="5" cy="6" r="2"/><path d="M2 21v-9h6v9M5 12v9m3-9 5-4"/></svg><span>Giảng viên</span></a></li>
+              <li>
+                <a id="role-tab-department" href="#vai-tro-bo-mon-khoa">
+                  <svg aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 21h18M5 21V8l7-4 7 4v13M9 10v1m6-1v1m-6 2v1m6-1v1m-5 7v-4h4v4" />
+                  </svg>
+                  <span>Bộ môn / Khoa</span>
+                </a>
+              </li>
             </ul>
           </nav>
           <!-- Chỉ panel đang chọn hiển thị khi các tab đã được khởi tạo. -->
@@ -870,82 +879,136 @@
             <h3 id="student-role-title">Sinh viên</h3>
             <div class="about-audience__content">
               <figure class="about-audience__preview">
-                <figcaption>Tổng quan sinh viên<span class="visually-hidden"> — minh họa giao diện</span></figcaption>
-                <div class="dashboard-preview" aria-hidden="true">
-                  <div class="dashboard-preview__sidebar">
-                    <img src="../../assets/images/icons/about-house.svg" alt="" width="24" height="24" />
-                    <img src="../../assets/images/icons/about-book.svg" alt="" width="24" height="24" />
-                    <img src="../../assets/images/icons/about-calendar.svg" alt="" width="24" height="24" />
-                    <img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" />
-                    <img src="../../assets/images/icons/role-settings.svg" alt="" width="24" height="24" />
+                <figcaption class="visually-hidden">Minh họa Tổng quan sinh viên: 6 đề tài, 2 đang thực hiện; 3 đã duyệt, 2 chờ duyệt, 1 đã từ chối. Tiến độ hai đề tài mẫu là 23% và 40%.</figcaption>
+                <!-- Minh họa HTML/CSS theo giao diện hiện có, không phải màn hình tương tác hoặc dữ liệu trực tiếp. -->
+                <div class="audience-dashboard" aria-hidden="true">
+                  <div class="audience-dashboard__site-header">
+                    <div class="audience-dashboard__brand">
+                      <img src="../../assets/images/images.jpg" alt="" width="40" height="40" />
+                      <span class="audience-dashboard__brand-name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
+                    </div>
+                    <div class="audience-dashboard__menu"><span class="is-current">Tổng quan</span><span>Đăng ký đề tài</span><span>Đề tài của tôi</span><span>Lịch hạn nộp</span><span>Chung<svg class="audience-dashboard__chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span></div>
+                    <span class="audience-dashboard__account"><span class="audience-dashboard__avatar"><span>SV</span></span><svg class="audience-dashboard__chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span>
                   </div>
-                  <div class="dashboard-preview__main">
-                    <div class="dashboard-preview__summary">
-                      <div><p>Đề tài của tôi</p><span class="preview-line"></span></div>
-                      <div><p>Lịch và hạn nộp</p><span class="preview-line"></span></div>
+                  <div class="audience-dashboard__body">
+                    <p class="audience-dashboard__breadcrumb">Sinh viên / Tổng quan</p>
+                    <p class="audience-dashboard__heading">Tổng quan</p>
+                    <div class="audience-dashboard__stats" data-spotlight-panel="stats">
+                      <div><span>Tổng đề tài</span><strong>6</strong></div>
+                      <div><span>Đang thực hiện</span><strong>2</strong></div>
+                      <div><span>Đã duyệt</span><strong>3</strong></div>
+                      <div><span>Chờ duyệt</span><strong>2</strong></div>
+                      <div><span>Đã từ chối</span><strong>1</strong></div>
                     </div>
-                    <div class="dashboard-preview__block">
-                      <p class="dashboard-preview__title">Tiến độ thực hiện đồ án / khóa luận</p>
-                      <div class="dashboard-preview__progress-row"><span class="preview-line"></span><span class="dashboard-preview__progress"></span></div>
-                      <div class="dashboard-preview__progress-row"><span class="preview-line"></span><span class="dashboard-preview__progress"></span></div>
-                      <div class="dashboard-preview__progress-row"><span class="preview-line"></span><span class="dashboard-preview__progress"></span></div>
+                    <div class="audience-dashboard__panel" data-spotlight-panel="registration">
+                      <p class="audience-dashboard__panel-title">Trạng thái đăng ký</p>
+                      <div class="audience-dashboard__registration">
+                        <svg class="audience-dashboard__chart" viewBox="0 0 240 240" width="240" height="240" focusable="false">
+                          <g fill="none" stroke-width="44" transform="rotate(-90 120 120)">
+                            <circle class="chart-approved" cx="120" cy="120" r="76" pathLength="6" stroke-dasharray="3 3" />
+                            <circle class="chart-pending" cx="120" cy="120" r="76" pathLength="6" stroke-dasharray="2 4" stroke-dashoffset="-3" />
+                            <circle class="chart-rejected" cx="120" cy="120" r="76" pathLength="6" stroke-dasharray="1 5" stroke-dashoffset="-5" />
+                          </g>
+                          <g text-anchor="middle" fill="currentColor" font-weight="600">
+                            <text x="120" y="111" font-size="14">Tổng đề tài</text>
+                            <text class="audience-dashboard__chart-total" x="120" y="146" font-size="32">6</text>
+                          </g>
+                          <g class="audience-dashboard__chart-labels" text-anchor="middle" font-size="13" font-weight="600"><text x="196" y="125">50%</text><text x="53" y="164">33,3%</text><text x="82" y="57">16,7%</text></g>
+                        </svg>
+                        <div class="audience-dashboard__legend"><span class="is-approved">Đã duyệt: 3</span><span class="is-pending">Chờ duyệt: 2</span><span class="is-rejected">Đã từ chối: 1</span></div>
+                      </div>
                     </div>
-                    <div class="dashboard-preview__block">
-                      <p class="dashboard-preview__title">Công việc cần làm</p>
-                      <div class="dashboard-preview__task"><img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
-                      <div class="dashboard-preview__task"><img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
-                      <div class="dashboard-preview__task"><img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
+                    <div class="audience-dashboard__panel" data-spotlight-panel="progress">
+                      <p class="audience-dashboard__panel-title">Tiến độ đề tài đang thực hiện</p>
+                      <div class="audience-dashboard__progress-row"><span>Website quản lý thư viện</span><span class="audience-dashboard__progress"><i class="progress-library"></i></span><span class="audience-dashboard__percent">23%</span></div>
+                      <div class="audience-dashboard__progress-row"><span>Website bán sách trực tuyến</span><span class="audience-dashboard__progress"><i class="progress-bookshop"></i></span><span class="audience-dashboard__percent">40%</span></div>
                     </div>
                   </div>
                 </div>
               </figure>
-              <ul class="about-audience__benefits">
-                <li><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" />Tìm và đăng ký đề tài</li>
-                <li><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" />Theo dõi tiến độ, lịch và hạn nộp</li>
-                <li><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" />Nộp báo cáo, xem phản hồi và kết quả</li>
+              <ul class="about-audience__benefits about-audience__benefits--student">
+                <li data-spotlight="registration">
+                  <span class="audience-benefit-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></span>
+                  <div><strong>Tìm và đăng ký đề tài</strong><p>Tra cứu danh sách đề tài mở hoặc gửi đề xuất mới.</p></div>
+                </li>
+                <li data-spotlight="progress">
+                  <span class="audience-benefit-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 11h18"/></svg></span>
+                  <div><strong>Theo dõi tiến độ, lịch và hạn nộp</strong><p>Quản lý công việc trực quan và theo dõi các mốc hạn nộp.</p></div>
+                </li>
+                <li data-spotlight="stats">
+                  <span class="audience-benefit-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H5a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1V9l-6-6Z"/><path d="M14 3v6h6M8 13h8M8 17h6"/></svg></span>
+                  <div><strong>Nộp báo cáo, xem phản hồi và kết quả</strong><p>Gửi bài nộp tập trung và nhận góp ý từ giảng viên.</p></div>
+                </li>
               </ul>
             </div>
           </section>
           <section id="vai-tro-giang-vien" class="about-audience" aria-labelledby="lecturer-role-title">
             <h3 id="lecturer-role-title">Giảng viên</h3>
             <div class="about-audience__content">
-              <figure class="about-audience__preview">
-                <figcaption>Tổng quan giảng viên<span class="visually-hidden"> — minh họa giao diện</span></figcaption>
-                <div class="dashboard-preview" aria-hidden="true">
-                  <div class="dashboard-preview__sidebar">
-                    <img src="../../assets/images/icons/about-house.svg" alt="" width="24" height="24" />
-                    <img src="../../assets/images/icons/about-book.svg" alt="" width="24" height="24" />
-                    <img src="../../assets/images/icons/about-calendar.svg" alt="" width="24" height="24" />
-                    <img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" />
-                    <img src="../../assets/images/icons/role-settings.svg" alt="" width="24" height="24" />
+              <figure class="about-audience__preview about-audience__preview--lecturer">
+                <figcaption class="visually-hidden">Minh họa Tổng quan giảng viên với dữ liệu mẫu: 12 đề tài, 8 đã tạo, 6 đang hướng dẫn, 4 yêu cầu chờ xử lý. Hai đề tài minh họa có tiến độ 60% và 25%.</figcaption>
+                <!-- Minh họa HTML/CSS theo giao diện hiện có, không phải màn hình tương tác hoặc dữ liệu trực tiếp. -->
+                <div class="audience-dashboard audience-dashboard--lecturer" aria-hidden="true">
+                  <div class="audience-dashboard__site-header">
+                    <div class="audience-dashboard__brand">
+                      <img src="../../assets/images/images.jpg" alt="" width="40" height="40" />
+                      <span class="audience-dashboard__brand-name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
+                    </div>
+                    <div class="audience-dashboard__menu"><span class="is-current">Tổng quan</span><span>Quản lý đề tài</span><span>Yêu cầu chờ duyệt</span><span>Chung<svg class="audience-dashboard__chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span></div>
+                    <span class="audience-dashboard__account"><span class="audience-dashboard__avatar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M5.5 20a6.5 6.5 0 0 1 13 0"/></svg></span><svg class="audience-dashboard__chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span>
                   </div>
-                  <div class="dashboard-preview__main">
-                    <div class="dashboard-preview__summary">
-                      <div><p>Đề tài hướng dẫn</p><span class="preview-line"></span></div>
-                      <div><p>Yêu cầu chờ duyệt</p><span class="preview-line"></span></div>
-                      <div><p>Bài nộp mới</p><span class="preview-line"></span></div>
-                      <div><p>Hạn nộp sắp tới</p><span class="preview-line"></span></div>
+                  <div class="audience-dashboard__body">
+                    <p class="audience-dashboard__breadcrumb">Giảng viên / Tổng quan</p>
+                    <p class="audience-dashboard__heading">Tổng quan</p>
+                    <div class="audience-dashboard__stats" data-spotlight-panel="stats">
+                      <div><span>Tổng số đề tài</span><strong>12</strong></div>
+                      <div><span>Đề tài đã tạo</span><strong>8</strong></div>
+                      <div><span>Đang hướng dẫn</span><strong>6</strong></div>
+                      <div><span>Yêu cầu chờ xử lý</span><strong>4</strong></div>
                     </div>
-                    <div class="dashboard-preview__block">
-                      <p class="dashboard-preview__title">Đề tài đang hướng dẫn</p>
-                      <div class="dashboard-preview__progress-row"><span class="preview-line"></span><span class="dashboard-preview__progress"></span></div>
-                      <div class="dashboard-preview__progress-row"><span class="preview-line"></span><span class="dashboard-preview__progress"></span></div>
-                      <div class="dashboard-preview__progress-row"><span class="preview-line"></span><span class="dashboard-preview__progress"></span></div>
+                    <div class="audience-dashboard__panel" data-spotlight-panel="registration">
+                      <p class="audience-dashboard__panel-title">Trạng thái đề tài</p>
+                      <div class="audience-dashboard__registration">
+                        <svg class="audience-dashboard__chart" viewBox="0 0 240 240" width="240" height="240" focusable="false">
+                          <g fill="none" stroke-width="44" transform="rotate(-90 120 120)">
+                            <circle class="chart-active" cx="120" cy="120" r="76" pathLength="12" stroke-dasharray="6 6" />
+                            <circle class="chart-open" cx="120" cy="120" r="76" pathLength="12" stroke-dasharray="4 8" stroke-dashoffset="-6" />
+                            <circle class="chart-completed" cx="120" cy="120" r="76" pathLength="12" stroke-dasharray="2 10" stroke-dashoffset="-10" />
+                          </g>
+                          <g text-anchor="middle" fill="currentColor" font-weight="600">
+                            <text x="120" y="111" font-size="14">Tổng đề tài</text>
+                            <text class="audience-dashboard__chart-total" x="120" y="146" font-size="32">12</text>
+                          </g>
+                          <g class="audience-dashboard__chart-labels" text-anchor="middle" font-size="13" font-weight="600"><text x="196" y="125">50%</text><text x="53" y="164">33,3%</text><text x="82" y="57">16,7%</text></g>
+                        </svg>
+                        <div class="audience-dashboard__legend"><span class="is-active">Đang thực hiện: 6</span><span class="is-open">Đang mở đăng ký: 4</span><span class="is-completed">Hoàn thành: 2</span></div>
+                      </div>
                     </div>
-                    <div class="dashboard-preview__block">
-                      <p class="dashboard-preview__title">Yêu cầu chờ duyệt</p>
-                      <div class="dashboard-preview__task"><img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
-                      <div class="dashboard-preview__task"><img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
-                      <div class="dashboard-preview__task"><img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
+                    <div class="audience-dashboard__panel" data-spotlight-panel="progress">
+                      <p class="audience-dashboard__panel-title">Tiến độ đề tài đang hướng dẫn</p>
+                      <div class="audience-dashboard__progress-row"><span>Website quản lý thư viện</span><span class="audience-dashboard__progress"><i class="progress-library"></i></span><span class="audience-dashboard__percent">60%</span></div>
+                      <div class="audience-dashboard__progress-row"><span>Ứng dụng quản lý chi tiêu</span><span class="audience-dashboard__progress"><i class="progress-expenses"></i></span><span class="audience-dashboard__percent">25%</span></div>
                     </div>
                   </div>
                 </div>
               </figure>
-              <ul class="about-audience__benefits">
-                <li><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" />Tạo và quản lý đề tài</li>
-                <li><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" />Xét duyệt đăng ký và đề xuất</li>
-                <li><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" />Theo dõi tiến độ, tạo yêu cầu nộp</li>
-                <li><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" />Nhận xét bài nộp và đánh giá kết quả</li>
+              <ul class="about-audience__benefits about-audience__benefits--lecturer">
+                <li data-spotlight="stats">
+                  <span class="audience-benefit-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v3M3 7v12a2 2 0 0 0 2 2h7M18 15v6m-3-3h6"/></svg></span>
+                  <div><strong>Tạo và quản lý đề tài</strong><p>Khởi tạo đề tài mới và cập nhật thông tin hướng dẫn.</p></div>
+                </li>
+                <li data-spotlight="registration">
+                  <span class="audience-benefit-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="4"/><path d="M2 21v-2a7 7 0 0 1 11-5"/><circle cx="18" cy="17" r="5"/><path d="m15.5 17 1.5 1.5 3-3"/></svg></span>
+                  <div><strong>Xét duyệt đăng ký và đề xuất</strong><p>Xem hồ sơ sinh viên và phê duyệt yêu cầu nhanh chóng.</p></div>
+                </li>
+                <li data-spotlight="progress">
+                  <span class="audience-benefit-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 11h18"/></svg></span>
+                  <div><strong>Theo dõi tiến độ, tạo yêu cầu nộp</strong><p>Quản lý các mốc thực hiện và đợt nộp báo cáo.</p></div>
+                </li>
+                <li data-spotlight="progress">
+                  <span class="audience-benefit-icon" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3H5a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h6M14 3v6h6M14 3l6 6M8 13h5M8 17h3m3 3 6-6a1.5 1.5 0 0 1 2 2l-6 6-3 1 1-3Z"/></svg></span>
+                  <div><strong>Nhận xét bài nộp và đánh giá kết quả</strong><p>Phản hồi trực tiếp trên bài nộp và chấm điểm tổng kết.</p></div>
+                </li>
               </ul>
             </div>
           </section>
@@ -973,40 +1036,91 @@
         <section id="chuc-nang" class="about-features" aria-labelledby="features-title">
           <header class="section-header">
             <h2 id="features-title">Các chức năng chính</h2>
-            <p>Tập trung công việc trong một hệ thống</p>
+            <p>Sáu nhóm công cụ cốt lõi đồng hành cùng sinh viên và giảng viên trong suốt học kỳ</p>
           </header>
           <div class="about-features__list">
-            <article class="feature-card feature-card--progress">
-              <h3><img src="../../assets/images/icons/about-chart.svg" alt="" width="24" height="24" /><span>Quản lý tiến độ</span></h3>
-              <p>Theo dõi công việc và các mốc thực hiện.</p>
-              <figure class="feature-card__illustration">
-                <figcaption class="visually-hidden">Minh họa danh sách công việc và tiến độ thực hiện</figcaption>
-              <div class="feature-progress" aria-hidden="true">
-                <div class="feature-progress__row"><span class="feature-progress__bar"></span><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
-                <div class="feature-progress__row"><span class="feature-progress__bar"></span><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
-                <div class="feature-progress__row"><span class="feature-progress__bar"></span><img src="../../assets/images/icons/role-check.svg" alt="" width="24" height="24" /><span class="preview-line"></span></div>
-              </div>
-              </figure>
-            </article>
-            <article class="feature-card feature-card--submission">
-              <h3><img src="../../assets/images/icons/about-upload.svg" alt="" width="24" height="24" /><span>Nộp bài và phản hồi</span></h3>
-              <p>Gửi báo cáo và nhận góp ý từ giảng viên.</p>
-            </article>
-            <article class="feature-card feature-card--calendar">
-              <h3><img src="../../assets/images/icons/about-calendar.svg" alt="" width="24" height="24" /><span>Lịch và hạn nộp</span></h3>
-              <p>Theo dõi các mốc cần hoàn thành.</p>
-            </article>
-            <article class="feature-card feature-card--notice">
-              <h3><img src="../../assets/images/icons/about-bell.svg" alt="" width="24" height="24" /><span>Thông báo</span></h3>
-              <p>Cập nhật thông tin liên quan.</p>
-            </article>
             <article class="feature-card feature-card--registration">
-              <h3><img src="../../assets/images/icons/about-file-text.svg" alt="" width="24" height="24" /><span>Đăng ký đề tài</span></h3>
-              <p>Lựa chọn đề tài hoặc gửi đề xuất.</p>
+              <span class="feature-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <path d="M14 2v6h6" />
+                  <path class="feature-icon__line feature-icon__line--1" pathLength="1" d="M8 13h8" />
+                  <path class="feature-icon__line feature-icon__line--2" pathLength="1" d="M8 17h5" />
+                </svg>
+              </span>
+              <h3>Đăng ký đề tài</h3>
+              <p>Tra cứu danh sách đề tài mở theo môn học hoặc chủ động gửi đề xuất mới đến giảng viên.</p>
+              <span class="feature-card__accent" aria-hidden="true"></span>
             </article>
+
+            <article class="feature-card feature-card--progress">
+              <span class="feature-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <path class="feature-icon__bar feature-icon__bar--1" d="M5 19V6" />
+                  <path class="feature-icon__bar feature-icon__bar--2" d="M11 19v-9" />
+                  <path class="feature-icon__bar feature-icon__bar--3" d="M17 19v-5" />
+                  <path d="M21 19H3" />
+                </svg>
+              </span>
+              <h3>Quản lý tiến độ</h3>
+              <p>Theo dõi công việc trực quan theo từng giai đoạn, phân công thành viên và kiểm soát hạn mục tiêu.</p>
+              <span class="feature-card__accent" aria-hidden="true"></span>
+            </article>
+
+            <article class="feature-card feature-card--submission">
+              <span class="feature-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <g class="feature-icon__arrow">
+                    <path d="M12 16V4" />
+                    <path d="m7 9 5-5 5 5" />
+                  </g>
+                  <path d="M20 16v2a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2" />
+                </svg>
+              </span>
+              <h3>Nộp bài và phản hồi</h3>
+              <p>Quản lý tập trung các đợt nộp báo cáo và lưu trữ nhận xét trực tiếp từ giảng viên hướng dẫn.</p>
+              <span class="feature-card__accent" aria-hidden="true"></span>
+            </article>
+
+            <article class="feature-card feature-card--calendar">
+              <span class="feature-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <rect x="3" y="5" width="18" height="16" rx="2" />
+                  <g class="feature-icon__pins">
+                    <path d="M16 3v4" />
+                    <path d="M8 3v4" />
+                  </g>
+                  <path d="M3 10h18" />
+                </svg>
+              </span>
+              <h3>Lịch và hạn nộp</h3>
+              <p>Quan sát lịch tháng rõ ràng giữa hạn bài nộp và hạn đề tài để chủ động sắp xếp thời gian.</p>
+              <span class="feature-card__accent" aria-hidden="true"></span>
+            </article>
+
+            <article class="feature-card feature-card--notice">
+              <span class="feature-card__icon" aria-hidden="true">
+                <svg class="feature-icon__bell" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+                  <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+                </svg>
+              </span>
+              <h3>Thông báo</h3>
+              <p>Cập nhật kịp thời kế hoạch học vụ, đợt báo cáo định kỳ và lịch bảo vệ từ Khoa.</p>
+              <span class="feature-card__accent" aria-hidden="true"></span>
+            </article>
+
             <article class="feature-card feature-card--evaluation">
-              <h3><img src="../../assets/images/icons/about-file-check.svg" alt="" width="24" height="24" /><span>Kết quả đánh giá</span></h3>
-              <p>Tra cứu nhận xét và kết quả.</p>
+              <span class="feature-card__icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <path d="M14 2v6h6" />
+                  <path class="feature-icon__check" pathLength="1" d="m9 15 2 2 4-4" />
+                </svg>
+              </span>
+              <h3>Kết quả đánh giá</h3>
+              <p>Tra cứu điểm thành phần theo trọng số tiêu chí cùng nhận xét tổng kết cuối kỳ.</p>
+              <span class="feature-card__accent" aria-hidden="true"></span>
             </article>
           </div>
         </section>
@@ -1017,23 +1131,262 @@
             <p>Đồng hành từ lựa chọn đề tài đến hoàn thành đồ án</p>
           </header>
           <ol class="about-workflow__steps">
-            <li class="workflow-step">
-              <h3>Chọn đề tài</h3>
-              <p>Tìm hiểu danh sách đề tài và lựa chọn hướng nghiên cứu phù hợp.</p>
+            <li class="workflow-step workflow-step--search">
+              <span class="workflow-step__connector" aria-hidden="true"></span>
+              <span class="workflow-step__node" aria-hidden="true">01</span>
+              <div class="workflow-step__card">
+                <span class="workflow-step__icon" aria-hidden="true">
+                  <svg class="workflow-icon__search" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                    <circle cx="10.5" cy="10.5" r="6.5" />
+                    <path d="m15.5 15.5 4.5 4.5" />
+                  </svg>
+                </span>
+                <div class="workflow-step__body">
+                  <h3>Chọn đề tài</h3>
+                  <p>Tìm đề tài và chọn hướng nghiên cứu phù hợp.</p>
+                </div>
+              </div>
             </li>
-            <li class="workflow-step">
-              <h3>Đăng ký / Đề xuất</h3>
-              <p>Đăng ký đề tài có sẵn hoặc gửi đề xuất để giảng viên xét duyệt.</p>
+            <li class="workflow-step workflow-step--proposal">
+              <span class="workflow-step__connector" aria-hidden="true"></span>
+              <span class="workflow-step__node" aria-hidden="true">02</span>
+              <div class="workflow-step__card">
+                <span class="workflow-step__icon" aria-hidden="true">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <path d="M14 2v6h6" />
+                    <g class="workflow-icon__plus">
+                      <path d="M12 11v6" />
+                      <path d="M9 14h6" />
+                    </g>
+                  </svg>
+                </span>
+                <div class="workflow-step__body">
+                  <h3>Đăng ký / Đề xuất</h3>
+                  <p>Đăng ký đề tài hoặc gửi đề xuất để giảng viên xét duyệt.</p>
+                </div>
+              </div>
             </li>
-            <li class="workflow-step">
-              <h3>Thực hiện và báo cáo</h3>
-              <p>Theo dõi tiến độ, nộp báo cáo và tiếp nhận phản hồi từ giảng viên.</p>
+            <li class="workflow-step workflow-step--progress">
+              <span class="workflow-step__connector" aria-hidden="true"></span>
+              <span class="workflow-step__node" aria-hidden="true">03</span>
+              <div class="workflow-step__card">
+                <span class="workflow-step__icon" aria-hidden="true">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                    <rect x="3" y="4" width="18" height="16" rx="2" />
+                    <path d="M9 4v16" />
+                    <path d="M15 4v16" />
+                    <path class="workflow-icon__col workflow-icon__col--1" d="M5.25 8.5h1.5M5.25 11.5h1.5" />
+                    <path class="workflow-icon__col workflow-icon__col--2" d="M11.25 8.5h1.5M11.25 11.5h1.5" />
+                    <path class="workflow-icon__col workflow-icon__col--3" d="M17.25 8.5h1.5M17.25 11.5h1.5" />
+                  </svg>
+                </span>
+                <div class="workflow-step__body">
+                  <h3>Thực hiện và báo cáo</h3>
+                  <p>Theo dõi tiến độ, nộp báo cáo và nhận phản hồi.</p>
+                </div>
+              </div>
             </li>
-            <li class="workflow-step">
-              <h3>Nộp và đánh giá</h3>
-              <p>Nộp sản phẩm cuối kỳ và xem kết quả đánh giá theo quy định.</p>
+            <li class="workflow-step workflow-step--evaluation">
+              <span class="workflow-step__connector" aria-hidden="true"></span>
+              <span class="workflow-step__node" aria-hidden="true">04</span>
+              <div class="workflow-step__card">
+                <span class="workflow-step__icon" aria-hidden="true">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <path d="M14 2v6h6" />
+                    <path class="workflow-icon__check" pathLength="1" d="m9 15 2 2 4-4" />
+                  </svg>
+                </span>
+                <div class="workflow-step__body">
+                  <h3>Nộp và đánh giá</h3>
+                  <p>Nộp sản phẩm cuối kỳ và xem kết quả đánh giá.</p>
+                </div>
+              </div>
             </li>
           </ol>
+        </section>
+
+        <!-- TRẢI NGHIỆM TỪ GÓC NHÌN SINH VIÊN (DỮ LIỆU MINH HỌA) -->
+        <section id="cam-nhan-sinh-vien" class="about-feedback" aria-labelledby="feedback-title">
+          <header class="section-header">
+            <h2 id="feedback-title">Trải nghiệm từ góc nhìn sinh viên</h2>
+            <p>Lướt ngang hoặc dùng nút điều hướng để xem chia sẻ minh họa theo từng loại đề tài</p>
+          </header>
+
+          <div class="about-feedback__viewport" data-feedback-viewport>
+            <ul
+              class="about-feedback__track"
+              aria-label="Danh sách chia sẻ minh họa của sinh viên"
+              tabindex="0"
+              data-feedback-track
+            >
+              <li class="feedback-card">
+                <div class="feedback-card__content">
+                  <div class="feedback-card__top">
+                    <span class="feedback-card__quote-icon" aria-hidden="true">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" focusable="false">
+                        <path d="M10.5 6.5C7.5 8.2 6 10.6 6 13.8c0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8L10.5 6.5zm8 0c-3 1.7-4.5 4.1-4.5 7.3 0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8l-2.4-1.3z" />
+                      </svg>
+                    </span>
+                    <span class="feedback-card__tag">Đồ án môn học</span>
+                  </div>
+                  <blockquote class="feedback-card__quote">
+                    “Nhờ lọc theo môn học và giảng viên, nhóm mình dễ so sánh các đề tài đang mở. Từ đó, cả nhóm chọn được đề tài vừa sức.”
+                  </blockquote>
+                </div>
+                <div class="feedback-card__author">
+                  <span class="feedback-card__avatar" aria-hidden="true">MA</span>
+                  <div class="feedback-card__meta">
+                    <h3>Nguyễn Minh Anh</h3>
+                    <p>Lớp CNTT2024.2</p>
+                  </div>
+                </div>
+                <span class="feedback-card__accent" aria-hidden="true"></span>
+              </li>
+
+              <li class="feedback-card">
+                <div class="feedback-card__content">
+                  <div class="feedback-card__top">
+                    <span class="feedback-card__quote-icon" aria-hidden="true">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" focusable="false">
+                        <path d="M10.5 6.5C7.5 8.2 6 10.6 6 13.8c0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8L10.5 6.5zm8 0c-3 1.7-4.5 4.1-4.5 7.3 0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8l-2.4-1.3z" />
+                      </svg>
+                    </span>
+                    <span class="feedback-card__tag">Đồ án tốt nghiệp</span>
+                  </div>
+                  <blockquote class="feedback-card__quote">
+                    “Theo dõi từng mốc trên bảng công việc giúp mình biết bản thử nghiệm còn phần nào cần hoàn thiện.”
+                  </blockquote>
+                </div>
+                <div class="feedback-card__author">
+                  <span class="feedback-card__avatar" aria-hidden="true">TN</span>
+                  <div class="feedback-card__meta">
+                    <h3>Trần Phú Nguyên</h3>
+                    <p>Lớp CNTT2023.1</p>
+                  </div>
+                </div>
+                <span class="feedback-card__accent" aria-hidden="true"></span>
+              </li>
+
+              <li class="feedback-card">
+                <div class="feedback-card__content">
+                  <div class="feedback-card__top">
+                    <span class="feedback-card__quote-icon" aria-hidden="true">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" focusable="false">
+                        <path d="M10.5 6.5C7.5 8.2 6 10.6 6 13.8c0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8L10.5 6.5zm8 0c-3 1.7-4.5 4.1-4.5 7.3 0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8l-2.4-1.3z" />
+                      </svg>
+                    </span>
+                    <span class="feedback-card__tag">Khóa luận tốt nghiệp</span>
+                  </div>
+                  <blockquote class="feedback-card__quote">
+                    “Khi sửa khóa luận, mình muốn xem góp ý của giảng viên cạnh từng bản thảo để dễ đối chiếu.”
+                  </blockquote>
+                </div>
+                <div class="feedback-card__author">
+                  <span class="feedback-card__avatar" aria-hidden="true">TV</span>
+                  <div class="feedback-card__meta">
+                    <h3>Lê Thảo Vy</h3>
+                    <p>Lớp CNVN2023.2</p>
+                  </div>
+                </div>
+                <span class="feedback-card__accent" aria-hidden="true"></span>
+              </li>
+
+              <li class="feedback-card">
+                <div class="feedback-card__content">
+                  <div class="feedback-card__top">
+                    <span class="feedback-card__quote-icon" aria-hidden="true">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" focusable="false">
+                        <path d="M10.5 6.5C7.5 8.2 6 10.6 6 13.8c0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8L10.5 6.5zm8 0c-3 1.7-4.5 4.1-4.5 7.3 0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8l-2.4-1.3z" />
+                      </svg>
+                    </span>
+                    <span class="feedback-card__tag">Đồ án môn học</span>
+                  </div>
+                  <blockquote class="feedback-card__quote">
+                    “Mẫu đề xuất giúp nhóm mình trình bày rõ ý tưởng và phạm vi đồ án trước khi gửi giảng viên.”
+                  </blockquote>
+                </div>
+                <div class="feedback-card__author">
+                  <span class="feedback-card__avatar" aria-hidden="true">QH</span>
+                  <div class="feedback-card__meta">
+                    <h3>Phạm Quốc Huy</h3>
+                    <p>Lớp CNTT2025.1</p>
+                  </div>
+                </div>
+                <span class="feedback-card__accent" aria-hidden="true"></span>
+              </li>
+
+              <li class="feedback-card">
+                <div class="feedback-card__content">
+                  <div class="feedback-card__top">
+                    <span class="feedback-card__quote-icon" aria-hidden="true">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" focusable="false">
+                        <path d="M10.5 6.5C7.5 8.2 6 10.6 6 13.8c0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8L10.5 6.5zm8 0c-3 1.7-4.5 4.1-4.5 7.3 0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8l-2.4-1.3z" />
+                      </svg>
+                    </span>
+                    <span class="feedback-card__tag">Đồ án tốt nghiệp</span>
+                  </div>
+                  <blockquote class="feedback-card__quote">
+                    “Trước buổi bảo vệ, mình muốn xem lại các yêu cầu để kiểm tra sản phẩm và báo cáo đã đủ chưa.”
+                  </blockquote>
+                </div>
+                <div class="feedback-card__author">
+                  <span class="feedback-card__avatar" aria-hidden="true">KN</span>
+                  <div class="feedback-card__meta">
+                    <h3>Hoàng Khánh Ngân</h3>
+                    <p>Lớp CNVN2023.1</p>
+                  </div>
+                </div>
+                <span class="feedback-card__accent" aria-hidden="true"></span>
+              </li>
+
+              <li class="feedback-card">
+                <div class="feedback-card__content">
+                  <div class="feedback-card__top">
+                    <span class="feedback-card__quote-icon" aria-hidden="true">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" focusable="false">
+                        <path d="M10.5 6.5C7.5 8.2 6 10.6 6 13.8c0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8L10.5 6.5zm8 0c-3 1.7-4.5 4.1-4.5 7.3 0 2.2 1.5 3.7 3.4 3.7 1.8 0 3.1-1.3 3.1-3 0-1.6-1.1-2.8-2.6-2.9.3-1.6 1.3-2.9 3-3.8l-2.4-1.3z" />
+                      </svg>
+                    </span>
+                    <span class="feedback-card__tag">Khóa luận tốt nghiệp</span>
+                  </div>
+                  <blockquote class="feedback-card__quote">
+                    “Mình xem lịch hạn nộp để chia thời gian cho khảo sát, phân tích và hoàn thiện bản thảo.”
+                  </blockquote>
+                </div>
+                <div class="feedback-card__author">
+                  <span class="feedback-card__avatar" aria-hidden="true">ĐK</span>
+                  <div class="feedback-card__meta">
+                    <h3>Đỗ Đăng Khoa</h3>
+                    <p>Lớp CNTT2023.2</p>
+                  </div>
+                </div>
+                <span class="feedback-card__accent" aria-hidden="true"></span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="about-feedback__controls">
+            <div class="about-feedback__dots" role="group" aria-label="Chọn vị trí chia sẻ" data-feedback-dots>
+              <button type="button" class="about-feedback__dot is-active" data-feedback-dot="0" aria-label="Xem chia sẻ 1" aria-current="true"></button>
+              <button type="button" class="about-feedback__dot" data-feedback-dot="1" aria-label="Xem chia sẻ 2"></button>
+              <button type="button" class="about-feedback__dot" data-feedback-dot="2" aria-label="Xem chia sẻ 3"></button>
+              <button type="button" class="about-feedback__dot" data-feedback-dot="3" aria-label="Xem chia sẻ 4"></button>
+            </div>
+            <div class="about-feedback__nav">
+              <button type="button" class="about-feedback__btn" data-feedback-prev aria-label="Xem chia sẻ trước" disabled>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <path d="m15 18-6-6 6-6" />
+                </svg>
+              </button>
+              <button type="button" class="about-feedback__btn" data-feedback-next aria-label="Xem chia sẻ tiếp theo">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <path d="m9 18 6-6-6-6" />
+                </svg>
+              </button>
+            </div>
+          </div>
         </section>
 
         <!-- NHÓM THỰC HIỆN: thay thông tin mẫu bằng thông tin thành viên chính thức. -->
@@ -1044,24 +1397,40 @@
           </header>
           <ul class="about-team__list">
             <li class="member-card">
-              <img class="member-card__avatar" src="../../assets/images/icons/about-member.svg" alt="Ảnh đại diện thành viên 01 — khung giữ chỗ" width="64" height="64" />
+              <div class="member-card__avatar-wrap">
+                <img class="member-card__avatar" src="../../assets/images/icons/about-member.svg" alt="Ảnh đại diện thành viên 01 — khung giữ chỗ" width="76" height="76" />
+              </div>
               <h3>Thành viên 01</h3>
-              <p>Vai trò / công việc</p>
+              <p class="member-card__role">Trưởng nhóm</p>
+              <p class="member-card__quote">“Xây dựng bố cục rõ ràng và điều hướng thống nhất cho toàn hệ thống.”</p>
+              <span class="member-card__accent" aria-hidden="true"></span>
             </li>
             <li class="member-card">
-              <img class="member-card__avatar" src="../../assets/images/icons/about-member.svg" alt="Ảnh đại diện thành viên 02 — khung giữ chỗ" width="64" height="64" />
+              <div class="member-card__avatar-wrap">
+                <img class="member-card__avatar" src="../../assets/images/icons/about-member.svg" alt="Ảnh đại diện thành viên 02 — khung giữ chỗ" width="76" height="76" />
+              </div>
               <h3>Thành viên 02</h3>
-              <p>Vai trò / công việc</p>
+              <p class="member-card__role">Frontend</p>
+              <p class="member-card__quote">“Tối ưu luồng đăng ký đề tài và theo dõi tiến độ trực quan cho sinh viên.”</p>
+              <span class="member-card__accent" aria-hidden="true"></span>
             </li>
             <li class="member-card">
-              <img class="member-card__avatar" src="../../assets/images/icons/about-member.svg" alt="Ảnh đại diện thành viên 03 — khung giữ chỗ" width="64" height="64" />
+              <div class="member-card__avatar-wrap">
+                <img class="member-card__avatar" src="../../assets/images/icons/about-member.svg" alt="Ảnh đại diện thành viên 03 — khung giữ chỗ" width="76" height="76" />
+              </div>
               <h3>Thành viên 03</h3>
-              <p>Vai trò / công việc</p>
+              <p class="member-card__role">Thiết kế UI/UX</p>
+              <p class="member-card__quote">“Giữ sự nhất quán trong giao diện quản lý đề tài và xét duyệt của giảng viên.”</p>
+              <span class="member-card__accent" aria-hidden="true"></span>
             </li>
             <li class="member-card">
-              <img class="member-card__avatar" src="../../assets/images/icons/about-member.svg" alt="Ảnh đại diện thành viên 04 — khung giữ chỗ" width="64" height="64" />
+              <div class="member-card__avatar-wrap">
+                <img class="member-card__avatar" src="../../assets/images/icons/about-member.svg" alt="Ảnh đại diện thành viên 04 — khung giữ chỗ" width="76" height="76" />
+              </div>
               <h3>Thành viên 04</h3>
-              <p>Vai trò / công việc</p>
+              <p class="member-card__role">Tương tác và kiểm thử</p>
+              <p class="member-card__quote">“Hoàn thiện chuyển động tinh tế và đảm bảo trải nghiệm mượt trên mọi thiết bị.”</p>
+              <span class="member-card__accent" aria-hidden="true"></span>
             </li>
           </ul>
         </section>

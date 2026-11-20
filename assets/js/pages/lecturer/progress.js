@@ -29,7 +29,7 @@
     Object.entries(labels).forEach(([status, label]) => {
       const tasks = state.progress.tasks.filter(task => task.status === status);
       const column = el('section', '', 'teaching-column');
-      column.append(el('h3', `${label} (${tasks.length})`));
+      const heading = el('h3', `${label} (${tasks.length})`); heading.prepend(app.ui.workflowIcon(status === 'da-hoan-thanh' ? 'done' : status === 'dang-thuc-hien' ? 'progress' : 'pending')); column.append(heading);
       const list = el('div', '', 'teaching-column-list');
       list.tabIndex = 0;
       list.setAttribute('role', 'region');
@@ -37,14 +37,19 @@
       tasks.forEach(task => {
         const names = task.assignees?.map(person => `${person.name} - ${person.code}`) || [state.team.members.find(member => member.code === task.assigneeCode)].filter(Boolean).map(person => `${person.name} - ${person.code}`);
         const article = el('article', '', 'teaching-board-card');
-        article.append(el('h4', task.title), el('p', `Phụ trách: ${names.join('; ') || task.assigneeCode}`), el('p', `Hạn hoàn thành: ${task.deadline.split('-').reverse().join('/')}`), el('p', Number.isFinite(task.percent) ? `${task.percent}%` : 'Chưa có phần trăm cụ thể'));
+        const open = el('button', '', 'workflow-task-open'); open.type = 'button'; open.setAttribute('aria-haspopup', 'dialog');
+        open.append(el('h4', task.title));
+        for (const [label,value] of [['Người phụ trách',names.join('\n') || task.assigneeCode],['Hạn hoàn thành dự kiến',task.deadline.split('-').reverse().join('/')]]) { const row=el('p'); row.append(el('span',label,'workflow-field-label'),el('span',value,'workflow-field-value')); open.append(row); }
+        open.append(el('p', Number.isFinite(task.percent) ? `${task.percent}%` : 'Chưa có phần trăm cụ thể'));
+        open.addEventListener('click', () => app.ui.workflowDetails({ title: 'Chi tiết công việc', fields: [['Tên công việc', task.title], ['Người phụ trách', names.join('; ') || task.assigneeCode], ['Hạn hoàn thành', task.deadline.split('-').reverse().join('/')], ['Trạng thái', labels[task.status]], ['Mức hoàn thành', Number.isFinite(task.percent) ? `${task.percent}%` : 'Chưa có phần trăm cụ thể']], progressHistory: { entries: state.progress.history, taskId: task.id }, returnTo: () => open }));
+        article.append(open);
         list.append(article);
       });
       if (!tasks.length) list.append(el('p', 'Chưa có công việc.'));
       column.append(list);
       board.append(column);
     });
-    panel.append(board);
+    const work = el('section', '', 'teaching-card'); work.append(el('h3','Danh sách công việc'),board); panel.append(work);
     const history = el('section', '', 'teaching-card');
     history.append(el('h3', 'Nhận xét của giảng viên'));
     if (!state.progressReviews.length) history.append(el('p', 'Chưa có nhận xét.'));

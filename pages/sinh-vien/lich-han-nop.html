@@ -12,18 +12,21 @@
     <link rel="stylesheet" href="../../assets/css/tokens.css" />
     <link rel="stylesheet" href="../../assets/css/base.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
-    <link rel="stylesheet" href="../../assets/css/deadline-calendar.css" />
+    <link rel="stylesheet" href="../../assets/css/deadline-calendar.css?v=20261120-google-export" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     
     <script src="../../assets/js/data/mock-data.js" defer></script>
     <script src="../../assets/js/data/student-projects.js" defer></script>
     <script src="../../assets/js/data/student-progress.js" defer></script>
-    <script src="../../assets/js/services/storage.js" defer></script>
+    <script src="../../assets/js/data/proposal-actors.js" defer></script>
+<script src="../../assets/js/services/storage.js" defer></script>
+<script src="../../assets/js/services/approved-project-service.js" defer></script>
     <script src="../../assets/js/services/project-team-service.js" defer></script>
     <script src="../../assets/js/services/project-progress-service.js" defer></script>
     <script src="../../assets/js/data/student-deadlines.js" defer></script>
     <script src="../../assets/js/services/deadline-service.js" defer></script>
     <script src="../../assets/js/pages/student/deadline-calendar.js" defer></script>
+    <script type="module" src="../../assets/js/pages/student/google-calendar-export.js"></script>
     <link rel="stylesheet" href="../../assets/css/student-deadlines-data.css">
   
 <script src="../../assets/js/dialog-commands.js" defer></script>
@@ -76,6 +79,11 @@
                   <li class="main-nav__subitem">
                     <a class="main-nav__link" href="../chung/gioi-thieu.html"
                       >Giới thiệu</a
+                    >
+                  </li>
+                  <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/huong-nghien-cuu.html"
+                      >Hướng nghiên cứu</a
                     >
                   </li>
                   <li class="main-nav__subitem">
@@ -208,6 +216,30 @@
               <button class="deadline-calendar__today" type="button" disabled>
                 Hôm nay
               </button>
+              <button
+                class="deadline-calendar__google"
+                type="button"
+                aria-haspopup="dialog"
+                aria-controls="calendar-export"
+                disabled
+              >
+                <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false">
+                  <symbol id="google-calendar-icon" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M3 2h17v5H2V3a1 1 0 0 1 1-1Z" />
+                    <path fill="#1967D2" d="M2 7h5v13H2z" />
+                    <path fill="#34A853" d="M7 17h10v5H7z" />
+                    <path fill="#188038" d="M2 20v1a1 1 0 0 0 1 1h4v-5H2z" />
+                    <path fill="#FBBC04" d="M17 7h5v10h-5z" />
+                    <path fill="#EA4335" d="M17 17h5l-5 5z" />
+                    <path fill="#1967D2" d="M20 2h1a1 1 0 0 1 1 1v4h-5V2z" />
+                    <path fill="#FFF" d="M7 7h10v10H7z" />
+                    <path d="M8.7 10h2.5l-1.3 1.8c2.1 0 1.8 2.8.2 2.8H8.8m4.2-3.6 1.5-1v4.6"
+                      fill="none" stroke="#1967D2" stroke-linecap="round" stroke-linejoin="round" />
+                  </symbol>
+                  <use href="#google-calendar-icon" />
+                </svg>
+                Thêm vào Google Calendar
+              </button>
             </div>
             <div
               class="calendar-scroll"
@@ -238,6 +270,64 @@
               Hạn công việc: ngày dự kiến hoàn thành công việc - Mốc đề tài: hạn báo cáo theo kế hoạch.
             </p>
           </section>
+          <dialog class="calendar-export" id="calendar-export" aria-labelledby="calendar-export-title" aria-describedby="calendar-export-help">
+            <div class="calendar-export__body">
+              <header class="calendar-export__header">
+                <h2 id="calendar-export-title">
+                  <svg viewBox="0 0 24 24" width="36" height="36" aria-hidden="true" focusable="false">
+                    <use href="#google-calendar-icon" />
+                  </svg>
+                  Thêm vào Google Calendar
+                </h2>
+                <button class="calendar-export__close" type="button" data-calendar-export-close aria-label="Đóng hộp thoại thêm lịch">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                    <path d="m6 6 12 12M18 6 6 18" />
+                  </svg>
+                </button>
+              </header>
+              <p class="calendar-export__month"></p>
+              <p id="calendar-export-help">Chọn các mốc trong tháng từ những đề tài có quyền đồng bộ.</p>
+              <button class="calendar-export__login" type="button" hidden>Đăng nhập bằng Google UIT</button>
+
+              <div class="calendar-export__search">
+                <label class="visually-hidden" for="calendar-export-search">Tìm theo tên mốc hoặc đề tài</label>
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                  <circle cx="10.5" cy="10.5" r="6.5" />
+                  <path d="m16 16 4 4" stroke-linecap="round" />
+                </svg>
+                <input type="search" id="calendar-export-search" placeholder="Tìm theo tên mốc hoặc đề tài…" />
+              </div>
+
+              <div class="calendar-export__results">
+                <label class="calendar-export__select-all">
+                  <input type="checkbox" id="calendar-export-select-all" disabled aria-controls="calendar-export-events" />
+                  Chọn tất cả kết quả
+                </label>
+                <ul class="calendar-export__events" id="calendar-export-events" aria-label="Các mốc phù hợp" hidden></ul>
+                <p class="calendar-export__empty" hidden></p>
+              </div>
+              <p class="calendar-export__feedback" role="status"></p>
+            </div>
+            <footer class="calendar-export__footer">
+              <p class="calendar-export__count" role="status">Đã chọn 0 mốc</p>
+              <div class="calendar-export__actions">
+                <button type="button" data-calendar-export-close>Hủy</button>
+                <button class="calendar-export__add" type="button" disabled>Thêm lịch</button>
+              </div>
+            </footer>
+            <template id="calendar-export-row">
+              <li class="calendar-export__row">
+                <label>
+                  <input type="checkbox" />
+                  <span class="calendar-export__event">
+                    <strong></strong>
+                    <time></time>
+                  </span>
+                  <span class="calendar-export__kind"></span>
+                </label>
+              </li>
+            </template>
+          </dialog>
         </div>
       </div>
     </main>

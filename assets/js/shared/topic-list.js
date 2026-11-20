@@ -98,6 +98,7 @@
         : 'Không có đề tài phù hợp.';
       if (result.warning) summary.textContent += ` ${result.warning}`;
       renderPagination(result);
+      document.dispatchEvent(new Event('ie104:student-topics-rendered'));
       if (options.focusPagination) pager.querySelector('[aria-current="page"]')?.focus({ preventScroll: true });
     }
 
@@ -123,7 +124,8 @@
       render({ focusPagination: true });
     });
     window.addEventListener('pageshow', applyFilters);
-    window.addEventListener('storage', event => { if ([globalThis.IE104?.storage?.registrationKey, globalThis.IE104?.storage?.proposalKey, globalThis.IE104?.storage?.requestKey, config.storageKey, null].includes(event.key) || event.key?.startsWith('ie104.proposal-decision.v1.')) applyFilters(); });
+    window.addEventListener('storage', event => { if ([globalThis.IE104?.storage?.registrationKey, globalThis.IE104?.storage?.proposalKey, globalThis.IE104?.storage?.requestKey, config.storageKey, globalThis.IE104?.services?.lecturerTopicRepository?.key, null].includes(event.key) || event.key?.startsWith('ie104.proposal-decision.v1.')) applyFilters(); });
+    window.addEventListener('ie104:published-topics-updated', applyFilters);
     form.dataset.topicsInitialized = 'true';
     applyFilters();
   }

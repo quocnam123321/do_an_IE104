@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Gửi lời mời hướng dẫn đề tài đến giảng viên trong bản demo IE104." />
+    <title>Liên hệ xin hướng dẫn | Quản lý đồ án</title>
+    <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261111-heading-sync-1" />
+    <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
+    <link rel="stylesheet" href="../../assets/css/components.css" />
+    <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css?v=20261111-heading-sync-1" />
+    <script src="../../assets/js/nav-indicator.js" defer></script>
+    <link rel="stylesheet" href="../../assets/css/supervision-invitations.css" />
+    <script src="../../assets/js/supervision-entry.js" defer></script>
+    <script src="../../assets/js/supervision-store.js" defer></script>
+    <script src="../../assets/js/supervision-attachment-ui.js" defer></script>
+    <script src="../../assets/js/supervision-compose.js" defer></script>
+  </head>
+  <body class="registration-page">
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+    <header class="site-header">
+      <div class="site-header__inner">
+        <a class="site-brand" href="tong-quan-sinh-vien.html">
+          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
+          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
+        </a>
+        <details class="site-navigation" open>
+          <summary class="site-navigation__toggle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>Menu</summary>
+        <nav class="main-nav" aria-label="Điều hướng sinh viên" data-nav-indicator>
+          <ul class="main-nav__list">
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="tong-quan-sinh-vien.html"><span class="main-nav__text">Tổng quan</span></a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="dang-ky-de-tai.html"><span class="main-nav__text">Đăng ký đề tài</span></a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="de-tai-cua-toi-sinh-vien.html" aria-current="location"><span class="main-nav__text">Đề tài của tôi</span></a>
+            </li>
+            <li class="main-nav__item">
+              <a class="main-nav__link" href="lich-han-nop.html"><span class="main-nav__text">Lịch hạn nộp</span></a>
+            </li>
+            <li class="main-nav__item">
+              <details class="main-nav__disclosure">
+                <summary class="main-nav__label" id="common-navigation-label"><span class="main-nav__text">Chung</span></summary>
+                <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+          <span class="main-nav__indicator" aria-hidden="true"></span>
+        </nav>
+        </details>
+        <!-- Menu tài khoản dùng hành vi đóng/mở tự nhiên của HTML. -->
+        <div class="account-menu">
+          <details class="account-menu__disclosure">
+            <summary class="account-menu__toggle" aria-label="Mở menu tài khoản sinh viên">
+              <span class="account-menu__avatar" aria-hidden="true">SV</span>
+              <span class="account-menu__label">Tài khoản sinh viên</span>
+            </summary>
+            <ul id="account-dropdown" class="account-menu__list">
+              <li>
+                <a class="account-menu__profile" href="ho-so-ca-nhan.html">Hồ sơ cá nhân</a>
+              </li>
+              <li>
+                <button
+                  class="account-menu__logout"
+                  type="button"
+                  aria-describedby="logout-notice"
+                  disabled
+                >
+                  Đăng xuất
+                </button>
+              </li>
+            </ul>
+            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
+          </details>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="main-content" tabindex="-1">
+      <div class="page-container">
+        <nav class="breadcrumb" aria-label="Đường dẫn">
+          <ol class="breadcrumb__list">
+            <li class="breadcrumb__item"><a href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a></li>
+            <li class="breadcrumb__item"><span aria-current="page">Lời mời hướng dẫn</span></li>
+          </ol>
+        </nav>
+        <header class="page-header">
+          <h1 id="invitation-title" class="page-header__title">Liên hệ xin hướng dẫn</h1>
+        </header>
+        <nav class="supervision supervision__actions supervision__compose-links" aria-label="Điều hướng lời mời">
+          <a class="supervision__button" id="invitation-back" href="../chung/huong-nghien-cuu.html">Quay lại danh sách giảng viên</a>
+          <a href="de-tai-cua-toi-sinh-vien.html#loi-moi-huong-dan">Xem lời mời đã gửi</a>
+        </nav>
+
+        <section class="supervision supervision__compose" aria-labelledby="invitation-title">
+          <div class="supervision__panel">
+            <p id="invitation-load" role="status" hidden>Đang tải thông tin giảng viên…</p>
+            <p id="invitation-error" class="supervision__error" role="alert"></p>
+            <form id="invitation-form" class="supervision__form" aria-describedby="invitation-note" hidden novalidate>
+              <dl class="supervision__recipient">
+                <dt class="supervision__hint">Người nhận</dt>
+                <dd id="invitation-recipient"></dd>
+              </dl>
+              <p id="invitation-note" class="supervision__hint">Bản demo dùng tài khoản Nguyễn Minh Anh và lưu lời mời trong trình duyệt. Tiêu đề và lời nhắn đều bắt buộc.</p>
+              <div class="supervision__field">
+                <label class="supervision__label" for="invitation-subject">Tiêu đề</label>
+                <input class="supervision__control" id="invitation-subject" name="subject" type="text" maxlength="120" aria-describedby="invitation-subject-error" required />
+                <p class="supervision__error" id="invitation-subject-error" role="alert" hidden></p>
+              </div>
+              <div class="supervision__field">
+                <label class="supervision__label" for="invitation-message">Lời nhắn</label>
+                <textarea class="supervision__control" id="invitation-message" name="message" rows="5" maxlength="2000" aria-describedby="invitation-message-hint invitation-message-error" required></textarea>
+                <p id="invitation-message-hint" class="supervision__hint">Giới thiệu ngắn và trình bày ý tưởng hoặc hướng nghiên cứu bạn quan tâm.</p>
+                <p id="invitation-message-error" class="supervision__error" role="alert" hidden></p>
+              </div>
+              <div data-supervision-picker></div>
+              <div class="supervision__actions">
+                <button type="submit" id="invitation-send" class="supervision__button supervision__button--primary">Gửi lời mời</button>
+              </div>
+            </form>
+            <noscript><p>Cần bật JavaScript để gửi lời mời hướng dẫn.</p></noscript>
+          </div>
+        </section>
+      </div>
+    </main>
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <div class="site-footer__columns">
+          <div class="site-footer__brand">
+            <a href="../chung/gioi-thieu.html">
+              <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40" />
+            </a>
+            <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</p>
+            <dl class="site-footer__about">
+              <div>
+                <dt><a href="../chung/gioi-thieu.html">Thông tin trang web</a></dt>
+                <dd>Trường Đại học Công nghệ Thông tin</dd>
+              </div>
+              <div>
+                <dt><a href="../chung/gioi-thieu.html#team-title">Thông tin nhóm</a></dt>
+                <dd>Đồ án IE104 — Nhóm 7</dd>
+              </div>
+            </dl>
+          </div>
+          <section class="site-footer__information site-footer__terms" aria-labelledby="footer-terms-title">
+            <h2 id="footer-terms-title">Điều khoản sử dụng</h2>
+            <p>Đang cập nhật.</p>
+          </section>
+          <section class="site-footer__information site-footer__policies" aria-labelledby="footer-policies-title">
+            <h2 id="footer-policies-title">Quy chế, chính sách bảo mật</h2>
+            <p>Đang cập nhật.</p>
+          </section>
+        </div>
+        <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
+      </div>
+    </footer>
+  </body>
+</html>

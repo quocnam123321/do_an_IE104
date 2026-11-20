@@ -25,5 +25,6 @@
   app.data.projectTeams = [
     { projectId: 'DA001', maxMembers: 4, members, supervisorIds: ['GV001', 'GV002'], invitations: [{ id: 'INV-DA001-01', lecturerId: 'GV003', message: '', status: 'pending', createdAt: '2026-10-27T02:00:00.000Z' }] },
     { projectId: 'DA002', maxMembers: 4, members, supervisorIds: ['GV002', 'GV003'], invitations: [{ id: 'INV-DA002-01', lecturerId: 'GV004', message: '', status: 'pending', createdAt: '2026-10-27T02:00:00.000Z' }] },
+    { projectId: 'DA005', maxMembers: 4, members, supervisorIds: ['GV001'], invitations: [] },
   ];
 })();

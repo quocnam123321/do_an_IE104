@@ -1,16 +1,10 @@
 <!doctype html>
-<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Đề xuất đã lưu | Đề tài của tôi</title>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Chi tiết đề tài | Đề tài của tôi</title>
 <link rel="stylesheet" href="../../assets/css/tokens.css">
 <link rel="stylesheet" href="../../assets/css/base.css">
 <link rel="stylesheet" href="../../assets/css/components.css">
 <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css">
-<link rel="stylesheet" href="../../assets/css/topic-enrollment.css">
-<link rel="stylesheet" href="../../assets/css/student-topic-proposal.css">
 <script src="../../assets/js/nav-indicator.js" defer></script>
-<script src="../../assets/js/data/mock-data.js" defer></script>
-<script src="../../assets/js/services/storage.js" defer></script>
-<script src="../../assets/js/shared/validation.js" defer></script>
-<script src="../../assets/js/services/proposal-service.js" defer></script>
 <script src="../../assets/js/pages/student/proposal-receipt.js" defer></script>
 <script src="../../assets/js/dialog-commands.js" defer></script>
 </head><body class="registration-page">
@@ -79,17 +73,13 @@
         </div>
       </div>
     </header>
-<main id="main-content" class="main-content" tabindex="-1"><div class="page-container">
-<a class="page-back-link" href="de-tai-cua-toi-sinh-vien.html">← Quay lại Đề tài của tôi</a>
-<header class="page-header"><h1 class="page-header__title">Đề xuất đã lưu</h1><p class="page-header__description">Bản đề xuất thử trên trình duyệt này, chưa gửi đến giảng viên.</p></header>
-<div class="saved-proposal-actions" data-proposal-actions hidden>
-  <a data-edit-proposal>Chỉnh sửa đề xuất</a>
-  <button type="button" data-open-withdraw>Rút đề xuất</button>
-</div>
-<p data-proposal-result role="status" tabindex="-1" hidden></p>
-<section id="saved-proposal" class="panel" aria-live="polite"><h2>Thông tin đề xuất</h2><div data-receipt-content></div></section>
-<noscript><p>Bật JavaScript để xem đề xuất đã lưu trên trình duyệt.</p></noscript>
-</div></main><footer class="site-footer">
+<main id="main-content" class="main-content" tabindex="-1">
+      <div class="page-container">
+        <h1>Chi tiết đề tài</h1>
+        <p><a href="de-tai-cua-toi-sinh-vien.html">Quay lại Đề tài của tôi</a> để mở đề xuất.</p>
+      </div>
+    </main>
+    <footer class="site-footer">
       <div class="site-footer__inner">
         <div class="site-footer__brand">
           <p class="site-footer__name">
@@ -121,16 +111,7 @@
           © 2026 - Hệ thống quản lý đồ án / khóa luận
         </p>
       </div>
-    </footer><dialog id="withdraw-proposal-dialog" class="confirmation-dialog" aria-labelledby="withdraw-proposal-title">
-  <h2 id="withdraw-proposal-title">Rút đề xuất</h2>
-  <p>Bạn có chắc muốn rút đề xuất <strong data-withdraw-title></strong>?</p>
-  <p>Thao tác này chỉ đổi trạng thái bản lưu trên trình duyệt thành Đã rút. Thông tin đề xuất vẫn được giữ lại.</p>
-  <p data-withdraw-error class="proposal-field-error" role="alert" tabindex="-1" hidden></p>
-  <div class="proposal-review-actions">
-    <button type="button" command="close" commandfor="withdraw-proposal-dialog">Hủy</button>
-    <button type="button" data-confirm-withdraw>Xác nhận rút đề xuất</button>
-  </div>
-</dialog>
+    </footer>
 <dialog id="logout-dialog" class="confirmation-dialog" aria-labelledby="logout-title">
   <h2 id="logout-title">Xác nhận đăng xuất</h2>
   <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>

@@ -12,8 +12,13 @@
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <script src="../../assets/js/dialog-commands.js" defer></script>
-  </head>
-  <body>
+  <link rel="stylesheet" href="../../assets/css/ho-so-ca-nhan.css">
+<link rel="stylesheet" href="../../assets/css/lecturer-profile.css">
+<script src="../../assets/js/data/proposal-actors.js" defer></script>
+<script src="../../assets/js/services/lecturer-profile-service.js" defer></script>
+<script src="../../assets/js/pages/lecturer/profile.js" defer></script>
+</head>
+  <body class="lecturer-profile-page">
     <a class="skip-link" href="#main-content">
       Chuyển đến nội dung chính
     </a>
@@ -78,7 +83,7 @@
     </header>
     <!-- Giá trị hồ sơ là dữ liệu minh họa theo wireframe.
          command/commandfor dùng tính năng HTML có sẵn trên trình duyệt hỗ trợ.
-         Các thao tác lưu dữ liệu và hiện mật khẩu chưa kết nối nên để disabled. -->
+         Các thao tác hồ sơ lưu trong bản demo trên trình duyệt. -->
     <!-- NỘI DUNG RIÊNG CỦA TỪNG TRANG -->
     <main class="main-content" id="main-content" tabindex="-1">
       <div class="page-container">
@@ -102,9 +107,11 @@
           </h1>
         </header>
         <div class="page-content">
-          <div class="lecturer-profile">
+<p id="lecturer-profile-status" role="status" tabindex="-1"></p>
+<input id="lecturer-avatar-file" type="file" accept="image/png,image/jpeg" hidden>
+          <div class="lecturer-profile profile-layout">
             <!-- Vùng chờ ảnh; chỉ thêm thẻ img khi có nguồn ảnh hợp lệ. -->
-            <section aria-label="Ảnh đại diện giảng viên" class="lecturer-profile__avatar-panel">
+            <section aria-label="Ảnh đại diện giảng viên" class="lecturer-profile__avatar-panel profile-avatar-panel">
               <figure class="profile-avatar">
                 <div class="profile-avatar__placeholder">
                   <p>
@@ -115,78 +122,78 @@
                   Ảnh đại diện giảng viên
                 </figcaption>
               </figure>
-              <button title="Chức năng lưu ảnh chưa được kết nối" class="profile-avatar__change" disabled="" type="button">
+              <button title="Chọn ảnh PNG hoặc JPG tối đa 2 MB" class="profile-avatar__change" disabled="" type="button">
                 Thay đổi ảnh
               </button>
             </section>
-            <section aria-labelledby="personal-information-title" class="lecturer-profile__information">
+            <section aria-labelledby="personal-information-title" class="lecturer-profile__information profile-details profile-details--lecturer">
               <h2 id="personal-information-title">
                 Thông tin cá nhân
               </h2>
               <!-- Hồ sơ ở chế độ xem; nút Chỉnh sửa thông tin mở biểu mẫu bên dưới. -->
-              <dl class="profile-details">
-                <div class="profile-details__item">
+              <dl class="profile-fields">
+                <div class="profile-field">
                   <dt>
                     Họ và tên
                   </dt>
-                  <dd>
-                    Họ tên giảng viên
+                  <dd class="profile-value">
+                    Đang tải hồ sơ
                   </dd>
                 </div>
-                <div class="profile-details__item">
+                <div class="profile-field">
                   <dt>
                     Mã giảng viên
                   </dt>
-                  <dd>
+                  <dd class="profile-value">
                     Mã giảng viên
                   </dd>
                 </div>
-                <div class="profile-details__item">
+                <div class="profile-field">
                   <dt>
                     Email
                   </dt>
-                  <dd>
-                    Địa chỉ email
+                  <dd class="profile-value">
+                    Chưa có thông tin
                   </dd>
                 </div>
-                <div class="profile-details__item">
+                <div class="profile-field">
                   <dt>
                     Số điện thoại
                   </dt>
-                  <dd>
+                  <dd class="profile-value">
                     Số điện thoại
                   </dd>
                 </div>
-                <div class="profile-details__item">
+                <div class="profile-field">
                   <dt>
                     Khoa
                   </dt>
-                  <dd>
+                  <dd class="profile-value">
                     Tên khoa
                   </dd>
                 </div>
-                <div class="profile-details__item">
+                <div class="profile-field">
                   <dt>
                     Bộ môn
                   </dt>
-                  <dd>
+                  <dd class="profile-value">
                     Tên bộ môn
                   </dd>
                 </div>
-                <div class="profile-details__item">
+                <div class="profile-field">
                   <dt>
                     Học vị
                   </dt>
-                  <dd>
+                  <dd class="profile-value">
                     Học vị
                   </dd>
                 </div>
-                <div class="profile-details__item">
+                <div class="profile-field">
                   <dt>
                     Chuyên môn
                   </dt>
-                  <dd>
-                    Lĩnh vực chuyên môn
+                  <dd class="profile-value">
+                    Chưa có thông tin
                   </dd>
                 </div>
               </dl>
@@ -235,13 +242,14 @@
           <input id="profile-expertise" name="profile-expertise" type="text"/>
         </p>
         <p id="profile-edit-notice">
-          Khung chỉnh sửa minh họa, chưa lưu thông tin tài khoản.
+          Hồ sơ thử chỉ lưu trên trình duyệt này, chưa cập nhật tài khoản trên hệ thống.
         </p>
-        <button type="submit" value="cancel" formnovalidate>Hủy</button>
-        <button type="reset">Đặt lại</button>
-        <button disabled="" type="button">
-          Lưu thay đổi
-        </button>
+        <p id="lecturer-profile-error" role="alert" tabindex="-1" hidden></p>
+        <div class="profile-edit__actions">
+          <button type="button" command="close" commandfor="profile-edit-dialog">Hủy</button>
+          <button type="reset">Đặt lại</button>
+          <button data-profile-save disabled="" type="submit">Lưu thay đổi</button>
+        </div>
       </form>
     </dialog>
     <!-- HỘP THOẠI ĐỔI MẬT KHẨU -->

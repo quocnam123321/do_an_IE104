@@ -1,7 +1,8 @@
 (() => {
   const app = globalThis.IE104;
   const service = app?.services?.teaching;
-  if (!service) return;
+  const topics = app?.services?.lecturerTopics;
+  if (!service || (window.UITLecturerCatalog && !new URLSearchParams(location.search).has('project'))) return;
   const el = (tag, text, className) => {
     const node = document.createElement(tag);
     if (text !== undefined && text !== null) node.textContent = text;
@@ -15,7 +16,10 @@
     node.addEventListener('click', action);
     return node;
   };
-  const date = value => new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh' }).format(new Date(value));
+  const date = value => {
+    const parts = Object.fromEntries(new Intl.DateTimeFormat('vi-VN', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit', hourCycle:'h23', timeZone:'Asia/Ho_Chi_Minh' }).formatToParts(new Date(value)).map(part => [part.type,part.value]));
+    return `${parts.day}/${parts.month}/${parts.year} - ${parts.hour}:${parts.minute}`;
+  };
   const region = (sectionId, anchorId) => {
     const section = document.getElementById(sectionId);
     const node = el('div');
@@ -27,15 +31,8 @@
   notice.setAttribute('role', 'status');
   notice.tabIndex = -1;
   const header = document.querySelector('.page-header');
-  const label = el('label', 'Đề tài / Nhóm thực hiện', 'teaching-project-label');
-  const select = el('select');
-  select.id = 'teaching-project';
-  label.htmlFor = select.id;
-  const projects = service.listProjects();
-  projects.forEach(project => select.add(new Option(project.label, project.id)));
-  let projectId = new URLSearchParams(location.search).get('project') || 'GV-DT001-N01';
-  select.value = projectId;
-  header.append(label, select, notice);
+  const projectId = new URLSearchParams(location.search).get('project') || app.data.lecturerRealDefaultProjectId || 'GV-DT001-N01';
+  header.append(notice);
   const subscribers = [];
   let state = null;
   let saving = false;
@@ -44,17 +41,38 @@
   function overviewView(current) {
     if (current.projectId === 'GV-DT001-N01') {
       overview.replaceChildren(...[...overviewTemplate.childNodes].map(node => node.cloneNode(true)));
+      const title = overview.querySelector('.topic-summary h2');
+      if (title) title.textContent = current.project.title;
+      const badge = overview.querySelector('.topic-summary__status');
+      if (badge) {
+        const label = el('span', 'Trạng thái đề tài: ', 'visually-hidden');
+        badge.replaceChildren(label, document.createTextNode(current.project.statusLabel));
+        badge.dataset.status = current.project.status;
+      }
+      const fields = [current.project.topicId, current.project.typeLabel, current.project.courseLabel, `Học kỳ ${current.project.semester} - ${current.project.academicYear}`];
+      overview.querySelectorAll('.topic-summary dd').forEach((node, index) => { node.textContent = fields[index]; });
       return;
     }
     const card = el('section', '', 'teaching-card');
-    card.append(el('h2', current.project.title));
+    if (current.readOnly) card.dataset.catalogOnly = 'true';
+    const cover = el('img', null, 'gv-default-cover'); cover.src = '../../assets/images/uit-logo.png'; cover.alt = 'Ảnh UIT mặc định';
+    card.append(cover, el('h2', current.project.title));
     const dl = el('dl', '', 'teaching-metadata');
-    const fields = [['Mã đề tài', current.project.topicId || current.project.id], ['Nhóm thực hiện', current.project.groupName], ['Trạng thái', current.project.statusLabel || 'Đang thực hiện'], ['Học kỳ', current.project.semester], ['Năm học', current.project.academicYear]];
-    fields.forEach(([name, value]) => { const row = el('div'); row.append(el('dt', name), el('dd', value)); dl.append(row); });
+    const fields = [['Mã đề tài', current.project.displayId || current.project.topicId || current.project.id], ['Loại đề tài', current.project.typeLabel], ['Môn học', current.project.courseLabel || current.project.courseId || 'Không áp dụng'], ['Vai trò hướng dẫn', current.project.roleLabel || 'Chưa có thông tin'], ['Nhóm thực hiện', current.project.groupName], ['Trạng thái', current.project.statusLabel || 'Đang thực hiện'], ['Học kỳ', current.project.semester], ['Năm học', current.project.academicYear]];
+    fields.forEach(([name, value]) => { const row = el('div'); row.append(el('dt', name), el('dd', value || 'Chưa có thông tin')); dl.append(row); });
     card.append(dl, el('h3', 'Nhóm thực hiện'));
+    if (!current.team.members.length) card.append(el('p', 'Chưa có thông tin thành viên nhóm.'));
     current.team.members.forEach(member => card.append(el('p', `${member.name} - ${member.code}${member.role === 'nhom-truong' ? ' - Nhóm trưởng' : ''}`)));
-    const lecturers = current.team.supervisorIds.map(id => app.data.projectLecturers.find(item => item.id === id)?.name || id);
-    card.append(el('h3', 'Giảng viên hướng dẫn'), el('p', lecturers.join(' - ')));
+    if (['approved-proposal', 'approved-registration'].includes(current.project.source)) {
+      for (const [name, value] of [['Mô tả đề tài', current.project.description], ['Mục tiêu', current.project.objectives], ['Kết quả dự kiến', current.project.outcomes]]) card.append(el('h3', name), el('p', value || 'Chưa có thông tin'));
+    }
+    if (current.project.outline && app.shared?.proposalOutline) {
+      const outlinePanel = el('section');
+      app.shared.proposalOutline.render(outlinePanel, current.project);
+      card.append(outlinePanel);
+    }
+    const lecturers = current.team.supervisorIds.map(id => current.project.lecturerId === id ? current.project.lecturer : app.data.projectLecturers.find(item => item.id === id)?.name || id);
+    card.append(el('h3', current.project.sourceRecord ? 'GVHD theo hồ sơ UIT' : 'Giảng viên hướng dẫn'), el('p', current.project.sourceRecord ? (current.project.sourceRecord.advisors.join(' - ') || 'Chưa công bố trong nguồn') : lecturers.join(' - ')));
     overview.replaceChildren(card);
   }
   function notify(message, failure = false) {
@@ -63,15 +81,18 @@
   }
   function refresh() {
     try {
-      state = service.getState(projectId);
+      state = topics ? topics.workspaceState(projectId) : service.getState(projectId);
       document.querySelector('.page-header__topic-name').textContent = state.project.title;
       overviewView(state);
       subscribers.forEach(render => render(state));
-      notify(state.warning || (app.ui.lecturerWorkspace.dirty ? 'Đánh giá đang có thay đổi chưa lưu. Dữ liệu mới ở tab khác sẽ không ghi đè phần đang nhập.' : 'Dữ liệu mẫu. Thay đổi được lưu trên trình duyệt này.'));
-      select.value = projectId;
+      notify(state.warning || (app.ui.lecturerWorkspace.dirty ? 'Đánh giá đang có thay đổi chưa lưu. Dữ liệu mới ở tab khác sẽ không ghi đè phần đang nhập.' : app.data.lecturerRealMode ? '' : 'Dữ liệu mẫu. Thay đổi được lưu trên trình duyệt này.'));
       document.body.dataset.projectId = projectId;
+      const back = document.querySelector('.back-navigation .back-link');
+      if (back && topics) back.href = topics.returnUrl('supervised', new URLSearchParams(location.search).get('return'), location.href);
     } catch (failure) {
       state = null;
+      document.querySelector('.page-header__topic-name').textContent = 'Không thể mở đề tài';
+      delete document.body.dataset.projectId;
       overview.replaceChildren(el('p', failure.message, 'teaching-notice'));
       subscribers.forEach(render => render(null));
       notify(failure.message, true);
@@ -81,6 +102,7 @@
     if (saving) return;
     try {
       if (!state || snapshot.projectId !== projectId) throw new Error('Đề tài đã thay đổi. Hãy mở lại hộp thoại.');
+      if (state.readOnly) throw new Error('Đề tài này chưa có dữ liệu xử lý. Hiện chỉ được xem thông tin trong danh mục.');
       saving = true;
       operation(snapshot);
       dialog?.close();
@@ -116,7 +138,11 @@
       event.preventDefault();
       commit(snapshot, captured => submit(new FormData(form), captured), dialog);
     });
-    dialog.append(heading, form);
+    dialog.classList.add('workflow-dialog');
+    const dialogHeader = el('header');
+    const dialogClose = button('×', () => dialog.close()); dialogClose.classList.add('workflow-dialog__close'); dialogClose.setAttribute('aria-label', 'Đóng hộp thoại');
+    dialogHeader.append(heading, dialogClose);
+    dialog.append(dialogHeader, form);
     document.body.append(dialog);
     dialog.addEventListener('close', () => dialog.remove(), { once: true });
     dialog.addEventListener('keydown', event => {
@@ -140,19 +166,9 @@
     parent.append(label, input);
     return input;
   }
-  select.addEventListener('change', () => {
-    if (document.querySelector('.teaching-dialog[open]')) return;
-    if (app.ui.lecturerWorkspace.dirty && !window.confirm('Bỏ thay đổi đánh giá chưa lưu để đổi đề tài?')) { select.value = projectId; return; }
-    app.ui.lecturerWorkspace.dirty = false;
-    projectId = select.value;
-    const url = new URL(location.href);
-    url.searchParams.set('project', projectId);
-    history.replaceState(history.state, '', url);
-    refresh();
-  });
   app.ui ||= {};
   app.ui.lecturerWorkspace = { el, button, field, date, region, modal, commit, notify, refresh, service, get state() { return state; }, subscribe(render) { subscribers.push(render); if (state) render(state); }, dirty: false };
-  window.addEventListener('storage', event => { if ([app.storage.teachingKey, app.storage.progressKey, app.storage.teamKey, null].includes(event.key)) refresh(); });
+  window.addEventListener('storage', event => { if ([app.storage.teachingKey, app.storage.progressKey, app.storage.teamKey, app.storage.proposalKey, app.storage.registrationKey, null].includes(event.key)) refresh(); });
   window.addEventListener('pageshow', refresh);
   window.addEventListener('beforeunload', event => { if (app.ui.lecturerWorkspace.dirty) { event.preventDefault(); event.returnValue = ''; } });
   refresh();

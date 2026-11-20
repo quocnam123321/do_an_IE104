@@ -10,16 +10,19 @@
 
   function getState({ projectId = '', month = '' } = {}) {
     if (month && (!/^\d{4}-(0[1-9]|1[0-2])$/.test(month) || month.startsWith('0000'))) throw new Error('Chọn tháng hợp lệ.');
-    const topics = app.data.myTopics.filter(topic => ['dang-thuc-hien', 'hoan-thanh'].includes(topic.status) && (app.data.projectProgress.some(item => item.projectId === topic.id) || app.data.projectMilestones.some(item => item.projectId === topic.id)));
+    const warnings = [];
+    let approved = [];
+    try { approved = app.services.approvedProjects?.list('student') || []; }
+    catch (failure) { warnings.push(failure.message); }
+    const topics = [...app.data.myTopics, ...approved].filter(topic => ['dang-thuc-hien', 'hoan-thanh'].includes(topic.status) && (app.data.projectProgress.some(item => item.projectId === topic.id) || app.data.projectMilestones.some(item => item.projectId === topic.id) || ['approved-proposal', 'approved-registration'].includes(topic.source)));
     if (projectId && !topics.some(topic => topic.id === projectId)) throw new Error('Đề tài không có dữ liệu lịch phù hợp.');
     const events = [];
-    const warnings = [];
     topics.filter(topic => !projectId || topic.id === projectId).forEach(topic => {
       const closed = topic.status === 'hoan-thanh';
       const base = String(topic.detailUrl || '').split('#')[0];
       const milestones = app.data.projectMilestones.find(item => item.projectId === topic.id);
       milestones?.dates.forEach(item => events.push({ id: `${topic.id}-${item.id}`, projectId: topic.id, projectTitle: topic.title, title: item.title, date: item.date, kind: 'milestone', closed, detailUrl: base ? `${base}#tong-quan` : null }));
-      if (!app.data.projectProgress.some(item => item.projectId === topic.id)) return;
+      if (!app.data.projectProgress.some(item => item.projectId === topic.id) && !['approved-proposal', 'approved-registration'].includes(topic.source)) return;
       try {
         const state = app.services.projectProgress.getState(topic.id);
         state.tasks.forEach(task => events.push({ id: `${topic.id}-${task.id}`, projectId: topic.id, projectTitle: topic.title, title: task.title, date: task.deadline, kind: 'task', closed: closed || task.status === 'da-hoan-thanh', detailUrl: base ? `${base}#tien-do` : null }));

@@ -37,6 +37,12 @@
 .pending-proposal-summary { display: grid; grid-template-columns: 8rem minmax(0, 1fr); align-items: center; gap: var(--space-6); }
 .pending-proposal-summary .topic-image { align-self: center; }
 .pending-proposal-summary h2 { font-size: 1.125rem; margin-bottom: var(--space-4); }
+.pending-proposal-page :is(#proposal-topic-title, .pending-proposal-summary__id, .proposal-attachments p, [data-pending-question]) { overflow-wrap: anywhere; }
+.pending-proposal-summary__id { margin-block-start: var(--space-3); color: var(--color-muted-foreground); }
+.pending-proposal-page .proposal-status[data-request-status="yeu-cau-chinh-sua"] { background: var(--color-warning-bg); color: var(--color-warning-fg); }
+.pending-proposal-page .pending-proposal-header__actions a { max-width: 100%; }
+.pending-proposal-page .pending-proposal-notice:empty { display: none; }
+.proposal-history { margin-block-start: var(--space-3); font-size: var(--font-size-secondary); }
 .pending-proposal-summary__content { min-width: 0; }
 @media (min-width: 48rem) {
  .pending-proposal-summary { column-gap: var(--space-12); }

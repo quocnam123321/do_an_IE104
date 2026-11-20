@@ -4,7 +4,9 @@
   const file = location.pathname.split('/').pop();
   const kind = file.includes('dang-huong-dan') ? 'supervised' : 'created';
   if (!file.startsWith('chi-tiet-de-tai-') && !file.startsWith('chinh-sua-de-tai-')) return;
-  const id = new URLSearchParams(location.search).get('topic') || data[kind][0];
+  const params = new URLSearchParams(location.search);
+  if (kind === 'supervised' && params.has('project')) return;
+  const id = params.get('topic') || data[kind][0];
   const record = data.records.find(item => data[kind].includes(item.id) &&
     (item.id === id || data.formatCode(item.topicType, item.code) === id));
   if (!record) {
