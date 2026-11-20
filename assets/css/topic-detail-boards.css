@@ -225,9 +225,8 @@
   flex: 0 0 auto;
 }
 
-/* Từ công việc thứ 6, cuộn riêng danh sách; tiêu đề nằm ngoài vùng cuộn.
-   34rem là chiều cao ưu tiên: vùng cuộn giãn tới đáy khi cột bên cạnh cao hơn.
-   Không khóa chiều cao thẻ để tên dài/phóng to chữ vẫn đọc được đầy đủ. */
+/* Vùng cuộn giãn đến đáy cột; tiêu đề nằm ngoài vùng cuộn. */
+.teacher-workspace-page #progress-section .task-column__list,
 #progress-section .task-column__list:has(> li:nth-child(6)) {
   flex: 1 1 auto;
   block-size: 34rem;

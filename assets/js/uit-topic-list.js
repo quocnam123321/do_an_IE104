@@ -7,9 +7,26 @@
   const list = results.querySelector('.topic-list');
   const pagination = results.querySelector('.pagination');
   if (!status || !list || !pagination) return;
+  const catalog = window.UITLecturerCatalog;
+  for (const card of list.querySelectorAll('.topic-card:not([data-approved-proposal])')) {
+    const record = catalog?.records.find(topic => topic.id === card.dataset.topicId);
+    if (!record) continue;
+    const [code, course] = card.querySelectorAll('.topic-card__meta-text');
+    code.textContent = catalog.formatCode(record.topicType, record.code);
+    course.textContent = record.courseLabel || 'Không áp dụng';
+    card.querySelector('.topic-card__meta[aria-label]')?.setAttribute('aria-label', `Thông tin đề tài ${code.textContent}`);
+  }
   const viewport = list.closest('.topic-list-scroll') || list;
   const controls = Array.from(form.elements).filter(node => node.matches('input, select'));
-  const filters = [...new Set(controls.filter(node => node.type === 'checkbox' || (node.tagName === 'SELECT' && node.name !== 'topic_sort')).map(node => node.name))];
+  const filterControls = controls.filter(node => node.type === 'checkbox' || node.type === 'radio' || (node.tagName === 'SELECT' && node.name !== 'topic_sort'));
+  const filters = [...new Set(filterControls.map(node => node.name).filter(Boolean))];
+  const filterTitle = document.getElementById('topic-filters-title');
+  const baseFilterTitle = filterTitle ? filterTitle.textContent.trim() : '';
+  const filterCountNode = document.createElement('span');
+  filterCountNode.className = 'topic-filters__count';
+  const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+  let pageEnterTimer = 0;
+  let pageEnterHandler = null;
   const normalize = value => String(value || '').toLocaleLowerCase('vi').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
   const collator = new Intl.Collator('vi', { numeric: true });
   const orders = { 'name-asc': (a, b) => collator.compare(a.title, b.title), newest: (a, b) => b.date.localeCompare(a.date), oldest: (a, b) => a.date.localeCompare(b.date) };
@@ -17,7 +34,70 @@
   const originalOrder = new WeakMap(); let nextOrder = 0;
   const requested = Number(new URLSearchParams(location.search).get('page'));
   let page = Number.isSafeInteger(requested) && requested > 0 ? requested : 1;
-  function render() {
+
+  function countActiveFilters() {
+    return filterControls.reduce((total, node) => {
+      if (node.disabled) return total;
+      if (node.type === 'checkbox' || node.type === 'radio') {
+        return total + (node.checked && node.value.trim() !== '' ? 1 : 0);
+      }
+      if (node.tagName === 'SELECT') {
+        if (node.multiple) {
+          return total + Array.from(node.selectedOptions).filter(option => option.value.trim() !== '').length;
+        }
+        return total + (node.value.trim() !== '' ? 1 : 0);
+      }
+      return total;
+    }, 0);
+  }
+
+  function updateFilterTitle() {
+    if (!filterTitle) return;
+    const count = countActiveFilters();
+    if (count > 0) {
+      filterCountNode.textContent = `(${count})`;
+      filterTitle.replaceChildren(`${baseFilterTitle} `, filterCountNode);
+    } else {
+      filterTitle.textContent = baseFilterTitle;
+    }
+  }
+
+  function clearPageTransition() {
+    if (pageEnterTimer) {
+      clearTimeout(pageEnterTimer);
+      pageEnterTimer = 0;
+    }
+    if (pageEnterHandler) {
+      list.removeEventListener('animationend', pageEnterHandler);
+      pageEnterHandler = null;
+    }
+    list.classList.remove('topic-list--page-entering');
+  }
+
+  function triggerPageTransition(visibleCards) {
+    if (reducedMotion?.matches || !visibleCards.length) return;
+    const viewportRect = viewport.getBoundingClientRect();
+    if (viewportRect.height > 0) {
+      for (const card of visibleCards) {
+        if (card.getBoundingClientRect().top < viewportRect.bottom) {
+          card.classList.add('topic-card--page-settled');
+        }
+      }
+    }
+    void list.offsetWidth;
+    list.classList.add('topic-list--page-entering');
+    pageEnterHandler = event => {
+      if (event.target !== list) return;
+      clearPageTransition();
+    };
+    list.addEventListener('animationend', pageEnterHandler);
+    pageEnterTimer = setTimeout(clearPageTransition, 260);
+  }
+
+  function render(options = {}) {
+    const animatePageChange = Boolean(options && options.animatePageChange);
+    updateFilterTitle();
+    clearPageTransition();
     const data = new FormData(form);
     const terms = normalize(search.value).split(/\s+/).filter(Boolean);
     const selected = filters.map(name => [name, data.getAll(name).filter(Boolean)]);
@@ -31,8 +111,17 @@
     matched.sort((a, b) => (order ? order(a, b) : 0) || originalOrder.get(a.item) - originalOrder.get(b.item));
     const totalPages = Math.ceil(matched.length / pageSize);
     page = Math.max(1, Math.min(page, totalPages || 1));
-    topics.forEach(topic => { topic.item.hidden = true; });
-    matched.forEach((topic, index) => { list.append(topic.item); topic.item.hidden = index < (page - 1) * pageSize || index >= page * pageSize; });
+    topics.forEach(topic => {
+      topic.item.hidden = true;
+      topic.card.classList.remove('topic-card--page-settled');
+    });
+    const visibleCards = [];
+    matched.forEach((topic, index) => {
+      list.append(topic.item);
+      const hidden = index < (page - 1) * pageSize || index >= page * pageSize;
+      topic.item.hidden = hidden;
+      if (!hidden) visibleCards.push(topic.card);
+    });
     status.textContent = matched.length ? `Hiển thị ${(page - 1) * pageSize + 1}–${Math.min(page * pageSize, matched.length)} trên ${matched.length} đề tài` : 'Không tìm thấy đề tài phù hợp. Thử từ khóa khác hoặc xóa bộ lọc.';
     status.hidden = false; status.toggleAttribute('data-empty', !matched.length); viewport.hidden = !matched.length;
     const pages = document.createElement('ul'); pages.className = 'pagination__list';
@@ -40,13 +129,20 @@
       const item = document.createElement('li');
       const button = document.createElement('button'); button.type = 'button'; button.className = 'pagination__button'; button.textContent = text; button.setAttribute('aria-label', label); button.disabled = disabled;
       if (target === page && /^\d+$/.test(text)) { button.className = 'pagination__current'; button.setAttribute('aria-current', 'page'); }
-      button.addEventListener('click', () => { page = target; render(); pagination.querySelector('[aria-current="page"]')?.focus({ preventScroll: true }); });
+      button.addEventListener('click', () => {
+        const nextPage = Math.max(1, Math.min(target, totalPages || 1));
+        if (nextPage === page) return;
+        page = nextPage;
+        render({ animatePageChange: true });
+        pagination.querySelector('[aria-current="page"]')?.focus({ preventScroll: true });
+      });
       item.append(button); pages.append(item);
     };
     add(page - 1, '‹', 'Trang trước', page === 1);
     for (let number = 1; number <= totalPages; number++) add(number, String(number), `Trang ${number}`);
     add(page + 1, '›', 'Trang sau', page >= totalPages);
     pagination.replaceChildren(pages); pagination.hidden = totalPages <= 1; viewport.scrollTop = 0;
+    if (animatePageChange) triggerPageTransition(visibleCards);
     const url = new URL(location.href); if (page > 1) url.searchParams.set('page', String(page)); else url.searchParams.delete('page');
     try { history.replaceState(null, '', url); } catch {}
   }
@@ -54,6 +150,7 @@
   controls.filter(node => node !== search).forEach(node => node.addEventListener('change', () => { page = 1; render(); }));
   form.addEventListener('submit', event => { event.preventDefault(); page = 1; render(); });
   form.addEventListener('reset', () => setTimeout(() => { page = 1; render(); }, 0));
-  document.addEventListener('ie104:topics-updated', render);
+  document.addEventListener('ie104:topics-updated', () => render());
+  window.addEventListener('pageshow', event => { if (event.persisted) render(); });
   render();
 })();

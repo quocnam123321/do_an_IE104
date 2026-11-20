@@ -11,12 +11,13 @@
     <link rel="stylesheet" href="../../assets/css/components.css">
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
     <link rel="stylesheet" href="../../assets/css/teacher-dialogs.css?v=20261030-1">
-    <link rel="stylesheet" href="../../assets/css/topic-detail-boards.css">
+    <link rel="stylesheet" href="../../assets/css/topic-detail-boards.css?v=20261120-progress-columns">
     <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css">
     <link rel="stylesheet" href="../../assets/css/teacher-topic-detail.css?v=20261111-heading-sync-1">
     <script src="../../assets/js/uit-lecturer-catalog.js" defer=""></script><script src="../../assets/js/nav-indicator.js" defer=""></script>
     <script src="../../assets/js/detail-tabs.js" defer=""></script>
     <script src="../../assets/js/dialog-commands.js" defer=""></script>
+    <script src="../../assets/js/uit-supervised-demo.js?v=20261120-progress-columns" defer></script>
   <script src="../../assets/js/uit-lecturer-view.js" defer=""></script><link rel="stylesheet" href="../../assets/css/uit-restored-submissions.css"></head>
   <body class="teacher-workspace-page">
     <a class="skip-link" href="#main-content">
@@ -268,6 +269,11 @@
                       <li>Báo cáo tổng kết và bản trình diễn sản phẩm.</li>
                     </ul>
                   </section>
+                  <section class="topic-requirements topic-overview-card" aria-labelledby="supervised-requirements-title" hidden>
+                    <h2 id="supervised-requirements-title">Yêu cầu thực hiện</h2>
+                    <ul class="topic-bullet-list"></ul>
+                    <p data-supervised-technology></p>
+                  </section>
                 </div>
                 <aside class="topic-overview-layout__aside" aria-label="Nhóm thực hiện và mốc thời gian">
                   <section class="topic-team topic-overview-card" aria-labelledby="team-title">
@@ -371,7 +377,7 @@
               </section>
               <section class="progress-tasks" aria-labelledby="tasks-title">
                 <h3 id="tasks-title" class="progress-tasks__title">Bảng công việc</h3>
-                <p id="task-board-help" class="visually-hidden">Các công việc được nhóm theo trạng thái. Trên màn hình hẹp, có thể cuộn ngang vùng bảng bằng bàn phím hoặc vuốt để xem các cột. Cột có hơn 5 công việc có thể cuộn dọc riêng bằng bàn phím hoặc vuốt. Bấm avatar để xem thông tin thành viên.</p>
+                <p id="task-board-help" class="visually-hidden">Các công việc được nhóm theo trạng thái. Cuộn dọc trong từng cột để xem thêm công việc. Trên màn hình hẹp, cuộn ngang bảng để xem các cột khác. Bạn có thể cuộn bằng bàn phím hoặc vuốt. Bấm avatar để xem thông tin thành viên.</p>
                 <div class="task-board" role="region" aria-label="Các cột công việc" aria-describedby="task-board-help" tabindex="0">
                   <div class="task-board__columns">
                   <section class="task-column task-column--not-started" aria-labelledby="task-column-not-started-title">

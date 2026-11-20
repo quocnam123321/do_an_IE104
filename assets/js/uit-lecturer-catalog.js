@@ -1,4 +1,9 @@
 window.UITLecturerCatalog = {
+  formatCode(type, code) {
+    const prefixes = { course: 'ISEDAMH', graduation: 'ISEDATN', thesis: 'ISEKLTN' };
+    const number = /^ISE-(\d+)$/.exec(code)?.[1];
+    return prefixes[type] && number ? `${prefixes[type]}-${number.padStart(3, '0')}` : code;
+  },
   "records": [
     {
       "title": "Xây dựng mô hình dự đoán kết quả thi đấu bóng đá",
@@ -556,6 +561,465 @@ window.UITLecturerCatalog = {
       "outcomes": [
         "[Kết quả dự kiến]"
       ]
+    },
+    {
+      "id": "ISEDATN-001",
+      "code": "ISEDATN-001",
+      "title": "Xây dựng hệ thống quản lý mượn và trả thiết bị phòng thí nghiệm",
+      "type": "Đồ án tốt nghiệp",
+      "topicType": "graduation",
+      "semester": "1",
+      "academicYear": "2026–2027",
+      "faculty": "Khoa Khoa học và Kỹ thuật Thông tin",
+      "field": "Hệ thống thông tin",
+      "technology": "HTML/CSS/JavaScript, Node.js và PostgreSQL",
+      "description": "Xây dựng hệ thống quản lý thiết bị phòng thí nghiệm. Sinh viên xem lịch sử dụng và gửi yêu cầu mượn theo khung giờ. Cán bộ duyệt yêu cầu, kiểm tra tình trạng khi bàn giao và nhận trả, đồng thời theo dõi các lượt mượn quá hạn. Quản trị viên quản lý danh mục thiết bị và xem thống kê sử dụng.",
+      "objectives": [
+        "Quản lý danh mục, vị trí, tình trạng và lịch sử sử dụng của từng thiết bị.",
+        "Kiểm tra trùng khung giờ, xử lý yêu cầu và ghi nhận quá trình bàn giao, trả thiết bị.",
+        "Nhắc hạn trả và tổng hợp số lượt mượn, trả trễ, hư hỏng theo phòng thí nghiệm."
+      ],
+      "outcomes": [
+        "Ứng dụng web có giao diện cho sinh viên, cán bộ phòng thí nghiệm và quản trị viên.",
+        "Bộ dữ liệu mẫu và kịch bản kiểm thử cho đặt trùng giờ, trả trễ và ghi nhận hư hỏng.",
+        "Báo cáo thiết kế, hướng dẫn cài đặt và hướng dẫn thao tác mượn, trả."
+      ],
+      "requirements": [
+        "Có kiến thức lập trình web, cơ sở dữ liệu quan hệ và kiểm thử chức năng.",
+        "Kiểm tra quyền theo vai trò và tránh duyệt hai lượt mượn trùng giờ cho cùng một thiết bị.",
+        "Dùng dữ liệu minh họa để trình diễn và trình bày kết quả kiểm thử."
+      ],
+      "authors": [
+        "Đặng Minh Khôi",
+        "Lê Ngọc Hà My"
+      ],
+      "studentIds": [
+        "22520862",
+        "22520947"
+      ],
+      "supervision": {
+        "group": "Nhóm 11",
+        "milestones": [
+          "2026-11-02",
+          "2026-11-27",
+          "2027-01-24"
+        ],
+        "tasks": {
+          "notStarted": [
+            ["Kiểm thử đặt trùng khung giờ và trả trễ", "2026-12-18"],
+            ["Thử nghiệm khôi phục lịch mượn từ bản sao lưu", "2026-12-23"],
+            ["Đối chiếu số liệu sử dụng với lịch bàn giao", "2027-01-05"],
+            ["Chạy thử quy trình mượn, trả với dữ liệu mẫu", "2027-01-08"],
+            ["Hoàn thiện hướng dẫn mượn, trả thiết bị", "2027-01-15"],
+            ["Kiểm tra biên bản bàn giao khi thiết bị hư hỏng", "2027-01-16"],
+            ["Rà soát khả năng thao tác bằng bàn phím", "2027-01-18"],
+            ["Đo thời gian tải lịch đặt khi có nhiều yêu cầu", "2027-01-19"],
+            ["Chạy thử kịch bản chuyển thiết bị giữa hai phòng", "2027-01-20"],
+            ["Đóng gói bản cài đặt và dữ liệu trình diễn", "2027-01-21"],
+            ["Đối chiếu hướng dẫn sử dụng với bản chạy cuối", "2027-01-22"],
+            ["Chuẩn bị báo cáo và kịch bản bảo vệ", "2027-01-24"]
+          ],
+          "inProgress": [
+            ["Xây dựng màn hình đặt thiết bị theo khung giờ", "2026-11-25"],
+            ["Triển khai luồng duyệt và bàn giao", "2026-11-28"],
+            ["Ghi nhận tình trạng thiết bị khi nhận trả", "2026-12-01"],
+            ["Xây dựng báo cáo sử dụng theo phòng", "2026-12-04"],
+            ["Thiết lập nhắc hạn trả và danh sách quá hạn", "2026-12-09"],
+            ["Xây dựng chức năng hủy yêu cầu đặt mượn", "2026-12-11"],
+            ["Thêm bộ lọc thiết bị theo phòng và tình trạng", "2026-12-15"],
+            ["Cho phép cán bộ khóa lịch khi thiết bị bảo trì", "2026-12-16"],
+            ["Bổ sung lịch sử thay đổi người phụ trách bàn giao", "2026-12-17"],
+            ["Tạo phiếu xác nhận trả thiết bị để in", "2026-12-20"],
+            ["Bổ sung thông báo khi yêu cầu mượn bị từ chối", "2026-12-22"],
+            ["Xuất danh sách lượt mượn theo khoảng ngày", "2026-12-24"]
+          ],
+          "completed": [
+            ["Khảo sát quy trình mượn, trả thiết bị", "2026-11-06"],
+            ["Lập danh sách thiết bị và phòng mẫu", "2026-11-08"],
+            ["Chốt các trạng thái của yêu cầu mượn", "2026-11-10"],
+            ["Thiết kế danh mục và lịch đặt thiết bị", "2026-11-13"],
+            ["Dựng sơ đồ dữ liệu cho lượt mượn và phiếu bàn giao", "2026-11-16"],
+            ["Thống nhất khung giờ và thời lượng mượn tối đa", "2026-11-17"],
+            ["Tạo mẫu biên bản bàn giao và nhận trả", "2026-11-17"],
+            ["Lập bảng quyền sinh viên và cán bộ phòng thí nghiệm", "2026-11-18"],
+            ["Vẽ sơ đồ xử lý lượt mượn quá hạn", "2026-11-18"],
+            ["Nhập dữ liệu thiết bị thử nghiệm", "2026-11-19"],
+            ["Chuẩn bị tài khoản mẫu cho từng vai trò", "2026-11-19"],
+            ["Thống nhất tiêu chí nghiệm thu danh mục thiết bị", "2026-11-20"]
+          ]
+        },
+        "deliverables": [
+          {
+            "title": "Bản thử nghiệm quy trình đặt mượn và bàn giao",
+            "description": "Nộp bản chạy thử và hướng dẫn tái hiện từ đặt lịch đến duyệt yêu cầu, kiểm tra thiết bị và ký nhận bàn giao.",
+            "due": "2026-11-30T23:59"
+          },
+          {
+            "title": "Kết quả kiểm thử đặt trùng giờ và trả trễ",
+            "description": "Nộp bảng ca kiểm thử kèm kết quả thực tế cho đặt trùng giờ, hủy lượt mượn, trả trễ và trả thiết bị hư hỏng.",
+            "due": "2026-12-18T23:59"
+          },
+          {
+            "title": "Hướng dẫn sử dụng và cài đặt hệ thống",
+            "description": "Nộp hướng dẫn nạp dữ liệu mẫu và thao tác theo vai trò sinh viên, cán bộ phòng thí nghiệm và quản trị viên.",
+            "due": "2027-01-15T23:59"
+          },
+          {
+            "title": "Báo cáo cuối kỳ và bản trình diễn mượn, trả thiết bị",
+            "description": "Nộp báo cáo, mã nguồn và kịch bản trình diễn đặt mượn, bàn giao, trả thiết bị và xử lý quá hạn.",
+            "due": "2027-01-24T23:59"
+          },
+          {
+            "title": "Bảng phân quyền phòng thí nghiệm",
+            "description": "Liệt kê quyền gửi, duyệt, bàn giao, nhận trả và sửa danh mục thiết bị theo từng vai trò.",
+            "file": "ISEDATN-001-phan-quyen.pdf",
+            "due": "2026-11-19T23:59",
+            "submittedAt": "2026-11-19T15:10"
+          },
+          {
+            "title": "Mẫu giao diện đặt mượn theo khung giờ",
+            "description": "Trình bày cách chọn thiết bị, xem giờ còn trống và xử lý khi khung giờ vừa được người khác đặt.",
+            "file": "ISEDATN-001-giao-dien-dat-muon.pdf",
+            "due": "2026-11-17T23:59",
+            "submittedAt": "2026-11-18T09:25"
+          },
+          {
+            "title": "Thiết kế danh mục và lịch đặt thiết bị",
+            "description": "Trình bày mô hình dữ liệu và quy tắc kiểm tra trùng lịch.",
+            "file": "ISEDATN-001-thiet-ke-lich-dat.pdf",
+            "due": "2026-11-16T23:59",
+            "submittedAt": "2026-11-15T16:20"
+          },
+          {
+            "title": "Sơ đồ quy trình duyệt và bàn giao",
+            "description": "Diễn giải các trạng thái từ lúc sinh viên gửi yêu cầu đến khi bàn giao hoặc hủy lượt mượn.",
+            "file": "ISEDATN-001-quy-trinh-ban-giao.pdf",
+            "feedback": "Bổ sung bước cán bộ xác nhận tình trạng thiết bị ngay trước khi bàn giao.",
+            "due": "2026-11-12T23:59",
+            "submittedAt": "2026-11-12T15:45"
+          },
+          {
+            "title": "Báo cáo khảo sát phòng thí nghiệm",
+            "description": "Ghi lại vai trò, bước bàn giao và cách xử lý thiết bị hư hỏng.",
+            "file": "ISEDATN-001-khao-sat.pdf",
+            "feedback": "Đã mô tả quy trình mượn, trả. Bổ sung trường hợp người mượn không đến nhận thiết bị.",
+            "due": "2026-11-09T23:59",
+            "submittedAt": "2026-11-07T10:30"
+          }
+        ],
+        "criteria": [
+          "Mô tả đủ quy trình mượn, duyệt, bàn giao, trả và xử lý quá hạn.",
+          "Kiểm tra trùng lịch và quyền của sinh viên, cán bộ, quản trị viên.",
+          "Trình diễn trọn quy trình và giải thích các tình huống kiểm thử."
+        ],
+        "comment": "Nhận xét tiến độ mẫu: Cần kiểm thử trường hợp hai người đặt cùng thiết bị và cách ghi nhận tình trạng khi trả."
+      }
+    },
+    {
+      "id": "ISEDATN-002",
+      "code": "ISEDATN-002",
+      "title": "Xây dựng cổng quản lý thực tập và đánh giá sinh viên",
+      "type": "Đồ án tốt nghiệp",
+      "topicType": "graduation",
+      "semester": "1",
+      "academicYear": "2026–2027",
+      "faculty": "Khoa Khoa học và Kỹ thuật Thông tin",
+      "field": "Hệ thống thông tin",
+      "technology": "HTML/CSS/JavaScript, Node.js và PostgreSQL",
+      "description": "Xây dựng cổng theo dõi thực tập từ lúc nộp hồ sơ đến khi tổng hợp đánh giá. Sinh viên cập nhật nhật ký và báo cáo theo tuần. Người hướng dẫn tại doanh nghiệp gửi nhận xét theo đợt. Giảng viên theo dõi hồ sơ được phân công, phản hồi nhật ký và tổng hợp kết quả theo tiêu chí của đợt thực tập.",
+      "objectives": [
+        "Quản lý đợt thực tập, doanh nghiệp, hồ sơ sinh viên và phân công giảng viên.",
+        "Theo dõi nhật ký, hạn nộp, phản hồi và trạng thái hoàn thành của từng hồ sơ.",
+        "Thiết lập phiếu đánh giá và tổng hợp nhận xét của doanh nghiệp với kết quả của giảng viên."
+      ],
+      "outcomes": [
+        "Cổng web có ba luồng thao tác cho sinh viên, doanh nghiệp và giảng viên.",
+        "Bảng theo dõi hồ sơ và tệp kết quả xuất theo đợt thực tập.",
+        "Dữ liệu demo và báo cáo kiểm thử luồng nộp hồ sơ, phản hồi, đánh giá và phân quyền."
+      ],
+      "requirements": [
+        "Có kiến thức phân tích quy trình nghiệp vụ, lập trình web và thiết kế cơ sở dữ liệu.",
+        "Chỉ cho phép người được phân công truy cập hồ sơ, nhật ký và nhận xét của sinh viên.",
+        "Dùng hồ sơ giả lập để trình diễn và kiểm thử các trường hợp nộp trễ hoặc thiếu đánh giá."
+      ],
+      "authors": [
+        "Trần Gia Phúc",
+        "Nguyễn Thảo An"
+      ],
+      "studentIds": [
+        "23520871",
+        "23520936"
+      ],
+      "supervision": {
+        "group": "Nhóm 12",
+        "milestones": [
+          "2026-11-02",
+          "2026-11-27",
+          "2027-01-24"
+        ],
+        "tasks": {
+          "notStarted": [
+            ["Kiểm thử hạn nộp và thiếu phiếu đánh giá", "2026-12-18"],
+            ["Kiểm tra phân quyền với hồ sơ của từng sinh viên", "2026-12-23"],
+            ["Kiểm thử khi sinh viên đổi đơn vị thực tập", "2026-12-29"],
+            ["Đối chiếu bảng điểm xuất với phiếu đánh giá", "2027-01-05"],
+            ["Chạy thử cổng với một đợt thực tập giả lập", "2027-01-08"],
+            ["Kiểm thử mở lại nhật ký sau khi đã khóa đợt", "2027-01-11"],
+            ["Rà soát nhắc hạn khi lịch thực tập thay đổi", "2027-01-13"],
+            ["Viết hướng dẫn cho giảng viên và doanh nghiệp", "2027-01-15"],
+            ["Kiểm tra tệp xuất khi hồ sơ còn thiếu đánh giá", "2027-01-18"],
+            ["Thử sử dụng các biểu mẫu trên điện thoại", "2027-01-20"],
+            ["Đóng gói dữ liệu và tài khoản dùng khi bảo vệ", "2027-01-22"],
+            ["Chuẩn bị kịch bản trình diễn và báo cáo", "2027-01-24"]
+          ],
+          "inProgress": [
+            ["Xây dựng màn hình nộp và bổ sung hồ sơ", "2026-11-25"],
+            ["Xây dựng nhật ký và phản hồi theo tuần", "2026-11-28"],
+            ["Nhắc hạn nộp nhật ký cho từng đợt thực tập", "2026-12-01"],
+            ["Triển khai phiếu đánh giá của doanh nghiệp", "2026-12-04"],
+            ["Tổng hợp điểm và xuất kết quả theo đợt", "2026-12-11"],
+            ["Bổ sung luồng yêu cầu chỉnh sửa hồ sơ", "2026-12-14"],
+            ["Xây dựng bộ lọc hồ sơ theo trạng thái", "2026-12-16"],
+            ["Xây dựng danh sách giảng viên phụ trách theo đợt", "2026-12-17"],
+            ["Bổ sung nhật ký thay đổi người hướng dẫn", "2026-12-19"],
+            ["Thiết lập tính năng khóa phiếu sau khi xác nhận", "2026-12-21"],
+            ["Hiển thị hồ sơ thiếu giấy xác nhận thực tập", "2026-12-23"],
+            ["Bổ sung thông báo khi nhật ký cần nộp lại", "2026-12-25"]
+          ],
+          "completed": [
+            ["Khảo sát quy trình thực tập", "2026-11-06"],
+            ["Thu thập cấu trúc nhật ký và phiếu đánh giá mẫu", "2026-11-08"],
+            ["Xác định các bước tiếp nhận hồ sơ sinh viên", "2026-11-10"],
+            ["Thiết kế hồ sơ và phân công giảng viên", "2026-11-13"],
+            ["Dựng dữ liệu doanh nghiệp và sinh viên giả lập", "2026-11-16"],
+            ["Dựng bản nháp màn hình theo dõi theo tuần", "2026-11-17"],
+            ["Lập bảng trạng thái của hồ sơ thực tập", "2026-11-17"],
+            ["Thống nhất tiêu chí chấm và thang điểm thực tập", "2026-11-18"],
+            ["Thống nhất danh sách giấy tờ bắt buộc", "2026-11-18"],
+            ["Hoàn thiện sơ đồ vai trò của ba bên", "2026-11-19"],
+            ["Tạo vài nhật ký thực tập minh họa theo tuần", "2026-11-19"],
+            ["Chốt các cột trong bảng tổng hợp kết quả", "2026-11-20"]
+          ]
+        },
+        "deliverables": [
+          {
+            "title": "Bản thử nghiệm nộp hồ sơ và nhật ký thực tập",
+            "description": "Nộp bản chạy thử với một hồ sơ giả lập, nhật ký theo tuần và luồng giảng viên phản hồi.",
+            "due": "2026-11-30T23:59"
+          },
+          {
+            "title": "Bộ kiểm thử hạn nộp và tổng hợp đánh giá",
+            "description": "Nộp kết quả kiểm thử hồ sơ nộp trễ, thiếu đánh giá doanh nghiệp và đối chiếu điểm tổng hợp.",
+            "due": "2026-12-18T23:59"
+          },
+          {
+            "title": "Hướng dẫn vận hành một đợt thực tập",
+            "description": "Nộp tài liệu cấu hình đợt thực tập, phân công giảng viên, mời doanh nghiệp và xuất bảng điểm.",
+            "due": "2027-01-15T23:59"
+          },
+          {
+            "title": "Báo cáo cuối kỳ và bản trình diễn cổng thực tập",
+            "description": "Nộp báo cáo, mã nguồn, hồ sơ giả lập và kịch bản đánh giá từ doanh nghiệp tới giảng viên.",
+            "due": "2027-01-24T23:59"
+          },
+          {
+            "title": "Bảng tiêu chí và thang điểm thực tập",
+            "description": "Nêu thang điểm của doanh nghiệp và giảng viên, trọng số tổng hợp và cách xử lý khi thiếu một phiếu.",
+            "file": "ISEDATN-002-tieu-chi-thuc-tap.pdf",
+            "due": "2026-11-19T23:59",
+            "submittedAt": "2026-11-18T14:50"
+          },
+          {
+            "title": "Mẫu giao diện nhật ký thực tập theo tuần",
+            "description": "Trình bày các trường nhật ký, thời gian nộp, phản hồi của giảng viên và trạng thái nộp lại.",
+            "file": "ISEDATN-002-giao-dien-nhat-ky.pdf",
+            "due": "2026-11-17T23:59",
+            "submittedAt": "2026-11-18T08:40"
+          },
+          {
+            "title": "Thiết kế hồ sơ, nhật ký và phiếu đánh giá",
+            "description": "Mô tả dữ liệu, tiêu chí chấm và quyền của từng vai trò.",
+            "file": "ISEDATN-002-thiet-ke-ho-so.pdf",
+            "due": "2026-11-16T23:59",
+            "submittedAt": "2026-11-15T16:20"
+          },
+          {
+            "title": "Sơ đồ phân công và theo dõi hồ sơ",
+            "description": "Mô tả cách phân công giảng viên, chuyển hồ sơ và xác nhận đơn vị thực tập.",
+            "file": "ISEDATN-002-phan-cong-ho-so.pdf",
+            "feedback": "Thể hiện rõ ai xác nhận việc chuyển đơn vị thực tập và lịch sử điều chỉnh phân công.",
+            "due": "2026-11-12T23:59",
+            "submittedAt": "2026-11-12T14:30"
+          },
+          {
+            "title": "Báo cáo khảo sát quy trình thực tập",
+            "description": "Tóm tắt các bước nộp hồ sơ, ghi nhật ký, phản hồi và tổng hợp đánh giá.",
+            "file": "ISEDATN-002-khao-sat.pdf",
+            "feedback": "Luồng nghiệp vụ rõ. Bổ sung trường hợp sinh viên đổi đơn vị thực tập giữa đợt.",
+            "due": "2026-11-09T23:59",
+            "submittedAt": "2026-11-07T10:30"
+          }
+        ],
+        "criteria": [
+          "Bao quát hồ sơ, nhật ký, phản hồi và đánh giá của hai bên.",
+          "Kiểm tra phân quyền theo hồ sơ và tổng hợp đúng dữ liệu của từng đợt.",
+          "Trình diễn với dữ liệu giả lập và giải thích cách xử lý hồ sơ thiếu đánh giá."
+        ],
+        "comment": "Nhận xét tiến độ mẫu: Cần phân biệt rõ hồ sơ thiếu phiếu đánh giá của doanh nghiệp với hồ sơ chưa được giảng viên tổng hợp."
+      }
+    },
+    {
+      "id": "ISEDATN-003",
+      "code": "ISEDATN-003",
+      "title": "Xây dựng hệ thống số hóa và tra cứu văn bản nội bộ",
+      "type": "Đồ án tốt nghiệp",
+      "topicType": "graduation",
+      "semester": "1",
+      "academicYear": "2026–2027",
+      "faculty": "Khoa Khoa học và Kỹ thuật Thông tin",
+      "field": "Quản lý tài liệu và truy xuất thông tin",
+      "technology": "Python, Tesseract OCR và PostgreSQL",
+      "description": "Xây dựng hệ thống lưu trữ và tra cứu văn bản nội bộ từ PDF hoặc ảnh scan. Hệ thống nhận dạng chữ tiếng Việt để lập chỉ mục, cho phép người phụ trách hiệu chỉnh kết quả nhận dạng và hỗ trợ tìm theo nội dung, số hiệu, ngày ban hành hoặc phòng ban. Quyền xem và tải tài liệu được kiểm soát theo phòng ban.",
+      "objectives": [
+        "Nhập văn bản, lưu bản gốc và trích xuất văn bản tiếng Việt bằng OCR.",
+        "Cho phép hiệu chỉnh kết quả nhận dạng và tìm theo nội dung hoặc thông tin văn bản.",
+        "Phân quyền xem, cập nhật và tải tài liệu theo phòng ban, kèm nhật ký thao tác."
+      ],
+      "outcomes": [
+        "Ứng dụng web có quy trình tải lên, nhận dạng, hiệu chỉnh và tìm kiếm văn bản.",
+        "Bộ văn bản giả lập và báo cáo đo độ chính xác OCR trên bản scan rõ và bản scan chất lượng thấp.",
+        "Tài liệu cài đặt, hướng dẫn sử dụng và bộ kiểm thử quyền truy cập tài liệu."
+      ],
+      "requirements": [
+        "Có kiến thức lập trình web, xử lý tệp và cơ sở dữ liệu.",
+        "Chọn công cụ OCR có hỗ trợ tiếng Việt và công bố cách đo sai số nhận dạng.",
+        "Kiểm tra quyền truy cập ở cả kết quả tìm kiếm và đường dẫn tải tệp. Chỉ dùng văn bản giả lập hoặc được phép sử dụng."
+      ],
+      "authors": [
+        "Phạm Hải Đăng",
+        "Võ Khánh Linh"
+      ],
+      "studentIds": [
+        "24520854",
+        "24520973"
+      ],
+      "supervision": {
+        "group": "Nhóm 13",
+        "milestones": [
+          "2026-11-02",
+          "2026-11-27",
+          "2027-01-24"
+        ],
+        "tasks": {
+          "notStarted": [
+            ["Đo độ chính xác OCR trên bản scan mờ", "2026-12-18"],
+            ["Kiểm thử quyền tải tệp theo phòng ban", "2026-12-23"],
+            ["Thử nhập hàng loạt văn bản nhiều trang", "2026-12-29"],
+            ["Kiểm tra tra cứu văn bản thay thế và đính chính", "2027-01-05"],
+            ["Đánh giá kết quả tìm kiếm trên bộ tài liệu mẫu", "2027-01-08"],
+            ["Đo thời gian lập chỉ mục khi nhập văn bản hàng loạt", "2027-01-11"],
+            ["Kiểm thử tra cứu tiếng Việt có dấu và không dấu", "2027-01-13"],
+            ["Viết hướng dẫn sao lưu và khôi phục kho văn bản", "2027-01-15"],
+            ["Chạy thử khôi phục chỉ mục từ bản sao lưu", "2027-01-18"],
+            ["Rà soát kết quả tìm kiếm sau khi thu hồi quyền xem", "2027-01-20"],
+            ["Chuẩn bị bộ văn bản mẫu cho buổi bảo vệ", "2027-01-22"],
+            ["Hoàn thiện báo cáo và kịch bản trình diễn", "2027-01-24"]
+          ],
+          "inProgress": [
+            ["Xây dựng màn hình tải lên và xem bản scan", "2026-11-25"],
+            ["Tích hợp nhận dạng chữ tiếng Việt", "2026-11-28"],
+            ["Xây dựng màn hình hiệu chỉnh kết quả OCR", "2026-12-02"],
+            ["Triển khai tìm theo nội dung và số hiệu", "2026-12-04"],
+            ["Ghi nhật ký xem, sửa và tải văn bản", "2026-12-10"],
+            ["Bổ sung bộ lọc theo ngày ban hành và phòng ban", "2026-12-14"],
+            ["Tự động xoay và làm rõ ảnh scan trước khi OCR", "2026-12-16"],
+            ["Hiển thị trạng thái nhận dạng cho từng văn bản", "2026-12-17"],
+            ["Đánh dấu nội dung trùng khi tải lên", "2026-12-19"],
+            ["Cho phép nhận dạng lại từng trang có lỗi", "2026-12-21"],
+            ["Tô sáng từ khóa trong đoạn trích kết quả", "2026-12-23"],
+            ["Bổ sung liên kết giữa văn bản gốc và bản thay thế", "2026-12-25"]
+          ],
+          "completed": [
+            ["Chuẩn bị bộ văn bản scan giả lập", "2026-11-06"],
+            ["Phân nhóm bản scan theo độ rõ và độ nghiêng", "2026-11-08"],
+            ["Thử Tesseract trên tài liệu tiếng Việt có dấu", "2026-11-10"],
+            ["Thiết kế thông tin văn bản và phân quyền", "2026-11-13"],
+            ["Thống nhất quy ước số hiệu văn bản", "2026-11-16"],
+            ["Thống nhất các trường bắt buộc khi tải văn bản", "2026-11-17"],
+            ["Ghi lại cấu hình OCR tiếng Việt dùng cho bản mẫu", "2026-11-17"],
+            ["Chuẩn bị văn bản đối chiếu để đo sai số OCR", "2026-11-18"],
+            ["Chọn tiêu chí đánh giá chất lượng tìm kiếm", "2026-11-18"],
+            ["Kiểm tra đọc tệp PDF và ảnh scan mẫu", "2026-11-19"],
+            ["Tạo danh sách phòng ban và quyền xem mẫu", "2026-11-19"],
+            ["Chuẩn bị tập truy vấn mẫu theo số hiệu và nội dung", "2026-11-20"]
+          ]
+        },
+        "deliverables": [
+          {
+            "title": "Bản thử nghiệm nhập liệu và hiệu chỉnh OCR",
+            "description": "Nộp phiên bản cho phép tải bản scan, xem văn bản nhận dạng và lưu phần hiệu chỉnh.",
+            "due": "2026-12-04T23:59"
+          },
+          {
+            "title": "Báo cáo đo sai số OCR và kiểm thử phân quyền",
+            "description": "So sánh kết quả OCR giữa các mức chất lượng scan và ghi lại kết quả thử xem, tìm, tải văn bản theo từng quyền.",
+            "due": "2026-12-23T23:59"
+          },
+          {
+            "title": "Hướng dẫn vận hành kho văn bản số",
+            "description": "Nộp hướng dẫn cấu hình OCR, chuẩn bị dữ liệu, hiệu chỉnh kết quả và phân quyền theo phòng ban.",
+            "due": "2027-01-15T23:59"
+          },
+          {
+            "title": "Báo cáo cuối kỳ và bản trình diễn số hóa văn bản",
+            "description": "Nộp mã nguồn, báo cáo độ chính xác OCR, bộ văn bản giả lập và kịch bản kiểm thử phân quyền.",
+            "due": "2027-01-24T23:59"
+          },
+          {
+            "title": "Bộ văn bản đối chiếu để đánh giá OCR",
+            "description": "Nộp danh mục bản scan kèm văn bản gõ lại và quy tắc tính sai số ký tự.",
+            "file": "ISEDATN-003-van-ban-doi-chieu.pdf",
+            "due": "2026-11-19T23:59",
+            "submittedAt": "2026-11-19T16:20"
+          },
+          {
+            "title": "Mẫu giao diện tìm kiếm và hiệu chỉnh văn bản",
+            "description": "Trình bày màn hình đối chiếu bản scan với kết quả OCR và cách lọc kết quả theo số hiệu, ngày và phòng ban.",
+            "file": "ISEDATN-003-giao-dien-tra-cuu.pdf",
+            "due": "2026-11-17T23:59",
+            "submittedAt": "2026-11-18T11:05"
+          },
+          {
+            "title": "Thiết kế chỉ mục và quyền truy cập văn bản",
+            "description": "Mô tả chỉ mục tìm kiếm, dữ liệu nhận dạng và quyền theo phòng ban.",
+            "file": "ISEDATN-003-thiet-ke-chi-muc.pdf",
+            "due": "2026-11-16T23:59",
+            "submittedAt": "2026-11-15T16:20"
+          },
+          {
+            "title": "Quy ước đặt số hiệu và phân loại văn bản",
+            "description": "Nêu cách lưu số hiệu, loại văn bản, ngày ban hành và phòng phụ trách để hỗ trợ tra cứu.",
+            "file": "ISEDATN-003-quy-uoc-van-ban.pdf",
+            "feedback": "Bổ sung cách tìm theo số hiệu gốc khi văn bản đính chính hoặc thay thế một bản trước đó.",
+            "due": "2026-11-12T23:59",
+            "submittedAt": "2026-11-12T16:45"
+          },
+          {
+            "title": "Bộ văn bản scan giả lập và phương án OCR",
+            "description": "Trình bày bộ dữ liệu kiểm thử tiếng Việt và kế hoạch đo chất lượng nhận dạng.",
+            "file": "ISEDATN-003-phuong-an-ocr.pdf",
+            "feedback": "Bộ mẫu phù hợp để thử nghiệm. Thêm nhóm bản scan bị nghiêng và ghi rõ cách chấm sai số.",
+            "due": "2026-11-09T23:59",
+            "submittedAt": "2026-11-07T10:30"
+          }
+        ],
+        "criteria": [
+          "Trình bày đầy đủ luồng nhập, OCR, hiệu chỉnh, lập chỉ mục và tìm kiếm.",
+          "Kiểm tra quyền xem và tải tệp, ghi nhận sai số OCR theo chất lượng scan.",
+          "Giải thích phương pháp đo và trình diễn kết quả tra cứu trên bộ tài liệu mẫu."
+        ],
+        "comment": "Nhận xét tiến độ mẫu: Ưu tiên đo sai số trên các bản scan chất lượng khác nhau và kiểm tra quyền tải tệp qua đường dẫn trực tiếp."
+      }
     }
   ],
   "created": [
@@ -580,7 +1044,10 @@ window.UITLecturerCatalog = {
     "ISE-007",
     "ISE-008",
     "ISE-015",
-    "ISE-016"
+    "ISE-016",
+    "ISEDATN-001",
+    "ISEDATN-002",
+    "ISEDATN-003"
   ],
   "pending": [
     {

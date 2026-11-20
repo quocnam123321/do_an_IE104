@@ -24,8 +24,9 @@
       card.setAttribute('aria-labelledby', title.id);
       card.querySelector('.topic-card__image-placeholder').setAttribute('aria-label', `Chưa có ảnh đại diện cho đề tài ${record.title}`);
       const meta = card.querySelector('.topic-card__meta');
-      meta.setAttribute('aria-label', `Thông tin đề tài ${record.topicId}`);
-      [record.topicId, record.courseLabel,
+      const code = window.UITLecturerCatalog.formatCode(card.dataset.topicType, record.topicId);
+      meta.setAttribute('aria-label', `Thông tin đề tài ${code}`);
+      [code, record.courseLabel || 'Không áp dụng',
         record.semester ? `Học kỳ ${record.semester} • ${record.academicYear.replace('-', '–')}` : 'Chưa có học kỳ và năm học',
         `${record.studentName} · ${record.studentId} · ${record.supervisionRoleLabel}`]
         .forEach((value, index) => { meta.querySelectorAll('.topic-card__meta-text')[index].textContent = value; });
