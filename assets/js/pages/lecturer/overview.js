@@ -15,10 +15,13 @@
     const created = attempt(() => catalog.list('created'));
     const supervised = attempt(() => catalog.list('supervised'));
     const requests = attempt(() => globalThis.IE104Proposals.getAll());
+    const direct = attempt(() => app.services.approvedProjects.list('lecturer').filter(record => record.registrationStatus === 'da-dang-ky'));
     if (globalThis.IE104Proposals.getError()) errors.push(globalThis.IE104Proposals.getError());
-    const dynamic = requests?.filter(record => record.status === 'approved') || [];
+    const active = new Map((requests || []).filter(record => record.status === 'approved').map(record => [record.topicId, record]));
+    for (const project of direct || []) active.set(project.id, project);
+    const dynamic = [...active.values()];
     const requestsComplete = requests && !globalThis.IE104Proposals.getError();
-    const supervisedCount = supervised && requestsComplete ? supervised.length + dynamic.length : null;
+    const supervisedCount = supervised && requestsComplete && direct ? supervised.length + dynamic.length : null;
     const counts = [created && supervisedCount !== null ? created.length + supervisedCount : null, created?.length, supervisedCount, requestsComplete ? requests.filter(record => record.status === 'pending').length : null];
     document.querySelectorAll('.summary-card__value strong').forEach((node, index) => { node.textContent = counts[index] ?? '—'; });
     const grouped = new Map();
@@ -66,8 +69,8 @@
     progressList.replaceChildren();
     const entries = [
       ...(supervised || []).map(topic => ({ id: topic.workspaceId, title: topic.title, groupName: topic.groupName, url: catalog.detailUrl(topic) + '#tien-do' })),
-      ...dynamic.map(record => ({ id: record.topicId, title: record.title, groupName: record.groupName || `Nhóm của ${record.studentName}`,
-        url: ['student', 'registration'].includes(record.source) ? app.services.approvedProjects.lecturerUrl(record.topicId) + '#tien-do' : `chi-tiet-de-xuat-giang-vien.html?ma=${encodeURIComponent(record.id)}` })),
+      ...dynamic.map(record => ({ id: record.topicId, title: record.title, groupName: record.groupName || 'Chưa có thông tin',
+        url: app.services.approvedProjects.lecturerUrl(record.topicId) + '#tien-do' })),
     ];
     entries.slice(0, 3).forEach(entry => {
       const card = make('article', undefined, 'topic-progress-card');

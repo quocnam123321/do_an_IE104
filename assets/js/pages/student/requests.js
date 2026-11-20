@@ -1,6 +1,7 @@
 (() => {
   const service = globalThis.IE104?.services?.requests;
-  const articles = [...document.querySelectorAll('.request-detail[data-request-id]')];
+  const articles = [...document.querySelectorAll('.request-detail[data-request-type="dang-ky"]')];
+  const legacyProposals = [...document.querySelectorAll('.request-detail[data-request-type="de-xuat"]')];
   const dialog = document.getElementById('request-action-dialog');
   if (!service || !articles.length || !dialog) return;
   document.body.classList.add('legacy-requests-enhanced');
@@ -13,6 +14,7 @@
   let editing = false;
   let saving = false;
   const actionNames = { edit: 'Lưu chỉnh sửa thử', withdraw: 'Rút yêu cầu thử', resubmit: 'Gửi lại yêu cầu thử', remove: 'Xóa khỏi danh sách thử' };
+  const proposalUrl = id => `chi-tiet-de-tai-cho-duyet-sinh-vien.html?proposal=${encodeURIComponent(id)}`;
 
   function node(tag, text, className) {
     const item = document.createElement(tag);
@@ -46,13 +48,6 @@
       row(details, 'Hình thức', value.mode === 'nhom' ? 'Nhóm' : 'Cá nhân');
       if (value.mode === 'nhom') row(details, 'Nhóm', value.groupName);
       row(details, 'Thành viên', value.members.map(member => `${member.name} - ${member.code} - ${member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên'}`).join('\n'));
-      if (record.kind === 'de-xuat') {
-        row(details, 'Mô tả', value.description);
-        row(details, 'Mục tiêu', value.objectives);
-        row(details, 'Phạm vi', value.scope);
-        row(details, 'Kết quả dự kiến', value.outcomes);
-        row(details, 'Giảng viên', globalThis.IE104.data.requestLecturers.find(item => item.id === value.lecturerId)?.name);
-      }
       row(details, 'Lời nhắn', value.message);
     }
     summary.append(details, node('p', action === 'remove' ? 'Yêu cầu sẽ được ẩn khỏi danh sách, bản lưu và lịch sử vẫn được giữ. Chưa gửi thao tác đến hệ thống.' : 'Thao tác chỉ lưu trên trình duyệt này, chưa gửi đến giảng viên hoặc hệ thống.'));
@@ -91,15 +86,6 @@
       return control;
     }
 
-    if (record.kind === 'de-xuat') {
-      field(form, 'title', 'Tên đề tài *', record.title).maxLength = 200;
-      field(form, 'type', 'Loại đề tài *', record.type, [['do-an', 'Đồ án môn học'], ['khoa-luan', 'Khóa luận tốt nghiệp']]);
-      field(form, 'description', 'Mô tả *', record.description, null, true);
-      field(form, 'objectives', 'Mục tiêu', record.objectives, null, true);
-      field(form, 'scope', 'Phạm vi', record.scope, null, true);
-      field(form, 'outcomes', 'Kết quả dự kiến', record.outcomes, null, true);
-      field(form, 'lecturerId', 'Giảng viên đề nghị *', record.lecturerId, globalThis.IE104.data.requestLecturers.map(item => [item.id, item.name]));
-    }
     const mode = field(form, 'mode', 'Hình thức', record.mode, record.allowedModes.map(value => [value, value === 'nhom' ? 'Nhóm' : 'Cá nhân']));
     const group = field(form, 'groupName', 'Tên nhóm *', record.groupName);
     group.maxLength = 100;
@@ -196,6 +182,13 @@
   function render() {
     try {
       const records = service.list(true);
+      const selectedProposal = legacyProposals.find(article => location.hash === `#${article.id}` || location.hash.startsWith(`#${article.id}-`));
+      if (selectedProposal) {
+        const record = records.find(item => item.id === selectedProposal.dataset.requestId);
+        const editingProposal = location.hash === `#${selectedProposal.id}-chinh-sua` && service.permissions(record).edit;
+        location.replace(editingProposal ? `tao-de-xuat.html?proposal=${encodeURIComponent(record.id)}` : proposalUrl(selectedProposal.dataset.requestId));
+        return;
+      }
       editing = false;
       articles.forEach(article => {
         const record = records.find(item => item.id === article.dataset.requestId);
@@ -203,7 +196,7 @@
         const permission = service.permissions(record);
         if (location.hash === `#${slug}-chinh-sua` && !permission.edit) history.replaceState(null, '', `#${slug}`);
         article.dataset.requestActive = String(location.hash === `#${slug}` || location.hash.startsWith(`#${slug}-`));
-        const heading = node('h2', `${record.id} - ${record.kind === 'de-xuat' ? 'Đề xuất đề tài' : 'Đăng ký đề tài'}`);
+        const heading = node('h2', `${record.id} - Đăng ký đề tài`);
         heading.id = `${slug}-title`;
         article.replaceChildren(heading);
         if (record.deletedAt) { article.append(node('p', 'Yêu cầu đã được xóa khỏi danh sách thử. Bản lưu lịch sử vẫn được giữ.')); return; }
@@ -213,7 +206,6 @@
         [['Trạng thái', service.labels[record.status]], ['Hình thức', record.mode === 'nhom' ? 'Nhóm' : 'Cá nhân'], ['Giảng viên tiếp nhận', record.lecturerName], ['Ngày gửi ban đầu', new Date(record.createdAt).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })]].forEach(([label, value]) => row(details, label, value));
         if (record.mode === 'nhom') row(details, 'Tên nhóm', record.groupName);
         row(details, 'Thành viên', record.members.map(member => `${member.name} - ${member.code} - ${member.role === 'nhom-truong' ? 'Nhóm trưởng/người gửi' : 'Thành viên'}`).join('\n'));
-        if (record.kind === 'de-xuat') [['Loại đề tài', record.typeLabel], ['Mô tả', record.description], ['Mục tiêu', record.objectives], ['Phạm vi', record.scope], ['Kết quả dự kiến', record.outcomes]].forEach(([label, value]) => row(details, label, value));
         if (record.resubmittedAt) row(details, 'Gửi lại gần nhất', new Date(record.resubmittedAt).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' }));
         row(details, record.resubmittedAt ? 'Phản hồi trước khi gửi lại' : 'Phản hồi gần nhất', record.feedback);
         row(details, 'Lời nhắn', record.message);
@@ -256,7 +248,7 @@
         records.filter(record => !record.deletedAt).forEach(record => {
           const item = node('li');
           const link = node('a', `${record.id} - ${record.title} - ${service.labels[record.status]}`);
-          link.href = `#${record.id.toLowerCase()}`;
+          link.href = record.kind === 'de-xuat' ? proposalUrl(record.id) : `#${record.id.toLowerCase()}`;
           item.append(link);
           menu.append(item);
         });

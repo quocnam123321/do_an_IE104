@@ -119,7 +119,7 @@
     window.IE104.shared?.proposalOutline?.render(outlinePanel, record);
     text('.request-attachments__file span', record.attachment);
     content.querySelector('.request-attachments').hidden = registration;
-    document.getElementById('proposal-student-preview').href = registration ? `../sinh-vien/chi-tiet-dang-ky-da-luu.html?registration=${encodeURIComponent(record.id)}` : record.source === 'student' ? `../sinh-vien/chi-tiet-de-xuat-da-luu.html?proposal=${encodeURIComponent(record.id)}` : `../sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=${encodeURIComponent(record.id)}`;
+    document.getElementById('proposal-student-preview').href = registration ? `../sinh-vien/chi-tiet-dang-ky-da-luu.html?registration=${encodeURIComponent(record.id)}` : record.source === 'student' ? `../sinh-vien/${globalThis.IE104.services.proposals.detailUrl(record.id)}` : `../sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=${encodeURIComponent(record.id)}`;
     document.getElementById('proposal-student-preview').hidden = record.source === 'uit-demo';
     for (const form of forms) {
       form.querySelector('strong').textContent = `${record.id} — ${record.title}`;

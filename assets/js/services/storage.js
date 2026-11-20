@@ -14,10 +14,11 @@
       const statesValid = parsed.records.every(record => {
         if (!record || ids.has(record.id)) return false;
         ids.add(record.id);
-        if (!['cho-duyet', 'da-duyet', 'tu-choi'].includes(record.status)) return false;
+        if (!['cho-duyet', 'da-dang-ky', 'da-duyet', 'tu-choi'].includes(record.status)) return false;
         if (record.revision !== undefined && (!Number.isInteger(record.revision) || record.revision < 0)) return false;
         if (record.lecturerId !== undefined && (typeof record.lecturerId !== 'string' || !record.lecturerId.trim())) return false;
-        if (record.status !== 'cho-duyet') {
+        if (record.status === 'da-dang-ky' && record.decision !== undefined) return false;
+        if (['da-duyet', 'tu-choi'].includes(record.status)) {
           const decision = record.decision;
           if (!decision || !record.lecturerId || decision.lecturerId !== record.lecturerId || !Number.isFinite(Date.parse(decision.decidedAt)) ||
               typeof decision.reason !== 'string' || decision.registrationRevision !== record.revision - 1 ||

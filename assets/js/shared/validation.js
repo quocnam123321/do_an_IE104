@@ -10,7 +10,10 @@
       name: String(member?.name || '').trim(),
       role: member?.role,
     }));
-    if (!groupName || groupName.length > 100) errors.push({ field: 'groupName', message: 'Nhập tên nhóm từ 1 đến 100 ký tự.' });
+    const groupNameRequired = rules.groupNameRequired !== false;
+    if ((!groupName && groupNameRequired) || groupName.length > 100) {
+      errors.push({ field: 'groupName', message: groupNameRequired ? 'Nhập tên nhóm từ 1 đến 100 ký tự.' : 'Tên nhóm tối đa 100 ký tự.' });
+    }
     if (message.length > 2000) errors.push({ field: 'message', message: 'Lời nhắn tối đa 2000 ký tự.' });
     if (members.length < rules.minMembers || members.length > rules.maxMembers) errors.push({ field: 'members', message: `Nhóm cần từ ${rules.minMembers} đến ${rules.maxMembers} thành viên.` });
     const seen = new Set();

@@ -18,6 +18,7 @@
     },
   };
   const labels = { 'cho-duyet': 'Chờ duyệt', 'da-rut': 'Đã rút', 'da-duyet': 'Đã duyệt', 'tu-choi': 'Từ chối' };
+  const detailUrl = id => `chi-tiet-de-tai-cho-duyet-sinh-vien.html?proposal=${encodeURIComponent(id)}`;
   const clone = value => JSON.parse(JSON.stringify(value));
   const defaultStudent = () => app.data.currentStudent;
   const assignedLecturer = record => app.data.proposalLecturers.find(person => person.choiceId === record.supervisorId)?.id;
@@ -106,7 +107,7 @@
       academicYear: record.academicYear, lecturer: record.supervisorName,
       lecturerLabel: 'Giảng viên nhận đề xuất', groupName: 'Chưa xác nhận',
       status: record.status === 'da-duyet' ? 'dang-thuc-hien' : record.status, statusLabel: record.status === 'da-duyet' ? 'Đang thực hiện' : labels[record.status], requestStatusLabel: labels[record.status], feedback: record.decision?.reason || '', createdAt: record.createdAt,
-      detailUrl: `chi-tiet-de-xuat-da-luu.html?proposal=${encodeURIComponent(record.id)}`,
+      detailUrl: detailUrl(record.id),
     }));
     return [...pending, ...(approved?.list('student') || []).filter(project => project.source === 'approved-proposal').map(project => ({ ...project, requestStatusLabel: 'Đã duyệt', feedback: '' }))];
   }
@@ -150,5 +151,5 @@
     return globalThis.navigator?.locks?.request ? navigator.locks.request(app.storage.proposalKey, apply) : apply();
   }
 
-  app.services.proposals = { catalog, labels, validate, create, findById, update, withdraw, listMyTopics, listForLecturer, decide };
+  app.services.proposals = { catalog, labels, detailUrl, validate, create, findById, update, withdraw, listMyTopics, listForLecturer, decide };
 })();

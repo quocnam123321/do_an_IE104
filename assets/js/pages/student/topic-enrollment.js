@@ -8,6 +8,8 @@
   let rules = service.getRules(topicId);
   const extra = document.getElementById('additional-members');
   const template = document.getElementById('registration-member-template');
+  const groupSize = form.querySelector('.registration-form__group-size');
+  const studentRole = document.getElementById('student-role');
   const add = form.querySelector('.add-member');
   const submit = form.querySelector('.submit-registration');
   const dialog = document.getElementById('registration-confirm-dialog');
@@ -15,7 +17,8 @@
   const confirm = dialog.querySelector('[data-confirm-registration]');
   const errorBox = document.getElementById('registration-error');
   const resultBox = document.getElementById('registration-result');
-  let nextIndex = 3;
+  const availability = document.querySelector('[data-published-availability]');
+  let nextIndex = 2;
   let pending;
   let pendingRevision;
   let availabilityError = false;
@@ -70,11 +73,14 @@
     });
     errorBox.textContent = errors.map(error => error.message).filter((message, index, all) => all.indexOf(message) === index).join(' ');
     errorBox.hidden = false;
-    (first || document.getElementById('student-role')).focus();
+    (first || studentRole).focus();
   }
 
   function refreshMembers() {
     const all = cards();
+    const solo = all.length === 1;
+    if (solo) studentRole.value = 'nhom-truong';
+    studentRole.querySelector('option[value="thanh-vien"]').disabled = solo;
     all.slice(1).forEach((card, index) => {
       const label = `Thành viên ${index + 2}`;
       card.querySelector('strong').textContent = label;
@@ -83,18 +89,33 @@
       remove.setAttribute('aria-label', `Xóa ${label.toLocaleLowerCase('vi')}`);
       card.querySelectorAll('input').forEach(input => { input.required = true; });
     });
+    groupSize.textContent = rules.maxMembers === 1 ? 'Đăng ký cá nhân.' : `Đăng ký từ 1 đến ${rules.maxMembers} thành viên.`;
     add.disabled = all.length >= rules.maxMembers;
   }
 
   function showSaved(record) {
     form.hidden = true;
-    resultBox.replaceChildren(document.createTextNode('Đăng ký thử đã được lưu trên trình duyệt này. '));
-    const link = document.createElement('a');
-    link.href = `chi-tiet-dang-ky-da-luu.html?registration=${encodeURIComponent(record.id)}`;
-    link.textContent = 'Xem đăng ký đã lưu';
-    resultBox.append(link);
+    if (availability) availability.hidden = true;
     resultBox.hidden = false;
     errorBox.hidden = true;
+    if (!service.owns(record)) {
+      resultBox.textContent = 'Đề tài đã có lượt đăng ký trong bản demo.';
+      return;
+    }
+    const projectUrl = service.projectUrl(record);
+    resultBox.textContent = record.status === 'da-dang-ky'
+      ? 'Đã đăng ký thành công. Đề tài đã chuyển sang Đang thực hiện trong bản demo. '
+      : `Đăng ký đã lưu trên trình duyệt này (${service.labels[record.status]}). `;
+    if (projectUrl) {
+      const project = document.createElement('a');
+      project.href = projectUrl;
+      project.textContent = 'Xem chi tiết đề tài';
+      resultBox.append(project, ' · ');
+    }
+    const receipt = document.createElement('a');
+    receipt.href = service.receiptUrl(record.id);
+    receipt.textContent = 'Xem thông tin đăng ký';
+    resultBox.append(receipt);
   }
 
   function checkExisting() {
@@ -105,6 +126,7 @@
         showSaved(record);
       } else {
         form.hidden = false;
+        if (availability) availability.hidden = false;
         resultBox.hidden = true;
         const topic = service.getTopic(topicId);
         rules = service.getRules(topicId);
@@ -131,14 +153,23 @@
         pendingRevision = current.revision;
       }
     } catch (failure) { errorBox.textContent = failure.message; errorBox.hidden = false; return; }
-    const checked = app.validation.validateRegistration(readValue(), rules);
+    const checked = service.validateEnrollment(readValue(), rules);
     if (checked.errors.length) return showErrors(checked.errors);
     clearErrors();
     pending = checked.value;
     review.replaceChildren();
-    const lines = [service.getTopic(topicId).title, `Nhóm: ${pending.groupName}`, ...pending.members.map(member => `${member.code} - ${member.name} - ${member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên'}`)];
+    const lines = [service.getTopic(topicId).title, `Hình thức: ${pending.members.length === 1 ? 'Cá nhân' : 'Theo nhóm'}`];
+    if (pending.groupName) lines.push(`Tên nhóm: ${pending.groupName}`);
+    for (const member of pending.members) {
+      lines.push(`${member.code} - ${member.name}${pending.members.length > 1 ? ` - ${member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên'}` : ''}`);
+    }
     if (pending.message) lines.push(`Lời nhắn: ${pending.message}`);
     lines.forEach(text => { const line = document.createElement('p'); line.textContent = text; review.append(line); });
+    const outcome = document.createElement('p');
+    outcome.id = 'registration-confirm-note';
+    outcome.textContent = 'Sau khi xác nhận, đề tài sẽ chuyển sang Đang thực hiện trong bản demo.';
+    review.append(outcome);
+    dialog.setAttribute('aria-describedby', outcome.id);
     confirm.disabled = false;
     dialog.showModal();
   }
@@ -163,7 +194,7 @@
     button.closest('.member-card').remove();
     clearErrors();
     refreshMembers();
-    add.focus();
+    (add.disabled ? studentRole : add).focus();
   });
   submit.addEventListener('click', showReview);
   form.addEventListener('submit', event => { event.preventDefault(); if (!submit.disabled) showReview(); });
@@ -172,9 +203,11 @@
     saving = true;
     confirm.disabled = true;
     try {
-      const record = await service.submit(topicId,pending,pendingRevision);
+      const record = await service.submit(topicId, pending, pendingRevision);
       dialog.close();
       showSaved(record);
+      resultBox.tabIndex = -1;
+      resultBox.focus();
     } catch (error) {
       dialog.close();
       if (error.fields) showErrors(error.fields);

@@ -16,7 +16,9 @@
       root.setAttribute('aria-label',topic.title);
       document.title = `${topic.title} | Đăng ký đề tài`;
       text('.summary h2',topic.title);
-      const values = [topic.displayId,topic.typeLabel,topic.courseLabel,'Theo nhóm',topic.semester === 'he' ? 'Hè' : topic.semester,topic.academicYear];
+      const { maxMembers } = topic.registrationRules;
+      const mode = maxMembers === 1 ? 'Cá nhân' : 'Cá nhân hoặc theo nhóm';
+      const values = [topic.displayId,topic.typeLabel,topic.courseLabel,mode,topic.semester === 'he' ? 'Hè' : topic.semester,topic.academicYear];
       root.querySelectorAll('.summary__meta dd').forEach((node,index) => { node.textContent = values[index]; });
       text('.supervisor__profile h4',topic.lecturer);
       text('.supervisor__profile p',topic.supervisor.faculty);
@@ -29,11 +31,9 @@
       const file = root.querySelector('.topic-attachments__file');
       const icon = file.querySelector('svg')?.cloneNode(true);
       file.replaceChildren(); if (icon) file.append(icon); file.append(document.createTextNode(topic.attachmentName || 'Chưa có tài liệu đính kèm'));
-      text('.registration-form__group-size',`Nhóm gồm ${topic.registrationRules.minMembers} - ${topic.registrationRules.maxMembers} thành viên`);
       const status = root.querySelector('[data-published-availability]');
       status.textContent = `${topic.availability.label}. Hạn đăng ký: ${new Intl.DateTimeFormat('vi-VN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',timeZone:'Asia/Ho_Chi_Minh'}).format(new Date(topic.registration.deadline))}.`;
       status.dataset.closed = String(!topic.availability.allowed);
-      if (!ready && topic.registrationRules.maxMembers === 1) root.querySelector('#additional-members').replaceChildren();
       if (!ready) {
         const student = app.data.currentStudent;
         root.querySelector('#student-code').value = student?.code || '';

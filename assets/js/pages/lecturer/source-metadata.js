@@ -27,9 +27,16 @@
   function render() {
     defaultImages();
     try {
+      const supervised = new Set(app.services.lecturerTopics.list('supervised').map(topic => topic.workspaceId));
+      for (const record of globalThis.IE104Proposals?.getAll() || []) {
+        if (record.status === 'approved') supervised.add(record.topicId);
+      }
+      for (const project of app.services.approvedProjects?.list('lecturer') || []) {
+        if (project.registrationStatus === 'da-dang-ky') supervised.add(project.id);
+      }
       const counts = {
         'danh-sach-de-tai-da-tao.html': app.services.lecturerTopics.list('created').length,
-        'danh-sach-de-tai-dang-huong-dan.html': app.services.lecturerTopics.list('supervised').length + (globalThis.IE104Proposals?.getAll().filter(item => item.status === 'approved').length || 0),
+        'danh-sach-de-tai-dang-huong-dan.html': supervised.size,
       };
       document.querySelectorAll('.topic-tabs__link').forEach(link => {
         const name = new URL(link.href).pathname.split('/').pop();
@@ -66,6 +73,7 @@
   }
   document.addEventListener('ie104:lecturer-topic-rendered', render);
   document.addEventListener('ie104:lecturer-topics-rendered', render);
+  if (document.querySelector('.topic-tabs__count')) globalThis.IE104Proposals?.subscribe(render);
   app.ui?.lecturerWorkspace?.subscribe(render);
   window.addEventListener('pageshow', render);
   const observer = new MutationObserver(defaultImages);

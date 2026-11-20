@@ -23,7 +23,7 @@
   const dateFormat = new Intl.DateTimeFormat('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', day: '2-digit', month: '2-digit', year: 'numeric' });
   const timeFormat = new Intl.DateTimeFormat('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
   const filters = { total: [], active: ['dang-thuc-hien'], approved: ['dang-thuc-hien', 'hoan-thanh'], pending: ['cho-duyet'], rejected: ['tu-choi'] };
-  const names = { approved: 'Đã duyệt', pending: 'Chờ duyệt', rejected: 'Đã từ chối', withdrawn: 'Đã rút' };
+  const names = { approved: 'Đã bắt đầu', pending: 'Chờ duyệt', rejected: 'Đã từ chối', withdrawn: 'Đã rút' };
 
   function listUrl(statuses) {
     const query = new URLSearchParams();
@@ -73,6 +73,7 @@
       item.append(text);
       return item;
     }));
+    document.querySelector('.registration-status__note').textContent = 'Đã bắt đầu gồm đề tài đang thực hiện và đã hoàn thành. Đề tài đã rút được thống kê riêng.';
   }
 
   function empty(list, text) { const item = document.createElement('li'); item.className = 'overview-empty'; item.textContent = text; list.replaceChildren(item); }

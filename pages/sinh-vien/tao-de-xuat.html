@@ -19,9 +19,12 @@
     <script src="../../assets/js/shared/validation.js" defer></script>
     <script src="../../assets/js/data/proposal-actors.js" defer></script>
     <script src="../../assets/js/services/proposal-service.js" defer></script>
+    <script src="../../assets/js/data/student-requests.js" defer></script>
+    <script src="../../assets/js/services/request-service.js" defer></script>
+    <script src="../../assets/js/proposal-store.js" defer></script>
     <script src="../../assets/js/supervisor-dialog.js" defer></script>
     <script src="../../assets/js/pages/student/proposal-outline.js" defer></script>
-<script src="../../assets/js/pages/student/topic-proposal.js?v=20261115-1" defer></script>
+    <script src="../../assets/js/pages/student/topic-proposal.js" defer></script>
 
 <script src="../../assets/js/dialog-commands.js" defer></script>
 <link rel="stylesheet" href="../../assets/css/proposal-outline.css">
@@ -147,8 +150,9 @@
                     <select id="semester" name="hoc-ky" required>
                       <option value="1" selected>Học kỳ 1</option>
                       <option value="2">Học kỳ 2</option>
-                      <option value="he">Học kỳ hè</option>
+                      <option value="he">Học kỳ 3</option>
                     </select>
+                    <p id="proposal-legacy-semester" class="proposal-form__selected-supervisor" hidden></p>
                   </div>
                   <div class="proposal-form__field">
                     <label for="academic-year">Năm học <span class="proposal-form__required" aria-hidden="true">*</span></label>
@@ -216,6 +220,7 @@
               <div class="proposal-form__actions">
                 <a class="proposal-form__cancel" href="dang-ky-de-tai.html">Hủy</a>
                 <button class="proposal-form__submit" type="button" aria-haspopup="dialog" aria-controls="proposal-confirm-dialog" disabled>Gửi đề xuất</button>
+                <button class="proposal-form__submit" type="submit" data-resubmit-proposal aria-haspopup="dialog" aria-controls="proposal-confirm-dialog" hidden disabled>Lưu và gửi lại</button>
               </div>
             </div>
           </form>
@@ -343,7 +348,7 @@
 
     <dialog id="proposal-confirm-dialog" class="confirmation-dialog" aria-labelledby="proposal-confirm-title">
       <h2 id="proposal-confirm-title">Xác nhận đề xuất thử</h2>
-      <p>Đề xuất sẽ vào hàng chờ giảng viên trong bản demo trên trình duyệt này, chưa gửi qua máy chủ.</p>
+      <p data-proposal-confirm-note>Đề xuất sẽ vào hàng chờ giảng viên trong bản demo trên trình duyệt này, chưa gửi qua máy chủ.</p>
       <dl data-proposal-review></dl>
       <p data-proposal-error class="proposal-field-error" role="alert" tabindex="-1" hidden></p>
       <div class="proposal-review-actions">

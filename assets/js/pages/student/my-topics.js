@@ -26,7 +26,8 @@
     values[0].textContent = `${topic.displayId || topic.id} - ${topic.typeLabel}`;
     values[1].textContent = topic.lecturer;
     values[2].textContent = topic.groupName;
-    values[3].textContent = `Học kỳ ${topic.semester === 'he' ? 'hè' : topic.semester} ${topic.academicYear}`;
+    const semester = topic.semester ? `Học kỳ ${topic.semester}` : 'Học kỳ chưa xác định';
+    values[3].textContent = [semester, topic.academicYear.replace('-', '–')].filter(Boolean).join(' • ');
     lecturerLabel.textContent = topic.lecturerLabel;
     status.className = `topic-card__status topic-card__status--${statusStyles[topic.status]}`;
     status.textContent = topic.statusLabel;

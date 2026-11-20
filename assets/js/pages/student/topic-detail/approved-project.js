@@ -16,7 +16,7 @@
       document.title = `${project.title} | Đề tài của tôi`;
       text('[data-approved-title]', project.title);
       text('#project-title', project.title);
-      const fields = [project.id, project.typeLabel, project.courseLabel, project.semester === 'he' ? 'Hè' : project.semester, project.academicYear, project.lecturer, project.statusLabel];
+      const fields = [project.displayId || project.id, project.typeLabel, project.courseLabel, project.semester === 'he' ? 'Hè' : project.semester, project.academicYear, project.lecturer, project.statusLabel];
       document.querySelectorAll('.project-summary__meta dd').forEach((node, index) => { node.textContent = fields[index]; node.classList.remove('project-summary__status--completed'); });
       text('.project-description__text', project.description);
       text('.project-objectives__text', project.objectives);

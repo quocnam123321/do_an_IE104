@@ -111,7 +111,7 @@
 <input id="lecturer-avatar-file" type="file" accept="image/png,image/jpeg" hidden>
           <div class="lecturer-profile profile-layout">
             <!-- Vùng chờ ảnh; chỉ thêm thẻ img khi có nguồn ảnh hợp lệ. -->
-            <section aria-label="Ảnh đại diện giảng viên" class="lecturer-profile__avatar-panel">
+            <section aria-label="Ảnh đại diện giảng viên" class="lecturer-profile__avatar-panel profile-avatar-panel">
               <figure class="profile-avatar">
                 <div class="profile-avatar__placeholder">
                   <p>
@@ -245,11 +245,11 @@
           Hồ sơ thử chỉ lưu trên trình duyệt này, chưa cập nhật tài khoản trên hệ thống.
         </p>
         <p id="lecturer-profile-error" role="alert" tabindex="-1" hidden></p>
-<button type="button" command="close" commandfor="profile-edit-dialog">Hủy</button>
-        <button type="reset">Đặt lại</button>
-        <button data-profile-save disabled="" type="submit">
-          Lưu thay đổi
-        </button>
+        <div class="profile-edit__actions">
+          <button type="button" command="close" commandfor="profile-edit-dialog">Hủy</button>
+          <button type="reset">Đặt lại</button>
+          <button data-profile-save disabled="" type="submit">Lưu thay đổi</button>
+        </div>
       </form>
     </dialog>
     <!-- HỘP THOẠI ĐỔI MẬT KHẨU -->

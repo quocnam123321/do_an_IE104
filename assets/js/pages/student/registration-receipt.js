@@ -11,12 +11,17 @@
       const title = document.createElement('h3');
       title.textContent = record.topic.title;
       const details = document.createElement('dl');
-      const fields = [['Mã yêu cầu', record.id], ['Mã đề tài', record.topic.displayId || record.topic.id], ['Nhóm', record.groupName],
-        ['Trạng thái', service.labels[record.status]], ['Ngày lưu', new Date(record.createdAt).toLocaleString('vi-VN')]];
+      const projectUrl = service.projectUrl(record);
+      const solo = record.members.length === 1;
+      const fields = [['Mã yêu cầu', record.id], ['Mã đề tài', record.topic.displayId || record.topic.id], ['Hình thức', solo ? 'Cá nhân' : 'Theo nhóm']];
+      if (record.groupName.trim()) fields.push(['Tên nhóm', record.groupName]);
+      fields.push(['Trạng thái đăng ký', service.labels[record.status]]);
+      if (projectUrl) fields.push(['Trạng thái đề tài', 'Đang thực hiện']);
+      fields.push(['Ngày đăng ký', new Date(record.createdAt).toLocaleString('vi-VN')]);
       if (record.message) fields.push(['Lời nhắn', record.message]);
       if (record.decision) fields.push(['Ngày xử lý', new Date(record.decision.decidedAt).toLocaleString('vi-VN')]);
       if (record.decision?.reason) fields.push(['Lý do từ chối', record.decision.reason]);
-      if (!record.lecturerId) fields.push(['Xét duyệt', 'Đăng ký mẫu cũ chưa có mã giảng viên nhận.']);
+      if (record.status === 'cho-duyet' && !record.lecturerId) fields.push(['Xét duyệt', 'Đăng ký mẫu cũ chưa có mã giảng viên nhận.']);
       fields.forEach(([label, value]) => {
         const row = document.createElement('div');
         const term = document.createElement('dt');
@@ -29,14 +34,14 @@
       const members = document.createElement('ul');
       record.members.forEach(member => {
         const item = document.createElement('li');
-        item.textContent = `${member.code} - ${member.name} - ${member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên'}`;
+        item.textContent = `${member.code} - ${member.name}${solo ? '' : ` - ${member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên'}`}`;
         members.append(item);
       });
       content.replaceChildren(title, details, members);
-      if (record.status === 'da-duyet') {
+      if (projectUrl) {
         const link = document.createElement('a');
-        link.href = `chi-tiet-de-tai-da-duyet-sinh-vien.html?project=${encodeURIComponent(`DT-${record.id}`)}`;
-        link.textContent = 'Xem đề tài đang thực hiện';
+        link.href = projectUrl;
+        link.textContent = 'Xem chi tiết đề tài';
         content.append(link);
       }
     } catch (error) { content.textContent = error.message; }

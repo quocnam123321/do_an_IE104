@@ -49,7 +49,9 @@
       attachment: 'De_cuong_de_tai.pdf',
     },
   ].map((record) => ({ submittedAt: '', semester: '', academicYear: '', ...record }));
-  const seeds = window.IE104?.data?.lecturerRealProposalSeeds || legacySeeds;
+  const realSeeds = window.IE104?.data?.lecturerRealProposalSeeds;
+  const seeds = realSeeds || legacySeeds;
+  const canViewSeed = () => !window.IE104?.data?.currentLecturer || window.IE104.data.currentLecturer.id === 'GV001';
   const listeners = new Set();
   let readError = '';
 
@@ -65,16 +67,30 @@
     return { status: decision.status, reason: decision.reason, decidedAt: decision.decidedAt };
   }
 
+  function seedRecord(seed) {
+    let decision;
+    try { decision = readDecision(seed.id); }
+    catch { readError = 'Không đọc được dữ liệu đã lưu. Kiểm tra quyền lưu trữ của trình duyệt trước khi xử lý đề xuất.'; }
+    const record = { ...seed, status: 'pending', reason: '', decidedAt: '', ...decision };
+    record.topicStatus = record.status === 'approved' ? 'in-progress' : record.status;
+    return record;
+  }
+
+  function getApprovedSeed(topicId) {
+    if (!canViewSeed()) return null;
+    const seed = seeds.find((record) => record.topicId === topicId) ||
+      legacySeeds.find((record) => record.topicId === topicId);
+    const record = seed && seedRecord(seed);
+    return record?.status === 'approved' ? record : null;
+  }
+
   function getAll() {
     readError = '';
-    const initial = seeds.filter(() => !window.IE104?.data?.currentLecturer || window.IE104.data.currentLecturer.id === 'GV001').map((seed) => {
-      let decision;
-      try { decision = readDecision(seed.id); }
-      catch { readError = 'Không đọc được dữ liệu đã lưu. Kiểm tra quyền lưu trữ của trình duyệt trước khi xử lý đề xuất.'; }
-      const record = { ...seed, status: 'pending', reason: '', decidedAt: '', ...decision };
-      record.topicStatus = record.status === 'approved' ? 'in-progress' : record.status;
-      return record;
-    });
+    const initial = canViewSeed() ? seeds.map(seedRecord) : [];
+    // Giữ các quyết định đã duyệt từ bộ dữ liệu cũ khi dùng danh mục UIT.
+    if (realSeeds && canViewSeed()) {
+      initial.push(...legacySeeds.map(seedRecord).filter((record) => record.status === 'approved'));
+    }
     let saved = [];
     try { saved = window.IE104?.services?.proposals?.listForLecturer() || []; }
     catch (error) { readError = error.message; }
@@ -122,6 +138,12 @@
   window.IE104Proposals = Object.freeze({
     getAll,
     get: (id) => getAll().find((record) => record.id === id),
+    getSeed: (id) => {
+      const seed = seeds.find(record => record.id === id) || legacySeeds.find(record => record.id === id);
+      return canViewSeed() && seed ? seedRecord(seed) : null;
+    },
+    getSeedDecision: readDecision,
+    getApprovedSeed,
     getError: () => readError,
     decide,
     subscribe: (listener) => { listeners.add(listener); return () => listeners.delete(listener); },

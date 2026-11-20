@@ -163,7 +163,7 @@
                 <div><dt>Mã đề tài</dt><dd>MẪU-04</dd></div>
                 <div><dt>Loại đề tài</dt><dd>Khóa luận tốt nghiệp</dd></div>
                 <div><dt>Môn học</dt><dd>Không áp dụng</dd></div>
-                <div><dt>Hình thức</dt><dd>Theo nhóm</dd></div>
+                <div><dt>Hình thức</dt><dd>Cá nhân hoặc theo nhóm</dd></div>
                 <div><dt>Học kỳ</dt><dd>7</dd></div>
                 <div><dt>Năm học</dt><dd>2026 - 2027</dd></div>
               </dl>
@@ -245,7 +245,7 @@
                   <li><span>Đọc kỹ yêu cầu trước khi đăng ký.</span></li>
                   <li><span>Kiểm tra thông tin và thành viên nhóm.</span></li>
                   <li><span>Đăng ký sẽ được gửi đến giảng viên để xem xét.</span></li>
-                  <li><span>Theo dõi phản hồi trong “Đề tài của tôi”.</span></li>
+                  <li><span>Mở đề tài đang thực hiện trong “Đề tài của tôi”.</span></li>
                 </ol>
               </aside>
               <section id="topic-registration" class="panel" aria-labelledby="registration-title">
@@ -253,12 +253,12 @@
                 Thông tin đăng ký
               </h3>
               <form class="registration-form" data-topic-id="MẪU-04">
-                <p class="registration-form__group-size">Nhóm gồm 2 - 3 thành viên</p>
+                <p class="registration-form__group-size">Đăng ký từ 1 đến 3 thành viên.</p>
                 <div>
                   <label for="group-name">
-                    Tên nhóm
+                    Tên nhóm (không bắt buộc)
                   </label>
-                  <input id="group-name" name="ten-nhom" placeholder="Nhập tên nhóm" maxlength="100" required>
+                  <input id="group-name" name="ten-nhom" placeholder="Nhập tên nhóm" maxlength="100">
                 </div>
                 <fieldset>
                   <legend>
@@ -293,37 +293,7 @@
                     </div>
                     <p>Điền sẵn từ tài khoản, có thể chỉnh sửa.</p>
                   </div>
-                  <div id="additional-members">
-                    <div class="member-card" aria-labelledby="member-title-2">
-                      <div class="member-heading">
-                        <strong id="member-title-2">Thành viên 2</strong>
-                        <button type="button" class="remove-member" aria-label="Xóa thành viên 2" disabled>
-                          Xóa
-                        </button>
-                      </div>
-                      <div class="member-fields">
-                        <div>
-                          <label for="member-code-2">
-                            MSSV
-                          </label>
-                          <input id="member-code-2" name="thanh-vien-2-mssv" type="text" placeholder="Nhập MSSV" maxlength="20">
-                        </div>
-                        <div>
-                          <label for="member-name-2">
-                            Họ tên
-                          </label>
-                          <input id="member-name-2" name="thanh-vien-2-ho-ten" type="text" placeholder="Nhập họ tên" maxlength="100">
-                        </div>
-                      </div>
-                      <div>
-                        <label for="member-role-2">Vai trò</label>
-                        <select id="member-role-2" name="thanh-vien-2-vai-tro">
-                          <option value="thanh-vien" selected>Thành viên</option>
-                          <option value="nhom-truong">Nhóm trưởng</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
+                  <div id="additional-members"></div>
                   <button class="add-member" type="button" aria-controls="additional-members" disabled>+ Thêm thành viên</button>
                   <!-- Mẫu tái sử dụng khi bổ sung xử lý thêm thành viên.
                        Thay INDEX bằng số thứ tự duy nhất trước khi chèn vào danh sách.
@@ -362,22 +332,22 @@
                 </div>
                 <div>
                   <button class="submit-registration" type="button" aria-haspopup="dialog" aria-controls="registration-confirm-dialog" disabled>
-                    Gửi yêu cầu đăng ký
+                    Đăng ký đề tài
                   </button>
                 </div>
               </form>
               <p id="registration-error" class="form-error" role="alert" hidden>Vui lòng kiểm tra lại thông tin đăng ký.</p>
-              <p id="registration-result" class="form-result" role="status" hidden>Yêu cầu đăng ký đã được ghi nhận.</p>
+              <p id="registration-result" class="form-result" role="status" hidden></p>
               <template id="registration-already-sent-template">
                 <div class="registration-state" role="status">
-                  <p>Bạn đã gửi yêu cầu đăng ký đề tài này.</p>
-                  <a href="de-tai-cua-toi-sinh-vien.html">Theo dõi trong Đề tài của tôi</a>
+                  <p>Bạn đã đăng ký đề tài này.</p>
+                  <a href="de-tai-cua-toi-sinh-vien.html">Xem Đề tài của tôi</a>
                 </div>
               </template>
               <template id="registration-closed-template">
                 <div class="registration-state" role="status">
                   <p>Đề tài đã đóng đăng ký.</p>
-                  <button type="button" disabled>Gửi yêu cầu đăng ký</button>
+                  <button type="button" disabled>Đăng ký đề tài</button>
                 </div>
               </template>
               </section>
@@ -418,9 +388,9 @@
       </div>
     </footer>
     <dialog id="registration-confirm-dialog" class="confirmation-dialog registration-review" aria-labelledby="registration-confirm-title">
-      <header><h2 id="registration-confirm-title">Xác nhận đăng ký thử</h2><button type="button" commandfor="registration-confirm-dialog" command="close" aria-label="Đóng xác nhận đăng ký">×</button></header>
+      <header><h2 id="registration-confirm-title">Xác nhận đăng ký đề tài</h2><button type="button" commandfor="registration-confirm-dialog" command="close" aria-label="Đóng xác nhận đăng ký">×</button></header>
       <div data-registration-review></div>
-      <footer><button type="button" commandfor="registration-confirm-dialog" command="close">Quay lại chỉnh sửa</button><button type="button" data-confirm-registration disabled>Lưu đăng ký thử</button></footer>
+      <footer><button type="button" commandfor="registration-confirm-dialog" command="close">Quay lại chỉnh sửa</button><button type="button" data-confirm-registration disabled>Xác nhận đăng ký</button></footer>
     </dialog>
   </body>
 </html>

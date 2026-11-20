@@ -6,7 +6,7 @@
   const status = document.getElementById('supervisor-selection-status');
   const savedId = document.getElementById('supervisor-id');
   const savedLabel = document.getElementById('selected-supervisor');
-  const options = Array.from(dialog.querySelectorAll('.supervisor-dialog__option'));
+  const options = () => Array.from(dialog.querySelectorAll('.supervisor-dialog__option'));
   const empty = dialog.querySelector('.supervisor-dialog__empty');
   const normalize = (value) => value.toLocaleLowerCase('vi').normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
@@ -47,15 +47,16 @@
 
   search.addEventListener('input', () => {
     const query = normalize(search.value);
-    options.forEach((option) => {
+    const choices = options();
+    choices.forEach((option) => {
       option.hidden = !normalize(option.textContent).includes(query);
     });
-    empty.hidden = options.some((option) => !option.hidden);
+    empty.hidden = choices.some((option) => !option.hidden);
   });
 
   openButton.addEventListener('click', () => {
     search.value = '';
-    options.forEach((option) => {
+    options().forEach((option) => {
       option.hidden = false;
       const radio = option.querySelector('input');
       radio.checked = radio.value === savedId.value;

@@ -3,19 +3,26 @@
   const kind = document.body.dataset.lecturerList;
   if (!service || !kind) return;
   const container = document.querySelector('.topic-list');
-  const template = container?.querySelector('.topic-card')?.cloneNode(true);
-  if (!container || !template) return;
+  const firstCard = container?.querySelector('.topic-card');
+  if (!firstCard) return;
+  // Danh sách đã tạo dùng li bọc thẻ, còn danh sách đang hướng dẫn chứa thẻ trực tiếp.
+  const listItemFor = card => card.parentElement.matches('li') ? card.parentElement : card;
+  const template = listItemFor(firstCard).cloneNode(true);
   function render() {
     let topics;
     const results = container.closest('[data-topic-results]');
     try { topics = service.list(kind); if (results) delete results.dataset.topicSourceError; }
     catch (failure) { container.replaceChildren(); if (results) results.dataset.topicSourceError = failure.message; return; }
     container.querySelectorAll('.topic-card:not([data-approved-proposal])').forEach(card => {
-      if (!topics.some(topic => topic.id === card.dataset.topicId)) card.remove();
+      if (!topics.some(topic => topic.id === card.dataset.topicId)) listItemFor(card).remove();
     });
     topics.forEach(topic => {
       let card = [...container.querySelectorAll('.topic-card:not([data-approved-proposal])')].find(node => node.dataset.topicId === topic.id);
-      if (!card) { card = template.cloneNode(true); container.append(card); }
+      if (!card) {
+        const item = template.cloneNode(true);
+        card = item.matches('.topic-card') ? item : item.querySelector('.topic-card');
+        container.append(item);
+      }
       card.dataset.topicId = topic.id;
       const link = card.querySelector('.topic-card__detail-link');
       const title = card.querySelector('.topic-card__title');
@@ -53,7 +60,7 @@
   }
   function refreshReturn(event) {
     const link = event.target.closest('.topic-card__detail-link');
-    if (!link || !container.contains(link) || link.closest('[data-approved-proposal]')) return;
+    if (!link || !container.contains(link)) return;
     const url = new URL(link.href);
     url.searchParams.set('return', location.pathname.split('/').pop() + location.search);
     link.href = url.href;

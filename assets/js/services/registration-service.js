@@ -1,13 +1,21 @@
 (() => {
   const app = globalThis.IE104 = globalThis.IE104 || {};
   app.services = app.services || {};
+  const defaultRules = { minMembers: 1, maxMembers: 3 };
+  const labels = { 'cho-duyet': 'Chờ duyệt', 'da-dang-ky': 'Đã đăng ký', 'da-duyet': 'Đã duyệt', 'tu-choi': 'Từ chối' };
+  const owns = record => record.members.some(member => member.code === app.data.currentStudent?.code);
+  const isActive = record => record.status === 'da-dang-ky' || record.status === 'da-duyet';
+  const receiptUrl = id => `chi-tiet-dang-ky-da-luu.html?registration=${encodeURIComponent(id)}`;
+  const projectUrl = record => isActive(record) && owns(record)
+    ? `chi-tiet-de-tai-da-duyet-sinh-vien.html?project=${encodeURIComponent(`DT-${record.id}`)}`
+    : null;
 
   function getTopic(id) {
     return (app.data.openTopics || []).find(topic => topic.id === id) || app.services.publishedTopics?.get(id);
   }
 
   function getRules(id) {
-    return getTopic(id)?.registrationRules || { minMembers: 2, maxMembers: 3 };
+    return getTopic(id)?.registrationRules || { ...defaultRules };
   }
 
   function findByTopic(id) {
@@ -18,11 +26,17 @@
     return app.storage.readRegistrations().find(record => record.id === id);
   }
 
+  function validateEnrollment(payload, rules = defaultRules) {
+    const checked = app.validation.validateRegistration(payload, { ...rules, groupNameRequired: false });
+    if (!owns(checked.value)) checked.errors.push({ field: 'members.0.code', message: 'Nhóm đăng ký cần có MSSV của bạn.' });
+    return checked;
+  }
+
   function create(id, payload, expectedRevision) {
     let topic = getTopic(id);
     if (topic?.source === 'lecturer-created') topic = app.services.publishedTopics.requireOpen(id,expectedRevision);
     if (!topic) throw new Error('Không tìm thấy đề tài để đăng ký.');
-    const validation = app.validation.validateRegistration(payload, getRules(id));
+    const validation = validateEnrollment(payload, topic.registrationRules);
     if (validation.errors.length) {
       const error = new Error('Vui lòng kiểm tra thông tin nhóm.');
       error.fields = validation.errors;
@@ -31,12 +45,14 @@
     const records = app.storage.readRegistrations();
     if (records.some(record => record.topic.id === id)) throw new Error('Đề tài này đã có đăng ký thử trên trình duyệt này.');
     const suffix = globalThis.crypto?.randomUUID?.() || `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+    const lecturerId = topic.ownerId || topic.lecturerId;
     const record = {
       id: `DK-${suffix}`,
       topic: { ...topic },
-      ...(topic.source === 'lecturer-created' ? { catalogRevision:topic.revision, lecturerId:topic.ownerId } : {}),
+      ...(topic.source === 'lecturer-created' ? { catalogRevision: topic.revision } : {}),
+      ...(lecturerId ? { lecturerId } : {}),
       ...validation.value,
-      status: 'cho-duyet',
+      status: 'da-dang-ky',
       revision: 0,
       createdAt: new Date().toISOString(),
     };
@@ -52,17 +68,13 @@
     return topic?.source === 'lecturer-created' ? navigator.locks.request(app.services.lecturerTopicRepository.key,lockRegistration) : lockRegistration();
   }
 
-  const labels = { 'cho-duyet': 'Chờ duyệt', 'da-duyet': 'Đã duyệt', 'tu-choi': 'Từ chối' };
-  const owns = record => record.members.some(member => member.code === app.data.currentStudent?.code);
-  const receiptUrl = id => `chi-tiet-dang-ky-da-luu.html?registration=${encodeURIComponent(id)}`;
-
   function save(records) {
     app.storage.writeRegistrations(records);
     globalThis.dispatchEvent?.(new Event('ie104:registrations-updated'));
   }
 
   function listForLecturer() {
-    return app.storage.readRegistrations().filter(record => record.lecturerId && record.lecturerId === app.data.currentLecturer?.id).map(record => {
+    return app.storage.readRegistrations().filter(record => record.status !== 'da-dang-ky' && record.lecturerId && record.lecturerId === app.data.currentLecturer?.id).map(record => {
       const topic = record.topic;
       const leader = record.members.find(member => member.role === 'nhom-truong');
       const describe = value => Array.isArray(value) ? value.join('\n') : value || '';
@@ -103,8 +115,9 @@
   }
 
   function listMyTopics() {
-    const pending = app.storage.readRegistrations().filter(record => owns(record) && !(record.status === 'da-duyet' && app.services.approvedProjects)).map(record => {
+    const otherTopics = app.storage.readRegistrations().filter(record => owns(record) && !(isActive(record) && app.services.approvedProjects)).map(record => {
       const topic = record.topic;
+      const active = isActive(record);
       return {
         id: topic.id,
         requestId: record.id,
@@ -116,16 +129,17 @@
         semester: topic.semester,
         academicYear: topic.academicYear || '2026-2027',
         lecturer: topic.lecturer,
-        lecturerLabel: 'Giảng viên nhận đăng ký',
+        lecturerLabel: active ? 'Giảng viên hướng dẫn' : 'Giảng viên nhận đăng ký',
         groupName: record.groupName,
-        status: record.status,
-        statusLabel: labels[record.status], requestStatusLabel: labels[record.status], feedback: record.decision?.reason || '',
+        status: active ? 'dang-thuc-hien' : record.status,
+        statusLabel: active ? 'Đang thực hiện' : labels[record.status], requestStatusLabel: labels[record.status], feedback: record.decision?.reason || '',
         createdAt: record.createdAt,
-        detailUrl: `chi-tiet-dang-ky-da-luu.html?registration=${encodeURIComponent(record.id)}`,
+        detailUrl: projectUrl(record) || receiptUrl(record.id),
+        requestDetailUrl: receiptUrl(record.id),
       };
     });
-    return [...pending, ...(app.services.approvedProjects?.list('student') || []).filter(project => project.source === 'approved-registration').map(project => ({ ...project, requestStatusLabel: 'Đã duyệt', feedback: '' }))];
+    return [...otherTopics, ...(app.services.approvedProjects?.list('student') || []).filter(project => project.source === 'approved-registration')];
   }
 
-  app.services.registrations = { getTopic, getRules, findByTopic, findById, create, submit, listMyTopics, listForLecturer, decide, labels, owns, receiptUrl };
+  app.services.registrations = { getTopic, getRules, findByTopic, findById, validateEnrollment, create, submit, listMyTopics, listForLecturer, decide, labels, owns, receiptUrl, projectUrl };
 })();

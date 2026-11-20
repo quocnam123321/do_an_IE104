@@ -459,17 +459,8 @@
 
 /* Khung ảnh đề tài 16:9 đồng nhất cho cả ảnh thật và ảnh mặc định */
 .topic-card__media {
-  width: 100%;
-  aspect-ratio: 16 / 9;
   border-radius: var(--radius-md);
-  overflow: hidden;
   background-color: var(--media-placeholder-bg);
-}
-
-.topic-card__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .topic-card__image-placeholder {
@@ -485,6 +476,10 @@
   border-radius: var(--radius-md);
   background-color: var(--media-placeholder-bg);
   color: var(--media-placeholder-icon);
+}
+
+.topic-card__image-placeholder:has(> img) {
+  padding: 0;
 }
 
 .topic-card__placeholder-icon {

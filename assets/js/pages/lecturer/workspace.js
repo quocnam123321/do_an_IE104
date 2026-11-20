@@ -58,13 +58,13 @@
     const cover = el('img', null, 'gv-default-cover'); cover.src = '../../assets/images/uit-logo.png'; cover.alt = 'Ảnh UIT mặc định';
     card.append(cover, el('h2', current.project.title));
     const dl = el('dl', '', 'teaching-metadata');
-    const fields = [['Mã đề tài', current.project.topicId || current.project.id], ['Loại đề tài', current.project.typeLabel], ['Môn học', current.project.courseLabel || current.project.courseId || 'Không áp dụng'], ['Vai trò hướng dẫn', current.project.roleLabel || 'Chưa có thông tin'], ['Nhóm thực hiện', current.project.groupName], ['Trạng thái', current.project.statusLabel || 'Đang thực hiện'], ['Học kỳ', current.project.semester], ['Năm học', current.project.academicYear]];
-    fields.forEach(([name, value]) => { const row = el('div'); row.append(el('dt', name), el('dd', value)); dl.append(row); });
+    const fields = [['Mã đề tài', current.project.displayId || current.project.topicId || current.project.id], ['Loại đề tài', current.project.typeLabel], ['Môn học', current.project.courseLabel || current.project.courseId || 'Không áp dụng'], ['Vai trò hướng dẫn', current.project.roleLabel || 'Chưa có thông tin'], ['Nhóm thực hiện', current.project.groupName], ['Trạng thái', current.project.statusLabel || 'Đang thực hiện'], ['Học kỳ', current.project.semester], ['Năm học', current.project.academicYear]];
+    fields.forEach(([name, value]) => { const row = el('div'); row.append(el('dt', name), el('dd', value || 'Chưa có thông tin')); dl.append(row); });
     card.append(dl, el('h3', 'Nhóm thực hiện'));
     if (!current.team.members.length) card.append(el('p', 'Chưa có thông tin thành viên nhóm.'));
     current.team.members.forEach(member => card.append(el('p', `${member.name} - ${member.code}${member.role === 'nhom-truong' ? ' - Nhóm trưởng' : ''}`)));
     if (['approved-proposal', 'approved-registration'].includes(current.project.source)) {
-      for (const [name, value] of [['Mô tả đề tài', current.project.description], ['Mục tiêu', current.project.objectives], ['Kết quả dự kiến', current.project.outcomes]]) card.append(el('h3', name), el('p', value));
+      for (const [name, value] of [['Mô tả đề tài', current.project.description], ['Mục tiêu', current.project.objectives], ['Kết quả dự kiến', current.project.outcomes]]) card.append(el('h3', name), el('p', value || 'Chưa có thông tin'));
     }
     if (current.project.outline && app.shared?.proposalOutline) {
       const outlinePanel = el('section');
@@ -93,7 +93,6 @@
       state = null;
       document.querySelector('.page-header__topic-name').textContent = 'Không thể mở đề tài';
       delete document.body.dataset.projectId;
-      select.value = projectId;
       overview.replaceChildren(el('p', failure.message, 'teaching-notice'));
       subscribers.forEach(render => render(null));
       notify(failure.message, true);

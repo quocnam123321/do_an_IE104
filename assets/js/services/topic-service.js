@@ -2,6 +2,10 @@
   const app = globalThis.IE104 = globalThis.IE104 || {};
   app.services = app.services || {};
   const nameOrder = new Intl.Collator('vi', { sensitivity: 'base', numeric: true });
+  const projectTypeByLabel = new Map([
+    ['Đồ án môn học', 'do-an-mon-hoc'],
+    ['Đồ án tốt nghiệp', 'do-an-tot-nghiep'],
+  ]);
 
   function normalizeText(value) {
     return String(value ?? '')
@@ -55,10 +59,26 @@
   }
 
   function listOpenTopics(filters, pagination) {
-    let published = []; let warning = '';
+    let published = [];
+    let registered = new Set();
+    const warnings = [];
     try { published = app.services.publishedTopics?.list() || []; }
-    catch (failure) { warning = failure.message; }
-    return { ...listTopics([...(app.data?.openTopics || []),...published],filters,pagination), warning };
+    catch (failure) { warnings.push(failure.message); }
+    try {
+      registered = new Set((app.storage?.readRegistrations() || [])
+        .filter(record => ['da-dang-ky', 'da-duyet'].includes(record.status)).map(record => record.topic.id));
+    } catch (failure) { warnings.push(failure.message); }
+    const openTopics = [...(app.data?.openTopics || []), ...published].filter(topic => !registered.has(topic.id));
+    return { ...listTopics(openTopics, filters, pagination), warning: warnings.join(' ') };
+  }
+
+  function normalizeMyTopic(topic) {
+    const type = topic.type === 'do-an' ? projectTypeByLabel.get(topic.typeLabel) || topic.type : topic.type;
+    const semester = String(topic.semester ?? '').trim();
+    // Các nguồn đã lưu dùng "he" hoặc "summer" cho kỳ thứ ba. Kỳ ngoài 1–3 chưa có thông tin để quy đổi.
+    const academicSemester = ['he', 'summer'].includes(semester) ? '3' : (/^[1-3]$/.test(semester) ? semester : '');
+    const academicYear = String(topic.academicYear ?? '').trim().replace(/\s*[-–]\s*/g, '-');
+    return { ...topic, type, semester: academicSemester, academicYear };
   }
 
   function listMyTopics(filters, pagination) {
@@ -71,7 +91,8 @@
     let initial = app.data?.myTopics || [];
     try { if (app.services.requests) initial = app.services.requests.applyToTopics(initial); }
     catch (error) { warnings.push(error.message); }
-    return { ...listTopics([...initial, ...saved], filters, pagination), warning: warnings.join(' ') };
+    const topics = [...initial, ...saved].map(normalizeMyTopic);
+    return { ...listTopics(topics, filters, pagination), warning: warnings.join(' ') };
   }
 
   app.services.topics = { listOpenTopics, listMyTopics, normalizeText };
