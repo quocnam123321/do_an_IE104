@@ -9,8 +9,9 @@
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/common.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/information.css?v=20261111-heading-sync-1" />
+    <link rel="stylesheet" href="../../assets/css/information.css?v=20261117-contact-strip-3" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
+    <script src="../../assets/js/contact-form.js" defer></script>
   </head>
   <body class="common-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
@@ -48,79 +49,318 @@
     <main id="main-content" class="contact-page" tabindex="-1">
       <div class="page-container">
         <div class="contact-layout">
+          <div class="contact-layout__backdrop" aria-hidden="true">
+            <svg class="contact-layout__backdrop-svg" viewBox="0 0 1440 620" preserveAspectRatio="xMidYMid slice" focusable="false">
+              <defs>
+                <linearGradient id="contact-ribbon-1" x1="0%" y1="100%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#93c5fd" stop-opacity="0.45" />
+                  <stop offset="42%" stop-color="#bfdbfe" stop-opacity="0.68" />
+                  <stop offset="100%" stop-color="#ffffff" stop-opacity="0.2" />
+                </linearGradient>
+                <linearGradient id="contact-ribbon-2" x1="0%" y1="85%" x2="100%" y2="15%">
+                  <stop offset="0%" stop-color="#60a5fa" stop-opacity="0.32" />
+                  <stop offset="50%" stop-color="#93c5fd" stop-opacity="0.54" />
+                  <stop offset="100%" stop-color="#eff6ff" stop-opacity="0.3" />
+                </linearGradient>
+                <linearGradient id="contact-ribbon-edge" x1="0%" y1="100%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.88" />
+                  <stop offset="50%" stop-color="#93c5fd" stop-opacity="0.92" />
+                  <stop offset="100%" stop-color="#ffffff" stop-opacity="0.7" />
+                </linearGradient>
+                <radialGradient id="contact-orb-glow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.96" />
+                  <stop offset="45%" stop-color="#93c5fd" stop-opacity="0.65" />
+                  <stop offset="100%" stop-color="#60a5fa" stop-opacity="0" />
+                </radialGradient>
+              </defs>
+              <g class="contact-backdrop__wave contact-backdrop__wave--back">
+                <path d="M-120,440 C120,560 360,645 640,545 C920,445 1130,210 1560,260 L1560,650 L-120,650 Z" fill="url(#contact-ribbon-1)" />
+                <path d="M-120,440 C120,560 360,645 640,545 C920,445 1130,210 1560,260" fill="none" stroke="url(#contact-ribbon-edge)" stroke-width="2.2" />
+              </g>
+              <g class="contact-backdrop__wave contact-backdrop__wave--mid">
+                <path d="M-100,490 C180,625 460,605 745,435 C1015,275 1225,135 1540,95 L1540,415 C1240,385 1010,495 730,580 C430,665 150,620 -100,565 Z" fill="url(#contact-ribbon-2)" />
+                <path d="M-100,490 C180,625 460,605 745,435 C1015,275 1225,135 1540,95" fill="none" stroke="url(#contact-ribbon-edge)" stroke-width="1.8" />
+              </g>
+              <circle class="contact-backdrop__orb contact-backdrop__orb--1" cx="140" cy="120" r="14" fill="url(#contact-orb-glow)" />
+              <circle class="contact-backdrop__orb contact-backdrop__orb--2" cx="460" cy="95" r="18" fill="url(#contact-orb-glow)" />
+              <circle class="contact-backdrop__orb contact-backdrop__orb--3" cx="560" cy="280" r="12" fill="url(#contact-orb-glow)" />
+              <circle class="contact-backdrop__orb contact-backdrop__orb--4" cx="110" cy="460" r="16" fill="url(#contact-orb-glow)" />
+              <circle class="contact-backdrop__orb contact-backdrop__orb--5" cx="690" cy="510" r="20" fill="url(#contact-orb-glow)" />
+            </svg>
+          </div>
+
           <!-- Wireframe_Nhom7: phần giới thiệu và biểu mẫu liên hệ. -->
           <section class="contact-intro" aria-labelledby="contact-intro-title">
             <p class="contact-intro__description">Chúng tôi luôn sẵn sàng hỗ trợ</p>
             <h1 id="contact-intro-title">Kết nối với<br />đội ngũ của chúng tôi</h1>
             <figure class="contact-intro__illustration">
-              <figcaption><img src="../../assets/images/icons/contact-image.svg" alt="" width="24" height="24" /><strong>HÌNH MINH HỌA HỖ TRỢ</strong><span>Khung hình minh họa</span></figcaption>
+              <div class="contact-scene" aria-hidden="true">
+                <svg class="contact-iso-svg" viewBox="0 0 560 430" fill="none" focusable="false">
+                  <defs>
+                    <linearGradient id="c-plat-top" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#ffffff" />
+                      <stop offset="65%" stop-color="#f0f7ff" />
+                      <stop offset="100%" stop-color="#dbeafe" />
+                    </linearGradient>
+                    <linearGradient id="c-plat-left" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#bfdbfe" />
+                      <stop offset="100%" stop-color="#60a5fa" />
+                    </linearGradient>
+                    <linearGradient id="c-plat-right" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#60a5fa" />
+                      <stop offset="100%" stop-color="#2563eb" />
+                    </linearGradient>
+                    <linearGradient id="c-env-back" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#2563eb" />
+                      <stop offset="100%" stop-color="#1e3a8a" />
+                    </linearGradient>
+                    <linearGradient id="c-env-left" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#60a5fa" />
+                      <stop offset="100%" stop-color="#2563eb" />
+                    </linearGradient>
+                    <linearGradient id="c-env-right" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#3b82f6" />
+                      <stop offset="100%" stop-color="#1d4ed8" />
+                    </linearGradient>
+                    <linearGradient id="c-env-bottom" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#3b82f6" />
+                      <stop offset="100%" stop-color="#1e40af" />
+                    </linearGradient>
+                    <linearGradient id="c-paper" x1="0%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#ffffff" />
+                      <stop offset="100%" stop-color="#f1f5f9" />
+                    </linearGradient>
+                    <linearGradient id="c-cap-top" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#334155" />
+                      <stop offset="100%" stop-color="#0f172a" />
+                    </linearGradient>
+                    <linearGradient id="c-cap-base" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#1e293b" />
+                      <stop offset="100%" stop-color="#0f172a" />
+                    </linearGradient>
+                    <linearGradient id="c-folder-front" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#fcd34d" />
+                      <stop offset="100%" stop-color="#d97706" />
+                    </linearGradient>
+                    <linearGradient id="c-folder-back" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="#f59e0b" />
+                      <stop offset="100%" stop-color="#b45309" />
+                    </linearGradient>
+                    <filter id="c-drop-lg" x="-20%" y="-20%" width="140%" height="150%">
+                      <feDropShadow dx="0" dy="18" stdDeviation="14" flood-color="#1e3a8a" flood-opacity="0.2" />
+                    </filter>
+                    <filter id="c-drop-md" x="-20%" y="-20%" width="140%" height="150%">
+                      <feDropShadow dx="0" dy="10" stdDeviation="8" flood-color="#1e3a8a" flood-opacity="0.16" />
+                    </filter>
+                  </defs>
+
+                  <!-- Bóng đổ nền của bệ 3D -->
+                  <ellipse class="contact-iso__ground-shadow" cx="280" cy="348" rx="148" ry="44" fill="#60a5fa" opacity="0.22" />
+
+                  <!-- 1. BỆ ĐỠ 3D ISOMETRIC (nhịp thở lên xuống) -->
+                  <g class="contact-iso__platform" filter="url(#c-drop-lg)">
+                    <path d="M280 374 L106 286 L106 306 L280 394 Z" fill="url(#c-plat-left)" />
+                    <path d="M280 374 L454 286 L454 306 L280 394 Z" fill="url(#c-plat-right)" />
+                    <path d="M280 198 L454 286 L280 374 L106 286 Z" fill="url(#c-plat-top)" stroke="#ffffff" stroke-width="2.5" stroke-linejoin="round" />
+                    <path d="M280 212 L430 286 L280 360 L130 286 Z" fill="none" stroke="#93c5fd" stroke-opacity="0.6" stroke-width="1.5" />
+                  </g>
+
+                  <!-- 2. PHONG BÌ 3D & LÁ THƯ TRỒI LÊN THỤT XUỐNG LIÊN TỤC -->
+                  <g class="contact-iso__envelope-unit" filter="url(#c-drop-md)">
+                    <!-- Thân sau & nắp mở phong bì -->
+                    <path d="M188 156 L280 96 L372 156 L372 268 L280 314 L188 268 Z" fill="url(#c-env-back)" />
+                    <path d="M188 156 L280 88 L372 156 L280 196 Z" fill="#3b82f6" stroke="#93c5fd" stroke-width="1.2" />
+
+                    <!-- Tờ tài liệu trồi lên thụt xuống bên trong phong bì -->
+                    <g class="contact-iso__letter">
+                      <rect x="208" y="64" width="144" height="176" rx="16" fill="url(#c-paper)" stroke="#dbeafe" stroke-width="2" />
+                      <!-- Góc gấp của tờ tài liệu -->
+                      <path d="M320 64 L352 96 L328 96 C323 96 320 93 320 88 Z" fill="#dbeafe" />
+                      <!-- Huy hiệu tick xanh phát sáng trên lá thư -->
+                      <g class="contact-iso__letter-badge">
+                        <circle cx="280" cy="116" r="24" fill="#93c5fd" opacity="0.35" class="contact-iso__badge-halo" />
+                        <circle cx="280" cy="116" r="19" fill="url(#c-env-right)" />
+                        <path d="M271 116.5 L277 122.5 L290 109.5" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" />
+                      </g>
+                      <!-- Các dòng nội dung trên lá thư -->
+                      <rect x="232" y="150" width="96" height="9" rx="4.5" fill="#60a5fa" />
+                      <rect x="232" y="166" width="84" height="8" rx="4" fill="#cbd5e1" />
+                      <rect x="232" y="181" width="64" height="8" rx="4" fill="#cbd5e1" />
+                    </g>
+
+                    <!-- Mặt trước phong bì che phần dưới lá thư (tạo chiều sâu lá thư chui ra từ trong phong bì) -->
+                    <path d="M188 156 L280 220 L280 314 L188 268 Z" fill="url(#c-env-left)" />
+                    <path d="M372 156 L280 220 L280 314 L372 268 Z" fill="url(#c-env-right)" />
+                    <path d="M188 268 L280 208 L372 268 L280 314 Z" fill="url(#c-env-bottom)" />
+                    <path d="M188 268 L280 208 L372 268" fill="none" stroke="#93c5fd" stroke-opacity="0.55" stroke-width="1.5" />
+                  </g>
+
+                  <!-- 3. HAI BONG BÓNG TIN NHẮN 3D BAY LƠ LỬNG BÊN TRÁI -->
+                  <g class="contact-iso__bubble contact-iso__bubble--top" filter="url(#c-drop-md)">
+                    <g transform="translate(64, 92) rotate(-11)">
+                      <rect x="0" y="0" width="112" height="50" rx="13" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5" />
+                      <path d="M88 49 L98 60 L102 49 Z" fill="#ffffff" />
+                      <circle cx="26" cy="25" r="13" fill="#2563eb" />
+                      <path d="M20 25 L24 29 L32 21" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                      <rect x="46" y="16" width="48" height="7" rx="3.5" fill="#3b82f6" />
+                      <rect x="46" y="28" width="34" height="6" rx="3" fill="#cbd5e1" />
+                    </g>
+                  </g>
+
+                  <g class="contact-iso__bubble contact-iso__bubble--bottom" filter="url(#c-drop-md)">
+                    <g transform="translate(48, 166) rotate(-11)">
+                      <rect x="0" y="0" width="106" height="48" rx="12" fill="#ffffff" stroke="#bfdbfe" stroke-width="1.5" />
+                      <circle cx="25" cy="24" r="12" fill="#2563eb" />
+                      <path d="M19.5 24 L23.5 28 L31 20.5" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
+                      <rect x="44" y="15" width="44" height="7" rx="3.5" fill="#60a5fa" />
+                      <rect x="44" y="27" width="30" height="6" rx="3" fill="#cbd5e1" />
+                    </g>
+                  </g>
+
+                  <!-- 4. MŨ CỬ NHÂN 3D & DÂY TUA RUA VÀNG ĐUNG ĐƯA GÓC TRÊN PHẢI -->
+                  <g class="contact-iso__cap" filter="url(#c-drop-md)">
+                    <path d="M382 100 L442 128 L428 158 L368 130 Z" fill="url(#c-cap-base)" />
+                    <path d="M398 66 L476 102 L398 136 L322 100 Z" fill="url(#c-cap-top)" stroke="#475569" stroke-width="1.4" stroke-linejoin="round" />
+                    <circle cx="398" cy="101" r="5" fill="#fbbf24" />
+                    <g class="contact-iso__tassel">
+                      <path d="M398 101 Q432 116 440 154" fill="none" stroke="#f59e0b" stroke-width="3" stroke-linecap="round" />
+                      <path d="M435 152 L445 152 L447 168 L433 168 Z" fill="#fbbf24" />
+                    </g>
+                  </g>
+
+                  <!-- 5. CẶP HỒ SƠ ĐỀ TÀI & TỜ GIẤY NHẤP NHÔ GÓC DƯỚI PHẢI -->
+                  <g class="contact-iso__folder" filter="url(#c-drop-md)">
+                    <g transform="translate(362, 232) rotate(-14)">
+                      <path d="M0 14 C0 9 4 5 9 5 L34 5 L42 14 L88 14 C93 14 97 18 97 23 L97 72 C97 77 93 81 88 81 L9 81 C4 81 0 77 0 72 Z" fill="url(#c-folder-back)" />
+                      <g class="contact-iso__folder-sheets">
+                        <rect x="10" y="0" width="72" height="58" rx="6" fill="#ffffff" stroke="#dbeafe" stroke-width="1.2" />
+                        <rect x="16" y="-7" width="70" height="58" rx="6" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.2" />
+                      </g>
+                      <path d="M0 24 L97 24 L92 81 L5 81 Z" rx="6" fill="url(#c-folder-front)" />
+                    </g>
+                  </g>
+                </svg>
+
+                <!-- 2 Nhãn nổi lơ lửng theo ảnh mẫu -->
+                <div class="contact-scene__badge contact-scene__badge--left">Hỗ trợ Sinh viên &amp; Giảng viên</div>
+                <div class="contact-scene__badge contact-scene__badge--right">Phản hồi nhanh chóng</div>
+              </div>
+              <figcaption class="visually-hidden">Minh họa hỗ trợ học vụ và tiếp nhận thông tin liên hệ</figcaption>
             </figure>
           </section>
 
           <section class="contact-panel" aria-labelledby="contact-form-title">
             <header class="contact-panel__header">
               <h2 id="contact-form-title">Gửi lời nhắn</h2>
-              <p id="contact-required-hint">Các trường có dấu * là bắt buộc.</p>
+              <p id="contact-required-hint">Các trường có dấu <span class="contact-required-mark">*</span> là bắt buộc.</p>
             </header>
-            <!-- Chưa có xử lý gửi/lưu liên hệ; nút gửi chỉ là khung HTML. -->
-            <form id="contact-form" class="contact-form" aria-describedby="contact-required-hint contact-form-notice">
+            <form id="contact-form" class="contact-form" method="post" aria-describedby="contact-required-hint">
               <div class="contact-form__row">
                 <div class="form-field">
-                  <label for="contact-name">Họ và tên *</label>
-                  <input id="contact-name" name="ho-ten" type="text" autocomplete="name" placeholder="Nhập họ và tên" required />
+                  <label for="contact-name">Họ và tên <span class="contact-required-mark">*</span></label>
+                  <div class="contact-input-wrap">
+                    <svg class="contact-input-wrap__icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-3.8 4.6-6 8-6s6.5 2.2 8 6"/></svg>
+                    <input id="contact-name" name="ho-ten" type="text" autocomplete="name" placeholder="Nhập họ và tên" required />
+                  </div>
                 </div>
                 <div class="form-field">
-                  <label for="contact-email">Email *</label>
-                  <input id="contact-email" name="email" type="email" autocomplete="email" placeholder="Nhập email liên hệ" required />
+                  <label for="contact-email">Email <span class="contact-required-mark">*</span></label>
+                  <div class="contact-input-wrap">
+                    <svg class="contact-input-wrap__icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+                    <input id="contact-email" name="email" type="email" autocomplete="email" placeholder="Nhập email liên hệ" required />
+                  </div>
                 </div>
               </div>
               <div class="contact-form__row">
                 <div class="form-field">
-                  <label for="contact-phone">Số điện thoại (không bắt buộc)</label>
-                  <input id="contact-phone" name="so-dien-thoai" type="tel" autocomplete="tel" placeholder="Nhập số điện thoại" />
+                  <label for="contact-phone">Số điện thoại</label>
+                  <div class="contact-input-wrap">
+                    <svg class="contact-input-wrap__icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <input id="contact-phone" name="so-dien-thoai" type="tel" autocomplete="tel" placeholder="Nhập số điện thoại" />
+                  </div>
                 </div>
                 <div class="form-field">
-                  <label for="contact-subject">Chủ đề *</label>
-                  <input id="contact-subject" name="chu-de" type="text" placeholder="Nhập chủ đề liên hệ" required />
+                  <label for="contact-subject">Chủ đề <span class="contact-required-mark">*</span></label>
+                  <div class="contact-input-wrap">
+                    <svg class="contact-input-wrap__icon" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.5"/></svg>
+                    <input id="contact-subject" name="chu-de" type="text" placeholder="Nhập chủ đề liên hệ" required />
+                  </div>
                 </div>
               </div>
               <div class="form-field">
-                <label for="contact-message">Nội dung *</label>
+                <label for="contact-message">Nội dung <span class="contact-required-mark">*</span></label>
                 <textarea id="contact-message" name="noi-dung" rows="6" placeholder="Bạn cần hỗ trợ hoặc muốn góp ý điều gì?" required></textarea>
               </div>
-              <p id="contact-error" class="form-error" role="alert" hidden></p>
-              <p id="contact-result" class="form-result" role="status" hidden></p>
-              <button class="contact-form__submit" type="button" disabled>Gửi liên hệ</button>
-              <p id="contact-form-notice" class="demo-notice">Biểu mẫu HTML minh họa, chưa gửi hoặc lưu lời nhắn.</p>
+              <button class="contact-form__submit" type="submit" disabled>
+                <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="m22 2-7 20-4-9-9-4 20-7z"/></svg>
+                <span>Gửi liên hệ</span>
+              </button>
             </form>
           </section>
         </div>
 
-        <!-- KHUNG BẢN ĐỒ: bổ sung bản đồ sau khi xác nhận địa chỉ liên hệ. -->
+        <dialog id="contact-result" class="contact-result" aria-labelledby="contact-result-title" aria-describedby="contact-result-description">
+          <button class="contact-result__close" type="button" aria-label="Đóng thông báo" autofocus>
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"/></svg>
+          </button>
+          <span class="contact-result__icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 4 4L19 6"/></svg>
+          </span>
+          <h2 id="contact-result-title">Gửi thử thành công</h2>
+          <p id="contact-result-description">Cảm ơn bạn đã thử biểu mẫu liên hệ. Lời nhắn chưa được gửi hoặc lưu.</p>
+        </dialog>
+
+        <!-- Bản đồ UIT nhúng từ Google Maps; địa chỉ theo thông báo UIT ngày 23/9/2026. -->
         <section class="contact-location" aria-labelledby="contact-location-title">
           <header class="contact-location__header">
             <h2 id="contact-location-title">Vị trí của chúng tôi</h2>
-            <p>[Địa chỉ liên hệ của nhóm]</p>
+            <p>Khu đô thị ĐHQG-HCM, Khu phố 9, Phường Linh Xuân, TP. Hồ Chí Minh (Khuôn viên UIT)</p>
           </header>
-          <figure class="contact-location__map">
-            <figcaption><img src="../../assets/images/icons/contact-map-pin.svg" alt="" width="24" height="24" /><strong>KHUNG BẢN ĐỒ</strong><span>Vị trí liên hệ của nhóm</span></figcaption>
-          </figure>
+          <div class="contact-location__map">
+            <iframe
+              title="Google Maps – Trường Đại học Công nghệ Thông tin, ĐHQG-HCM"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.2312402759762!2d106.8030541!3d10.870008899999998!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x317527587e9ad5bf%3A0xafa66f9c8be3c91!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBDw7RuZyBuZ2jhu4cgVGjDtG5nIHRpbiAtIMSQSFFHIFRQLkhDTQ!5e0!3m2!1svi!2s!4v1794904092932!5m2!1svi!2s"
+              width="1200"
+              height="360"
+              loading="lazy"
+              allowfullscreen
+              referrerpolicy="strict-origin-when-cross-origin"
+            ></iframe>
+          </div>
         </section>
 
-        <!-- Chưa có thông tin chính thức: giữ các giá trị mẫu như wireframe. -->
+        <!-- Thông tin trình bày theo mẫu người dùng duyệt; chưa xác minh kênh hỗ trợ thực tế. -->
         <address class="contact-information" aria-label="Thông tin liên lạc trực tiếp">
           <dl class="contact-information__list">
             <div class="contact-information__item">
-              <dt><span class="contact-information__icon"><img src="../../assets/images/icons/contact-phone.svg" alt="" width="24" height="24" /></span>Điện thoại</dt>
-              <dd>[Số điện thoại liên hệ]</dd>
+              <dt>
+                <span class="contact-information__icon" aria-hidden="true">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                </span>
+                Điện thoại
+              </dt>
+              <dd class="contact-information__value"><a href="tel:02837252002">(028) 372 52002</a></dd>
+              <dd class="contact-information__note">Văn phòng Khoa KH&amp;KTTT</dd>
             </div>
             <div class="contact-information__item">
-              <dt><span class="contact-information__icon"><img src="../../assets/images/icons/contact-mail.svg" alt="" width="24" height="24" /></span>Email của nhóm</dt>
-              <dd>[Email liên hệ]</dd>
+              <dt>
+                <span class="contact-information__icon" aria-hidden="true">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+                </span>
+                Email của nhóm
+              </dt>
+              <dd class="contact-information__value"><a href="mailto:nhom7.ie104@gm.uit.edu.vn">nhom7.ie104<wbr>@gm.uit.edu.vn</a></dd>
+              <dd class="contact-information__note">Phản hồi trong ngày làm việc</dd>
             </div>
             <div class="contact-information__item">
-              <dt><span class="contact-information__icon"><img src="../../assets/images/icons/contact-map-pin.svg" alt="" width="24" height="24" /></span>Địa chỉ</dt>
-              <dd>[Địa chỉ liên hệ]</dd>
+              <dt>
+                <span class="contact-information__icon" aria-hidden="true">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                </span>
+                Địa chỉ
+              </dt>
+              <dd class="contact-information__value"><a href="https://www.google.com/maps/dir/?api=1&amp;destination=10.8700089%2C106.8030541" target="_blank" rel="noopener noreferrer">Khu phố 9, P. Linh Xuân, TP.HCM<span class="visually-hidden"> — Mở chỉ đường Google Maps trong thẻ mới</span></a></dd>
+              <dd class="contact-information__note">Khu đô thị ĐHQG-HCM (Khuôn viên UIT)</dd>
             </div>
           </dl>
         </address>

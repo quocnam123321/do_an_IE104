@@ -21,6 +21,122 @@
   }
 }
 
+/* Khối thông tin sinh viên theo mẫu Tổng quan giảng viên đã duyệt. */
+.student-overview-page .student-welcome {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  min-width: 0;
+  min-height: 11.5rem;
+  padding: var(--space-8);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  background-color: var(--color-surface);
+}
+
+.student-overview-page .student-welcome__avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 6rem;
+  width: 6rem;
+  height: 6rem;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-full);
+  background-color: var(--color-info-bg);
+  color: var(--color-primary);
+  font-size: 2rem;
+  font-weight: var(--font-weight-bold);
+  text-decoration: none;
+}
+
+.student-overview-page .student-welcome__avatar:hover {
+  background-color: var(--color-info-hover-bg);
+  color: var(--color-primary-hover);
+}
+
+.student-overview-page .student-welcome__avatar:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 4px;
+}
+
+.student-overview-page .student-welcome__content {
+  min-width: 0;
+  flex: 1;
+}
+
+.student-overview-page .student-welcome__greeting {
+  margin-bottom: var(--space-1);
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+}
+
+.student-overview-page .student-welcome h2 {
+  color: var(--color-heading);
+  font-size: clamp(1.25rem, 2.4vw, 2rem);
+  font-weight: var(--font-weight-bold);
+}
+
+.student-overview-page .student-welcome__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-6);
+  padding: 0;
+  margin-top: var(--space-4);
+  list-style: none;
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+}
+
+.student-overview-page .student-welcome__meta li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.student-overview-page .student-welcome__meta svg {
+  flex-shrink: 0;
+}
+
+.student-overview-page .student-welcome__meta span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 47.99rem) {
+  .student-overview-page .student-welcome {
+    display: grid;
+    grid-template-columns: 4rem minmax(0, 1fr);
+    gap: var(--space-4);
+    min-height: 0;
+    padding: var(--space-5);
+  }
+
+  .student-overview-page .student-welcome__avatar {
+    width: 4rem;
+    height: 4rem;
+    font-size: 1.5rem;
+  }
+
+  .student-overview-page .student-welcome__content {
+    display: contents;
+  }
+
+  .student-overview-page .student-welcome__meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-column: 1 / -1;
+    margin-top: 0;
+  }
+
+  .student-overview-page .student-welcome__meta li:nth-child(n + 3) {
+    grid-column: 1 / -1;
+  }
+}
+
 /* --------------------------------------------------------------------------
    6. Summary Cards (.dashboard-summary & .summary-card)
    Tinh chỉnh điểm 1:

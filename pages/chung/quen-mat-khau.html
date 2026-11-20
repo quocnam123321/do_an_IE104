@@ -5,98 +5,161 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Khung yêu cầu hỗ trợ khôi phục mật khẩu tài khoản sinh viên và giảng viên."
+      content="Thử luồng quên mật khẩu IE104 với mã xác minh gửi đến Gmail."
     />
     <title>Quên mật khẩu | Quản lý đồ án và khóa luận</title>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261111-heading-sync-1" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/common.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/auth.css?v=20261111-heading-sync-1" />
-    <script src="../../assets/js/nav-indicator.js" defer></script>
+    <link rel="stylesheet" href="../../assets/css/auth.css?v=20261119-otp" />
+    <script src="../../assets/js/password-toggle.js?v=20261119-recovery-reset" defer></script>
+    <script src="../../assets/js/recovery-otp.js?v=20261119-brevo-demo" defer></script>
   </head>
   <body class="common-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
 
-    <!-- ĐẦU TRANG -->
-    <header class="site-header">
-      <div class="site-header__inner">
-        <a class="site-brand" href="../../index.html">
-          <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="70" height="70" />
-          <span class="site-brand__name">QUẢN LÝ ĐỒ ÁN VÀ<br />KHÓA LUẬN TỐT NGHIỆP</span>
-        </a>
-        <details class="site-navigation" open>
-          <summary class="site-navigation__toggle" aria-label="Mở hoặc thu gọn điều hướng chính">
-            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
-            <span>Menu</span>
-          </summary>
-          <nav class="main-nav" aria-label="Điều hướng chính" data-nav-indicator>
-            <ul class="main-nav__list">
-              <li class="main-nav__item"><a class="main-nav__link" href="gioi-thieu.html"><span class="main-nav__text">Giới thiệu</span></a></li>
-              <li class="main-nav__item"><a class="main-nav__link" href="thong-bao.html"><span class="main-nav__text">Thông báo</span></a></li>
-              <li class="main-nav__item"><a class="main-nav__link" href="huong-nghien-cuu.html"><span class="main-nav__text">Hướng nghiên cứu</span></a></li>
-
-              <li class="main-nav__item"><a class="main-nav__link" href="lien-he.html"><span class="main-nav__text">Liên hệ</span></a></li>
-            </ul>
-            <span class="main-nav__indicator" aria-hidden="true"></span>
-          </nav>
-        </details>
-        <a class="site-header__login" href="dang-nhap.html" aria-current="page">
-          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h5v16h-5M4 12h11M10 7l5 5-5 5" /></svg>
-          <span>Đăng nhập</span>
-        </a>
-      </div>
-    </header>
-
     <main id="main-content" class="recovery-page" tabindex="-1">
-      <div class="page-container">
-        <nav class="breadcrumb" aria-label="Đường dẫn"><ol class="breadcrumb__list"><li class="breadcrumb__item"><a href="dang-nhap.html">Đăng nhập</a></li><li class="breadcrumb__item" aria-current="page">Quên mật khẩu</li></ol></nav>
-        <section class="recovery-panel" aria-labelledby="recovery-title">
-          <h1 id="recovery-title">Quên mật khẩu</h1>
-          <form class="recovery-form" aria-describedby="recovery-notice">
-            <div class="form-field"><label for="recovery-account">Tài khoản</label><input id="recovery-account" name="tai-khoan" type="text" autocomplete="username" required /></div>
-            <div class="form-field"><label for="recovery-email">Email</label><input id="recovery-email" name="email" type="email" autocomplete="email" required /></div>
-            <p id="recovery-error" class="form-error" role="alert" hidden></p>
-            <p id="recovery-result" class="form-result" role="status" hidden></p>
-            <button type="button" disabled>Gửi yêu cầu</button>
-            <a href="dang-nhap.html">Quay lại Đăng nhập</a>
-          </form>
-          <p id="recovery-notice" class="demo-notice">Đây là khung HTML minh họa. Cơ chế khôi phục mật khẩu chưa được kết nối.</p>
-        </section>
-      </div>
-    </main>
-
-    <!-- CHÂN TRANG -->
-    <footer class="site-footer">
-      <div class="site-footer__inner">
-        <div class="site-footer__columns">
-          <div class="site-footer__brand">
-            <a href="gioi-thieu.html">
-              <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40" />
-            </a>
-            <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</p>
-            <dl class="site-footer__about">
-              <div>
-                <dt><a href="gioi-thieu.html">Thông tin trang web</a></dt>
-                <dd>Trường Đại học Công nghệ Thông tin</dd>
-              </div>
-              <div>
-                <dt><a href="gioi-thieu.html#team-title">Thông tin nhóm</a></dt>
-                <dd>Đồ án IE104 — Nhóm 7</dd>
-              </div>
-            </dl>
+      <section class="recovery-panel" aria-labelledby="recovery-title">
+        <div class="recovery-panel__intro">
+          <div>
+            <h1 id="recovery-title">
+              <span data-recovery-step="email">Quên mật khẩu</span>
+              <span data-recovery-step="otp" hidden>Nhập mã OTP</span>
+              <span data-recovery-step="reset" hidden>Đặt lại mật khẩu</span>
+              <span data-recovery-step="done" hidden>Đã hoàn tất mô phỏng</span>
+            </h1>
+            <p id="recovery-help" data-recovery-step="email">Nhập Gmail của bạn để nhận mã và trải nghiệm luồng quên mật khẩu.</p>
+            <p id="recovery-otp-help" data-recovery-step="otp" hidden>
+              Nhập mã gồm 6 chữ số cho địa chỉ
+              <strong id="recovery-masked-email"></strong>
+            </p>
+            <p id="recovery-reset-help" data-recovery-step="reset" hidden>Dùng mật khẩu mẫu để thử bước đặt lại.</p>
+            <p id="recovery-reset-result" data-recovery-step="done" hidden>Mã OTP đã được xác minh. Biểu mẫu đã xóa mật khẩu mẫu bạn vừa nhập.</p>
           </div>
-          <section class="site-footer__information site-footer__terms" aria-labelledby="footer-terms-title">
-            <h2 id="footer-terms-title">Điều khoản sử dụng</h2>
-            <p>Đang cập nhật.</p>
-          </section>
-          <section class="site-footer__information site-footer__policies" aria-labelledby="footer-policies-title">
-            <h2 id="footer-policies-title">Quy chế, chính sách bảo mật</h2>
-            <p>Đang cập nhật.</p>
-          </section>
+          <img src="../../assets/images/recovery-lock.png" width="384" height="384" alt="" />
         </div>
-        <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
-      </div>
-    </footer>
+
+        <form id="recovery-email-form" class="recovery-form" method="post" aria-describedby="recovery-help" data-recovery-step="email">
+          <div class="form-field">
+            <label for="recovery-email">Địa chỉ Gmail</label>
+            <div class="login-input-wrap">
+              <svg class="login-input-wrap__icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="m3 7 9 6 9-6" />
+              </svg>
+              <input
+                id="recovery-email"
+                type="email"
+                placeholder="Nhập địa chỉ Gmail"
+                autocomplete="email"
+                maxlength="254"
+                aria-describedby="recovery-email-error"
+                required
+              />
+            </div>
+          </div>
+          <p id="recovery-email-error" class="form-error recovery-form__error" role="alert"></p>
+
+          <button type="submit" disabled>Gửi mã OTP</button>
+          <a class="button recovery-form__back" href="dang-nhap.html">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5m7 7-7-7 7-7" />
+            </svg>
+            Quay lại Đăng nhập
+          </a>
+        </form>
+
+        <form id="recovery-otp-form" class="recovery-form" method="post" aria-describedby="recovery-otp-help" data-recovery-step="otp" hidden>
+          <fieldset class="recovery-otp">
+            <legend>Mã xác minh</legend>
+            <div class="recovery-otp__digits">
+              <input aria-label="Chữ số 1" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]" required />
+              <input aria-label="Chữ số 2" type="text" inputmode="numeric" autocomplete="off" pattern="[0-9]" required />
+              <input aria-label="Chữ số 3" type="text" inputmode="numeric" autocomplete="off" pattern="[0-9]" required />
+              <input aria-label="Chữ số 4" type="text" inputmode="numeric" autocomplete="off" pattern="[0-9]" required />
+              <input aria-label="Chữ số 5" type="text" inputmode="numeric" autocomplete="off" pattern="[0-9]" required />
+              <input aria-label="Chữ số 6" type="text" inputmode="numeric" autocomplete="off" pattern="[0-9]" required />
+            </div>
+          </fieldset>
+          <p id="recovery-otp-error" class="form-error recovery-form__error" role="alert"></p>
+          <p id="recovery-otp-status" class="recovery-otp__status" role="status"></p>
+          <button type="submit">Xác nhận mã</button>
+          <div class="recovery-otp__resend">
+            <span>Chưa nhận được mã?</span>
+            <button id="recovery-resend" type="button" disabled>Gửi lại sau 60 giây</button>
+          </div>
+          <button id="recovery-change-email" class="recovery-form__back" type="button">
+            <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 12H5m7 7-7-7 7-7" />
+            </svg>
+            Đổi địa chỉ email
+          </button>
+        </form>
+
+        <form id="recovery-reset-form" class="recovery-form" method="post" autocomplete="off"
+          aria-describedby="recovery-reset-help" data-recovery-step="reset" hidden>
+          <div class="form-field">
+            <label for="recovery-new-password">Mật khẩu mẫu</label>
+            <div class="password-field login-input-wrap">
+              <svg class="login-input-wrap__icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+                <rect x="4" y="11" width="16" height="10" rx="2" />
+                <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+              </svg>
+              <input id="recovery-new-password" type="password" autocomplete="off"
+                placeholder="Nhập mật khẩu mẫu" aria-describedby="recovery-password-rules recovery-strength-label" required minlength="8" maxlength="128" />
+              <button class="password-field__toggle" type="button" aria-label="Hiện mật khẩu mẫu"
+                aria-controls="recovery-new-password" data-password-label="mẫu" aria-pressed="false" hidden>
+                <svg data-password-icon="show" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <svg data-password-icon="hide" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" hidden>
+                  <path d="m3 3 18 18M10.6 5.1A11.3 11.3 0 0 1 12 5c6.5 0 10 7 10 7a18.5 18.5 0 0 1-3 4M6.6 6.6A19 19 0 0 0 2 12s3.5 7 10 7a11.8 11.8 0 0 0 5.4-1.4M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+                </svg>
+              </button>
+            </div>
+            <div id="recovery-strength" class="recovery-strength" hidden>
+              <div class="recovery-strength__bar" aria-hidden="true"><span></span><span></span><span></span></div>
+              <span id="recovery-strength-label" role="status"></span>
+            </div>
+            <p id="recovery-password-rules" class="recovery-reset__hint">Tối thiểu 8 ký tự, có cả chữ và số.</p>
+          </div>
+          <div class="form-field">
+            <label for="recovery-confirm-password">Xác nhận mật khẩu mẫu</label>
+            <div class="password-field login-input-wrap">
+              <svg class="login-input-wrap__icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+                <rect x="4" y="11" width="16" height="10" rx="2" />
+                <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+              </svg>
+              <input id="recovery-confirm-password" type="password" autocomplete="off"
+                placeholder="Nhập lại mật khẩu mẫu" aria-describedby="recovery-match-text" required maxlength="128" />
+              <button class="password-field__toggle" type="button" aria-label="Hiện mật khẩu xác nhận"
+                aria-controls="recovery-confirm-password" data-password-label="xác nhận" aria-pressed="false" hidden>
+                <svg data-password-icon="show" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+                <svg data-password-icon="hide" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" hidden>
+                  <path d="m3 3 18 18M10.6 5.1A11.3 11.3 0 0 1 12 5c6.5 0 10 7 10 7a18.5 18.5 0 0 1-3 4M6.6 6.6A19 19 0 0 0 2 12s3.5 7 10 7a11.8 11.8 0 0 0 5.4-1.4M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+                </svg>
+              </button>
+            </div>
+            <div id="recovery-match" class="recovery-reset__match" role="status">
+              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" hidden>
+                <circle cx="12" cy="12" r="10" fill="currentColor" />
+                <path d="m7.5 12 3 3 6-6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span id="recovery-match-text"></span>
+            </div>
+          </div>
+          <button id="recovery-save-password" type="submit" disabled>Hoàn tất mô phỏng</button>
+        </form>
+        <div class="recovery-form" data-recovery-step="done" hidden>
+          <a id="recovery-reset-return" class="button recovery-form__back" href="dang-nhap.html" aria-describedby="recovery-reset-result">Quay lại Đăng nhập</a>
+        </div>
+        <p class="demo-notice" data-recovery-step="email">Bạn có thể thử bằng Gmail của mình mà không cần tài khoản IE104.</p>
+        <noscript><p>Bật JavaScript để thử luồng Quên mật khẩu.</p></noscript>
+      </section>
+    </main>
   </body>
 </html>

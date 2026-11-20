@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="../../assets/css/tokens.css" />
     <link rel="stylesheet" href="../../assets/css/base.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
-    <link rel="stylesheet" href="../../assets/css/tong-quan-sinh-vien.css" />
+    <link rel="stylesheet" href="../../assets/css/tong-quan-sinh-vien.css?v=20261117-welcome-1" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
   
     <script src="../../assets/js/data/mock-data.js" defer></script>
@@ -173,6 +173,52 @@
           <p data-overview-notice role="status"></p>
           <noscript><p>Bật JavaScript để cập nhật số liệu Tổng quan theo dữ liệu hiện tại.</p></noscript>
           <!-- Dữ liệu minh họa theo wireframe tổng quan sinh viên phiên bản 2. -->
+          <section class="student-welcome" aria-labelledby="student-welcome-name" aria-describedby="student-welcome-demo">
+            <a
+              class="student-welcome__avatar"
+              href="ho-so-ca-nhan.html"
+              aria-label="Xem hồ sơ cá nhân của Nguyễn Minh Anh"
+              title="Xem hồ sơ cá nhân"
+            >
+              <span aria-hidden="true">MA</span>
+            </a>
+            <div class="student-welcome__content">
+              <div class="student-welcome__heading">
+                <p class="student-welcome__greeting">Xin chào,</p>
+                <h2 id="student-welcome-name">Nguyễn Minh Anh</h2>
+              </div>
+              <ul class="student-welcome__meta" role="list" aria-label="Thông tin sinh viên">
+                <li>
+                  <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                    <circle cx="8" cy="10" r="2" />
+                    <path d="M5 16a3 3 0 0 1 6 0M14 9h5M14 13h5M14 16h3" />
+                  </svg>
+                  <span><span class="visually-hidden">Mã số sinh viên </span>24520001</span>
+                </li>
+                <li>
+                  <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="9" cy="7" r="3" />
+                    <path d="M3 21v-3a6 6 0 0 1 12 0v3M16 4a3 3 0 0 1 0 6M21 21v-3a6 6 0 0 0-3-5" />
+                  </svg>
+                  <span><span class="visually-hidden">Lớp </span>CNTT2024.2</span>
+                </li>
+                <li>
+                  <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-4h6v4M9 8v1M15 8v1M9 12v1M15 12v1" />
+                  </svg>
+                  <span>Khoa Khoa học và Kỹ thuật Thông tin</span>
+                </li>
+                <li>
+                  <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m2 8 10-5 10 5-10 5L2 8ZM6 10v6c4 3 8 3 12 0v-6M22 8v8" />
+                  </svg>
+                  <span>Khóa 2024</span>
+                </li>
+              </ul>
+            </div>
+            <p id="student-welcome-demo" class="visually-hidden">Thông tin sinh viên minh họa, chưa kết nối tài khoản đăng nhập.</p>
+          </section>
           <section aria-label="Thống kê đề tài" class="dashboard-summary">
             <div class="dashboard-summary__items">
               <article
