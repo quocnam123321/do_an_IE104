@@ -502,6 +502,60 @@ window.UITLecturerCatalog = {
       "outcomes": [
         "[Kết quả dự kiến]"
       ]
+    },
+    {
+      "code": "ISE-015",
+      "id": "ISE-015",
+      "title": "Xây dựng hệ thống khuyến nghị cho người dùng xem phim trên điện thoại di động",
+      "authors": [
+        "Quách Phú Quốc",
+        "Nguyễn Tiến Đạt"
+      ],
+      "summaryUrl": "https://bit.ly/3ou7z2o",
+      "sourceUrl": "https://ise.uit.edu.vn/vi/bai-viet/ten-d-tai-kltn-c-a-sinh-vien",
+      "cohort": "2016",
+      "faculty": "Khoa Khoa học và Kỹ thuật Thông tin",
+      "type": "Khóa luận tốt nghiệp",
+      "topicType": "thesis",
+      "studentId": "xxxxxxxx",
+      "supervisionRole": "primary",
+      "supervisionRoleLabel": "Hướng dẫn chính",
+      "advisors": [],
+      "abstractVerified": false,
+      "description": "[Mô tả đề tài]",
+      "objectives": [
+        "[Mục tiêu đề tài]"
+      ],
+      "outcomes": [
+        "[Kết quả dự kiến]"
+      ]
+    },
+    {
+      "code": "ISE-016",
+      "id": "ISE-016",
+      "title": "Xây dựng hệ thống quản lý và truy xuất nguồn gốc thực phẩm trên nền tảng website áp dụng công nghệ blockchain",
+      "authors": [
+        "Lê Trung Kiên",
+        "Trần Ngọc Duy"
+      ],
+      "summaryUrl": "https://bit.ly/3oG0D2q",
+      "sourceUrl": "https://ise.uit.edu.vn/vi/bai-viet/ten-d-tai-kltn-c-a-sinh-vien",
+      "cohort": "2016",
+      "faculty": "Khoa Khoa học và Kỹ thuật Thông tin",
+      "type": "Khóa luận tốt nghiệp",
+      "topicType": "thesis",
+      "studentId": "xxxxxxxx",
+      "supervisionRole": "primary",
+      "supervisionRoleLabel": "Hướng dẫn chính",
+      "advisors": [],
+      "abstractVerified": false,
+      "description": "[Mô tả đề tài]",
+      "objectives": [
+        "[Mục tiêu đề tài]"
+      ],
+      "outcomes": [
+        "[Kết quả dự kiến]"
+      ]
     }
   ],
   "created": [
@@ -524,7 +578,9 @@ window.UITLecturerCatalog = {
     "ISE-005",
     "ISE-006",
     "ISE-007",
-    "ISE-008"
+    "ISE-008",
+    "ISE-015",
+    "ISE-016"
   ],
   "pending": [
     {
