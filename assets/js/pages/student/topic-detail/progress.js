@@ -14,11 +14,13 @@
   const notice = panel.querySelector('[data-progress-notice]');
   const result = panel.querySelector('[data-progress-result]');
   const dialogs = { add: document.getElementById('task-add-popover'), edit: document.getElementById('task-edit-cv-01'), remove: document.getElementById('task-delete-cv-01'), update: document.getElementById('progress-update-popover') };
-  const labels = { 'chua-thuc-hien': 'Chưa thực hiện', 'dang-thuc-hien': 'Đang thực hiện', 'da-hoan-thanh': 'Đã hoàn thành' };
+  const labels = { 'chua-thuc-hien': 'Chưa bắt đầu', 'dang-thuc-hien': 'Đang thực hiện', 'da-hoan-thanh': 'Đã hoàn thành' };
+  const columnClasses = { 'chua-thuc-hien': 'task-column--not-started', 'dang-thuc-hien': 'task-column--in-progress', 'da-hoan-thanh': 'task-column--done' };
   const summaryText = document.createElement('p');
   panel.querySelector('#overall-progress').setAttribute('aria-label', 'Tiến độ tổng thể');
   summaryText.className = 'student-progress-summary';
-  panel.querySelector('.overall-progress-bar').after(summaryText);
+  panel.querySelector('.progress-overview__stats').after(summaryText);
+  list.classList.add('task-board__columns');
   list.removeAttribute('tabindex');
   list.setAttribute('aria-label', 'Công việc theo trạng thái');
   let state = null;
@@ -92,10 +94,10 @@
       const summary = service.summarize(state);
       panel.querySelector('#overall-progress').value = summary.percent;
       panel.querySelector('#overall-progress').textContent = `${summary.percent}%`;
-      panel.querySelector('.overall-progress__text').textContent = `${summary.percent}%`;
-      summaryText.textContent = `${summary.percent}% hoàn thành - ${summary.completed}/${summary.total} công việc đã hoàn thành`;
-      if (summary.method === 'completed-ratio') summaryText.textContent += '. Tính theo số công việc đã hoàn thành; một số công việc chưa có phần trăm cụ thể.';
-      panel.querySelectorAll('.progress-stat-item dd').forEach((node, index) => { node.textContent = [summary.total, summary.completed, summary.remaining][index]; });
+      panel.querySelector('.overall-progress__text').textContent = `${summary.percent}% hoàn thành`;
+      summaryText.hidden = summary.method !== 'completed-ratio';
+      summaryText.textContent = summaryText.hidden ? '' : 'Tính theo số công việc đã hoàn thành vì một số công việc chưa có phần trăm cụ thể.';
+      panel.querySelectorAll('.progress-stat dd').forEach((node, index) => { node.textContent = [summary.total, summary.completed, summary.remaining][index]; });
       const taskItems = state.tasks.map((task, index) => {
         const item = cardTemplate.cloneNode(true);
         const article = item.querySelector('article');
@@ -107,12 +109,25 @@
         title.textContent = task.title;
         article.setAttribute('aria-labelledby', title.id);
         const paragraphs = item.querySelectorAll('.task-card__content p');
-        const assignee = state.team.members.find(member => member.code === task.assigneeCode);
-        [['Người phụ trách', `${assignee?.name || 'Không còn trong nhóm'} - ${task.assigneeCode}`], ['Hạn hoàn thành dự kiến', dateText(task.deadline)]].forEach(([label,value],i) => {
-          const term = document.createElement('span'), text = document.createElement('span'); term.className = 'workflow-field-label'; text.className = 'workflow-field-value'; term.textContent = label; text.textContent = value; paragraphs[i].replaceChildren(term,text);
-        });
+        const codes = task.assigneeCodes || [task.assigneeCode];
+        const people = codes.map(code => state.team.members.find(member => member.code === code));
+        const names = people.map((person, index) => person?.name || codes[index]).filter(Boolean);
+        const prefix = label => {
+          const node = document.createElement('span');
+          node.className = 'visually-hidden';
+          node.textContent = label + ': ';
+          return node;
+        };
+        paragraphs[0].className = 'student-task-assignees';
+        paragraphs[0].replaceChildren(prefix('Người phụ trách'), names.join(', ') || 'Chưa có người phụ trách');
+        const date = document.createElement('time');
+        date.dateTime = task.deadline;
+        date.textContent = dateText(task.deadline);
+        paragraphs[1].className = 'task-card__deadline';
+        paragraphs[1].replaceChildren(prefix('Hạn hoàn thành'), date);
         const status = document.createElement('p');
-        status.textContent = task.percent === null ? 'Chưa có phần trăm cụ thể' : `${task.percent}%`;
+        status.className = 'student-task-percent';
+        status.textContent = task.percent === null ? 'Chưa có phần trăm cụ thể' : `${task.percent}% hoàn thành`;
         item.querySelector('.task-card__content').append(status);
         const content = item.querySelector('.task-card__content');
         const view = document.createElement('button'); view.type = 'button'; view.className = 'student-task-open'; view.dataset.progressAction = 'view';
@@ -127,20 +142,28 @@
       });
       list.replaceChildren(...Object.entries(labels).map(([status, label]) => {
         const column = document.createElement('li');
-        column.className = 'student-progress-column';
+        column.classList.add('task-column', columnClasses[status]);
         const heading = document.createElement('h3');
         const items = taskItems.filter(item => item.dataset.taskStatus === status);
         heading.id = `progress-column-${status}`;
-        heading.textContent = `${label} (${items.length})`;
-        heading.prepend(globalThis.IE104.ui.workflowIcon(status === 'da-hoan-thanh' ? 'done' : status === 'dang-thuc-hien' ? 'progress' : 'pending'));
+        heading.className = 'task-column__title';
+        const count = document.createElement('span');
+        count.className = 'task-column__count';
+        count.textContent = `(${items.length})`;
+        const icon = globalThis.IE104.ui.workflowIcon(status === 'da-hoan-thanh' ? 'done' : status === 'dang-thuc-hien' ? 'progress' : 'pending');
+        icon.setAttribute('class', 'task-column__icon');
+        heading.append(icon, label, count);
         const columnList = document.createElement('ul');
-        columnList.className = 'student-progress-column__list';
+        columnList.className = 'task-column__list';
         columnList.tabIndex = 0;
         columnList.setAttribute('aria-labelledby', heading.id);
         items.forEach(item => {
           const oldTitle = item.querySelector('h3');
           const title = document.createElement('h4');
-          title.id = oldTitle.id; title.textContent = oldTitle.textContent; oldTitle.replaceWith(title);
+          title.id = oldTitle.id;
+          title.className = 'task-card__title';
+          title.textContent = oldTitle.textContent;
+          oldTitle.replaceWith(title);
           columnList.append(item);
         });
         if (!items.length) {

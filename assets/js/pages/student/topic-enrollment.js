@@ -6,6 +6,13 @@
   const store = globalThis.TeacherTopicStore;
   const topicId = (store && new URLSearchParams(location.search).get('topic')) || form.dataset.topicId;
   if (!topicId) return;
+  try {
+    const profile = app.services.profile?.getState();
+    const name = form.querySelector('#student-name');
+    if (name && profile?.code === app.data.currentStudent?.code && profile.name) name.value = profile.name;
+  } catch {
+    // The registration form keeps its editable initial value if the profile cannot be loaded.
+  }
   let rules = service.getRules(topicId);
   const extra = document.getElementById('additional-members');
   const template = document.getElementById('registration-member-template');

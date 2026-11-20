@@ -16,8 +16,14 @@
       document.title = `${project.title} | Đề tài của tôi`;
       text('[data-approved-title]', project.title);
       text('#project-title', project.title);
-      const fields = [project.displayId || project.id, project.typeLabel, project.courseLabel, project.semester === 'he' ? 'Hè' : project.semester, project.academicYear, project.lecturer, project.statusLabel];
-      document.querySelectorAll('.project-summary__meta dd').forEach((node, index) => { node.textContent = fields[index]; node.classList.remove('project-summary__status--completed'); });
+      const term = project.semester === 'he' ? 'hè' : project.semester;
+      const period = [term && 'Học kỳ ' + term, project.academicYear].filter(Boolean).join(' · ');
+      const fields = [project.displayId || project.id, project.typeLabel, project.courseLabel, period];
+      root.querySelectorAll('.topic-summary__details dd').forEach((node, index) => {
+        node.textContent = fields[index] || 'Chưa có thông tin';
+      });
+      text('[data-project-status]', project.statusLabel);
+      root.querySelector('.topic-summary__status').classList.toggle('topic-summary__status--completed', project.status === 'hoan-thanh');
       text('.project-description__text', project.description);
       text('.project-objectives__text', project.objectives);
       text('.project-outcomes__text', project.outcomes);

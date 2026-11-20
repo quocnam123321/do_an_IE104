@@ -17,6 +17,14 @@
     if (!Number.isFinite(instant.getTime()) || new Date(instant.getTime() + 7 * 3600000).toISOString().slice(0, 16) !== normalized) return null;
     return instant.toISOString();
   };
+  function getSupervisor() {
+    const lecturer = app.data.currentLecturer;
+    let profile;
+    try { profile = app.services.lecturerProfile?.getState(); }
+    catch { /* Keep the current lecturer's initial identity if the profile cannot be loaded. */ }
+    return { name: profile?.name || lecturer.name, faculty: '', email: profile?.email || '', research: profile?.expertise || '' };
+  }
+
   function nextCode(type) {
     const store = globalThis.TeacherTopicStore;
     if (!store?.codePrefixes[type]) return '';
@@ -78,7 +86,7 @@
       domain: value.domain, technologies: value.technologies,
       registration: { ...previous?.registration, minMembers: value.minMembers, maxMembers: value.maxMembers, deadline: value.deadline, opensAt: value.opensAt || '' },
       startsAt: value.startsAt || '', completesAt: value.completesAt || '',
-      supervisor: previous?.supervisor || { name: actor.name, faculty: '', email: '', research: '' },
+      supervisor: previous?.supervisor || getSupervisor(),
       status: previous?.status || 'open', statusLabel: previous?.statusLabel || 'Đang mở đăng ký', createdAt: previous?.createdAt || createdAt,
       revision: (previous?.revision || 0) + 1, updatedAt: now.toISOString(),
     };
@@ -110,5 +118,5 @@
     repository.write([...saved.filter(item => item.id !== id),record]);
     return app.services.lecturerTopics.get('created',id);
   }
-  app.services.lecturerTopicEditor = { catalog, validate, nextCode, setRegistration, create: (input, files, owner) => save(null, input, null, files, owner), update: (id, input, revision, files, owner) => save(id, input,revision,files,owner) };
+  app.services.lecturerTopicEditor = { catalog, validate, nextCode, getSupervisor, setRegistration, create: (input, files, owner) => save(null, input, null, files, owner), update: (id, input, revision, files, owner) => save(id, input,revision,files,owner) };
 })();

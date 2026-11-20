@@ -162,10 +162,15 @@
           </ol>
         </nav>
         <p class="back-navigation">
-          <a class="back-link" href="de-tai-cua-toi-sinh-vien.html">← Quay lại Đề tài của tôi</a>
+          <a class="back-link" href="de-tai-cua-toi-sinh-vien.html">
+            <svg class="back-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M19 12H5m7 7-7-7 7-7"></path>
+            </svg>
+            <span>Quay lại Đề tài của tôi</span>
+          </a>
         </p>
-        <header class="page-header">
-          <h1 class="page-header__title">Chi tiết đề tài</h1><p class="active-project-name">Website quản lý hoạt động học tập <span class="active-project-status active-project-status--progress">Đang thực hiện</span></p>
+        <header class="page-header page-header--detail">
+          <h1 class="page-header__title">Chi tiết đề tài</h1><p class="page-header__topic-name">Website quản lý hoạt động học tập</p>
         </header>
 
         <nav class="detail-tabs-nav" aria-label="Các mục chi tiết đề tài">
@@ -180,45 +185,49 @@
                 <div class="student-detail-panels">
         <section id="tong-quan" class="student-detail-panel" aria-labelledby="tong-quan-panel-title" tabindex="-1">
           <h2 id="tong-quan-panel-title">Tổng quan</h2>
-<div class="page-content">
+<div id="overview-section">
           <!-- Khung nội dung giữ chỗ, chưa tải dữ liệu của từng đề tài. -->
-          <section class="project-summary" aria-labelledby="project-title">
-            <div class="project-summary__image"><img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" /></div>
-            <div class="project-summary__content">
-              <h2 id="project-title" class="project-summary__title">Website quản lý hoạt động học tập</h2>
-              <dl class="project-summary__meta">
-                <div class="project-summary__field"><dt>Mã đề tài</dt><dd>DA005</dd></div>
-                <div class="project-summary__field"><dt>Loại đề tài</dt><dd>Đồ án môn học</dd></div>
-                <div class="project-summary__field"><dt>Môn học</dt><dd>IE104 - Internet và Công nghệ Web</dd></div>
-                <div class="project-summary__field"><dt>Học kỳ</dt><dd>4</dd></div>
-                <div class="project-summary__field"><dt>Năm học</dt><dd>2026-2027</dd></div>
-                <div class="project-summary__field"><dt>Giảng viên hướng dẫn</dt><dd>Nguyễn Văn An</dd></div>
-                <div class="project-summary__field"><dt>Trạng thái</dt><dd class="project-summary__status project-summary__status--progress">Đang thực hiện</dd></div>
+          <section class="topic-summary" aria-labelledby="project-title">
+            <div class="topic-summary__image" role="img" aria-label="Ảnh đề tài mặc định">
+              <svg class="topic-summary__placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+                    <path d="M9 13h6M9 16h4"></path>
+                  </svg>
+            </div>
+            <div class="topic-summary__content">
+              <div class="topic-summary__heading">
+                <h2 id="project-title" class="topic-summary__title">Website quản lý hoạt động học tập</h2>
+                <span class="topic-summary__status"><span class="visually-hidden">Trạng thái đề tài: </span><span data-project-status>Đang thực hiện</span></span>
+              </div>
+              <dl class="topic-summary__details">
+                <div class="topic-summary__field"><dt>Mã đề tài</dt><dd>DA005</dd></div>
+                <div class="topic-summary__field"><dt>Loại đề tài</dt><dd>Đồ án môn học</dd></div>
+                <div class="topic-summary__field"><dt>Môn học</dt><dd>IE104 - Internet và Công nghệ Web</dd></div>
+                <div class="topic-summary__field"><dt>Học kỳ / Năm học</dt><dd>Học kỳ 4 · 2026-2027</dd></div>
               </dl>
             </div>
           </section>
 
-          <!-- Khi bổ sung CSS: cột nội dung khoảng 60%, cột thông tin khoảng 40%. -->
-          <div class="project-overview-layout">
-            <div class="project-overview-layout__main">
-              <section class="project-description" aria-labelledby="description-title">
+          <div class="topic-overview-layout">
+            <div class="topic-overview-layout__main">
+              <section class="project-description topic-overview-card topic-description" aria-labelledby="description-title">
                 <h2 id="description-title">Mô tả đề tài</h2>
                 <p class="project-description__text">Xây dựng website tập trung thông tin đề tài, nhóm sinh viên và các mốc thực hiện. Sinh viên theo dõi tiến độ, nộp báo cáo và xem phản hồi của giảng viên.</p>
               </section>
-              <section class="project-objectives" aria-labelledby="objectives-title">
+              <section class="project-objectives topic-overview-card" aria-labelledby="objectives-title">
                 <h2 id="objectives-title">Mục tiêu đề tài</h2>
                 <p class="project-objectives__text">Thiết kế giao diện quản lý rõ ràng; hỗ trợ phân công công việc, theo dõi thời hạn và tổng hợp báo cáo của nhóm.</p>
               </section>
-              <section class="project-outcomes" aria-labelledby="outcomes-title">
+              <section class="project-outcomes topic-overview-card" aria-labelledby="outcomes-title">
                 <h2 id="outcomes-title">Kết quả dự kiến</h2>
                 <p class="project-outcomes__text">Website quản lý đồ án, mã nguồn, dữ liệu mẫu, báo cáo kiểm thử và hướng dẫn sử dụng.</p>
               </section>
             </div>
 
-            <aside class="project-overview-layout__sidebar" aria-label="Giảng viên, nhóm thực hiện và mốc thời gian">
+            <aside class="topic-overview-layout__aside" aria-label="Giảng viên, nhóm thực hiện và mốc thời gian">
               <p data-team-notice role="status"></p>
               <p data-team-result role="status" tabindex="-1" hidden></p>
-              <section class="project-supervisors" aria-labelledby="supervisors-title">
+              <section class="project-supervisors topic-overview-card" aria-labelledby="supervisors-title">
                 <header class="project-supervisors__header">
                   <h2 id="supervisors-title">Giảng viên hướng dẫn</h2>
                   <button id="invite-supervisor-button" disabled class="project-supervisors__invite" type="button" commandfor="invite-supervisor-dialog" command="show-modal" aria-haspopup="dialog" aria-controls="invite-supervisor-dialog">+ Mời</button>
@@ -260,14 +269,14 @@
                 </section>
               </section>
 
-              <section class="project-team" aria-labelledby="team-title">
+              <section class="project-team topic-overview-card topic-team" aria-labelledby="team-title">
                 <header class="project-team__header">
                   <h2 id="team-title">Nhóm thực hiện</h2>
                   <button id="add-team-member-button" disabled class="project-team__add" type="button" commandfor="add-team-member-dialog" command="show-modal" aria-haspopup="dialog" aria-controls="add-team-member-dialog">+ Thêm thành viên</button>
                 </header>
                 <p class="project-team__note">Đề tài này cho phép tối đa 4 thành viên, bao gồm nhóm trưởng.</p>
-                <p class="project-team__name">Nhóm 7 - Web UIT</p>
-                <ul class="team-member-list">
+                <p class="project-team__name topic-team__group-name">Nhóm 7 - Web UIT</p>
+                <ul class="team-member-list topic-team__members">
                   <li class="team-member">
                     <div class="team-member__avatar" role="img" aria-label="Ảnh đại diện thành viên"><span aria-hidden="true">SV</span></div>
                     <div class="team-member__content">
@@ -292,12 +301,33 @@
                 </ul>
               </section>
 
-              <section class="project-milestones" aria-labelledby="milestones-title">
+              <section class="project-milestones topic-overview-card topic-milestones" aria-labelledby="milestones-title">
                 <h2 id="milestones-title">Mốc thời gian chính</h2>
-                <dl class="project-milestones__list">
-                  <div class="project-milestones__item"><dt>Ngày bắt đầu</dt><dd>01/10/2026</dd></div>
-                  <div class="project-milestones__item"><dt>Hạn nộp báo cáo tiến độ</dt><dd>15/11/2026</dd></div>
-                  <div class="project-milestones__item"><dt>Hạn nộp báo cáo cuối cùng</dt><dd>20/12/2026</dd></div>
+                <dl class="project-milestones__list topic-milestones__list">
+                  <div class="topic-milestones__item"><span class="topic-milestones__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                          </svg>
+                        </span><div class="topic-milestones__text"><dt>Ngày bắt đầu</dt><dd>01/10/2026</dd></div></div>
+                  <div class="topic-milestones__item"><span class="topic-milestones__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                          </svg>
+                        </span><div class="topic-milestones__text"><dt>Hạn nộp báo cáo tiến độ</dt><dd>15/11/2026</dd></div></div>
+                  <div class="topic-milestones__item"><span class="topic-milestones__icon" aria-hidden="true">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                          </svg>
+                        </span><div class="topic-milestones__text"><dt>Hạn nộp báo cáo cuối cùng</dt><dd>20/12/2026</dd></div></div>
                 </dl>
               </section>
             </aside>
@@ -310,33 +340,33 @@
           <p data-progress-notice role="status"></p>
           <p data-progress-result role="status" tabindex="-1" hidden></p>
 
-<div class="page-content">
+<div id="progress-section" class="page-content student-progress-view">
           <!-- KHU VỰC 1: TIẾN ĐỘ TỔNG THỂ -->
           <section
-            class="project-progress"
+            class="progress-overview"
             aria-labelledby="overall-progress-title"
           >
-            <h2 id="overall-progress-title">Tiến độ tổng thể</h2>
-            <div class="overall-progress-bar">
-              <label for="overall-progress">Thanh tiến độ tổng thể</label>
-              <progress id="overall-progress" max="100" value="40">
+            <h2 id="overall-progress-title" class="progress-overview__title">Tiến độ tổng thể</h2>
+            <div class="progress-overview__meter">
+              <label class="visually-hidden" for="overall-progress">Thanh tiến độ tổng thể</label>
+              <progress id="overall-progress" class="progress-overview__bar" max="100" value="40">
                 40%
               </progress>
-              <span class="overall-progress__text"
+              <span class="overall-progress__text progress-overview__percent"
                 >40%</span
               >
             </div>
-            <dl class="progress-stats">
-              <div class="progress-stat-item">
-                <dt>Tổng công việc</dt>
+            <dl class="progress-overview__stats">
+              <div class="progress-stat">
+                <dt><svg class="progress-stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6M8 13h8M8 17h6"></path></svg><span>Tổng công việc</span></dt>
                 <dd>5</dd>
               </div>
-              <div class="progress-stat-item">
-                <dt>Đã hoàn thành</dt>
+              <div class="progress-stat">
+                <dt><svg class="progress-stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg><span>Đã hoàn thành</span></dt>
                 <dd>2</dd>
               </div>
-              <div class="progress-stat-item">
-                <dt>Còn lại</dt>
+              <div class="progress-stat">
+                <dt><svg class="progress-stat__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg><span>Còn lại</span></dt>
                 <dd>3</dd>
               </div>
             </dl>
@@ -344,11 +374,11 @@
 
           <!-- KHU VỰC 2: DANH SÁCH CÔNG VIỆC -->
           <section
-            class="task-list-section"
+            class="progress-tasks"
             aria-labelledby="task-list-title"
           >
             <div class="section-header">
-              <h2 id="task-list-title">Danh sách công việc</h2>
+              <h2 id="task-list-title" class="progress-tasks__title">Bảng công việc</h2>
               <button
                 type="button"
                 class="btn-add-task"
@@ -358,7 +388,8 @@
               </button>
             </div>
 
-            <ul class="task-list" tabindex="0" aria-label="Danh sách cuộn, dùng phím mũi tên để xem thêm">
+            <div class="task-board" role="region" aria-label="Các cột công việc" tabindex="0">
+              <ul class="task-list" tabindex="0" aria-label="Danh sách cuộn, dùng phím mũi tên để xem thêm">
               <li class="task-list__item">
                 <article id="cv-01" class="task-card" data-task-id="cv-01" aria-labelledby="cv-01-title">
                   <div class="task-card__content">
@@ -475,6 +506,7 @@
                 </article>
               </li>
             </ul>
+            </div>
 
             <!-- Trạng thái rỗng chuẩn bị cho JavaScript -->
             <template id="progress-locked-template">
@@ -1290,7 +1322,7 @@
           <h2 id="bai-nop-panel-title">
             Bài nộp
           </h2>
-          <div id="submissions-section">
+          <div id="submissions-section" data-student-submissions>
             <p class="visually-hidden" id="submission-board-help">
               Bản mẫu trình bày. Mỗi cột hiển thị 5 thẻ đầu; cuộn dọc để xem các thẻ tiếp theo. Bảng hẹp có thể cuộn ngang bằng bàn phím hoặc vuốt. Bấm thẻ yêu cầu để xem chi tiết và mở hộp nộp bài. Tải tệp và lưu dữ liệu chưa được kết nối.
             </p>
@@ -5179,14 +5211,16 @@
         <section id="ket-qua-danh-gia" class="student-detail-panel" aria-labelledby="ket-qua-danh-gia-panel-title" tabindex="-1">
           <h2 id="ket-qua-danh-gia-panel-title">Kết quả đánh giá</h2>
 
-          <div class="page-content evaluation-content">
+          <div id="evaluation-section" class="evaluation-content student-evaluation-view">
           <noscript><p>Bật JavaScript để xem kết quả đánh giá theo dữ liệu hiện tại.</p></noscript>
           <!-- Thay nội dung đánh giá bằng khung này khi giảng viên chưa công bố. -->
           <template id="evaluation-unpublished-template">
-            <section class="empty-state" aria-label="Kết quả chưa công bố">
-              <h2>Chưa có kết quả đánh giá</h2>
-              <p>Giảng viên chưa công bố kết quả đánh giá của đề tài này.</p>
-              <p>Điểm và nhận xét sẽ hiển thị khi được công bố.</p>
+            <section class="evaluation-info" aria-labelledby="evaluation-unpublished-title">
+              <h3 id="evaluation-unpublished-title">Thông tin đánh giá</h3>
+              <dl class="evaluation-info__list">
+                <div><dt>Trạng thái</dt><dd><span class="evaluation-info__status">Chưa công bố</span></dd></div>
+              </dl>
+              <p class="student-evaluation-unpublished">Điểm và nhận xét sẽ hiển thị khi giảng viên công bố kết quả.</p>
             </section>
           </template>
           <template id="evaluation-error-template">
@@ -5196,115 +5230,51 @@
             </div>
           </template>
           <!-- KHU VỰC 1: KẾT QUẢ TỔNG HỢP -->
-          <section
-            class="evaluation-summary" hidden
-            aria-labelledby="evaluation-summary-title"
-          >
-            <header class="evaluation-section__header">
-              <h2 id="evaluation-summary-title">Kết quả tổng hợp</h2>
-            </header>
-            <div class="evaluation-summary__cards">
-              <div class="evaluation-summary__card" aria-labelledby="evaluation-score-title">
-                <h3 id="evaluation-score-title">Điểm tổng kết</h3>
-                <p class="evaluation-summary__score">8.4 / 10</p>
-              </div>
-              <div class="evaluation-summary__card" aria-labelledby="evaluation-result-title">
-                <h3 id="evaluation-result-title">Kết quả</h3>
-                <p class="evaluation-summary__result">Đạt yêu cầu</p>
-              </div>
-            </div>
+          <section class="evaluation-info" aria-labelledby="evaluation-summary-title" hidden>
+            <h3 id="evaluation-summary-title">Thông tin đánh giá</h3>
+            <dl class="evaluation-info__list">
+              <div><dt>Giảng viên đánh giá</dt><dd></dd></div>
+              <div><dt>Ngày đánh giá</dt><dd></dd></div>
+              <div><dt>Trạng thái</dt><dd><span class="evaluation-info__status evaluation-info__status--published">Đã công bố</span></dd></div>
+            </dl>
           </section>
 
-          <!-- KHU VỰC 2: CHI TIẾT ĐÁNH GIÁ — 3 TIÊU CHÍ THEO WIREFRAME -->
-          <section
-            class="evaluation-details" hidden
-            aria-labelledby="evaluation-details-title"
-          >
-            <header class="evaluation-section__header">
-              <h2 id="evaluation-details-title">Chi tiết đánh giá</h2>
-            </header>
-            <div class="evaluation-details__table-wrapper">
-              <table class="evaluation-details__table">
-                <caption>
-                  Ba tiêu chí đánh giá đề tài (dữ liệu giữ chỗ theo wireframe)
-                </caption>
-                <thead>
-                  <tr>
-                    <th scope="col">Tiêu chí đánh giá</th>
-                    <th scope="col">Trọng số (%)</th>
-                    <th scope="col">Điểm đạt được</th>
-                    <th scope="col">Nhận xét</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr data-criterion-id="TC001">
-                    <th scope="row">Chức năng và sản phẩm</th>
-                    <td>50%</td>
-                    <td>8.5</td>
-                    <td>Đáp ứng yêu cầu, cần hoàn thiện thêm một số chi tiết.</td>
-                  </tr>
-                  <tr data-criterion-id="TC002">
-                    <th scope="row">Báo cáo và tài liệu</th>
-                    <td>30%</td>
-                    <td>8.0</td>
-                    <td>Đáp ứng yêu cầu, cần hoàn thiện thêm một số chi tiết.</td>
-                  </tr>
-                  <tr data-criterion-id="TC003">
-                    <th scope="row">Trình bày và phối hợp</th>
-                    <td>20%</td>
-                    <td>8.8</td>
-                    <td>Đáp ứng yêu cầu, cần hoàn thiện thêm một số chi tiết.</td>
-                  </tr>
-                </tbody>
+          <section class="evaluation-criteria" aria-labelledby="evaluation-details-title" hidden>
+            <h3 id="evaluation-details-title">Đánh giá theo tiêu chí</h3>
+            <div class="evaluation-criteria__scroll" role="region" aria-labelledby="evaluation-details-title" tabindex="0">
+              <table class="evaluation-details__table evaluation-criteria__table evaluation-criteria__table--published">
+                <caption>Chi tiết tiêu chí đánh giá đề tài</caption>
+                <thead><tr>
+                  <th scope="col">Tiêu chí đánh giá</th>
+                  <th scope="col">Trọng số (%)</th>
+                  <th scope="col">Điểm đạt được</th>
+                  <th scope="col">Nhận xét</th>
+                </tr></thead>
+                <tbody></tbody>
               </table>
             </div>
           </section>
 
-          <!-- KHU VỰC 3: NHẬN XÉT CỦA GIẢNG VIÊN -->
-          <section
-            class="lecturer-feedback" hidden
-            aria-labelledby="lecturer-feedback-title"
-          >
-            <header class="evaluation-section__header">
-              <h2 id="lecturer-feedback-title">Nhận xét của giảng viên</h2>
-            </header>
-            <dl class="lecturer-feedback__metadata">
-              <div class="lecturer-feedback__field">
-                <dt>Giảng viên đánh giá</dt>
-                <dd>Nguyễn Văn An</dd>
-              </div>
-              <div class="lecturer-feedback__field">
-                <dt>Ngày đánh giá</dt>
-                <dd>15/11/2026</dd>
-              </div>
+          <section class="evaluation-total" aria-labelledby="evaluation-score-title" hidden>
+            <h3 id="evaluation-score-title">Điểm tổng kết</h3>
+            <dl class="evaluation-info__list">
+              <div><dt>Điểm đạt được</dt><dd class="evaluation-summary__score"></dd></div>
+              <div><dt id="evaluation-result-title">Kết quả</dt><dd class="evaluation-summary__result"></dd></div>
             </dl>
-            <div class="lecturer-feedback__content">
-              <p>Nhóm triển khai được các chức năng chính và phối hợp tốt. Cần bổ sung kiểm thử các trường hợp biên và hoàn thiện tài liệu sử dụng.</p>
-            </div>
           </section>
 
-          <!-- KHU VỰC 4: TỆP ĐÁNH GIÁ ĐÍNH KÈM -->
-          <section
-            class="evaluation-attachments" hidden
-            aria-labelledby="evaluation-attachments-title"
-          >
-            <header class="evaluation-section__header">
-              <h2 id="evaluation-attachments-title">Tệp đánh giá đính kèm</h2>
-            </header>
+          <section class="evaluation-comment" aria-labelledby="lecturer-feedback-title" hidden>
+            <h3 id="lecturer-feedback-title">Nhận xét của giảng viên</h3>
+            <div class="student-evaluation-comment lecturer-feedback__content"><p></p></div>
+          </section>
+
+          <section class="evaluation-attachments" aria-labelledby="evaluation-attachments-title" hidden>
+            <h3 id="evaluation-attachments-title">Tệp đánh giá đính kèm</h3>
             <div class="evaluation-attachments__item">
-              <p class="evaluation-attachments__name">Phieu_danh_gia.pdf</p>
-              <!-- Khi có tệp thật, thay nút này bằng liên kết có href và download. -->
-              <button
-                class="evaluation-attachments__download" aria-describedby="evaluation-attachment-note"
-                type="button"
-
-                disabled
-              >
-                Tải xuống
-              </button>
+              <p class="evaluation-attachments__name"></p>
+              <button class="evaluation-attachments__download" aria-describedby="evaluation-attachment-note" type="button" disabled>Tải xuống</button>
             </div>
-
-          <p class="evaluation-attachment-note" id="evaluation-attachment-note">Chưa có tệp đánh giá để tải xuống.</p>
+            <p class="evaluation-attachment-note" id="evaluation-attachment-note">Chưa có tệp đánh giá để tải xuống.</p>
           </section>
         </div>
         </section>
@@ -5446,5 +5416,7 @@
       <button type="button" disabled>Xác nhận nộp bài</button>
     </dialog>
     <script src="../../assets/js/pages/student/topic-detail/lecturer-reviews.js" defer></script>
-</body>
+    <script src="../../assets/js/services/student-submissions-service.js" defer></script>
+    <script src="../../assets/js/pages/student/topic-detail/submissions.js" defer></script>
+  </body>
 </html>

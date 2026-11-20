@@ -22,6 +22,15 @@
       const base = String(topic.detailUrl || '').split('#')[0];
       const milestones = app.data.projectMilestones.find(item => item.projectId === topic.id);
       milestones?.dates.forEach(item => events.push({ id: `${topic.id}-${item.id}`, projectId: topic.id, projectTitle: topic.title, title: item.title, date: item.date, kind: 'milestone', closed, detailUrl: base ? `${base}#tong-quan` : null }));
+      try {
+        const submissions = app.services.studentSubmissions?.forStudent(topic.id);
+        submissions?.requirements.forEach(requirement => events.push({
+          id: requirement.id, projectId: topic.id, projectTitle: topic.title, title: requirement.title,
+          date: today(new Date(requirement.deadline)), deadline: requirement.deadline, kind: 'submission',
+          closed: closed || requirement.submitted, submitted: requirement.submitted, locked: requirement.locked,
+          detailUrl: base ? `${base}#bai-nop` : null,
+        }));
+      } catch (failure) { warnings.push(failure.message); }
       if (!app.data.projectProgress.some(item => item.projectId === topic.id) && !['approved-proposal', 'approved-registration'].includes(topic.source)) return;
       try {
         const state = app.services.projectProgress.getState(topic.id);

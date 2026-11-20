@@ -61,7 +61,13 @@
       }
       const back = form.querySelector('.topic-edit-form__cancel');
       if (back) back.href = app.services.lecturerTopics.detailUrl(original);
-    } else document.querySelectorAll('.topic-supervisor__details dd').forEach((node,index) => { node.textContent = index === 0 ? app.data.currentLecturer.name : 'Chưa có thông tin'; });
+    } else {
+      const supervisor = service.getSupervisor();
+      const fields = ['name', 'faculty', 'email', 'research'];
+      document.querySelectorAll('.topic-supervisor__details dd').forEach((node, index) => {
+        node.textContent = supervisor[fields[index]] || 'Chưa có thông tin';
+      });
+    }
     for (const purpose of ['image','attachment']) {
       const fieldset = document.querySelector(purpose === 'image' ? '.topic-form__image, .topic-edit-form__image' : '.topic-form__attachment, [data-editor-attachment]');
       let input = fieldset.querySelector('input[type="file"]');

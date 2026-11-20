@@ -172,10 +172,7 @@
 }
 
 #overview-section .topic-overview-card > h2 {
-  margin: 0 0 var(--space-4);
-  font-size: var(--text-xl);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-snug);
+  margin-block: 0 var(--space-4);
 }
 
 #overview-section .topic-team > h2 {
@@ -260,12 +257,12 @@
 
 #evaluation-section .student-evaluation-comment {
   min-width: 0;
-  min-height: 7rem;
   padding: var(--space-3) var(--space-4);
   border: 1px solid var(--color-border);
   border-radius: var(--control-radius);
   background: var(--color-neutral-bg);
-  color: var(--color-muted-foreground);
+  color: var(--color-foreground);
+  overflow-wrap: anywhere;
 }
 
 #evaluation-section .evaluation-attachments {
@@ -301,4 +298,127 @@
   #progress-section .task-assignee--more {
     display: inline-grid;
   }
+}
+
+
+.active-topic-page .page-header__topic-name {
+  margin-top: var(--space-3);
+  color: var(--color-heading);
+  font-weight: var(--weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+.active-topic-page :is(.project-supervisors, .project-team) h2,
+#overview-section .topic-overview-card > h2 {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+}
+
+#overview-section :is(.project-objectives__text, .project-outcomes__text) {
+  max-width: 72ch;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+#overview-section .project-team__name {
+  margin-block: var(--space-3);
+}
+
+#overview-section .topic-milestones__list {
+  padding: 0;
+}
+
+#progress-section .progress-overview__title {
+  margin-bottom: var(--space-4);
+}
+
+#progress-section .progress-overview__bar {
+  flex-basis: min(14rem, 100%);
+}
+
+#progress-section .student-progress-summary {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-muted-foreground);
+}
+
+#progress-section .progress-tasks__title {
+  margin: 0;
+}
+
+#progress-section .task-list.task-board__columns {
+  max-height: none;
+  grid-auto-rows: auto;
+  padding: 0;
+  overflow: visible;
+  scrollbar-gutter: auto;
+}
+
+#progress-section .task-column__list {
+  max-block-size: min(34rem, 65svh);
+}
+
+#progress-section .task-card:has(.student-task-open) {
+  padding: 0;
+  gap: 0;
+}
+
+#progress-section .task-card__actions:empty {
+  display: none;
+}
+
+#progress-section .task-card__content {
+  display: grid;
+  gap: var(--space-1);
+}
+
+#progress-section .task-card__content p {
+  margin: 0;
+  font-size: var(--text-sm);
+}
+
+#progress-section .task-card__title {
+  margin-bottom: var(--space-1);
+}
+
+#progress-section .student-task-assignees {
+  color: var(--color-foreground);
+}
+
+#evaluation-section .student-evaluation-unpublished {
+  margin-top: var(--space-3);
+}
+
+#evaluation-section .evaluation-total :is(.evaluation-summary__score, .evaluation-summary__result) {
+  font-size: var(--text-base);
+  color: var(--color-foreground);
+}
+
+#submissions-section .submission-board__columns--requirements {
+  grid-template-columns: repeat(2, minmax(17.5rem, 1fr));
+}
+
+#submissions-section .student-submission-notice {
+  margin-bottom: var(--space-4);
+  color: var(--color-muted-foreground);
+}
+
+#submissions-section .student-submission-detail {
+  overflow-wrap: anywhere;
+}
+
+#submissions-section .student-submission-detail summary {
+  min-height: var(--control-min-height);
+  cursor: pointer;
+}
+
+#submissions-section .student-submission-status {
+  display: block;
+  margin-top: var(--space-1);
+  color: var(--color-muted-foreground);
+  font-size: var(--text-sm);
+}
+
+#submissions-section .student-submission-content {
+  white-space: pre-wrap;
 }
