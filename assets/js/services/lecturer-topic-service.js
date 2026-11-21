@@ -20,8 +20,9 @@
     return merged;
   };
 
-  function list(kind) {
-    const owned = records(kind).filter(record => record.kind === kind && record.ownerId === actorId());
+  function list(kind, { catalogOnly = false } = {}) {
+    const available = catalogOnly ? (app.data.lecturerTopics || []).filter(topic => topic.sourceRecord) : records(kind);
+    const owned = available.filter(record => record.kind === kind && record.ownerId === actorId());
     return clone(app.topicIdentity?.uniqueTitles(owned) || owned);
   }
 

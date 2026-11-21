@@ -4,6 +4,7 @@
   const topics = window.TeacherTopicStore;
   const proposals = window.IE104Proposals;
   const { teaching, projectProgress } = app.services;
+  const filePreview = window.location?.protocol === 'file:';
   const select = selector => document.querySelector(selector);
   const chart = select('.topic-status__chart');
   const circles = [...chart.querySelectorAll('circle')];
@@ -13,6 +14,7 @@
   const progressList = select('.supervised-progress__list');
   const pendingList = select('.pending-requests__list');
   const warning = select('#overview-storage-warning');
+  const loadingStatus = select('#lecturer-overview-status');
   const percentFormat = new Intl.NumberFormat('vi-VN', { style: 'percent', maximumFractionDigits: 1 });
   const dateFormat = new Intl.DateTimeFormat('vi-VN', {
     dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh',
@@ -51,7 +53,11 @@
     const group = element('p', 'Nhóm thực hiện: ' + (project.groupName || 'Chưa có nhóm thực hiện'));
     let detail;
     try {
-      const { percent, total } = projectProgress.summarize(projectProgress.getState(project.id));
+      const sample = project.sourceRecord?.supervision?.tasks;
+      const totalSample = sample ? sample.notStarted.length + sample.inProgress.length + sample.completed.length : 0;
+      const { percent, total } = project.sourceRecord
+        ? { total: totalSample, percent: totalSample ? Math.round(100 * sample.completed.length / totalSample) : 0 }
+        : projectProgress.summarize(projectProgress.getState(project.id));
       if (total) {
         detail = element('p');
         const meter = element('progress', `${percent}%`);
@@ -62,7 +68,7 @@
         label.htmlFor = meter.id;
         detail.append(label, meter);
       } else {
-        detail = element('p', 'Chưa có công việc để tính tiến độ.');
+        detail = element('p', project.sourceRecord && !sample ? 'Chưa có dữ liệu tiến độ.' : 'Chưa có công việc để tính tiến độ.');
       }
     } catch {
       detail = element('p', 'Không đọc được tiến độ của đề tài.');
@@ -134,18 +140,18 @@
 
   function render() {
     let created;
-    try { created = app.services.lecturerTopics?.list('created') || topics.read(); }
+    try { created = app.services.lecturerTopics?.list('created', { catalogOnly: filePreview }) || topics.read(); }
     catch { /* Thông báo lỗi hiển thị bên dưới. */ }
     const records = proposals.getAll();
-    const proposalError = proposals.getError();
+    const proposalError = filePreview ? '' : proposals.getError();
     const approved = records.filter(record => record.status === 'approved');
     const pending = records.filter(record => record.status === 'pending').sort((first, second) =>
       (Date.parse(second.submittedAt) || 0) - (Date.parse(first.submittedAt) || 0));
     let supervised = [];
     let progressError = '';
     try {
-      const catalog = app.services.lecturerTopics?.list('supervised') || [];
-      supervised = [...catalog, ...teaching.listSupervisedProjects().map(({ project }) => project)];
+      supervised = app.services.lecturerTopics?.list('supervised') || [];
+      if (!filePreview) supervised.push(...teaching.listSupervisedProjects().map(({ project }) => project));
     } catch (failure) { progressError = failure.message; }
     const unique = (entries, title) => app.topicIdentity?.uniqueTitles(entries, title) || entries;
     supervised = unique(supervised);
@@ -162,7 +168,10 @@
     for (const [key, count] of Object.entries(values)) {
       select(`[aria-labelledby="${key}-count-title"] strong`).textContent = count ?? '—';
     }
-    warning.textContent = [created ? '' : 'Không đọc được danh sách đề tài đã tạo.', proposalError, progressError].filter(Boolean).join(' ');
+    loadingStatus.hidden = true;
+    warning.textContent = filePreview
+      ? 'Đang xem dữ liệu có sẵn. Mở website qua localhost để xem dữ liệu đã lưu trên trình duyệt.'
+      : [created ? '' : 'Không đọc được danh sách đề tài đã tạo.', proposalError, progressError].filter(Boolean).join(' ');
     warning.hidden = !warning.textContent;
     renderChart([inProgress, open, completed.length, chartCreated.length - open], total);
 

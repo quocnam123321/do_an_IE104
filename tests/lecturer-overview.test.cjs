@@ -52,7 +52,7 @@ class Element {
   }
 }
 
-function setup() {
+function setup(protocol) {
   const data = new Map();
   const events = new Map();
   const labels = ['Đang thực hiện', 'Đang mở đăng ký', 'Hoàn thành', 'Đã đóng đăng ký'];
@@ -79,12 +79,14 @@ function setup() {
   const nodes = {
     '.topic-status__chart': chart, '.supervised-progress__list': progress,
     '.pending-requests__list': pending, '#overview-storage-warning': warning,
+    '#lecturer-overview-status': new Element('p'),
     '#topic-status-empty': empty, '#status-chart-title': new Element('title'),
     '#status-chart-description': new Element('desc'),
   };
   for (const [key, node] of Object.entries(counts)) nodes[`[aria-labelledby="${key}-count-title"] strong`] = node;
 
   const context = vm.createContext({
+    location: protocol && { protocol },
     navigator: {},
     document: {
       querySelector: selector => nodes[selector],
@@ -102,8 +104,15 @@ function setup() {
   const files = [
     'shared/topic-identity', 'teacher-topic-store', 'proposal-store', 'data/mock-data', 'data/student-projects',
     'data/student-progress', 'data/teaching-data', 'services/storage', 'services/project-team-service',
-    'services/project-progress-service', 'services/teaching-service', 'pages/lecturer/overview',
+    'services/project-progress-service', 'services/teaching-service',
   ];
+  if (protocol === 'file:') {
+    files.unshift('uit-lecturer-catalog');
+    files.push('data/lecturer-topics', 'data/lecturer-merge-catalog', 'services/lecturer-topic-repository',
+      'services/proposal-service', 'services/registration-service', 'services/approved-project-service',
+      'services/lecturer-topic-service');
+  }
+  files.push('pages/lecturer/overview');
   for (const file of files) {
     vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js', file + '.js'), 'utf8'), context);
   }
@@ -180,4 +189,19 @@ test('a storage change refreshes the overview and corrupt data is reported', () 
   assert.equal(counts.total.textContent, '—');
   assert.equal(warning.hidden, false);
   assert.equal(chartContent.hidden, true);
+});
+
+test('opening the overview as a file shows the bundled catalog while saved data is unavailable', () => {
+  const { context, counts, chartContent, chartLabels, legend, warning, progress, pending } = setup('file:');
+  const catalog = context.UITLecturerCatalog;
+  assert.equal(counts.created.textContent, catalog.created.length);
+  assert.equal(counts.supervised.textContent, catalog.supervised.length);
+  assert.equal(counts.pending.textContent, pending.children.length);
+  assert.equal(chartContent.hidden, false);
+  const total = legend.reduce((sum, row) => sum + row.querySelector('dd').textContent, 0);
+  assert.equal(counts.total.textContent, total);
+  assert.equal(chartLabels.querySelector('text:nth-of-type(2)').textContent, total);
+  assert.match(warning.textContent, /localhost/);
+  assert.match(progress.children.find(card => card.querySelector('a').href.includes('ISEDATN-001')).querySelector('a').href,
+    /\?topic=ISEDATN-001#tien-do$/);
 });
