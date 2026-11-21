@@ -287,7 +287,7 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 - Hộp cập nhật tự điền trạng thái và % hiện tại của công việc được chọn, nội dung báo cáo mới trống khi mở. Chi tiết có lịch sử riêng theo task: tên/mã, giờ Việt Nam, % từng lần, mới nhất trước; details/summary mở nội dung. Chưa có lịch sử hiện trạng thái trống, không sinh người/thời gian giả.
 - Bài nộp: phía trên Chưa nộp/Đã nộp, phía dưới Chờ phản hồi/Đã phản hồi. Giữ nhãn thời hạn riêng: Quá hạn · Chưa nộp, Đã nộp trễ, Đúng hạn. Các nút có khoảng cách, Tạo yêu cầu và Thêm công việc dùng primary. Tiêu đề thẻ GV trải hàng đầu, chừa chỗ nhãn thời hạn.
 - DA005 là đề tài đang thực hiện để thử; giữ DA001/DA002 Hoàn thành. Giữ quyền, revision và quy tắc nộp muộn khi chưa khóa. Bài nộp SV chưa có xử lý tải lên thực tế.
-- Khung ảnh danh sách/chi tiết SV/GV dùng topic-media-shared.css: vuông 168px desktop, 128px dưới 64rem, contain/padding/nền chung; không đổi avatar và logo header. Giữ token, font và các sửa riêng của nhóm ngoài phạm vi. Ảnh tóm tắt trong chi tiết đề tài của giảng viên dùng lại kích thước theo `d53e746`: đề tài đang hướng dẫn dùng 16:9, đề tài đã tạo dùng 4:3 trên máy tính và tablet, 16:9 trên điện thoại.
+- Khung ảnh danh sách/chi tiết SV/GV dùng topic-media-shared.css: vuông 168px desktop, 128px dưới 64rem, contain/padding/nền chung; không đổi avatar và logo header. Giữ token, font và các sửa riêng của nhóm ngoài phạm vi. Ảnh tóm tắt trong chi tiết đề tài đã tạo và đang hướng dẫn của giảng viên dùng cùng khung ngang 16:9, theo kích thước của trang đang hướng dẫn ở `d53e746`.
 
 ## GV phục hồi theo 1ddf0d3 — 20/11/2026
 

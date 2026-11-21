@@ -142,16 +142,13 @@
 
 .teacher-created-detail-page .topic-summary {
   display: grid;
-  grid-template-columns: 13rem minmax(0, 1fr);
   align-items: center;
-  gap: var(--space-6);
 }
 
 .teacher-created-detail-page .topic-summary__image {
   position: relative;
   display: grid;
   place-items: center;
-  aspect-ratio: 4 / 3;
   overflow: hidden;
   border-radius: var(--control-radius);
   background: var(--media-placeholder-bg);
@@ -350,14 +347,9 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .teacher-created-detail-page .topic-summary,
   .teacher-created-detail-page .topic-supervisor__content {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-4);
-  }
-
-  .teacher-created-detail-page .topic-summary__image {
-    aspect-ratio: 16 / 9;
   }
 
   .teacher-created-detail-page .topic-summary h2 {

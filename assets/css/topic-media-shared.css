@@ -33,6 +33,30 @@
   }
 }
 
+/* Khung ảnh tóm tắt của hai trang chi tiết đề tài giảng viên. */
+.topic-summary:has(> [data-topic-cover="wide"]) {
+  grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr);
+  gap: var(--space-8);
+}
+
+.topic-summary__image[data-topic-cover="wide"] {
+  aspect-ratio: 16 / 9;
+}
+
+@media (max-width: 63.99875rem) {
+  .topic-summary:has(> [data-topic-cover="wide"]) {
+    grid-template-columns: minmax(12rem, 0.7fr) minmax(0, 1.5fr);
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 47.99875rem) {
+  .topic-summary:has(> [data-topic-cover="wide"]) {
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--space-4);
+  }
+}
+
 .page-container .topic-image,
 .page-container .topic-summary__image:where(:not([data-topic-cover="wide"])),
 #overview-section .topic-summary__image:where(:not([data-topic-cover="wide"])),
