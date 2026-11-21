@@ -299,3 +299,4 @@ Ngày 21/11/2026, danh sách Đề tài đã tạo hiện tên tác giả, khóa
 
 - Dùng nền xanh đậm #122E59 theo mẫu UIT áp dụng cho dự án, chữ phụ #DBEAFE và đường phân chia #50688A. Logo ngang màu trắng lấy từ footer của website UIT và lưu trong dự án.
 - Bố cục có bốn cột trên màn hình rộng, hai cột dưới 64rem và một cột đến 36rem. Hai liên kết điều khoản và bảo mật mở từng trang trong cùng một PDF.
+- Cột Truy cập nhanh chứa liên kết Liên hệ. Cột Tài nguyên UIT liên kết đến website của khoa và Cổng thông tin UIT. Khoảng đệm dọc của phần cột là 24px.
