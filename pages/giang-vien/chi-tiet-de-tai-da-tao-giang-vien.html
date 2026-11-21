@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1">
     <link rel="stylesheet" href="../../assets/css/components.css">
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
-    <link rel="stylesheet" href="../../assets/css/teacher-created-detail.css?v=20261121-matching-topic-covers">
+    <link rel="stylesheet" href="../../assets/css/teacher-created-detail.css?v=20261121-uit-records">
     <script src="../../assets/js/nav-indicator.js" defer=""></script>
     <script src="../../assets/js/dialog-commands.js" defer=""></script>
 
@@ -34,9 +34,9 @@
     <script src="../../assets/js/proposal-store.js" defer></script>
     <script src="../../assets/js/services/lecturer-topic-file-service.js" defer></script>
     <script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
-    <script src="../../assets/js/pages/lecturer/created-topic.js?v=20261121-created-topics" defer></script>
-    <script src="../../assets/js/pages/lecturer/topic-media.js" defer></script>
-    <script src="../../assets/js/pages/lecturer/topic-registration-state.js" defer></script>
+    <script src="../../assets/js/pages/lecturer/created-topic.js?v=20261121-uit-records" defer></script>
+    <script src="../../assets/js/pages/lecturer/topic-media.js?v=20261121-uit-records" defer></script>
+    <script src="../../assets/js/pages/lecturer/topic-registration-state.js?v=20261121-uit-records" defer></script>
   </head>
   <body data-lecturer-topic-view="detail" class="teacher-workspace-page teacher-created-detail-page">
     <a class="skip-link" href="#main-content">
@@ -263,7 +263,7 @@
             <button class="topic-attachments__download" type="button" disabled="" title="Chưa có tệp tài liệu thực để tải xuống"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"></path></svg><span>Tải xuống</span></button>
           </section>
         </div>
-        <p class="created-detail-note">Bản xem giao diện với dữ liệu mẫu. Đổi trạng thái đăng ký và tải tài liệu chưa được kết nối.</p>
+        <noscript><p class="created-detail-note">Bật JavaScript để xem thông tin của đề tài đã chọn.</p></noscript>
         <!-- Biến thể đóng đăng ký dành cho tích hợp: thay nhãn trạng thái và nút đóng
              bằng nội dung template này. HTML thuần không tự đổi hoặc lưu trạng thái. -->
         <template id="registration-closed-template">

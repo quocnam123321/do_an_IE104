@@ -7,6 +7,7 @@
   document.querySelector('.topic-attachments')?.append(notice);
   async function render() {
     const current = ++generation; release();
+    const catalogOnly = document.body.dataset.topicCatalogOnly === 'true';
     const targets = [];
     if (document.body.dataset.lecturerTopicView === 'detail' && document.body.dataset.topicRouteState === 'ready') targets.push([document.body.dataset.topicId, document.querySelector('.topic-summary__image')]);
     if (document.body.dataset.lecturerList === 'created') document.querySelectorAll('.topic-card').forEach(card => targets.push([card.dataset.topicId,card.querySelector('.topic-card__image-placeholder')]));
@@ -15,6 +16,7 @@
       if (!placeholders.has(node)) placeholders.set(node,[...node.childNodes].map(child => child.cloneNode(true)));
       node.replaceChildren(...placeholders.get(node).map(child => child.cloneNode(true)));
       delete node.dataset.topicImage;
+      if (catalogOnly) continue;
       try {
         const topic = app.services.lecturerTopics.get('created',id); if (!topic.imageRef) continue;
         const value = await app.services.lecturerTopicFiles.read(id,'image');
@@ -27,6 +29,8 @@
     const download = document.querySelector('.topic-attachments__download');
     if (!download) return;
     download.disabled = true;
+    download.hidden = catalogOnly;
+    if (catalogOnly) { notice.textContent = ''; return; }
     try {
       const value = await app.services.lecturerTopicFiles.read(document.body.dataset.topicId,'attachment');
       if (current !== generation) return;

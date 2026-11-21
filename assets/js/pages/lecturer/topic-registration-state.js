@@ -10,10 +10,13 @@
   dialogs.open.querySelector('form').before(label,deadline,hint);
   let pending = null; let busy = false;
   const describe = () => {
+    status.hidden = document.body.dataset.topicCatalogOnly === 'true';
+    if (status.hidden) return;
     try { const topic = app.services.lecturerTopics.get('created',document.body.dataset.topicId); const state = app.services.publishedTopics.availability(topic); status.textContent = `Tiếp nhận đăng ký: ${state.label}.${state.allowed ? '' : ` ${state.reason}`}`; }
     catch (failure) { status.textContent = failure.message; }
   };
   describe();
+  document.addEventListener('ie104:lecturer-topic-rendered', describe);
   window.addEventListener('storage',event => { if ([app.services.lecturerTopicRepository.key,null].includes(event.key)) describe(); });
   for (const [action,dialog] of Object.entries(dialogs)) {
     const button = dialog.querySelector('button[type="button"]'); button.disabled = false; button.removeAttribute('title');

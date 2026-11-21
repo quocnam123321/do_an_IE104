@@ -55,7 +55,7 @@
   background: var(--color-success-bg);
 }
 
-.teacher-created-detail-page .status-badge--closed {
+.teacher-created-detail-page :is(.status-badge--closed, .status-badge--catalog) {
   color: var(--color-neutral-fg);
   background: var(--color-neutral-bg);
 }

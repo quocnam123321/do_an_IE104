@@ -9,6 +9,8 @@
   // Danh sách đã tạo dùng li bọc thẻ, còn danh sách đang hướng dẫn chứa thẻ trực tiếp.
   const listItemFor = card => card.parentElement.matches('li') ? card.parentElement : card;
   const template = listItemFor(firstCard).cloneNode(true);
+  const catalogCards = new Map(Array.from(container.querySelectorAll('.topic-card[data-status="catalog"]'),
+    card => [card.dataset.topicId, listItemFor(card).cloneNode(true)]));
   function render() {
     let topics;
     try {
@@ -23,13 +25,19 @@
     });
     topics.forEach(topic => {
       let card = [...container.querySelectorAll('.topic-card:not([data-approved-proposal])')].find(node => node.dataset.topicId === topic.id);
+      const catalogCard = catalogCards.get(topic.id);
+      if (catalogCard && !topic.registration) {
+        if (!card) container.append(catalogCard.cloneNode(true));
+        else if (card.dataset.status !== 'catalog') listItemFor(card).replaceWith(catalogCard.cloneNode(true));
+        return;
+      }
       const existing = Boolean(card);
       if (!card) {
         const item = template.cloneNode(true);
         card = item.matches('.topic-card') ? item : item.querySelector('.topic-card');
         container.append(item);
       }
-      if (existing && topic.sourceRecord && !topic.revision) return;
+      if (existing && topic.sourceRecord && !topic.revision && kind === 'supervised') return;
       card.dataset.topicId = topic.id;
       const link = card.querySelector('.topic-card__detail-link');
       const title = card.querySelector('.topic-card__title');

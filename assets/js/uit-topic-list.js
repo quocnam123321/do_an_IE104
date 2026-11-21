@@ -10,7 +10,7 @@
   const catalog = window.UITLecturerCatalog;
   for (const card of list.querySelectorAll('.topic-card:not([data-approved-proposal])')) {
     const record = catalog?.records.find(topic => topic.id === card.dataset.topicId);
-    if (!record) continue;
+    if (!record || document.body.classList.contains('teacher-created-topics-page')) continue;
     const [code, course] = card.querySelectorAll('.topic-card__meta-text');
     code.textContent = catalog.formatCode(record.topicType, record.code);
     course.textContent = record.courseLabel || 'Không áp dụng';
