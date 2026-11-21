@@ -18,7 +18,7 @@
       if (results) delete results.dataset.topicSourceError;
     } catch (failure) {
       if (results) results.dataset.topicSourceError = failure.message;
-      return;
+      topics = service.list(kind, { catalogOnly: true });
     }
     container.querySelectorAll('.topic-card:not([data-approved-proposal])').forEach(card => {
       if (!topics.some(topic => topic.id === card.dataset.topicId)) listItemFor(card).remove();
@@ -37,7 +37,7 @@
         card = item.matches('.topic-card') ? item : item.querySelector('.topic-card');
         container.append(item);
       }
-      if (existing && topic.sourceRecord && !topic.revision && kind === 'supervised') return;
+      if (existing && topic.sourceRecord && !topic.demo && !topic.revision && kind === 'supervised') return;
       card.dataset.topicId = topic.id;
       const link = card.querySelector('.topic-card__detail-link');
       const title = card.querySelector('.topic-card__title');
@@ -54,11 +54,11 @@
       const createdAt = topic.createdAt || (existing && topic.sourceRecord ? date?.dateTime : '') || '';
       const values = [
         `Mã đề tài: ${topic.displayId || topic.id}`,
-        `${topic.course ? 'Môn học' : 'Hình thức tốt nghiệp'}: ${topic.course ? topic.courseLabel : topic.typeLabel}`,
+        `Môn học: ${topic.courseLabel || topic.typeLabel}`,
         `Học kỳ ${topic.semester === 'summer' ? 'hè' : topic.semester} - ${topic.academicYear}`,
         kind === 'created' ? createdAt.split('-').reverse().join('/') : `Nhóm thực hiện: ${topic.groupName}`,
       ];
-      if (topic.sourceRecord && kind === 'supervised') {
+      if (topic.sourceRecord && !topic.demo && kind === 'supervised') {
         values.splice(0, values.length, `Mã đề tài: ${topic.id}`, `Tác giả: ${topic.sourceRecord.authors.join(', ')}`,
           `GVHD theo nguồn: ${topic.sourceRecord.advisors.join(', ') || 'Chưa công bố trong nguồn'}`, `${topic.typeLabel}${topic.sourceRecord.cohort ? ' - Khóa ' + topic.sourceRecord.cohort : ' - Năm ' + topic.sourceRecord.year}`);
       }
@@ -72,6 +72,21 @@
       url.searchParams.set('return', location.pathname.split('/').pop() + location.search);
       link.href = url.href;
       link.setAttribute('aria-label', `Xem chi tiết ${topic.title}`);
+    });
+    document.querySelectorAll('[data-topic-tab-count]').forEach(node => {
+      const tabKind = node.dataset.topicTabCount === 'teaching' ? 'supervised' : 'created';
+      try {
+        let entries;
+        try { entries = service.list(tabKind); }
+        catch { entries = service.list(tabKind, { catalogOnly: true }); }
+        if (tabKind === 'supervised') {
+          try {
+            entries = [...entries, ...(globalThis.IE104.services.teaching?.listSupervisedProjects() || []).map(entry => entry.project),
+              ...(window.IE104Proposals?.getAll() || []).filter(entry => entry.status === 'approved')];
+          } catch { /* Vẫn đếm được danh mục mẫu khi không đọc được dữ liệu đã lưu. */ }
+        }
+        node.textContent = (globalThis.IE104.topicIdentity?.uniqueTitles(entries) || entries).length;
+      } catch { node.textContent = '—'; }
     });
     document.dispatchEvent(new Event('ie104:lecturer-topics-rendered'));
   }

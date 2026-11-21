@@ -13,7 +13,7 @@
     try { projects = teaching.listSupervisedProjects(); } catch { /* Keep the available proposal records. */ }
     const byId = new Map(projects.map(({ project, role }) => [project.id, {
       id: project.id, topicId: project.topicId || project.id, projectId: project.id,
-      title: project.title, topicType: project.type, course: project.courseId, courseLabel: project.courseLabel,
+      title: project.title, topicType: project.type || ({ 'Đồ án môn học': 'do-an-mon-hoc', 'Đồ án tốt nghiệp': 'do-an-tot-nghiep', 'Khóa luận tốt nghiệp': 'khoa-luan' })[project.typeLabel], course: project.courseId, courseLabel: project.courseLabel,
       semester: project.semester, academicYear: project.academicYear, groupName: project.groupName,
       supervisionRole: role === 'secondary' ? 'dong-huong-dan' : 'huong-dan-chinh',
       supervisionRoleLabel: role === 'secondary' ? 'Đồng hướng dẫn' : 'Hướng dẫn chính',
@@ -37,9 +37,12 @@
       card.setAttribute('aria-labelledby', title.id);
       card.querySelector('.topic-card__image-placeholder').setAttribute('aria-label', `Chưa có ảnh đại diện cho đề tài ${record.title}`);
       const meta = card.querySelector('.topic-card__meta');
-      const code = window.UITLecturerCatalog.formatCode(card.dataset.topicType, record.topicId);
+      const project = projects.find(entry => entry.project.id === record.projectId)?.project;
+      const code = project ? window.IE104.services.lecturerTopics.projectIdentity(project).displayId
+        : window.UITLecturerCatalog.formatCode(card.dataset.topicType, record.topicId);
       meta.setAttribute('aria-label', `Thông tin đề tài ${code}`);
-      [code, record.courseLabel || 'Không áp dụng',
+      const courseLabel = card.dataset.topicType === 'graduation' ? 'Đồ án tốt nghiệp' : card.dataset.topicType === 'thesis' ? 'Khóa luận tốt nghiệp' : record.courseLabel || 'Không áp dụng';
+      [code, courseLabel,
         record.semester ? `Học kỳ ${record.semester} • ${record.academicYear.replace('-', '–')}` : 'Chưa có học kỳ và năm học',
         [record.groupName || record.studentName, record.studentId, record.supervisionRoleLabel].filter(Boolean).join(' · ')]
         .forEach((value, index) => { meta.querySelectorAll('.topic-card__meta-text')[index].textContent = value; });

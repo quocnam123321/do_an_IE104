@@ -8,14 +8,15 @@
   const pagination = results.querySelector('.pagination');
   if (!status || !list || !pagination) return;
   const catalog = window.UITLecturerCatalog;
-  for (const card of list.querySelectorAll('.topic-card:not([data-approved-proposal])')) {
+  function refreshCodes() { for (const card of list.querySelectorAll('.topic-card:not([data-approved-proposal])')) {
     const record = catalog?.records.find(topic => topic.id === card.dataset.topicId);
-    if (!record || document.body.classList.contains('teacher-created-topics-page')) continue;
+    if (!record) continue;
+    if (document.body.classList.contains('teacher-created-topics-page') && card.dataset.status !== 'catalog') continue;
     const [code, course] = card.querySelectorAll('.topic-card__meta-text');
     code.textContent = catalog.formatCode(record.topicType, record.code);
-    course.textContent = record.courseLabel || 'Không áp dụng';
+    if (!document.body.classList.contains('teacher-created-topics-page')) course.textContent = record.courseLabel || 'Không áp dụng';
     card.querySelector('.topic-card__meta[aria-label]')?.setAttribute('aria-label', `Thông tin đề tài ${code.textContent}`);
-  }
+  } }
   const viewport = list.closest('.topic-list-scroll') || list;
   const controls = Array.from(form.elements).filter(node => node.matches('input, select'));
   const filterControls = controls.filter(node => node.type === 'checkbox' || node.type === 'radio' || (node.tagName === 'SELECT' && node.name !== 'topic_sort'));
@@ -95,6 +96,7 @@
   }
 
   function render(options = {}) {
+    refreshCodes();
     const animatePageChange = Boolean(options && options.animatePageChange);
     updateFilterTitle();
     clearPageTransition();

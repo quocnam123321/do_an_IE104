@@ -51,7 +51,8 @@
     document.title = `${record.title} | Chỉnh sửa đề tài`; return;
   }
   set('#topic-summary-title, .page-header__topic-name', record.title);
-  const values = kind === 'supervised' ? [code, record.type, courseLabel, 'Học kỳ 1 · 2026–2027'] : [code, record.type, courseLabel, 'Học kỳ 1', '2026–2027'];
+  const semesterLabel = record.semester ? `Học kỳ ${record.semester}` : 'Chưa có thông tin';
+  const values = kind === 'supervised' ? [code, record.type, courseLabel, `${semesterLabel} · ${record.academicYear || 'Chưa có thông tin'}`] : [code, record.type, courseLabel, semesterLabel, record.academicYear];
   document.querySelectorAll('.topic-summary__meta dd, .topic-summary__details dd').forEach((node, index) => { node.textContent = values[index] || 'Chưa có thông tin'; });
   set('.topic-description p', record.description);
   for (const key of ['objectives', 'outcomes', 'requirements']) {

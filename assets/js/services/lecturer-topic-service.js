@@ -3,25 +3,26 @@
   app.services ||= {};
   const clone = value => JSON.parse(JSON.stringify(value));
   const actorId = () => app.data.currentLecturer?.id;
+  const decorate = topics => window.UITLecturerCatalog?.decorateTopics(topics) || topics;
   const records = kind => {
     const initial = app.data.lecturerTopics || [];
-    if (kind !== 'created' || !app.services.lecturerTopicRepository) return initial;
+    if (kind !== 'created' || !app.services.lecturerTopicRepository) return decorate(initial);
     const saved = app.services.lecturerTopicRepository.read();
     const merged = initial.map(topic => {
       const changed = topic.kind === 'created' && saved.find(record => record.id === topic.id);
       if (changed && changed.ownerId !== topic.ownerId) throw new Error('Dữ liệu người sở hữu đề tài đã lưu không hợp lệ.');
-      return changed ? { ...topic, ...changed } : topic;
+      return changed ? { ...topic, ...changed, displayId: topic.displayId } : topic;
     });
     for (const topic of saved) if (!initial.some(seed => seed.kind === 'created' && seed.id === topic.id)) {
       if (app.data.lecturerRealMode && topic.patchOnly && app.data.lecturerLegacyTopics?.some(seed => seed.kind === 'created' && seed.id === topic.id && seed.ownerId === topic.ownerId)) continue;
       if (topic.patchOnly) throw new Error('Không tìm thấy nguồn của trạng thái đăng ký đã lưu.');
       merged.push(topic);
     }
-    return merged;
+    return decorate(merged);
   };
 
   function list(kind, { catalogOnly = false } = {}) {
-    const available = catalogOnly ? (app.data.lecturerTopics || []).filter(topic => topic.sourceRecord) : records(kind);
+    const available = catalogOnly ? decorate(app.data.lecturerTopics || []).filter(topic => topic.sourceRecord) : records(kind);
     const owned = available.filter(record => record.kind === kind && record.ownerId === actorId());
     return clone(app.topicIdentity?.uniqueTitles(owned) || owned);
   }
@@ -33,7 +34,7 @@
       record = records(kind).find(matches);
     } catch (failure) {
       if (!onSourceError) throw failure;
-      record = app.data.lecturerTopics?.find(matches);
+      record = decorate(app.data.lecturerTopics || []).find(matches);
       if (!record) throw failure;
       onSourceError(failure);
     }
@@ -68,6 +69,22 @@
     return choices;
   }
 
+  function projectIdentity(project) {
+    const codes = window.UITLecturerCatalog;
+    if (!codes) return project;
+    const adapt = item => ({ ...item,
+      topicType: ({ 'do-an-mon-hoc': 'course', 'do-an': 'course', 'do-an-tot-nghiep': 'graduation', 'khoa-luan': 'thesis' })[item.type] || item.topicType ||
+        ({ 'Đồ án môn học': 'course', 'Đồ án tốt nghiệp': 'graduation', 'Khóa luận tốt nghiệp': 'thesis' })[item.typeLabel] || item.type,
+      course: item.course || item.courseId,
+      displayId: item.displayId || item.topicId || item.id,
+    });
+    const initial = app.data.lecturerTopics || [];
+    const staticIds = new Set([...(app.data.myTopics || []), ...(app.data.lecturerProjects || [])].map(item => item.id));
+    const projects = app.services.teaching?.listSupervisedProjects().filter(entry => staticIds.has(entry.project.id)).map(entry => adapt(entry.project)) || [];
+    const decorated = codes.decorateTopics([...initial, ...projects, adapt(project)]).at(-1);
+    return { ...project, displayId: decorated.displayId, courseLabel: decorated.courseLabel };
+  }
+
   function workspaceState(projectId) {
     const definition = records('supervised').find(record => record.kind === 'supervised' && record.workspaceId === projectId);
     if (!definition) return app.services.teaching.getState(projectId);
@@ -87,5 +104,5 @@
     };
   }
 
-  app.services.lecturerTopics = { list, get, detailUrl, returnUrl, workspaceChoices, workspaceState, allCreated: () => clone(records('created').filter(topic => topic.kind === 'created')) };
+  app.services.lecturerTopics = { list, get, detailUrl, returnUrl, workspaceChoices, workspaceState, projectIdentity, allCreated: () => clone(records('created').filter(topic => topic.kind === 'created')) };
 })();

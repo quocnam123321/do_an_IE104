@@ -35,6 +35,13 @@
     <script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
     <script src="../../assets/js/services/published-topic-service.js" defer></script>
     <script src="../../assets/js/proposal-store.js" defer></script>
+    <script src="../../assets/js/data/student-projects.js" defer></script>
+    <script src="../../assets/js/data/student-progress.js" defer></script>
+    <script src="../../assets/js/data/student-evaluations.js" defer></script>
+    <script src="../../assets/js/data/teaching-data.js" defer></script>
+    <script src="../../assets/js/services/project-team-service.js" defer></script>
+    <script src="../../assets/js/services/project-progress-service.js" defer></script>
+    <script src="../../assets/js/services/teaching-service.js" defer></script>
     <script src="../../assets/js/services/lecturer-topic-file-service.js" defer></script>
     <script src="../../assets/js/services/lecturer-profile-service.js" defer></script>
     <script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
@@ -182,7 +189,7 @@
             <fieldset class="topic-form__basic teacher-topic-form__panel">
               <legend>Thông tin cơ bản</legend>
               <p><label for="topic-code">Mã đề tài *</label><input id="topic-code" name="topic-code" type="text" readonly aria-describedby="topic-code-hint" />
-                <span id="topic-code-hint" role="status">Mã đề tài được cấp tự động theo loại đề tài.</span></p>
+                <span id="topic-code-hint" role="status">Mã đề tài được cấp tự động theo khoa quản lý môn học và loại đề tài.</span></p>
               <p><label for="topic-name">Tên đề tài *</label><input id="topic-name" name="topic-name" type="text" placeholder="Nhập tên đề tài" required/></p>
               <div class="teacher-topic-form__grid">
               <p><label for="topic-type">Loại đề tài *</label>

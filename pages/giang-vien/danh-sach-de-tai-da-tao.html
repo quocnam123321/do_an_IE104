@@ -30,6 +30,13 @@
     <script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
     <script src="../../assets/js/services/published-topic-service.js" defer></script>
     <script src="../../assets/js/proposal-store.js" defer></script>
+    <script src="../../assets/js/data/student-projects.js" defer></script>
+    <script src="../../assets/js/data/student-progress.js" defer></script>
+    <script src="../../assets/js/data/student-evaluations.js" defer></script>
+    <script src="../../assets/js/data/teaching-data.js" defer></script>
+    <script src="../../assets/js/services/project-team-service.js" defer></script>
+    <script src="../../assets/js/services/project-progress-service.js" defer></script>
+    <script src="../../assets/js/services/teaching-service.js" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-list.js?v=20261121-uit-records" defer></script>
     <script src="../../assets/js/uit-topic-list.js?v=20261121-uit-records" defer></script>
   </head>
@@ -196,13 +203,13 @@
             <li>
               <a class="topic-tabs__link" href="danh-sach-de-tai-dang-huong-dan.html">
                 <span>Đề tài đang hướng dẫn</span>
-                <span class="topic-tabs__count">(13)</span>
+                <span class="topic-tabs__count">(<span data-topic-tab-count="teaching">13</span>)</span>
               </a>
             </li>
             <li>
               <a class="topic-tabs__link" href="danh-sach-de-tai-da-tao.html" aria-current="page">
                 <span>Đề tài đã tạo</span>
-                <span class="topic-tabs__count">(10)</span>
+                <span class="topic-tabs__count">(<span data-topic-tab-count="created">10</span>)</span>
               </a>
             </li>
           </ul>
@@ -219,7 +226,7 @@
                 <svg class="topic-filters__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
               </summary>
               <!-- Reset dùng HTML; tìm kiếm/lọc/sắp xếp dữ liệu thuộc giai đoạn sau. -->
-              <form id="topic-filter-form" class="topic-filters__form" action="danh-sach-de-tai-da-tao.html" method="get" aria-describedby="topic-preview-note">
+              <form id="topic-filter-form" class="topic-filters__form" action="danh-sach-de-tai-da-tao.html" method="get">
                 <button type="submit" hidden="" disabled="" aria-hidden="true" tabindex="-1">Áp dụng bộ lọc</button>
                 <fieldset class="topic-filters__group">
                   <legend>Trạng thái</legend>
@@ -375,11 +382,11 @@
               <div class="topic-toolbar__search">
                 <label class="visually-hidden" for="topic-search">Tìm kiếm đề tài</label>
                 <svg class="topic-toolbar__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 4.5 4.5"></path></svg>
-                <input type="search" id="topic-search" name="topic_search" form="topic-filter-form" placeholder="Tìm theo tên hoặc mã đề tài…" aria-describedby="topic-preview-note">
+                <input type="search" id="topic-search" name="topic_search" form="topic-filter-form" placeholder="Tìm theo tên hoặc mã đề tài…">
               </div>
               <div class="topic-toolbar__sort">
                 <label class="visually-hidden" for="topic-sort">Sắp xếp theo ngày tạo hoặc tên đề tài</label>
-                <select id="topic-sort" name="topic_sort" form="topic-filter-form" aria-describedby="topic-preview-note">
+                <select id="topic-sort" name="topic_sort" form="topic-filter-form">
                   <option value="newest" selected="">Sắp xếp: Mới nhất</option>
                   <option value="oldest">Sắp xếp: Cũ nhất</option>
                   <option value="name-asc">Sắp xếp: Tên A–Z</option>
@@ -737,7 +744,7 @@
                 </li></ul>
             </div>
             <div class="topic-results__footer">
-              <nav class="pagination" aria-label="Phân trang đề tài" aria-describedby="topic-preview-note">
+              <nav class="pagination" aria-label="Phân trang đề tài">
                 <ul class="pagination__list">
                   <li><button class="pagination__button" type="button" aria-label="Trang trước" disabled="">‹</button></li>
                   <li><span class="pagination__current" aria-current="page" aria-label="Trang 1">1</span></li>
@@ -747,7 +754,6 @@
                 </ul>
               </nav>
             </div>
-            <p id="topic-preview-note" class="topic-toolbar__note">Hồ sơ UIT lấy từ danh mục công khai. Đề tài tạo trong ứng dụng được lưu trên trình duyệt này.</p>
           </section>
         </div>
       </div>

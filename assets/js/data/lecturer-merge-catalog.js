@@ -6,7 +6,7 @@
   const kindOf = record => record.topicType === 'master' ? 'thesis' : record.topicType;
   const shared = record => ({
     id: record.id,
-    displayId: catalog.formatCode(record.topicType, record.code),
+    displayId: catalog.formatCode(record.topicType, record.code, catalog.facultyFor(record)),
     ownerId: 'GV001',
     title: record.title,
     topicType: kindOf(record),
@@ -14,6 +14,7 @@
     typeLabel: record.type,
     course: record.course || '',
     courseLabel: record.courseLabel || '',
+    courseCode: record.courseCode || '',
     semester: String(record.semester || ''),
     academicYear: (record.academicYear || '').replace('–', '-'),
     description: record.description,
@@ -23,15 +24,19 @@
     domain: record.field || '',
     technologies: record.technology || '',
     sourceRecord: record,
+    demo: Boolean(record.demo),
+    startsAt: record.startsAt,
+    completesAt: record.completesAt,
   });
 
   const created = catalog.records.filter(record => catalog.created.includes(record.id)).map(record => ({
     ...shared(record),
     kind: 'created',
     supervisor: { name: 'Nguyễn Văn A', faculty: record.faculty, email: 'giangvien@example.com', research: 'Khoa học dữ liệu và Hệ thống thông tin' },
-    status: 'open',
-    statusLabel: 'Đang mở đăng ký',
-    createdAt: '',
+    status: record.status || 'open',
+    statusLabel: record.status === 'closed' ? 'Đã đóng đăng ký' : 'Đang mở đăng ký',
+    createdAt: record.createdAt || '',
+    ...(record.demo ? { registration: record.registration, attachmentName: '' } : {}),
   }));
   const supervised = catalog.records.filter(record => catalog.supervised.includes(record.id)).map(record => ({
     ...shared(record),
@@ -43,10 +48,10 @@
     status: 'dang-thuc-hien',
     statusLabel: 'Đang thực hiện',
   }));
-  data.lecturerTopics = [
+  data.lecturerTopics = catalog.decorateTopics([
     ...created,
     ...supervised,
     ...(data.lecturerTopics || []).filter(topic => topic.kind === 'created'),
-  ];
+  ]);
   data.lecturerRealDefaultTopicId = created[0]?.id;
 })();

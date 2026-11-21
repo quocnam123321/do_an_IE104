@@ -15,7 +15,7 @@
   }
   function project(topic, now) {
     return {
-      id:publicId(topic), displayId:topic.id, catalogId:topic.id, source:'lecturer-created', ownerId:topic.ownerId,
+      id:publicId(topic), displayId:topic.displayId || topic.id, catalogId:topic.id, source:'lecturer-created', ownerId:topic.ownerId,
       title:topic.title, type:({course:'do-an-mon-hoc',graduation:'do-an-tot-nghiep',thesis:'khoa-luan'})[topic.topicType], typeLabel:topic.typeLabel,
       courseId:({web:'IE104',database:'co-so-du-lieu',software:'cong-nghe-phan-mem'})[topic.course] || topic.course, courseLabel:topic.courseLabel || 'Không áp dụng',
       semester:topic.semester === 'summer' ? 'he' : topic.semester, academicYear:topic.academicYear, lecturer:topic.supervisor.name,

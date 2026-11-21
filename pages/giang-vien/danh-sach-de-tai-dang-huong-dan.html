@@ -37,10 +37,11 @@
     <script src="../../assets/js/services/project-progress-service.js" defer></script>
     <script src="../../assets/js/services/teaching-service.js" defer></script>
     <script src="../../assets/js/uit-teacher-approved-proposals.js" defer></script>
+    <script src="../../assets/js/pages/lecturer/topic-list.js?v=20261121-demo-topics" defer></script>
     <script src="../../assets/js/uit-topic-list.js" defer></script>
   </head>
 
-  <body class="teacher-workspace-page teacher-topic-list-page">
+  <body data-lecturer-list="supervised" class="teacher-workspace-page teacher-topic-list-page">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
 
     <!-- ĐẦU TRANG -->
@@ -214,13 +215,13 @@
             <li>
               <a class="topic-tabs__link" href="danh-sach-de-tai-dang-huong-dan.html" aria-current="page">
                 <span>Đề tài đang hướng dẫn</span>
-                <span class="topic-tabs__count">(13)</span>
+                <span class="topic-tabs__count">(<span data-topic-tab-count="teaching">13</span>)</span>
               </a>
             </li>
             <li>
               <a class="topic-tabs__link" href="danh-sach-de-tai-da-tao.html">
                 <span>Đề tài đã tạo</span>
-                <span class="topic-tabs__count">(10)</span>
+                <span class="topic-tabs__count">(<span data-topic-tab-count="created">10</span>)</span>
               </a>
             </li>
           </ul>

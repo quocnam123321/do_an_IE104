@@ -46,7 +46,7 @@
 
   function progressCard(project, index) {
     const { article, link } = card('topic-progress-card', `overview-project-${index}`, project.title,
-      project.topicId || project.id, 'Xem đề tài',
+      project.displayId || project.topicId || project.id, 'Xem đề tài',
       (project.workspaceId && project.sourceRecord
         ? app.services.lecturerTopics.detailUrl(project)
         : `chi-tiet-de-tai-dang-huong-dan-giang-vien.html?project=${encodeURIComponent(project.id)}`) + '#tien-do');

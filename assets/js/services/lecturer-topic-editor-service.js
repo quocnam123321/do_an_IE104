@@ -2,10 +2,10 @@
   const app = globalThis.IE104 = globalThis.IE104 || {};
   app.services ||= {};
   const catalog = {
-    types: { course: 'Đồ án môn học', graduation: 'Đồ án tốt nghiệp', thesis: 'Khóa luận' },
-    courses: { web: 'Internet và công nghệ Web', database: 'Cơ sở dữ liệu', software: 'Công nghệ phần mềm', 'phan-tich-thiet-ke-he-thong': 'Phân tích và thiết kế hệ thống', 'thuong-mai-dien-tu': 'Thương mại điện tử', 'quan-ly-du-an-cntt': 'Quản lý dự án CNTT' },
+    types: { course: 'Đồ án môn học', graduation: 'Đồ án tốt nghiệp', thesis: 'Khóa luận tốt nghiệp' },
+    courses: Object.fromEntries(Object.entries(window.UITLecturerCatalog.courseCatalog).map(([key, course]) => [key, course.label])),
     semesters: { '1': 'Học kỳ 1', '2': 'Học kỳ 2', summer: 'Học kỳ hè' },
-    years: ['2026-2027'],
+    years: ['2026-2027', '2025-2026'],
   };
   const text = value => String(value ?? '').normalize('NFC').trim();
   const date = value => {
@@ -22,14 +22,15 @@
     let profile;
     try { profile = app.services.lecturerProfile?.getState(); }
     catch { /* Keep the current lecturer's initial identity if the profile cannot be loaded. */ }
-    return { name: profile?.name || lecturer.name, faculty: '', email: profile?.email || '', research: profile?.expertise || '' };
+    return { name: profile?.name || lecturer.name, faculty: profile?.faculty || lecturer.faculty || '', email: profile?.email || '', research: profile?.expertise || '' };
   }
 
-  function nextCode(type) {
-    const store = globalThis.TeacherTopicStore;
-    if (!store?.codePrefixes[type]) return '';
-    const codes = app.services.lecturerTopics.allCreated().map(topic => ({ code: topic.id }));
-    return store.nextCode(type, [...store.read(), ...codes]);
+  function nextCode(type, course) {
+    const codes = window.UITLecturerCatalog;
+    const faculty = type === 'course' ? codes.courseCatalog[course]?.faculty : codes.facultyCode(getSupervisor().faculty) || 'ISE';
+    const service = app.services.lecturerTopics;
+    const projects = app.services.teaching?.listSupervisedProjects().map(entry => service.projectIdentity(entry.project)) || [];
+    return codes.nextCode(type, [...service.allCreated(), ...service.list('supervised'), ...projects], faculty);
   }
 
   function validate(input, previous = null, now = new Date()) {
@@ -39,7 +40,7 @@
     value.maxMembers = text(input.maxMembers) ? Number(input.maxMembers) : NaN;
     const errors = [];
     const error = (field, message) => errors.push({ field, message });
-    if (!/^[A-Z0-9][A-Z0-9_-]{0,29}$/.test(value.id)) error('id', 'Mã đề tài gồm 1–30 chữ cái, chữ số, dấu gạch ngang hoặc gạch dưới.');
+    if (!/^[A-ZĐ0-9][A-ZĐ0-9_-]{0,29}$/.test(value.id)) error('id', 'Mã đề tài gồm 1–30 chữ cái, chữ số, dấu gạch ngang hoặc gạch dưới.');
     if (previous && value.id !== previous.id) error('id', 'Không được đổi mã của đề tài đã tạo.');
     for (const [field, limit] of [['title', 200], ['description', 10000], ['objectives', 5000], ['outcomes', 5000], ['requirements', 5000]]) if (!value[field] || value[field].length > limit) error(field, `Nhập nội dung từ 1 đến ${limit} ký tự.`);
     if (!Object.hasOwn(catalog.types, value.topicType)) error('topicType', 'Chọn loại đề tài trong danh sách.');
@@ -68,7 +69,7 @@
     if (checked.errors.length) throw new Error(checked.errors[0].message);
     const value = checked.value;
     const seeds = (app.data.lecturerTopics || []).filter(topic => topic.kind === 'created');
-    if (!previous && (value.id !== nextCode(value.topicType) || [...seeds, ...saved].some(topic => topic.id === value.id))) {
+    if (!previous && (value.id !== nextCode(value.topicType, value.course) || [...seeds, ...saved].some(topic => topic.id === value.id))) {
       throw new Error('Mã đề tài vừa thay đổi. Hãy kiểm tra mã mới rồi lưu lại.');
     }
     const titleKey = app.topicIdentity.titleKey;
@@ -80,7 +81,8 @@
     const createdAt = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
     const record = {
       ...previous, patchOnly: false, id: previous?.id || value.id, kind: 'created', ownerId: actor.id,
-      title: value.title, topicType: value.topicType, typeLabel: previous?.sourceRecord?.type === 'Luận văn thạc sĩ' && value.topicType === previous.topicType ? previous.typeLabel : catalog.types[value.topicType], course: value.course, courseLabel: catalog.courses[value.course] || '',
+      title: value.title, topicType: value.topicType, typeLabel: previous?.sourceRecord?.type === 'Luận văn thạc sĩ' && value.topicType === previous.topicType ? previous.typeLabel : catalog.types[value.topicType], course: value.course,
+      courseLabel: value.topicType === 'course' ? catalog.courses[value.course] : catalog.types[value.topicType],
       semester: value.semester, academicYear: value.academicYear, description: value.description,
       ...Object.fromEntries(['objectives', 'outcomes', 'requirements'].map(field => [field, value[field].split(/\r?\n/).map(text).filter(Boolean)])),
       domain: value.domain, technologies: value.technologies,

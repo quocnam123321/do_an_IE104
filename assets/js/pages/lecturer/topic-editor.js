@@ -23,7 +23,7 @@
     field.replaceChildren(new Option('Chọn giá trị', ''), ...Object.entries(options).map(([key,label]) => new Option(label,key)));
     field.value = String(value ?? '');
   }
-  function read() { return Object.fromEntries(Object.entries(fields).map(([key, field]) => [key, field?.value || ''])); }
+  function read() { return Object.fromEntries(Object.entries(fields).map(([key, field]) => [key, key === 'id' && original ? original.id : field?.value || ''])); }
   function showErrors(errors) {
     form.querySelectorAll('[aria-invalid]').forEach(node => node.removeAttribute('aria-invalid'));
     const list = document.createElement('ul');
@@ -54,7 +54,9 @@
       const crumb = document.querySelector('.breadcrumb__item:nth-last-child(2) span'); if (crumb) crumb.textContent = original.title;
       const values = { ...original, objectives: original.objectives?.join('\n'), outcomes: original.outcomes?.join('\n'), requirements: original.requirements?.join('\n'), minMembers: original.registration?.minMembers, maxMembers: original.registration?.maxMembers, deadline: localDate(original.registration?.deadline), opensAt: localDate(original.registration?.opensAt), startsAt: localDate(original.startsAt).slice(0,10), completesAt: localDate(original.completesAt) };
       for (const [key,field] of Object.entries(fields)) if (field) field.value = values[key] ?? '';
+      if (original.semester === '3' || original.semester === 3) fields.semester.value = 'summer';
       fields.id.readOnly = true;
+      fields.id.value = original.displayId || original.id;
       for (const [id, key] of [['ho-ten-giang-vien', 'name'], ['khoa-bo-mon', 'faculty'], ['email-lien-he', 'email']]) {
         const field = document.getElementById(id);
         if (field) field.value = original.supervisor?.[key] || '';
@@ -93,11 +95,14 @@
       remove.addEventListener('click', () => { files[purpose] = null; removed[purpose] = true; input.value = ''; remove.disabled = true; note.textContent = 'Tệp sẽ được gỡ khi lưu thay đổi.'; if (purpose === 'image') paint(null); dirty = true; });
     }
     const courseState = () => {
+      const selectedCourse = fields.course.value || original?.course;
       fields.course.disabled = fields.topicType.value !== 'course';
-      if (fields.course.disabled) fields.course.value = '';
-      if (!editing) fields.id.value = service.nextCode(fields.topicType.value);
+      if (fields.course.disabled) fields.course.replaceChildren(new Option(service.catalog.types[fields.topicType.value] || 'Chọn loại đề tài', ''));
+      else if (!fields.course.options.length || !fields.course.options[0].value && fields.course.options.length === 1) select(fields.course, service.catalog.courses, selectedCourse);
+      if (!editing) fields.id.value = service.nextCode(fields.topicType.value, fields.course.value);
     };
     fields.topicType.addEventListener('change', courseState); courseState();
+    fields.course.addEventListener('change', () => { if (!editing) fields.id.value = service.nextCode(fields.topicType.value, fields.course.value); });
     form.noValidate = true; submit.disabled = false; submit.removeAttribute('title');
     status.textContent = '';
     form.dataset.topicEditorReady = 'true';
@@ -105,7 +110,7 @@
   form.addEventListener('input', () => { dirty = true; });
   form.addEventListener('submit', async event => {
     event.preventDefault(); if (saving) return;
-    try { if (!editing) fields.id.value = service.nextCode(fields.topicType.value); }
+    try { if (!editing) fields.id.value = service.nextCode(fields.topicType.value, fields.course.value); }
     catch (failure) { showErrors([{ message: failure.message }]); return; }
     const input = read(); const checked = service.validate(input, original);
     if (checked.errors.length) { showErrors(checked.errors); return; }

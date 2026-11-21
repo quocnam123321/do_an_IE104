@@ -49,7 +49,7 @@
         badge.replaceChildren(label, document.createTextNode(current.project.statusLabel));
         badge.dataset.status = current.project.status;
       }
-      const fields = [current.project.topicId, current.project.typeLabel, current.project.courseLabel, `Học kỳ ${current.project.semester} - ${current.project.academicYear}`];
+      const fields = [current.project.displayId || current.project.topicId, current.project.typeLabel, current.project.courseLabel, `Học kỳ ${current.project.semester} - ${current.project.academicYear}`];
       overview.querySelectorAll('.topic-summary dd').forEach((node, index) => { node.textContent = fields[index]; });
       return;
     }
@@ -82,6 +82,7 @@
   function refresh() {
     try {
       state = topics ? topics.workspaceState(projectId) : service.getState(projectId);
+      if (topics?.projectIdentity) state.project = topics.projectIdentity(state.project);
       document.querySelector('.page-header__topic-name').textContent = state.project.title;
       overviewView(state);
       subscribers.forEach(render => render(state));
