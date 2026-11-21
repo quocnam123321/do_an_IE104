@@ -5,33 +5,17 @@
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta
-      content="Theo dõi hạn công việc và các mốc thời gian của đề tài."
+      content="Xem lịch đề tài và các bài nộp sắp đến hạn của bạn."
       name="description"
     />
     <title>Lịch hạn nộp | Quản lý đồ án</title>
-    <link rel="stylesheet" href="../../assets/css/tokens.css" />
-    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261111-heading-sync-1" />
+    <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
-    <link rel="stylesheet" href="../../assets/css/deadline-calendar.css?v=20261120-google-export" />
+    <link rel="stylesheet" href="../../assets/css/deadline-calendar.css?v=20261119-calendar-picker" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
-    
-    <script src="../../assets/js/data/mock-data.js" defer></script>
-    <script src="../../assets/js/data/student-projects.js" defer></script>
-    <script src="../../assets/js/data/student-progress.js" defer></script>
-    <script src="../../assets/js/data/proposal-actors.js" defer></script>
-<script src="../../assets/js/services/storage.js" defer></script>
-<script src="../../assets/js/services/approved-project-service.js" defer></script>
-    <script src="../../assets/js/services/project-team-service.js" defer></script>
-    <script src="../../assets/js/services/project-progress-service.js" defer></script>
-    <script src="../../assets/js/data/student-deadlines.js" defer></script>
-    <script src="../../assets/js/services/student-submissions-service.js" defer></script>
-    <script src="../../assets/js/services/deadline-service.js" defer></script>
-    <script src="../../assets/js/pages/student/deadline-calendar.js" defer></script>
-    <script type="module" src="../../assets/js/pages/student/google-calendar-export.js"></script>
-    <link rel="stylesheet" href="../../assets/css/student-deadlines-data.css">
-  
-<script src="../../assets/js/dialog-commands.js" defer></script>
-</head>
+    <script src="../../assets/js/deadline-calendar.js?v=20261119-calendar-worker" defer></script>
+  </head>
   <body class="student-deadline-page">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
     <!-- ĐẦU TRANG -->
@@ -166,55 +150,57 @@
         </nav>
         <header class="page-header">
           <h1 class="page-header__title">Lịch hạn nộp</h1>
-          <p class="page-header__description">
-            Theo dõi hạn công việc và các mốc thời gian của đề tài.
-          </p>
         </header>
         <div class="page-content">
-          <p class="demo-notice" id="deadline-demo-notice">Hiển thị hạn công việc và các mốc đề tài. Các mốc hiện chỉ có ngày, chưa có giờ.</p>
-          <p data-calendar-status role="status"></p>
-          <noscript><p>Bật JavaScript để xem lịch theo dữ liệu hiện tại.</p></noscript>
+          <p class="demo-notice" id="deadline-demo-notice">
+            Lịch minh họa tháng 10/2026 dùng ngày 30/10/2026 làm mốc “Hôm nay”.
+            Ngày giờ trên lịch dùng để thử giao diện. Form nộp bài chưa lưu hoặc gửi tệp.
+            Đăng nhập để thêm mốc của đề tài được cấp quyền vào Google Calendar.
+          </p>
           <!-- Wireframe_Nhom7: SV - Lịch hạn nộp, node 584:1487. -->
           <section
             class="deadline-calendar"
             id="deadline-calendar"
             aria-labelledby="deadline-calendar-title"
           >
-            <h2 id="deadline-calendar-title">Lịch</h2>
+            <div class="deadline-calendar__header">
+              <h2 id="deadline-calendar-title">Lịch</h2>
+              <ul class="deadline-calendar__legend" id="calendar-legend" aria-label="Chú giải loại hạn">
+                <li>
+                  <span class="deadline-calendar__swatch deadline-calendar__swatch--submission" aria-hidden="true"></span>
+                  <span>Bài nộp<span class="visually-hidden">: hạn yêu cầu nộp của giảng viên</span></span>
+                </li>
+                <li>
+                  <span class="deadline-calendar__swatch deadline-calendar__swatch--topic" aria-hidden="true"></span>
+                  <span>Hạn đề tài<span class="visually-hidden">: thời hạn hoàn thành toàn đề tài</span></span>
+                </li>
+              </ul>
+            </div>
             <div
               class="deadline-calendar__toolbar"
               role="group"
-              aria-label="Bộ lọc và điều hướng tháng"
+              aria-label="Điều khiển lịch hạn nộp"
               aria-describedby="deadline-demo-notice"
             >
               <div class="deadline-calendar__field">
                 <label for="deadline-topic">Đề tài</label>
-                <select id="deadline-topic" name="de-tai" disabled><option value="">Tất cả đề tài</option></select>
+                <select id="deadline-topic" name="de-tai">
+                  <option value="">Tất cả đề tài</option>
+                  <option value="thu-vien" data-topic-status="in-progress" data-group="Nhóm 01">Website quản lý thư viện</option>
+                  <option value="ban-sach" data-topic-status="completed" data-group="Nhóm 3 — BookHub">Website bán sách trực tuyến</option>
+                  <option value="he-thong-thu-vien" data-topic-status="completed" data-group="Nhóm 5 — Library UIT">Hệ thống quản lý thư viện</option>
+                  <option value="cau-lac-bo" data-topic-status="completed" data-group="Nhóm 2 — Campus Club">Website quản lý câu lạc bộ sinh viên</option>
+                </select>
               </div>
-              <button
-                class="deadline-calendar__previous"
-                type="button"
-                aria-label="Tháng trước"
-               disabled>
-                ‹
-              </button>
               <div class="deadline-calendar__field">
                 <label for="deadline-month">Tháng</label>
-                <input
-                  type="month"
-                  id="deadline-month"
-                  name="thang"
-                  
-                disabled />
+                <div class="deadline-calendar__month-controls">
+                  <button class="deadline-calendar__previous" type="button" aria-label="Tháng trước">‹</button>
+                  <input type="month" id="deadline-month" name="thang" value="2026-10" />
+                  <button class="deadline-calendar__next" type="button" aria-label="Tháng sau">›</button>
+                </div>
               </div>
-              <button
-                class="deadline-calendar__next"
-                type="button"
-                aria-label="Tháng sau"
-               disabled>
-                ›
-              </button>
-              <button class="deadline-calendar__today" type="button" disabled>
+              <button class="deadline-calendar__today" type="button">
                 Hôm nay
               </button>
               <button
@@ -252,7 +238,9 @@
                 class="calendar-table"
                 aria-describedby="calendar-legend deadline-demo-notice"
               >
-                <caption>Lịch hạn công việc và mốc đề tài</caption>
+                <caption>
+                  Tháng 10/2026 · Giờ Việt Nam (UTC+7)
+                </caption>
                 <thead>
                   <tr>
                     <th scope="col" abbr="Thứ hai">T2</th>
@@ -264,12 +252,301 @@
                     <th scope="col" abbr="Chủ nhật">CN</th>
                   </tr>
                 </thead>
-                <tbody></tbody>
+                <tbody>
+                  <tr>
+                    <td class="calendar-table__empty"></td>
+                    <td class="calendar-table__empty"></td>
+                    <td class="calendar-table__empty"></td>
+                    <td>
+                      <time datetime="2026-10-01">1</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-02">2</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-03">3</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-04">4</time>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <time datetime="2026-10-05">5</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-06">6</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-07">7</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-08">8</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-09">9</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-10">10</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-11">11</time>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <time datetime="2026-10-12">12</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-13">13</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-14">14</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-15">15</time>
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-sinh-vien.html#requirement-1" data-topic="thu-vien"
+                        data-status="responded" data-details="submission-requirements-1"
+                        data-action="submission-feedback-1" data-deadline="2026-10-15T23:59+07:00"
+                        data-submitted="2026-10-14T21:30+07:00">
+                        <span class="calendar-event__title">Báo cáo đề cương và kế hoạch thực hiện</span>
+                      </a>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-16">16</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-17">17</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-18">18</time>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <time datetime="2026-10-19">19</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-20">20</time>
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-sinh-vien.html#requirement-21" data-topic="thu-vien"
+                        data-status="pending" data-details="submission-requirements-21"
+                        data-action="submission-upload-21" data-deadline="2026-10-20T23:59+07:00">
+                        <span class="calendar-event__title">Biên bản họp nhóm</span>
+                      </a>
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-dang-thuc-hien-da002.html#requirement-2" data-topic="ban-sach"
+                        data-status="responded" data-details="submission-requirements-2"
+                        data-action="submission-feedback-4" data-deadline="2026-10-20T23:59+07:00"
+                        data-submitted="2026-10-27T20:00+07:00">
+                        <span class="calendar-event__title">Báo cáo tuần 1</span>
+                      </a>
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-sinh-vien.html#requirement-4" data-topic="thu-vien"
+                        data-status="awaiting" data-details="submission-requirements-4"
+                        data-action="submission-4" data-deadline="2026-10-20T23:59+07:00"
+                        data-submitted="2026-10-19T22:10+07:00">
+                        <span class="calendar-event__title">Báo cáo tiến độ giai đoạn 1</span>
+                      </a>
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-sinh-vien.html#requirement-7" data-topic="thu-vien"
+                        data-status="responded" data-details="submission-requirements-7"
+                        data-action="submission-feedback-5" data-deadline="2026-10-20T23:59+07:00"
+                        data-submitted="2026-10-22T08:00+07:00">
+                        <span class="calendar-event__title">Kết quả kiểm thử phiên bản thử nghiệm</span>
+                      </a>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-21">21</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-22">22</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-23">23</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-24">24</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-25">25</time>
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-sinh-vien.html#requirement-3" data-topic="thu-vien"
+                        data-status="pending" data-details="submission-requirements-3"
+                        data-action="submission-form-section" data-deadline="2026-10-25T23:59+07:00">
+                        <span class="calendar-event__title">Thiết kế cơ sở dữ liệu và kiến trúc hệ thống</span>
+                      </a>
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-dang-thuc-hien-da002.html#requirement-3" data-topic="ban-sach"
+                        data-status="responded" data-details="submission-requirements-3"
+                        data-action="submission-feedback-5" data-deadline="2026-10-25T23:59+07:00"
+                        data-submitted="2026-10-28T20:00+07:00">
+                        <span class="calendar-event__title">Báo cáo giữa kỳ</span>
+                      </a>
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-sinh-vien.html#requirement-8" data-topic="thu-vien"
+                        data-status="pending" data-details="submission-requirements-8"
+                        data-action="submission-upload-8" data-deadline="2026-10-25T23:59+07:00">
+                        <span class="calendar-event__title">Đặc tả chức năng tìm kiếm</span>
+                      </a>
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-sinh-vien.html#requirement-14" data-topic="thu-vien"
+                        data-status="submitted" data-details="submission-requirements-14"
+                        data-action="submission-7" data-deadline="2026-10-25T23:59+07:00"
+                        data-submitted="2026-10-24T15:00+07:00">
+                        <span class="calendar-event__title">Thiết kế trang quản lý bạn đọc</span>
+                      </a>
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-sinh-vien.html#requirement-15" data-topic="thu-vien"
+                        data-status="awaiting" data-details="submission-requirements-15"
+                        data-action="submission-8" data-deadline="2026-10-25T23:59+07:00"
+                        data-submitted="2026-10-25T10:30+07:00">
+                        <span class="calendar-event__title">Đánh giá hiệu năng hệ thống</span>
+                      </a>
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-sinh-vien.html#requirement-17" data-topic="thu-vien"
+                        data-status="responded" data-details="submission-requirements-17"
+                        data-action="submission-feedback-10" data-deadline="2026-10-25T23:59+07:00"
+                        data-submitted="2026-10-11T14:00+07:00">
+                        <span class="calendar-event__title">Khảo sát quy trình thư viện</span>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <time datetime="2026-10-26">26</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-27">27</time>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-28">28</time>
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-sinh-vien.html#requirement-13" data-topic="thu-vien"
+                        data-status="submitted" data-details="submission-requirements-13"
+                        data-action="submission-6" data-deadline="2026-10-28T23:59+07:00"
+                        data-submitted="2026-10-29T09:15+07:00">
+                        <span class="calendar-event__title">Kiểm thử chức năng mượn trả</span>
+                      </a>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-29">29</time>
+                    </td>
+                    <td class="calendar-table__today">
+                      <time datetime="2026-10-30" aria-current="date">30</time> · Hôm nay
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-sinh-vien.html#requirement-2" data-topic="thu-vien"
+                        data-status="submitted" data-details="submission-requirements-2"
+                        data-action="submission-2" data-deadline="2026-10-30T17:00+07:00"
+                        data-submitted="2026-10-10T09:10+07:00">
+                        <span class="calendar-event__title">Tài liệu đặc tả yêu cầu phần mềm</span>
+                      </a>
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-sinh-vien.html#requirement-5" data-topic="thu-vien"
+                        data-status="pending" data-details="submission-requirements-5"
+                        data-action="submission-upload-5" data-deadline="2026-10-30T18:00+07:00">
+                        <span class="calendar-event__title">Báo cáo kết quả thử nghiệm và mã nguồn</span>
+                      </a>
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-sinh-vien.html#requirement-6" data-topic="thu-vien"
+                        data-status="submitted" data-details="submission-requirements-6"
+                        data-action="submission-3" data-deadline="2026-10-30T20:00+07:00"
+                        data-submitted="2026-10-18T20:45+07:00">
+                        <span class="calendar-event__title">Thiết kế giao diện hệ thống</span>
+                      </a>
+                      <a class="calendar-event calendar-event--submission"
+                        href="chi-tiet-de-tai-sinh-vien.html#requirement-12" data-topic="thu-vien"
+                        data-status="pending" data-details="submission-requirements-12"
+                        data-action="submission-upload-12" data-deadline="2026-10-30T23:59+07:00">
+                        <span class="calendar-event__title">Báo cáo tổng kết đề tài</span>
+                      </a>
+                    </td>
+                    <td>
+                      <time datetime="2026-10-31">31</time>
+                      <a class="calendar-event calendar-event--topic"
+                        href="chi-tiet-de-tai-sinh-vien.html#tong-quan" data-topic="thu-vien" data-deadline="2026-10-31T17:00+07:00">
+                        <span class="visually-hidden">Hạn đề tài: </span>
+                        <span class="calendar-event__title">Website quản lý thư viện</span>
+                      </a>
+                      <a class="calendar-event calendar-event--topic"
+                        href="chi-tiet-de-tai-dang-thuc-hien-da002.html#tong-quan" data-topic="ban-sach"
+                        data-deadline="2026-10-31T18:00+07:00">
+                        <span class="visually-hidden">Hạn đề tài: </span>
+                        <span class="calendar-event__title">Website bán sách trực tuyến</span>
+                      </a>
+                      <a class="calendar-event calendar-event--topic"
+                        href="de-tai-cua-toi-sinh-vien.html#topic-da003" data-topic="he-thong-thu-vien"
+                        data-deadline="2026-10-31T23:59+07:00">
+                        <span class="visually-hidden">Hạn đề tài: </span>
+                        <span class="calendar-event__title">Hệ thống quản lý thư viện</span>
+                      </a>
+                      <a class="calendar-event calendar-event--topic"
+                        href="de-tai-cua-toi-sinh-vien.html#topic-da004" data-topic="cau-lac-bo" data-deadline="2026-10-31T23:59+07:00">
+                        <span class="visually-hidden">Hạn đề tài: </span>
+                        <span class="calendar-event__title">Website quản lý câu lạc bộ sinh viên</span>
+                      </a>
+                    </td>
+                    <td class="calendar-table__empty"></td>
+                  </tr>
+                </tbody>
               </table>
             </div>
-            <p class="deadline-calendar__legend" id="calendar-legend">
-              Lịch hiển thị hạn công việc, mốc đề tài và hạn nộp do giảng viên đặt.
-            </p>
+            <div class="calendar-preview calendar-overflow" id="calendar-overflow" popover="auto" role="dialog"
+              aria-label="Các mốc khác trong ngày" hidden>
+              <div class="calendar-preview__surface">
+                <header class="calendar-preview__header">
+                  <button class="calendar-preview__close" type="button" aria-label="Đóng danh sách mốc khác">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                      <path d="m6 6 12 12M18 6 6 18" />
+                    </svg>
+                  </button>
+                </header>
+                <ul class="calendar-overflow__list"></ul>
+              </div>
+            </div>
+            <div class="calendar-preview" id="calendar-preview" popover="auto" role="dialog"
+              aria-labelledby="calendar-preview-title" hidden>
+              <div class="calendar-preview__surface">
+                <header class="calendar-preview__header">
+                  <div class="calendar-preview__heading">
+                    <h3 id="calendar-preview-title"></h3>
+                    <p class="calendar-preview__status" hidden></p>
+                  </div>
+                  <button class="calendar-preview__close" type="button" aria-label="Đóng chi tiết sự kiện">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                      <path d="m6 6 12 12M18 6 6 18" />
+                    </svg>
+                  </button>
+                </header>
+                <dl class="calendar-preview__meta">
+                  <div>
+                    <dt>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                        <rect x="3" y="5" width="18" height="16" rx="2" />
+                        <path d="M7 3v4m10-4v4M3 10h18" />
+                      </svg>
+                      <span class="visually-hidden" id="calendar-preview-deadline-label">Hạn nộp</span>
+                    </dt>
+                    <dd class="calendar-preview__deadline"><time></time></dd>
+                  </div>
+                  <div>
+                    <dt>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                        <path d="M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v10H3z" stroke-linejoin="round" />
+                      </svg>
+                      <span class="visually-hidden">Đề tài và nhóm</span>
+                    </dt>
+                    <dd class="calendar-preview__topic"></dd>
+                  </div>
+                </dl>
+                <p class="calendar-preview__submitted" hidden></p>
+                <footer class="calendar-preview__actions">
+                  <a class="calendar-preview__details">Xem chi tiết <span aria-hidden="true">→</span></a>
+                  <a class="calendar-preview__primary"></a>
+                </footer>
+              </div>
+            </div>
           </section>
           <dialog class="calendar-export" id="calendar-export" aria-labelledby="calendar-export-title" aria-describedby="calendar-export-help">
             <div class="calendar-export__body">
@@ -287,8 +564,7 @@
                 </button>
               </header>
               <p class="calendar-export__month"></p>
-              <p id="calendar-export-help">Chọn các mốc trong tháng từ những đề tài có quyền đồng bộ.</p>
-              <button class="calendar-export__login" type="button" hidden>Đăng nhập bằng Google UIT</button>
+              <p id="calendar-export-help">Chọn các mốc bạn muốn thêm vào lịch.</p>
 
               <div class="calendar-export__search">
                 <label class="visually-hidden" for="calendar-export-search">Tìm theo tên mốc hoặc đề tài</label>
@@ -301,10 +577,10 @@
 
               <div class="calendar-export__results">
                 <label class="calendar-export__select-all">
-                  <input type="checkbox" id="calendar-export-select-all" disabled aria-controls="calendar-export-events" />
+                  <input type="checkbox" id="calendar-export-select-all" aria-controls="calendar-export-events" />
                   Chọn tất cả kết quả
                 </label>
-                <ul class="calendar-export__events" id="calendar-export-events" aria-label="Các mốc phù hợp" hidden></ul>
+                <ul class="calendar-export__events" id="calendar-export-events" aria-label="Các mốc phù hợp"></ul>
                 <p class="calendar-export__empty" hidden></p>
               </div>
               <p class="calendar-export__feedback" role="status"></p>
@@ -364,10 +640,5 @@
         <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
       </div>
     </footer>
-  <dialog id="calendar-event-dialog" class="confirmation-dialog" aria-labelledby="calendar-event-title">
-      <h2 id="calendar-event-title">Chi tiết mốc thời gian</h2><dl></dl>
-      <div class="calendar-event-actions"><a data-calendar-detail>Xem chi tiết đề tài</a>
-      <button type="button" command="close" commandfor="calendar-event-dialog">Đóng</button></div>
-    </dialog>
   </body>
 </html>
