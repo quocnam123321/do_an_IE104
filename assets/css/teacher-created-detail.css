@@ -148,12 +148,19 @@
 }
 
 .teacher-created-detail-page .topic-summary__image {
+  position: relative;
   display: grid;
   place-items: center;
   aspect-ratio: 4 / 3;
+  overflow: hidden;
   border-radius: var(--control-radius);
   background: var(--media-placeholder-bg);
   color: var(--media-placeholder-icon);
+}
+
+.teacher-created-detail-page .topic-summary__image > img {
+  position: absolute;
+  inset: 0;
 }
 
 .teacher-created-detail-page .topic-summary__image svg {
