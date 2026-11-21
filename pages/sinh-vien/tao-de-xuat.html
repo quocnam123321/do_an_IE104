@@ -28,8 +28,9 @@
 
 <script src="../../assets/js/dialog-commands.js" defer></script>
 <link rel="stylesheet" href="../../assets/css/proposal-outline.css">
-</head>
-  <body class="registration-page student-proposal-page">
+  <link rel="stylesheet" href="../../assets/css/project-footer.css" />
+  </head>
+  <body id="page-top" tabindex="-1" class="registration-page student-proposal-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
     <header class="site-header">
       <div class="site-header__inner">
@@ -250,35 +251,48 @@
       </div>
     </main>
     <!-- Chân trang theo khung ba cột dùng chung. -->
-    <footer class="site-footer">
-      <div class="site-footer__inner">
-        <div class="site-footer__columns">
-          <div class="site-footer__brand">
-            <a href="../chung/gioi-thieu.html">
-              <img class="site-footer__logo" src="../../assets/images/images.jpg" alt="Logo Khoa Khoa học và Kỹ thuật Thông tin" width="40" height="40" />
-            </a>
-            <p class="site-footer__name">QUẢN LÝ ĐỒ ÁN VÀ KHÓA LUẬN TỐT NGHIỆP</p>
-            <dl class="site-footer__about">
-              <div>
-                <dt><a href="../chung/gioi-thieu.html">Thông tin trang web</a></dt>
-                <dd>Trường Đại học Công nghệ Thông tin</dd>
-              </div>
-              <div>
-                <dt><a href="../chung/gioi-thieu.html#team-title">Thông tin nhóm</a></dt>
-                <dd>Đồ án IE104 — Nhóm 7</dd>
-              </div>
-            </dl>
-          </div>
-          <section class="site-footer__information site-footer__terms" aria-labelledby="footer-terms-title">
-            <h2 id="footer-terms-title">Điều khoản sử dụng</h2>
-            <p>Đang cập nhật.</p>
-          </section>
-          <section class="site-footer__information site-footer__policies" aria-labelledby="footer-policies-title">
-            <h2 id="footer-policies-title">Quy chế, chính sách bảo mật</h2>
-            <p>Đang cập nhật.</p>
-          </section>
+    <footer class="project-footer">
+      <div class="project-footer__columns">
+        <div class="project-footer__identity">
+          <img class="project-footer__logo" src="../../assets/images/uit-footer-logo.png"
+            alt="UIT – Trường Đại học Công nghệ Thông tin" width="480" height="180" loading="lazy" />
+          <p class="project-footer__name">Quản lý đồ án và khóa luận tốt nghiệp</p>
+          <a href="../chung/gioi-thieu.html#team-title">Đồ án IE104 — Nhóm 7</a>
         </div>
-        <p class="site-footer__copyright">Copyright &copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
+        <nav aria-labelledby="project-footer-navigation">
+          <h2 id="project-footer-navigation">Truy cập nhanh</h2>
+          <ul>
+            <li><a href="../../index.html">Trang chủ</a></li>
+            <li><a href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+            <li><a href="../chung/thong-bao.html">Thông báo</a></li>
+          </ul>
+        </nav>
+        <nav aria-labelledby="project-footer-policy">
+          <h2 id="project-footer-policy">Điều khoản và quy chế</h2>
+          <ul>
+            <li><a href="../../assets/documents/dieu-khoan-va-chinh-sach-ie104.pdf#page=1" target="_blank" rel="noopener">Điều khoản sử dụng<span class="visually-hidden"> (PDF, mở trong thẻ mới)</span></a></li>
+            <li><a href="../../assets/documents/dieu-khoan-va-chinh-sach-ie104.pdf#page=2" target="_blank" rel="noopener">Quy chế, chính sách bảo mật<span class="visually-hidden"> (PDF, mở trong thẻ mới)</span></a></li>
+          </ul>
+        </nav>
+        <section aria-labelledby="project-footer-support">
+          <h2 id="project-footer-support">Hỗ trợ</h2>
+          <a class="project-footer__contact" href="../chung/lien-he.html">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="2.5" y="5" width="19" height="14" rx="2" />
+              <path d="m3 7 9 6 9-6" />
+            </svg>
+            Trang Liên hệ
+          </a>
+          <p>Góp ý và báo sự cố</p>
+        </section>
+      </div>
+      <div class="project-footer__bottom">
+        <p>&copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
+        <a class="project-footer__top" href="#page-top" aria-label="Về đầu trang">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 19V5m-6 6 6-6 6 6" />
+          </svg>
+        </a>
       </div>
     </footer>
 

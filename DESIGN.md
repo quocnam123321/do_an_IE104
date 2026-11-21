@@ -294,3 +294,8 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 Theo xác nhận của người dùng, phần GV dùng giao diện 1ddf0d3 và các thao tác của bản đó, không mang chức năng/bố cục ngày 19/11 vào. Gộp cột Đã phản hồi ở Yêu cầu bài nộp vào Đã nộp; giữ hai cột Bài nộp nhóm. Metadata: 10 đã tạo, 8 hướng dẫn, 6 chờ duyệt không giao với hướng dẫn. ISE-005 dùng vai trò Đồng hướng dẫn. Phân công task và popover theo đúng authors từng đề tài; các bước công việc là mẫu trung tính. Thông tin chưa biết dùng placeholder xxxxxxxx hoặc nội dung trong ngoặc vuông. GV phần Đề tài đã tạo dùng Nguyễn Văn A, giangvien@example.com, hướng nghiên cứu chung Khoa học dữ liệu và Hệ thống thông tin. Bỏ ghi chú nguồn/demo trên giao diện theo yêu cầu; nguồn và giới hạn ghi riêng trong docs/RESTORE-GV-2026-11-20.md. Giữ các file dùng chung của SV; hai script cần lấy từ commit cũ được tách thành uit-topic-list.js và uit-teacher-approved-proposals.js chỉ nạp bởi GV.
 
 Ngày 21/11/2026, danh sách Đề tài đã tạo hiện tên tác giả, khóa hoặc đợt bảo vệ và giảng viên hướng dẫn theo 10 hồ sơ UIT trong Git. Các thẻ này dùng nhãn Hồ sơ UIT. Trang chi tiết dùng lại bản `75bca90`, gồm khung ảnh 16:9 và luồng đề tài lưu trên trình duyệt.
+
+## Footer dùng chung
+
+- Dùng nền xanh đậm #122E59 theo mẫu UIT áp dụng cho dự án, chữ phụ #DBEAFE và đường phân chia #50688A. Logo ngang màu trắng lấy từ footer của website UIT và lưu trong dự án.
+- Bố cục có bốn cột trên màn hình rộng, hai cột dưới 64rem và một cột đến 36rem. Hai liên kết điều khoản và bảo mật mở từng trang trong cùng một PDF.
