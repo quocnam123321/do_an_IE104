@@ -10,7 +10,8 @@
   document.body.classList.add('lecturer-routing-page');
   function render() {
   try {
-    const topic = service.get('created', id);
+    let readOnly = false;
+    const topic = service.get('created', id, mode === 'detail' ? { onSourceError: () => { readOnly = true; } } : undefined);
     document.title = `${topic.title} | ${mode === 'edit' ? 'Chỉnh sửa' : 'Chi tiết'} đề tài`;
     document.body.dataset.topicId = topic.id;
     const detail = new URL(service.detailUrl(topic), location.href);
@@ -72,15 +73,21 @@
       setText('.topic-attachments__file span', topic.attachmentName || 'Chưa có tài liệu đính kèm');
       const badge = document.querySelector('.created-detail-heading .status-badge');
       if (badge) { badge.textContent = topic.statusLabel; badge.className = `status-badge status-badge--${topic.status}`; }
-      document.querySelectorAll('.registration-close-button').forEach(button => { button.hidden = topic.status !== 'open'; });
+      document.querySelectorAll('.registration-close-button').forEach(button => { button.hidden = readOnly || topic.status !== 'open'; });
       let reopen = document.querySelector('.registration-reopen-button');
       if (!reopen && topic.status === 'closed') {
         const prototype = document.getElementById('registration-closed-template')?.content.querySelector('.registration-reopen-button');
         if (prototype) { reopen = prototype.cloneNode(true); document.querySelector('.registration-close-button')?.after(reopen); }
       }
-      if (reopen) reopen.hidden = topic.status !== 'closed';
+      if (reopen) reopen.hidden = readOnly || topic.status !== 'closed';
       const edit = document.querySelector('.topic-edit-link');
-      if (edit) { const url = new URL('chinh-sua-de-tai-giang-vien.html', location.href); url.searchParams.set('topic', topic.id); url.searchParams.set('return', listUrl); edit.href = url.href; }
+      if (edit) {
+        const url = new URL('chinh-sua-de-tai-giang-vien.html', location.href);
+        url.searchParams.set('topic', topic.id);
+        url.searchParams.set('return', listUrl);
+        edit.href = url.href;
+        edit.hidden = readOnly;
+      }
     }
     document.body.dataset.topicRouteState = 'ready';
     document.dispatchEvent(new Event('ie104:lecturer-topic-rendered'));

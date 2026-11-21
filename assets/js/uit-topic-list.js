@@ -129,6 +129,9 @@
         ? '[data-topic-tab-count="created"]' : '[data-topic-tab-count="teaching"]');
     if (tabCount) tabCount.textContent = unique.length;
     status.textContent = matched.length ? `Hiển thị ${(page - 1) * pageSize + 1}–${Math.min(page * pageSize, matched.length)} trên ${matched.length} đề tài` : 'Không tìm thấy đề tài phù hợp. Thử từ khóa khác hoặc xóa bộ lọc.';
+    if (results.dataset.topicSourceError) {
+      status.append(` · Danh sách có thể chưa cập nhật. ${results.dataset.topicSourceError}`);
+    }
     status.hidden = false; status.toggleAttribute('data-empty', !matched.length); viewport.hidden = !matched.length;
     const pages = document.createElement('ul'); pages.className = 'pagination__list';
     const add = (target, text, label, disabled = false) => {

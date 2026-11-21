@@ -5,25 +5,31 @@
   const container = document.querySelector('.topic-list');
   const firstCard = container?.querySelector('.topic-card');
   if (!firstCard) return;
+  const results = container.closest('[data-topic-results]');
   // Danh sách đã tạo dùng li bọc thẻ, còn danh sách đang hướng dẫn chứa thẻ trực tiếp.
   const listItemFor = card => card.parentElement.matches('li') ? card.parentElement : card;
   const template = listItemFor(firstCard).cloneNode(true);
   function render() {
     let topics;
-    const results = container.closest('[data-topic-results]');
-    try { topics = service.list(kind); if (results) delete results.dataset.topicSourceError; }
-    catch (failure) { container.replaceChildren(); if (results) results.dataset.topicSourceError = failure.message; return; }
+    try {
+      topics = service.list(kind);
+      if (results) delete results.dataset.topicSourceError;
+    } catch (failure) {
+      if (results) results.dataset.topicSourceError = failure.message;
+      return;
+    }
     container.querySelectorAll('.topic-card:not([data-approved-proposal])').forEach(card => {
       if (!topics.some(topic => topic.id === card.dataset.topicId)) listItemFor(card).remove();
     });
     topics.forEach(topic => {
       let card = [...container.querySelectorAll('.topic-card:not([data-approved-proposal])')].find(node => node.dataset.topicId === topic.id);
+      const existing = Boolean(card);
       if (!card) {
         const item = template.cloneNode(true);
         card = item.matches('.topic-card') ? item : item.querySelector('.topic-card');
         container.append(item);
       }
-      if (card.dataset.topicId === topic.id && topic.sourceRecord && !topic.revision) return;
+      if (existing && topic.sourceRecord && !topic.revision) return;
       card.dataset.topicId = topic.id;
       const link = card.querySelector('.topic-card__detail-link');
       const title = card.querySelector('.topic-card__title');
@@ -36,19 +42,21 @@
       card.dataset.hocKy = `${topic.academicYear}-${topic.semester === 'summer' ? '3' : topic.semester}`;
       card.dataset.status = kind === 'created' ? topic.status : topic.status === 'hoan-thanh' ? 'completed' : 'in-progress';
       if (topic.role) card.dataset.role = topic.role;
+      const date = card.querySelector('time[datetime]');
+      const createdAt = topic.createdAt || (existing && topic.sourceRecord ? date?.dateTime : '') || '';
       const values = [
         `Mã đề tài: ${topic.displayId || topic.id}`,
         `${topic.course ? 'Môn học' : 'Hình thức tốt nghiệp'}: ${topic.course ? topic.courseLabel : topic.typeLabel}`,
         `Học kỳ ${topic.semester === 'summer' ? 'hè' : topic.semester} - ${topic.academicYear}`,
-        kind === 'created' ? `Ngày tạo: ${topic.createdAt.split('-').reverse().join('/')}` : `Nhóm thực hiện: ${topic.groupName}`,
+        kind === 'created' ? createdAt.split('-').reverse().join('/') : `Nhóm thực hiện: ${topic.groupName}`,
       ];
-      if (topic.sourceRecord) {
+      if (topic.sourceRecord && kind === 'supervised') {
         values.splice(0, values.length, `Mã đề tài: ${topic.id}`, `Tác giả: ${topic.sourceRecord.authors.join(', ')}`,
           `GVHD theo nguồn: ${topic.sourceRecord.advisors.join(', ') || 'Chưa công bố trong nguồn'}`, `${topic.typeLabel}${topic.sourceRecord.cohort ? ' - Khóa ' + topic.sourceRecord.cohort : ' - Năm ' + topic.sourceRecord.year}`);
       }
       card.querySelectorAll('.topic-card__meta-text').forEach((node, index) => { node.textContent = values[index]; });
-      const date = card.querySelector('time[datetime]'); if (date) date.dateTime = topic.createdAt;
-      card.dataset.createdAt = topic.createdAt;
+      if (date) date.dateTime = createdAt;
+      card.dataset.createdAt = createdAt;
       const badge = card.querySelector('.topic-card__status');
       badge.textContent = kind === 'created' ? topic.statusLabel : topic.roleLabel;
       badge.className = `topic-card__status topic-card__status--${kind === 'created' ? topic.status : topic.role}`;

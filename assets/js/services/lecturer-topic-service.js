@@ -25,8 +25,17 @@
     return clone(app.topicIdentity?.uniqueTitles(owned) || owned);
   }
 
-  function get(kind, id) {
-    const record = records(kind).find(item => item.kind === kind && (item.id === id || item.displayId === id));
+  function get(kind, id, { onSourceError } = {}) {
+    const matches = item => item.kind === kind && (item.id === id || item.displayId === id);
+    let record;
+    try {
+      record = records(kind).find(matches);
+    } catch (failure) {
+      if (!onSourceError) throw failure;
+      record = app.data.lecturerTopics?.find(matches);
+      if (!record) throw failure;
+      onSourceError(failure);
+    }
     if (!record) throw new Error('Không tìm thấy đề tài theo mã đã chọn.');
     if (record.ownerId !== actorId()) throw new Error('Giảng viên hiện tại không được xem đề tài này.');
     return clone(record);
