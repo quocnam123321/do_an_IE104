@@ -56,8 +56,8 @@
       text('.topic-team__group-name', project.groupName);
       const instructors = root.querySelector('.supervisor-list');
       instructors.replaceChildren(...[
-        ['Hướng dẫn chính', project.lecturer, project.lecturerId],
-        ['Đồng hướng dẫn', project.coSupervisor, project.coSupervisorId],
+        ['primary', project.lecturer, project.lecturerId],
+        ['secondary', project.coSupervisor, project.coSupervisorId],
       ].filter(([, name]) => name).map(([role, name, id]) => supervisorCard(name, role, id)));
       const dates = root.querySelectorAll('.topic-milestones__list dd');
       const milestones = project.milestones || (!project.isArchivedSample && project.createdAt
@@ -78,7 +78,7 @@
     }
   }
 
-  function supervisorCard(name, roleLabel, lecturerId) {
+  function supervisorCard(name, roleKind, lecturerId) {
     const lecturer = app.data.projectLecturers.find(profile =>
       profile.name === name && (!lecturerId || profile.id === lecturerId));
     const department = lecturer?.department?.trim().replace(/^Bộ môn(?:\s*:\s*|\s+|$)/i, '');
@@ -96,8 +96,8 @@
     title.className = 'supervisor-card__name';
     title.textContent = name;
     const role = document.createElement('p');
-    role.className = 'supervisor-card__role';
-    role.textContent = roleLabel;
+    role.className = `supervisor-card__role supervisor-card__role--${roleKind}`;
+    role.textContent = roleKind === 'primary' ? 'Hướng dẫn chính' : 'Đồng hướng dẫn';
     const details = document.createElement('p');
     details.className = 'supervisor-card__department';
     details.textContent = department || 'Chưa cập nhật bộ môn';

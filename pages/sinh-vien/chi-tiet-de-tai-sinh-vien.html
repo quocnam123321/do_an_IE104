@@ -330,7 +330,7 @@
                       <div class="supervisor-card__content">
                         <h3 id="primary-supervisor-name" class="supervisor-card__name">Nguyễn Văn An</h3>
                         <p class="supervisor-card__department">Khoa Khoa học và Kỹ thuật Thông tin</p>
-                        <p class="supervisor-card__role">Hướng dẫn chính</p>
+                        <p class="supervisor-card__role supervisor-card__role--primary">Hướng dẫn chính</p>
                       </div>
                     </article>
                   </li>
@@ -340,22 +340,14 @@
                       <div class="supervisor-card__content">
                         <h3 id="co-supervisor-name" class="supervisor-card__name">Trần Thị Bình</h3>
                         <p class="supervisor-card__department">Khoa Khoa học và Kỹ thuật Thông tin</p>
-                        <p class="supervisor-card__role">Đồng hướng dẫn</p>
+                        <p class="supervisor-card__role supervisor-card__role--secondary">Đồng hướng dẫn</p>
                       </div>
                     </article>
                   </li>
                 </ul>
-                <section class="pending-invitations" aria-labelledby="pending-invitations-title">
+                <section class="pending-invitations" aria-labelledby="pending-invitations-title" hidden>
                   <h3 id="pending-invitations-title">Lời mời đang chờ</h3>
-                  <ul class="pending-invitations__list">
-                    <li class="pending-invitation">
-                      <p class="pending-invitation__name">Lê Minh Châu</p>
-                      <dl class="pending-invitation__meta">
-                        <dt>Ngày gửi</dt><dd>27/10/2026</dd>
-                      </dl>
-                      <button id="cancel-pending-invitation" class="pending-invitation__cancel" type="button" aria-label="Hủy lời mời đang chờ" disabled>Hủy</button>
-                    </li>
-                  </ul>
+                  <ul class="pending-invitations__list"></ul>
                 </section>
               </section>
             </aside>
@@ -813,9 +805,9 @@
             </section>
           </div>
           <dialog class="submission-dialog submission-upload-dialog" id="student-upload-dialog"></dialog>
-          <dialog id="student-upload-success" class="workflow-dialog submission-saved-dialog" aria-labelledby="student-upload-success-title">
-            <div class="submission-saved-dialog__body">
-              <span class="submission-saved-dialog__icon" aria-hidden="true">
+          <dialog id="student-upload-success" class="workflow-dialog workflow-saved-dialog" aria-labelledby="student-upload-success-title">
+            <div class="workflow-saved-dialog__body">
+              <span class="workflow-saved-dialog__icon" aria-hidden="true">
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
                   <path d="m5 12 4 4L19 6"></path>
                 </svg>
@@ -969,11 +961,29 @@
     </footer>
 
 
-    <dialog id="cancel-team-invitation-dialog" class="confirmation-dialog" aria-labelledby="cancel-team-invitation-title">
-      <h2 id="cancel-team-invitation-title">Hủy lời mời giảng viên</h2>
-      <p>Bạn muốn hủy lời mời thử đến <strong data-cancel-invitation-name></strong>?</p>
+    <dialog id="cancel-team-invitation-dialog" class="confirmation-dialog" aria-labelledby="cancel-team-invitation-title" aria-describedby="cancel-team-invitation-message">
+      <header>
+        <h2 id="cancel-team-invitation-title">Hủy lời mời giảng viên</h2>
+        <button class="cancel-team-invitation__close" type="button" command="close" commandfor="cancel-team-invitation-dialog" aria-label="Đóng hộp thoại" autofocus>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+        </button>
+      </header>
+      <p id="cancel-team-invitation-message">Bạn có muốn hủy lời mời dành cho <strong data-cancel-invitation-name></strong>?</p>
       <p data-cancel-invitation-error class="team-error" role="alert" tabindex="-1" hidden></p>
-      <footer><button type="button" command="close" commandfor="cancel-team-invitation-dialog">Quay lại</button><button type="button" data-confirm-cancel-invitation>Xác nhận hủy</button></footer>
+      <footer>
+        <button type="button" data-confirm-cancel-invitation>Xác nhận hủy</button>
+      </footer>
+    </dialog>
+    <dialog id="cancel-team-invitation-success" class="workflow-dialog workflow-saved-dialog" aria-labelledby="cancel-team-invitation-success-title">
+      <div class="workflow-saved-dialog__body">
+        <span class="workflow-saved-dialog__icon" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+            <path d="m5 12 4 4L19 6"></path>
+          </svg>
+        </span>
+        <h2 id="cancel-team-invitation-success-title">Đã hủy lời mời</h2>
+        <button type="button" class="workflow-dialog__primary" command="close" commandfor="cancel-team-invitation-success" autofocus>Xong</button>
+      </div>
     </dialog>
     <dialog id="add-team-member-dialog" class="team-member-dialog" aria-labelledby="add-team-member-title">
       <header class="team-member-dialog__header">

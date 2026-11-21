@@ -32,6 +32,7 @@
   const memberError = document.querySelector('[data-member-error]');
   const inviteError = document.querySelector('[data-invite-error]');
   const cancelDialog = document.getElementById('cancel-team-invitation-dialog');
+  const cancelSuccess = document.getElementById('cancel-team-invitation-success');
   const cancelError = document.querySelector('[data-cancel-invitation-error]');
   const cancelConfirm = document.querySelector('[data-confirm-cancel-invitation]');
   const members = document.querySelector('.topic-team__members');
@@ -78,46 +79,7 @@
         item.querySelector('.team-member__role').textContent = member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
         return item;
       }));
-      const invitations = document.querySelector('.pending-invitations__list');
-      invitations.replaceChildren();
-      state.invitations.filter(invitation => invitation.status === 'pending').forEach(invitation => {
-        const lecturerName = invitation.lecturerName ||
-          globalThis.IE104.data.projectLecturers.find(item => item.id === invitation.lecturerId)?.name ||
-          'Giảng viên không còn trong danh mục';
-        const item = document.createElement('li');
-        item.className = 'pending-invitation';
-        const name = document.createElement('p');
-        name.className = 'pending-invitation__name';
-        name.textContent = lecturerName;
-        const date = document.createElement('p');
-        date.className = 'pending-invitation__meta';
-        date.textContent = `Ngày lưu: ${new Date(invitation.createdAt).toLocaleDateString('vi-VN')}`;
-        const cancel = document.createElement('button');
-        cancel.type = 'button';
-        cancel.className = 'pending-invitation__cancel';
-        cancel.textContent = 'Hủy';
-        cancel.disabled = !permission.allowed;
-        cancel.setAttribute('aria-label', `Hủy lời mời ${lecturerName}`);
-        cancel.setAttribute('aria-haspopup', 'dialog');
-        cancel.setAttribute('aria-controls', 'cancel-team-invitation-dialog');
-        cancel.addEventListener('click', () => {
-          try {
-            const current = service.getState(projectId);
-            if (!service.getPermission(current).allowed) { refresh(); return; }
-            pendingCancel = { id: invitation.id, revision: current.revision };
-          } catch (failure) { notice.textContent = failure.message; return; }
-          document.querySelector('[data-cancel-invitation-name]').textContent = lecturerName;
-          cancelError.hidden = true;
-          cancelDialog.showModal();
-        });
-        item.append(name, date, cancel);
-        invitations.append(item);
-      });
-      if (!invitations.children.length) {
-        const empty = document.createElement('li');
-        empty.textContent = 'Chưa có lời mời đang chờ.';
-        invitations.append(empty);
-      }
+      renderPendingInvitations(state.invitations, permission.allowed);
       return true;
     } catch (failure) {
       state = null;
@@ -133,6 +95,77 @@
 
   const normalizeSearch = value => value.toLowerCase().normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
+
+  function departmentLabel(value = '') {
+    const department = value.trim().replace(/^Bộ môn(?:\s*:\s*|\s+|$)/i, '');
+    return !department || normalizeSearch(department).startsWith('chua ')
+      ? 'Chưa cập nhật bộ môn'
+      : department;
+  }
+
+  function renderPendingInvitations(invitations, canManage) {
+    const section = document.querySelector('.pending-invitations');
+    const list = section.querySelector('.pending-invitations__list');
+    const pending = invitations.filter(invitation => invitation.status === 'pending');
+    section.hidden = pending.length === 0;
+
+    const directory = pending.some(invitation => invitation.lecturerId.startsWith('giang-vien-'))
+      ? globalThis.IE104SupervisionEntry?.getTeachers().catch(() => [])
+      : null;
+
+    list.replaceChildren(...pending.map(invitation => {
+      const lecturer = globalThis.IE104.data.projectLecturers.find(item => item.id === invitation.lecturerId);
+      const knownName = invitation.lecturerName || lecturer?.name;
+      const lecturerName = knownName || 'Giảng viên không còn trong danh mục';
+      const item = document.createElement('li');
+      item.className = 'pending-invitation supervisor-card';
+
+      const avatar = document.createElement('span');
+      avatar.className = 'supervisor-card__avatar';
+      avatar.setAttribute('aria-hidden', 'true');
+      avatar.textContent = knownName ? knownName.trim().split(/\s+/).slice(-2).map(part => part[0]).join('') : 'GV';
+
+      const content = document.createElement('div');
+      content.className = 'supervisor-card__content';
+      const name = document.createElement('p');
+      name.className = 'supervisor-card__name';
+      name.textContent = lecturerName;
+      const department = document.createElement('p');
+      department.className = 'supervisor-card__department';
+      department.textContent = departmentLabel(lecturer?.department);
+      const date = document.createElement('p');
+      date.className = 'pending-invitation__meta';
+      date.textContent = 'Ngày lưu: ' + new Date(invitation.createdAt).toLocaleDateString('vi-VN');
+      content.append(name, department, date);
+
+      const cancel = document.createElement('button');
+      cancel.type = 'button';
+      cancel.className = 'pending-invitation__cancel';
+      cancel.textContent = 'Hủy';
+      cancel.disabled = !canManage;
+      cancel.setAttribute('aria-label', 'Hủy lời mời ' + lecturerName);
+      cancel.setAttribute('aria-haspopup', 'dialog');
+      cancel.setAttribute('aria-controls', 'cancel-team-invitation-dialog');
+      cancel.addEventListener('click', () => {
+        try {
+          const current = service.getState(projectId);
+          if (!service.getPermission(current).allowed) { refresh(); return; }
+          pendingCancel = { id: invitation.id, revision: current.revision };
+        } catch (failure) { notice.textContent = failure.message; return; }
+        document.querySelector('[data-cancel-invitation-name]').textContent = lecturerName;
+        cancelError.hidden = true;
+        cancelDialog.showModal();
+      });
+
+      directory?.then(lecturers => {
+        const profile = lecturers.find(lecturer => lecturer.id === invitation.lecturerId);
+        if (profile) department.textContent = departmentLabel(profile.department);
+      });
+
+      item.append(avatar, content, cancel);
+      return item;
+    }));
+  }
 
   function updateResults() {
     if (!inviteOptions.length) return;
@@ -159,9 +192,7 @@
       const option = inviteOption.content.firstElementChild.cloneNode(true);
       option.querySelector('input').value = lecturer.id;
       option.querySelector('.supervisor-dialog__name').textContent = lecturer.name;
-      const department = normalizeSearch(lecturer.department);
-      option.querySelector('.supervisor-dialog__specialty').textContent =
-        !department || department.startsWith('chua ') ? 'Chưa cập nhật bộ môn' : lecturer.department;
+      option.querySelector('.supervisor-dialog__specialty').textContent = departmentLabel(lecturer.department);
       return {
         option,
         keywords: normalizeSearch(`${lecturer.name} ${lecturer.department} ${lecturer.email}`),
@@ -269,17 +300,22 @@
     }
   });
   cancelConfirm.addEventListener('click', () => {
-    if (saving || !pendingCancel) return;
+    if (saving || !cancelDialog.open || !pendingCancel) return;
     saving = true;
+    cancelError.hidden = true;
     try {
       service.cancelInvitation(projectId, pendingCancel.id, pendingCancel.revision);
       cancelDialog.close();
       refresh();
-      setResult('Đã hủy lời mời thử trong bản lưu trên trình duyệt.');
+      result.hidden = true;
+      cancelSuccess.showModal();
     } catch (failure) { showError(cancelError, failure); }
     finally { saving = false; }
   });
-  cancelDialog.addEventListener('close', () => { pendingCancel = null; });
+  cancelDialog.addEventListener('close', () => {
+    if (!cancelDialog.open) pendingCancel = null;
+  });
+  cancelSuccess.addEventListener('close', () => inviteButton.focus({ preventScroll: true }));
   window.addEventListener('storage', event => { if (event.key === globalThis.IE104.storage.teamKey || event.key === null) refresh(); });
   window.addEventListener('pageshow', refresh);
   refresh();

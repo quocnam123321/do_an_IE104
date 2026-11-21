@@ -130,14 +130,14 @@
   border-top: 1px solid var(--color-border);
 }
 
-.active-topic-page :is(.task-detail-dialog, .task-saved-dialog, .submission-saved-dialog) .workflow-dialog__primary {
+.active-topic-page :is(.task-detail-dialog, .task-saved-dialog, .workflow-saved-dialog) .workflow-dialog__primary {
   border-color: var(--color-primary);
   background: var(--color-primary);
   color: var(--color-on-primary);
   font-weight: var(--weight-semibold);
 }
 
-.active-topic-page :is(.task-detail-dialog, .task-saved-dialog, .submission-saved-dialog) .workflow-dialog__primary:hover {
+.active-topic-page :is(.task-detail-dialog, .task-saved-dialog, .workflow-saved-dialog) .workflow-dialog__primary:hover {
   background: var(--color-primary-hover);
   border-color: var(--color-primary-hover);
 }
@@ -217,18 +217,18 @@
   }
 }
 
-.active-topic-page .workflow-dialog:is(.task-saved-dialog, .submission-saved-dialog) {
+.active-topic-page .workflow-dialog:is(.task-saved-dialog, .workflow-saved-dialog) {
   width: min(28rem, calc(100% - 2rem));
   text-align: center;
 }
 
-:is(.task-saved-dialog__body, .submission-saved-dialog__body) {
+:is(.task-saved-dialog__body, .workflow-saved-dialog__body) {
   display: grid;
   justify-items: center;
   padding: var(--space-6);
 }
 
-:is(.task-saved-dialog__icon, .submission-saved-dialog__icon) {
+:is(.task-saved-dialog__icon, .workflow-saved-dialog__icon) {
   display: grid;
   place-items: center;
   width: 3.5rem;
@@ -239,7 +239,7 @@
   color: var(--color-success-fg);
 }
 
-.active-topic-page :is(.task-saved-dialog, .submission-saved-dialog) h2 {
+.active-topic-page :is(.task-saved-dialog, .workflow-saved-dialog) h2 {
   font-size: var(--text-2xl);
   line-height: var(--leading-tight);
 }
@@ -251,11 +251,11 @@
   line-height: var(--leading-normal);
 }
 
-.active-topic-page :is(.task-saved-dialog, .submission-saved-dialog) .workflow-dialog__primary {
+.active-topic-page :is(.task-saved-dialog, .workflow-saved-dialog) .workflow-dialog__primary {
   min-width: 7rem;
 }
 
-.submission-saved-dialog__body > .workflow-dialog__primary {
+.workflow-saved-dialog__body > .workflow-dialog__primary {
   margin-block-start: var(--space-5);
 }
 
