@@ -2,7 +2,7 @@
   const app = globalThis.IE104;
   const panel = document.getElementById('tien-do');
   const projectId = document.body.dataset.projectId;
-  if (!panel || !projectId || !app?.storage?.readTeachingRecords) return;
+  if (!panel || !projectId || document.body.hasAttribute('data-archived-sample') || !app?.storage?.readTeachingRecords) return;
   const section = document.createElement('section');
   section.className = 'content-card lecturer-progress-reviews';
   const heading = document.createElement('h2');

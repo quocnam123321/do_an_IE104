@@ -7,7 +7,7 @@
   const isActive = record => record.status === 'da-dang-ky' || record.status === 'da-duyet';
   const receiptUrl = id => `chi-tiet-dang-ky-da-luu.html?registration=${encodeURIComponent(id)}`;
   const projectUrl = record => isActive(record) && owns(record)
-    ? `chi-tiet-de-tai-da-duyet-sinh-vien.html?project=${encodeURIComponent(`DT-${record.id}`)}`
+    ? `chi-tiet-de-tai-sinh-vien.html?project=${encodeURIComponent(`DT-${record.id}`)}`
     : null;
 
   function getTopic(id) {

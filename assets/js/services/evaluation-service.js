@@ -5,10 +5,18 @@
   const validScore = value => Number.isFinite(value) && value >= 0 && value <= 10;
 
   function getResult(projectId, { preview = false } = {}) {
-    if (!app.data.myTopics.some(project => project.id === projectId) && (preview || !app.services.approvedProjects?.forStudent(projectId))) throw new Error('Không tìm thấy đề tài cần xem đánh giá.');
+    const project = app.data.myTopics.find(item => item.id === projectId)
+      || (!preview && app.services.approvedProjects?.forStudent(projectId)?.project);
+    if (!project) throw new Error('Không tìm thấy đề tài cần xem đánh giá.');
+    const groupName = project.groupName;
     const saved = preview ? null : app.storage?.readTeachingRecords?.().find(item => item.projectId === projectId);
     const record = saved?.publishedEvaluation || app.data.projectEvaluations.find(item => item.projectId === projectId);
-    if (!record || record.published === false) return { projectId, status: 'unpublished' };
+    if (!record || record.published === false) {
+      return {
+        projectId, groupName, status: 'unpublished', projectStatus: project.status,
+        supervisor: hasText(project.lecturer) ? project.lecturer.trim() : '',
+      };
+    }
     const invalid = () => { throw new Error('Không thể hiển thị kết quả vì dữ liệu đánh giá chưa hợp lệ.'); };
     if (record.published !== true || !validScore(record.score) || !['resultLabel', 'lecturerName', 'feedback'].every(key => hasText(record[key]))) invalid();
     if (!Array.isArray(record.criteria) || !record.criteria.length) invalid();
@@ -18,11 +26,13 @@
     const date = new Date(`${record.evaluatedAt}T00:00:00.000Z`);
     if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== record.evaluatedAt) invalid();
     if (record.attachment !== null && (!record.attachment || !hasText(record.attachment.name))) invalid();
+    const file = record.attachment?.assetFile;
+    const assetFile = typeof file === 'string' && /^[a-z0-9][a-z0-9._-]*$/i.test(file) ? file : null;
     return {
-      projectId, status: 'published', score: record.score, resultLabel: record.resultLabel,
+      projectId, groupName, status: 'published', score: record.score, resultLabel: record.resultLabel,
       criteria: record.criteria.map(item => ({ id: item.id, title: item.title, weight: item.weight, score: item.score, comment: item.comment })),
       lecturerName: record.lecturerName, evaluatedAt: record.evaluatedAt, feedback: record.feedback,
-      attachment: record.attachment ? { name: record.attachment.name, downloadAvailable: false } : null,
+      attachment: record.attachment ? { name: record.attachment.name, assetFile } : null,
     };
   }
 

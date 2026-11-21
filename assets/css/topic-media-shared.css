@@ -33,7 +33,7 @@
   }
 }
 
-/* Khung ảnh tóm tắt của hai trang chi tiết đề tài giảng viên. */
+/* Khung ảnh tóm tắt 16:9 trong chi tiết đề tài của sinh viên và giảng viên. */
 .topic-summary:has(> [data-topic-cover="wide"]) {
   grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr);
   gap: var(--space-8);

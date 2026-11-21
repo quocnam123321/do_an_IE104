@@ -295,6 +295,36 @@ Theo xác nhận của người dùng, phần GV dùng giao diện 1ddf0d3 và c
 
 Ngày 21/11/2026, danh sách Đề tài đã tạo hiện tên tác giả, khóa hoặc đợt bảo vệ và giảng viên hướng dẫn theo 10 hồ sơ UIT trong Git. Các thẻ này dùng nhãn Hồ sơ UIT. Trang chi tiết dùng lại bản `75bca90`, gồm khung ảnh 16:9 và luồng đề tài lưu trên trình duyệt.
 
+### Tổng quan chi tiết đề tài sinh viên — 21/11/2026
+
+- Tab Tổng quan của Đề tài của tôi dùng chung khung ảnh tóm tắt 16:9, bố cục thẻ, danh sách mục tiêu và kết quả, cách hiển thị thành viên và mốc thời gian với trang Đề tài đang hướng dẫn. Khối Yêu cầu thực hiện xuất hiện khi đề tài đăng ký có dữ liệu tương ứng. Khối Giảng viên hướng dẫn đặt sau Mốc thời gian chính. Các thao tác nhóm và lời mời hiển thị theo quyền hiện có của sinh viên.
+- Thông báo giới hạn thành viên đặt ngay dưới tên nhóm với biểu tượng thông tin và cụm “tối đa X thành viên” in đậm. Dùng nền vàng nhạt, viền vàng mảnh, chữ và biểu tượng màu nâu ở mọi trạng thái sức chứa.
+
+### Tiến độ chi tiết đề tài sinh viên — 21/11/2026
+
+- Tab Tiến độ dùng chung bố cục tổng thể và bảng ba cột với giảng viên. Thẻ công việc hiển thị hạn hoàn thành, ảnh đại diện người phụ trách và nhãn “Quá hạn” chỉ có chữ khi phù hợp. Trên màn hình hẹp, cuộn ngang bảng để xem các cột. Khối Tiến độ tổng thể hiển thị thanh tiến độ và số liệu. Thêm công việc và Xóa nằm ở bảng công việc. Các thao tác và lịch sử theo từng công việc dùng quyền và dữ liệu hiện có của sinh viên.
+- Hộp Thêm công việc có ô mô tả và danh sách người phụ trách thả xuống với checkbox chọn nhiều thành viên. Dấu sao đỏ đánh dấu tên, người phụ trách và hạn hoàn thành. Trạng thái ban đầu chọn giữa Chưa bắt đầu và Đang thực hiện, nhận biết lựa chọn bằng nền và viền. Hộp Sửa công việc cho chỉnh danh sách người phụ trách cùng mô tả đã lưu.
+- Khi đề tài đã hoàn thành, nút Xóa và Thêm công việc đều bị khóa. Ngay dưới tiêu đề Bảng công việc hiển thị thông báo nền xanh nhạt với biểu tượng thông tin: “Đề tài đã hoàn thành. Chức năng thêm và xóa công việc đã được khóa.”
+- Hộp chi tiết công việc bên sinh viên dùng tên công việc làm tiêu đề. Trạng thái có nhãn xám, xanh dương hoặc xanh lá theo ba cột của bảng. Hạn hoàn thành, tên người phụ trách và mô tả lấy theo dữ liệu công việc. Dấu × và phím Esc dùng để đóng hộp. Hàng thao tác hiển thị Cập nhật tiến độ và Sửa công việc theo quyền. Biểu mẫu cập nhật mở cho công việc đang xem, với trạng thái và mức hoàn thành đã điền sẵn.
+- Sau khi lưu thành công trong hộp Sửa công việc, hộp Đã lưu thay đổi hiển thị dấu tích xanh, dòng “Công việc đã được cập nhật.” và nút Xong. Đóng hộp đưa tiêu điểm về thẻ vừa sửa.
+
+### Nhãn thời hạn bài nộp bên sinh viên — 21/11/2026
+
+- Ba nhãn chỉ hiển thị chữ và dùng chung kiểu chữ, khoảng đệm, bo góc với nhãn bên giảng viên. “Đúng hạn” dùng nền xanh lá nhạt, “Quá hạn” dùng nền đỏ nhạt và “Nộp sau hạn” dùng nền vàng nhạt, chữ nâu và viền vàng mảnh. Cột Chờ phản hồi dùng nền vàng nhạt, cột Đã phản hồi dùng nền xanh lá nhạt như bên giảng viên. Ở Yêu cầu bài nộp → Đã nộp, nhãn vàng theo lần nộp gần nhất. Ở Bài nộp của nhóm, nhãn theo thời điểm gửi của từng bài ở cả hai cột phản hồi.
+- Hộp thoại yêu cầu bài nộp dùng tên yêu cầu làm tiêu đề, giống hộp thoại chi tiết công việc. Ngày giờ nộp của lần gửi gần nhất nằm dưới hạn nộp. Tệp nằm dưới nội dung yêu cầu. Bài mẫu có tệp liên kết dùng nút Tải xuống cùng kiểu với Bài nộp của nhóm. Nút mở biểu mẫu mẫu có tên Nộp bài hoặc Cập nhật bài nộp theo trạng thái yêu cầu.
+- Biểu mẫu nộp bài lấy tên yêu cầu làm tiêu đề. Cả hàng trắng mở trình chọn tệp khi danh sách trống. Nút Chọn tệp và Thêm tệp dùng viền xanh, biểu tượng mũi tên hướng lên và cùng một trình chọn nhiều tệp. Mỗi hàng có biểu tượng thùng rác đỏ để gỡ tệp. Bản nộp gồm các tệp và ghi chú được lưu trong IndexedDB trên trình duyệt hiện tại. Sau khi lưu, hộp xác nhận chỉ hiển thị dấu tích xanh, “Nộp bài thành công” và nút Xong.
+- Thẻ Bài nộp của nhóm hiện tên tệp đầu tiên. Với nhiều tệp, nút +N tệp mở danh sách các tệp còn lại trong khung nổi, căn mép phải theo nút, lật lên khi thiếu chỗ bên dưới và đóng khi cuộn bảng. Tiêu đề đứng yên, phần danh sách hiện tối đa hai hàng và cuộn riêng. Nút Tải xuống tải cả bộ ZIP khi có nhiều tệp, tải trực tiếp khi chỉ có một tệp.
+- Trong chi tiết yêu cầu đã nộp, khối Tệp đã nộp ghi tên và dung lượng nếu có dữ liệu. Danh sách hiện tối đa bốn hàng và cuộn riêng khi có thêm. Tải xuống nằm ở từng hàng có tệp và Tải tất cả ở cạnh tiêu đề khi có nhiều tệp.
+- Khi cập nhật bài nộp, biểu mẫu điền tệp và ghi chú sẵn có. Thêm hoặc gỡ tệp chỉ thay đổi bản nháp cho đến khi bấm Lưu thay đổi và lưu thành công. Hộp xác nhận cập nhật hiển thị dấu tích xanh, “Đã lưu thay đổi” và nút Xong.
+- Các hộp thoại Chi tiết yêu cầu, Phản hồi, Nộp bài và Cập nhật bài nộp dùng chung biểu tượng × nét bo đầu, khung biểu tượng 20px và vùng bấm 44px không viền.
+
+### Kết quả đánh giá bên sinh viên
+
+- Dùng cùng bố cục, kiểu thẻ, bảng và thang điểm với tab của giảng viên: Thông tin đánh giá, Đánh giá theo tiêu chí, Điểm tổng kết và Nhận xét. Phía sinh viên hiển thị nhận xét theo tiêu chí, điểm và thông tin công bố dưới dạng chỉ đọc. Khi chưa công bố, hiển thị tên nhóm và trạng thái, giữ nội dung đánh giá trong bản nháp riêng của giảng viên.
+- Khi chưa công bố, hiển thị giảng viên hướng dẫn nếu có dữ liệu, nhãn vàng “Chưa công bố” chỉ có chữ và thông báo xanh nhạt. Tiêu đề thông báo là “Đề tài đang thực hiện.” khi đề tài đang thực hiện, hoặc “Kết quả đánh giá chưa được công bố.” khi đề tài đã hoàn thành.
+- Nhận xét của giảng viên là văn bản trải rộng trực tiếp trên thẻ. Hàng tệp đánh giá dùng nền nhạt không viền, biểu tượng tệp và nút Tải xuống. Khi chỉ có tên tệp, nút bị khóa và hiện giải thích. Hai bản đánh giá mẫu có PDF minh họa để thử tải.
+- Thẻ Điểm tổng kết giữ hai dòng. Điểm hiển thị bằng số đen in đậm trực tiếp trên nền trắng, bỏ hậu tố “/10”. Kết quả “Đạt yêu cầu” dùng nhãn xanh lá nhạt chỉ có chữ, cùng kiểu với nhãn “Đã công bố”.
+
 ## Footer dùng chung
 
 - Dùng nền xanh đậm #122E59 theo mẫu UIT áp dụng cho dự án, chữ phụ #DBEAFE và đường phân chia #50688A. Logo ngang màu trắng lấy từ footer của website UIT và lưu trong dự án.

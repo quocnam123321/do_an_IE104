@@ -30,18 +30,9 @@
 .workflow-dialog .workflow-dialog__close { border-color: transparent; font-size: 1.5rem; padding: .25rem .75rem; }
 .workflow-dialog .workflow-dialog__primary { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
 .workflow-dialog button:disabled { opacity: .6; cursor: not-allowed; }
-.workflow-dialog :focus-visible, .student-task-open:focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
-#tien-do .student-progress-column:nth-child(1) { background: var(--color-neutral-bg); }
-#tien-do .student-progress-column:nth-child(2) { background: var(--color-info-bg); }
-#tien-do .student-progress-column:nth-child(3) { background: var(--color-success-bg); }
-:where(.active-topic-page) #tien-do .task-card { position: relative; padding: 0; gap: 0; }
-#tien-do .student-task-open { display: block; box-sizing: border-box; width: 100%; text-align: left; padding: var(--space-4); border: 0; border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-foreground); font: inherit; cursor: pointer; }
-#tien-do .student-task-open:hover { background: var(--color-info-bg); outline: 1px solid var(--color-primary); }
-#tien-do .task-card__actions:empty { display: none; }
-#tien-do .student-task-remove { position: absolute; right: var(--space-3); top: var(--space-3); min-width: var(--control-min-height); color: var(--color-danger-fg); border-color: var(--color-danger-fg); background: var(--color-surface); }
-#tien-do[data-task-delete-mode="true"] .student-task-open { padding-right: 4.5rem; }
+.workflow-dialog :focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
 #tien-do .student-task-mode { margin-left: auto; }
-#tien-do .student-task-mode[data-mode="delete"] { color: var(--color-danger-fg); border-color: var(--color-danger-fg); }
+#tien-do .student-task-mode[data-mode="delete"]:not(:disabled) { color: var(--color-danger-fg); border-color: var(--color-danger-fg); }
 #tien-do .student-task-mode[data-mode="done"] { background: var(--color-primary); color: var(--color-on-primary); border-color: var(--color-primary); }
 #tien-do .student-delete-mode-label { padding: .2rem .6rem; border: 1px solid var(--color-danger-fg); border-radius: var(--radius-control); color: var(--color-danger-fg); font-size: .875rem; }
 #submissions-section .submission-board__columns--requirements { grid-template-columns: repeat(2,minmax(18rem,1fr)); }
@@ -69,7 +60,7 @@
 .workflow-state-icon { flex: 0 0 auto; width: 1.1rem; height: 1.1rem; margin-right: .5rem; vertical-align: -.2rem; }
 #tien-do .workflow-field-label { display: block; color: var(--color-muted-foreground); font-size: .875rem; }
 #tien-do .workflow-field-value { display: block; white-space: pre-line; overflow-wrap: anywhere; margin-top: .2rem; }
-#tien-do .student-progress-column > h3, #bai-nop .teaching-column > h4 { display: flex; align-items: center; }
+#bai-nop .teaching-column > h4 { display: flex; align-items: center; }
 #bai-nop .teaching-column { padding: .75rem; }
 #bai-nop .teaching-column-list { max-height: 36rem; padding-right: .5rem; }
 #bai-nop .workflow-requirement-open { padding: .75rem; }
@@ -101,5 +92,5 @@
 #tien-do .section-header > h2 { margin-right: auto; }
 #tien-do .section-header > .student-task-mode { margin-left: 0; }
 #bai-nop .workflow-overdue-badge { display: inline-block; margin-top: .5rem; padding: .2rem .5rem; border-radius: var(--radius-control); color: var(--color-danger-fg); background: var(--color-danger-bg); font-size: .75rem; }
-#bai-nop button.workflow-primary-action, .active-topic-page #tien-do button.btn-add-task { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
+#bai-nop button.workflow-primary-action, .active-topic-page #tien-do button.btn-add-task:not(:disabled) { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
 #bai-nop button.workflow-primary-action:not(:disabled):hover, .active-topic-page #tien-do button.btn-add-task:not(:disabled):hover { background: var(--color-primary-hover); border-color: var(--color-primary-hover); color: var(--color-on-primary); }

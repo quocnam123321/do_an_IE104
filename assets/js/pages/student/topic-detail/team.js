@@ -2,6 +2,16 @@
   const service = globalThis.IE104?.services?.projectTeams;
   const projectId = document.body.dataset.projectId;
   if (!service || !projectId) return;
+  if (document.body.hasAttribute('data-archived-sample')) {
+    const message = document.createElement('li');
+    message.textContent = 'Chưa có dữ liệu thành viên của nhóm này.';
+    document.querySelector('.topic-team__members').replaceChildren(message);
+    document.querySelector('.project-team__note').hidden = true;
+    document.querySelector('[data-team-notice]').hidden = true;
+    document.querySelector('.pending-invitations').hidden = true;
+    document.body.dataset.teamReady = 'true';
+    return;
+  }
   const preview = location.protocol === 'file:';
   const memberDialog = document.getElementById('add-team-member-dialog');
   const inviteDialog = document.getElementById('invite-supervisor-dialog');
@@ -12,6 +22,11 @@
   const inviteSubmit = document.getElementById('send-invite-supervisor');
   const search = document.getElementById('supervisor-search');
   const results = document.getElementById('supervisor-search-results');
+  const inviteOption = document.getElementById('invite-supervisor-option');
+  const inviteSearchStatus = inviteForm.querySelector('[data-invite-search-status]');
+  const capacity = document.querySelector('.project-team__note');
+  const capacityLimit = capacity.querySelector('[data-team-capacity]');
+  const fullMessage = capacity.querySelector('[data-team-full-message]');
   const notice = document.querySelector('[data-team-notice]');
   const result = document.querySelector('[data-team-result]');
   const memberError = document.querySelector('[data-member-error]');
@@ -19,11 +34,14 @@
   const cancelDialog = document.getElementById('cancel-team-invitation-dialog');
   const cancelError = document.querySelector('[data-cancel-invitation-error]');
   const cancelConfirm = document.querySelector('[data-confirm-cancel-invitation]');
-  const memberTemplate = document.querySelector('.team-member').cloneNode(true);
+  const members = document.querySelector('.topic-team__members');
+  const memberTemplate = members.firstElementChild.cloneNode(true);
   let state = null;
   let memberRevision = 0;
   let inviteRevision = 0;
   let selectedLecturer = '';
+  let inviteOptions = [];
+  let inviteLoad = 0;
   let pendingCancel = null;
   let saving = false;
 
@@ -48,24 +66,29 @@
       addButton.disabled = !permission.allowed || full;
       inviteButton.disabled = !permission.allowed;
       memberForm.querySelector('button[type="submit"]').disabled = !permission.allowed || full;
-      inviteSubmit.disabled = !permission.allowed || !selectedLecturer;
-      document.querySelector('.project-team__note').textContent = `Đề tài này cho phép tối đa ${state.maxMembers} thành viên, bao gồm nhóm trưởng. Hiện có ${state.members.length} thành viên.`;
-      const members = document.querySelector('.team-member-list');
+      inviteSubmit.disabled = !permission.allowed || !selectedLecturer || saving;
+      capacityLimit.textContent = `tối đa ${state.maxMembers} thành viên`;
+      fullMessage.hidden = !full;
       members.replaceChildren(...state.members.map(member => {
         const item = memberTemplate.cloneNode(true);
-        item.querySelector('.team-member__name').textContent = `${member.name} - ${member.code}`;
+        const initials = member.name.trim().split(/\s+/).slice(-2).map(part => part[0]).join('').toUpperCase();
+        item.querySelector('.team-member__avatar').textContent = initials;
+        item.querySelector('.team-member__name').textContent = member.name;
+        item.querySelector('.team-member__id').textContent = member.code;
         item.querySelector('.team-member__role').textContent = member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
         return item;
       }));
       const invitations = document.querySelector('.pending-invitations__list');
       invitations.replaceChildren();
       state.invitations.filter(invitation => invitation.status === 'pending').forEach(invitation => {
-        const lecturer = globalThis.IE104.data.projectLecturers.find(item => item.id === invitation.lecturerId);
+        const lecturerName = invitation.lecturerName ||
+          globalThis.IE104.data.projectLecturers.find(item => item.id === invitation.lecturerId)?.name ||
+          'Giảng viên không còn trong danh mục';
         const item = document.createElement('li');
         item.className = 'pending-invitation';
         const name = document.createElement('p');
         name.className = 'pending-invitation__name';
-        name.textContent = lecturer?.name || 'Giảng viên không còn trong danh mục';
+        name.textContent = lecturerName;
         const date = document.createElement('p');
         date.className = 'pending-invitation__meta';
         date.textContent = `Ngày lưu: ${new Date(invitation.createdAt).toLocaleDateString('vi-VN')}`;
@@ -74,7 +97,7 @@
         cancel.className = 'pending-invitation__cancel';
         cancel.textContent = 'Hủy';
         cancel.disabled = !permission.allowed;
-        cancel.setAttribute('aria-label', `Hủy lời mời ${lecturer?.name || ''}`);
+        cancel.setAttribute('aria-label', `Hủy lời mời ${lecturerName}`);
         cancel.setAttribute('aria-haspopup', 'dialog');
         cancel.setAttribute('aria-controls', 'cancel-team-invitation-dialog');
         cancel.addEventListener('click', () => {
@@ -83,7 +106,7 @@
             if (!service.getPermission(current).allowed) { refresh(); return; }
             pendingCancel = { id: invitation.id, revision: current.revision };
           } catch (failure) { notice.textContent = failure.message; return; }
-          document.querySelector('[data-cancel-invitation-name]').textContent = lecturer?.name || '';
+          document.querySelector('[data-cancel-invitation-name]').textContent = lecturerName;
           cancelError.hidden = true;
           cancelDialog.showModal();
         });
@@ -108,38 +131,48 @@
     }
   }
 
+  const normalizeSearch = value => value.toLowerCase().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
+
   function updateResults() {
-    selectedLecturer = '';
-    inviteSubmit.disabled = true;
-    results.replaceChildren();
-    results.hidden = false;
-    try {
-      const lecturers = service.getLecturers(projectId, search.value);
-      lecturers.forEach(lecturer => {
-        const item = document.createElement('li');
-        item.className = 'supervisor-search-results__item';
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.className = 'supervisor-search-results__option';
-        const name = document.createElement('span');
-        name.className = 'supervisor-search-results__name';
-        name.textContent = lecturer.name;
-        const email = document.createElement('span');
-        email.className = 'supervisor-search-results__email';
-        email.textContent = lecturer.email;
-        button.append(name, email);
-        button.addEventListener('click', () => {
-          selectedLecturer = lecturer.id;
-          search.value = `${lecturer.name} - ${lecturer.email}`;
-          results.hidden = true;
-          inviteSubmit.disabled = !service.getPermission(state).allowed;
-          inviteSubmit.focus();
-        });
-        item.append(button);
-        results.append(item);
-      });
-      document.getElementById('supervisor-search-help').textContent = lecturers.length ? `${lecturers.length} giảng viên phù hợp. Chọn một kết quả bên dưới.` : 'Không có giảng viên phù hợp; người đã tham gia hoặc có lời mời đang chờ được loại khỏi kết quả.';
-    } catch (failure) { showError(inviteError, failure); }
+    if (!inviteOptions.length) return;
+    const query = normalizeSearch(search.value);
+    let hasMatch = false;
+    for (const { option, keywords } of inviteOptions) {
+      option.hidden = !keywords.includes(query);
+      hasMatch ||= !option.hidden;
+    }
+    const hiddenSelection = results.querySelector('label[hidden] input:checked');
+    if (hiddenSelection) {
+      hiddenSelection.checked = false;
+      selectedLecturer = '';
+      inviteSubmit.disabled = true;
+    }
+    results.hidden = !hasMatch;
+    results.scrollTop = 0;
+    inviteSearchStatus.hidden = hasMatch;
+    inviteSearchStatus.textContent = hasMatch ? '' : 'Không tìm thấy giảng viên phù hợp.';
+  }
+
+  function renderInviteOptions(lecturers) {
+    inviteOptions = lecturers.map(lecturer => {
+      const option = inviteOption.content.firstElementChild.cloneNode(true);
+      option.querySelector('input').value = lecturer.id;
+      option.querySelector('.supervisor-dialog__name').textContent = lecturer.name;
+      const department = normalizeSearch(lecturer.department);
+      option.querySelector('.supervisor-dialog__specialty').textContent =
+        !department || department.startsWith('chua ') ? 'Chưa cập nhật bộ môn' : lecturer.department;
+      return {
+        option,
+        keywords: normalizeSearch(`${lecturer.name} ${lecturer.department} ${lecturer.email}`),
+      };
+    });
+    results.replaceChildren(...inviteOptions.map(({ option }) => option));
+    if (!inviteOptions.length) {
+      inviteSearchStatus.textContent = 'Không còn giảng viên có thể mời cho đề tài này.';
+      return;
+    }
+    updateResults();
   }
 
   [addButton, inviteButton].forEach(button => {
@@ -147,9 +180,7 @@
     button.removeAttribute('commandfor');
   });
   memberForm.noValidate = true;
-  inviteForm.noValidate = true;
-  inviteSubmit.type = 'submit';
-  document.getElementById('new-team-member-role').querySelector('[value="nhom-truong"]').disabled = true;
+  memberDialog.querySelector('.team-member-dialog__close').addEventListener('click', () => memberDialog.close());
   addButton.addEventListener('click', () => {
     if (!refresh() || !service.getPermission(state).allowed || state.members.length >= state.maxMembers) return;
     memberRevision = state.revision;
@@ -158,23 +189,50 @@
     memberForm.querySelectorAll('[aria-invalid]').forEach(field => field.removeAttribute('aria-invalid'));
     memberDialog.showModal();
   });
-  inviteButton.addEventListener('click', () => {
+  inviteButton.addEventListener('click', async () => {
     if (!refresh() || !service.getPermission(state).allowed) return;
+    const load = ++inviteLoad;
     inviteRevision = state.revision;
     inviteForm.reset();
     selectedLecturer = '';
+    inviteOptions = [];
+    results.replaceChildren();
+    results.hidden = true;
     inviteError.hidden = true;
-    updateResults();
+    inviteSubmit.disabled = true;
+    inviteSearchStatus.hidden = false;
+    inviteSearchStatus.textContent = 'Đang tải danh sách giảng viên…';
     inviteDialog.showModal();
+
+    try {
+      const lecturers = await service.getLecturers(projectId);
+      if (inviteDialog.open && load === inviteLoad) renderInviteOptions(lecturers);
+    } catch (failure) {
+      if (!inviteDialog.open || load !== inviteLoad) return;
+      inviteSearchStatus.hidden = true;
+      inviteError.textContent = failure.message;
+      inviteError.hidden = false;
+    }
   });
   search.addEventListener('input', updateResults);
+  search.addEventListener('keydown', event => {
+    if (event.key === 'Enter' && !event.isComposing) event.preventDefault();
+  });
+  results.addEventListener('change', event => {
+    selectedLecturer = event.target.value;
+    inviteSubmit.disabled = saving || !state || !service.getPermission(state).allowed;
+    inviteError.hidden = true;
+  });
   memberForm.addEventListener('submit', event => {
     event.preventDefault();
     if (saving || !state) return;
-    const fields = { name: document.getElementById('new-team-member-name'), code: document.getElementById('new-team-member-code'), role: document.getElementById('new-team-member-role') };
+    const fields = {
+      name: document.getElementById('new-team-member-name'),
+      code: document.getElementById('new-team-member-code'),
+    };
     Object.values(fields).forEach(field => field.removeAttribute('aria-invalid'));
     memberError.hidden = true;
-    const input = Object.fromEntries(Object.entries(fields).map(([key, field]) => [key, field.value]));
+    const input = { name: fields.name.value, code: fields.code.value, role: 'thanh-vien' };
     const checked = service.validateMember(input, state);
     if (checked.errors.length) {
       showError(memberError, new Error(checked.errors.map(error => error.message).join(' ')));
@@ -191,18 +249,24 @@
     } catch (failure) { showError(memberError, failure); }
     finally { saving = false; }
   });
-  inviteForm.addEventListener('submit', event => {
+  inviteForm.addEventListener('submit', async event => {
     event.preventDefault();
-    if (saving || !state) return;
+    if (saving || !state || !selectedLecturer || !service.getPermission(state).allowed) return;
     saving = true;
+    inviteSubmit.disabled = true;
+    inviteError.hidden = true;
     try {
-      service.inviteSupervisor(projectId, selectedLecturer, document.getElementById('invitation-message').value, inviteRevision);
+      await service.inviteSupervisor(projectId, selectedLecturer, '', inviteRevision);
       inviteDialog.close();
       selectedLecturer = '';
       refresh();
       setResult('Đã lưu lời mời thử trên trình duyệt. Chưa gửi đến giảng viên; giảng viên chưa được thêm vào đề tài.');
-    } catch (failure) { showError(inviteError, failure); }
-    finally { saving = false; }
+    } catch (failure) {
+      if (inviteDialog.open) showError(inviteError, failure);
+    } finally {
+      saving = false;
+      inviteSubmit.disabled = !state || !selectedLecturer || !service.getPermission(state).allowed;
+    }
   });
   cancelConfirm.addEventListener('click', () => {
     if (saving || !pendingCancel) return;

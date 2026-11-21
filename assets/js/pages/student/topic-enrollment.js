@@ -4,7 +4,7 @@
   const service = app?.services?.registrations;
   if (!form || !service) return;
   const store = globalThis.TeacherTopicStore;
-  const topicId = (store && new URLSearchParams(location.search).get('topic')) || form.dataset.topicId;
+  const topicId = form.dataset.topicId;
   if (!topicId) return;
   try {
     const profile = app.services.profile?.getState();

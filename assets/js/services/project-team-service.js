@@ -2,7 +2,6 @@
   const app = globalThis.IE104 = globalThis.IE104 || {};
   app.services = app.services || {};
   const clone = value => JSON.parse(JSON.stringify(value));
-  const normalize = value => String(value).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
 
   function getDefinition(projectId, preview = false) {
     const existingProject = app.data.myTopics.find(item => item.id === projectId) || app.data.lecturerProjects?.find(item => item.id === projectId);
@@ -43,11 +42,18 @@
     return { errors, value };
   }
 
-  function getLecturers(projectId, query = '') {
+  function canInvite(lecturer, state) {
+    const pending = state.invitations.filter(invitation => invitation.status === 'pending');
+    const excluded = [...state.supervisorIds, ...pending.map(invitation => invitation.lecturerId)];
+    if (excluded.includes(lecturer.id)) return false;
+    return !lecturer.email || !app.data.projectLecturers.some(existing =>
+      excluded.includes(existing.id) && existing.email?.toLowerCase() === lecturer.email.toLowerCase());
+  }
+
+  async function getLecturers(projectId) {
+    const lecturers = await globalThis.IE104SupervisionEntry.getTeachers();
     const state = getState(projectId);
-    const excluded = new Set([...state.supervisorIds, ...state.invitations.filter(invite => invite.status === 'pending').map(invite => invite.lecturerId)]);
-    const keyword = normalize(query);
-    return clone(app.data.projectLecturers.filter(lecturer => !excluded.has(lecturer.id) && normalize(`${lecturer.name} ${lecturer.email}`).includes(keyword)));
+    return lecturers.filter(lecturer => canInvite(lecturer, state));
   }
 
   function mutate(projectId, revision, change) {
@@ -73,13 +79,18 @@
     });
   }
 
-  function inviteSupervisor(projectId, lecturerId, message, revision) {
+  async function inviteSupervisor(projectId, lecturerId, message, revision) {
+    const lecturers = await globalThis.IE104SupervisionEntry.getTeachers();
+    const lecturer = lecturers.find(item => item.id === lecturerId);
+    if (!lecturer) throw new Error('Chọn giảng viên từ danh sách kết quả.');
+
     return mutate(projectId, revision, (state, team) => {
-      if (!app.data.projectLecturers.some(lecturer => lecturer.id === lecturerId)) throw new Error('Chọn giảng viên từ danh sách kết quả.');
-      if (team.supervisorIds.includes(lecturerId) || state.invitations.some(invite => invite.lecturerId === lecturerId && invite.status === 'pending')) throw new Error('Giảng viên đã tham gia đề tài hoặc đã có lời mời đang chờ.');
+      if (!canInvite(lecturer, { ...state, supervisorIds: team.supervisorIds })) {
+        throw new Error('Giảng viên đã tham gia đề tài hoặc đã có lời mời đang chờ.');
+      }
       const text = String(message || '').trim();
       if (text.length > 2000) throw new Error('Lời nhắn tối đa 2000 ký tự.');
-      state.invitations.push({ id: `INV-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`}`, lecturerId, message: text, status: 'pending', createdAt: new Date().toISOString() });
+      state.invitations.push({ id: `INV-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`}`, lecturerId, lecturerName: lecturer.name, message: text, status: 'pending', createdAt: new Date().toISOString() });
     });
   }
 

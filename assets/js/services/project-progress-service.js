@@ -33,10 +33,29 @@
   }
 
   function validateTask(input, team) {
-    const value = { title: String(input.title || '').trim(), assigneeCode: String(input.assigneeCode || '').trim(), deadline: String(input.deadline || '').trim() };
+    const requestedCodes = input.assigneeCodes ?? [input.assigneeCode];
+    const assigneeCodes = Array.isArray(requestedCodes)
+      ? [...new Set(requestedCodes.map(code => String(code ?? '').trim()))]
+      : [];
+    const value = {
+      title: String(input.title || '').trim(),
+      assigneeCode: assigneeCodes[0] || '',
+      assigneeCodes,
+      deadline: String(input.deadline || '').trim(),
+    };
+    if (input.description !== undefined) value.description = String(input.description ?? '').trim();
+    if (input.status !== undefined) value.status = input.status;
+
     const errors = [];
     if (!value.title || value.title.length > 200) errors.push({ field: 'title', message: 'Nhập tên công việc từ 1 đến 200 ký tự.' });
-    if (!team.members.some(member => member.code === value.assigneeCode)) errors.push({ field: 'assigneeCode', message: 'Chọn người phụ trách trong nhóm hiện tại.' });
+    const memberCodes = new Set(team.members.map(member => member.code));
+    if (!assigneeCodes.length || assigneeCodes.some(code => !memberCodes.has(code))) {
+      errors.push({ field: 'assigneeCode', message: 'Chọn ít nhất một người phụ trách trong nhóm hiện tại.' });
+    }
+    if (value.description?.length > 2000) errors.push({ field: 'description', message: 'Nhập mô tả tối đa 2000 ký tự.' });
+    if (value.status !== undefined && !['chua-thuc-hien', 'dang-thuc-hien'].includes(value.status)) {
+      errors.push({ field: 'status', message: 'Chọn trạng thái Chưa bắt đầu hoặc Đang thực hiện.' });
+    }
     const date = new Date(`${value.deadline}T00:00:00.000Z`);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value.deadline) || !Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== value.deadline) errors.push({ field: 'deadline', message: 'Chọn hạn hoàn thành là ngày hợp lệ.' });
     return { errors, value };
@@ -72,11 +91,15 @@
       if (!permission.manage) throw new Error('Chỉ nhóm trưởng được thêm hoặc sửa công việc.');
       const checked = validateTask(input, team);
       if (checked.errors.length) throw new Error(checked.errors[0].message);
+      const { status = 'chua-thuc-hien', ...fields } = checked.value;
       if (taskId) {
         const task = state.tasks.find(item => item.id === taskId);
         if (!task) throw new Error('Công việc không còn tồn tại.');
-        Object.assign(task, checked.value);
-      } else state.tasks.push({ ...checked.value, id: newId('CV'), status: 'chua-thuc-hien', percent: 0 });
+        Object.assign(task, fields);
+        delete task.assignees;
+      } else {
+        state.tasks.push({ ...fields, id: newId('CV'), status, percent: status === 'chua-thuc-hien' ? 0 : null });
+      }
     });
   }
 

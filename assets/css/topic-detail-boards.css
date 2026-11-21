@@ -227,6 +227,7 @@
 
 /* Vùng cuộn giãn đến đáy cột; tiêu đề nằm ngoài vùng cuộn. */
 .teacher-workspace-page #progress-section .task-column__list,
+#progress-section.student-progress-view:has(.task-card--interactive) .task-column__list,
 #progress-section .task-column__list:has(> li:nth-child(6)) {
   flex: 1 1 auto;
   block-size: 34rem;
@@ -327,6 +328,46 @@
 #progress-section .task-card { align-content: start; }
 #progress-section .task-card__footer { align-items: center; }
 #progress-section .task-assignees { align-self: center; }
+
+#progress-section .task-card--interactive {
+  position: relative;
+}
+
+.task-card__open {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+}
+
+.task-card__open::after {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--card-radius);
+  content: "";
+}
+
+.task-card__open:focus-visible::after {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+.task-card__completion,
+.progress-overview__note {
+  color: var(--color-muted-foreground);
+  font-size: var(--text-sm);
+}
+
+.task-card__completion {
+  margin: 0;
+}
+
+.progress-overview__note {
+  margin-block-start: var(--space-3);
+}
 
 /* Popover HTML tự nhiên: không che tối trang; Escape/bấm ngoài để đóng.
    Mặc định ở giữa viewport; anchor positioning đặt gần avatar khi được hỗ trợ. */

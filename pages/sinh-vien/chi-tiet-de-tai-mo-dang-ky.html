@@ -6,11 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Thông tin và yêu cầu đăng ký đề tài DT001: Website quản lý thư viện."
+      content="Thông tin và yêu cầu đăng ký đề tài."
     />
-    <title>
-      Chi tiết đề tài DT001 | Quản lý đồ án
-    </title>
+    <title>Chi tiết đề tài mở đăng ký | Quản lý đồ án</title>
     <link rel="stylesheet" href="../../assets/css/tokens.css" />
     <link rel="stylesheet" href="../../assets/css/base.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
@@ -30,6 +28,7 @@
 <script src="../../assets/js/services/registration-service.js" defer></script>
 <script src="../../assets/js/data/student-profile.js" defer></script>
 <script src="../../assets/js/services/profile-service.js" defer></script>
+<script src="../../assets/js/pages/student/open-topic.js" defer></script>
 <script src="../../assets/js/pages/student/topic-enrollment.js" defer></script>
 <link rel="stylesheet" href="../../assets/css/topic-enrollment.css">
 <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css" />
@@ -159,7 +158,9 @@
         <p class="description page-header__description">
           Xem thông tin đề tài và điều kiện trước khi đăng ký.
         </p>
-        <article aria-label="Website quản lý thư viện">
+        <noscript><p>Bật JavaScript để xem thông tin đề tài.</p></noscript>
+        <p data-open-topic-notice role="status" hidden></p>
+        <article data-open-topic aria-labelledby="open-topic-title" hidden>
           <div class="detail-layout">
             <div class="detail-body">
           <div class="overview">
@@ -167,16 +168,14 @@
               <img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" />
             </div>
             <div class="summary">
-              <h2>
-                Website quản lý thư viện
-              </h2>
+              <h2 id="open-topic-title" data-topic-field="title"></h2>
               <dl class="summary__meta">
-                <div><dt>Mã đề tài</dt><dd>DT001</dd></div>
-                <div><dt>Loại đề tài</dt><dd>Đồ án môn học</dd></div>
-                <div><dt>Môn học</dt><dd>IE104 — Internet và Công nghệ Web</dd></div>
-                <div><dt>Hình thức</dt><dd>Cá nhân hoặc theo nhóm</dd></div>
-                <div><dt>Học kỳ</dt><dd>4</dd></div>
-                <div><dt>Năm học</dt><dd>2026 - 2027</dd></div>
+                <div><dt>Mã đề tài</dt><dd data-topic-field="code"></dd></div>
+                <div><dt>Loại đề tài</dt><dd data-topic-field="type"></dd></div>
+                <div><dt>Môn học</dt><dd data-topic-field="course"></dd></div>
+                <div><dt>Hình thức</dt><dd data-topic-field="mode"></dd></div>
+                <div><dt>Học kỳ</dt><dd data-topic-field="semester"></dd></div>
+                <div><dt>Năm học</dt><dd data-topic-field="academicYear"></dd></div>
               </dl>
             </div>
           </div>
@@ -185,69 +184,38 @@
                 <div class="supervisor__profile">
                   <img src="../../assets/images/student-avatar.svg" alt="Ảnh đại diện giảng viên giữ chỗ" width="40" height="40" />
                   <div>
-                    <h4>Nguyễn Văn A</h4>
-                    <p>Học vị: Thạc sĩ</p>
+                    <h4 data-topic-field="lecturer"></h4>
+                    <p data-sample-degree hidden>Học vị: Thạc sĩ</p>
                   </div>
                 </div>
                 <dl>
-                  <div class="supervisor__info-row supervisor__info-row--stacked"><dt>Lĩnh vực chuyên môn</dt><dd>Phát triển ứng dụng web, cơ sở dữ liệu</dd></div>
-                  <div class="supervisor__info-row supervisor__info-row--stacked"><dt>Email</dt><dd>nguyenvana@example.com</dd></div>
+                  <div class="supervisor__info-row supervisor__info-row--stacked"><dt>Lĩnh vực chuyên môn</dt><dd data-topic-field="research"></dd></div>
+                  <div class="supervisor__info-row supervisor__info-row--stacked"><dt>Email</dt><dd data-topic-field="email"></dd></div>
                 </dl>
               </section>
               <section class="panel">
                 <h3>
                   Mô tả đề tài
                 </h3>
-                <div class="content-box">
-                  Xây dựng website quản lý thư viện, tập trung thông tin sách, độc giả và lịch sử mượn trả. Hệ thống hỗ trợ sinh viên tra cứu tài liệu và giúp thủ thư theo dõi việc mượn, trả sách trong thư viện đại học.
-                </div>
+                <div class="content-box" data-topic-field="description"></div>
               </section>
               <section class="panel">
                 <h3>
                   Mục tiêu
                 </h3>
-                <div class="content-box">
-                  <ul>
-                    <li>
-                      Giúp sinh viên tìm kiếm sách và xem tình trạng sẵn có.
-                    </li>
-                    <li>
-                      Hỗ trợ thủ thư quản lý phiếu mượn, trả và sách quá hạn.
-                    </li>
-                    <li>
-                      Vận dụng kiến thức lập trình web và thiết kế cơ sở dữ liệu.
-                    </li>
-                  </ul>
-                </div>
+                <div class="content-box" data-topic-field="objectives"></div>
               </section>
               <section class="panel">
                 <h3>
                   Kết quả dự kiến
                 </h3>
-                <div class="content-box">
-                  <p>Website quản lý thư viện, mã nguồn, cơ sở dữ liệu mẫu, báo cáo và hướng dẫn sử dụng.</p>
-                </div>
+                <div class="content-box" data-topic-field="outcomes"></div>
               </section>
               <section class="panel">
                 <h3>
                   Yêu cầu đối với sinh viên
                 </h3>
-                <div class="content-box">
-                  <ul>
-                    <li>
-                      Nắm kiến thức HTML, CSS, JavaScript và cơ sở dữ liệu SQL.
-                    </li>
-                    <li>
-                      Xây dựng đăng nhập, phân quyền, tra cứu và quản lý sách, độc giả, phiếu mượn trả.
-                    </li>
-                    <li>
-                      Thống kê sách đang mượn và các phiếu quá hạn.
-                    </li>
-                    <li>
-                      Bàn giao website, mã nguồn, dữ liệu mẫu, hướng dẫn cài đặt và báo cáo kiểm thử.
-                    </li>
-                  </ul>
-                </div>
+                <div class="content-box" data-topic-field="requirements"></div>
               </section>
               <section class="panel" aria-labelledby="topic-attachments-title">
                 <h3 id="topic-attachments-title">Tài liệu đính kèm</h3>
@@ -273,7 +241,7 @@
               <h3 id="registration-title">
                 Thông tin đăng ký
               </h3>
-              <form class="registration-form" data-topic-id="DT001">
+              <form class="registration-form">
                 <p class="registration-form__group-size">Đăng ký từ 1 đến 3 thành viên.</p>
                 <div>
                   <label for="group-name">

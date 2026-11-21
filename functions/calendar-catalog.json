@@ -4,7 +4,7 @@
     "topic": "thu-vien",
     "name": "Báo cáo đề cương và kế hoạch thực hiện",
     "due": "2026-10-15T23:59+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-1",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-1",
     "description": "Bản kế hoạch chi tiết các giai đoạn, mục tiêu đồ án và phân công trách nhiệm nhóm."
   },
   {
@@ -12,7 +12,7 @@
     "topic": "thu-vien",
     "name": "Biên bản họp nhóm",
     "due": "2026-10-20T23:59+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-21",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-21",
     "description": "Tài liệu mẫu cho yêu cầu “Biên bản họp nhóm” của nhóm thực hiện đề tài."
   },
   {
@@ -20,7 +20,7 @@
     "topic": "ban-sach",
     "name": "Báo cáo tuần 1",
     "due": "2026-10-20T23:59+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-dang-thuc-hien-da002.html#submission-requirements-2",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA002#submission-requirements-2",
     "description": "Trình bày kết quả thực hiện, chức năng đã hoàn thành và phần việc còn lại.\nĐính kèm báo cáo PDF cùng tài liệu minh họa cần thiết.\nNêu khó khăn, hướng giải quyết và kế hoạch giai đoạn tiếp theo."
   },
   {
@@ -28,7 +28,7 @@
     "topic": "thu-vien",
     "name": "Báo cáo tiến độ giai đoạn 1",
     "due": "2026-10-20T23:59+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-4",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-4",
     "description": "Báo cáo kết quả xây dựng giao diện người dùng và kiểm thử khả năng tương thích."
   },
   {
@@ -36,7 +36,7 @@
     "topic": "thu-vien",
     "name": "Kết quả kiểm thử phiên bản thử nghiệm",
     "due": "2026-10-20T23:59+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-7",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-7",
     "description": "Kết quả kiểm thử và các lỗi cần khắc phục trong phiên bản thử nghiệm."
   },
   {
@@ -44,7 +44,7 @@
     "topic": "thu-vien",
     "name": "Thiết kế cơ sở dữ liệu và kiến trúc hệ thống",
     "due": "2026-10-25T23:59+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-3",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-3",
     "description": "Sơ đồ quan hệ thực thể (ERD), thiết kế bảng dữ liệu và kiến trúc ứng dụng web."
   },
   {
@@ -52,7 +52,7 @@
     "topic": "ban-sach",
     "name": "Báo cáo giữa kỳ",
     "due": "2026-10-25T23:59+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-dang-thuc-hien-da002.html#submission-requirements-3",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA002#submission-requirements-3",
     "description": "Trình bày kết quả thực hiện, chức năng đã hoàn thành và phần việc còn lại.\nĐính kèm báo cáo PDF cùng tài liệu minh họa cần thiết.\nNêu khó khăn, hướng giải quyết và kế hoạch giai đoạn tiếp theo."
   },
   {
@@ -60,7 +60,7 @@
     "topic": "thu-vien",
     "name": "Đặc tả chức năng tìm kiếm",
     "due": "2026-10-25T23:59+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-8",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-8",
     "description": "Tài liệu mẫu cho yêu cầu “Đặc tả chức năng tìm kiếm” của nhóm thực hiện đề tài."
   },
   {
@@ -68,7 +68,7 @@
     "topic": "thu-vien",
     "name": "Thiết kế trang quản lý bạn đọc",
     "due": "2026-10-25T23:59+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-14",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-14",
     "description": "Tài liệu mẫu cho yêu cầu “Thiết kế trang quản lý bạn đọc” của nhóm thực hiện đề tài."
   },
   {
@@ -76,7 +76,7 @@
     "topic": "thu-vien",
     "name": "Đánh giá hiệu năng hệ thống",
     "due": "2026-10-25T23:59+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-15",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-15",
     "description": "Tài liệu mẫu cho yêu cầu “Đánh giá hiệu năng hệ thống” của nhóm thực hiện đề tài."
   },
   {
@@ -84,7 +84,7 @@
     "topic": "thu-vien",
     "name": "Khảo sát quy trình thư viện",
     "due": "2026-10-25T23:59+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-17",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-17",
     "description": "Tài liệu mẫu cho yêu cầu “Khảo sát quy trình thư viện” của nhóm thực hiện đề tài."
   },
   {
@@ -92,7 +92,7 @@
     "topic": "thu-vien",
     "name": "Kiểm thử chức năng mượn trả",
     "due": "2026-10-28T23:59+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-13",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-13",
     "description": "Tài liệu mẫu cho yêu cầu “Kiểm thử chức năng mượn trả” của nhóm thực hiện đề tài."
   },
   {
@@ -100,7 +100,7 @@
     "topic": "thu-vien",
     "name": "Tài liệu đặc tả yêu cầu phần mềm",
     "due": "2026-10-30T17:00+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-2",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-2",
     "description": "Đặc tả yêu cầu phần mềm chi tiết, sơ đồ ca sử dụng và kiến trúc hệ thống quản lý thư viện."
   },
   {
@@ -108,7 +108,7 @@
     "topic": "thu-vien",
     "name": "Báo cáo kết quả thử nghiệm và mã nguồn",
     "due": "2026-10-30T18:00+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-5",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-5",
     "description": "Báo cáo kết quả kiểm thử đơn vị, kiểm thử tích hợp và toàn bộ mã nguồn nguồn hoàn chỉnh."
   },
   {
@@ -116,7 +116,7 @@
     "topic": "thu-vien",
     "name": "Thiết kế giao diện hệ thống",
     "due": "2026-10-30T20:00+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-6",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-6",
     "description": "Bản thiết kế giao diện và mô tả các màn hình chính của hệ thống."
   },
   {
@@ -124,7 +124,7 @@
     "topic": "thu-vien",
     "name": "Báo cáo tổng kết đề tài",
     "due": "2026-10-30T23:59+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-12",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-12",
     "description": "Tài liệu mẫu cho yêu cầu “Báo cáo tổng kết đề tài” của nhóm thực hiện đề tài."
   },
   {
@@ -132,14 +132,14 @@
     "topic": "thu-vien",
     "name": "Website quản lý thư viện",
     "due": "2026-10-31T17:00+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#tong-quan"
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#tong-quan"
   },
   {
     "id": "ban-sach--deadline",
     "topic": "ban-sach",
     "name": "Website bán sách trực tuyến",
     "due": "2026-10-31T18:00+07:00",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-dang-thuc-hien-da002.html#tong-quan"
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA002#tong-quan"
   },
   {
     "id": "he-thong-thu-vien--deadline",
@@ -158,7 +158,7 @@
   {
     "id": "thu-vien--requirement-9",
     "topic": "thu-vien",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-9",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-9",
     "name": "Thiết kế sơ đồ dữ liệu",
     "description": "Tài liệu mẫu cho yêu cầu “Thiết kế sơ đồ dữ liệu” của nhóm thực hiện đề tài.",
     "due": "2026-11-12T23:59+07:00"
@@ -166,7 +166,7 @@
   {
     "id": "thu-vien--requirement-10",
     "topic": "thu-vien",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-10",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-10",
     "name": "Kiểm thử phân quyền người dùng",
     "description": "Tài liệu mẫu cho yêu cầu “Kiểm thử phân quyền người dùng” của nhóm thực hiện đề tài.",
     "due": "2026-11-20T23:59+07:00"
@@ -174,7 +174,7 @@
   {
     "id": "thu-vien--requirement-11",
     "topic": "thu-vien",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-11",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-11",
     "name": "Tài liệu hướng dẫn sử dụng",
     "description": "Tài liệu mẫu cho yêu cầu “Tài liệu hướng dẫn sử dụng” của nhóm thực hiện đề tài.",
     "due": "2026-12-05T23:59+07:00"
@@ -182,7 +182,7 @@
   {
     "id": "thu-vien--requirement-16",
     "topic": "thu-vien",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-16",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-16",
     "name": "Hoàn thiện báo cáo thực nghiệm",
     "description": "Tài liệu mẫu cho yêu cầu “Hoàn thiện báo cáo thực nghiệm” của nhóm thực hiện đề tài.",
     "due": "2026-11-15T23:59+07:00"
@@ -190,7 +190,7 @@
   {
     "id": "thu-vien--requirement-18",
     "topic": "thu-vien",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-18",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-18",
     "name": "Phân tích yêu cầu người dùng",
     "description": "Tài liệu mẫu cho yêu cầu “Phân tích yêu cầu người dùng” của nhóm thực hiện đề tài.",
     "due": "2026-10-14T23:59+07:00"
@@ -198,7 +198,7 @@
   {
     "id": "thu-vien--requirement-19",
     "topic": "thu-vien",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-19",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-19",
     "name": "Thiết kế sơ đồ use case",
     "description": "Tài liệu mẫu cho yêu cầu “Thiết kế sơ đồ use case” của nhóm thực hiện đề tài.",
     "due": "2026-10-16T23:59+07:00"
@@ -206,7 +206,7 @@
   {
     "id": "thu-vien--requirement-20",
     "topic": "thu-vien",
-    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html#submission-requirements-20",
+    "path": "pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html?project=DA001#submission-requirements-20",
     "name": "Kế hoạch phân công công việc",
     "description": "Tài liệu mẫu cho yêu cầu “Kế hoạch phân công công việc” của nhóm thực hiện đề tài.",
     "due": "2026-10-18T23:59+07:00"

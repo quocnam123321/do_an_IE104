@@ -17,6 +17,6 @@
     lecturerName,
     evaluatedAt: '2026-11-15',
     feedback: 'Nhóm triển khai được các chức năng chính và phối hợp tốt. Cần bổ sung kiểm thử các trường hợp biên và hoàn thiện tài liệu sử dụng.',
-    attachment: { name: 'Phieu_danh_gia.pdf' },
+    attachment: { name: 'Phieu_danh_gia.pdf', assetFile: 'phieu-danh-gia-minh-hoa.pdf' },
   }));
 })();

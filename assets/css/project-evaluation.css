@@ -1,4 +1,79 @@
-.active-topic-page #ket-qua-danh-gia .evaluation-content > section[hidden] { display: none; }
-.active-topic-page #ket-qua-danh-gia :is(.lecturer-feedback__content, .evaluation-attachments__name) { white-space: pre-wrap; overflow-wrap: anywhere; }
+#evaluation-section .evaluation-total__score {
+  font-variant-numeric: tabular-nums;
+}
+
+#evaluation-section .evaluation-total__value {
+  color: var(--color-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+}
+
+#evaluation-section .student-evaluation-comment {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+#evaluation-section .evaluation-attachments__item {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--control-radius);
+  background: var(--color-background);
+}
+
+#evaluation-section .evaluation-attachments__file {
+  display: flex;
+  flex: 1 1 10rem;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+#evaluation-section .evaluation-attachments__file svg {
+  color: var(--color-muted-foreground);
+}
+
+#evaluation-section .evaluation-attachments__name {
+  overflow-wrap: anywhere;
+}
+
+#evaluation-section .evaluation-attachments__download {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  margin-inline-start: auto;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--button-secondary-border);
+  border-radius: var(--control-radius);
+  background: var(--button-secondary-bg);
+  color: var(--button-secondary-fg);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+}
+
+#evaluation-section a.evaluation-attachments__download:hover {
+  background: var(--button-secondary-bg-hover);
+}
+
+#evaluation-section .evaluation-attachments__download:disabled {
+  border-color: var(--color-disabled-border);
+  background: var(--color-disabled-bg);
+  color: var(--color-disabled-fg);
+}
+
+#evaluation-section .evaluation-attachments svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 30rem) {
+  #evaluation-section .evaluation-attachments__item {
+    gap: var(--space-2);
+    padding-inline: var(--space-2);
+  }
+}
+
 .active-topic-page #ket-qua-danh-gia .evaluation-attachment-note { color: var(--color-muted-foreground); font-size: var(--font-size-secondary); margin-top: var(--space-2); }
 .active-topic-page .evaluation-preview-note { color: var(--color-muted-foreground); font-size: var(--font-size-secondary); margin-block-end: var(--space-3); }

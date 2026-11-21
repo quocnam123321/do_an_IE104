@@ -3,7 +3,7 @@
   app.services ||= {};
   const clone = value => JSON.parse(JSON.stringify(value));
   const projectIdFor = proposalId => `DT-${proposalId}`;
-  const studentUrl = projectId => `chi-tiet-de-tai-da-duyet-sinh-vien.html?project=${encodeURIComponent(projectId)}`;
+  const studentUrl = projectId => `chi-tiet-de-tai-sinh-vien.html?project=${encodeURIComponent(projectId)}`;
   const lecturerUrl = projectId => `chi-tiet-de-tai-dang-huong-dan-giang-vien.html?project=${encodeURIComponent(projectId)}`;
 
   function definitions() {
@@ -42,6 +42,7 @@
           lecturer: topic.lecturer, lecturerLabel: 'Giảng viên hướng dẫn', roleLabel: 'Hướng dẫn chính',
           lecturerId, createdAt: record.decision?.decidedAt || record.createdAt,
           description: describe(topic.description), objectives: describe(topic.objectives), outcomes: describe(topic.outcomes),
+          requirements: describe(topic.requirements),
           detailUrl: studentUrl(id), requestDetailUrl: `chi-tiet-dang-ky-da-luu.html?registration=${encodeURIComponent(record.id)}`,
         },
         team: { projectId: id, maxMembers: topic.registrationRules?.maxMembers || 3, members: clone(record.members), supervisorIds: lecturerId ? [lecturerId] : [], invitations: [] },

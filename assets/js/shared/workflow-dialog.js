@@ -43,6 +43,12 @@
     const ns = 'http://www.w3.org/2000/svg'; const svg = document.createElementNS(ns, 'svg');
     for (const [key,value] of Object.entries({ viewBox:'0 0 24 24', width:'20', height:'20', fill:'none', stroke:'currentColor', 'stroke-width':'1.7', 'stroke-linecap':'round', 'stroke-linejoin':'round', 'aria-hidden':'true', class:'workflow-state-icon' })) svg.setAttribute(key,value);
     if (kind === 'calendar' || kind === 'file') { const path=document.createElementNS(ns,'path'); path.setAttribute('d',kind==='calendar'?'M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14H3V6a2 2 0 0 1 2-2Z':'M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8M8 17h6'); svg.append(path); return svg; }
+    if (kind === 'list') {
+      const path = document.createElementNS(ns, 'path');
+      path.setAttribute('d', 'M9 6h12M9 12h12M9 18h12M3 6h.01M3 12h.01M3 18h.01');
+      svg.append(path);
+      return svg;
+    }
     const circle = document.createElementNS(ns,'circle'); circle.setAttribute('cx','12'); circle.setAttribute('cy','12'); circle.setAttribute('r','9'); svg.append(circle);
     if (kind !== 'pending') { const path = document.createElementNS(ns,'path'); path.setAttribute('d',kind === 'done' ? 'm8 12 3 3 5-6' : 'M12 7v5l3 2'); svg.append(path); }
     return svg;

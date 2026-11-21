@@ -63,3 +63,41 @@ test('yêu cầu lưu phía giảng viên cập nhật ở bài nộp và lịch
   student.data.currentStudent = { code: '99999999', name: 'Sinh viên khác' };
   assert.throws(() => studentSubmissions.forStudent(projectId), /không thuộc nhóm/);
 });
+
+test('nhãn thời hạn dùng giờ gửi của từng bài và lần gửi gần nhất cho yêu cầu', () => {
+  const student = createTab(new Map());
+  const projectId = 'DA005';
+  const deadline = '2026-11-20T17:00:00+07:00';
+  const requirement = { id: 'req', title: 'Báo cáo', content: '', deadline, locked: false };
+  const file = { title: 'Báo cáo', fileName: 'Bao_cao.pdf', feedback: '', feedbackHistory: [] };
+  student.storage.writeTeachingRecords([{
+    projectId,
+    revision: 0,
+    submissionsLocked: false,
+    requirements: [requirement, { ...requirement, id: 'pending' }, { ...requirement, id: 'legacy', sourceStage: 'submitted' }],
+    submissions: [
+      { ...file, id: 'late', requirementId: 'req', fileName: 'Bao_cao_cap_nhat.pdf', submittedAt: '2026-11-20T10:00:01Z', feedback: 'Đã xem' },
+      { ...file, id: 'exact', requirementId: 'req', submittedAt: '2026-11-20T10:00:00Z' },
+      { ...file, id: 'early', requirementId: 'req', submittedAt: '2026-11-20T09:59:59Z' },
+      { ...file, id: 'unlinked', requirementId: null, submittedAt: '2026-11-21T10:00:00Z' },
+    ],
+    progressReviews: [],
+    draft: null,
+    publishedEvaluation: null,
+    audit: [],
+  }]);
+
+  const state = student.services.studentSubmissions.forStudent(projectId, new Date('2026-11-22T00:00:00Z'));
+  assert.deepEqual(Array.from(state.submissions, item => item.late), [true, false, false, null]);
+  const requirements = new Map(Array.from(state.requirements, item => [item.id, item]));
+  assert.equal(requirements.get('req').late, true);
+  assert.equal(requirements.get('req').submitted, true);
+  assert.equal(requirements.get('req').latestSubmission.fileName, 'Bao_cao_cap_nhat.pdf');
+  assert.equal(requirements.get('req').latestSubmission.submittedAt, '2026-11-20T10:00:01Z');
+  assert.equal(requirements.get('pending').overdue, true);
+  assert.equal(requirements.get('pending').submitted, false);
+  assert.equal(requirements.get('pending').late, null);
+  assert.equal(requirements.get('legacy').submitted, true);
+  assert.equal(requirements.get('legacy').late, null);
+  assert.equal(requirements.get('legacy').latestSubmission, null);
+});

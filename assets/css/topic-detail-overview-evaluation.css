@@ -352,7 +352,7 @@
   min-width: 0;
 }
 
-#evaluation-section :is(.evaluation-info, .evaluation-criteria, .evaluation-total, .evaluation-comment) {
+#evaluation-section :is(.evaluation-info, .evaluation-criteria, .evaluation-total, .evaluation-comment, .evaluation-attachments) {
   min-width: 0;
   padding: var(--space-6);
   border: 1px solid var(--color-border);
@@ -368,7 +368,7 @@
   line-height: var(--leading-snug);
 }
 
-#evaluation-section :is(.evaluation-info, .evaluation-total, .evaluation-comment) > h3 {
+#evaluation-section :is(.evaluation-info, .evaluation-total, .evaluation-comment, .evaluation-attachments) > h3 {
   padding-bottom: var(--space-4);
   border-bottom: 1px solid var(--color-border);
 }
@@ -533,7 +533,7 @@
 #evaluation-section .evaluation-form__publish:active { background-color: var(--color-primary-active); }
 
 @media (max-width: 47.99rem) {
-  #evaluation-section :is(.evaluation-info, .evaluation-criteria, .evaluation-total, .evaluation-comment) {
+  #evaluation-section :is(.evaluation-info, .evaluation-criteria, .evaluation-total, .evaluation-comment, .evaluation-attachments) {
     padding: var(--space-4);
   }
 

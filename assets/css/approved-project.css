@@ -1,7 +1,0 @@
-.approved-project-page [data-approved-content][hidden] { display: none !important; }
-.approved-project-page .project-summary__meta dd { overflow-wrap: anywhere; }
-.approved-project-page .project-description__text,
-.approved-project-page .project-objectives__text,
-.approved-project-page .project-outcomes__text { white-space: pre-wrap; }
-.approved-project-page [data-approved-notice] { color: var(--color-text); }
-.approved-project-page .project-overview-layout__main { align-self: start; grid-template-rows: repeat(3, auto); }

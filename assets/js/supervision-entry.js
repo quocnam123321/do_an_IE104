@@ -45,24 +45,48 @@
     if (!hasStudentSession()) throw new Error('Phiên sinh viên mẫu chưa khả dụng.');
   }
 
-  async function getTeacher(id) {
-    validateTeacherId(id);
-    let source = document;
-    if (location.pathname !== directory.pathname) {
-      if (location.protocol === 'file:') {
-        throw new Error('Mở website qua HTTP, chẳng hạn Live Server, để tải danh sách giảng viên.');
-      }
-      try {
-        const response = await fetch(directory.href, { mode: 'same-origin' });
-        if (!response.ok) throw new Error('Không đọc được trang hướng nghiên cứu.');
-        const markup = document.createElement('template');
-        markup.innerHTML = await response.text();
-        source = markup.content;
-      } catch {
-        throw new Error('Không tải được danh sách giảng viên. Vui lòng tải lại trang để thử lại.');
-      }
+  let directoryRequest;
+
+  async function getDirectory() {
+    if (location.pathname === directory.pathname) return document;
+    if (location.protocol === 'file:') {
+      throw new Error('Mở website qua HTTP, chẳng hạn Live Server, để tải danh sách giảng viên.');
     }
 
+    directoryRequest ||= fetch(directory.href, { mode: 'same-origin' }).then(async response => {
+      if (!response.ok) throw new Error();
+      const markup = document.createElement('template');
+      markup.innerHTML = await response.text();
+      return markup.content;
+    }).catch(() => {
+      directoryRequest = undefined;
+      throw new Error('Không tải được danh sách giảng viên. Vui lòng thử lại.');
+    });
+    return directoryRequest;
+  }
+
+  async function getTeachers() {
+    const source = await getDirectory();
+    const teachers = Array.from(source.querySelectorAll('.research-card[id]'), card => {
+      const affiliations = Array.from(card.querySelectorAll('.research-affiliations > div'));
+      const department = affiliations.find(row => row.querySelector('dt')?.textContent.trim() === 'Bộ môn');
+      return {
+        id: card.id,
+        name: card.querySelector('h2')?.textContent.trim(),
+        department: department?.querySelector('dd')?.textContent.trim() || '',
+        email: card.querySelector('.research-email span')?.textContent.trim() || '',
+      };
+    }).filter(teacher => teacher.name && teacherIdPattern.test(teacher.id));
+    if (!teachers.length) {
+      directoryRequest = undefined;
+      throw new Error('Trang Hướng nghiên cứu chưa có danh sách giảng viên.');
+    }
+    return teachers;
+  }
+
+  async function getTeacher(id) {
+    validateTeacherId(id);
+    const source = await getDirectory();
     const card = source.getElementById(id);
     const name = card?.matches('.research-card') && card.querySelector('h2')?.textContent.trim();
     if (!name) {
@@ -72,6 +96,6 @@
   }
 
   window.IE104SupervisionEntry = Object.freeze({
-    getComposeUrl, getLoginUrl, getInboxLoginUrl, hasStudentSession, startStudentSession, getTeacher,
+    getComposeUrl, getLoginUrl, getInboxLoginUrl, hasStudentSession, startStudentSession, getTeacher, getTeachers,
   });
 })();

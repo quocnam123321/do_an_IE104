@@ -1,3 +1,15 @@
+.student-topic-detail-page [data-project-content][hidden] {
+  display: none !important;
+}
+
+.student-topic-detail-page .project-description__text {
+  white-space: pre-wrap;
+}
+
+.student-topic-detail-page [data-project-notice] {
+  color: var(--color-text);
+}
+
 /* Điều chỉnh phạm vi sinh viên khi dùng bảng chi tiết chung với giảng viên. */
 #progress-section.student-progress-view {
   min-width: 0;
@@ -25,79 +37,44 @@
   gap: var(--space-2);
 }
 
-#progress-section .progress-overview__review {
-  border-color: var(--button-primary-bg);
-  background: var(--button-primary-bg);
-  color: var(--button-primary-fg);
-  font-size: var(--text-base);
-}
-
-#progress-section .progress-overview__review:hover {
-  border-color: var(--button-primary-bg-hover);
-  background: var(--button-primary-bg-hover);
-}
-
 #progress-section :is(.progress-overview__title, .progress-tasks__title),
 #submissions-section :is(.requirements__title, .submissions__title) {
   font-size: var(--text-xl);
   font-weight: var(--weight-bold);
 }
 
-#progress-section .task-column__title,
 #submissions-section .task-column__title {
   font-size: var(--text-base);
   margin-bottom: var(--space-3);
 }
 
-#progress-section .task-card {
-  min-height: 0;
-  font-size: var(--text-base);
-  align-items: normal;
-  justify-content: normal;
+#progress-section .task-card--interactive :is(.task-assignee, .student-task-remove) {
+  position: relative;
+  z-index: 1;
 }
 
-#progress-section .task-card__title {
-  font-size: var(--text-base);
+#progress-section .task-card--interactive:has(.task-card__open:hover) {
+  border-color: var(--color-primary);
 }
 
-#progress-section .task-card__deadline {
-  margin: 0;
-  color: var(--color-muted-foreground);
-}
-
-#progress-section .task-card--overdue .task-card__deadline {
+#progress-section .student-task-remove {
+  min-width: var(--control-min-height);
+  min-height: var(--control-min-height);
+  padding: 0;
+  border: 1px solid var(--color-danger-fg);
+  border-radius: var(--control-radius);
+  background-color: var(--color-surface);
   color: var(--color-danger-fg);
 }
 
-#progress-section .task-assignee {
-  display: inline-grid;
-  min-width: var(--control-min-height);
-  width: var(--control-min-height);
-  height: var(--control-min-height);
-  padding: 0;
-  border: 0;
-  border-radius: var(--radius-full);
-  background: transparent;
-}
-
-#progress-section .task-assignee:hover {
-  background: transparent;
-}
-
-#tien-do .progress-member-popover__close {
-  display: grid;
-  padding: 0;
-  border: 0;
-  background: transparent;
+#progress-section .task-column__empty {
   color: var(--color-muted-foreground);
+  font-size: var(--text-sm);
+  padding: var(--space-2);
 }
 
-#tien-do .progress-member-popover__close:hover {
-  background: var(--color-neutral-bg);
-}
-
-#progress-section .task-assignee--more {
-  display: none;
+#progress-section .progress-member-popover__info {
+  overflow-wrap: anywhere;
 }
 
 #submissions-section .requirement-board-card__open {
@@ -122,19 +99,280 @@
   color: var(--color-danger-fg);
 }
 
-#tien-do .student-task-members {
-  display: grid;
-  gap: var(--space-2);
-  min-width: 0;
-  padding: var(--space-3);
-  border: 1px solid var(--color-border);
-  border-radius: var(--control-radius);
+.active-topic-page .workflow-dialog.task-detail-dialog {
+  width: min(46rem, calc(100% - 2rem));
+  overscroll-behavior: contain;
 }
 
-#tien-do .student-task-members legend {
-  padding-inline: var(--space-1);
+.active-topic-page .task-detail-dialog > header {
+  align-items: flex-start;
+}
+
+.active-topic-page .task-detail-dialog h2 {
+  align-self: center;
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+  overflow-wrap: anywhere;
+}
+
+.active-topic-page .task-detail-dialog .workflow-dialog__close {
+  flex: 0 0 var(--control-min-height);
+  padding: 0;
+  border-color: transparent;
+}
+
+.active-topic-page .task-detail-dialog .workflow-dialog__close:hover {
+  background: var(--color-neutral-bg);
+}
+
+.active-topic-page .workflow-dialog.task-detail-dialog > footer {
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid var(--color-border);
+}
+
+.active-topic-page :is(.task-detail-dialog, .task-saved-dialog, .submission-saved-dialog) .workflow-dialog__primary {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.active-topic-page :is(.task-detail-dialog, .task-saved-dialog, .submission-saved-dialog) .workflow-dialog__primary:hover {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.task-detail-dialog__summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-6);
+  margin: 0;
+}
+
+.active-topic-page .task-detail-dialog__summary dd {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+.task-detail-dialog__status {
+  display: inline-block;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-control);
   font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
+  line-height: var(--leading-normal);
+  background: var(--task-not-started-badge-bg);
+  color: var(--task-not-started-badge-fg);
+}
+
+.task-detail-dialog__status[data-status="dang-thuc-hien"] {
+  background: var(--task-in-progress-badge-bg);
+  color: var(--task-in-progress-badge-fg);
+}
+
+.task-detail-dialog__status[data-status="da-hoan-thanh"] {
+  background: var(--task-done-badge-bg);
+  color: var(--task-done-badge-fg);
+}
+
+.task-detail-dialog__deadline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.task-detail-dialog__calendar {
+  flex: 0 0 auto;
+  color: var(--color-muted-foreground);
+}
+
+.task-detail-dialog__description {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.task-detail-dialog__description h3 {
+  margin: 0 0 var(--space-1);
+}
+
+.task-detail-dialog__description p {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 38rem) {
+  .active-topic-page .workflow-dialog.task-detail-dialog > :is(header, .workflow-dialog__body, footer) {
+    padding: var(--space-4);
+  }
+
+  .task-detail-dialog__summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: var(--space-3);
+  }
+
+  .task-detail-dialog__summary > :first-child {
+    grid-column: 1 / -1;
+  }
+}
+
+.active-topic-page .workflow-dialog:is(.task-saved-dialog, .submission-saved-dialog) {
+  width: min(28rem, calc(100% - 2rem));
+  text-align: center;
+}
+
+:is(.task-saved-dialog__body, .submission-saved-dialog__body) {
+  display: grid;
+  justify-items: center;
+  padding: var(--space-6);
+}
+
+:is(.task-saved-dialog__icon, .submission-saved-dialog__icon) {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: var(--space-4);
+  border-radius: 50%;
+  background: var(--green-100);
+  color: var(--color-success-fg);
+}
+
+.active-topic-page :is(.task-saved-dialog, .submission-saved-dialog) h2 {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+}
+
+.active-topic-page .task-saved-dialog p {
+  margin: var(--space-2) 0 var(--space-5);
+  color: var(--color-muted-foreground);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+}
+
+.active-topic-page :is(.task-saved-dialog, .submission-saved-dialog) .workflow-dialog__primary {
+  min-width: 7rem;
+}
+
+.submission-saved-dialog__body > .workflow-dialog__primary {
+  margin-block-start: var(--space-5);
+}
+
+.active-topic-page #tien-do .task-editor {
+  width: min(42rem, calc(100% - 2rem));
+  padding: 0;
+}
+
+#tien-do .task-editor .popover-header {
+  padding: var(--space-4) var(--space-6);
+  margin: 0;
+}
+
+#tien-do .task-editor h3 {
+  font-size: var(--text-xl);
+}
+
+#tien-do .task-editor .btn-close-popover {
+  display: grid;
+  place-items: center;
+  width: var(--control-min-height);
+  padding: 0;
+  border-color: transparent;
+  font-size: var(--text-xl);
+}
+
+#tien-do .task-editor .btn-close-popover:hover {
+  background-color: var(--color-neutral-bg);
+}
+
+#tien-do .task-editor form {
+  gap: 0;
+}
+
+#tien-do .task-editor__body {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-6);
+}
+
+#tien-do .task-editor__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--space-4);
+}
+
+#tien-do .task-editor :is(.task-editor__label, .form-group > label, .task-editor__status legend) {
+  margin: 0;
+  color: var(--color-heading);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+#tien-do .task-editor__required {
+  color: var(--color-danger-fg);
+}
+
+#tien-do .task-editor__preview-note,
+#tien-do .task-editor__empty-assignees {
+  margin: 0;
+  padding: 8px 12px;
+}
+
+#tien-do .task-editor__preview-note {
+  border-radius: var(--radius-control);
+  background: var(--color-info-bg);
+  color: var(--color-info-fg);
+}
+
+#tien-do .task-editor__picker summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--control-radius);
+  background-color: var(--color-surface);
+  cursor: pointer;
+  list-style: none;
+}
+
+#tien-do .task-editor__picker summary::-webkit-details-marker {
+  display: none;
+}
+
+#tien-do .task-editor__picker summary:hover {
+  background-color: var(--color-background);
+}
+
+#tien-do .task-editor__picker summary > svg {
+  flex: 0 0 1rem;
+  width: 1rem;
+  height: 1rem;
+}
+
+#tien-do .task-editor__picker[open] summary {
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+}
+
+#tien-do .task-editor__picker[open] summary > svg {
+  transform: rotate(180deg);
+}
+
+#tien-do .student-task-members {
+  min-inline-size: 0;
+  max-block-size: min(14rem, 40svh);
+  margin: 0;
+  padding: var(--space-1) var(--space-3);
+  overflow-y: auto;
+  border: 1px solid var(--color-control-border);
+  border-block-start: 0;
+  border-end-start-radius: var(--control-radius);
+  border-end-end-radius: var(--control-radius);
 }
 
 #tien-do .student-task-members label {
@@ -144,6 +382,7 @@
   min-height: var(--control-min-height);
   margin: 0;
   overflow-wrap: anywhere;
+  cursor: pointer;
 }
 
 #tien-do .student-task-members input[type="checkbox"] {
@@ -153,6 +392,92 @@
   min-height: 0;
   padding: 0;
   accent-color: var(--color-primary);
+}
+
+#tien-do .task-editor__status-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-block-start: var(--space-2);
+}
+
+#tien-do .task-editor__status-options label {
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+}
+
+#tien-do .task-editor__status-options input {
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+}
+
+#tien-do .task-editor__status-options label > span {
+  display: grid;
+  place-items: center;
+  min-height: var(--control-min-height);
+  padding: var(--space-2);
+  border: 1px solid var(--color-control-border);
+  text-align: center;
+  font-weight: var(--weight-semibold);
+}
+
+#tien-do .task-editor__status-options label:first-child > span {
+  border-start-start-radius: var(--control-radius);
+  border-end-start-radius: var(--control-radius);
+}
+
+#tien-do .task-editor__status-options label:last-child > span {
+  margin-inline-start: -1px;
+  border-start-end-radius: var(--control-radius);
+  border-end-end-radius: var(--control-radius);
+}
+
+#tien-do .task-editor__status-options input:checked + span {
+  position: relative;
+  z-index: 1;
+  border-color: var(--color-primary);
+  background-color: var(--color-info-bg);
+  color: var(--color-info-fg);
+}
+
+#tien-do .task-editor__status-options input:focus-visible + span {
+  position: relative;
+  z-index: 2;
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+#tien-do .task-editor :is(input, textarea, summary)[aria-invalid="true"] {
+  border-color: var(--color-danger-fg);
+}
+
+#tien-do .task-editor .popover-actions {
+  margin: 0;
+  padding: var(--space-4) var(--space-6);
+}
+
+#tien-do .task-editor button[type="submit"]:not(:disabled) {
+  border-color: var(--color-primary);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+#tien-do .task-editor button[type="submit"]:not(:disabled):hover {
+  border-color: var(--color-primary-hover);
+  background-color: var(--color-primary-hover);
+}
+
+@media (max-width: 35rem) {
+  #tien-do .task-editor__row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #tien-do .task-editor :is(.popover-header, .task-editor__body, .popover-actions) {
+    padding-inline: var(--space-4);
+  }
 }
 
 #submissions-section .student-submission-awaiting {
@@ -171,18 +496,6 @@
   min-width: 0;
 }
 
-#overview-section .topic-overview-card > h2 {
-  margin-block: 0 var(--space-4);
-}
-
-#overview-section .topic-team > h2 {
-  margin-bottom: var(--space-3);
-}
-
-#overview-section .topic-summary__status {
-  color: var(--color-info-fg);
-}
-
 #overview-section .topic-summary__status--completed {
   color: var(--color-success-fg);
   background: var(--color-success-bg);
@@ -197,10 +510,38 @@
   object-fit: contain;
 }
 
-#overview-section .topic-team__group-name {
-  margin-top: 0;
-  font-size: var(--text-base);
-  font-weight: var(--weight-bold);
+#overview-section .project-team__note {
+  display: grid;
+  grid-template-columns: 1.125rem minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--amber-200);
+  border-radius: var(--radius-control);
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning-fg);
+  font-size: var(--font-size-secondary);
+  line-height: 1.5;
+}
+
+#overview-section .project-team__note > svg {
+  width: 100%;
+  height: auto;
+  margin-block-start: 0.09375rem;
+}
+
+#overview-section .project-team :is([data-team-notice], [data-team-result]) {
+  margin-block-start: var(--space-3);
+}
+
+#overview-section .project-team [data-team-notice]:empty {
+  margin: 0;
+  padding: 0;
+}
+
+#overview-section :is(.topic-description > p, .topic-bullet-list > li) {
+  overflow-wrap: anywhere;
 }
 
 #overview-section .topic-overview-card:has(> .student-overview-actions) {
@@ -227,46 +568,45 @@
 }
 
 /* Sinh viên xem đánh giá đã công bố; các giá trị chưa công bố chỉ là văn bản. */
-#evaluation-section :is(.evaluation-total__field, .evaluation-comment__field) {
-  margin: 0;
-}
-
 #evaluation-section .student-evaluation-unpublished {
-  color: var(--color-muted-foreground);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-info-border);
+  border-radius: var(--control-radius);
+  background: var(--color-info-bg);
+  color: var(--color-foreground);
   font-size: var(--text-sm);
 }
 
-#evaluation-section .evaluation-info__status--published {
+#evaluation-section .student-evaluation-unpublished svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-top: 0.125rem;
+  color: var(--color-info-fg);
+}
+
+#evaluation-section .student-evaluation-unpublished__title {
+  margin-bottom: var(--space-1);
+  color: var(--color-info-fg);
+  font-weight: var(--weight-semibold);
+}
+
+#evaluation-section .evaluation-info__status[data-evaluation-unpublished] {
+  background: var(--amber-100);
+}
+
+#evaluation-section .evaluation-info__status--success {
   color: var(--color-success-fg);
   background: var(--color-success-bg);
 }
 
-#evaluation-section .evaluation-criteria__table--published th:nth-child(1) { width: 24%; }
-#evaluation-section .evaluation-criteria__table--published th:nth-child(2) { width: 14%; }
-#evaluation-section .evaluation-criteria__table--published th:nth-child(3) { width: 14%; }
-#evaluation-section .evaluation-criteria__table--published th:nth-child(4) { width: 48%; }
-
-#evaluation-section .evaluation-criteria__table--published :is(th, td):nth-child(2) {
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-}
-
-#evaluation-section .evaluation-criteria__table--published :is(th, td):nth-child(4) {
-  text-align: left;
-}
-
-#evaluation-section .student-evaluation-comment {
-  min-width: 0;
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--control-radius);
-  background: var(--color-neutral-bg);
-  color: var(--color-foreground);
+#evaluation-section .evaluation-criteria__table--published tbody :is(th, td):nth-child(-n + 2),
+#evaluation-section [data-evaluation-result] {
   overflow-wrap: anywhere;
-}
-
-#evaluation-section .evaluation-attachments {
-  padding: var(--space-6);
 }
 
 @media (max-width: 63.99rem) {
@@ -280,23 +620,11 @@
   #submissions-section .submissions {
     padding: var(--space-4);
   }
-
-  #evaluation-section .evaluation-attachments {
-    padding: var(--space-4);
-  }
 }
 
 @media (max-width: 29.99rem) {
   #overview-section .topic-overview-card:has(> .student-overview-actions) {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  #progress-section .task-assignee--third {
-    display: none;
-  }
-
-  #progress-section .task-assignee--more {
-    display: inline-grid;
   }
 }
 
@@ -308,42 +636,13 @@
   overflow-wrap: anywhere;
 }
 
-.active-topic-page :is(.project-supervisors, .project-team) h2,
-#overview-section .topic-overview-card > h2 {
+.active-topic-page :is(.project-supervisors, .project-team) h2 {
   font-size: var(--text-xl);
   font-weight: var(--weight-bold);
 }
 
-#overview-section :is(.project-objectives__text, .project-outcomes__text) {
-  max-width: 72ch;
-  line-height: 1.65;
-  overflow-wrap: anywhere;
-}
-
-#overview-section .project-team__name {
-  margin-block: var(--space-3);
-}
-
 #overview-section .topic-milestones__list {
   padding: 0;
-}
-
-#progress-section .progress-overview__title {
-  margin-bottom: var(--space-4);
-}
-
-#progress-section .progress-overview__bar {
-  flex-basis: min(14rem, 100%);
-}
-
-#progress-section .student-progress-summary {
-  margin-top: var(--space-3);
-  font-size: var(--text-sm);
-  color: var(--color-muted-foreground);
-}
-
-#progress-section .progress-tasks__title {
-  margin: 0;
 }
 
 #progress-section .task-list.task-board__columns {
@@ -352,46 +651,6 @@
   padding: 0;
   overflow: visible;
   scrollbar-gutter: auto;
-}
-
-#progress-section .task-column__list {
-  max-block-size: min(34rem, 65svh);
-}
-
-#progress-section .task-card:has(.student-task-open) {
-  padding: 0;
-  gap: 0;
-}
-
-#progress-section .task-card__actions:empty {
-  display: none;
-}
-
-#progress-section .task-card__content {
-  display: grid;
-  gap: var(--space-1);
-}
-
-#progress-section .task-card__content p {
-  margin: 0;
-  font-size: var(--text-sm);
-}
-
-#progress-section .task-card__title {
-  margin-bottom: var(--space-1);
-}
-
-#progress-section .student-task-assignees {
-  color: var(--color-foreground);
-}
-
-#evaluation-section .student-evaluation-unpublished {
-  margin-top: var(--space-3);
-}
-
-#evaluation-section .evaluation-total :is(.evaluation-summary__score, .evaluation-summary__result) {
-  font-size: var(--text-base);
-  color: var(--color-foreground);
 }
 
 #submissions-section .submission-board__columns--requirements {
@@ -412,6 +671,19 @@
   cursor: pointer;
 }
 
+#submissions-section .student-submission-heading {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  width: calc(100% - 1.25rem);
+  vertical-align: top;
+}
+
+#submissions-section .student-submission-heading .submission-board-card__title {
+  flex-basis: 9rem;
+}
+
 #submissions-section .student-submission-status {
   display: block;
   margin-top: var(--space-1);
@@ -419,6 +691,456 @@
   font-size: var(--text-sm);
 }
 
+#submissions-section .submission-board__badge--late {
+  background: var(--sub-late-bg);
+  color: var(--sub-late-badge-fg);
+  box-shadow: inset 0 0 0 1px var(--sub-late-border);
+}
+
+#submissions-section a.submission-board-card__download {
+  text-decoration: none;
+}
+
+#submissions-section .submission-board-card__download:not(:disabled):hover {
+  background-color: var(--button-secondary-bg-hover);
+}
+
+#submissions-section .submission-file-toggle {
+  display: inline-grid;
+  place-items: center;
+  align-self: center;
+  flex: 0 0 auto;
+  min-height: var(--control-min-height);
+  /* Keep the full hit area while contributing only one text line to the row. */
+  margin-block: min(0px, calc((1lh - var(--control-min-height)) / 2));
+  padding: 0;
+  border: 0;
+  color: var(--color-foreground);
+  background: transparent;
+}
+
+.submission-file-toggle__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: .125rem var(--space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  white-space: nowrap;
+}
+
+#submissions-section .submission-file-toggle:focus-visible {
+  outline: none;
+}
+
+.submission-file-toggle:focus-visible .submission-file-toggle__label {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.submission-file-toggle[aria-expanded="true"] .submission-file-toggle__label {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-info-bg);
+}
+
+.submission-file-toggle__chevron {
+  width: .42rem;
+  height: .42rem;
+  margin-block-start: -.2rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.submission-file-toggle[aria-expanded="true"] .submission-file-toggle__chevron {
+  margin-block-start: .16rem;
+  transform: rotate(225deg);
+}
+
+.submission-file-popup {
+  position: fixed;
+  inset: auto;
+  width: min(17.5rem, calc(100% - 24px));
+  max-height: var(--submission-file-popup-height, none);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-floating);
+  color: var(--color-foreground);
+}
+
+.submission-file-popup:popover-open {
+  display: flex;
+  flex-direction: column;
+}
+
+.submission-file-popup > p {
+  flex-shrink: 0;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.submission-file-names {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.submission-file-names li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  padding-inline: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.submission-file-names .workflow-state-icon {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+}
+
+.submission-file-popup .submission-file-names {
+  --submission-file-row-height: 2.25rem;
+  min-height: 0;
+  max-height: calc(2 * var(--submission-file-row-height));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.submission-file-popup .submission-file-names::-webkit-scrollbar {
+  width: 6px;
+}
+
+.submission-file-popup .submission-file-names::-webkit-scrollbar-track {
+  background: var(--color-neutral-bg);
+}
+
+.submission-file-popup .submission-file-names::-webkit-scrollbar-thumb {
+  background: var(--color-control-border);
+  border-radius: var(--radius-control);
+}
+
+.submission-file-popup .submission-file-names:focus-visible {
+  outline-offset: -2px;
+}
+
+.submission-file-popup li {
+  height: var(--submission-file-row-height);
+}
+
+.submission-file-popup li > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.active-topic-page .submission-requirement-dialog h2 {
+  font-size: var(--text-xl);
+}
+
+.submission-requirement-dialog .submission-dialog__body > dl > dd {
+  font-weight: var(--weight-bold);
+}
+
+#bai-nop .submission-dialog__close {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 var(--control-min-height);
+  width: var(--control-min-height);
+  height: var(--control-min-height);
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+#bai-nop .submission-dialog__close:enabled:hover {
+  background: var(--color-neutral-bg);
+}
+
+.submission-dialog__close svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.submission-dialog__attachment {
+  margin-top: var(--space-4);
+}
+
+.submission-dialog__attachment-heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.active-topic-page dialog .submission-dialog__download-all {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-control);
+  color: var(--color-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+}
+
+.active-topic-page dialog .submission-dialog__download-all:not(:disabled):hover {
+  background: var(--color-info-bg);
+}
+
+.submission-dialog__attachment .submission-board__icon {
+  margin-top: 0;
+}
+
+.submission-dialog__files {
+  --submission-dialog-file-row-height: calc(var(--control-min-height) + 2 * var(--space-2));
+  max-height: calc(4 * var(--submission-dialog-file-row-height) + 2px);
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-control-border) var(--color-neutral-bg);
+  list-style: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+}
+
+.submission-dialog__files:focus-visible {
+  outline-offset: 2px;
+}
+
+.submission-dialog__file {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--submission-dialog-file-row-height);
+  padding: var(--space-2) var(--space-3);
+}
+
+.submission-dialog__file + .submission-dialog__file {
+  box-shadow: inset 0 1px var(--color-border);
+}
+
+.submission-dialog__file .submission-board-card__download {
+  white-space: nowrap;
+}
+
+.submission-dialog__filename {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.submission-dialog__file-info {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  min-width: 0;
+  line-height: var(--leading-snug);
+}
+
+.submission-dialog__file-info [data-submission-filename] {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.submission-dialog__file-size {
+  flex-shrink: 0;
+  color: var(--color-muted-foreground);
+  white-space: nowrap;
+}
+
+.submission-dialog__file-size::before {
+  content: "· ";
+}
+
+@media (max-width: 30rem) {
+  .submission-dialog__file-info {
+    display: grid;
+    gap: 0;
+  }
+
+  .submission-dialog__file-size::before {
+    content: none;
+  }
+}
+
+.submission-dialog .submission-dialog__submit:enabled {
+  background-color: var(--button-primary-bg);
+  border-color: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+}
+
+.submission-dialog .submission-dialog__submit:enabled:hover {
+  background-color: var(--button-primary-bg-hover);
+  border-color: var(--button-primary-bg-hover);
+}
+
+.submission-dialog .submission-dialog__submit:enabled:active {
+  background-color: var(--button-primary-bg-active);
+  border-color: var(--button-primary-bg-active);
+}
+
 #submissions-section .student-submission-content {
   white-space: pre-wrap;
+}
+
+#bai-nop .submission-upload-dialog > header {
+  align-items: start;
+}
+
+#bai-nop .submission-upload-dialog[data-update] [data-upload-cancel]:enabled {
+  border-color: var(--button-outline-primary-border);
+  background: var(--button-outline-primary-bg);
+  color: var(--button-outline-primary-fg);
+}
+
+#bai-nop .submission-upload-dialog[data-update] [data-upload-cancel]:enabled:hover {
+  background: var(--button-outline-primary-bg-hover);
+}
+
+#bai-nop .submission-upload-dialog h2 {
+  align-self: center;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: var(--text-xl);
+}
+
+.submission-upload__attachments {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+#bai-nop .submission-upload__label {
+  font-weight: var(--weight-semibold);
+}
+
+.submission-upload__required {
+  color: var(--color-danger-fg);
+}
+
+#bai-nop .submission-upload__picker {
+  grid-column: 1 / -1;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface);
+  text-align: start;
+}
+
+.submission-upload__empty,
+.submission-upload__scope {
+  color: var(--color-muted-foreground);
+}
+
+.submission-upload__choose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--button-outline-primary-border);
+  border-radius: var(--radius-control);
+  background: var(--button-outline-primary-bg);
+  color: var(--button-outline-primary-fg);
+  font-weight: var(--weight-medium);
+}
+
+#bai-nop .submission-upload__picker:hover .submission-upload__choose {
+  background: var(--button-outline-primary-bg-hover);
+}
+
+#bai-nop .submission-upload__attachments[data-has-files] .submission-upload__picker {
+  grid-column: 2;
+  grid-row: 1;
+  padding: 0;
+  border: 0;
+}
+
+.submission-upload__files {
+  grid-column: 1 / -1;
+  max-height: 13rem;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  list-style: none;
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+}
+
+.submission-upload__file {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2);
+  padding-inline: var(--space-3);
+  overflow-wrap: anywhere;
+}
+
+.submission-upload__file + .submission-upload__file {
+  border-top: 1px solid var(--color-border);
+}
+
+#bai-nop .submission-upload__remove {
+  min-width: var(--control-min-height);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-danger-fg);
+}
+
+#bai-nop .submission-upload__remove:hover {
+  background: var(--color-danger-bg);
+}
+
+#bai-nop .submission-upload__notes {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.submission-upload__error {
+  color: var(--color-danger-fg);
+}
+
+#bai-nop .submission-upload__form .submission-dialog__actions {
+  margin-top: 0;
+}
+
+@media (max-width: 24rem) {
+  #bai-nop .submission-upload-dialog {
+    padding: var(--space-4);
+  }
+
+  #bai-nop .submission-upload__picker {
+    flex-wrap: wrap;
+  }
+
+  #bai-nop .submission-upload__choose {
+    padding-inline: var(--space-2);
+  }
 }

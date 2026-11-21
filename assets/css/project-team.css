@@ -1,7 +1,156 @@
 .active-topic-page [data-team-notice], .active-topic-page [data-team-result] { margin: 0; padding: var(--space-3); border-radius: var(--radius-control); background: var(--color-info-bg); color: var(--color-info-fg); font-size: var(--font-size-secondary); overflow-wrap: anywhere; }
 .active-topic-page .team-error { color: var(--color-danger-fg); font-size: var(--font-size-secondary); }
 .active-topic-page #add-team-member-form [aria-invalid="true"] { border-color: var(--color-danger-fg); }
-.active-topic-page .supervisor-search-results[hidden] { display: none; }
-.active-topic-page .supervisor-search-results__option { width: 100%; text-align: left; }
 .active-topic-page :is(#add-team-member-dialog, #invite-supervisor-dialog, #cancel-team-invitation-dialog) { max-height: calc(100svh - 2rem); overflow-y: auto; overflow-wrap: anywhere; }
 .active-topic-page #cancel-team-invitation-dialog { width: min(36rem, calc(100% - 2rem)); }
+
+#overview-section :is(.project-team__add, .project-supervisors__invite) {
+  min-height: var(--control-min-height);
+  max-width: 100%;
+  margin-inline-start: auto;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--button-outline-primary-border);
+  border-radius: var(--control-radius);
+  background-color: var(--button-outline-primary-bg);
+  color: var(--button-outline-primary-fg);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+#overview-section :is(.project-team__add, .project-supervisors__invite):enabled:hover {
+  background-color: var(--button-outline-primary-bg-hover);
+  color: var(--button-outline-primary-fg-hover);
+}
+
+#overview-section :is(.project-team__add, .project-supervisors__invite):enabled:active {
+  background-color: var(--color-info-hover-bg);
+}
+
+#overview-section :is(.project-team__add, .project-supervisors__invite):disabled {
+  border-color: var(--color-border);
+  background-color: var(--color-neutral-bg);
+  color: var(--color-muted-foreground);
+}
+
+#add-team-member-dialog .team-member-dialog__close {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: var(--control-min-height);
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+#add-team-member-dialog .team-member-dialog__close:hover {
+  background: var(--color-neutral-bg);
+}
+
+.team-member-dialog__close svg {
+  width: 20px;
+  height: 20px;
+}
+
+#add-team-member-dialog button[type="submit"]:enabled {
+  border-color: var(--button-primary-bg);
+  background: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+  font-weight: 600;
+}
+
+#add-team-member-dialog button[type="submit"]:enabled:hover {
+  border-color: var(--button-primary-bg-hover);
+  background: var(--button-primary-bg-hover);
+}
+
+#invite-supervisor-dialog {
+  width: min(36rem, calc(100% - 2rem));
+}
+
+#invite-supervisor-dialog h2 {
+  font-size: var(--font-size-section-title);
+}
+
+#invite-supervisor-dialog .supervisor-dialog__close {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+}
+
+#invite-supervisor-dialog .supervisor-dialog__close:hover {
+  background-color: var(--color-neutral-bg);
+}
+
+#invite-supervisor-dialog .supervisor-dialog__search {
+  position: relative;
+  margin: 0;
+}
+
+.invite-supervisor-search__icon {
+  position: absolute;
+  inset-inline-start: var(--space-3);
+  inset-block-start: 50%;
+  transform: translateY(-50%);
+  color: var(--color-muted-foreground);
+  pointer-events: none;
+}
+
+#invite-supervisor-dialog input[type="search"] {
+  padding-inline-start: calc(20px + 2 * var(--space-3));
+}
+
+#invite-supervisor-dialog .supervisor-dialog__choices {
+  margin: 0;
+}
+
+#invite-supervisor-dialog .supervisor-dialog__list {
+  max-height: min(16rem, 38svh);
+  scroll-padding-block: var(--space-2);
+}
+
+#invite-supervisor-dialog .supervisor-dialog__option {
+  display: flex;
+  min-height: 4rem;
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+}
+
+#invite-supervisor-dialog .supervisor-dialog__option[hidden] {
+  display: none;
+}
+
+#invite-supervisor-dialog input[type="radio"] {
+  width: 1.125rem;
+  height: 1.125rem;
+  min-height: 0;
+  padding: 0;
+}
+
+#invite-supervisor-dialog .invite-supervisor-search__status {
+  margin: 0;
+  color: var(--color-muted-foreground);
+}
+
+#invite-supervisor-dialog .supervisor-dialog__footer {
+  margin: 0;
+}
+
+#invite-supervisor-dialog button[type="submit"]:enabled {
+  border-color: var(--button-primary-bg);
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+  font-weight: var(--weight-semibold);
+}
+
+#invite-supervisor-dialog button[type="submit"]:enabled:hover {
+  border-color: var(--button-primary-bg-hover);
+  background-color: var(--button-primary-bg-hover);
+}
+
+@media (max-width: 35.99rem) {
+  #invite-supervisor-dialog {
+    padding: var(--space-4);
+  }
+}

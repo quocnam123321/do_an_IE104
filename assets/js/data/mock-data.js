@@ -1,6 +1,12 @@
 (() => {
   const app = globalThis.IE104 = globalThis.IE104 || {};
   app.data = app.data || {};
+  const commonRegistrationRequirements = [
+    'Nắm kiến thức HTML, CSS, JavaScript và cơ sở dữ liệu SQL.',
+    'Triển khai các chức năng theo mô tả đề tài và phân quyền người dùng phù hợp.',
+    'Tổng hợp dữ liệu và trình bày báo cáo theo mục tiêu đề tài.',
+    'Bàn giao website, mã nguồn, dữ liệu mẫu, hướng dẫn cài đặt và báo cáo kiểm thử.',
+  ];
   app.data.openTopics = [
     {
       id: 'DT001',
@@ -15,8 +21,14 @@
       description: 'Xây dựng website quản lý thư viện, tập trung thông tin sách, độc giả và lịch sử mượn trả. Hệ thống hỗ trợ sinh viên tra cứu tài liệu và giúp thủ thư theo dõi việc mượn, trả sách trong thư viện đại học.',
       objectives: ['Giúp sinh viên tìm kiếm sách và xem tình trạng sẵn có.', 'Hỗ trợ thủ thư quản lý phiếu mượn, trả và sách quá hạn.', 'Vận dụng kiến thức lập trình web và thiết kế cơ sở dữ liệu.'],
       outcomes: 'Website quản lý thư viện, mã nguồn, cơ sở dữ liệu mẫu, báo cáo và hướng dẫn sử dụng.',
+      supervisor: { research: 'Phát triển ứng dụng web, cơ sở dữ liệu', email: 'nguyenvana@example.com' },
+      requirements: [
+        'Nắm kiến thức HTML, CSS, JavaScript và cơ sở dữ liệu SQL.',
+        'Xây dựng đăng nhập, phân quyền, tra cứu và quản lý sách, độc giả, phiếu mượn trả.',
+        'Thống kê sách đang mượn và các phiếu quá hạn.',
+        'Bàn giao website, mã nguồn, dữ liệu mẫu, hướng dẫn cài đặt và báo cáo kiểm thử.',
+      ],
       createdAt: '2026-10-28',
-      detailUrl: 'chi-tiet-de-tai-mo-dang-ky.html',
     },
     {
       id: 'DT003',
@@ -30,8 +42,8 @@
       description: 'Xây dựng website giới thiệu sự kiện, tiếp nhận đăng ký tham gia và quản lý danh sách người tham dự. Ban tổ chức có thể theo dõi số lượng đăng ký và cập nhật thông tin sự kiện.',
       objectives: ['Giúp sinh viên tìm kiếm và đăng ký sự kiện.', 'Hỗ trợ ban tổ chức quản lý lịch và danh sách tham dự.', 'Vận dụng kiến thức lập trình web và thiết kế biểu mẫu.'],
       outcomes: 'Website đăng ký sự kiện, mã nguồn, cơ sở dữ liệu mẫu, báo cáo và hướng dẫn sử dụng.',
+      supervisor: { research: 'Ứng dụng web, thiết kế trải nghiệm người dùng', email: 'levanc@example.com' },
       createdAt: '2026-10-27',
-      detailUrl: 'chi-tiet-de-tai-mo-dang-ky-dt003.html',
     },
     {
       id: 'DT004',
@@ -46,8 +58,8 @@
       description: 'Xây dựng website tổ chức công việc nhóm theo dự án. Thành viên theo dõi nhiệm vụ, hạn hoàn thành và tiến độ chung; nhóm trưởng phân công và tổng hợp kết quả.',
       objectives: ['Theo dõi nhiệm vụ và tiến độ của từng thành viên.', 'Hỗ trợ phân công công việc và quản lý thời hạn.', 'Thiết kế giao diện quản lý dự án dễ sử dụng.'],
       outcomes: 'Website quản lý công việc nhóm, mã nguồn, cơ sở dữ liệu mẫu, báo cáo và hướng dẫn sử dụng.',
+      supervisor: { research: 'Phát triển ứng dụng web, cơ sở dữ liệu', email: 'nguyenvana@example.com' },
       createdAt: '2026-10-26',
-      detailUrl: 'chi-tiet-de-tai-mo-dang-ky-dt004.html',
     },
     {
       id: 'MẪU-04',
@@ -61,8 +73,8 @@
       description: 'Xây dựng hệ thống thông tin tổng hợp dữ liệu học tập mẫu, hỗ trợ tra cứu và trực quan hóa các chỉ số trên giao diện web.',
       objectives: ['Tổ chức dữ liệu học tập mẫu theo cấu trúc rõ ràng.', 'Hỗ trợ tra cứu và trình bày dữ liệu bằng bảng, biểu đồ.', 'Vận dụng kiến thức phân tích và thiết kế hệ thống.'],
       outcomes: 'Đề tài minh họa 4, mã nguồn, cơ sở dữ liệu mẫu, báo cáo và hướng dẫn sử dụng.',
+      supervisor: { research: 'Khoa học dữ liệu, hệ thống thông tin', email: 'tranthib@example.com' },
       createdAt: '2026-10-25',
-      detailUrl: 'chi-tiet-de-tai-mo-dang-ky-mau04.html',
     },
     {
       id: 'MẪU-05',
@@ -76,11 +88,16 @@
       description: 'Xây dựng ứng dụng quản lý yêu cầu phần mềm và ca kiểm thử, giúp nhóm phát triển theo dõi chất lượng và kết quả kiểm tra.',
       objectives: ['Quản lý yêu cầu và các ca kiểm thử.', 'Theo dõi lỗi và kết quả kiểm tra phần mềm.', 'Xây dựng báo cáo chất lượng cho từng phiên bản.'],
       outcomes: 'Đề tài minh họa 5, mã nguồn, cơ sở dữ liệu mẫu, báo cáo và hướng dẫn sử dụng.',
+      supervisor: { research: 'Kỹ thuật phần mềm, kiểm thử ứng dụng', email: 'phamminhd@example.com' },
       createdAt: '2026-10-24',
-      detailUrl: 'chi-tiet-de-tai-mo-dang-ky-mau05.html',
     },
   ];
-  app.data.openTopics.forEach(topic => { topic.academicYear = '2026-2027'; topic.registrationRules = { minMembers: 1, maxMembers: 3 }; });
+  app.data.openTopics.forEach(topic => {
+    topic.academicYear = '2026-2027';
+    topic.registrationRules = { minMembers: 1, maxMembers: 3 };
+    topic.requirements ??= [...commonRegistrationRequirements];
+    topic.detailUrl = `chi-tiet-de-tai-mo-dang-ky.html?topic=${encodeURIComponent(topic.id)}`;
+  });
   app.data.myTopics = [
   {
     "id": "DA001",
@@ -96,7 +113,7 @@
     "status": "hoan-thanh",
     "statusLabel": "Hoàn thành",
     "createdAt": "2026-10-14",
-    "detailUrl": "chi-tiet-de-tai-sinh-vien.html#tong-quan"
+    "detailUrl": "chi-tiet-de-tai-sinh-vien.html?project=DA001#tong-quan"
   },
   {
     "id": "DA002",
@@ -112,7 +129,7 @@
     "status": "hoan-thanh",
     "statusLabel": "Hoàn thành",
     "createdAt": "2026-10-13",
-    "detailUrl": "chi-tiet-de-tai-dang-thuc-hien-da002.html#tong-quan"
+    "detailUrl": "chi-tiet-de-tai-sinh-vien.html?project=DA002#tong-quan"
   },
   {
     "id": "DX001",
@@ -144,7 +161,8 @@
     "status": "hoan-thanh",
     "statusLabel": "Hoàn thành",
     "createdAt": "2025-10-10",
-    "detailUrl": null
+    "isArchivedSample": true,
+    "detailUrl": "chi-tiet-de-tai-sinh-vien.html?project=DA003#tong-quan"
   },
   {
     "id": "DA004",
@@ -160,7 +178,8 @@
     "status": "hoan-thanh",
     "statusLabel": "Hoàn thành",
     "createdAt": "2025-10-09",
-    "detailUrl": null
+    "isArchivedSample": true,
+    "detailUrl": "chi-tiet-de-tai-sinh-vien.html?project=DA004#tong-quan"
   },
 {
   "id": "DA005",
@@ -172,11 +191,11 @@
   "academicYear": "2026-2027",
   "lecturer": "Nguyễn Văn An",
   "lecturerLabel": "Giảng viên hướng dẫn",
-  "groupName": "Nhóm 7 - Study UIT",
+  "groupName": "Nhóm 7 - Web UIT",
   "status": "dang-thuc-hien",
   "statusLabel": "Đang thực hiện",
   "createdAt": "2026-11-19",
-  "detailUrl": "chi-tiet-de-tai-dang-thuc-hien-da005.html#tong-quan"
+  "detailUrl": "chi-tiet-de-tai-sinh-vien.html?project=DA005#tong-quan"
 }
 ];
 })();

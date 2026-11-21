@@ -109,7 +109,7 @@
         if (!record || typeof record.projectId !== 'string' || ids.has(record.projectId) || !Number.isInteger(record.revision) || record.revision < 0) return false;
         ids.add(record.projectId);
         if (!Array.isArray(record.members) || !record.members.every(member => member && typeof member.code === 'string' && typeof member.name === 'string' && ['nhom-truong', 'thanh-vien'].includes(member.role))) return false;
-        return Array.isArray(record.invitations) && record.invitations.every(invite => invite && typeof invite.id === 'string' && typeof invite.lecturerId === 'string' && typeof invite.message === 'string' && ['pending', 'cancelled'].includes(invite.status) && Number.isFinite(Date.parse(invite.createdAt)) && (invite.cancelledAt === undefined || Number.isFinite(Date.parse(invite.cancelledAt))));
+        return Array.isArray(record.invitations) && record.invitations.every(invite => invite && typeof invite.id === 'string' && typeof invite.lecturerId === 'string' && (invite.lecturerName === undefined || typeof invite.lecturerName === 'string') && typeof invite.message === 'string' && ['pending', 'cancelled'].includes(invite.status) && Number.isFinite(Date.parse(invite.createdAt)) && (invite.cancelledAt === undefined || Number.isFinite(Date.parse(invite.cancelledAt))));
       });
       if (!valid) throw new Error();
       return parsed.records;
@@ -141,7 +141,13 @@
       const valid = parsed.records.every(record => {
         if (!hasStrings(record, ['projectId']) || ids.has(record.projectId) || !Number.isInteger(record.revision) || record.revision < 0) return false;
         ids.add(record.projectId);
-        if (!Array.isArray(record.tasks) || !record.tasks.every(task => hasStrings(task, ['id', 'title', 'assigneeCode', 'deadline']) && Number.isFinite(Date.parse(task.deadline)) && (validProgress(task) || (task.status === 'dang-thuc-hien' && task.percent === null)))) return false;
+        if (!Array.isArray(record.tasks) || !record.tasks.every(task =>
+          hasStrings(task, ['id', 'title', 'assigneeCode', 'deadline']) &&
+          Number.isFinite(Date.parse(task.deadline)) &&
+          (task.assigneeCodes == null || (Array.isArray(task.assigneeCodes) && task.assigneeCodes.every(code => typeof code === 'string' && code.trim()))) &&
+          (task.description === undefined || (typeof task.description === 'string' && task.description.length <= 2000)) &&
+          (validProgress(task) || (task.status === 'dang-thuc-hien' && task.percent === null))
+        )) return false;
         if (new Set(record.tasks.map(task => task.id)).size !== record.tasks.length) return false;
         return Array.isArray(record.history) && record.history.every(item => hasStrings(item, ['id', 'taskId', 'taskTitle', 'content', 'actorCode', 'actorName', 'createdAt']) && Number.isFinite(Date.parse(item.createdAt)) && validProgress(item));
       });
