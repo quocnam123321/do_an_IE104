@@ -41,74 +41,45 @@
       });
       document.querySelectorAll('form button[type="submit"]').forEach(button => { button.disabled = true; });
     } else {
-      const source = topic.sourceRecord;
-      const catalogOnly = Boolean(source && !topic.registration);
-      const unpublished = 'Chưa công bố trong hồ sơ UIT';
-      document.body.dataset.topicCatalogOnly = String(catalogOnly);
       setText('#topic-summary-title', topic.title);
       document.querySelectorAll('.topic-summary__image[role="img"]').forEach(image => image.setAttribute('aria-label', `Chưa có ảnh đại diện cho đề tài ${topic.title}`));
-      const fields = [
-        [catalogOnly ? 'Mã hồ sơ:' : 'Mã đề tài:', topic.displayId || topic.id],
-        ['Loại đề tài:', topic.typeLabel],
-        catalogOnly ? ['Tác giả:', source.authors.join(', ')] : ['Môn học:', topic.courseLabel || (topic.topicType === 'course' ? missing : 'Không áp dụng')],
-        catalogOnly && source.cohort ? ['Khóa:', source.cohort] : catalogOnly ? ['Đợt bảo vệ:', source.defensePeriod || source.year] : ['Học kỳ:', `Học kỳ ${topic.semester}`],
-        catalogOnly ? ['Nguồn:', source.publisher] : ['Năm học:', topic.academicYear],
-      ];
-      document.querySelectorAll('.topic-summary__meta > div').forEach((row, index) => {
-        const [label, value] = fields[index];
-        row.querySelector('dt').textContent = label;
-        row.querySelector('dd').textContent = value || missing;
-      });
+      const fields = [topic.displayId || topic.id, topic.typeLabel, topic.courseLabel || (topic.topicType === 'course' ? missing : 'Không áp dụng'), `Học kỳ ${topic.semester}`, topic.academicYear];
+      document.querySelectorAll('.topic-summary__meta dd').forEach((node, index) => { node.textContent = fields[index] || missing; });
       const supervisor = ['name', 'faculty', 'email', 'research'];
-      const advisor = catalogOnly ? source.advisors[0] : topic.supervisor?.name;
-      document.querySelectorAll('.topic-supervisor__details > div').forEach((row, index) => {
-        row.hidden = catalogOnly && index > 0;
-        row.querySelector('dd').textContent = catalogOnly
-          ? (index === 0 ? source.advisors.join(', ') || unpublished : '')
-          : topic.supervisor?.[supervisor[index]] || missing;
-      });
+      document.querySelectorAll('.topic-supervisor__details dd').forEach((node, index) => { node.textContent = topic.supervisor?.[supervisor[index]] || missing; });
       const avatar = document.querySelector('.topic-supervisor__avatar');
-      if (avatar) {
-        const parts = advisor?.trim().split(/\s+/) || [];
-        avatar.textContent = parts.length ? `${parts[0][0]}${parts.at(-1)[0]}` : 'GV';
-        avatar.setAttribute('aria-label', parts.length ? `Ảnh đại diện mặc định của ${advisor}` : 'Chưa có thông tin giảng viên hướng dẫn');
-      }
-      const hasSummary = !catalogOnly || source.abstractVerified;
-      setText('.topic-description p:not([data-topic-source])', hasSummary ? topic.description : unpublished);
-      const sourceUrl = source?.summaryUrl || source?.sourceUrl;
+      if (avatar) { const parts = topic.supervisor?.name?.trim().split(/\s+/) || []; avatar.textContent = parts.length ? `${parts[0][0]}${parts.at(-1)[0]}` : 'GV'; avatar.setAttribute('aria-label', parts.length ? `Ảnh đại diện mặc định của ${topic.supervisor.name}` : 'Chưa có thông tin giảng viên hướng dẫn'); }
+      setText('.topic-description p:not([data-topic-source])', topic.description);
+      const source = topic.sourceRecord?.summaryUrl || topic.sourceRecord?.sourceUrl;
       const description = document.querySelector('.topic-description');
-      if (description && sourceUrl && !description.querySelector('[data-topic-source]')) {
+      if (description && source && !description.querySelector('[data-topic-source]')) {
         const paragraph = document.createElement('p');
         paragraph.dataset.topicSource = '';
         const link = document.createElement('a');
-        link.href = sourceUrl;
+        link.href = source;
         link.target = '_blank';
         link.rel = 'noopener noreferrer';
-        link.textContent = source.summaryUrl ? 'Xem tóm tắt tại nguồn UIT' : 'Xem hồ sơ tại nguồn UIT';
+        link.textContent = 'Xem hồ sơ tại nguồn UIT';
         paragraph.append(link);
         description.append(paragraph);
       }
-      [['.topic-objectives ul', hasSummary && topic.objectives], ['.topic-outcomes ul', hasSummary && topic.outcomes], ['.topic-requirements ul', topic.requirements]].forEach(([selector, items]) => {
+      [['.topic-objectives ul', topic.objectives], ['.topic-outcomes ul', topic.outcomes], ['.topic-requirements ul', topic.requirements]].forEach(([selector, items]) => {
         const list = document.querySelector(selector);
         if (!list) return;
-        list.replaceChildren(...(items?.length ? items : [catalogOnly ? unpublished : missing]).map(text => { const item = document.createElement('li'); item.textContent = text; return item; }));
+        list.replaceChildren(...(items?.length ? items : [missing]).map(text => { const item = document.createElement('li'); item.textContent = text; return item; }));
       });
-      document.querySelector('.topic-registration').hidden = catalogOnly;
       setText('.topic-registration__members', topic.registration ? `Nhóm gồm ${topic.registration.minMembers} - ${topic.registration.maxMembers} sinh viên` : missing);
       setText('.topic-registration dd', topic.registration?.deadline ? new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh' }).format(new Date(topic.registration.deadline)) : missing);
       setText('.topic-attachments__file span', topic.attachmentName || 'Chưa có tài liệu đính kèm');
       const badge = document.querySelector('.created-detail-heading .status-badge');
-      if (badge) {
-        badge.textContent = catalogOnly ? 'Hồ sơ UIT' : topic.statusLabel;
-        badge.className = `status-badge status-badge--${catalogOnly ? 'catalog' : topic.status}`;
-      }
-      document.querySelectorAll('.registration-close-button').forEach(button => { button.hidden = readOnly || catalogOnly || topic.status !== 'open'; });
+      if (badge) { badge.textContent = topic.statusLabel; badge.className = `status-badge status-badge--${topic.status}`; }
+      document.querySelectorAll('.registration-close-button').forEach(button => { button.hidden = readOnly || topic.status !== 'open'; });
       let reopen = document.querySelector('.registration-reopen-button');
       if (!reopen && topic.status === 'closed') {
         const prototype = document.getElementById('registration-closed-template')?.content.querySelector('.registration-reopen-button');
         if (prototype) { reopen = prototype.cloneNode(true); document.querySelector('.registration-close-button')?.after(reopen); }
       }
-      if (reopen) reopen.hidden = readOnly || catalogOnly || topic.status !== 'closed';
+      if (reopen) reopen.hidden = readOnly || topic.status !== 'closed';
       const edit = document.querySelector('.topic-edit-link');
       if (edit) {
         const url = new URL('chinh-sua-de-tai-giang-vien.html', location.href);
