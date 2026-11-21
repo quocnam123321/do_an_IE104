@@ -4,10 +4,10 @@
   const clone = value => JSON.parse(JSON.stringify(value));
   const normalize = value => String(value).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
 
-  function getDefinition(projectId) {
+  function getDefinition(projectId, preview = false) {
     const existingProject = app.data.myTopics.find(item => item.id === projectId) || app.data.lecturerProjects?.find(item => item.id === projectId);
     const existingTeam = app.data.projectTeams.find(item => item.projectId === projectId);
-    const approved = !existingProject || !existingTeam ? app.services.approvedProjects?.get(projectId) : null;
+    const approved = !preview && (!existingProject || !existingTeam) ? app.services.approvedProjects?.get(projectId) : null;
     const project = existingProject || approved?.project;
     const team = existingTeam || approved?.team;
     if (!project || !team) throw new Error('Không tìm thấy thông tin nhóm của đề tài.');
@@ -19,13 +19,14 @@
     return clone(saved || { projectId: team.projectId, revision: 0, members: team.members, invitations: team.invitations });
   }
 
-  function getState(projectId) {
-    const { project, team } = getDefinition(projectId);
-    const state = stateFrom(team, app.storage.readProjectTeams());
-    return { ...state, project: clone(project), maxMembers: team.maxMembers, supervisorIds: [...team.supervisorIds] };
+  function getState(projectId, { preview = false } = {}) {
+    const { project, team } = getDefinition(projectId, preview);
+    const state = stateFrom(team, preview ? [] : app.storage.readProjectTeams());
+    return { ...state, project: clone(project), maxMembers: team.maxMembers, supervisorIds: [...team.supervisorIds], ...(preview ? { preview } : {}) };
   }
 
   function getPermission(state) {
+    if (state.preview) return { allowed: false, reason: 'Đang xem thông tin nhóm mẫu. Mở website qua localhost để xem dữ liệu đã lưu và thay đổi thành viên hoặc lời mời.' };
     if (state.project.status !== 'dang-thuc-hien') return { allowed: false, reason: 'Đề tài hiện không ở trạng thái Đang thực hiện nên chỉ được xem thông tin nhóm và lời mời.' };
     if (!state.members.some(member => member.code === app.data.currentStudent?.code && member.role === 'nhom-truong')) return { allowed: false, reason: 'Chỉ nhóm trưởng được thêm thành viên, mời hoặc hủy lời mời giảng viên.' };
     return { allowed: true, reason: '' };

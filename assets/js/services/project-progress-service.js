@@ -4,18 +4,20 @@
   const clone = value => JSON.parse(JSON.stringify(value));
   const newId = prefix => `${prefix}-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`}`;
 
-  function stateFrom(projectId, records) {
-    const initial = app.data.projectProgress.find(item => item.projectId === projectId) || app.services.approvedProjects?.get(projectId)?.progress;
+  function stateFrom(projectId, records, preview = false) {
+    const initial = app.data.projectProgress.find(item => item.projectId === projectId)
+      || (!preview && app.services.approvedProjects?.get(projectId)?.progress);
     if (!initial) throw new Error('Không tìm thấy dữ liệu tiến độ của đề tài.');
     return clone(records.find(item => item.projectId === projectId) || initial);
   }
 
-  function getState(projectId) {
-    const team = app.services.projectTeams.getState(projectId);
-    return { ...stateFrom(projectId, app.storage.readProjectProgress()), team };
+  function getState(projectId, { preview = false } = {}) {
+    const team = app.services.projectTeams.getState(projectId, { preview });
+    return { ...stateFrom(projectId, preview ? [] : app.storage.readProjectProgress(), preview), team };
   }
 
   function getPermissions(state) {
+    if (state.team.preview) return { manage: false, update: false, reason: 'Đang xem tiến độ mẫu. Mở website qua localhost để xem dữ liệu đã lưu và cập nhật công việc.' };
     const member = state.team.members.find(item => item.code === app.data.currentStudent?.code);
     const active = state.team.project.status === 'dang-thuc-hien';
     return {

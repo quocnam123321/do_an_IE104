@@ -3,6 +3,7 @@
   const projectId = document.body.dataset.projectId;
   const panel = document.getElementById('tien-do');
   if (!service || !projectId || !panel) return;
+  const preview = location.protocol === 'file:';
   const list = panel.querySelector('.task-list');
   const history = panel.querySelector('.update-history');
   const cardTemplate = list.firstElementChild.cloneNode(true);
@@ -84,10 +85,10 @@
 
   function refresh() {
     try {
-      state = service.getState(projectId);
+      state = service.getState(projectId, { preview });
 
       const permissions = service.getPermissions(state);
-      notice.textContent = state.team.project.status !== 'dang-thuc-hien' ? '' : permissions.reason;
+      notice.textContent = preview || state.team.project.status === 'dang-thuc-hien' ? permissions.reason : '';
       notice.hidden = !notice.textContent;
       addButton.disabled = !permissions.manage;
       updateButton.disabled = !state.tasks.some(task => service.canUpdateTask(state, task));

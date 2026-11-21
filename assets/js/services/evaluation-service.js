@@ -4,9 +4,9 @@
   const hasText = value => typeof value === 'string' && Boolean(value.trim());
   const validScore = value => Number.isFinite(value) && value >= 0 && value <= 10;
 
-  function getResult(projectId) {
-    if (!app.data.myTopics.some(project => project.id === projectId) && !app.services.approvedProjects?.forStudent(projectId)) throw new Error('Không tìm thấy đề tài cần xem đánh giá.');
-    const saved = app.storage?.readTeachingRecords?.().find(item => item.projectId === projectId);
+  function getResult(projectId, { preview = false } = {}) {
+    if (!app.data.myTopics.some(project => project.id === projectId) && (preview || !app.services.approvedProjects?.forStudent(projectId))) throw new Error('Không tìm thấy đề tài cần xem đánh giá.');
+    const saved = preview ? null : app.storage?.readTeachingRecords?.().find(item => item.projectId === projectId);
     const record = saved?.publishedEvaluation || app.data.projectEvaluations.find(item => item.projectId === projectId);
     if (!record || record.published === false) return { projectId, status: 'unpublished' };
     const invalid = () => { throw new Error('Không thể hiển thị kết quả vì dữ liệu đánh giá chưa hợp lệ.'); };

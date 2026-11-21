@@ -2,6 +2,7 @@
   const service = globalThis.IE104?.services?.projectTeams;
   const projectId = document.body.dataset.projectId;
   if (!service || !projectId) return;
+  const preview = location.protocol === 'file:';
   const memberDialog = document.getElementById('add-team-member-dialog');
   const inviteDialog = document.getElementById('invite-supervisor-dialog');
   const memberForm = document.getElementById('add-team-member-form');
@@ -40,7 +41,7 @@
 
   function refresh() {
     try {
-      state = service.getState(projectId);
+      state = service.getState(projectId, { preview });
       const permission = service.getPermission(state);
       notice.textContent = permission.reason || 'Thao tác thử chỉ lưu trên trình duyệt này; chưa xác minh sinh viên hoặc gửi lời mời đến giảng viên.';
       const full = state.members.length >= state.maxMembers;

@@ -3,7 +3,14 @@
   const panel = document.getElementById('ket-qua-danh-gia');
   const projectId = document.body.dataset.projectId;
   if (!service || !panel || !projectId) return;
+  const preview = location.protocol === 'file:';
   const content = panel.querySelector('.evaluation-content');
+  if (preview) {
+    const notice = document.createElement('p');
+    notice.className = 'evaluation-preview-note';
+    notice.textContent = 'Đang xem dữ liệu mẫu. Mở website qua localhost để xem kết quả giảng viên đã lưu.';
+    content.before(notice);
+  }
   const unpublished = panel.querySelector('#evaluation-unpublished-template');
   const failed = panel.querySelector('#evaluation-error-template');
   const published = document.createElement('template');
@@ -16,7 +23,7 @@
   function render(retrying = false) {
     content.setAttribute('aria-busy', 'true');
     try {
-      const result = service.getResult(projectId);
+      const result = service.getResult(projectId, { preview });
       panel.dataset.evaluationState = result.status;
       if (result.status === 'unpublished') {
         content.replaceChildren(unpublished.content.cloneNode(true));
