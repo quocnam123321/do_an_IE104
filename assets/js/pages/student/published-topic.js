@@ -18,7 +18,8 @@
       text('.summary h2',topic.title);
       const { maxMembers } = topic.registrationRules;
       const mode = maxMembers === 1 ? 'Cá nhân' : 'Cá nhân hoặc theo nhóm';
-      const values = [topic.displayId,topic.typeLabel,topic.courseLabel,mode,topic.semester === 'he' ? 'Hè' : topic.semester,topic.academicYear];
+      const code = app.services.studentTopicCodes.get(topic) || 'Chưa có mã đề tài';
+      const values = [code,topic.typeLabel,app.ui.studentCourseLabel(topic, true),mode,topic.semester === 'he' ? 'Hè' : topic.semester,topic.academicYear];
       root.querySelectorAll('.summary__meta dd').forEach((node,index) => { node.textContent = values[index]; });
       text('.supervisor__profile h4',topic.lecturer);
       text('.supervisor__profile p',topic.supervisor.faculty);

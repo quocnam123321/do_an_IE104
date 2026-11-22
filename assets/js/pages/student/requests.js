@@ -4,6 +4,7 @@
   const legacyProposals = [...document.querySelectorAll('.request-detail[data-request-type="de-xuat"]')];
   const dialog = document.getElementById('request-action-dialog');
   if (!service || !articles.length || !dialog) return;
+  const backLink = articles[0].querySelector('.request-detail__back');
   document.body.classList.add('legacy-requests-enhanced');
   const status = document.querySelector('[data-request-result]');
   const error = dialog.querySelector('[data-request-action-error]');
@@ -199,6 +200,7 @@
         const heading = node('h2', `${record.id} - Đăng ký đề tài`);
         heading.id = `${slug}-title`;
         article.replaceChildren(heading);
+        if (backLink) article.append(backLink.cloneNode(true));
         if (record.deletedAt) { article.append(node('p', 'Yêu cầu đã được xóa khỏi danh sách thử. Bản lưu lịch sử vẫn được giữ.')); return; }
         article.dataset.requestStatus = record.status;
         article.append(node('h3', record.title));

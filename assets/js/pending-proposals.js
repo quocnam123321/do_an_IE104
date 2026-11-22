@@ -1,17 +1,23 @@
 (() => {
   const store = window.IE104Proposals;
+  const catalog = window.UITLecturerCatalog;
   const form = document.getElementById('proposal-filter-form');
   const search = document.getElementById('proposal-search');
   const sort = document.getElementById('proposal-sort');
   const list = document.querySelector('.proposal-list');
   const count = document.getElementById('proposal-count');
-  const empty = document.getElementById('proposal-empty');
   const pagination = document.querySelector('.pending-proposals .pagination');
-  if (!store || !form || !search || !sort || !list || !count || !empty || !pagination) return;
+  if (!store || !form || !search || !sort || !list || !count || !pagination) return;
 
   const viewport = list.closest('.proposal-list-scroll');
   const cardTemplate = list.querySelector('.proposal-card')?.cloneNode(true);
   if (!viewport || !cardTemplate) return;
+  const showEmpty = window.IE104.ui.createTopicListEmpty(viewport, form, search, {
+    id: 'proposal-empty',
+    noResultsTitle: 'Không tìm thấy đề xuất',
+    emptyTitle: 'Không còn đề xuất chờ duyệt',
+    emptyDescription: 'Đề xuất mới sẽ xuất hiện tại đây khi được gửi.',
+  });
 
   const pageSize = 5;
   const note = document.getElementById('proposal-preview-note');
@@ -28,15 +34,24 @@
     .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
   let page = 1;
 
+  function courseKey(proposal) {
+    return ['course', 'do-an-mon-hoc', 'do-an'].includes(proposal.topicType)
+      ? catalog.courseKey(proposal.course || proposal.courseId) : '';
+  }
+
   function readUrl() {
     const params = new URLSearchParams(window.location.search);
     search.value = params.get('proposal_search') || '';
     const requestedOrder = params.get('proposal_sort');
     sort.value = validOrders.includes(requestedOrder) ? requestedOrder : 'oldest';
     for (const name of Object.keys(filterFields)) {
-      const selected = params.getAll(name);
+      const selected = params.getAll(name).map(value => name === 'course' ? catalog.courseKey(value) : value);
       for (const control of form.querySelectorAll(`input[name="${name}"]`)) {
         control.checked = selected.includes(control.value);
+        if (name === 'course' && control.checked) {
+          const more = control.closest('details');
+          if (more) more.open = true;
+        }
       }
     }
     const requestedPage = Number(params.get('page'));
@@ -76,7 +91,7 @@
     title.textContent = proposal.title;
     card.setAttribute('aria-labelledby', title.id);
     const fields = [
-      ['type', `${proposal.topicTypeLabel}`],
+      ['code', proposal.id],
       ['course', `${window.UITLecturerCatalog.subjectLabel(proposal)}`],
       ['student', `${proposal.studentName} · ${proposal.studentId}`],
       ['role', `${proposal.supervisionRoleLabel}`],
@@ -135,19 +150,24 @@
     addPage(page + 1, '›', 'Trang sau', page === totalPages);
     pagination.replaceChildren(items);
     pagination.hidden = totalPages <= 1;
+    pagination.parentElement.hidden = pagination.hidden;
   }
 
-  function render(urlMode) {
-    const pending = store.getAll().filter((proposal) => window.UITLecturerCatalog.isAvailableTopic(proposal) && proposal.status === 'pending' && proposal.topicTypeLabel !== 'Luận văn thạc sĩ');
+  function render(urlMode, restoreUrl = false) {
+    const pending = store.getAll().filter((proposal) => catalog.isAvailableTopic(proposal) && proposal.status === 'pending' && proposal.topicTypeLabel !== 'Luận văn thạc sĩ');
+    window.IE104.ui.renderCourseFilters(form, pending.map(proposal => ({
+      id: courseKey(proposal),
+      label: catalog.subjectLabel(proposal),
+    })));
+    if (restoreUrl) readUrl();
     if (note) note.hidden = true;
     const terms = normalize(search.value).split(/\s+/).filter(Boolean);
     const data = new FormData(form);
-    const selected = Object.entries(filterFields).map(([name, field]) =>
-      [field, data.getAll(name)]);
+    const selected = Object.entries(filterFields).map(([name, field]) => [field, data.getAll(name)]);
     const matching = pending.filter((proposal) => {
       const haystack = normalize([proposal.id, proposal.title, proposal.studentName, proposal.studentId].join(' '));
       return terms.every((term) => haystack.includes(term)) &&
-        selected.every(([field, values]) => !values.length || values.some(value => field === 'course' ? ['course', 'do-an-mon-hoc', 'do-an'].includes(proposal.topicType) && window.UITLecturerCatalog.courseKey(value) === window.UITLecturerCatalog.courseKey(proposal[field]) : value === proposal[field]));
+        selected.every(([field, values]) => !values.length || values.includes(field === 'course' ? courseKey(proposal) : proposal[field]));
     });
     // Ngày gửi chỉ được so sánh khi đã có trong dữ liệu; hồ sơ thiếu ngày giữ thứ tự mẫu.
     if (sort.value === 'name-asc') matching.sort((a, b) => collator.compare(a.title, b.title));
@@ -162,19 +182,15 @@
     });
 
     const totalPages = Math.max(1, Math.ceil(matching.length / pageSize));
-    const previousPage = page;
     page = Math.min(page, totalPages);
-    if (urlMode || previousPage !== page) writeUrl(urlMode || 'replace');
+    writeUrl(urlMode || 'replace');
     const first = (page - 1) * pageSize;
     const visible = matching.slice(first, first + pageSize);
     list.replaceChildren(...visible.map(makeCard));
     count.textContent = matching.length
       ? `Hiển thị ${first + 1}–${first + visible.length} trên ${matching.length} đề xuất chờ duyệt`
-      : '0 đề xuất chờ duyệt phù hợp';
-    empty.textContent = pending.length
-      ? 'Không tìm thấy đề xuất phù hợp. Thử từ khóa khác hoặc xóa bộ lọc.'
-      : 'Không còn đề xuất chờ duyệt.';
-    empty.hidden = matching.length > 0;
+      : 'Không có đề xuất chờ duyệt phù hợp.';
+    showEmpty(matching.length > 0, pending.length > 0);
     viewport.hidden = matching.length === 0;
     viewport.scrollTop = 0;
     renderPagination(totalPages);
@@ -210,17 +226,12 @@
     render('push');
     viewport.focus({ preventScroll: true });
   });
-  window.addEventListener('popstate', () => {
-    readUrl();
-    render();
-  });
+  window.addEventListener('popstate', () => render('replace', true));
   window.addEventListener('pageshow', (event) => {
     if (event.persisted) {
-      readUrl();
-      render();
+      render('replace', true);
     }
   });
   store.subscribe(() => render());
-  readUrl();
-  render('replace');
+  render('replace', true);
 })();

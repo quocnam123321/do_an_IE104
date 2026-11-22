@@ -21,21 +21,9 @@
     summary.setAttribute('aria-atomic', 'true');
     topics.querySelector('.topics__header').append(summary);
 
-    const emptyState = document.createElement('section');
-    emptyState.className = 'topic-list-empty';
-    emptyState.hidden = true;
-    const emptyTitle = document.createElement('h3');
-    emptyTitle.textContent = 'Không tìm thấy đề tài';
-    const emptyDescription = document.createElement('p');
-    emptyDescription.textContent = 'Thử từ khóa khác hoặc thay đổi bộ lọc đang chọn.';
-    const clearButton = document.createElement('button');
-    clearButton.type = 'button';
-    clearButton.textContent = 'Xóa tìm kiếm và bộ lọc';
-    emptyState.append(emptyTitle, emptyDescription, clearButton);
-    list.after(emptyState);
+    const showEmpty = app.ui.createTopicListEmpty(list, form, search, config);
 
     let page = 1;
-    let currentFilters;
 
     function readFilters() {
       const values = new FormData(form);
@@ -80,17 +68,14 @@
     }
 
     function render(options = {}) {
-      const result = config.query(currentFilters, { page, pageSize: 5 });
+      const result = config.query(readFilters(), { page, pageSize: 5 });
+      app.ui.renderCourseFilters(form, result.courseOptions);
       page = result.page;
       const fragment = document.createDocumentFragment();
       result.items.forEach((topic, index) => fragment.append(config.createCard(topic, (page - 1) * 5 + index, cardTemplate)));
       list.replaceChildren(fragment);
       list.hidden = result.total === 0;
-      emptyState.hidden = result.total !== 0;
-      const noTopics = result.totalAvailable === 0;
-      emptyTitle.textContent = noTopics ? config.emptyTitle : 'Không tìm thấy đề tài';
-      emptyDescription.textContent = noTopics ? config.emptyDescription : 'Thử từ khóa khác hoặc thay đổi bộ lọc đang chọn.';
-      clearButton.hidden = noTopics;
+      showEmpty(result.total > 0, result.totalAvailable > 0);
       list.setAttribute('aria-label', `${result.items.length} đề tài trên trang ${page}, cuộn để xem thêm`);
       list.scrollTop = 0;
       summary.textContent = result.total
@@ -104,7 +89,6 @@
 
     function applyFilters() {
       page = 1;
-      currentFilters = readFilters();
       render();
     }
 
@@ -112,11 +96,7 @@
     lecturer.addEventListener('change', applyFilters);
     form.addEventListener('change', applyFilters);
     form.addEventListener('submit', event => event.preventDefault());
-    form.addEventListener('reset', () => {
-      if (emptyState.contains(document.activeElement)) search.focus({ preventScroll: true });
-      requestAnimationFrame(applyFilters);
-    });
-    clearButton.addEventListener('click', () => form.reset());
+    form.addEventListener('reset', () => requestAnimationFrame(applyFilters));
     pager.addEventListener('click', event => {
       const button = event.target.closest('button[data-page]');
       if (!button || button.disabled || !pager.contains(button)) return;

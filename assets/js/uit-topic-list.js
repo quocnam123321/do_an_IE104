@@ -47,9 +47,12 @@
     }
   }
   const viewport = list.closest('.topic-list-scroll') || list;
-  const controls = Array.from(form.elements).filter(node => node.matches('input, select'));
-  const filterControls = controls.filter(node => node.type === 'checkbox' || node.type === 'radio' || (node.tagName === 'SELECT' && node.name !== 'topic_sort'));
-  const filters = [...new Set(filterControls.map(node => node.name).filter(Boolean))];
+  const showEmpty = window.IE104.ui.createTopicListEmpty(viewport, form, search, {
+    emptyTitle: isSupervised ? 'Chưa có đề tài đang hướng dẫn' : 'Chưa có đề tài đã tạo',
+    emptyDescription: isSupervised
+      ? 'Đề tài được phân công hướng dẫn sẽ xuất hiện tại đây.'
+      : 'Đề tài mới sẽ xuất hiện tại đây sau khi được tạo.',
+  });
   const filterTitle = document.getElementById('topic-filters-title');
   const baseFilterTitle = filterTitle ? filterTitle.textContent.trim() : '';
   const filterCountNode = document.createElement('span');
@@ -70,7 +73,7 @@
   const requested = Number(new URLSearchParams(location.search).get('page'));
   let page = Number.isSafeInteger(requested) && requested > 0 ? requested : 1;
 
-  function countActiveFilters() {
+  function countActiveFilters(filterControls) {
     return filterControls.reduce((total, node) => {
       if (node.disabled) return total;
       if (node.type === 'checkbox' || node.type === 'radio') {
@@ -86,9 +89,9 @@
     }, 0);
   }
 
-  function updateFilterTitle() {
+  function updateFilterTitle(filterControls) {
     if (!filterTitle) return;
-    const count = countActiveFilters();
+    const count = countActiveFilters(filterControls);
     if (count > 0) {
       filterCountNode.textContent = `(${count})`;
       filterTitle.replaceChildren(`${baseFilterTitle} `, filterCountNode);
@@ -132,11 +135,8 @@
   function render(options = {}) {
     refreshCodes();
     const animatePageChange = Boolean(options && options.animatePageChange);
-    updateFilterTitle();
     clearPageTransition();
-    const data = new FormData(form);
     const terms = normalize(search.value).split(/\s+/).filter(Boolean);
-    const selected = filters.map(name => [name, data.getAll(name).filter(Boolean)]);
     const topics = Array.from(list.children, item => {
       if (!originalOrder.has(item)) originalOrder.set(item, nextOrder++);
       const card = item.matches('.topic-card') ? item : item.querySelector('.topic-card');
@@ -145,6 +145,16 @@
     });
     topics.sort((a, b) => originalOrder.get(a.item) - originalOrder.get(b.item));
     const unique = window.IE104?.topicIdentity?.uniqueTitles(topics) || topics;
+    window.IE104.ui.renderCourseFilters(form, unique.map(({ card }) => ({
+      id: card.dataset.course,
+      label: card.querySelectorAll('.topic-card__meta-text')[1]?.textContent.trim(),
+    })));
+    const filterControls = Array.from(form.elements).filter(node =>
+      node.type === 'checkbox' || node.type === 'radio' || (node.tagName === 'SELECT' && node.name !== 'topic_sort'));
+    updateFilterTitle(filterControls);
+    const filters = [...new Set(filterControls.map(node => node.name).filter(Boolean))];
+    const data = new FormData(form);
+    const selected = filters.map(name => [name, data.getAll(name).filter(Boolean)]);
     const matched = unique.filter(topic => selected.every(([name, values]) => !values.length || values.includes(topic.card.getAttribute(`data-${name}`))) && terms.every(term => topic.terms.includes(term)));
     const order = orders[data.get('topic_sort')];
     matched.sort((a, b) => (order ? order(a, b) : 0) || originalOrder.get(a.item) - originalOrder.get(b.item));
@@ -165,11 +175,13 @@
       document.body.classList.contains('teacher-created-topics-page')
         ? '[data-topic-tab-count="created"]' : '[data-topic-tab-count="teaching"]');
     if (tabCount) tabCount.textContent = unique.length;
-    status.textContent = matched.length ? `Hiển thị ${(page - 1) * pageSize + 1}–${Math.min(page * pageSize, matched.length)} trên ${matched.length} đề tài` : 'Không tìm thấy đề tài phù hợp. Thử từ khóa khác hoặc xóa bộ lọc.';
+    status.textContent = matched.length ? `Hiển thị ${(page - 1) * pageSize + 1}–${Math.min(page * pageSize, matched.length)} trên ${matched.length} đề tài` : 'Không có đề tài phù hợp.';
     if (results.dataset.topicSourceError) {
       status.append(` · Danh sách có thể chưa cập nhật. ${results.dataset.topicSourceError}`);
     }
-    status.hidden = false; status.toggleAttribute('data-empty', !matched.length); viewport.hidden = !matched.length;
+    status.hidden = false;
+    viewport.hidden = !matched.length;
+    showEmpty(matched.length > 0, unique.length > 0);
     const pages = document.createElement('ul'); pages.className = 'pagination__list';
     const add = (target, text, label, disabled = false) => {
       const item = document.createElement('li');
@@ -193,7 +205,11 @@
     try { history.replaceState(null, '', url); } catch {}
   }
   search.addEventListener('input', () => { page = 1; render(); });
-  controls.filter(node => node !== search).forEach(node => node.addEventListener('change', () => { page = 1; render(); }));
+  document.addEventListener('change', event => {
+    if (event.target.form !== form || event.target === search) return;
+    page = 1;
+    render();
+  });
   form.addEventListener('submit', event => { event.preventDefault(); page = 1; render(); });
   form.addEventListener('reset', () => setTimeout(() => { page = 1; render(); }, 0));
   document.addEventListener('ie104:topics-updated', () => render());

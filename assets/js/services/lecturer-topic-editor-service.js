@@ -30,7 +30,8 @@
     const faculty = type === 'course' ? codes.courseCatalog[course]?.faculty : codes.facultyCode(getSupervisor().faculty) || 'ISE';
     const service = app.services.lecturerTopics;
     const projects = app.services.teaching?.listSupervisedProjects().map(entry => service.projectIdentity(entry.project)) || [];
-    return codes.nextCode(type, [...service.allCreated(), ...service.list('supervised'), ...projects], faculty);
+    const samples = app.services.studentTopicCodes?.allocatedSamples() || [];
+    return codes.nextCode(type, [...service.allCreated(), ...service.list('supervised'), ...projects, ...samples], faculty);
   }
 
   function validate(input, previous = null, now = new Date()) {

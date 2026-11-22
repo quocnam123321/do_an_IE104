@@ -7,12 +7,14 @@
   const link = card.querySelector('a');
   const inboxUrl = link.href;
   const store = window.IE104Supervision;
+  const entry = window.IE104SupervisionEntry;
   const dateFormat = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short' });
+  let currentStudent;
 
   function latestResponse(records) {
     let latest;
     for (const record of records) {
-      if (record.student.id !== store.student.id) continue;
+      if (record.student.id !== currentStudent.id) continue;
       const time = record.decision?.at ?? record.messages.findLast(({ role }) => role === 'teacher')?.sentAt;
       if (time && (!latest || Date.parse(time) > Date.parse(latest.time))) latest = { record, time };
     }
@@ -23,8 +25,10 @@
     link.href = inboxUrl;
     link.textContent = 'Xem lời mời';
 
-    if (!isTeacher && !window.IE104SupervisionEntry.hasStudentSession()) {
-      summary.textContent = 'Đăng nhập bằng tài khoản mẫu để theo dõi lời mời và phản hồi.';
+    if (!isTeacher && !currentStudent) {
+      summary.textContent = currentStudent === null
+        ? 'Đăng nhập bằng tài khoản sinh viên để theo dõi lời mời và phản hồi.'
+        : 'Đang kiểm tra phiên đăng nhập…';
       return;
     }
 
@@ -61,4 +65,16 @@
 
   store.subscribe(render);
   render();
+  if (!isTeacher) {
+    const refreshSession = async () => {
+      currentStudent = undefined;
+      render();
+      currentStudent = await entry.getStudent().catch(() => null);
+      render();
+    };
+    refreshSession();
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) refreshSession();
+    });
+  }
 })();

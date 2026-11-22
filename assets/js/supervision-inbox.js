@@ -17,7 +17,7 @@
     <div class="supervision__topline">
       <p class="supervision__hint">${isTeacher
         ? 'Bản demo trình duyệt. Chọn giảng viên nhận lời mời để xem và phản hồi.'
-        : 'Bản demo trình duyệt dùng tài khoản Nguyễn Minh Anh.'}</p>
+        : 'Lời mời được lưu trong trình duyệt này.'}</p>
       ${isTeacher ? '' : '<a href="../chung/huong-nghien-cuu.html" class="supervision__button">Tìm giảng viên</a>'}
     </div>
     <p class="supervision__error supervision__feedback" data-inbox-error role="alert"></p>
@@ -102,6 +102,8 @@
   const buttons = detail.querySelectorAll('button[type="submit"]');
   let activeId = new URLSearchParams(location.search).get('loi-moi');
   let active;
+  let currentStudent;
+  let sessionError = '';
   let saving = false;
   let unreadById = new Map();
   let readFrame = 0;
@@ -187,9 +189,9 @@
     subject.textContent = record.subject;
     badge.dataset.status = record.status;
     badge.textContent = describeStatus(record);
+    const studentCode = record.student.id === store.student.id ? ` · ${record.student.id}` : '';
     person.textContent = isTeacher
-      ? `Sinh viên ${record.student.name} · ${record.student.id}`
-      : `Giảng viên ${record.teacher.name}`;
+      ? `Sinh viên ${record.student.name}${studentCode}` : `Giảng viên ${record.teacher.name}`;
     messages.replaceChildren(...record.messages.map((message) => {
       const item = document.createElement('li');
       item.className = 'supervision__message';
@@ -235,10 +237,12 @@
     inboxError.textContent = '';
     empty.textContent = '';
     if (login) {
-      login.hidden = entry.hasStudentSession();
-      if (!login.hidden) {
+      login.hidden = currentStudent !== null;
+      if (!currentStudent) {
+        active = null;
         renderTabCount(0);
         workspace.hidden = true;
+        inboxError.textContent = sessionError;
         return;
       }
     }
@@ -246,7 +250,7 @@
     let records;
     try {
       const all = store.getAll();
-      records = isTeacher ? showTeacherChoices(all) : all.filter(({ student }) => student.id === store.student.id);
+      records = isTeacher ? showTeacherChoices(all) : all.filter(({ student }) => student.id === currentStudent.id);
       if (isTeacher) {
         renderTabCount(all.filter(store.needsTeacherReply).length);
       } else {
@@ -311,7 +315,7 @@
   replyField.addEventListener('input', clearReplyError);
   replyForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    if (saving || active?.status !== 'pending' || (!isTeacher && !entry.hasStudentSession())) return;
+    if (saving || active?.status !== 'pending') return;
     const value = replyField.value.trim();
     const attachmentValid = replyAttachment.validate();
     if (!value) {
@@ -325,9 +329,15 @@
       replyAttachment.focus();
       return;
     }
-    const actor = { role, id: isTeacher ? teachers.value : store.student.id };
+    const invitation = active;
+    const actor = { role, id: isTeacher ? teachers.value : currentStudent.id };
     const file = replyAttachment.getFile();
-    save(() => store.reply(active.id, actor, value, file), replyForm, 'Đã lưu phản hồi trong bản demo.');
+    save(async () => {
+      if (!isTeacher && (await entry.getStudent())?.id !== actor.id) {
+        throw new Error('Phiên đăng nhập đã thay đổi. Hãy tải lại trang để tiếp tục.');
+      }
+      return store.reply(invitation.id, actor, value, file);
+    }, replyForm, 'Đã lưu phản hồi trong bản demo.');
   });
   decisionForm?.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -349,6 +359,22 @@
   });
   if (login) login.querySelector('a').href = entry.getInboxLoginUrl();
   if (!isTeacher) {
+    const refreshSession = async () => {
+      currentStudent = undefined;
+      sessionError = '';
+      render();
+      try {
+        currentStudent = await entry.getStudent();
+      } catch {
+        currentStudent = null;
+        sessionError = 'Không kiểm tra được phiên đăng nhập. Hãy thử đăng nhập lại.';
+      }
+      render();
+    };
+    refreshSession();
+    window.addEventListener('pageshow', (event) => {
+      if (event.persisted) refreshSession();
+    });
     document.addEventListener('visibilitychange', scheduleRead);
     if ('IntersectionObserver' in window) new IntersectionObserver(scheduleRead).observe(detail);
   }

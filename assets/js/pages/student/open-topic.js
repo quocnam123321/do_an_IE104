@@ -19,9 +19,9 @@
     const supervisor = content.supervisor || (content.lecturer === sample?.lecturer ? sample?.supervisor : null);
     const values = {
       title: content.title,
-      code: content.displayId || content.code || content.id,
+      code: app.services.studentTopicCodes.get(topic) || 'Chưa có mã đề tài',
       type: content.typeLabel,
-      course: content.courseLabel || 'Không áp dụng',
+      course: app.ui.studentCourseLabel(content, true),
       mode: topic.registrationRules?.maxMembers === 1 ? 'Cá nhân' : 'Cá nhân hoặc theo nhóm',
       semester: content.semester === 'he' ? 'Hè' : content.semester,
       academicYear: content.academicYear?.replace(/^(\d{4})[-–](\d{4})$/, '$1 - $2'),

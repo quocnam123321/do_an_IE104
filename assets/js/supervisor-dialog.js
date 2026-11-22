@@ -60,12 +60,14 @@
 
   const invitationId = new URLSearchParams(location.search).get('loi-moi');
   const editing = new URLSearchParams(location.search).has('proposal');
-  if (invitationId && !editing && entry.hasStudentSession()) {
+  async function fillFromInvitation() {
     const store = window.IE104Supervision;
     let accepted;
     try {
+      const currentStudent = await entry.getStudent();
+      if (!currentStudent) return;
       accepted = store.getAll().find(({ id, status, student }) =>
-        id === invitationId && status === 'accepted' && student.id === store.student.id);
+        id === invitationId && status === 'accepted' && student.id === currentStudent.id);
     } catch {
       showInvitationNote('Không đọc được lời mời đã lưu. Bạn có thể chọn giảng viên thủ công.');
     }
@@ -80,6 +82,7 @@
       renderSavedSelection();
     }).catch(failure => showInvitationNote(failure.message));
   }
+  if (invitationId && !editing) fillFromInvitation();
 
   function updateSelection() {
     confirmButton.disabled = !getSelection();

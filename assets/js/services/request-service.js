@@ -166,7 +166,7 @@
       if (record.deletedAt) return [];
       const proposal = record.kind === 'de-xuat';
       const approved = proposal && record.status === 'da-duyet';
-      return [{ ...topic, title: record.title, type: record.type, typeLabel: record.typeLabel, courseId: record.courseId, lecturer: record.lecturerName,
+      return [{ ...topic, title: record.title, type: record.type, typeLabel: record.typeLabel, courseId: record.courseId, courseLabel: record.courseLabel, lecturer: record.lecturerName,
         status: approved ? 'dang-thuc-hien' : record.status, statusLabel: approved ? 'Đang thực hiện' : labels[record.status],
         ...(proposal ? { semester: record.semester, academicYear: record.academicYear, detailUrl: detailUrl(record.id) } : {}),
       }];

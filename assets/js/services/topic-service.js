@@ -17,18 +17,34 @@
       .trim();
   }
 
+  function courseKey(topic) {
+    if (!['course', 'do-an-mon-hoc', 'do-an'].includes(topic.type)) return '';
+    const id = String(topic.courseId ?? '').trim();
+    return globalThis.UITLecturerCatalog?.courseKey(id) ?? id;
+  }
+
   function listTopics(source, filters = {}, pagination = {}) {
     const keyword = normalizeText(filters.keyword);
     const lecturer = normalizeText(filters.lecturer);
     const types = filters.types || [];
-    const courses = filters.courses || [];
+    const courseOptions = new Map();
+    for (const topic of source) {
+      const id = courseKey(topic);
+      if (!id || courseOptions.has(id)) continue;
+      const subject = globalThis.UITLecturerCatalog?.courseCatalog[id];
+      const label = topic.courseLabel?.trim() || (subject ? `${subject.code} — ${subject.label}` : id);
+      courseOptions.set(id, { id, label });
+    }
+    const courses = (filters.courses || []).filter(id => courseOptions.has(id));
     const statuses = filters.statuses || [];
     const semesters = filters.semesters || [];
     const results = source.filter(topic => {
-      const matchesKeyword = !keyword || normalizeText(`${topic.id} ${topic.title}`).includes(keyword);
+      const matchesKeyword = !keyword || normalizeText([
+        topic.id, topic.code, topic.displayId, topic.requestId, app.services.studentTopicCodes?.get(topic), topic.title,
+      ].join(' ')).includes(keyword);
       const matchesLecturer = !lecturer || normalizeText(topic.lecturer) === lecturer;
       const matchesType = !types.length || types.includes(topic.type);
-      const matchesCourse = !courses.length || courses.includes(topic.courseId);
+      const matchesCourse = !courses.length || courses.includes(courseKey(topic));
       const matchesStatus = !statuses.length || statuses.includes(topic.status);
       const matchesSemester = !semesters.length || semesters.includes(`${topic.academicYear}-${topic.semester}`);
       return matchesKeyword && matchesLecturer && matchesType && matchesCourse && matchesStatus && matchesSemester;
@@ -50,6 +66,7 @@
       items: results.slice(startIndex, startIndex + pageSize),
       total,
       totalAvailable: source.length,
+      courseOptions: [...courseOptions.values()],
       page,
       pageCount,
       pageSize,

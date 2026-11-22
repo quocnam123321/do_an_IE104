@@ -28,16 +28,18 @@
   }
 
   async function initialize() {
+    form.hidden = true;
+    error.textContent = '';
     if (!teacherId) {
       error.textContent = 'Hãy chọn giảng viên từ trang Hướng nghiên cứu để gửi lời mời.';
       return;
     }
     try {
-      if (!entry.hasStudentSession()) {
+      loading.hidden = false;
+      if (!await entry.getStudent().catch(() => null)) {
         location.replace(entry.getLoginUrl(teacherId));
         return;
       }
-      loading.hidden = false;
       teacher = await entry.getTeacher(teacherId);
       document.getElementById('invitation-recipient').textContent = teacher.name;
       document.getElementById('invitation-back').hash = teacher.id;
@@ -59,10 +61,6 @@
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (saving || !teacher) return;
-    if (!entry.hasStudentSession()) {
-      location.replace(entry.getLoginUrl(teacherId));
-      return;
-    }
     error.textContent = '';
     const subjectValid = validate(subject, 'tiêu đề');
     const messageValid = validate(message, 'lời nhắn');
@@ -79,7 +77,14 @@
     saving = true;
     submit.disabled = true;
     try {
-      const record = await store.create({ teacher, subject: subject.value, message: message.value, attachment: attachment.getFile() });
+      const student = await entry.getStudent();
+      if (!student) {
+        location.replace(entry.getLoginUrl(teacherId));
+        return;
+      }
+      const record = await store.create({
+        student, teacher, subject: subject.value, message: message.value, attachment: attachment.getFile(),
+      });
       location.assign(`de-tai-cua-toi-sinh-vien.html?loi-moi=${encodeURIComponent(record.id)}#loi-moi-huong-dan`);
     } catch (problem) {
       error.textContent = problem.message;
@@ -90,10 +95,13 @@
 
   // Back/Forward có thể khôi phục trang từ bộ nhớ đệm sau khi đã gửi.
   window.addEventListener('pageshow', (event) => {
-    if (!event.persisted || !saving) return;
-    form.reset();
-    saving = false;
-    submit.disabled = false;
+    if (!event.persisted) return;
+    if (saving) {
+      form.reset();
+      saving = false;
+      submit.disabled = false;
+    }
+    initialize();
   });
 
   initialize();

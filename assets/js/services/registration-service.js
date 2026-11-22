@@ -137,6 +137,7 @@
         type: topic.type === 'khoa-luan' ? 'khoa-luan' : 'do-an',
         typeLabel: topic.typeLabel,
         courseId: topic.courseId,
+        courseLabel: topic.courseLabel,
         semester: topic.semester,
         academicYear: topic.academicYear || '2026-2027',
         lecturer: topic.lecturer,

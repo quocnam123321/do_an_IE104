@@ -28,6 +28,9 @@
   const isTeacher = (teacher) => typeof teacher?.id === 'string' && /^giang-vien-\d+$/.test(teacher.id) &&
     typeof teacher.name === 'string' && teacher.name.trim().length > 0;
   const isDate = (value) => typeof value === 'string' && Number.isFinite(Date.parse(value));
+  const isStudent = (sender) => typeof sender?.id === 'string'
+    && (sender.id === student.id || /^firebase:.{1,128}$/.test(sender.id))
+    && typeof sender.name === 'string' && sender.name.trim().length > 0;
 
   function isAttachment(file) {
     return typeof file?.id === 'string' && /^[a-f0-9]{32}$/.test(file.id) &&
@@ -37,7 +40,7 @@
 
   function isRecord(record, id) {
     if (!record || id !== record.id || !isTeacher(record.teacher) ||
-        record.student?.id !== student.id || typeof record.student.name !== 'string' ||
+        !isStudent(record.student) ||
         !isText(record.subject, subjectLimit) || !isDate(record.createdAt) || !isDate(record.updatedAt) ||
         !Array.isArray(record.messages) || record.messages[0]?.role !== 'student') {
       return false;
@@ -162,7 +165,7 @@
   }
 
   function receiptKey(record) {
-    return `${receiptPrefix}${student.id}.${record.id}`;
+    return `${receiptPrefix}${record.student.id}.${record.id}`;
   }
 
   function readReceipt(key) {
@@ -175,12 +178,10 @@
   }
 
   function getUnreadResponses(record) {
-    if (record.student.id !== student.id) return 0;
     return Math.max(0, responseCount(record) - readReceipt(receiptKey(record)));
   }
 
   async function markResponsesRead(record) {
-    if (record.student.id !== student.id) return false;
     // Chỉ đánh dấu các phản hồi trong bản lời mời mà sinh viên đang xem.
     const count = responseCount(record);
     if (count === 0) return false;
@@ -203,7 +204,8 @@
     return record.status === 'pending' && record.messages.at(-1)?.role === 'student';
   }
 
-  async function create({ teacher, subject, message, attachment }) {
+  async function create({ student: sender = student, teacher, subject, message, attachment }) {
+    if (!isStudent(sender)) throw new Error('Tài khoản sinh viên gửi lời mời không hợp lệ.');
     if (!isTeacher(teacher)) throw new Error('Giảng viên nhận lời mời không hợp lệ.');
     const title = validateText(subject, 'Tiêu đề', subjectLimit);
     const text = validateText(message, 'Lời nhắn', messageLimit);
@@ -214,7 +216,7 @@
       const record = {
         id: randomId(),
         teacher: { id: teacher.id, name: teacher.name.trim() },
-        student,
+        student: { id: sender.id, name: sender.name.trim() },
         subject: title,
         status: 'pending',
         messages: [initial],

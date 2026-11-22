@@ -13,7 +13,12 @@
       const details = document.createElement('dl');
       const projectUrl = service.projectUrl(record);
       const solo = record.members.length === 1;
-      const fields = [['Mã yêu cầu', record.id], ['Mã đề tài', record.topic.displayId || record.topic.id], ['Hình thức', solo ? 'Cá nhân' : 'Theo nhóm']];
+      const fields = [
+        ['Mã yêu cầu', record.id],
+        ['Mã đề tài', app.services.studentTopicCodes.get(record.topic) || 'Chưa có mã đề tài'],
+        ['Môn học', app.ui.studentCourseLabel(record.topic, true)],
+        ['Hình thức', solo ? 'Cá nhân' : 'Theo nhóm'],
+      ];
       if (record.groupName.trim()) fields.push(['Tên nhóm', record.groupName]);
       fields.push(['Trạng thái đăng ký', service.labels[record.status]]);
       if (projectUrl) fields.push(['Trạng thái đề tài', 'Đang thực hiện']);

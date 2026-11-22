@@ -33,7 +33,8 @@
       text('#project-title', project.title);
       const term = project.semester === 'he' ? 'hè' : project.semester;
       const period = [term && 'Học kỳ ' + term, project.academicYear].filter(Boolean).join(' · ');
-      const fields = [project.displayId || project.id, project.typeLabel, project.courseLabel, period];
+      const code = app.services.studentTopicCodes.get(project) || 'Chưa có mã đề tài';
+      const fields = [code, project.typeLabel, app.ui.studentCourseLabel(project, true), period];
       root.querySelectorAll('.topic-summary__details dd').forEach((node, index) => {
         node.textContent = fields[index] || 'Chưa có thông tin';
       });

@@ -11,10 +11,10 @@
     <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css?v=20261111-heading-sync-1" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/supervision-invitations.css" />
-    <script src="../../assets/js/supervision-entry.js" defer></script>
-    <script src="../../assets/js/supervision-store.js" defer></script>
+    <script src="../../assets/js/supervision-entry.js?v=20261122-shared-login" defer></script>
+    <script src="../../assets/js/supervision-store.js?v=20261122-shared-login" defer></script>
     <script src="../../assets/js/supervision-attachment-ui.js" defer></script>
-    <script src="../../assets/js/supervision-compose.js" defer></script>
+    <script src="../../assets/js/supervision-compose.js?v=20261122-shared-login" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script src="../../assets/js/shared/logout.js" defer></script>
   </head>
@@ -100,14 +100,14 @@
 
         <section class="supervision supervision__compose" aria-labelledby="invitation-title">
           <div class="supervision__panel">
-            <p id="invitation-load" role="status" hidden>Đang tải thông tin giảng viên…</p>
+            <p id="invitation-load" role="status" hidden>Đang kiểm tra đăng nhập và tải thông tin giảng viên…</p>
             <p id="invitation-error" class="supervision__error" role="alert"></p>
             <form id="invitation-form" class="supervision__form" aria-describedby="invitation-note" hidden novalidate>
               <dl class="supervision__recipient">
                 <dt class="supervision__hint">Người nhận</dt>
                 <dd id="invitation-recipient"></dd>
               </dl>
-              <p id="invitation-note" class="supervision__hint">Bản demo dùng tài khoản Nguyễn Minh Anh và lưu lời mời trong trình duyệt. Tiêu đề và lời nhắn đều bắt buộc.</p>
+              <p id="invitation-note" class="supervision__hint">Lời mời được lưu trong trình duyệt này. Tiêu đề và lời nhắn đều bắt buộc.</p>
               <div class="supervision__field">
                 <label class="supervision__label" for="invitation-subject">Tiêu đề</label>
                 <input class="supervision__control" id="invitation-subject" name="subject" type="text" maxlength="120" aria-describedby="invitation-subject-error" required />

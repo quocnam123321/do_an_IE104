@@ -11,7 +11,7 @@
   const destinations = new Map(
     Array.from(demoNotice.querySelectorAll("[data-demo-destination]"), (account) => [
       account.textContent.trim(),
-      account.dataset.demoDestination,
+      { role: account.dataset.websiteRole, destination: account.dataset.demoDestination },
     ]),
   );
   const roleDestinations = new Map(
@@ -29,15 +29,25 @@
 
   form.addEventListener("input", clearError);
   form.addEventListener("reset", clearError);
+  function finishSignIn(role, defaultDestination) {
+    const invitation = window.IE104SupervisionLogin;
+    const destination = invitation ? invitation.destinationFor(role) : defaultDestination;
+    form.reset();
+    if (destination) window.location.assign(destination);
+    else username.focus();
+  }
+
   async function signInWebsiteAccount(email, value) {
     const { getFirebaseAuth, useRecoveryEmulator } = await import("./firebase-client.js?v=20261119-otp");
+    const { getWebsiteRole, setFirebaseSession } = await import("./website-session.js");
     const { auth, sdk } = await getFirebaseAuth(useRecoveryEmulator);
     const { user } = await sdk.signInWithEmailAndPassword(auth, email, value);
     try {
-      const { claims } = await user.getIdTokenResult();
-      const destination = roleDestinations.get(claims.ie104Role);
+      const role = await getWebsiteRole(user);
+      const destination = roleDestinations.get(role);
       if (!destination) throw new Error("Tài khoản chưa được cấp quyền truy cập website.");
-      return destination;
+      setFirebaseSession(useRecoveryEmulator);
+      return { role, destination };
     } catch (failure) {
       await sdk.signOut(auth);
       throw failure;
@@ -68,9 +78,8 @@
       const label = submitButton.textContent;
       submitButton.textContent = "Đang đăng nhập…";
       try {
-        const destination = await signInWebsiteAccount(account, password.value);
-        form.reset();
-        window.location.assign(destination);
+        const { role, destination } = await signInWebsiteAccount(account, password.value);
+        finishSignIn(role, destination);
       } catch (failure) {
         const temporarilyUnavailable = [
           "auth/network-request-failed", "auth/operation-not-allowed", "auth/too-many-requests",
@@ -87,17 +96,29 @@
       return;
     }
 
-    const destination = destinations.get(account);
-    if (!destination || password.value !== demoPassword) {
+    const demo = destinations.get(account);
+    if (!demo || password.value !== demoPassword) {
       username.setAttribute("aria-invalid", "true");
       password.setAttribute("aria-invalid", "true");
       error.textContent = "Tài khoản hoặc mật khẩu không đúng. Vui lòng kiểm tra thông tin mẫu.";
-      (destination ? password : username).focus();
+      (demo ? password : username).focus();
       return;
     }
 
-    form.reset();
-    window.location.assign(destination);
+    submitButton.disabled = true;
+    form.setAttribute("aria-busy", "true");
+    try {
+      if (location.protocol !== "file:") {
+        const { setDemoRole } = await import("./website-session.js");
+        setDemoRole(demo.role);
+      }
+      finishSignIn(demo.role, demo.destination);
+    } catch {
+      error.textContent = "Không lưu được phiên đăng nhập mẫu. Hãy kiểm tra quyền lưu trữ của trình duyệt.";
+    } finally {
+      submitButton.disabled = false;
+      form.removeAttribute("aria-busy");
+    }
   });
 
   submitButton.disabled = false;

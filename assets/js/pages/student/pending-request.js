@@ -175,6 +175,7 @@
       const outline = record.outline;
       const fields = {
         ...record,
+        courseLabel: app.ui.studentCourseLabel(record, true),
         englishTitle: outline?.englishTitle,
         semester: record.semester && `Học kỳ ${['he', 'summer'].includes(record.semester) ? '3' : record.semester}`,
         academicYear: record.academicYear?.replace(/\s*[-–]\s*/, ' – '),

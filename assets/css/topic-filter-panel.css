@@ -231,6 +231,55 @@
   color: var(--color-muted-foreground);
   font-size: var(--text-sm);
 }
+
+.teacher-topic-list-page .topic-results__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-4);
+}
+
+.topic-list-empty {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: var(--space-4);
+  min-height: 18rem;
+  padding: var(--space-6);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  background: var(--color-surface);
+  text-align: center;
+}
+
+.topic-list-empty h3 {
+  color: var(--color-heading);
+  font-size: var(--font-size-section-title);
+}
+
+.topic-list-empty p {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+}
+
+.topic-list-empty button {
+  min-height: var(--control-min-height);
+  padding: .625rem var(--space-4);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-foreground);
+  font-size: var(--font-size-secondary);
+  font-weight: var(--weight-medium);
+  line-height: 1.5;
+}
+
+.topic-list-empty button:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
 .topic-list__status[data-empty] {
   flex-basis: 100%;
   margin-block-start: var(--space-2);

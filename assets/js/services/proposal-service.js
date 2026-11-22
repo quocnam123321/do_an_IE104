@@ -136,7 +136,7 @@
     const pending = app.storage.readProposals().filter(record => studentOwns(record) && !(record.status === 'da-duyet' && approved)).map(record => ({
       id: record.id, requestId: record.id, title: record.title,
       type: record.type === 'khoa-luan' ? 'khoa-luan' : 'do-an', typeLabel: record.typeLabel,
-      courseId: record.courseId, semester: record.semester,
+      courseId: record.courseId, courseLabel: record.courseLabel, semester: record.semester,
       academicYear: record.academicYear, lecturer: record.supervisorName,
       lecturerLabel: 'Giảng viên nhận đề xuất', groupName: 'Chưa xác nhận',
       status: record.status === 'da-duyet' ? 'dang-thuc-hien' : record.status, statusLabel: record.status === 'da-duyet' ? 'Đang thực hiện' : labels[record.status], requestStatusLabel: labels[record.status], feedback: record.decision?.reason || '', createdAt: record.createdAt,

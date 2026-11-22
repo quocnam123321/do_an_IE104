@@ -9,9 +9,9 @@
     return;
   }
 
-  const emailDomains = new Map(
-    Array.from(document.querySelectorAll("[data-uit-email-domain][data-demo-destination]"), (account) => [
-      account.dataset.uitEmailDomain,
+  const destinations = new Map(
+    Array.from(document.querySelectorAll("[data-website-role][data-demo-destination]"), (account) => [
+      account.dataset.websiteRole,
       account.dataset.demoDestination,
     ]),
   );
@@ -27,6 +27,7 @@
   try {
     hint.textContent = "Đang kết nối với Firebase…";
     const { getFirebaseAuth } = await import("./firebase-client.js?v=20261119-otp");
+    const { getWebsiteRole, setFirebaseSession } = await import("./website-session.js");
     const { auth, sdk } = await getFirebaseAuth();
     const { GoogleAuthProvider, signInWithPopup, signOut } = sdk;
     const provider = new GoogleAuthProvider();
@@ -41,16 +42,18 @@
 
       try {
         const { user } = await signInWithPopup(auth, provider);
-        const email = (user.email ?? "").trim().toLowerCase();
-        const domain = /^[^@\s]+@([^@\s]+)$/.exec(email)?.[1];
-        const destination = user.emailVerified ? emailDomains.get(domain) : undefined;
+        const role = await getWebsiteRole(user);
+        const destination = destinations.get(role);
         if (!destination) {
           await signOut(auth);
           error.textContent = "Vui lòng sử dụng tài khoản email UIT đã xác minh.";
           return;
         }
 
-        window.location.assign(destination);
+        setFirebaseSession();
+        const invitation = window.IE104SupervisionLogin;
+        const next = invitation ? invitation.destinationFor(role) : destination;
+        if (next) window.location.assign(next);
       } catch (failure) {
         error.textContent = errorMessages.get(failure?.code) ?? "Không thể đăng nhập bằng Google. Vui lòng thử lại.";
       } finally {

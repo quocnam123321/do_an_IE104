@@ -30,11 +30,11 @@ Chưa triển khai chuyển Việt/Anh. Lịch mẫu cố định “hôm nay”
 
 ### Demo Liên hệ xin hướng dẫn
 
-1. Mở [Hướng nghiên cứu](pages/chung/huong-nghien-cuu.html) qua Live Server. Chọn **Liên hệ xin hướng dẫn** và, nếu được chuyển đến Đăng nhập, chọn **Đăng nhập bằng tài khoản mẫu**. Điền và gửi lời mời.
+1. Mở [Hướng nghiên cứu](pages/chung/huong-nghien-cuu.html) qua Live Server. Chọn **Liên hệ xin hướng dẫn**. Nếu chưa đăng nhập bằng tài khoản sinh viên, dùng biểu mẫu đăng nhập chung để tiếp tục đến đúng giảng viên. Điền và gửi lời mời.
 2. Trên tab thứ hai cùng địa chỉ máy chủ, mở [Yêu cầu chờ duyệt → Lời mời hướng dẫn](pages/giang-vien/yeu-cau-cho-duyet.html#loi-moi-huong-dan). Chọn giảng viên đã nhận lời mời và trả lời.
 3. Trên tab sinh viên, xem và trả lời trong [Đề tài của tôi → Lời mời hướng dẫn](pages/sinh-vien/de-tai-cua-toi-sinh-vien.html#loi-moi-huong-dan). Giảng viên có thể **Đồng ý hướng dẫn** hoặc **Từ chối** và kèm lời nhắn. Sau khi đồng ý, sinh viên có thể mở **Tạo đề xuất**. Nếu giảng viên chưa có trong danh mục nhận đề xuất thử, biểu mẫu hiển thị thông tin lời mời để đối chiếu.
 
-Phiên sinh viên mẫu lưu trong tab. Lời mời và phản hồi lưu bằng `localStorage` và đồng bộ giữa các tab cùng nguồn URL. Quyết định kết thúc trao đổi trên lời mời. Việc đồng ý hướng dẫn ghi nhận trong lời mời, còn việc gửi đề xuất chính thức vẫn theo luồng riêng.
+Luồng này dùng chung phiên đăng nhập trong tab. Lời mời và phản hồi lưu bằng `localStorage` và cập nhật giữa các tab cùng nguồn URL. Sinh viên xem lời mời theo tài khoản đang đăng nhập. Quyết định kết thúc trao đổi trên lời mời. Việc đồng ý hướng dẫn ghi nhận trong lời mời, còn việc gửi đề xuất chính thức vẫn theo luồng riêng.
 
 Tab **Lời mời hướng dẫn** cũng mở được từ **Tổng quan** của mỗi vai trò. Sinh viên thấy phản hồi gần nhất. Giảng viên thấy số lời mời demo đang chờ phản hồi.
 

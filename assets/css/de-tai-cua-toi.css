@@ -9,15 +9,6 @@
 .pending-proposal-page .pending-proposal-notice { overflow-wrap: anywhere; white-space: pre-wrap; }
 
 .my-topics-page .topic-card__status--withdrawn { background: var(--color-neutral-bg); color: var(--color-muted-foreground); }
-.requests { margin-top: var(--space-6); padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); }
-.requests > summary { color: var(--color-heading); font-weight: 600; cursor: pointer; }
-.requests > p { margin-block: var(--space-4); color: var(--color-muted-foreground); }
-.request-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); margin: 0; padding: 0; list-style: none; }
-.request-card { height: 100%; padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-control); }
-.request-card h3 { margin-bottom: var(--space-3); font-size: 1rem; }
-.request-card__meta { display: grid; gap: var(--space-1); margin-bottom: var(--space-3); font-size: var(--font-size-secondary); }
-.request-card__meta dt { color: var(--color-muted-foreground); }
-.request-card__meta dd { margin: 0 0 var(--space-2); overflow-wrap: anywhere; }
 .pending-proposal-header { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: var(--space-3); }
 .pending-proposal-header__title { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); }
 .pending-proposal-header__title h1 { font-size: var(--font-size-page-title); }
@@ -95,7 +86,6 @@
 .pending-withdraw-dialog button { min-height: var(--control-min-height); padding: var(--space-2) var(--space-3); border: 1px solid var(--color-control-border); border-radius: var(--radius-control); background: var(--color-surface); font: inherit; cursor: pointer; }
 .pending-withdraw-dialog button:disabled { color: var(--color-muted-foreground); background: var(--color-neutral-bg); cursor: not-allowed; }
 @media (max-width: 47.99rem) {
- .request-list { grid-template-columns: minmax(0, 1fr); }
  .pending-proposal-header { grid-template-columns: minmax(0, 1fr); }
  .pending-proposal-header__actions { grid-row: 3; }
  .pending-proposal-header__title h1 { font-size: 1.5rem; }

@@ -1,7 +1,6 @@
 (() => {
   'use strict';
 
-  const sessionKey = 'ie104.supervision.student-session.v1';
   const teacherIdPattern = /^giang-vien-\d+$/;
   const pages = new URL('../../pages/', document.currentScript.src);
   const directory = new URL('chung/huong-nghien-cuu.html', pages);
@@ -41,17 +40,16 @@
     return withQuery('chung/dang-nhap.html', 'loi-moi', 'da-gui');
   }
 
-  function hasStudentSession() {
-    try {
-      return sessionStorage.getItem(sessionKey) === 'active';
-    } catch {
-      return false;
-    }
-  }
-
-  function startStudentSession() {
-    sessionStorage.setItem(sessionKey, 'active');
-    if (!hasStudentSession()) throw new Error('Phiên sinh viên mẫu chưa khả dụng.');
+  async function getStudent() {
+    const { getWebsiteSession } = await import('./website-session.js');
+    const session = await getWebsiteSession();
+    if (session?.role !== 'student') return null;
+    if (!session.user) return window.IE104Supervision.student;
+    const { uid, displayName, email } = session.user;
+    return {
+      id: `firebase:${uid}`,
+      name: displayName?.trim() || email || 'Sinh viên',
+    };
   }
 
   let directoryRequest;
@@ -105,7 +103,7 @@
   }
 
   window.IE104SupervisionEntry = Object.freeze({
-    getComposeUrl, getLoginUrl, getInboxLoginUrl, hasStudentSession, startStudentSession, getTeacher, getTeachers,
+    getComposeUrl, getLoginUrl, getInboxLoginUrl, getStudent, getTeacher, getTeachers,
     normalizeSearch, departmentLabel,
   });
 })();

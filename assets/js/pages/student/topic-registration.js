@@ -13,8 +13,9 @@
     article.setAttribute('aria-labelledby', title.id);
     article.dataset.topicId = topic.id;
     if (topic.source === 'lecturer-created') article.dataset.publishedTopic = topic.id;
-    values[0].textContent = `${topic.displayId || topic.code || topic.id} - ${topic.typeLabel}`;
-    values[1].textContent = topic.courseLabel;
+    const displayId = app.services.studentTopicCodes.get(topic);
+    values[0].textContent = displayId || 'Chưa có mã đề tài';
+    values[1].textContent = app.ui.studentCourseLabel(topic);
     values[2].textContent = `Học kỳ ${topic.semester === 'he' ? 'hè' : topic.semester}`;
     values[3].textContent = topic.lecturer;
     link.setAttribute('href', topic.detailUrl);
