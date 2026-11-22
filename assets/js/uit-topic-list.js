@@ -8,6 +8,7 @@
   const pagination = results.querySelector('.pagination');
   if (!status || !list || !pagination) return;
   const catalog = window.UITLecturerCatalog;
+  const isSupervised = document.body.dataset.lecturerList === 'supervised';
   function refreshCodes() { for (const card of list.querySelectorAll('.topic-card:not([data-approved-proposal])')) {
     const record = catalog?.records.find(topic => topic.id === card.dataset.topicId);
     if (!record) continue;
@@ -30,7 +31,12 @@
   let pageEnterHandler = null;
   const normalize = value => String(value || '').toLocaleLowerCase('vi').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
   const collator = new Intl.Collator('vi', { numeric: true });
-  const orders = { 'name-asc': (a, b) => collator.compare(a.title, b.title), newest: (a, b) => b.date.localeCompare(a.date), oldest: (a, b) => a.date.localeCompare(b.date) };
+  const byDate = direction => (a, b) => {
+    if (!isSupervised) return direction * a.date.localeCompare(b.date);
+    if (Number.isNaN(a.date) || Number.isNaN(b.date)) return Number.isNaN(a.date) - Number.isNaN(b.date);
+    return direction * (a.date - b.date);
+  };
+  const orders = { 'name-asc': (a, b) => collator.compare(a.title, b.title), newest: byDate(-1), oldest: byDate(1) };
   const pageSize = 5;
   const originalOrder = new WeakMap(); let nextOrder = 0;
   const requested = Number(new URLSearchParams(location.search).get('page'));
@@ -106,7 +112,8 @@
     const topics = Array.from(list.children, item => {
       if (!originalOrder.has(item)) originalOrder.set(item, nextOrder++);
       const card = item.matches('.topic-card') ? item : item.querySelector('.topic-card');
-      return { item, card, title: card.querySelector('.topic-card__title').textContent.trim(), date: card.dataset.createdAt || card.querySelector('time[datetime]')?.dateTime || '', terms: normalize([card.querySelector('.topic-card__title').textContent, card.dataset.topicId, ...Array.from(card.querySelectorAll('[data-topic-search-term]'), node => node.textContent)].join(' ')) };
+      const date = isSupervised ? Date.parse(card.dataset.sortDate) : card.dataset.createdAt || card.querySelector('time[datetime]')?.dateTime || '';
+      return { item, card, title: card.querySelector('.topic-card__title').textContent.trim(), date, terms: normalize([card.querySelector('.topic-card__title').textContent, card.dataset.topicId, ...Array.from(card.querySelectorAll('[data-topic-search-term]'), node => node.textContent)].join(' ')) };
     });
     topics.sort((a, b) => originalOrder.get(a.item) - originalOrder.get(b.item));
     const unique = window.IE104?.topicIdentity?.uniqueTitles(topics) || topics;

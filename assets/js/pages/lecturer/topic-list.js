@@ -37,7 +37,10 @@
         card = item.matches('.topic-card') ? item : item.querySelector('.topic-card');
         container.append(item);
       }
-      if (existing && topic.sourceRecord && !topic.demo && !topic.revision && kind === 'supervised') return;
+      if (kind === 'supervised') {
+        card.dataset.sortDate = topic.startsAt || topic.sourceRecord?.supervision?.milestones?.[0] || topic.createdAt || '';
+        if (existing && topic.sourceRecord && !topic.demo && !topic.revision) return;
+      }
       card.dataset.topicId = topic.id;
       const link = card.querySelector('.topic-card__detail-link');
       const title = card.querySelector('.topic-card__title');

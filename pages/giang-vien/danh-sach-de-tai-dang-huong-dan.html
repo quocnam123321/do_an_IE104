@@ -20,7 +20,7 @@
     />
     <link
       rel="stylesheet"
-      href="../../assets/css/teacher-supervised-topics.css?v=20261102-filter-borderless-6"
+      href="../../assets/css/teacher-supervised-topics.css?v=20261122-topic-sort"
     />
     <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css" />
     <script src="../../assets/js/nav-indicator.js" defer=""></script>
@@ -71,14 +71,15 @@
     ></script>
     <script src="../../assets/js/services/teaching-service.js" defer></script>
     <script
-      src="../../assets/js/uit-teacher-approved-proposals.js"
+      src="../../assets/js/uit-teacher-approved-proposals.js?v=20261122-topic-sort"
       defer
     ></script>
     <script
-      src="../../assets/js/pages/lecturer/topic-list.js?v=20261121-demo-topics"
+      src="../../assets/js/pages/lecturer/topic-list.js?v=20261122-topic-sort"
       defer
     ></script>
-    <script src="../../assets/js/uit-topic-list.js" defer></script>
+    <script src="../../assets/js/uit-topic-list.js?v=20261122-topic-sort" defer></script>
+    <script src="../../assets/js/pages/lecturer/topic-sort.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   </head>
 
@@ -680,15 +681,15 @@
                       </label>
                     </div>
                     <div class="topic-filters__option">
-                      <label for="course-software">
+                      <label for="course-ie101">
                         <input
                           type="checkbox"
-                          id="course-software"
+                          id="course-ie101"
                           name="course"
-                          value="software"
+                          value="IE101"
                         />
                         <span class="topic-filters__option-text"
-                          >Công nghệ phần mềm</span
+                          >Cơ sở hạ tầng công nghệ thông tin</span
                         >
                       </label>
                     </div>
@@ -723,28 +724,28 @@
                       </summary>
                       <div class="topic-filters__more-options">
                         <div class="topic-filters__option">
-                          <label for="course-ecommerce">
+                          <label for="course-ie103">
                             <input
                               type="checkbox"
-                              id="course-ecommerce"
+                              id="course-ie103"
                               name="course"
-                              value="thuong-mai-dien-tu"
+                              value="IE103"
                             />
                             <span class="topic-filters__option-text"
-                              >Thương mại điện tử</span
+                              >Quản lý thông tin</span
                             >
                           </label>
                         </div>
                         <div class="topic-filters__option">
-                          <label for="course-it-project">
+                          <label for="course-ie105">
                             <input
                               type="checkbox"
-                              id="course-it-project"
+                              id="course-ie105"
                               name="course"
-                              value="quan-ly-du-an-cntt"
+                              value="IE105"
                             />
                             <span class="topic-filters__option-text"
-                              >Quản lý dự án công nghệ thông tin</span
+                              >Nhập môn bảo đảm và an ninh thông tin</span
                             >
                           </label>
                         </div>
@@ -792,17 +793,27 @@
               </div>
 
               <div class="topic-toolbar__sort">
-                <label class="visually-hidden" for="topic-sort">Sắp xếp</label>
+                <label class="visually-hidden" for="topic-sort">Sắp xếp theo thời gian hoặc tên đề tài</label>
                 <select
                   id="topic-sort"
                   name="topic_sort"
                   form="topic-filter-form"
                 >
-                  <option value="default" selected="">
-                    Sắp xếp: Thứ tự mặc định
-                  </option>
-                  <option value="name-asc">Sắp xếp: Tên A–Z</option>
+                  <option value="newest" selected>Mới nhất</option>
+                  <option value="oldest">Cũ nhất</option>
+                  <option value="name-asc">Tên A–Z</option>
                 </select>
+                <button
+                  class="topic-sort-trigger"
+                  type="button"
+                  id="topic-sort-trigger"
+                  aria-haspopup="menu"
+                  aria-expanded="false"
+                  aria-controls="topic-sort-options"
+                  hidden
+                >
+                  Sắp xếp: <span data-topic-sort-value></span>
+                </button>
                 <svg
                   class="topic-toolbar__sort-icon"
                   viewBox="0 0 24 24"
@@ -815,6 +826,13 @@
                 >
                   <path d="m6 9 6 6 6-6"></path>
                 </svg>
+                <div
+                  class="topic-sort-options"
+                  id="topic-sort-options"
+                  role="menu"
+                  aria-labelledby="topic-sort-trigger"
+                  hidden
+                ></div>
               </div>
             </div>
 

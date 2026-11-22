@@ -373,7 +373,7 @@
   min-width: 0;
 }
 
-.topic-toolbar__sort select {
+.topic-toolbar__sort :is(select, .topic-sort-trigger) {
   appearance: none;
   -webkit-appearance: none;
   width: 100%;
@@ -389,11 +389,11 @@
   transition: border-color var(--duration-fast) var(--ease-standard);
 }
 
-.topic-toolbar__sort select:hover {
+.topic-toolbar__sort :is(select, .topic-sort-trigger):hover {
   border-color: var(--color-foreground);
 }
 
-.topic-toolbar__sort select:focus-visible {
+.topic-toolbar__sort :is(select, .topic-sort-trigger):focus-visible {
   border-color: var(--color-primary);
 }
 
@@ -406,6 +406,63 @@
   height: 1.125rem;
   color: var(--color-foreground);
   pointer-events: none;
+}
+
+.topic-sort-trigger {
+  text-align: start;
+}
+
+.topic-toolbar__sort .topic-sort-trigger[aria-expanded="true"] {
+  border-color: var(--color-primary);
+}
+
+.topic-sort-trigger[aria-expanded="true"] + .topic-toolbar__sort-icon {
+  transform: translateY(-50%) rotate(180deg);
+  color: var(--color-primary);
+}
+
+.topic-sort-options {
+  position: absolute;
+  z-index: var(--z-dropdown);
+  inset-block-start: 100%;
+  inset-inline: 0;
+  margin-block: var(--space-2);
+  padding: var(--space-1);
+  overflow-y: auto;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--control-radius);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-overlay);
+}
+
+.topic-sort-options[data-above] {
+  inset-block: auto 100%;
+}
+
+.topic-sort-option {
+  display: block;
+  width: 100%;
+  min-block-size: var(--control-min-height);
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--radius-small);
+  background-color: transparent;
+  color: var(--color-neutral-fg);
+  text-align: start;
+}
+
+.topic-sort-option:hover {
+  background-color: var(--color-surface-subtle);
+}
+
+.topic-sort-option[aria-checked="true"] {
+  background-color: var(--color-primary-tint);
+  color: var(--color-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.topic-sort-option:focus-visible {
+  outline-offset: -2px;
 }
 
 /* --------------------------------------------------------------------------
@@ -938,7 +995,7 @@
   .topic-filters__option label,
   .topic-filters__reset,
   .topic-toolbar__search input[type="search"],
-  .topic-toolbar__sort select,
+  .topic-toolbar__sort :is(select, .topic-sort-trigger),
   .topic-card,
   .topic-card__detail-link,
   .topic-card__detail-link svg,

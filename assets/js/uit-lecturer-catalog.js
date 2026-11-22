@@ -13,6 +13,10 @@ window.UITLecturerCatalog = {
     'phan-tich-thiet-ke-he-thong': { code: 'IS201', label: 'Phân tích thiết kế hệ thống', faculty: 'HTTT' },
     'thuong-mai-dien-tu': { code: 'IS334', label: 'Thương mại điện tử', faculty: 'HTTT' },
     'quan-ly-du-an-cntt': { code: 'IS208', label: 'Quản lý dự án công nghệ thông tin', faculty: 'HTTT' },
+    // IE101, IE103, IE105: https://student.uit.edu.vn/danh-muc-mon-hoc-dai-hoc
+    IE101: { code: 'IE101', label: 'Cơ sở hạ tầng công nghệ thông tin', faculty: 'ISE' },
+    IE103: { code: 'IE103', label: 'Quản lý thông tin', faculty: 'ISE' },
+    IE105: { code: 'IE105', label: 'Nhập môn bảo đảm và an ninh thông tin', faculty: 'ISE' },
   },
   typeCodes: { course: 'ĐAMH', graduation: 'ĐATN', thesis: 'KLTN' },
   facultyCode(value) {
@@ -1289,7 +1293,7 @@ window.UITLecturerCatalog = {
       features: ['danh mục hoạt động tình nguyện', 'tìm hoạt động theo kỹ năng', 'lịch ca tham gia', 'đăng ký và hủy tham gia', 'kiểm tra số chỗ còn lại', 'phát hiện ca trùng lịch', 'xét duyệt danh sách tham gia', 'điểm danh theo ca', 'ghi nhận số giờ đóng góp', 'báo cáo hoạt động theo tháng'],
     },
     {
-      id: 'ISEDAMH-001', title: 'Website đặt chỗ phòng tự học theo khung giờ',
+      id: 'ISEDAMH-001', title: 'Website đặt chỗ phòng tự học theo khung giờ', createdOnly: true,
       semester: '1', academicYear: '2026–2027', course: 'web', start: '2026-09-07', group: 'Nhóm 16',
       authors: ['Nguyễn Gia Huy', 'Đỗ Khánh Linh'], studentIds: ['23525005', '23525006'],
       description: 'Xây dựng giao diện website tra cứu phòng tự học và đặt chỗ theo khung giờ bằng HTML, CSS và JavaScript. Website hỗ trợ xem lịch phòng, đăng ký chỗ và hủy lịch đặt.',
@@ -1350,9 +1354,9 @@ window.UITLecturerCatalog = {
     date.setUTCDate(date.getUTCDate() + days);
     return date.toISOString().slice(0, 10);
   };
-  samples.forEach((sample, index) => {
+  samples.forEach(({ createdOnly, ...sample }, index) => {
     const graduation = sample.id.startsWith('ISEDATN');
-    const supervised = index < 7;
+    const supervised = index < 7 && !createdOnly;
     const record = {
       ...sample, code: sample.id, demo: true, source: 'illustrative',
       type: graduation ? 'Đồ án tốt nghiệp' : 'Đồ án môn học', topicType: graduation ? 'graduation' : 'course',

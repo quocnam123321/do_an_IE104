@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1">
     <link rel="stylesheet" href="../../assets/css/components.css">
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
-    <link rel="stylesheet" href="../../assets/css/teacher-supervised-topics.css?v=20261102-filter-borderless-6">
+    <link rel="stylesheet" href="../../assets/css/teacher-supervised-topics.css?v=20261122-topic-sort">
     <link rel="stylesheet" href="../../assets/css/teacher-created-topics.css?v=20261121-uit-records">
     <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css">
     <script src="../../assets/js/nav-indicator.js" defer=""></script>
@@ -38,7 +38,8 @@
     <script src="../../assets/js/services/project-progress-service.js" defer></script>
     <script src="../../assets/js/services/teaching-service.js" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-list.js?v=20261121-uit-records" defer></script>
-    <script src="../../assets/js/uit-topic-list.js?v=20261121-uit-records" defer></script>
+    <script src="../../assets/js/uit-topic-list.js?v=20261122-topic-sort" defer></script>
+    <script src="../../assets/js/pages/lecturer/topic-sort.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   </head>
 
@@ -339,9 +340,9 @@
     </label>
     </div>
     <div class="topic-filters__option">
-    <label for="course-software">
-    <input type="checkbox" id="course-software" name="course" value="software">
-    <span class="topic-filters__option-text">Công nghệ phần mềm</span>
+    <label for="course-ie101">
+    <input type="checkbox" id="course-ie101" name="course" value="IE101">
+    <span class="topic-filters__option-text">Cơ sở hạ tầng công nghệ thông tin</span>
     </label>
     </div>
     <div class="topic-filters__option">
@@ -359,15 +360,15 @@
       </summary>
       <div class="topic-filters__more-options">
         <div class="topic-filters__option">
-        <label for="course-ecommerce">
-        <input type="checkbox" id="course-ecommerce" name="course" value="thuong-mai-dien-tu">
-        <span class="topic-filters__option-text">Thương mại điện tử</span>
+        <label for="course-ie103">
+        <input type="checkbox" id="course-ie103" name="course" value="IE103">
+        <span class="topic-filters__option-text">Quản lý thông tin</span>
         </label>
         </div>
         <div class="topic-filters__option">
-        <label for="course-it-project">
-        <input type="checkbox" id="course-it-project" name="course" value="quan-ly-du-an-cntt">
-        <span class="topic-filters__option-text">Quản lý dự án công nghệ thông tin</span>
+        <label for="course-ie105">
+        <input type="checkbox" id="course-ie105" name="course" value="IE105">
+        <span class="topic-filters__option-text">Nhập môn bảo đảm và an ninh thông tin</span>
         </label>
         </div>
       </div>
@@ -388,11 +389,16 @@
               <div class="topic-toolbar__sort">
                 <label class="visually-hidden" for="topic-sort">Sắp xếp theo ngày tạo hoặc tên đề tài</label>
                 <select id="topic-sort" name="topic_sort" form="topic-filter-form">
-                  <option value="newest" selected="">Sắp xếp: Mới nhất</option>
-                  <option value="oldest">Sắp xếp: Cũ nhất</option>
-                  <option value="name-asc">Sắp xếp: Tên A–Z</option>
+                  <option value="newest" selected>Mới nhất</option>
+                  <option value="oldest">Cũ nhất</option>
+                  <option value="name-asc">Tên A–Z</option>
                 </select>
+                <button class="topic-sort-trigger" type="button" id="topic-sort-trigger"
+                        aria-haspopup="menu" aria-expanded="false" aria-controls="topic-sort-options" hidden>
+                  Sắp xếp: <span data-topic-sort-value></span>
+                </button>
                 <svg class="topic-toolbar__sort-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+                <div class="topic-sort-options" id="topic-sort-options" role="menu" aria-labelledby="topic-sort-trigger" hidden></div>
               </div>
             </div>
             <header class="topic-results__header">

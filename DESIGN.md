@@ -295,6 +295,8 @@ Theo xác nhận của người dùng, phần GV dùng giao diện 1ddf0d3 và c
 
 Ngày 21/11/2026, danh sách Đề tài đã tạo hiện tên tác giả, khóa hoặc đợt bảo vệ và giảng viên hướng dẫn theo 10 hồ sơ UIT trong Git. Các thẻ này dùng nhãn Hồ sơ UIT. Trang chi tiết dùng lại bản `75bca90`, gồm khung ảnh 16:9 và luồng đề tài lưu trên trình duyệt.
 
+Hai tab Quản lý đề tài của giảng viên dùng chung menu Sắp xếp với ba lựa chọn Mới nhất, Cũ nhất và Tên A–Z. Menu mở đè lên nội dung, mục đã chọn có nền xanh nhạt và chữ xanh. Tab Đề tài đang hướng dẫn ưu tiên ngày bắt đầu thực hiện, dùng ngày duyệt hoặc ngày ghi nhận nếu có và xếp hồ sơ thiếu ngày ở cuối khi sắp xếp theo thời gian.
+
 ### Tổng quan chi tiết đề tài sinh viên — 21/11/2026
 
 - Tab Tổng quan của Đề tài của tôi dùng chung khung ảnh tóm tắt 16:9, bố cục thẻ, danh sách mục tiêu và kết quả, cách hiển thị thành viên và mốc thời gian với trang Đề tài đang hướng dẫn. Khối Yêu cầu thực hiện xuất hiện khi đề tài đăng ký có dữ liệu tương ứng. Khối Giảng viên hướng dẫn đặt sau Mốc thời gian chính. Các thao tác nhóm và lời mời hiển thị theo quyền hiện có của sinh viên.

@@ -14,6 +14,7 @@
     const byId = new Map(projects.map(({ project, role }) => [project.id, {
       id: project.id, topicId: project.topicId || project.id, projectId: project.id,
       title: project.title, topicType: project.type || ({ 'Đồ án môn học': 'do-an-mon-hoc', 'Đồ án tốt nghiệp': 'do-an-tot-nghiep', 'Khóa luận tốt nghiệp': 'khoa-luan' })[project.typeLabel], course: project.courseId, courseLabel: project.courseLabel,
+      sortDate: project.startsAt || project.createdAt,
       semester: project.semester, academicYear: project.academicYear, groupName: project.groupName,
       supervisionRole: role === 'secondary' ? 'dong-huong-dan' : 'huong-dan-chinh',
       supervisionRoleLabel: role === 'secondary' ? 'Đồng hướng dẫn' : 'Hướng dẫn chính',
@@ -25,6 +26,7 @@
       card.hidden = false;
       card.dataset.approvedProposal = record.id;
       card.dataset.topicId = record.topicId;
+      card.dataset.sortDate = record.sortDate || record.decidedAt || '';
       card.dataset.status = record.topicStatus;
       card.dataset.topicType = { 'do-an-mon-hoc': 'course', 'do-an-tot-nghiep': 'graduation', 'khoa-luan': 'thesis', 'luan-van-thac-si': 'master', 'do-an': 'course' }[record.topicType] || '';
       card.dataset.role = record.supervisionRole === 'dong-huong-dan' ? 'secondary' : 'primary';
