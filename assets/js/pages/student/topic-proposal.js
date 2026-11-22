@@ -6,7 +6,11 @@
   if (!form || !service || !dialog) return;
   const fields = Object.fromEntries(Object.entries({ title: 'topic-name', type: 'topic-type', courseId: 'course', semester: 'semester', academicYear: 'academic-year', description: 'topic-description', objectives: 'topic-objectives', outcomes: 'expected-results', supervisorId: 'add-supervisor', attachment: 'proposal-attachment' }).map(([key, id]) => [key, document.getElementById(id)]));
   const outline = globalThis.IE104.ui?.proposalOutline;
-  const fieldFor = key => fields[key] || outline?.getField(key);
+  const pickers = globalThis.IE104.ui?.proposalPickers;
+  const fieldFor = key => {
+    const field = key ? fields[key] || outline?.getField(key) : undefined;
+    return pickers?.fieldFor(field) || field;
+  };
   const fixedCourse = document.getElementById('fixed-course');
   const status = document.getElementById('course-status');
   const supervisorId = document.getElementById('supervisor-id');
@@ -19,6 +23,8 @@
   const error = document.getElementById('proposal-error');
   const reviewError = dialog.querySelector('[data-proposal-error]');
   const result = document.getElementById('proposal-result');
+  const successDialog = document.getElementById('proposal-success-dialog');
+  const successLink = document.getElementById('view-saved-proposal');
   const semesterNote = document.getElementById('proposal-legacy-semester');
   if (form.querySelector('[data-proposal-outline]') && (!outline || !globalThis.IE104.shared?.proposalOutline)) {
     error.textContent = 'Chưa tải đủ biểu mẫu đề cương. Hãy tải lại trang trước khi gửi.';
@@ -37,13 +43,16 @@
   let original = null;
   let retainedAttachment = null;
   let retainedAttachmentName = '';
+  const attachmentPicker = fields.attachment.parentElement;
   const attachmentStatus = document.getElementById('proposal-attachment-status');
-  const removeAttachment = document.querySelector('[data-remove-proposal-attachment]');
+  const attachmentSelection = attachmentStatus.parentElement;
+  const removeAttachment = attachmentSelection.querySelector('[data-remove-proposal-attachment]');
 
   function showAttachment() {
     const name = (fields.attachment.files[0] || retainedAttachment)?.name || retainedAttachmentName;
-    attachmentStatus.textContent = name ? `${name} - chỉ lưu thông tin tệp` : 'Chưa chọn tệp';
-    removeAttachment.hidden = !name;
+    attachmentPicker.hidden = Boolean(name);
+    attachmentSelection.hidden = !name;
+    attachmentStatus.textContent = name;
   }
 
   function fillOriginal() {
@@ -52,8 +61,9 @@
     Object.entries(fields).forEach(([key, field]) => {
       if (!['supervisorId', 'attachment'].includes(key)) field.value = original[key] ?? '';
     });
+    pickers?.syncSelects();
     supervisorId.value = original.supervisorId;
-    document.getElementById('selected-supervisor').textContent = original.supervisorName;
+    supervisorId.dispatchEvent(new CustomEvent('change', { detail: { name: original.supervisorName } }));
     fields.attachment.value = '';
     retainedAttachment = original.attachment;
     retainedAttachmentName = original.attachmentName || '';
@@ -68,17 +78,7 @@
       fields.semester.prepend(placeholder);
       semesterNote.textContent = original.semester ? `Học kỳ đã lưu là ${original.semester}. Vui lòng chọn học kỳ tương ứng để cập nhật.` : 'Vui lòng chọn học kỳ để cập nhật.';
       semesterNote.hidden = false;
-      fields.semester.setAttribute('aria-describedby', semesterNote.id);
-    }
-    if (!Object.hasOwn(service.catalog.supervisors, original.supervisorId)) {
-      const option = document.querySelector('#supervisor-list .supervisor-dialog__option').cloneNode(true);
-      const radio = option.querySelector('input');
-      radio.id = 'supervisor-option-legacy';
-      radio.value = original.supervisorId;
-      option.htmlFor = radio.id;
-      option.querySelector('.supervisor-dialog__name').textContent = original.supervisorName;
-      option.querySelector('.supervisor-dialog__specialty').textContent = 'Giảng viên đang nhận đề xuất';
-      document.getElementById('supervisor-list').prepend(option);
+      fieldFor('semester').setAttribute('aria-describedby', semesterNote.id);
     }
   }
 
@@ -100,16 +100,19 @@
     fixedCourse.disabled = !fixed;
     courseIsFixed = fixed;
     outline?.setType(type);
+    pickers?.syncSelects();
+  }
+
+  function clearFieldError(field) {
+    field.removeAttribute('aria-invalid');
+    const descriptions = (field.getAttribute('aria-describedby') || '').split(' ').filter(id => id && !id.startsWith('proposal-field-error-'));
+    if (descriptions.length) field.setAttribute('aria-describedby', descriptions.join(' '));
+    else field.removeAttribute('aria-describedby');
   }
 
   function clearErrors() {
     form.querySelectorAll('[data-proposal-field-error]').forEach(node => node.remove());
-    form.querySelectorAll('input, select, textarea, [tabindex="-1"]').forEach(field => {
-      field.removeAttribute('aria-invalid');
-      const descriptions = (field.getAttribute('aria-describedby') || '').split(' ').filter(id => id && !id.startsWith('proposal-field-error-'));
-      if (descriptions.length) field.setAttribute('aria-describedby', descriptions.join(' '));
-      else field.removeAttribute('aria-describedby');
-    });
+    form.querySelectorAll('[aria-invalid="true"]').forEach(clearFieldError);
     error.hidden = true;
   }
 
@@ -118,10 +121,14 @@
   }
 
   function showErrors(errors) {
-    error.textContent = 'Vui lòng kiểm tra các thông tin được đánh dấu bên dưới.';
+    const summary = [];
     error.hidden = false;
     errors.forEach(({ field: key, message }) => {
-      const field = fieldFor(key) || document.getElementById('proposal-members');
+      const field = fieldFor(key);
+      if (!field) {
+        summary.push(message);
+        return;
+      }
       field.closest('details')?.setAttribute('open', '');
       const note = document.createElement('p');
       note.id = `proposal-field-error-${key}`;
@@ -132,13 +139,14 @@
       field.setAttribute('aria-invalid', 'true');
       field.setAttribute('aria-describedby', `${field.getAttribute('aria-describedby') || ''} ${note.id}`.trim());
     });
+    error.textContent = summary.join(' ') || 'Vui lòng kiểm tra các thông tin được đánh dấu bên dưới.';
     (fieldFor(errors[0].field) || error).focus();
   }
 
   function review(value) {
     const list = dialog.querySelector('[data-proposal-review]');
     list.replaceChildren();
-    const catalog = legacy ? requests.proposalCatalog(legacy) : service.catalog;
+    const catalog = legacy ? requests.proposalCatalog(legacy) : service.catalogFor(original);
     const type = catalog.types[value.type];
     const attachment = value.attachment ? `${value.attachment.name} (${value.attachment.size} byte)` : retainedAttachmentName;
     const rows = [['Tên đề tài', value.title], ['Loại đề tài', type.label], ['Môn học', type.courses[value.courseId]], ['Học kỳ - Năm học', `Học kỳ ${value.semester === 'he' ? '3' : value.semester} • ${value.academicYear}`], ['Giảng viên', catalog.supervisors[value.supervisorId]], ['Mô tả', value.description], ['Mục tiêu', value.objectives], ['Kết quả dự kiến', value.outcomes], ['Tài liệu', attachment ? `${attachment}. Chỉ lưu thông tin tệp.` : 'Không đính kèm']];
@@ -164,6 +172,7 @@
     const oldNav = document.querySelector('.main-nav__link[aria-current="page"]');
     const topicsNav = document.querySelector('.main-nav__link[href="de-tai-cua-toi-sinh-vien.html"]');
     back.href = cancel.href = service.detailUrl(editId);
+    cancel.hidden = false;
     back.lastChild.textContent = 'Quay lại chi tiết đề tài';
     breadcrumb.href = 'de-tai-cua-toi-sinh-vien.html';
     breadcrumb.textContent = 'Đề tài của tôi';
@@ -184,6 +193,7 @@
       document.querySelector('.breadcrumb [aria-current="page"]')?.replaceChildren(document.createTextNode('Chỉnh sửa đề xuất'));
       document.querySelector('.page-header__description').textContent = 'Cập nhật thông tin đề xuất trong bản demo trên trình duyệt này.';
       submit.textContent = 'Lưu thay đổi';
+      submit.setAttribute('aria-controls', dialog.id);
       fillOriginal();
     } catch (failure) {
       error.textContent = failure.message;
@@ -195,8 +205,16 @@
   }
   form.dataset.proposalReady = 'true';
   fields.type.addEventListener('change', updateCourse);
+  supervisorId.addEventListener('change', () => {
+    const note = document.getElementById('proposal-field-error-supervisorId');
+    if (!supervisorId.value || !note) return;
+    note.remove();
+    clearFieldError(fields.supervisorId);
+    if (!form.querySelector('[data-proposal-field-error]')) error.hidden = true;
+  });
   fields.attachment.addEventListener('change', () => {
     showAttachment();
+    if (!attachmentSelection.hidden) removeAttachment.focus();
   });
   removeAttachment.addEventListener('click', () => {
     fields.attachment.value = '';
@@ -213,24 +231,36 @@
     outline?.fill();
     showAttachment();
     supervisorId.value = '';
-    document.getElementById('selected-supervisor').textContent = 'Chưa chọn giảng viên';
+    supervisorId.dispatchEvent(new Event('change'));
   }));
-  window.addEventListener('pageshow', () => { if (!saved) updateCourse(); });
+  window.addEventListener('pageshow', () => {
+    if (saved) return;
+    updateCourse();
+    showAttachment();
+  });
   form.addEventListener('submit', event => {
     event.preventDefault();
     if (saved || saving) return;
     clearErrors();
     const input = readInput();
-    const checked = legacy ? requests.validateProposal(input, legacy) : service.validate(input);
+    let checked;
+    try {
+      checked = legacy ? requests.validateProposal(input, legacy) : service.validate(input, original);
+    } catch (failure) {
+      showErrors([{ message: failure.message }]);
+      return;
+    }
     if (checked.errors.length) { showErrors(checked.errors); return; }
+    if (!editing) {
+      void saveProposal(checked.value);
+      return;
+    }
     const sendingAgain = event.submitter === resubmit;
     pending = { value: checked.value, submitter: event.submitter, sendingAgain };
-    if (editing) {
-      confirmTitle.textContent = sendingAgain ? 'Xác nhận gửi lại đề xuất' : 'Xác nhận chỉnh sửa';
-      confirmNote.textContent = sendingAgain ? 'Đề xuất sẽ chuyển về Chờ duyệt trong bản demo trên trình duyệt này.'
-        : 'Thay đổi sẽ được lưu trong bản demo trên trình duyệt này.';
-      confirm.textContent = sendingAgain ? 'Lưu và gửi lại' : 'Lưu thay đổi';
-    }
+    confirmTitle.textContent = sendingAgain ? 'Xác nhận gửi lại đề xuất' : 'Xác nhận chỉnh sửa';
+    confirmNote.textContent = sendingAgain ? 'Đề xuất sẽ chuyển về Chờ duyệt trong bản demo trên trình duyệt này.'
+      : 'Thay đổi sẽ được lưu trong bản demo trên trình duyệt này.';
+    confirm.textContent = sendingAgain ? 'Lưu và gửi lại' : 'Lưu thay đổi';
     review(pending.value);
     reviewError.hidden = true;
     dialog.showModal();
@@ -242,39 +272,60 @@
   dialog.addEventListener('cancel', event => {
     if (saving) event.preventDefault();
   });
-  confirm.addEventListener('click', async () => {
-    if (!pending || saved || saving) return;
-    const { value, sendingAgain } = pending;
+
+  function showSavedResult() {
+    result.hidden = false;
+    result.focus();
+  }
+
+  successDialog.addEventListener('close', showSavedResult);
+  confirm.addEventListener('click', () => {
+    if (pending) void saveProposal(pending.value, pending.sendingAgain);
+  });
+
+  async function saveProposal(value, sendingAgain = false) {
+    if (saved || saving) return;
     saving = true;
-    confirm.disabled = closeReview.disabled = true;
+    if (editing) confirm.disabled = closeReview.disabled = true;
+    else submit.disabled = true;
     try {
       const record = legacy ? await requests.updateProposal(editId, { ...value, keepAttachmentName: Boolean(retainedAttachmentName) }, original.revision, sendingAgain)
         : editing ? service.update(editId, value, original.revision || 0) : service.create(value);
       saved = true;
-      dialog.close();
+      if (editing) dialog.close();
       form.querySelectorAll('fieldset').forEach(fieldset => { fieldset.disabled = true; });
       submit.disabled = true;
       resubmit.disabled = true;
-      submit.textContent = editing ? 'Đã lưu thay đổi' : 'Đã lưu đề xuất thử';
+      submit.textContent = editing ? 'Đã lưu thay đổi' : 'Đã lưu đề xuất';
       result.replaceChildren(document.createTextNode(sendingAgain ? 'Đã lưu thay đổi và chuyển đề xuất về Chờ duyệt trong bản demo trên trình duyệt này. '
         : editing ? 'Đã lưu thay đổi trên trình duyệt này. '
-          : 'Đã lưu đề xuất vào hàng chờ của giảng viên trong bản demo trên trình duyệt này. '));
+          : 'Đã lưu đề xuất và thông tin giảng viên đã chọn trên trình duyệt này. '));
       const link = document.createElement('a');
       link.href = service.detailUrl(record.id);
-      link.textContent = 'Xem chi tiết';
+      link.textContent = editing ? 'Xem chi tiết' : 'Xem đề xuất';
       result.append(link);
-      result.hidden = false;
-      result.tabIndex = -1;
-      result.focus();
+      if (editing) showSavedResult();
+      else {
+        successLink.href = link.href;
+        successDialog.showModal();
+      }
     } catch (failure) {
-      reviewError.textContent = failure.message;
-      reviewError.hidden = false;
-      reviewError.focus();
+      if (editing) {
+        reviewError.textContent = failure.message;
+        reviewError.hidden = false;
+        reviewError.focus();
+      } else {
+        showErrors([{ message: failure.message }]);
+      }
     } finally {
       saving = false;
-      confirm.disabled = saved;
-      closeReview.disabled = false;
+      if (editing) {
+        confirm.disabled = saved;
+        closeReview.disabled = false;
+      } else {
+        submit.disabled = saved;
+      }
     }
-  });
+  }
   updateCourse();
 })();

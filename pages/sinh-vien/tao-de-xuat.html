@@ -15,7 +15,10 @@
     <script src="../../assets/js/supervision-entry.js" defer></script>
     <script src="../../assets/js/supervision-store.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/student-topic-proposal.css?v=20261116-1" />
+    <link rel="stylesheet" href="../../assets/css/proposal-pickers.css" />
+    <script src="../../assets/js/data/student-profile.js" defer></script>
     <script src="../../assets/js/services/storage.js" defer></script>
+    <script src="../../assets/js/services/profile-service.js" defer></script>
     <script src="../../assets/js/shared/validation.js" defer></script>
     <script src="../../assets/js/data/proposal-actors.js" defer></script>
     <script src="../../assets/js/services/proposal-service.js" defer></script>
@@ -23,6 +26,8 @@
     <script src="../../assets/js/services/request-service.js" defer></script>
     <script src="../../assets/js/proposal-store.js" defer></script>
     <script src="../../assets/js/supervisor-dialog.js" defer></script>
+    <script src="../../assets/js/pages/student/proposal-pickers.js" defer></script>
+    <script src="../../assets/js/pages/student/proposal-date-picker.js" defer></script>
     <script src="../../assets/js/pages/student/proposal-outline.js" defer></script>
     <script src="../../assets/js/pages/student/topic-proposal.js" defer></script>
 
@@ -113,8 +118,8 @@
 
         <div class="page-content proposal-layout">
           <form id="proposal-form" class="proposal-form" aria-labelledby="proposal-title" aria-describedby="proposal-required-note">
-            <p id="proposal-error" class="form-error" role="alert" hidden>Vui lòng kiểm tra thông tin bắt buộc và giảng viên hướng dẫn.</p>
-            <p id="proposal-result" class="form-result" role="status" hidden>Đề xuất đã được ghi nhận.</p>
+            <p id="proposal-error" class="form-error" role="alert" tabindex="-1" hidden>Vui lòng kiểm tra thông tin bắt buộc và giảng viên hướng dẫn.</p>
+            <p id="proposal-result" class="form-result" role="status" tabindex="-1" hidden></p>
             <div class="proposal-form__panel">
               <fieldset class="proposal-form__section">
                 <legend>Thông tin đề tài</legend>
@@ -122,10 +127,14 @@
                   <label for="topic-name">Tên đề tài tiếng Việt <span class="proposal-form__required" aria-hidden="true">*</span></label>
                   <input id="topic-name" name="ten-de-tai" type="text" placeholder="Nhập tên đề tài bạn muốn đề xuất" required />
                 </div>
+                <div class="proposal-form__field">
+                  <label for="outline-englishTitle">Tên đề tài tiếng Anh <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label>
+                  <input id="outline-englishTitle" data-outline-field="englishTitle" type="text" maxlength="250" placeholder="Nhập tên đề tài bằng tiếng Anh" />
+                </div>
                 <div class="proposal-form__row">
                   <div class="proposal-form__field">
                     <label for="topic-type">Loại đề tài <span class="proposal-form__required" aria-hidden="true">*</span></label>
-                    <select id="topic-type" name="loai-de-tai" required>
+                    <select id="topic-type" name="loai-de-tai" data-proposal-picker required>
                       <option value="" selected disabled>Chọn loại đề tài</option>
                       <option value="do-an-mon-hoc">Đồ án môn học</option>
                       <option value="do-an-tot-nghiep">Đồ án tốt nghiệp</option>
@@ -134,9 +143,14 @@
                   </div>
                   <div class="proposal-form__field">
                     <label for="course">Môn học <span class="proposal-form__required" aria-hidden="true">*</span></label>
-                    <select id="course" name="mon-hoc" aria-describedby="course-status" required>
+                    <select id="course" name="mon-hoc" aria-describedby="course-status" data-proposal-picker required>
                       <option value="" selected disabled>Chọn môn học</option>
                       <option value="IE104">IE104 - Internet và Công nghệ Web</option>
+                      <option value="IT004">IT004 - Cơ sở dữ liệu</option>
+                      <option value="IE101">IE101 - Cơ sở hạ tầng công nghệ thông tin</option>
+                      <option value="IE108">IE108 - Phân tích thiết kế phần mềm</option>
+                      <option value="IE103">IE103 - Quản lý thông tin</option>
+                      <option value="IE105">IE105 - Nhập môn bảo đảm và an ninh thông tin</option>
                     </select>
                     <!-- Select bị khóa không được đưa vào FormData; input này giữ mã môn tương ứng. -->
                     <input id="fixed-course" name="mon-hoc" type="hidden" value="" disabled />
@@ -146,7 +160,7 @@
                 <div class="proposal-form__row">
                   <div class="proposal-form__field">
                     <label for="semester">Học kỳ <span class="proposal-form__required" aria-hidden="true">*</span></label>
-                    <select id="semester" name="hoc-ky" required>
+                    <select id="semester" name="hoc-ky" data-proposal-picker required>
                       <option value="1" selected>Học kỳ 1</option>
                       <option value="2">Học kỳ 2</option>
                       <option value="he">Học kỳ 3</option>
@@ -155,23 +169,26 @@
                   </div>
                   <div class="proposal-form__field">
                     <label for="academic-year">Năm học <span class="proposal-form__required" aria-hidden="true">*</span></label>
-                    <select id="academic-year" name="nam-hoc" required>
+                    <select id="academic-year" name="nam-hoc" data-proposal-picker required>
                       <option value="2026-2027" selected>2026 – 2027</option>
+                      <option value="2025-2026">2025 – 2026</option>
                     </select>
                   </div>
                 </div>
-                <!-- IE104 là lựa chọn mẫu; danh mục đầy đủ sẽ được nối khi tích hợp dữ liệu. -->
               </fieldset>
 
               <fieldset class="proposal-form__section" data-proposal-outline aria-label="Thông tin bổ sung đề tài">
 
-<div class="proposal-form__field"><label for="outline-englishTitle">Tên đề tài tiếng Anh <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label><input id="outline-englishTitle" data-outline-field="englishTitle" type="text" maxlength="250"></div>
-<div class="proposal-form__row"><div class="proposal-form__field"><label for="outline-startDate">Ngày bắt đầu dự kiến <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label><input id="outline-startDate" data-outline-field="startDate" type="date" maxlength="250"></div><div class="proposal-form__field"><label for="outline-endDate">Ngày kết thúc dự kiến <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label><input id="outline-endDate" data-outline-field="endDate" type="date" maxlength="250"></div></div>
-</fieldset>
-<fieldset class="proposal-form__section"><legend>Sinh viên thực hiện</legend>
-<div class="proposal-form__field"><div id="proposal-members" tabindex="-1" aria-label="Danh sách sinh viên thực hiện"></div></div>
-<button id="proposal-add-member" class="proposal-outline-button" type="button" disabled>Thêm thành viên</button>
-
+                <div class="proposal-form__row">
+                  <div class="proposal-form__field">
+                    <label for="outline-startDate">Ngày bắt đầu dự kiến <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label>
+                    <input id="outline-startDate" data-outline-field="startDate" data-proposal-picker type="date" />
+                  </div>
+                  <div class="proposal-form__field">
+                    <label for="outline-endDate">Ngày kết thúc dự kiến <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label>
+                    <input id="outline-endDate" data-outline-field="endDate" data-proposal-picker type="date" />
+                  </div>
+                </div>
 </fieldset>
 <fieldset class="proposal-form__section">
                 <legend>Nội dung đề xuất</legend>
@@ -179,37 +196,68 @@
                   <label for="topic-description">Tổng quan đề tài <span class="proposal-form__required" aria-hidden="true">*</span></label>
                   <textarea id="topic-description" name="mo-ta-de-tai" rows="3" placeholder="Nêu bối cảnh, sản phẩm/nghiên cứu liên quan, thực trạng và lý do thực hiện đề tài" required></textarea>
                 </div>
-                <div class="proposal-form__row">
-                  <div class="proposal-form__field">
-                    <label for="topic-objectives">Mục tiêu <span class="proposal-form__required" aria-hidden="true">*</span></label>
-                    <textarea id="topic-objectives" name="muc-tieu" rows="3" placeholder="Nêu mục tiêu cụ thể và điểm cải tiến so với thực trạng" required></textarea>
-                  </div>
-                  <div class="proposal-form__field">
-                    <label for="expected-results">Kết quả dự kiến <span class="proposal-form__required" aria-hidden="true">*</span></label>
-                    <textarea id="expected-results" name="ket-qua-du-kien" rows="3" placeholder="Mô tả các kết quả dự kiến đạt được" required></textarea>
-                  </div>
+                <div class="proposal-form__field">
+                  <label for="topic-objectives">Mục tiêu <span class="proposal-form__required" aria-hidden="true">*</span></label>
+                  <textarea id="topic-objectives" name="muc-tieu" rows="3" placeholder="Nêu mục tiêu cụ thể và điểm cải tiến so với thực trạng" required></textarea>
+                </div>
+                <div class="proposal-form__field">
+                  <label for="expected-results">Kết quả dự kiến <span class="proposal-form__required" aria-hidden="true">*</span></label>
+                  <textarea id="expected-results" name="ket-qua-du-kien" rows="3" placeholder="Mô tả các kết quả dự kiến đạt được" required></textarea>
                 </div>
               </fieldset>
 
-<fieldset class="proposal-form__section"><legend>Phương pháp và kế hoạch</legend><div class="proposal-form__field"><label for="outline-method">Phương pháp thực hiện <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label><textarea id="outline-method" data-outline-field="method" rows="4" maxlength="10000"></textarea></div><div class="proposal-form__field"><label for="outline-scope">Nội dung chính, phạm vi và cách đánh giá <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label><textarea id="outline-scope" data-outline-field="scope" rows="4" maxlength="10000"></textarea></div><div class="proposal-form__field"><label for="outline-plan">Kế hoạch thực hiện và phân công <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label><textarea id="outline-plan" data-outline-field="plan" rows="4" maxlength="10000"></textarea></div></fieldset>
+              <fieldset class="proposal-form__section">
+                <legend>Phương pháp và kế hoạch</legend>
+                <div class="proposal-form__field">
+                  <label for="outline-methodAndScope">Phương pháp và phạm vi thực hiện <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label>
+                  <textarea id="outline-methodAndScope" data-outline-field="methodAndScope" rows="4" maxlength="20002" placeholder="Nêu cách thực hiện, nội dung chính, giới hạn của đề tài và cách đánh giá kết quả."></textarea>
+                </div>
+                <div class="proposal-form__field">
+                  <label for="outline-plan">Kế hoạch thực hiện và phân công <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label>
+                  <textarea id="outline-plan" data-outline-field="plan" rows="4" maxlength="10000" placeholder="Nêu các giai đoạn, mốc hoàn thành và người phụ trách từng phần việc nếu làm theo nhóm."></textarea>
+                </div>
+              </fieldset>
               <fieldset class="proposal-form__section">
                 <legend>Thông tin hướng dẫn</legend>
                 <div class="proposal-form__field">
                   <label for="add-supervisor">Giảng viên hướng dẫn chính <span class="proposal-form__required" aria-hidden="true">*</span></label>
-                  <button id="add-supervisor" class="proposal-form__add-supervisor" type="button" aria-haspopup="dialog" aria-controls="supervisor-dialog" aria-describedby="selected-supervisor"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>Thêm giảng viên</button>
-                  <p id="selected-supervisor" class="proposal-form__selected-supervisor" aria-live="polite">Chưa chọn giảng viên</p>
+                  <div class="proposal-supervisor__row">
+                    <div class="proposal-supervisor__person" hidden>
+                      <span class="proposal-supervisor__avatar" aria-hidden="true"></span>
+                      <div class="proposal-supervisor__details">
+                        <p class="proposal-supervisor__name"></p>
+                        <p class="proposal-supervisor__specialty" hidden></p>
+                      </div>
+                    </div>
+                    <button id="add-supervisor" class="proposal-form__add-supervisor" type="button" aria-haspopup="dialog" aria-controls="supervisor-dialog" aria-labelledby="proposal-supervisor-action" aria-describedby="selected-supervisor">
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+                      <span id="proposal-supervisor-action">Thêm giảng viên</span>
+                    </button>
+                  </div>
+                  <p id="selected-supervisor" class="visually-hidden" aria-live="polite"></p>
                   <input id="supervisor-id" name="ma-giang-vien" type="hidden" value="" />
                 </div>
-<div class="proposal-form__row"><div class="proposal-form__field"><label for="outline-supervisor-degree">Học vị GVHD chính</label><input id="outline-supervisor-degree" data-outline-field="supervisor.degree" type="text" maxlength="250"></div><div class="proposal-form__field"><label for="outline-supervisor-workplace">Đơn vị công tác GVHD chính</label><input id="outline-supervisor-workplace" data-outline-field="supervisor.workplace" type="text" maxlength="250"></div></div>
-<details class="proposal-secondary"><summary>Thông tin người hướng dẫn phụ (nếu có)</summary><div class="proposal-form__field"><label for="outline-secondarySupervisor-name">Họ tên người hướng dẫn phụ</label><input id="outline-secondarySupervisor-name" data-outline-field="secondarySupervisor.name" type="text" maxlength="250"></div><div class="proposal-form__field"><label for="outline-secondarySupervisor-degree">Học vị người hướng dẫn phụ</label><input id="outline-secondarySupervisor-degree" data-outline-field="secondarySupervisor.degree" type="text" maxlength="250"></div><div class="proposal-form__field"><label for="outline-secondarySupervisor-workplace">Đơn vị công tác người hướng dẫn phụ</label><input id="outline-secondarySupervisor-workplace" data-outline-field="secondarySupervisor.workplace" type="text" maxlength="250"></div></details>
+              </fieldset>
+
+              <fieldset class="proposal-form__section">
+                <legend>Tài liệu đính kèm</legend>
                 <div class="proposal-form__field">
-                  <label for="proposal-attachment">Tài liệu đính kèm</label>
+                  <p id="proposal-attachment-limit" class="proposal-outline-hint">Đính kèm tối đa 1 tệp.</p>
                   <div class="proposal-form__attachment">
-                    <input id="proposal-attachment" name="tai-lieu-dinh-kem" type="file" aria-describedby="proposal-attachment-status" />
+                    <input id="proposal-attachment" name="tai-lieu-dinh-kem" type="file" aria-describedby="proposal-attachment-limit proposal-attachment-status" />
                     <label class="proposal-form__file-button" for="proposal-attachment"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-6 6 6-6 6 6M5 16v5h14v-5" /></svg>Chọn tệp</label>
                   </div>
-                  <p id="proposal-attachment-status" aria-live="polite">Chưa chọn tệp</p>
-                  <button type="button" data-remove-proposal-attachment hidden>Bỏ tệp đính kèm</button>
+                  <div class="proposal-form__attachment-selection" hidden>
+                    <svg class="proposal-form__attachment-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8M8 17h6" />
+                    </svg>
+                    <p id="proposal-attachment-status" aria-live="polite"></p>
+                    <button type="button" data-remove-proposal-attachment aria-label="Bỏ tệp đính kèm" aria-describedby="proposal-attachment-status" title="Bỏ tệp">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M3 6h18m-2 0-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6m4 0V3h6v3m-5 4v7m4-7v7" />
+                      </svg>
+                    </button>
+                  </div>
                 </div>
               </fieldset>
             </div>
@@ -217,12 +265,22 @@
             <div class="proposal-form__footer">
               <p id="proposal-required-note">* Thông tin bắt buộc</p>
               <div class="proposal-form__actions">
-                <a class="proposal-form__cancel" href="dang-ky-de-tai.html">Hủy</a>
-                <button class="proposal-form__submit" type="button" aria-haspopup="dialog" aria-controls="proposal-confirm-dialog" disabled>Gửi đề xuất</button>
+                <a class="proposal-form__cancel" href="dang-ky-de-tai.html" hidden>Hủy</a>
+                <button class="proposal-form__submit" type="button" aria-haspopup="dialog" aria-controls="proposal-success-dialog" disabled>Gửi đề xuất</button>
                 <button class="proposal-form__submit" type="submit" data-resubmit-proposal aria-haspopup="dialog" aria-controls="proposal-confirm-dialog" hidden disabled>Lưu và gửi lại</button>
               </div>
             </div>
           </form>
+
+          <template id="proposal-edit-members">
+            <fieldset class="proposal-form__section">
+              <legend>Sinh viên thực hiện</legend>
+              <div class="proposal-form__field">
+                <div id="proposal-members" tabindex="-1" aria-label="Danh sách sinh viên thực hiện"></div>
+              </div>
+              <button id="proposal-add-member" class="proposal-outline-button" type="button">Thêm thành viên</button>
+            </fieldset>
+          </template>
 
           <aside class="proposal-notes" aria-labelledby="proposal-notes-title">
             <h2 id="proposal-notes-title">Lưu ý khi đề xuất</h2>
@@ -291,78 +349,62 @@
       </div>
     </footer>
 
-    <!-- Hộp thoại chọn giảng viên; tên/lĩnh vực dưới đây là dữ liệu mẫu. -->
-    <dialog id="supervisor-dialog" class="supervisor-dialog" aria-labelledby="supervisor-dialog-title" aria-describedby="supervisor-dialog-description">
+    <dialog id="supervisor-dialog" class="supervisor-dialog" aria-labelledby="supervisor-dialog-title">
       <header class="supervisor-dialog__header">
         <h2 id="supervisor-dialog-title">Chọn giảng viên hướng dẫn chính</h2>
         <button id="close-supervisor-dialog" class="supervisor-dialog__close" type="button" aria-label="Đóng hộp thoại chọn giảng viên"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg></button>
       </header>
-      <p id="supervisor-dialog-description">Tìm kiếm và chọn một giảng viên để gửi đề xuất đề tài.</p>
       <div class="supervisor-dialog__search">
-        <label class="visually-hidden" for="supervisor-search">Tìm kiếm giảng viên</label>
+        <label class="visually-hidden" for="supervisor-search">Tìm giảng viên theo tên, bộ môn hoặc email</label>
         <svg class="supervisor-dialog__search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5" /><path d="m16 16 5 5" /></svg>
-        <input id="supervisor-search" name="tim-giang-vien" type="search" placeholder="Tìm kiếm tên giảng viên..." aria-controls="supervisor-list" />
+        <input id="supervisor-search" name="tim-giang-vien" type="search" placeholder="Tên, bộ môn hoặc email" aria-controls="supervisor-list" />
       </div>
       <fieldset class="supervisor-dialog__choices">
         <legend>Chọn 1 giảng viên</legend>
-        <!-- Năm giảng viên mẫu theo ảnh duyệt, chưa phải danh mục giảng viên thực tế. -->
-        <div id="supervisor-list" class="supervisor-dialog__list">
-          <label class="supervisor-dialog__option" for="supervisor-option-1">
-            <input id="supervisor-option-1" name="giang-vien-huong-dan" type="radio" value="placeholder-1" />
-            <span class="supervisor-dialog__lecturer">
-              <span class="supervisor-dialog__name">Nguyễn Văn An</span>
-              <span class="supervisor-dialog__specialty">Công nghệ phần mềm</span>
-            </span>
-          </label>
-          <label class="supervisor-dialog__option" for="supervisor-option-2">
-            <input id="supervisor-option-2" name="giang-vien-huong-dan" type="radio" value="placeholder-2" />
-            <span class="supervisor-dialog__lecturer">
-              <span class="supervisor-dialog__name">Trần Thị Bình</span>
-              <span class="supervisor-dialog__specialty">Hệ thống thông tin</span>
-            </span>
-          </label>
-          <label class="supervisor-dialog__option" for="supervisor-option-3">
-            <input id="supervisor-option-3" name="giang-vien-huong-dan" type="radio" value="placeholder-3" />
-            <span class="supervisor-dialog__lecturer">
-              <span class="supervisor-dialog__name">Lê Văn Cường</span>
-              <span class="supervisor-dialog__specialty">Trí tuệ nhân tạo</span>
-            </span>
-          </label>
-          <label class="supervisor-dialog__option" for="supervisor-option-4">
-            <input id="supervisor-option-4" name="giang-vien-huong-dan" type="radio" value="placeholder-4" />
-            <span class="supervisor-dialog__lecturer">
-              <span class="supervisor-dialog__name">Phạm Minh Anh</span>
-              <span class="supervisor-dialog__specialty">Khoa học dữ liệu</span>
-            </span>
-          </label>
-          <label class="supervisor-dialog__option" for="supervisor-option-5">
-            <input id="supervisor-option-5" name="giang-vien-huong-dan" type="radio" value="placeholder-5" />
-            <span class="supervisor-dialog__lecturer">
-              <span class="supervisor-dialog__name">Nguyễn Minh Khang</span>
-              <span class="supervisor-dialog__specialty">Mạng máy tính</span>
-            </span>
-          </label>
-        </div>
+        <div id="supervisor-list" class="supervisor-dialog__list" hidden></div>
       </fieldset>
-      <p class="supervisor-dialog__empty" role="status" hidden>Không tìm thấy giảng viên phù hợp. Hãy thử tên khác.</p>
-      <p class="supervisor-dialog__note">Giảng viên chính thức được xác nhận sau khi chấp nhận yêu cầu.</p>
+      <p class="supervisor-dialog__empty" role="status" hidden></p>
       <footer class="supervisor-dialog__footer">
-        <p id="supervisor-selection-status" aria-live="polite">Chưa chọn giảng viên</p>
         <div class="supervisor-dialog__actions">
-          <button id="cancel-supervisor-selection" type="button">Hủy</button>
           <button id="confirm-supervisor-selection" type="button" disabled>Xác nhận</button>
         </div>
       </footer>
     </dialog>
+    <template id="proposal-supervisor-option">
+      <label class="supervisor-dialog__option">
+        <input name="giang-vien-huong-dan" type="radio" />
+        <span class="supervisor-dialog__lecturer">
+          <span class="supervisor-dialog__name"></span>
+          <span class="supervisor-dialog__specialty"></span>
+        </span>
+      </label>
+    </template>
 
     <dialog id="proposal-confirm-dialog" class="confirmation-dialog" aria-labelledby="proposal-confirm-title">
-      <h2 id="proposal-confirm-title">Xác nhận đề xuất thử</h2>
-      <p data-proposal-confirm-note>Đề xuất sẽ vào hàng chờ giảng viên trong bản demo trên trình duyệt này, chưa gửi qua máy chủ.</p>
+      <h2 id="proposal-confirm-title">Xác nhận chỉnh sửa</h2>
+      <p data-proposal-confirm-note>Thay đổi sẽ được lưu trong bản demo trên trình duyệt này.</p>
       <dl data-proposal-review></dl>
       <p data-proposal-error class="proposal-field-error" role="alert" tabindex="-1" hidden></p>
       <div class="proposal-review-actions">
         <button type="button" command="close" commandfor="proposal-confirm-dialog">Quay lại chỉnh sửa</button>
-        <button type="button" data-confirm-proposal>Lưu đề xuất thử</button>
+        <button type="button" data-confirm-proposal>Lưu thay đổi</button>
+      </div>
+    </dialog>
+
+    <dialog id="proposal-success-dialog" class="confirmation-dialog proposal-success-dialog" aria-labelledby="proposal-success-title">
+      <button class="proposal-success-dialog__close" type="button" command="close" commandfor="proposal-success-dialog" aria-label="Đóng thông báo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+          <path d="m6 6 12 12M18 6 6 18" />
+        </svg>
+      </button>
+      <div class="proposal-success-dialog__content">
+        <span class="proposal-success-dialog__icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m5 12 4 4L19 6" />
+          </svg>
+        </span>
+        <h2 id="proposal-success-title">Đã lưu đề xuất</h2>
+        <a id="view-saved-proposal" class="proposal-success-dialog__link" autofocus>Xem đề xuất</a>
       </div>
     </dialog>
 

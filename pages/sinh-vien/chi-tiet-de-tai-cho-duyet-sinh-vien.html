@@ -16,10 +16,10 @@
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <script src="../../assets/js/dialog-commands.js" defer></script>
+    <script src="../../assets/js/supervision-entry.js" defer></script>
     <script src="../../assets/js/data/proposal-actors.js" defer></script>
     <script src="../../assets/js/data/student-requests.js" defer></script>
     <script src="../../assets/js/services/storage.js" defer></script>
-    <script src="../../assets/js/shared/proposal-outline.js" defer></script>
     <script src="../../assets/js/services/proposal-service.js" defer></script>
     <script src="../../assets/js/services/approved-project-service.js" defer></script>
     <script src="../../assets/js/proposal-store.js" defer></script>
@@ -127,48 +127,63 @@
         <p class="pending-proposal-notice" role="status"></p>
         <noscript><p>Cần bật JavaScript để xem đề xuất được lưu trên trình duyệt.</p></noscript>
         <article id="dx001" class="pending-proposal" aria-labelledby="proposal-topic-title" hidden>
-          <section id="saved-proposal" class="pending-proposal-summary" aria-labelledby="proposal-topic-title">
-            <div class="topic-image topic-image--uit"><img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" /></div>
-            <div class="pending-proposal-summary__content">
-              <h2 id="proposal-topic-title"></h2>
-              <dl class="pending-proposal-summary__meta">
+          <section id="saved-proposal" aria-labelledby="proposal-topic-info-title">
+            <h2 id="proposal-topic-info-title">Thông tin đề tài</h2>
+            <div class="pending-proposal-summary">
+              <div class="topic-image topic-image--uit"><img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" /></div>
+              <dl class="pending-proposal-fields pending-proposal-fields--paired">
+                <div class="pending-proposal-fields__wide"><dt>Tên đề tài tiếng Việt</dt><dd id="proposal-topic-title" data-proposal-field="title"></dd></div>
+                <div class="pending-proposal-fields__wide"><dt>Tên đề tài tiếng Anh</dt><dd data-proposal-field="englishTitle"></dd></div>
                 <div><dt>Loại đề tài</dt><dd data-proposal-field="typeLabel"></dd></div>
                 <div><dt>Môn học</dt><dd data-proposal-field="courseLabel"></dd></div>
                 <div><dt>Học kỳ</dt><dd data-proposal-field="semester"></dd></div>
                 <div><dt>Năm học</dt><dd data-proposal-field="academicYear"></dd></div>
-              </dl>
-              <p class="pending-proposal-summary__id">Mã đề xuất <span data-proposal-field="id"></span></p>
-            </div>
-          </section>
-          <section class="proposal-recipient" aria-labelledby="proposal-recipient-title">
-            <h2 id="proposal-recipient-title">Giảng viên nhận đề xuất</h2>
-            <div class="proposal-recipient__profile">
-              <span class="proposal-recipient__avatar" aria-hidden="true"></span>
-              <dl>
-                <div><dt>Họ tên</dt><dd data-proposal-field="recipient"></dd></div>
-                <div><dt data-recipient-label>Vai trò được đề xuất</dt><dd data-proposal-field="recipientRole"></dd></div>
-                <div><dt data-proposal-date-label>Ngày gửi đề xuất</dt><dd data-proposal-field="submittedDate"></dd></div>
+                <div><dt>Ngày bắt đầu dự kiến</dt><dd data-proposal-field="startDate"></dd></div>
+                <div><dt>Ngày kết thúc dự kiến</dt><dd data-proposal-field="endDate"></dd></div>
               </dl>
             </div>
           </section>
-          <section class="proposal-description" aria-labelledby="proposal-description-title">
-            <h2 id="proposal-description-title">Mô tả đề tài</h2>
-            <p data-proposal-field="description"></p>
+          <section aria-labelledby="proposal-content-title">
+            <h2 id="proposal-content-title">Nội dung đề xuất</h2>
+            <dl class="pending-proposal-fields">
+              <div><dt>Tổng quan đề tài</dt><dd data-proposal-field="description"></dd></div>
+              <div><dt>Mục tiêu</dt><dd data-proposal-field="objectives"></dd></div>
+              <div><dt>Kết quả dự kiến</dt><dd data-proposal-field="outcomes"></dd></div>
+            </dl>
           </section>
-          <section class="proposal-objectives" aria-labelledby="proposal-objectives-title">
-            <h2 id="proposal-objectives-title">Mục tiêu</h2>
-            <p data-proposal-field="objectives"></p>
+          <section aria-labelledby="proposal-plan-title">
+            <h2 id="proposal-plan-title">Phương pháp và kế hoạch</h2>
+            <dl class="pending-proposal-fields">
+              <div><dt>Phương pháp và phạm vi thực hiện</dt><dd data-proposal-field="methodAndScope"></dd></div>
+              <div><dt>Kế hoạch thực hiện và phân công</dt><dd data-proposal-field="plan"></dd></div>
+            </dl>
           </section>
-          <section class="proposal-outcomes" aria-labelledby="proposal-outcomes-title">
-            <h2 id="proposal-outcomes-title">Kết quả dự kiến</h2>
-            <p data-proposal-field="outcomes"></p>
+          <section aria-labelledby="proposal-recipient-title">
+            <h2 id="proposal-recipient-title">Thông tin hướng dẫn</h2>
+            <dl class="pending-proposal-fields">
+              <div>
+                <dt data-recipient-label>Giảng viên hướng dẫn chính</dt>
+                <dd class="proposal-recipient__profile">
+                  <span class="proposal-recipient__avatar" aria-hidden="true" hidden></span>
+                  <div>
+                    <p class="proposal-recipient__name" data-proposal-field="recipient"></p>
+                    <p class="proposal-recipient__department" data-recipient-department hidden></p>
+                  </div>
+                </dd>
+              </div>
+            </dl>
           </section>
-          <section data-proposal-outline aria-label="Đề cương chi tiết" hidden></section>
-          <section class="proposal-attachments" aria-labelledby="proposal-attachments-title">
+          <section aria-labelledby="proposal-attachments-title">
             <h2 id="proposal-attachments-title">Tài liệu đính kèm</h2>
-            <p data-proposal-field="attachmentText"></p>
+            <div class="proposal-attachments__item" data-proposal-attachment hidden>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8M8 17h6" />
+              </svg>
+              <p data-proposal-field="attachmentText"></p>
+            </div>
+            <p class="proposal-attachments__note" data-proposal-attachment-note></p>
           </section>
-          <section aria-labelledby="proposal-record-title" hidden>
+          <section aria-labelledby="proposal-record-title">
             <h2 id="proposal-record-title">Thông tin hồ sơ</h2>
             <dl class="proposal-outline-details" data-proposal-record></dl>
             <details class="proposal-history" hidden>

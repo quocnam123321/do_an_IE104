@@ -54,11 +54,10 @@
   }
 
   function proposalCatalog(record) {
-    const catalog = app.services.proposals.catalog;
-    return record.supervisorId ? catalog : {
-      ...catalog,
-      supervisors: { ...catalog.supervisors, [record.lecturerId]: record.lecturerName },
-    };
+    return app.services.proposals.catalogFor({
+      supervisorId: record.supervisorId || record.lecturerId,
+      supervisorName: record.lecturerName,
+    });
   }
 
   function validateProposal(input, record) {
@@ -76,17 +75,17 @@
     if (checked.errors.length) return checked;
     const { value } = checked;
     const catalog = proposalCatalog(record);
-    const lecturer = app.data.proposalLecturers.find(person => person.choiceId === value.supervisorId);
+    const sameSupervisor = value.supervisorId === (record.supervisorId || record.lecturerId);
     return {
       errors: [],
       value: {
         ...value,
-        supervisorId: lecturer?.choiceId,
-        lecturerId: lecturer?.id || record.lecturerId,
+        supervisorId: value.supervisorId,
+        lecturerId: sameSupervisor ? record.lecturerId : app.services.proposals.lecturerIdFor(value.supervisorId),
         lecturerName: catalog.supervisors[value.supervisorId],
         typeLabel: catalog.types[value.type].label,
         courseLabel: catalog.types[value.type].courses[value.courseId],
-        ...(value.outline ? { members: value.outline.members, scope: value.outline.scope, mode: value.outline.members.length === 1 ? 'ca-nhan' : 'nhom' } : {}),
+        ...(value.outline ? { members: value.outline.members, scope: value.outline.methodAndScope ?? value.outline.scope, mode: value.outline.members.length === 1 ? 'ca-nhan' : 'nhom' } : {}),
         attachmentName: value.attachment?.name || (input.keepAttachmentName ? record.attachmentName : ''),
       },
     };

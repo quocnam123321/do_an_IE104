@@ -46,9 +46,10 @@
   const proposalKey = 'ie104.demo.proposals.v1';
 
   function isProposalOutline(outline) {
-    const strings = ['englishTitle', 'startDate', 'endDate', 'method', 'scope', 'plan'];
-    if (!outline || outline.version !== 1 || !strings.every(key => typeof outline[key] === 'string')) return false;
-    if (outline.englishTitle.length > 250 || ['method', 'scope', 'plan'].some(key => outline[key].length > 10000)) return false;
+    if (![1, 2].includes(outline?.version)) return false;
+    const methodLimits = outline.version === 1 ? { method: 10000, scope: 10000 } : { methodAndScope: 20002 };
+    const limits = { englishTitle: 250, startDate: 10, endDate: 10, ...methodLimits, plan: 10000 };
+    if (!Object.entries(limits).every(([key, max]) => typeof outline[key] === 'string' && outline[key].length <= max)) return false;
     if (!['supervisor', 'secondarySupervisor'].every(key => outline[key] && ['name', 'degree', 'workplace'].every(field => typeof outline[key][field] === 'string'))) return false;
     if (['supervisor', 'secondarySupervisor'].some(key => ['name', 'degree', 'workplace'].some(field => outline[key][field].length > 250))) return false;
     if (!outline.secondarySupervisor.name && (outline.secondarySupervisor.degree || outline.secondarySupervisor.workplace)) return false;
@@ -63,7 +64,10 @@
     const strings = ['id', 'title', 'type', 'typeLabel', 'courseId', 'courseLabel', 'semester', 'academicYear', 'description', 'objectives', 'outcomes', 'supervisorId', 'supervisorName', 'createdAt'];
     if (!record || !strings.every(key => typeof record[key] === 'string' && record[key].trim())) return false;
     if (record.outline !== undefined && (!isProposalOutline(record.outline) || (record.student && !record.outline.members.some(member => member.code === record.student.code && member.name === record.student.name && member.role === 'nhom-truong')))) return false;
-    if (record.outline && record.type === 'khoa-luan' && ['englishTitle', 'startDate', 'endDate', 'method', 'scope', 'plan'].some(key => !record.outline[key].trim())) return false;
+    if (record.outline && record.type === 'khoa-luan') {
+      const methodFields = record.outline.version === 1 ? ['method', 'scope'] : ['methodAndScope'];
+      if (['englishTitle', 'startDate', 'endDate', ...methodFields, 'plan'].some(key => !record.outline[key].trim())) return false;
+    }
     if (!Number.isFinite(Date.parse(record.createdAt)) || !['cho-duyet', 'da-rut', 'da-duyet', 'tu-choi'].includes(record.status)) return false;
     if (['da-duyet', 'tu-choi'].includes(record.status) && (!record.decision || !Number.isFinite(Date.parse(record.decision.decidedAt)) || typeof record.decision.lecturerId !== 'string' || typeof record.decision.reason !== 'string' || record.decision.proposalRevision !== record.revision - 1 || (record.status === 'tu-choi' && record.decision.reason.trim().length < 10))) return false;
     if (record.student !== undefined && (!record.student || typeof record.student.code !== 'string' || !record.student.code.trim() || typeof record.student.name !== 'string' || !record.student.name.trim())) return false;

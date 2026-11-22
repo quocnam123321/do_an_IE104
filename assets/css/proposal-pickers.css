@@ -1,0 +1,286 @@
+.student-proposal-page .proposal-form .proposal-picker-trigger {
+  width: 100%;
+  min-width: 0;
+  justify-content: space-between;
+  padding-inline: var(--space-3);
+  font-size: var(--font-size-body);
+  font-weight: 400;
+  text-align: start;
+}
+
+.student-proposal-page .proposal-form .proposal-picker-trigger span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.student-proposal-page .proposal-form .proposal-picker-trigger.is-placeholder {
+  color: var(--color-muted-foreground);
+}
+
+.student-proposal-page .proposal-form .proposal-picker-trigger:disabled svg {
+  visibility: hidden;
+}
+
+.student-proposal-page .proposal-form .proposal-picker-trigger[aria-invalid="true"] {
+  border-color: var(--color-danger-fg);
+}
+
+.student-proposal-page .proposal-form .proposal-picker-trigger:not(:disabled):hover,
+.student-proposal-page .proposal-form .proposal-picker-trigger[aria-expanded="true"] {
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+}
+
+.student-proposal-page .proposal-form .proposal-picker-trigger[aria-expanded="true"],
+.student-proposal-page .proposal-form .proposal-date-control:has(.proposal-date-trigger[aria-expanded="true"]) > input {
+  border-color: var(--color-primary);
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.proposal-picker-trigger svg,
+.proposal-date-trigger svg,
+.proposal-calendar svg {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.proposal-picker-trigger[aria-expanded="true"] svg,
+.proposal-calendar__heading[aria-expanded="true"] svg {
+  color: var(--color-primary);
+  transform: rotate(180deg);
+}
+
+.proposal-picker-popup {
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-floating);
+  color: var(--color-foreground);
+}
+
+.proposal-select-popup {
+  max-width: calc(100vw - var(--space-4));
+  padding: var(--space-1);
+}
+
+.proposal-select-option {
+  display: flex;
+  align-items: center;
+  min-height: var(--control-min-height);
+  padding: var(--space-2);
+  border-radius: var(--radius-control);
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.proposal-select-option[aria-selected="true"] {
+  font-weight: var(--font-weight-semibold);
+}
+
+.proposal-select-option.is-active {
+  background: var(--color-info-bg);
+  color: var(--color-primary);
+}
+
+.proposal-date-control {
+  position: relative;
+  min-width: 0;
+}
+
+.student-proposal-page .proposal-form .proposal-date-control > input {
+  width: 100%;
+  padding-inline-end: calc(var(--control-min-height) + var(--space-2));
+}
+
+.student-proposal-page .proposal-form .proposal-date-trigger {
+  position: absolute;
+  inset-block: 1px;
+  inset-inline-end: 1px;
+  width: var(--control-min-height);
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-muted-foreground);
+}
+
+.student-proposal-page .proposal-form .proposal-date-trigger:not(:disabled):is(:hover, [aria-expanded="true"]) {
+  background: var(--color-info-bg);
+  color: var(--color-primary);
+}
+
+.student-proposal-page .proposal-form .proposal-date-trigger:focus-visible {
+  outline-offset: -3px;
+}
+
+.proposal-calendar {
+  width: min(22rem, calc(100vw - var(--space-4)));
+  padding: var(--space-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.proposal-calendar:popover-open {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+
+.proposal-calendar__body {
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.proposal-calendar__header,
+.proposal-calendar__navigation,
+.proposal-calendar__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1);
+}
+
+.student-proposal-page .proposal-form .proposal-calendar button {
+  padding: var(--space-1);
+  border-color: transparent;
+  background: var(--color-surface);
+  font-size: var(--font-size-secondary);
+}
+
+.student-proposal-page .proposal-form .proposal-calendar button:focus-visible {
+  outline-offset: -2px;
+}
+
+.student-proposal-page .proposal-form .proposal-calendar button:not(:disabled):hover {
+  background: var(--color-info-bg);
+  color: var(--color-primary);
+}
+
+.student-proposal-page .proposal-form .proposal-calendar .proposal-calendar__heading {
+  min-width: 0;
+  color: var(--color-heading);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-semibold);
+  text-align: start;
+}
+
+.student-proposal-page .proposal-form .proposal-calendar__navigation button {
+  width: var(--control-min-height);
+  border-color: var(--color-border);
+}
+
+.student-proposal-page .proposal-form .proposal-calendar__navigation button:disabled {
+  background: var(--color-neutral-bg);
+}
+
+.proposal-calendar__grid {
+  width: 100%;
+  margin-block: var(--space-2);
+  border-spacing: .125rem;
+  table-layout: fixed;
+}
+
+.proposal-calendar__grid th {
+  padding-block: var(--space-2);
+  color: var(--color-heading);
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+}
+
+.proposal-calendar__grid td { padding: 0; }
+
+.student-proposal-page .proposal-form .proposal-calendar__grid button {
+  width: 100%;
+  padding: 0;
+}
+
+.student-proposal-page .proposal-form .proposal-calendar__grid .is-outside-month {
+  color: var(--color-muted-foreground);
+}
+
+.student-proposal-page .proposal-form .proposal-calendar__grid button[aria-current="date"] {
+  border-color: var(--color-primary);
+  background: var(--color-info-bg);
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.student-proposal-page .proposal-form .proposal-calendar__grid [aria-selected="true"] button,
+.student-proposal-page .proposal-form .proposal-calendar__grid [aria-selected="true"] button:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.student-proposal-page .proposal-form .proposal-calendar__grid [aria-selected="true"] button:focus-visible {
+  outline-color: var(--color-on-primary);
+}
+
+.proposal-calendar__months { margin-block: var(--space-2); }
+
+.proposal-calendar__months label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-1);
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.student-proposal-page .proposal-form .proposal-calendar__months input {
+  width: 8rem;
+  padding: var(--space-2);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+}
+
+.proposal-calendar__month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.student-proposal-page .proposal-form .proposal-calendar__month-grid button[aria-pressed="true"] {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-info-bg);
+}
+
+.proposal-calendar__footer {
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+}
+
+.student-proposal-page .proposal-form .proposal-calendar__footer button {
+  padding-inline: var(--space-2);
+  color: var(--color-muted-foreground);
+}
+
+.student-proposal-page .proposal-form .proposal-calendar__footer [data-today] {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.student-proposal-page .proposal-form .proposal-calendar__footer [data-clear-date]:disabled {
+  opacity: .65;
+}
+
+@media (pointer: fine) {
+  .student-proposal-page .proposal-form .proposal-calendar__grid button {
+    min-height: 2.5rem;
+  }
+}

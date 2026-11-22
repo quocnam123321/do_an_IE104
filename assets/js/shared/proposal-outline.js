@@ -12,8 +12,9 @@
       ['Sinh viên thực hiện', outline.members.map(member => `${member.name} - ${member.code}${member.role === 'nhom-truong' ? ' - Nhóm trưởng' : ''}`).join('\n')],
       ['Thông tin GVHD trong đề cương', person(outline.supervisor)],
       ['Người hướng dẫn phụ trong đề cương', person(outline.secondarySupervisor)],
-      ['Phương pháp thực hiện', outline.method],
-      ['Nội dung chính, phạm vi và cách đánh giá', outline.scope],
+      ...(outline.version === 2
+        ? [['Phương pháp và phạm vi thực hiện', outline.methodAndScope]]
+        : [['Phương pháp thực hiện', outline.method], ['Nội dung chính, phạm vi và cách đánh giá', outline.scope]]),
       ['Kế hoạch thực hiện và phân công', outline.plan],
     ].filter(([, value]) => Boolean(value));
   }

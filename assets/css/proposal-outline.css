@@ -9,9 +9,6 @@
 .student-proposal-page .proposal-member input[readonly] { background: var(--color-neutral-bg); }
 .student-proposal-page .proposal-outline-button { justify-self: start; min-height: var(--control-min-height); padding: .625rem 1rem; border: 1px solid var(--color-primary); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-primary); }
 .student-proposal-page .proposal-outline-button:disabled { opacity: .6; cursor: not-allowed; }
-.student-proposal-page .proposal-secondary { padding-block: var(--space-4); }
-.student-proposal-page .proposal-secondary > summary { cursor: pointer; min-height: var(--control-min-height); font-weight: 600; }
-.student-proposal-page .proposal-secondary .proposal-form__field { margin-top: var(--space-4); }
 .student-proposal-page .proposal-notes > .proposal-outline-hint { margin-bottom: var(--space-6); }
 .student-proposal-page [data-proposal-review] dd,
 [data-receipt-content] dd { white-space: pre-wrap; overflow-wrap: anywhere; }

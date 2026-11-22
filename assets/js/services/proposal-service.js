@@ -3,26 +3,44 @@
   app.services = app.services || {};
   const catalog = {
     types: {
-      'do-an-mon-hoc': { label: 'Đồ án môn học', courses: { IE104: 'IE104 - Internet và Công nghệ Web' } },
+      'do-an-mon-hoc': {
+        label: 'Đồ án môn học',
+        courses: {
+          IE104: 'IE104 - Internet và Công nghệ Web',
+          IT004: 'IT004 - Cơ sở dữ liệu',
+          IE101: 'IE101 - Cơ sở hạ tầng công nghệ thông tin',
+          IE108: 'IE108 - Phân tích thiết kế phần mềm',
+          IE103: 'IE103 - Quản lý thông tin',
+          IE105: 'IE105 - Nhập môn bảo đảm và an ninh thông tin',
+        },
+      },
       'do-an-tot-nghiep': { label: 'Đồ án tốt nghiệp', courses: { IE501: 'IE501 - Đồ án tốt nghiệp' } },
       'khoa-luan': { label: 'Khóa luận tốt nghiệp', courses: { IE505: 'IE505 - Khóa luận tốt nghiệp' } },
     },
     semesters: ['1', '2', 'he'],
-    academicYears: ['2026-2027'],
-    supervisors: {
-      'placeholder-1': 'Nguyễn Văn An',
-      'placeholder-2': 'Trần Thị Bình',
-      'placeholder-3': 'Lê Văn Cường',
-      'placeholder-4': 'Phạm Minh Anh',
-      'placeholder-5': 'Nguyễn Minh Khang',
-    },
+    academicYears: ['2026-2027', '2025-2026'],
+    supervisors: {},
   };
   const labels = { 'cho-duyet': 'Chờ duyệt', 'da-rut': 'Đã rút', 'da-duyet': 'Đã duyệt', 'tu-choi': 'Từ chối' };
   const detailUrl = id => `chi-tiet-de-tai-cho-duyet-sinh-vien.html?proposal=${encodeURIComponent(id)}`;
   const clone = value => JSON.parse(JSON.stringify(value));
   const defaultStudent = () => app.data.currentStudent;
-  const assignedLecturer = record => app.data.proposalLecturers.find(person => person.choiceId === record.supervisorId)?.id;
+  const lecturerIdFor = supervisorId =>
+    app.data.proposalLecturers?.find(person => person.choiceId === supervisorId)?.id || supervisorId;
+  const assignedLecturer = record => record.lecturerId || lecturerIdFor(record.supervisorId);
   const studentOwns = record => (record.student || app.data.legacyProposalStudent)?.code === defaultStudent()?.code;
+
+  async function listSupervisors() {
+    const teachers = await globalThis.IE104SupervisionEntry.getTeachers();
+    catalog.supervisors = Object.fromEntries(teachers.map(teacher => [teacher.id, teacher.name]));
+    return teachers;
+  }
+
+  function catalogFor(record) {
+    const id = record?.supervisorId;
+    if (!id || !record.supervisorName || Object.hasOwn(catalog.supervisors, id)) return catalog;
+    return { ...catalog, supervisors: { ...catalog.supervisors, [id]: record.supervisorName } };
+  }
 
   function notify() {
     globalThis.dispatchEvent?.(new Event('ie104:proposals-updated'));
@@ -33,15 +51,29 @@
     notify();
   }
 
-  function validate(input) {
-    return app.validation.validateProposal(input, catalog);
+  function submittingStudent() {
+    const profile = app.services.profile?.getState() || defaultStudent();
+    return profile ? { code: profile.code, name: profile.name } : null;
+  }
+
+  function validateForStudent(input, student, options = catalog) {
+    const outline = input.outline;
+    if ([1, 2].includes(outline?.version) && outline.members === undefined && student) {
+      input = { ...input, outline: { ...outline, members: [{ ...student, role: 'nhom-truong' }] } };
+    }
+    return app.validation.validateProposal(input, options, student);
+  }
+
+  function validate(input, record) {
+    return validateForStudent(input, record ? record.student || defaultStudent() : submittingStudent(), catalogFor(record));
   }
 
   function create(input) {
-    const checked = validate(input);
+    const student = submittingStudent();
+    const checked = validateForStudent(input, student);
     if (checked.errors.length) throw new Error(checked.errors[0].message);
     const value = checked.value;
-    if (!defaultStudent()?.code || !assignedLecturer(value)) throw new Error('Chưa có thông tin sinh viên hoặc giảng viên nhận đề xuất.');
+    if (!student?.code || !assignedLecturer(value)) throw new Error('Chưa có thông tin sinh viên hoặc giảng viên nhận đề xuất.');
     const records = app.storage.readProposals();
     rejectDuplicate(records, value);
     const record = {
@@ -51,7 +83,7 @@
       courseLabel: catalog.types[value.type].courses[value.courseId],
       supervisorName: catalog.supervisors[value.supervisorId],
       lecturerId: assignedLecturer(value),
-      student: clone(defaultStudent()),
+      student,
       status: 'cho-duyet',
       revision: 0,
       createdAt: new Date().toISOString(),
@@ -81,11 +113,12 @@
   function update(id, input, revision) {
     const records = app.storage.readProposals();
     const previous = getEditable(records, id, revision);
-    const checked = validate(input.outline === undefined && previous.outline ? { ...input, outline: previous.outline } : input);
+    const checked = validate(input.outline === undefined && previous.outline ? { ...input, outline: previous.outline } : input, previous);
     if (checked.errors.length) throw new Error(checked.errors[0].message);
     const value = checked.value;
     rejectDuplicate(records, value, id);
-    const record = { ...previous, ...value, student: previous.student || clone(defaultStudent()), lecturerId: assignedLecturer(value), typeLabel: catalog.types[value.type].label, courseLabel: catalog.types[value.type].courses[value.courseId], supervisorName: catalog.supervisors[value.supervisorId], revision: (previous.revision || 0) + 1, updatedAt: new Date().toISOString() };
+    const lecturerId = value.supervisorId === previous.supervisorId ? assignedLecturer(previous) : lecturerIdFor(value.supervisorId);
+    const record = { ...previous, ...value, student: previous.student || clone(defaultStudent()), lecturerId, typeLabel: catalog.types[value.type].label, courseLabel: catalog.types[value.type].courses[value.courseId], supervisorName: catalogFor(previous).supervisors[value.supervisorId], revision: (previous.revision || 0) + 1, updatedAt: new Date().toISOString() };
     save(records.map(item => item.id === id ? record : item));
     return record;
   }
@@ -114,19 +147,19 @@
 
   function listForLecturer() {
     const actor = app.data.currentLecturer?.id;
-    return app.storage.readProposals().filter(record => (record.lecturerId || assignedLecturer(record)) === actor).map(record => {
+    return app.storage.readProposals().filter(record => assignedLecturer(record) === actor).map(record => {
       const student = record.student || app.data.legacyProposalStudent;
       return {
         id: record.id, topicId: `DT-${record.id}`, title: record.title, source: 'student', revision: record.revision || 0,
         status: ({ 'cho-duyet': 'pending', 'da-duyet': 'approved', 'tu-choi': 'rejected', 'da-rut': 'withdrawn' })[record.status],
         topicStatus: record.status === 'da-duyet' ? 'in-progress' : record.status,
         topicType: record.type, topicTypeLabel: record.typeLabel, courseId: record.courseId,
-        course: ({ IE104: 'internet-va-cong-nghe-web', IE501: 'do-an-tot-nghiep', IE505: 'khoa-luan' })[record.courseId] || record.courseId,
+        course: ({ IE104: 'internet-va-cong-nghe-web', IT004: 'co-so-du-lieu', IE501: 'do-an-tot-nghiep', IE505: 'khoa-luan' })[record.courseId] || record.courseId,
         courseLabel: record.courseLabel, semester: record.semester, academicYear: record.academicYear,
         supervisionRole: 'huong-dan-chinh', supervisionRoleLabel: 'Hướng dẫn chính',
         studentName: student.name, studentId: student.code, submittedAt: record.createdAt,
         description: record.description, objectives: record.objectives, outcomes: record.outcomes, outline: record.outline ? clone(record.outline) : null,
-        attachment: record.attachment?.name || '', lecturerId: record.lecturerId || assignedLecturer(record),
+        attachment: record.attachment?.name || '', lecturerId: assignedLecturer(record),
         reason: record.decision?.reason || '', decidedAt: record.decision?.decidedAt || '',
       };
     });
@@ -138,7 +171,7 @@
       const previous = records.find(record => record.id === id);
       if (!previous) throw new Error('Không tìm thấy đề xuất.');
       const lecturerId = app.data.currentLecturer?.id;
-      if ((previous.lecturerId || assignedLecturer(previous)) !== lecturerId) throw new Error('Giảng viên hiện tại không được xử lý đề xuất này.');
+      if (assignedLecturer(previous) !== lecturerId) throw new Error('Giảng viên hiện tại không được xử lý đề xuất này.');
       if (previous.status !== 'cho-duyet') throw new Error('Đề xuất đã rút hoặc đã được xử lý. Hãy tải lại kết quả mới nhất.');
       if (!Number.isInteger(revision) || revision !== (previous.revision || 0)) throw new Error('Sinh viên đã sửa đề xuất. Hãy tải lại để đọc nội dung mới trước khi xét duyệt.');
       if (!['approved', 'rejected'].includes(status)) throw new Error('Quyết định không hợp lệ.');
@@ -151,5 +184,5 @@
     return globalThis.navigator?.locks?.request ? navigator.locks.request(app.storage.proposalKey, apply) : apply();
   }
 
-  app.services.proposals = { catalog, labels, detailUrl, validate, create, findById, update, withdraw, listMyTopics, listForLecturer, decide };
+  app.services.proposals = { catalog, catalogFor, listSupervisors, lecturerIdFor, labels, detailUrl, validate, create, findById, update, withdraw, listMyTopics, listForLecturer, decide };
 })();

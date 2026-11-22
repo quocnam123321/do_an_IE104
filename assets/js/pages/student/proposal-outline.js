@@ -2,10 +2,14 @@
   const app = globalThis.IE104;
   const root = document.querySelector('[data-proposal-outline]');
   if (!root || !app?.data?.currentStudent) return;
-  const keys = ['englishTitle', 'startDate', 'endDate', 'method', 'scope', 'plan', 'supervisor.degree', 'supervisor.workplace', 'secondarySupervisor.name', 'secondarySupervisor.degree', 'secondarySupervisor.workplace'];
+  const keys = ['englishTitle', 'startDate', 'endDate', 'methodAndScope', 'plan'];
   const fields = Object.fromEntries(keys.map(key => [key, document.querySelector(`[data-outline-field="${key}"]`)]));
-  const members = document.getElementById('proposal-members');
-  const add = document.getElementById('proposal-add-member');
+  const datePicker = app.ui?.proposalDatePicker;
+  const membersTemplate = document.getElementById('proposal-edit-members');
+  const supervisorId = document.getElementById('supervisor-id');
+  let original;
+  let members;
+  let add;
   let count = 0;
   function addMember(value, leader = false) {
     const index = count++;
@@ -44,42 +48,57 @@
     add.disabled = members.children.length >= 4;
     return row;
   }
-  function fill(record) {
-    const outline = record?.outline || {};
-    keys.forEach(key => {
-      const [a, b] = key.split('.');
-      fields[key].value = b ? outline[a]?.[b] || '' : outline[a] || '';
+  function mountMembers() {
+    root.after(membersTemplate.content);
+    members = document.getElementById('proposal-members');
+    add = document.getElementById('proposal-add-member');
+    add.addEventListener('click', () => {
+      if (members.children.length >= 4) return;
+      addMember().querySelector('input').focus();
     });
+  }
+  function fill(record) {
+    original = record;
+    const outline = { ...record?.outline };
+    outline.methodAndScope ??= [outline.method, outline.scope].filter(Boolean).join('\n\n');
+    keys.forEach(key => {
+      const field = fields[key];
+      const value = outline[key] || '';
+      if (datePicker && field.hasAttribute('data-proposal-picker')) datePicker.fill(field, value);
+      else field.value = value;
+    });
+    if (!record) return;
+    if (!members) mountMembers();
     members.replaceChildren();
     const people = outline.members || [{ ...(record?.student || app.data.currentStudent), role: 'nhom-truong' }];
     people.forEach(person => addMember(person, person.role === 'nhom-truong'));
     add.disabled = people.length >= 4;
   }
-  add.disabled = false;
-  add.addEventListener('click', () => {
-    if (members.children.length >= 4) return;
-    addMember().querySelector('input').focus();
-  });
   function read() {
-    const value = { version: 1, supervisor: { name: '' }, secondarySupervisor: {} };
+    const value = {
+      version: 2,
+      supervisor: supervisorId.value === original?.supervisorId ? { ...original.outline?.supervisor } : {},
+      secondarySupervisor: { ...original?.outline?.secondarySupervisor },
+    };
     keys.forEach(key => {
-      const [a, b] = key.split('.');
-      if (b) value[a][b] = fields[key].value;
-      else value[a] = fields[key].value;
+      const field = fields[key];
+      value[key] = datePicker && field.hasAttribute('data-proposal-picker') ? datePicker.read(field) : field.value;
     });
-    value.members = [...members.children].map(row => ({ role: row.dataset.role,
-      ...Object.fromEntries([...row.querySelectorAll('[data-member-field]')].map(input => [input.dataset.memberField, input.value])) }));
+    if (members) {
+      value.members = [...members.children].map(row => ({ role: row.dataset.role,
+        ...Object.fromEntries([...row.querySelectorAll('[data-member-field]')].map(input => [input.dataset.memberField, input.value])) }));
+    }
     return value;
   }
   function getField(path) {
     const key = path.replace(/^outline\./, '');
     if (key === 'members') return members;
     const match = key.match(/^members\.(\d+)\.(code|name)$/);
-    if (match) return members.children[Number(match[1])]?.querySelector(`[data-member-field="${match[2]}"]`);
+    if (match) return members?.children[Number(match[1])]?.querySelector(`[data-member-field="${match[2]}"]`);
     return fields[key];
   }
   function setType(type) {
-    for (const key of ['englishTitle', 'startDate', 'endDate', 'method', 'scope', 'plan']) {
+    for (const key of ['englishTitle', 'startDate', 'endDate', 'methodAndScope', 'plan']) {
       fields[key].required = type === 'khoa-luan';
       const star = fields[key].closest('.proposal-form__field').querySelector('[data-outline-required]');
       if (star) star.hidden = type !== 'khoa-luan';

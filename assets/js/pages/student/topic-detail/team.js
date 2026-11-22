@@ -93,15 +93,7 @@
     }
   }
 
-  const normalizeSearch = value => value.toLowerCase().normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
-
-  function departmentLabel(value = '') {
-    const department = value.trim().replace(/^Bộ môn(?:\s*:\s*|\s+|$)/i, '');
-    return !department || normalizeSearch(department).startsWith('chua ')
-      ? 'Chưa cập nhật bộ môn'
-      : department;
-  }
+  const { normalizeSearch, departmentLabel } = globalThis.IE104SupervisionEntry;
 
   function renderPendingInvitations(invitations, canManage) {
     const section = document.querySelector('.pending-invitations');

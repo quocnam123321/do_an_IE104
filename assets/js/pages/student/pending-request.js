@@ -8,9 +8,15 @@
     dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh',
   });
   const date = value => value ? dateFormat.format(new Date(value)) : '';
+  const outlineDate = value => value ? value.split('-').reverse().join('/') : '';
   const missing = 'Chưa có thông tin';
   const article = document.getElementById('dx001');
-  const title = document.getElementById('proposal-topic-title');
+  const recipientTitle = article.querySelector('#proposal-recipient-title');
+  const recipientLabel = article.querySelector('[data-recipient-label]');
+  const recipientAvatar = article.querySelector('.proposal-recipient__avatar');
+  const recipientDepartment = article.querySelector('[data-recipient-department]');
+  const attachmentRow = article.querySelector('[data-proposal-attachment]');
+  const attachmentNote = article.querySelector('[data-proposal-attachment-note]');
   const badge = document.querySelector('.proposal-status');
   const actions = document.querySelector('.pending-proposal-header__actions');
   const notice = document.querySelector('.pending-proposal-notice');
@@ -77,11 +83,20 @@
 
   function renderRecord(record) {
     const details = article.querySelector('[data-proposal-record]');
+    const outline = record.outline;
+    const people = outline?.members || record.members;
+    const supervisor = outline?.supervisor;
+    const hasExtraSupervisorInfo = supervisor && (supervisor.name !== record.recipient || supervisor.degree || supervisor.workplace);
+    const person = value => value && [value.name, value.degree, value.workplace].filter(Boolean).join(' - ');
     const fields = [
+      ['Mã đề xuất', record.id],
+      [record.dateLabel || 'Ngày gửi đề xuất', record.submittedDate],
       ['Hình thức', record.mode && (record.mode === 'nhom' ? 'Nhóm' : 'Cá nhân')],
       ['Tên nhóm', record.groupName],
-      ['Thành viên', !record.outline && record.members?.map(member => [member.name, member.code, member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên'].join(' - ')).join('\n')],
-      ['Phạm vi', record.scope !== record.outline?.scope && record.scope],
+      ['Sinh viên thực hiện', people?.map(member => [member.name, member.code, member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên'].join(' - ')).join('\n')],
+      ['Thông tin GVHD trong đề cương', hasExtraSupervisorInfo && person(supervisor)],
+      ['Người hướng dẫn phụ trong đề cương', person(outline?.secondarySupervisor)],
+      ['Phạm vi', outline && record.scope !== (outline.methodAndScope ?? (outline.scope || record.scope)) && record.scope],
       ['Lời nhắn', record.message],
       ['Ngày gửi ban đầu', record.resubmittedAt && date(record.createdAt)],
       ['Phản hồi trước khi gửi lại', record.resubmittedAt && record.feedback],
@@ -108,7 +123,28 @@
       history.append(item);
     }
     history.parentElement.hidden = !history.childElementCount;
-    details.parentElement.hidden = !details.childElementCount && history.parentElement.hidden;
+  }
+
+  async function renderRecipient(record) {
+    recipientTitle.textContent = record.owner ? 'Thông tin hướng dẫn' : 'Sinh viên gửi đề xuất';
+    recipientLabel.textContent = record.owner
+      ? (record.recipientRole === 'Đồng hướng dẫn' ? 'Giảng viên đồng hướng dẫn' : 'Giảng viên hướng dẫn chính')
+      : 'Họ và tên';
+    recipientAvatar.textContent = record.recipient?.trim().split(/\s+/).slice(-2)
+      .map(part => part.charAt(0)).join('').toLocaleUpperCase('vi') || '';
+    recipientAvatar.hidden = !recipientAvatar.textContent;
+    recipientDepartment.textContent = !record.owner && record.recipientRole ? `MSSV: ${record.recipientRole}` : '';
+    recipientDepartment.hidden = !recipientDepartment.textContent;
+
+    const supervisorId = record.supervisorId || record.lecturerId;
+    const entry = globalThis.IE104SupervisionEntry;
+    if (!entry || !record.owner || !supervisorId?.startsWith('giang-vien-')) return;
+    const teachers = await entry.getTeachers().catch(() => []);
+    if (displayed !== record) return;
+    const teacher = teachers.find(person => person.id === supervisorId);
+    if (!teacher) return;
+    recipientDepartment.textContent = entry.departmentLabel(teacher.department);
+    recipientDepartment.hidden = false;
   }
 
   function render() {
@@ -135,20 +171,27 @@
       actions.hidden = edit.hidden && project.hidden && Array.from(buttons).every(button => button.hidden);
       if (article.hidden) return;
 
-      title.textContent = record.title;
-      article.querySelector('#proposal-recipient-title').textContent = record.owner ? 'Giảng viên nhận đề xuất' : 'Sinh viên gửi đề xuất';
-      article.querySelector('[data-recipient-label]').textContent = record.owner ? 'Vai trò được đề xuất' : 'MSSV';
-      article.querySelector('[data-proposal-date-label]').textContent = record.dateLabel || 'Ngày gửi đề xuất';
-      const parts = record.recipient?.trim().split(/\s+/).filter(Boolean) || [];
-      article.querySelector('.proposal-recipient__avatar').textContent = [parts[0], parts.length > 1 ? parts.at(-1) : ''].map(part => part?.[0] || '').join('');
       const attachment = record.attachment?.name || record.attachmentName || record.attachment;
+      const outline = record.outline;
       const fields = {
         ...record,
-        semester: record.semester === 'he' ? '3' : record.semester,
-        attachmentText: attachment ? `${attachment}${Number.isFinite(record.attachment?.size) ? ` (${record.attachment.size} byte)` : ''}. Bản demo lưu thông tin tệp.` : 'Chưa có tài liệu đính kèm.',
+        englishTitle: outline?.englishTitle,
+        semester: record.semester && `Học kỳ ${['he', 'summer'].includes(record.semester) ? '3' : record.semester}`,
+        academicYear: record.academicYear?.replace(/\s*[-–]\s*/, ' – '),
+        startDate: outlineDate(outline?.startDate),
+        endDate: outlineDate(outline?.endDate),
+        methodAndScope: outline?.methodAndScope ?? [outline?.method, outline?.scope || record.scope].filter(Boolean).join('\n\n'),
+        plan: outline?.plan,
+        attachmentText: attachment && `${attachment}${Number.isFinite(record.attachment?.size) ? ` (${record.attachment.size} byte)` : ''}`,
       };
-      for (const field of article.querySelectorAll('[data-proposal-field]')) field.textContent = fields[field.dataset.proposalField] || missing;
-      app.shared.proposalOutline.render(article.querySelector('[data-proposal-outline]'), record);
+      for (const field of article.querySelectorAll('[data-proposal-field]')) {
+        const value = fields[field.dataset.proposalField];
+        field.textContent = value || missing;
+        field.classList.toggle('is-missing', !value);
+      }
+      attachmentRow.hidden = !attachment;
+      attachmentNote.textContent = attachment ? 'Bản demo chỉ lưu thông tin tệp.' : 'Chưa có tài liệu đính kèm.';
+      void renderRecipient(record);
       renderRecord(record);
     } catch (failure) {
       displayed = null;

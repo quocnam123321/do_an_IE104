@@ -5,6 +5,15 @@
   const teacherIdPattern = /^giang-vien-\d+$/;
   const pages = new URL('../../pages/', document.currentScript.src);
   const directory = new URL('chung/huong-nghien-cuu.html', pages);
+  const normalizeSearch = value => value.toLowerCase().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
+
+  function departmentLabel(value = '') {
+    const department = value.trim().replace(/^Bộ môn(?:\s*:\s*|\s+|$)/i, '');
+    return !department || normalizeSearch(department).startsWith('chua ')
+      ? 'Chưa cập nhật bộ môn'
+      : department;
+  }
 
   function validateTeacherId(id) {
     if (!teacherIdPattern.test(id)) {
@@ -97,5 +106,6 @@
 
   window.IE104SupervisionEntry = Object.freeze({
     getComposeUrl, getLoginUrl, getInboxLoginUrl, hasStudentSession, startStudentSession, getTeacher, getTeachers,
+    normalizeSearch, departmentLabel,
   });
 })();

@@ -1,0 +1,295 @@
+(() => {
+  const form = document.getElementById('proposal-form');
+  const app = globalThis.IE104;
+  const pickers = app?.ui?.proposalPickers;
+  if (!form || !pickers) return;
+
+  const fullDate = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'full', timeZone: 'UTC' });
+  const dateAt = (year, month, day) => {
+    const date = new Date(0);
+    date.setUTCFullYear(year, month, day);
+    return date;
+  };
+  const isoDate = date => date.toISOString().slice(0, 10);
+  const displayDate = iso => iso.split('-').reverse().join('/');
+  const inRange = date => date.getUTCFullYear() >= 1 && date.getUTCFullYear() <= 9999;
+  const dayOfWeek = date => (date.getUTCDay() + 6) % 7;
+  const addDays = (date, days) => dateAt(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate() + days);
+  const addMonths = (date, months) => {
+    const start = dateAt(date.getUTCFullYear(), date.getUTCMonth() + months, 1);
+    const last = dateAt(start.getUTCFullYear(), start.getUTCMonth() + 1, 0);
+    return addDays(start, Math.min(date.getUTCDate(), last.getUTCDate()) - 1);
+  };
+
+  function parseDate(value) {
+    let iso = value.trim();
+    const parts = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(iso) || /^(\d{2})(\d{2})(\d{4})$/.exec(iso);
+    if (parts) iso = `${parts[3]}-${parts[2].padStart(2, '0')}-${parts[1].padStart(2, '0')}`;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return null;
+    const date = new Date(`${iso}T00:00:00Z`);
+    return Number.isFinite(date.getTime()) && inRange(date) && isoDate(date) === iso ? date : null;
+  }
+
+  const icon = path => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;
+  const weekdays = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
+  const enhanced = new Set();
+
+  function enhanceDate(input) {
+    const group = document.createElement('div');
+    group.className = 'proposal-date-control';
+    input.before(group);
+    group.append(input);
+    const initial = input.value;
+    input.type = 'text';
+    input.inputMode = 'numeric';
+    input.placeholder = 'dd/mm/yyyy';
+    input.maxLength = 10;
+    input.autocomplete = 'off';
+    input.value = initial ? displayDate(initial) : '';
+    enhanced.add(input);
+
+    const label = input.labels[0];
+    label.id ||= `${input.id}-label`;
+    const panelId = `${input.id}-calendar`;
+    const headingId = `${panelId}-heading`;
+    group.insertAdjacentHTML('beforeend', `
+      <button type="button" class="proposal-date-trigger" aria-haspopup="dialog"
+        aria-label="Mở lịch: ${label.firstChild.textContent.trim()}">
+        ${icon('M20 7v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2ZM8 3v4m8-4v4M4 10h16')}
+      </button>
+      <div id="${panelId}" class="proposal-picker-popup proposal-calendar" role="dialog"
+        aria-labelledby="${label.id}">
+        <div class="proposal-calendar__header">
+          <button type="button" id="${headingId}" class="proposal-calendar__heading"
+            aria-expanded="false" aria-controls="${panelId}-months">
+            <span aria-live="polite"></span>${icon('m7 10 5 5 5-5')}
+          </button>
+          <div class="proposal-calendar__navigation">
+            <button type="button" data-step="-1" aria-label="Tháng trước">${icon('m14 6-6 6 6 6')}</button>
+            <button type="button" data-step="1" aria-label="Tháng sau">${icon('m10 6 6 6-6 6')}</button>
+          </div>
+        </div>
+        <div class="proposal-calendar__body">
+          <div id="${panelId}-months" class="proposal-calendar__months" hidden>
+            <label>Năm <input type="number" inputmode="numeric" min="1" max="9999" step="1"></label>
+            <div class="proposal-calendar__month-grid"></div>
+          </div>
+          <table class="proposal-calendar__grid" role="grid" aria-labelledby="${headingId}">
+            <thead><tr>${weekdays.map(day => `<th scope="col">${day}</th>`).join('')}</tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="proposal-calendar__footer">
+          <button type="button" data-clear-date>Xóa</button>
+          <button type="button" data-today>Hôm nay</button>
+        </div>
+      </div>
+    `);
+    const trigger = group.querySelector('.proposal-date-trigger');
+    const panel = group.querySelector('.proposal-calendar');
+    const body = panel.querySelector('.proposal-calendar__body');
+    const popup = pickers.setupPopup(group, trigger, panel, { scrollArea: body });
+    const heading = panel.querySelector('.proposal-calendar__heading');
+    const title = heading.querySelector('span');
+    const navigation = [...panel.querySelectorAll('[data-step]')];
+    const jump = panel.querySelector('.proposal-calendar__months');
+    const yearField = jump.querySelector('input');
+    const monthGrid = jump.querySelector('.proposal-calendar__month-grid');
+    const grid = panel.querySelector('table');
+    const gridBody = grid.tBodies[0];
+    const clear = panel.querySelector('[data-clear-date]');
+    let today;
+    let selected;
+    let active;
+
+    const months = Array.from({ length: 12 }, (_, index) => {
+      const month = document.createElement('button');
+      month.type = 'button';
+      month.textContent = `Tháng ${index + 1}`;
+      month.addEventListener('click', () => {
+        setYear();
+        active = dateAt(active.getUTCFullYear(), index, 1);
+        showMonths(false);
+        focusDay();
+      });
+      return month;
+    });
+    monthGrid.append(...months);
+
+    function render() {
+      const year = active.getUTCFullYear();
+      const month = active.getUTCMonth();
+      title.textContent = `Tháng ${month + 1} năm ${year}`;
+      navigation[0].disabled = year === 1 && (!jump.hidden || month === 0);
+      navigation[1].disabled = year === 9999 && (!jump.hidden || month === 11);
+      if (!jump.hidden) {
+        yearField.value = year;
+        months.forEach((button, index) => button.setAttribute('aria-pressed', String(index === month)));
+        popup.place();
+        return;
+      }
+      const start = dateAt(year, month, 1);
+      const first = addDays(start, -dayOfWeek(start));
+      const rows = Array.from({ length: 6 }, (_, week) => {
+        const row = document.createElement('tr');
+        for (let day = 0; day < 7; day++) {
+          const date = addDays(first, week * 7 + day);
+          const cell = document.createElement('td');
+          row.append(cell);
+          if (!inRange(date)) continue;
+          const value = isoDate(date);
+          const button = document.createElement('button');
+          cell.setAttribute('aria-selected', String(value === selected));
+          button.type = 'button';
+          button.dataset.date = value;
+          button.textContent = date.getUTCDate();
+          button.tabIndex = date.getTime() === active.getTime() ? 0 : -1;
+          button.setAttribute('aria-label', fullDate.format(date));
+          if (date.getUTCMonth() !== month) button.classList.add('is-outside-month');
+          if (value === isoDate(today)) button.setAttribute('aria-current', 'date');
+          cell.append(button);
+        }
+        return row;
+      });
+      gridBody.replaceChildren(...rows);
+      popup.place();
+    }
+
+    function focusDay() {
+      gridBody.querySelector('button[tabindex="0"]')?.focus({ preventScroll: true });
+      const day = document.activeElement;
+      if (gridBody.contains(day)) {
+        const cell = day.getBoundingClientRect();
+        const bounds = body.getBoundingClientRect();
+        if (cell.bottom > bounds.bottom) body.scrollTop += cell.bottom - bounds.bottom + 4;
+        if (cell.top < bounds.top) body.scrollTop -= bounds.top - cell.top + 4;
+      }
+    }
+
+    function showMonths(show) {
+      body.scrollTop = 0;
+      jump.hidden = !show;
+      grid.hidden = show;
+      heading.setAttribute('aria-expanded', String(show));
+      navigation[0].setAttribute('aria-label', show ? 'Năm trước' : 'Tháng trước');
+      navigation[1].setAttribute('aria-label', show ? 'Năm sau' : 'Tháng sau');
+      render();
+    }
+
+    function setYear() {
+      const year = yearField.valueAsNumber;
+      if (Number.isInteger(year) && year >= 1 && year <= 9999) {
+        active = addMonths(active, (year - active.getUTCFullYear()) * 12);
+      }
+      render();
+    }
+
+    function close() {
+      popup.close();
+      trigger.focus({ preventScroll: true });
+    }
+
+    function open() {
+      const now = new Date();
+      today = dateAt(now.getFullYear(), now.getMonth(), now.getDate());
+      const date = parseDate(input.value);
+      selected = date ? isoDate(date) : '';
+      active = date || today;
+      clear.disabled = !input.value;
+      showMonths(false);
+      popup.open();
+      focusDay();
+    }
+
+    function choose(value) {
+      input.value = value ? displayDate(value) : '';
+      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+      close();
+    }
+
+    trigger.addEventListener('click', () => {
+      if (popup.isOpen()) close();
+      else open();
+    });
+    input.addEventListener('keydown', event => {
+      if (event.altKey && event.key === 'ArrowDown') {
+        event.preventDefault();
+        if (!popup.isOpen()) {
+          trigger.focus({ preventScroll: true });
+          open();
+        }
+      }
+    });
+    input.addEventListener('blur', () => {
+      const value = parseDate(input.value);
+      if (value) input.value = displayDate(isoDate(value));
+    });
+    panel.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+      }
+    });
+    group.addEventListener('focusout', event => {
+      if (event.relatedTarget && !group.contains(event.relatedTarget)) popup.close();
+    });
+    heading.addEventListener('click', () => {
+      showMonths(jump.hidden);
+      if (!jump.hidden) yearField.focus();
+    });
+    yearField.addEventListener('change', setYear);
+    yearField.addEventListener('keydown', event => {
+      if (event.key !== 'Enter') return;
+      event.preventDefault();
+      setYear();
+      months[active.getUTCMonth()].focus();
+    });
+    navigation.forEach(button => button.addEventListener('click', () => {
+      const step = Number(button.dataset.step);
+      active = addMonths(active, jump.hidden ? step : step * 12);
+      render();
+      if (button.disabled) heading.focus({ preventScroll: true });
+    }));
+    gridBody.addEventListener('click', event => {
+      const day = event.target.closest('button[data-date]');
+      if (day) choose(day.dataset.date);
+    });
+    gridBody.addEventListener('keydown', event => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        choose(event.target.dataset.date);
+        return;
+      }
+      const offset = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 }[event.key];
+      let next;
+      if (offset) next = addDays(active, offset);
+      else if (event.key === 'Home') next = addDays(active, -dayOfWeek(active));
+      else if (event.key === 'End') next = addDays(active, 6 - dayOfWeek(active));
+      else if (event.key === 'PageUp' || event.key === 'PageDown') {
+        const step = event.key === 'PageUp' ? -1 : 1;
+        next = addMonths(active, event.shiftKey ? step * 12 : step);
+      }
+      if (!next) return;
+      event.preventDefault();
+      if (!inRange(next)) return;
+      active = next;
+      render();
+      focusDay();
+    });
+    clear.addEventListener('click', () => choose(''));
+    panel.querySelector('[data-today]').addEventListener('click', () => choose(isoDate(today)));
+    form.addEventListener('reset', popup.close);
+  }
+
+  form.querySelectorAll('input[type="date"][data-proposal-picker]').forEach(enhanceDate);
+  app.ui.proposalDatePicker = {
+    read(input) {
+      const date = parseDate(input.value);
+      return date ? isoDate(date) : input.value;
+    },
+    fill(input, value) {
+      input.value = enhanced.has(input) && value ? displayDate(value) : value;
+    },
+  };
+})();
