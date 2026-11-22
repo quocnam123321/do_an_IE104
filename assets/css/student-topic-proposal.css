@@ -143,7 +143,7 @@
 }
 .student-proposal-page .proposal-form__attachment { position: relative; justify-self: start; max-width: 100%; }
 /* Input tệp native vẫn nhận focus bàn phím và lưu lựa chọn của người dùng. */
-.student-proposal-page .main-content #proposal-attachment {
+.student-proposal-page .main-content :is(#proposal-attachment, #proposal-cover-image) {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -154,7 +154,7 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
-.student-proposal-page #proposal-attachment:focus-visible + .proposal-form__file-button {
+.student-proposal-page :is(#proposal-attachment, #proposal-cover-image):focus-visible + .proposal-form__file-button {
   outline: 2px solid var(--color-focus);
   outline-offset: 3px;
 }
@@ -165,24 +165,21 @@
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-control);
-  background: var(--color-background);
 }
 .student-proposal-page .proposal-form__attachment-icon { color: var(--color-muted-foreground); }
-.student-proposal-page #proposal-attachment-status {
+.student-proposal-page :is(#proposal-attachment-status, #proposal-cover-status) {
   margin: 0;
   font-size: var(--font-size-secondary);
   overflow-wrap: anywhere;
 }
-.student-proposal-page .main-content [data-remove-proposal-attachment] {
+.student-proposal-page .main-content :is([data-remove-proposal-attachment], [data-remove-proposal-cover]) {
   width: var(--control-min-height);
   padding: 0;
   border: 0;
   background: transparent;
   color: var(--color-danger-fg);
 }
-.student-proposal-page .main-content [data-remove-proposal-attachment]:not(:disabled):hover {
+.student-proposal-page .main-content :is([data-remove-proposal-attachment], [data-remove-proposal-cover]):not(:disabled):hover {
   background: var(--color-danger-bg);
 }
 .student-proposal-page .proposal-form__footer {
@@ -193,7 +190,7 @@
   gap: var(--space-4);
 }
 .student-proposal-page .proposal-form__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-left: auto; }
-.student-proposal-page .main-content :is(.proposal-form__cancel, .proposal-form__submit) { font-size: var(--font-size-body); padding-inline: var(--space-6); }
+.student-proposal-page .main-content .proposal-form__submit { font-size: var(--font-size-body); padding-inline: var(--space-6); }
 .student-proposal-page .proposal-form__submit:disabled {
   background: var(--color-disabled-bg);
   color: var(--color-disabled-fg);
@@ -285,7 +282,6 @@
   .student-proposal-page .proposal-notes__list > li + li { padding-top: var(--space-4); border-top: 1px solid var(--color-border); }
   .student-proposal-page .proposal-form__actions { width: 100%; margin: 0; }
   .student-proposal-page .proposal-form__actions > * { flex: 1 1 auto; }
-  .student-proposal-page .proposal-form__attachment-selection { padding-inline: var(--space-2); }
   .student-proposal-page .supervisor-dialog__actions { width: 100%; margin: 0; }
   .student-proposal-page .supervisor-dialog__actions > button { flex: 1 1 auto; }
 }

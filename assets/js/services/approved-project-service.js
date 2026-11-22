@@ -11,7 +11,8 @@
       const student = record.student || app.data.legacyProposalStudent;
       const id = projectIdFor(record.id);
       const project = {
-        id, topicId: id, requestId: record.id, source: 'approved-proposal',
+        id, topicId: id, requestId: record.id, source: 'approved-proposal', topicCode: record.topicCode, displayId: record.topicCode,
+        coverImage: record.coverImage,
         title: record.title, type: record.type === 'khoa-luan' ? 'khoa-luan' : 'do-an', typeLabel: record.typeLabel,
         courseId: record.courseId, courseLabel: record.courseLabel, semester: record.semester, academicYear: record.academicYear,
         status: 'dang-thuc-hien', statusLabel: 'Đang thực hiện', groupName: `Nhóm của ${student.name}`,
@@ -90,13 +91,19 @@
     return definition;
   }
 
+  function canSupervise(project, supervisorIds) {
+    if (supervisorIds.includes(app.data.currentLecturer?.id)) return true;
+    return project.source === 'approved-proposal' && supervisorIds.includes(project.lecturerId) &&
+      Boolean(app.services.proposals?.canReview(project.lecturerId));
+  }
+
   function list(role) {
     const all = definitions();
-    if (role === 'lecturer') return clone(all.filter(item => item.team.supervisorIds.includes(app.data.currentLecturer?.id)).map(item => item.project));
+    if (role === 'lecturer') return clone(all.filter(({ project, team }) => canSupervise(project, team.supervisorIds)).map(item => item.project));
     if (role !== 'student') throw new Error('Chọn vai trò hợp lệ để xem đề tài.');
     const savedTeams = app.storage.readProjectTeams();
     return clone(all.filter(item => studentCanView(item, savedTeams)).map(item => item.project));
   }
 
-  app.services.approvedProjects = { get, forStudent, list, projectIdFor, studentUrl, lecturerUrl };
+  app.services.approvedProjects = { get, forStudent, list, canSupervise, projectIdFor, studentUrl, lecturerUrl };
 })();

@@ -41,7 +41,7 @@
       const meta = card.querySelector('.topic-card__meta');
       const project = projects.find(entry => entry.project.id === record.projectId)?.project;
       const code = project ? window.IE104.services.lecturerTopics.projectIdentity(project).displayId
-        : window.UITLecturerCatalog.formatCode(card.dataset.topicType, record.topicId);
+        : record.topicCode || window.UITLecturerCatalog.formatCode(card.dataset.topicType, record.topicId);
       meta.setAttribute('aria-label', `Thông tin đề tài ${code}`);
       const courseLabel = card.dataset.topicType === 'graduation' ? 'Đồ án tốt nghiệp' : card.dataset.topicType === 'thesis' ? 'Khóa luận tốt nghiệp' : record.courseLabel || 'Không áp dụng';
       [code, courseLabel,

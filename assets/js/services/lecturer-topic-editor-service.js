@@ -31,7 +31,8 @@
     const service = app.services.lecturerTopics;
     const projects = app.services.teaching?.listSupervisedProjects().map(entry => service.projectIdentity(entry.project)) || [];
     const samples = app.services.studentTopicCodes?.allocatedSamples() || [];
-    return codes.nextCode(type, [...service.allCreated(), ...service.list('supervised'), ...projects, ...samples], faculty);
+    const proposals = (app.storage?.readProposals?.() || []).filter(record => record.topicCode);
+    return codes.nextCode(type, [...service.allCreated(), ...service.list('supervised'), ...projects, ...samples, ...proposals], faculty);
   }
 
   function validate(input, previous = null, now = new Date()) {

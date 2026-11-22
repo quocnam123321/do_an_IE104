@@ -31,6 +31,7 @@
       document.title = `${project.title} | Đề tài của tôi`;
       text('[data-project-title]', project.title);
       text('#project-title', project.title);
+      void app.shared?.renderProposalCover?.(root.querySelector('.topic-summary__image'), project.coverImage);
       const term = project.semester === 'he' ? 'hè' : project.semester;
       const period = [term && 'Học kỳ ' + term, project.academicYear].filter(Boolean).join(' · ');
       const code = app.services.studentTopicCodes.get(project) || 'Chưa có mã đề tài';

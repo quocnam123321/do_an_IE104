@@ -45,6 +45,12 @@
 
   const proposalKey = 'ie104.demo.proposals.v1';
 
+  function validProposalCover(image) {
+    return image === undefined || image === null || (typeof image.fileKey === 'string' && image.fileKey.trim() &&
+      typeof image.name === 'string' && image.name.trim() && Number.isInteger(image.size) && image.size > 0 &&
+      ['image/jpeg', 'image/png'].includes(image.type));
+  }
+
   function isProposalOutline(outline) {
     if (![1, 2].includes(outline?.version)) return false;
     const methodLimits = outline.version === 1 ? { method: 10000, scope: 10000 } : { methodAndScope: 20002 };
@@ -63,6 +69,8 @@
   function isProposalRecord(record) {
     const strings = ['id', 'title', 'type', 'typeLabel', 'courseId', 'courseLabel', 'semester', 'academicYear', 'description', 'objectives', 'outcomes', 'supervisorId', 'supervisorName', 'createdAt'];
     if (!record || !strings.every(key => typeof record[key] === 'string' && record[key].trim())) return false;
+    if (!validProposalCover(record.coverImage)) return false;
+    if (record.topicCode !== undefined && (typeof record.topicCode !== 'string' || !/^ISE(?:DAMH|DATN|KLTN)-(?!000)\d{3}$/.test(record.topicCode))) return false;
     if (record.outline !== undefined && (!isProposalOutline(record.outline) || (record.student && !record.outline.members.some(member => member.code === record.student.code && member.name === record.student.name && member.role === 'nhom-truong')))) return false;
     if (record.outline && record.type === 'khoa-luan') {
       const methodFields = record.outline.version === 1 ? ['method', 'scope'] : ['methodAndScope'];
@@ -74,7 +82,10 @@
     if (record.lecturerId !== undefined && (typeof record.lecturerId !== 'string' || !record.lecturerId.trim())) return false;
     if (record.revision !== undefined && (!Number.isInteger(record.revision) || record.revision < 0)) return false;
     if (!['updatedAt', 'withdrawnAt'].every(key => record[key] === undefined || (typeof record[key] === 'string' && Number.isFinite(Date.parse(record[key]))))) return false;
-    return record.attachment === null || Boolean(record.attachment && typeof record.attachment.name === 'string' && Number.isFinite(record.attachment.size) && record.attachment.size >= 0);
+    const attachment = record.attachment;
+    return attachment === null || Boolean(attachment && typeof attachment.name === 'string' &&
+      Number.isFinite(attachment.size) && attachment.size >= 0 &&
+      (attachment.fileKey === undefined || (typeof attachment.fileKey === 'string' && attachment.fileKey.trim() && attachment.size > 0)));
   }
 
   function readProposals() {
@@ -85,6 +96,8 @@
       const parsed = JSON.parse(raw);
       if (parsed.version !== 1 || !Array.isArray(parsed.records)) throw new Error();
       if (!parsed.records.every(isProposalRecord) || new Set(parsed.records.map(record => record.id)).size !== parsed.records.length) throw new Error();
+      const codes = parsed.records.flatMap(record => record.topicCode ? [record.topicCode] : []);
+      if (new Set(codes).size !== codes.length) throw new Error();
       return parsed.records;
     } catch {
       throw new Error('Không đọc được đề xuất đã lưu. Dữ liệu cũ chưa bị thay thế.');
@@ -204,6 +217,7 @@
       const valid = parsed.records.every(record => {
         const strings = ['id', 'title', 'groupName', 'message', 'description', 'objectives', 'scope', 'outcomes', 'lecturerId', 'lecturerName', 'feedback', 'createdAt'];
         if (!record || !strings.every(key => typeof record[key] === 'string') || !record.id || !record.title.trim() || ids.has(record.id)) return false;
+        if (!validProposalCover(record.coverImage)) return false;
         ids.add(record.id);
         if (!['dang-ky', 'de-xuat'].includes(record.kind) || !['nhom', 'ca-nhan'].includes(record.mode) || !['cho-duyet', 'da-duyet', 'yeu-cau-chinh-sua', 'da-rut', 'tu-choi'].includes(record.status) || !Number.isInteger(record.revision) || record.revision < 0) return false;
         if (!Number.isFinite(Date.parse(record.createdAt)) || !['updatedAt', 'withdrawnAt', 'resubmittedAt', 'deletedAt'].every(key => record[key] === undefined || Number.isFinite(Date.parse(record[key])))) return false;

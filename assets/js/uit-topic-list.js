@@ -175,13 +175,15 @@
       document.body.classList.contains('teacher-created-topics-page')
         ? '[data-topic-tab-count="created"]' : '[data-topic-tab-count="teaching"]');
     if (tabCount) tabCount.textContent = unique.length;
-    status.textContent = matched.length ? `Hiển thị ${(page - 1) * pageSize + 1}–${Math.min(page * pageSize, matched.length)} trên ${matched.length} đề tài` : 'Không có đề tài phù hợp.';
-    if (results.dataset.topicSourceError) {
-      status.append(` · Danh sách có thể chưa cập nhật. ${results.dataset.topicSourceError}`);
-    }
+    const hasMatches = matched.length > 0;
+    const sourceError = results.dataset.topicSourceError;
+    const count = `Hiển thị ${(page - 1) * pageSize + 1}–${Math.min(page * pageSize, matched.length)} trên ${matched.length} đề tài`;
+    const summary = hasMatches ? count : 'Không có đề tài phù hợp.';
+    status.textContent = sourceError ? `${summary} Danh sách có thể chưa cập nhật. ${sourceError}` : summary;
+    status.classList.toggle('visually-hidden', !sourceError);
     status.hidden = false;
-    viewport.hidden = !matched.length;
-    showEmpty(matched.length > 0, unique.length > 0);
+    viewport.hidden = !hasMatches;
+    showEmpty(hasMatches, unique.length > 0);
     const pages = document.createElement('ul'); pages.className = 'pagination__list';
     const add = (target, text, label, disabled = false) => {
       const item = document.createElement('li');

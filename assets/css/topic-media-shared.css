@@ -77,6 +77,20 @@
   aspect-ratio: 1; object-fit: contain; padding: var(--topic-cover-padding);
 }
 .gv-default-cover { object-fit: contain; padding: var(--topic-cover-padding); }
+
+:is(.topic-card__media, .topic-card__image, .request-topic__image, .topic-summary__image):has(> img[data-proposal-cover]:not([hidden])) > :not([data-proposal-cover]) {
+  display: none;
+}
+
+.page-container :is(.request-topic__image, .topic-summary__image) > img[data-proposal-cover],
+:is(.request-topic__image, .topic-summary__image) > img[data-proposal-cover] {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
 .page-container .overview { grid-template-columns: var(--topic-cover-size) minmax(0,1fr); }
 .page-container .project-summary { grid-template-columns: var(--topic-cover-size) minmax(0,1fr); }
 .page-container .pending-proposal-summary { grid-template-columns: var(--topic-cover-size) minmax(0,1fr); }

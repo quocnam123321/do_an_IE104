@@ -81,7 +81,10 @@
       summary.textContent = result.total
         ? `${result.total} đề tài - Hiển thị ${result.rangeStart}-${result.rangeEnd} - Trang ${page}/${result.pageCount}`
         : 'Không có đề tài phù hợp.';
-      if (result.warning) summary.textContent += ` ${result.warning}`;
+      if (result.warning) {
+        summary.textContent = config.hideResultSummary ? result.warning : `${summary.textContent} ${result.warning}`;
+      }
+      summary.classList.toggle('visually-hidden', Boolean(config.hideResultSummary && !result.warning));
       renderPagination(result);
       document.dispatchEvent(new Event('ie104:student-topics-rendered'));
       if (options.focusPagination) pager.querySelector('[aria-current="page"]')?.focus({ preventScroll: true });

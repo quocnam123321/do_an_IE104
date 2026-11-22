@@ -17,11 +17,20 @@
     <link rel="stylesheet" href="../../assets/css/student-topic-proposal.css?v=20261116-1" />
     <link rel="stylesheet" href="../../assets/css/proposal-pickers.css" />
     <script src="../../assets/js/data/student-profile.js" defer></script>
+    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261122-outlines" defer></script>
+    <script src="../../assets/js/shared/topic-identity.js" defer></script>
+    <script src="../../assets/js/data/mock-data.js" defer></script>
+    <script src="../../assets/js/data/student-projects.js" defer></script>
+    <script src="../../assets/js/data/lecturer-topics.js" defer></script>
+    <script src="../../assets/js/data/lecturer-merge-catalog.js?v=20261122-outlines" defer></script>
     <script src="../../assets/js/services/storage.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
     <script src="../../assets/js/services/profile-service.js" defer></script>
     <script src="../../assets/js/shared/validation.js" defer></script>
     <script src="../../assets/js/data/proposal-actors.js" defer></script>
-    <script src="../../assets/js/services/proposal-service.js" defer></script>
+    <script src="../../assets/js/services/student-topic-codes.js?v=20261122-merge" defer></script>
+    <script src="../../assets/js/services/proposal-service.js?v=20261122-merge" defer></script>
     <script src="../../assets/js/data/student-requests.js" defer></script>
     <script src="../../assets/js/services/request-service.js" defer></script>
     <script src="../../assets/js/proposal-store.js" defer></script>
@@ -29,6 +38,7 @@
     <script src="../../assets/js/pages/student/proposal-pickers.js" defer></script>
     <script src="../../assets/js/pages/student/proposal-date-picker.js" defer></script>
     <script src="../../assets/js/pages/student/proposal-outline.js" defer></script>
+    <script src="../../assets/js/services/proposal-file-service.js" defer></script>
     <script src="../../assets/js/pages/student/topic-proposal.js" defer></script>
 
 <script src="../../assets/js/dialog-commands.js" defer></script>
@@ -157,6 +167,11 @@
                     <p id="course-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
                   </div>
                 </div>
+                <div class="proposal-form__field">
+                  <label for="proposal-topic-code">Mã đề tài</label>
+                  <input id="proposal-topic-code" type="text" placeholder="Chọn loại đề tài" aria-describedby="proposal-topic-code-note" readonly />
+                  <p id="proposal-topic-code-note" class="proposal-outline-hint" role="status">Mã dự kiến được chốt khi lưu đề xuất.</p>
+                </div>
                 <div class="proposal-form__row">
                   <div class="proposal-form__field">
                     <label for="semester">Học kỳ <span class="proposal-form__required" aria-hidden="true">*</span></label>
@@ -260,12 +275,33 @@
                   </div>
                 </div>
               </fieldset>
+              <fieldset class="proposal-form__section">
+                <legend>Ảnh đại diện đề tài</legend>
+                <div class="proposal-form__field">
+                  <div id="proposal-cover-picker" class="proposal-form__field">
+                    <div class="proposal-form__attachment">
+                      <input id="proposal-cover-image" type="file" accept="image/png,image/jpeg" aria-describedby="proposal-cover-hint" />
+                      <label class="proposal-form__file-button" for="proposal-cover-image"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-6 6 6-6 6 6M5 16v5h14v-5" /></svg>Chọn ảnh</label>
+                    </div>
+                    <p id="proposal-cover-hint" class="proposal-outline-hint">Hệ thống sẽ dùng ảnh mặc định nếu bạn chưa chọn ảnh.</p>
+                  </div>
+                  <div id="proposal-cover-selection" class="proposal-form__attachment-selection" hidden>
+                    <svg class="proposal-form__attachment-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 16-5-5L5 21"/>
+                    </svg>
+                    <p id="proposal-cover-status" aria-live="polite"></p>
+                    <button type="button" data-remove-proposal-cover aria-label="Bỏ ảnh đại diện" aria-describedby="proposal-cover-status" title="Bỏ ảnh">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18m-2 0-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6m4 0V3h6v3m-5 4v7m4-7v7" /></svg>
+                    </button>
+                  </div>
+                  <p id="proposal-cover-error" class="proposal-field-error" role="alert" hidden></p>
+                </div>
+              </fieldset>
             </div>
 
             <div class="proposal-form__footer">
               <p id="proposal-required-note">* Thông tin bắt buộc</p>
               <div class="proposal-form__actions">
-                <a class="proposal-form__cancel" href="dang-ky-de-tai.html" hidden>Hủy</a>
                 <button class="proposal-form__submit" type="button" aria-haspopup="dialog" aria-controls="proposal-success-dialog" disabled>Gửi đề xuất</button>
                 <button class="proposal-form__submit" type="submit" data-resubmit-proposal aria-haspopup="dialog" aria-controls="proposal-confirm-dialog" hidden disabled>Lưu và gửi lại</button>
               </div>
@@ -381,13 +417,13 @@
     </template>
 
     <dialog id="proposal-confirm-dialog" class="confirmation-dialog" aria-labelledby="proposal-confirm-title">
-      <h2 id="proposal-confirm-title">Xác nhận chỉnh sửa</h2>
-      <p data-proposal-confirm-note>Thay đổi sẽ được lưu trong bản demo trên trình duyệt này.</p>
+      <h2 id="proposal-confirm-title">Xác nhận gửi lại đề xuất</h2>
+      <p>Đề xuất sẽ chuyển về Chờ duyệt trong bản demo trên trình duyệt này.</p>
       <dl data-proposal-review></dl>
       <p data-proposal-error class="proposal-field-error" role="alert" tabindex="-1" hidden></p>
       <div class="proposal-review-actions">
         <button type="button" command="close" commandfor="proposal-confirm-dialog">Quay lại chỉnh sửa</button>
-        <button type="button" data-confirm-proposal>Lưu thay đổi</button>
+        <button type="button" data-confirm-proposal>Lưu và gửi lại</button>
       </div>
     </dialog>
 

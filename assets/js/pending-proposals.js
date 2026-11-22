@@ -86,6 +86,7 @@
     const card = cardTemplate.cloneNode(true);
     card.querySelectorAll('.proposal-card__date').forEach(node => node.remove());
     card.dataset.proposalId = proposal.id;
+    void window.IE104.shared?.renderProposalCover?.(card.querySelector('.topic-card__media'), proposal.coverImage);
     const title = card.querySelector('.proposal-card__title');
     title.id = `proposal-${proposal.id.toLowerCase()}-title`;
     title.textContent = proposal.title;
@@ -94,7 +95,7 @@
       ['code', proposal.id],
       ['course', `${window.UITLecturerCatalog.subjectLabel(proposal)}`],
       ['student', `${proposal.studentName} · ${proposal.studentId}`],
-      ['role', `${proposal.supervisionRoleLabel}`],
+      ['role', [proposal.supervisionRoleLabel, proposal.supervisorName].filter(Boolean).join(' · ')],
     ];
     for (const [name, value] of fields) {
       card.querySelector(`.proposal-card__${name} .topic-card__meta-text`).textContent = value;
@@ -165,7 +166,7 @@
     const data = new FormData(form);
     const selected = Object.entries(filterFields).map(([name, field]) => [field, data.getAll(name)]);
     const matching = pending.filter((proposal) => {
-      const haystack = normalize([proposal.id, proposal.title, proposal.studentName, proposal.studentId].join(' '));
+      const haystack = normalize([proposal.id, proposal.topicCode, proposal.title, proposal.studentName, proposal.studentId].join(' '));
       return terms.every((term) => haystack.includes(term)) &&
         selected.every(([field, values]) => !values.length || values.includes(field === 'course' ? courseKey(proposal) : proposal[field]));
     });

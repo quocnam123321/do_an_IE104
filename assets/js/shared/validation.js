@@ -85,7 +85,20 @@
     value.attachment = null;
     if (file) {
       if (typeof file.name !== 'string' || !file.name.trim() || !Number.isFinite(file.size) || file.size < 0) errors.push({ field: 'attachment', message: 'Thông tin tệp không hợp lệ. Vui lòng chọn lại tệp.' });
-      else value.attachment = { name: file.name, size: file.size, type: String(file.type || '') };
+      else value.attachment = {
+        name: file.name, size: file.size, type: String(file.type || ''),
+        ...(typeof file.fileKey === 'string' && file.fileKey ? { fileKey: file.fileKey } : {}),
+      };
+    }
+    const image = input.coverImage;
+    if (image === null) value.coverImage = null;
+    else if (image !== undefined) {
+      if (!image || typeof image.fileKey !== 'string' || !image.fileKey.trim() || typeof image.name !== 'string' || !image.name.trim() ||
+          !Number.isInteger(image.size) || image.size < 1 || !['image/jpeg', 'image/png'].includes(image.type)) {
+        errors.push({ message: 'Thông tin ảnh đại diện không hợp lệ. Hãy chọn lại ảnh.' });
+      } else {
+        value.coverImage = { fileKey: image.fileKey, name: image.name, size: image.size, type: image.type };
+      }
     }
     return { errors, value };
   }

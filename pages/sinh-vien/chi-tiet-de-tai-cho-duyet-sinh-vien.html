@@ -4,16 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Xem nội dung đề xuất và theo dõi kết quả xét duyệt." />
-    <title>Chi tiết đề tài | Đề tài của tôi</title>
+    <title>Chi tiết đề xuất đề tài | Đề tài của tôi</title>
     <link rel="stylesheet" href="../../assets/css/tokens.css" />
     <link rel="stylesheet" href="../../assets/css/base.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
-    <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css" />
-    <link rel="stylesheet" href="../../assets/css/de-tai-cua-toi.css" />
-    <link rel="stylesheet" href="../../assets/css/student-requests.css" />
-    <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css" />
-    <link rel="stylesheet" href="../../assets/css/proposal-outline.css" />
+    <link rel="stylesheet" href="../../assets/css/proposal-request-detail.css" />
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css" />
+    <link rel="stylesheet" href="../../assets/css/de-tai-cua-toi.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <script src="../../assets/js/dialog-commands.js" defer></script>
     <script src="../../assets/js/supervision-entry.js?v=20261122-shared-login" defer></script>
@@ -26,11 +23,15 @@
     <script src="../../assets/js/services/request-service.js" defer></script>
     <script src="../../assets/js/uit-lecturer-catalog.js" defer></script>
     <script src="../../assets/js/shared/student-course-label.js?v=20261122-course-label" defer></script>
+    <script src="../../assets/js/services/proposal-file-service.js" defer></script>
+    <script src="../../assets/js/shared/proposal-cover.js" defer></script>
+    <script src="../../assets/js/shared/download-file.js" defer></script>
+    <script src="../../assets/js/shared/proposal-detail-fields.js" defer></script>
     <script src="../../assets/js/pages/student/pending-request.js?v=20261122-course-label" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script src="../../assets/js/shared/logout.js" defer></script>
   </head>
-  <body id="page-top" tabindex="-1" class="registration-page my-topics-page pending-proposal-page">
+  <body id="page-top" tabindex="-1" class="pending-proposal-page proposal-request-detail-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
     <header class="site-header">
       <div class="site-header__inner">
@@ -111,88 +112,128 @@
           <ol class="breadcrumb__list">
             <li class="breadcrumb__item"><a href="tong-quan-sinh-vien.html">Sinh viên</a></li>
             <li class="breadcrumb__item"><a href="de-tai-cua-toi-sinh-vien.html">Đề tài của tôi</a></li>
-            <li class="breadcrumb__item" aria-current="page">Chi tiết đề tài</li>
+            <li class="breadcrumb__item" aria-current="page">Chi tiết đề xuất đề tài</li>
           </ol>
         </nav>
-        <a class="page-back-link" href="de-tai-cua-toi-sinh-vien.html">← Quay lại Đề tài của tôi</a>
-        <header class="page-header pending-proposal-header">
-          <div class="pending-proposal-header__title"><h1>Chi tiết đề tài</h1><span class="proposal-status" hidden></span></div>
-          <div class="pending-proposal-header__actions" hidden>
-            <a data-proposal-edit hidden>Chỉnh sửa đề xuất</a>
-            <button type="button" data-proposal-action="withdraw" aria-haspopup="dialog" aria-controls="withdraw-proposal-dialog" hidden>Rút đề xuất</button>
-            <button type="button" data-proposal-action="remove" aria-haspopup="dialog" aria-controls="withdraw-proposal-dialog" hidden>Xóa khỏi danh sách</button>
-            <a data-proposal-project hidden>Mở đề tài và nhóm thực hiện</a>
+        <a class="back-link" href="de-tai-cua-toi-sinh-vien.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m12 5-7 7 7 7M5 12h14" />
+          </svg>
+          Quay lại Đề tài của tôi
+        </a>
+        <header class="page-header">
+          <div class="request-detail-heading">
+            <h1 class="page-header__title">Chi tiết đề xuất đề tài</h1>
           </div>
-          <p>Xem lại nội dung đề xuất và theo dõi kết quả xét duyệt.</p>
         </header>
         <p data-pending-result role="status" tabindex="-1" hidden></p>
         <p class="pending-proposal-notice" role="status"></p>
         <noscript><p>Cần bật JavaScript để xem đề xuất được lưu trên trình duyệt.</p></noscript>
-        <article id="dx001" class="pending-proposal" aria-labelledby="proposal-topic-title" hidden>
-          <section id="saved-proposal" aria-labelledby="proposal-topic-info-title">
-            <h2 id="proposal-topic-info-title">Thông tin đề tài</h2>
-            <div class="pending-proposal-summary">
-              <div class="topic-image topic-image--uit"><img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" /></div>
-              <dl class="pending-proposal-fields pending-proposal-fields--paired">
-                <div class="pending-proposal-fields__wide"><dt>Tên đề tài tiếng Việt</dt><dd id="proposal-topic-title" data-proposal-field="title"></dd></div>
-                <div class="pending-proposal-fields__wide"><dt>Tên đề tài tiếng Anh</dt><dd data-proposal-field="englishTitle"></dd></div>
+        <article id="dx001" class="pending-proposal request-detail request-detail--proposal" aria-labelledby="proposal-topic-title" hidden>
+          <section id="saved-proposal" class="request-topic" aria-labelledby="proposal-topic-title">
+            <div class="request-topic__image" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z" />
+                <path d="M9 13h6M9 16h4" />
+              </svg>
+            </div>
+            <div class="request-topic__content">
+              <div class="request-topic__heading">
+                <div>
+                  <h2 id="proposal-topic-title" data-proposal-field="title"></h2>
+                  <p class="request-topic__translation" lang="en" data-proposal-field="englishTitle" data-optional-field hidden></p>
+                </div>
+                <p class="status-badge status-badge--pending" hidden>
+                  <span class="visually-hidden">Trạng thái đề xuất: </span><span data-proposal-status></span>
+                </p>
+              </div>
+              <dl class="request-topic__meta">
                 <div><dt>Loại đề tài</dt><dd data-proposal-field="typeLabel"></dd></div>
                 <div><dt>Môn học</dt><dd data-proposal-field="courseLabel"></dd></div>
-                <div><dt>Học kỳ</dt><dd data-proposal-field="semester"></dd></div>
-                <div><dt>Năm học</dt><dd data-proposal-field="academicYear"></dd></div>
+                <div><dt>Mã đề tài</dt><dd data-proposal-field="topicCode"></dd></div>
+                <div><dt>Học kỳ / Năm học</dt><dd data-proposal-field="academicPeriod"></dd></div>
                 <div><dt>Ngày bắt đầu dự kiến</dt><dd data-proposal-field="startDate"></dd></div>
                 <div><dt>Ngày kết thúc dự kiến</dt><dd data-proposal-field="endDate"></dd></div>
               </dl>
             </div>
           </section>
-          <section aria-labelledby="proposal-content-title">
-            <h2 id="proposal-content-title">Nội dung đề xuất</h2>
-            <dl class="pending-proposal-fields">
-              <div><dt>Tổng quan đề tài</dt><dd data-proposal-field="description"></dd></div>
-              <div><dt>Mục tiêu</dt><dd data-proposal-field="objectives"></dd></div>
-              <div><dt>Kết quả dự kiến</dt><dd data-proposal-field="outcomes"></dd></div>
-            </dl>
-          </section>
-          <section aria-labelledby="proposal-plan-title">
-            <h2 id="proposal-plan-title">Phương pháp và kế hoạch</h2>
-            <dl class="pending-proposal-fields">
-              <div><dt>Phương pháp và phạm vi thực hiện</dt><dd data-proposal-field="methodAndScope"></dd></div>
-              <div><dt>Kế hoạch thực hiện và phân công</dt><dd data-proposal-field="plan"></dd></div>
-            </dl>
-          </section>
           <section aria-labelledby="proposal-recipient-title">
-            <h2 id="proposal-recipient-title">Thông tin hướng dẫn</h2>
-            <dl class="pending-proposal-fields">
+            <h2 id="proposal-recipient-title">Giảng viên hướng dẫn chính</h2>
+            <div class="proposal-recipient__profile">
+              <span class="proposal-recipient__avatar" aria-hidden="true" hidden></span>
               <div>
-                <dt data-recipient-label>Giảng viên hướng dẫn chính</dt>
-                <dd class="proposal-recipient__profile">
-                  <span class="proposal-recipient__avatar" aria-hidden="true" hidden></span>
-                  <div>
-                    <p class="proposal-recipient__name" data-proposal-field="recipient"></p>
-                    <p class="proposal-recipient__department" data-recipient-department hidden></p>
-                  </div>
-                </dd>
+                <p class="proposal-recipient__name" data-proposal-field="recipient"></p>
+                <p class="proposal-recipient__department" data-recipient-department hidden></p>
+                <p class="proposal-recipient__email">
+                  <a data-recipient-email hidden></a>
+                  <span data-recipient-no-email hidden>Chưa cập nhật email</span>
+                </p>
               </div>
-            </dl>
-          </section>
-          <section aria-labelledby="proposal-attachments-title">
-            <h2 id="proposal-attachments-title">Tài liệu đính kèm</h2>
-            <div class="proposal-attachments__item" data-proposal-attachment hidden>
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8M8 17h6" />
-              </svg>
-              <p data-proposal-field="attachmentText"></p>
             </div>
-            <p class="proposal-attachments__note" data-proposal-attachment-note></p>
           </section>
-          <section aria-labelledby="proposal-record-title">
-            <h2 id="proposal-record-title">Thông tin hồ sơ</h2>
-            <dl class="proposal-outline-details" data-proposal-record></dl>
-            <details class="proposal-history" hidden>
-              <summary>Lịch sử thao tác</summary>
-              <ol data-proposal-history></ol>
-            </details>
+          <section class="request-detail__body-card" aria-labelledby="proposal-description-title">
+            <h2 id="proposal-description-title">Tổng quan đề tài</h2>
+            <p data-proposal-field="description"></p>
           </section>
+          <section class="request-detail__body-card" aria-labelledby="proposal-objectives-title">
+            <h2 id="proposal-objectives-title">Mục tiêu</h2>
+            <p data-proposal-field="objectives"></p>
+          </section>
+          <section class="request-detail__body-card" aria-labelledby="proposal-outcomes-title">
+            <h2 id="proposal-outcomes-title">Kết quả dự kiến</h2>
+            <p data-proposal-field="outcomes"></p>
+          </section>
+          <section class="request-detail__body-card" aria-labelledby="proposal-method-title" data-optional-section="methodAndScope" hidden>
+            <h2 id="proposal-method-title">Phương pháp và phạm vi thực hiện</h2>
+            <p data-proposal-field="methodAndScope"></p>
+          </section>
+          <section class="request-detail__body-card" aria-labelledby="proposal-plan-title" data-optional-section="plan" hidden>
+            <h2 id="proposal-plan-title">Kế hoạch thực hiện và phân công</h2>
+            <p data-proposal-field="plan"></p>
+          </section>
+          <section class="request-attachments" aria-labelledby="proposal-attachments-title">
+            <h2 id="proposal-attachments-title">Tài liệu đính kèm</h2>
+            <div class="request-attachments__row" data-proposal-attachment hidden>
+              <div class="request-attachments__file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8M8 17h6" />
+                </svg>
+                <span data-proposal-field="attachmentText" data-optional-field hidden></span>
+              </div>
+              <button type="button" class="request-attachments__download" aria-describedby="proposal-attachment-note" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5" />
+                </svg>
+                <span>Tải xuống</span>
+              </button>
+            </div>
+            <p class="proposal-attachments__note" id="proposal-attachment-note" data-proposal-attachment-note aria-live="polite"></p>
+          </section>
+          <details class="proposal-history" hidden>
+            <summary>Lịch sử thao tác</summary>
+            <ol data-proposal-history></ol>
+          </details>
+          <div class="pending-proposal-actions request-detail__actions" role="group" aria-label="Thao tác với đề xuất" hidden>
+            <button class="request-action request-action--danger" type="button" data-proposal-action="withdraw" aria-haspopup="dialog" aria-controls="withdraw-proposal-dialog" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M6 6l12 12M18 6 6 18" />
+              </svg>
+              <span>Rút đề xuất</span>
+            </button>
+            <button class="request-action request-action--danger" type="button" data-proposal-action="remove" aria-haspopup="dialog" aria-controls="withdraw-proposal-dialog" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 6h18m-2 0-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6m4 0V3h6v3" />
+              </svg>
+              <span>Xóa khỏi danh sách</span>
+            </button>
+            <a class="request-action request-action--primary" data-proposal-edit hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="m15 5 4 4M4 20l4.5-1L20 7.5 16.5 4 5 15.5 4 20Z" />
+              </svg>
+              <span>Chỉnh sửa đề xuất</span>
+            </a>
+            <a class="request-action request-action--primary" data-proposal-project hidden>Mở đề tài và nhóm thực hiện</a>
+          </div>
         </article>
       </div>
     </main>
@@ -237,12 +278,20 @@
         </a>
       </div>
     </footer>
-    <dialog class="confirmation-dialog pending-withdraw-dialog" id="withdraw-proposal-dialog" aria-labelledby="withdraw-proposal-title" aria-describedby="withdraw-proposal-notice">
-      <header><h2 id="withdraw-proposal-title">Rút đề xuất</h2><button type="button" commandfor="withdraw-proposal-dialog" command="close" aria-label="Đóng hộp thoại rút đề xuất">×</button></header>
-      <p data-pending-question></p>
+    <dialog class="confirmation-dialog pending-withdraw-dialog" id="withdraw-proposal-dialog" aria-labelledby="withdraw-proposal-title" aria-describedby="withdraw-proposal-question">
+      <header>
+        <h2 id="withdraw-proposal-title">Rút đề xuất đề tài</h2>
+        <button class="pending-withdraw-dialog__close" type="button" commandfor="withdraw-proposal-dialog" command="close" aria-label="Đóng hộp thoại">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
+        </button>
+      </header>
+      <p id="withdraw-proposal-question"></p>
       <p id="withdraw-proposal-notice">Thao tác chỉ lưu thử trên trình duyệt này, chưa gửi đến giảng viên hoặc hệ thống.</p>
       <p data-pending-error role="alert" tabindex="-1" hidden></p>
-      <footer><button type="button" commandfor="withdraw-proposal-dialog" command="close" autofocus>Hủy</button><button type="button" data-confirm-pending-withdraw disabled>Xác nhận</button></footer>
+      <footer>
+        <button type="button" commandfor="withdraw-proposal-dialog" command="close" data-pending-cancel>Hủy</button>
+        <button type="button" data-confirm-pending-withdraw disabled>Xác nhận rút</button>
+      </footer>
     </dialog>
   </body>
 </html>

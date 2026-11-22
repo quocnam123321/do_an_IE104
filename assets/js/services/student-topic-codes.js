@@ -2,7 +2,7 @@
   const app = globalThis.IE104 ||= {};
   const services = app.services ||= {};
   const catalog = globalThis.UITLecturerCatalog;
-  const displayCode = /^ISE(?:DAMH|DATN|KTLN)-\d{3,}$/;
+  const displayCode = /^ISE(?:DAMH|DATN|KTLN|KLTN)-\d{3,}$/;
   const legacyCode = /^(?:DA|DT|DATN|DAMH|KL|KLTN|KTLN|MẪU)-?\d+$/iu;
   const types = {
     'do-an': 'course',

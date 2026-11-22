@@ -40,7 +40,7 @@
     const semesters = filters.semesters || [];
     const results = source.filter(topic => {
       const matchesKeyword = !keyword || normalizeText([
-        topic.id, topic.code, topic.displayId, topic.requestId, app.services.studentTopicCodes?.get(topic), topic.title,
+        topic.id, topic.code, topic.topicCode, topic.displayId, topic.requestId, app.services.studentTopicCodes?.get(topic), topic.title,
       ].join(' ')).includes(keyword);
       const matchesLecturer = !lecturer || normalizeText(topic.lecturer) === lecturer;
       const matchesType = !types.length || types.includes(topic.type);

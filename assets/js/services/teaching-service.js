@@ -11,7 +11,9 @@
     if (!project) throw new Error('Không tìm thấy đề tài cần quản lý.');
     if (project.id === 'DA005') project = { ...project, semester: 1 };
     const team = app.services.projectTeams.getState(projectId);
-    if (checkActor && !team.supervisorIds.includes(actor()?.id)) throw new Error('Giảng viên hiện tại không hướng dẫn đề tài này.');
+    const canSupervise = app.services.approvedProjects?.canSupervise(project, team.supervisorIds) ??
+      team.supervisorIds.includes(actor()?.id);
+    if (checkActor && !canSupervise) throw new Error('Giảng viên hiện tại không hướng dẫn đề tài này.');
     const initialEvaluation = app.data.projectEvaluations?.find(item => item.projectId === projectId && item.published);
     const criteria = initialEvaluation?.criteria || app.data.teachingCriteria;
     return { project, team, initialEvaluation, criteria };

@@ -1,0 +1,16 @@
+ĐỀ CƯƠNG ĐỀ TÀI MẪU
+
+Mã đề xuất: DX001
+Tên đề tài: Cổng thông tin nghiên cứu sinh viên
+Môn học: IE104 – Internet và Công nghệ Web
+
+Tổng quan
+Xây dựng cổng thông tin giúp sinh viên tra cứu công trình nghiên cứu và tìm nhóm cùng thực hiện.
+
+Mục tiêu
+Tập trung thông tin nghiên cứu và hỗ trợ tìm nhóm theo lĩnh vực quan tâm.
+
+Kết quả dự kiến
+Website tra cứu, mã nguồn, dữ liệu mẫu và báo cáo.
+
+Tệp minh họa chức năng tải xuống trong bản demo IE104.

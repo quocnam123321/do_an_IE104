@@ -23,6 +23,7 @@
     article.setAttribute('aria-labelledby', title.id);
     article.dataset.topicId = topic.id;
     article.dataset.status = statusStyles[topic.status];
+    void app.shared?.renderProposalCover?.(article.querySelector('.topic-card__image'), topic.coverImage);
     const displayId = app.services.studentTopicCodes.get(topic);
     const proposalId = !displayId && [topic.requestId, topic.id].find(id => /^DX(?:-\w|\d)/i.test(id || ''));
     if (proposalId) code.previousElementSibling.querySelector('.visually-hidden').textContent = 'Mã đề xuất';
@@ -58,6 +59,7 @@
   app.ui.initTopicList({
     query: app.services.topics.listMyTopics,
     createCard,
+    hideResultSummary: true,
     emptyTitle: 'Bạn chưa có đề tài',
     emptyDescription: 'Đề tài của bạn sẽ xuất hiện trong danh sách này khi có dữ liệu.',
   });
