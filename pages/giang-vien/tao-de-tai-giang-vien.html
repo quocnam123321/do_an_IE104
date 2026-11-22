@@ -47,6 +47,7 @@
     <script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-editor.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
+    <script src="../../assets/js/shared/logout.js" defer></script>
   </head>
   <body id="page-top" tabindex="-1" data-lecturer-topic-editor="create">
     <a class="skip-link" href="#main-content">
@@ -129,7 +130,7 @@
                 </a>
               </li>
               <li>
-                <button aria-controls="logout-dialog" title="Chức năng đăng xuất chưa được kết nối" class="account-menu__logout" disabled="" type="button">
+                <button class="account-menu__logout" disabled="" type="button" aria-controls="logout-dialog">
                   Đăng xuất
                 </button>
               </li>
@@ -146,13 +147,14 @@
         Bạn muốn đăng xuất khỏi tài khoản hiện tại?
       </p>
       <form method="dialog">
-        <button type="submit" value="cancel">
+        <button type="submit" value="cancel" data-logout-cancel autofocus>
           Hủy
         </button>
-        <button disabled="" type="button">
+        <button type="button" data-logout-confirm>
           Xác nhận đăng xuất
         </button>
       </form>
+      <p data-logout-status role="status"></p>
     </dialog>
     <!-- NỘI DUNG RIÊNG CỦA TỪNG TRANG -->
     <main class="main-content" id="main-content" tabindex="-1">

@@ -18,6 +18,7 @@
 <script src="../../assets/js/services/lecturer-profile-service.js" defer></script>
 <script src="../../assets/js/pages/lecturer/profile.js" defer></script>
   <link rel="stylesheet" href="../../assets/css/project-footer.css" />
+    <script src="../../assets/js/shared/logout.js" defer></script>
   </head>
   <body id="page-top" tabindex="-1" class="lecturer-profile-page">
     <a class="skip-link" href="#main-content">
@@ -79,12 +80,27 @@
                 </ul>
               </details>
             </li>
-            <li class="main-nav__item">
-              <a class="main-nav__link" href="ho-so-ca-nhan-giang-vien.html" aria-current="page"><span class="main-nav__text">Hồ sơ cá nhân</span></a>
-            </li>
           </ul>
         </nav>
         </details>
+        <div class="account-menu">
+          <details class="account-menu__disclosure">
+            <summary class="account-menu__toggle" aria-label="Mở menu tài khoản giảng viên">
+              <span class="account-menu__avatar" aria-hidden="true">
+                <svg width="22" height="22" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+                  <circle cx="12" cy="8" r="4"></circle>
+                  <path d="M5.5 20a6.5 6.5 0 0 1 13 0"></path>
+                </svg>
+              </span>
+            </summary>
+            <div class="account-menu__panel">
+              <ul class="account-menu__list">
+                <li><a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html" aria-current="page">Hồ sơ cá nhân</a></li>
+                <li><button type="button" class="account-menu__logout" aria-controls="logout-dialog" disabled>Đăng xuất</button></li>
+              </ul>
+            </div>
+          </details>
+        </div>
       </div>
     </header>
     <!-- Giá trị hồ sơ là dữ liệu minh họa theo wireframe.
@@ -374,5 +390,12 @@
         </a>
       </div>
     </footer>
+      <dialog id="logout-dialog" class="confirmation-dialog" aria-labelledby="logout-title">
+      <h2 id="logout-title">Xác nhận đăng xuất</h2>
+      <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
+      <button type="button" data-logout-cancel autofocus>Hủy</button>
+      <button type="button" data-logout-confirm>Xác nhận đăng xuất</button>
+      <p data-logout-status role="status"></p>
+    </dialog>
   </body>
 </html>

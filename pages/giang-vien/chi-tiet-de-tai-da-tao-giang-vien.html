@@ -38,6 +38,7 @@
     <script src="../../assets/js/pages/lecturer/topic-media.js" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-registration-state.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
+    <script src="../../assets/js/shared/logout.js" defer></script>
   </head>
   <body id="page-top" tabindex="-1" data-lecturer-topic-view="detail" class="teacher-workspace-page teacher-created-detail-page">
     <a class="skip-link" href="#main-content">
@@ -109,7 +110,7 @@
                 <a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
               </li>
               <li>
-                <button class="account-menu__logout" type="button" aria-controls="logout-dialog" title="Chức năng đăng xuất chưa được kết nối" disabled="">
+                <button class="account-menu__logout" type="button" disabled="" aria-controls="logout-dialog">
                   Đăng xuất
                 </button>
               </li>
@@ -163,7 +164,7 @@
                       <a class="mobile-nav__link" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
                     </li>
                     <li>
-                      <button class="mobile-nav__logout" type="button" aria-controls="logout-dialog" title="Chức năng đăng xuất chưa được kết nối" disabled="">
+                      <button class="mobile-nav__logout" type="button" disabled="" aria-controls="logout-dialog">
                         Đăng xuất
                       </button>
                     </li>
@@ -183,13 +184,14 @@
         Bạn muốn đăng xuất khỏi tài khoản hiện tại?
       </p>
       <form method="dialog">
-        <button type="submit" value="cancel">
+        <button type="submit" value="cancel" data-logout-cancel autofocus>
           Hủy
         </button>
-        <button disabled="" type="button">
+        <button type="button" data-logout-confirm>
           Xác nhận đăng xuất
         </button>
       </form>
+      <p data-logout-status role="status"></p>
     </dialog>
     <!-- NỘI DUNG RIÊNG CỦA TRANG CHI TIẾT ĐỀ TÀI ĐÃ TẠO -->
     <main class="main-content" id="main-content" tabindex="-1">

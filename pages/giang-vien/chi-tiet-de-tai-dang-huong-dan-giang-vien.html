@@ -52,6 +52,7 @@
     <script src="../../assets/js/pages/lecturer/progress.js?v=20261121-progress-restore" defer></script>
     <script src="../../assets/js/pages/lecturer/evaluation.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
+    <script src="../../assets/js/shared/logout.js" defer></script>
   </head>
   <body id="page-top" tabindex="-1" class="teacher-workspace-page">
     <a class="skip-link" href="#main-content">
@@ -140,7 +141,7 @@
                 </a>
               </li>
               <li>
-                <button aria-controls="logout-dialog" title="Chức năng đăng xuất chưa được kết nối" class="account-menu__logout" disabled="" type="button">
+                <button class="account-menu__logout" disabled="" type="button" aria-controls="logout-dialog">
                   Đăng xuất
                 </button>
               </li>
@@ -194,7 +195,7 @@
                     <a class="mobile-nav__link" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
                   </li>
                   <li>
-                    <button class="mobile-nav__logout" type="button" disabled="" title="Chức năng đăng xuất chưa được kết nối">Đăng xuất</button>
+                    <button class="mobile-nav__logout" type="button" disabled="" aria-controls="logout-dialog">Đăng xuất</button>
                   </li>
                 </ul>
               </div>
@@ -211,13 +212,14 @@
         Bạn muốn đăng xuất khỏi tài khoản hiện tại?
       </p>
       <form method="dialog">
-        <button type="submit" value="cancel">
+        <button type="submit" value="cancel" data-logout-cancel autofocus>
           Hủy
         </button>
-        <button disabled="" type="button">
+        <button type="button" data-logout-confirm>
           Xác nhận đăng xuất
         </button>
       </form>
+      <p data-logout-status role="status"></p>
     </dialog>
     <!-- HTML thuần: không CSS, JavaScript hoặc thuộc tính sự kiện.
          Bốn mục là section; thanh điều hướng bốn mục dùng liên kết fragment.

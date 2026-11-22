@@ -44,6 +44,7 @@
 <script src="../../assets/js/pages/lecturer/overview.js?v=20261121-overview-preview" defer></script>
 <link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
   <link rel="stylesheet" href="../../assets/css/project-footer.css" />
+    <script src="../../assets/js/shared/logout.js" defer></script>
   </head>
 
   <body id="page-top" tabindex="-1" class="lecturer-overview-page">
@@ -115,7 +116,7 @@
 <a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
 </li>
 <li>
-<button aria-controls="logout-dialog" class="account-menu__logout" disabled="" title="Chức năng đăng xuất chưa được kết nối" type="button">
+<button class="account-menu__logout" disabled="" type="button" aria-controls="logout-dialog">
                   Đăng xuất
                 </button>
 </li>
@@ -168,7 +169,7 @@
 <a class="mobile-nav__link" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
 </li>
 <li>
-<button aria-controls="logout-dialog" class="mobile-nav__logout" disabled="" title="Chức năng đăng xuất chưa được kết nối" type="button">
+<button class="mobile-nav__logout" disabled="" type="button" aria-controls="logout-dialog">
                         Đăng xuất
                       </button>
 </li>
@@ -190,9 +191,10 @@
       <h2 id="logout-title">Xác nhận đăng xuất</h2>
       <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
       <form method="dialog">
-        <button type="submit" value="cancel">Hủy</button>
-        <button type="button" disabled>Xác nhận đăng xuất</button>
+        <button type="submit" value="cancel" data-logout-cancel autofocus>Hủy</button>
+        <button type="button" data-logout-confirm>Xác nhận đăng xuất</button>
       </form>
+      <p data-logout-status role="status"></p>
     </dialog>
 
     <!-- NỘI DUNG RIÊNG CỦA TỪNG TRANG -->

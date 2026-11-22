@@ -41,6 +41,7 @@
     <script src="../../assets/js/uit-topic-list.js?v=20261122-topic-sort" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-sort.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
+    <script src="../../assets/js/shared/logout.js" defer></script>
   </head>
 
   <body id="page-top" tabindex="-1" data-lecturer-list="created" class="teacher-workspace-page teacher-topic-list-page teacher-created-topics-page">
@@ -112,7 +113,7 @@
                 <a class="account-menu__profile" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
               </li>
               <li>
-                <button class="account-menu__logout" type="button" aria-controls="logout-dialog" title="Chức năng đăng xuất chưa được kết nối" disabled="">
+                <button class="account-menu__logout" type="button" disabled="" aria-controls="logout-dialog">
                   Đăng xuất
                 </button>
               </li>
@@ -166,7 +167,7 @@
                       <a class="mobile-nav__link" href="ho-so-ca-nhan-giang-vien.html">Hồ sơ cá nhân</a>
                     </li>
                     <li>
-                      <button class="mobile-nav__logout" type="button" aria-controls="logout-dialog" title="Chức năng đăng xuất chưa được kết nối" disabled="">
+                      <button class="mobile-nav__logout" type="button" disabled="" aria-controls="logout-dialog">
                         Đăng xuất
                       </button>
                     </li>
@@ -182,9 +183,10 @@
       <h2 id="logout-title">Xác nhận đăng xuất</h2>
       <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
       <form method="dialog">
-        <button type="submit" value="cancel">Hủy</button>
-        <button type="button" disabled="">Xác nhận đăng xuất</button>
+        <button type="submit" value="cancel" data-logout-cancel autofocus>Hủy</button>
+        <button type="button" data-logout-confirm>Xác nhận đăng xuất</button>
       </form>
+      <p data-logout-status role="status"></p>
     </dialog>
 
     <main id="main-content" class="main-content" tabindex="-1">

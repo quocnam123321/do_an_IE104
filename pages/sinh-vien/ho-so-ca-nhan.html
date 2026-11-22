@@ -23,6 +23,7 @@
     <script src="../../assets/js/pages/student/profile-avatar.js" defer></script>
     <script src="../../assets/js/pages/common/password-toggle.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
+    <script src="../../assets/js/shared/logout.js" defer></script>
   </head>
 
   <body id="page-top" tabindex="-1" class="student-profile-page">
@@ -81,15 +82,12 @@
                 <button
                   class="account-menu__logout"
                   type="button"
-                  aria-controls="logout-dialog"
-                  aria-describedby="logout-notice"
                   disabled
-                >
+                 aria-controls="logout-dialog">
                   Đăng xuất
                 </button>
               </li>
             </ul>
-            <p id="logout-notice">Chưa có xử lý đăng xuất.</p>
           </details>
         </div>
       </div>
@@ -102,9 +100,10 @@
       <h2 id="logout-title">Xác nhận đăng xuất</h2>
       <p>Bạn muốn đăng xuất khỏi tài khoản hiện tại?</p>
       <form method="dialog">
-        <button type="submit" value="cancel">Hủy</button>
-        <button type="button" disabled>Xác nhận đăng xuất</button>
+        <button type="submit" value="cancel" data-logout-cancel autofocus>Hủy</button>
+        <button type="button" data-logout-confirm>Xác nhận đăng xuất</button>
       </form>
+      <p data-logout-status role="status"></p>
     </dialog>
 
     <!-- NỘI DUNG RIÊNG CỦA TỪNG TRANG -->
