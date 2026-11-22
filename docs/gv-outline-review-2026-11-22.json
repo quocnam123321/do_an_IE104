@@ -1,0 +1,32 @@
+[
+  {
+    "course": "IE104",
+    "file": "[DC] Internet va cong nghe web.pdf",
+    "pages": 13,
+    "sha256": "6912ef2ac7fcc0c67591b9547947a333701340e0a00097c976449c792b59ac91",
+    "kind": "course-syllabus",
+    "source": "user-provided"
+  },
+  {
+    "course": "IT004",
+    "file": "IT004 - Cơ sở dữ liệu (2022-Rubric) - Update 2026.pdf",
+    "pages": 15,
+    "sha256": "75b60a8750579c95a3ed9d7074e70f92769c13f0ee4065e55c0898f21d9a0f01",
+    "kind": "course-syllabus",
+    "source": "user-provided"
+  },
+  {
+    "course": "IE108",
+    "file": "Buoi1-1-6.pdf",
+    "pages": 6,
+    "sha256": "088904beca30d6c0b92913f698a47e4f2e072b1180dae177faf8e4a0c1b40b97",
+    "kind": "course-introduction-slides",
+    "source": "user-provided"
+  },
+  {
+    "course": "IE108",
+    "source": "https://thuvien.uit.edu.vn/page/dcmh-nganh-cong-nghe-thong-tin",
+    "linkedResource": "https://ir.vnulib.edu.vn/entities/publication/9526e7c6-9814-4e10-9a4d-3d00431bd0cc",
+    "status": "Full syllabus not publicly verified; use supplied six-page introductory slides for scope."
+  }
+]

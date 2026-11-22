@@ -3,7 +3,7 @@
   app.services ||= {};
   const clone = value => JSON.parse(JSON.stringify(value));
   const actorId = () => app.data.currentLecturer?.id;
-  const decorate = topics => window.UITLecturerCatalog?.decorateTopics(topics) || topics;
+  const decorate = topics => window.UITLecturerCatalog?.decorateTopics(topics.filter(topic => window.UITLecturerCatalog.isAvailableTopic(topic))) || topics;
   const records = kind => {
     const initial = app.data.lecturerTopics || [];
     if (kind !== 'created' || !app.services.lecturerTopicRepository) return decorate(initial);
@@ -23,7 +23,7 @@
 
   function list(kind, { catalogOnly = false } = {}) {
     const available = catalogOnly ? decorate(app.data.lecturerTopics || []).filter(topic => topic.sourceRecord) : records(kind);
-    const owned = available.filter(record => record.kind === kind && record.ownerId === actorId());
+    const owned = available.filter(record => record.kind === kind && record.ownerId === actorId() && record.sourceRecord?.type !== 'Luận văn thạc sĩ' && record.topicType !== 'master');
     return clone(app.topicIdentity?.uniqueTitles(owned) || owned);
   }
 
@@ -82,7 +82,9 @@
     const staticIds = new Set([...(app.data.myTopics || []), ...(app.data.lecturerProjects || [])].map(item => item.id));
     const projects = app.services.teaching?.listSupervisedProjects().filter(entry => staticIds.has(entry.project.id)).map(entry => adapt(entry.project)) || [];
     const decorated = codes.decorateTopics([...initial, ...projects, adapt(project)]).at(-1);
-    return { ...project, displayId: decorated.displayId, courseLabel: decorated.courseLabel };
+    const position = app.data.projectTeams?.find(team => team.projectId === project.id)?.supervisorIds.indexOf(actorId());
+    const role = project.role || (position >= 0 ? position === 0 ? 'primary' : 'secondary' : undefined);
+    return { ...project, role, roleLabel: project.roleLabel || ({ primary: 'Hướng dẫn chính', secondary: 'Đồng hướng dẫn' })[role], displayId: decorated.displayId, courseLabel: decorated.courseLabel, groupName: codes.groupLabel(project) };
   }
 
   function workspaceState(projectId) {

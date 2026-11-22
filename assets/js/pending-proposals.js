@@ -69,16 +69,17 @@
 
   function makeCard(proposal) {
     const card = cardTemplate.cloneNode(true);
+    card.querySelectorAll('.proposal-card__date').forEach(node => node.remove());
     card.dataset.proposalId = proposal.id;
     const title = card.querySelector('.proposal-card__title');
     title.id = `proposal-${proposal.id.toLowerCase()}-title`;
     title.textContent = proposal.title;
     card.setAttribute('aria-labelledby', title.id);
     const fields = [
-      ['type', `Loại đề tài: ${proposal.topicTypeLabel}`],
-      ['course', `Môn học: ${proposal.courseLabel || 'Chưa có thông tin'}`],
-      ['student', `Sinh viên: ${proposal.studentName} · ${proposal.studentId}`],
-      ['role', `Vai trò của tôi: ${proposal.supervisionRoleLabel}`],
+      ['type', `${proposal.topicTypeLabel}`],
+      ['course', `${window.UITLecturerCatalog.subjectLabel(proposal)}`],
+      ['student', `${proposal.studentName} · ${proposal.studentId}`],
+      ['role', `${proposal.supervisionRoleLabel}`],
     ];
     for (const [name, value] of fields) {
       card.querySelector(`.proposal-card__${name} .topic-card__meta-text`).textContent = value;
@@ -93,7 +94,7 @@
         year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
         timeZone: 'Asia/Ho_Chi_Minh',
       }).format(sentAt);
-      row.append('Ngày gửi: ', time);
+      row.insertAdjacentHTML('afterbegin', '<svg class="topic-card__meta-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>'); row.append(time);
       card.querySelector('.topic-card__meta').append(row);
     }
     const link = card.querySelector('.proposal-card__detail-link');
@@ -137,8 +138,8 @@
   }
 
   function render(urlMode) {
-    const pending = store.getAll().filter((proposal) => proposal.status === 'pending');
-    if (note) note.textContent = [demoNote, store.getError()].filter(Boolean).join(' ');
+    const pending = store.getAll().filter((proposal) => window.UITLecturerCatalog.isAvailableTopic(proposal) && proposal.status === 'pending' && proposal.topicTypeLabel !== 'Luận văn thạc sĩ');
+    if (note) note.hidden = true;
     const terms = normalize(search.value).split(/\s+/).filter(Boolean);
     const data = new FormData(form);
     const selected = Object.entries(filterFields).map(([name, field]) =>
@@ -146,7 +147,7 @@
     const matching = pending.filter((proposal) => {
       const haystack = normalize([proposal.id, proposal.title, proposal.studentName, proposal.studentId].join(' '));
       return terms.every((term) => haystack.includes(term)) &&
-        selected.every(([field, values]) => !values.length || values.includes(proposal[field]));
+        selected.every(([field, values]) => !values.length || values.some(value => field === 'course' ? ['course', 'do-an-mon-hoc', 'do-an'].includes(proposal.topicType) && window.UITLecturerCatalog.courseKey(value) === window.UITLecturerCatalog.courseKey(proposal[field]) : value === proposal[field]));
     });
     // Ngày gửi chỉ được so sánh khi đã có trong dữ liệu; hồ sơ thiếu ngày giữ thứ tự mẫu.
     if (sort.value === 'name-asc') matching.sort((a, b) => collator.compare(a.title, b.title));

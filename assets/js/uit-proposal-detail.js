@@ -52,7 +52,7 @@
     badge.dataset.status = record.status;
     text('#proposal-topic-title', `${record.id} — ${record.title}`);
     const topicFields = content.querySelectorAll('.request-topic__meta dd');
-    [record.topicTypeLabel, record.courseLabel, record.semester ? `Học kỳ ${record.semester}` : '', record.academicYear]
+    [record.topicTypeLabel, window.UITLecturerCatalog.subjectLabel(record, true), record.semester ? `Học kỳ ${record.semester}` : '', record.academicYear]
       .forEach((value, index) => { topicFields[index].textContent = value || 'Chưa có thông tin'; });
     const studentFields = content.querySelectorAll('.request-student__meta dd');
     studentFields[0].textContent = record.studentName;

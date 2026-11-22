@@ -43,7 +43,7 @@
     } else {
       setText('#topic-summary-title', topic.title);
       document.querySelectorAll('.topic-summary__image[role="img"]').forEach(image => image.setAttribute('aria-label', `Chưa có ảnh đại diện cho đề tài ${topic.title}`));
-      const fields = [topic.displayId || topic.id, topic.typeLabel, topic.courseLabel || (topic.topicType === 'course' ? missing : 'Không áp dụng'), `Học kỳ ${topic.semester === 'summer' ? 'hè' : topic.semester}`, topic.academicYear];
+      const fields = [topic.displayId || topic.id, topic.typeLabel, window.UITLecturerCatalog.subjectLabel(topic, true), `Học kỳ ${topic.semester === 'summer' ? 'hè' : topic.semester}`, topic.academicYear];
       document.querySelectorAll('.topic-summary__meta dd').forEach((node, index) => { node.textContent = fields[index] || missing; });
       const supervisor = ['name', 'faculty', 'email', 'research'];
       document.querySelectorAll('.topic-supervisor__details dd').forEach((node, index) => { node.textContent = topic.supervisor?.[supervisor[index]] || missing; });

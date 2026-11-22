@@ -1,0 +1,44 @@
+[
+  {
+    "id": "ISEDAMH-009",
+    "title": "Thiết kế hạ tầng công nghệ thông tin cho trung tâm đào tạo quy mô nhỏ",
+    "course": "IE101",
+    "syllabusUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE101%20-%20Co%20so%20ha%20tang%20cong%20nghe%20thong%20tin.pdf",
+    "origin": "generated-from-course-outline"
+  },
+  {
+    "id": "ISEDAMH-010",
+    "title": "Khảo sát và đề xuất phương án nâng cấp hạ tầng CNTT cho thư viện trường học",
+    "course": "IE101",
+    "syllabusUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE101%20-%20Co%20so%20ha%20tang%20cong%20nghe%20thong%20tin.pdf",
+    "origin": "generated-from-course-outline"
+  },
+  {
+    "id": "ISEDAMH-011",
+    "title": "Hệ thống tổ chức và tra cứu hồ sơ hoạt động câu lạc bộ sinh viên",
+    "course": "IE103",
+    "syllabusUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE103%20-%20Quan%20ly%20Thong%20tin.pdf",
+    "origin": "generated-from-course-outline"
+  },
+  {
+    "id": "ISEDAMH-012",
+    "title": "Tích hợp và quản lý thông tin học bổng từ nhiều nguồn dữ liệu",
+    "course": "IE103",
+    "syllabusUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE103%20-%20Quan%20ly%20Thong%20tin.pdf",
+    "origin": "generated-from-course-outline"
+  },
+  {
+    "id": "ISEDAMH-013",
+    "title": "Xây dựng mô hình phân quyền và kiểm soát truy cập tài liệu nội bộ",
+    "course": "IE105",
+    "syllabusUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE105_Nhap%20Mon%20Bao%20Dam%20va%20An%20Ninh%20Thong%20Tin-CDIO_v1-05122016.pdf",
+    "origin": "generated-from-course-outline"
+  },
+  {
+    "id": "ISEDAMH-014",
+    "title": "Thiết kế phương án bảo vệ mạng nội bộ cho văn phòng nhỏ",
+    "course": "IE105",
+    "syllabusUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE105_Nhap%20Mon%20Bao%20Dam%20va%20An%20Ninh%20Thong%20Tin-CDIO_v1-05122016.pdf",
+    "origin": "generated-from-course-outline"
+  }
+]

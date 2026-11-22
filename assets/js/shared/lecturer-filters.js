@@ -1,0 +1,31 @@
+(() => {
+  const catalog = window.UITLecturerCatalog;
+  const form = document.getElementById('topic-filter-form') || document.getElementById('proposal-filter-form');
+  if (!catalog || !form) return;
+  const inputs = [...form.querySelectorAll('input[name="course"]')];
+  const options = inputs[0]?.closest('fieldset')?.querySelector('.topic-filters__options');
+  if (!options) return;
+  const checked = new Set(inputs.filter(input => input.checked).map(input => catalog.courseKey(input.value)));
+  const preferred = ['web', 'database', 'IE101', 'phan-tich-thiet-ke-phan-mem'];
+  const keys = [...preferred, ...Object.keys(catalog.courseCatalog).filter(key => !preferred.includes(key))];
+  const makeOption = key => {
+    const row = document.createElement('div'); row.className = 'topic-filters__option';
+    const label = document.createElement('label');
+    const input = document.createElement('input');
+    input.type = 'checkbox'; input.name = 'course'; input.value = key;
+    input.id = `course-${key.toLowerCase()}`; input.checked = checked.has(key);
+    label.htmlFor = input.id;
+    const text = document.createElement('span'); text.className = 'topic-filters__option-text';
+    text.textContent = catalog.courseCatalog[key].label;
+    label.append(input, text); row.append(label); return row;
+  };
+  const more = document.createElement('details'); more.className = 'topic-filters__more';
+  const summary = document.createElement('summary');
+  const show = document.createElement('span'); show.className = 'topic-filters__more-label'; show.textContent = 'Xem thêm';
+  const hide = document.createElement('span'); hide.className = 'topic-filters__less-label'; hide.textContent = 'Ẩn bớt';
+  const context = document.createElement('span'); context.className = 'visually-hidden'; context.textContent = ' môn học';
+  summary.append(show, hide, context);
+  const extra = document.createElement('div'); extra.className = 'topic-filters__more-options';
+  extra.append(...keys.slice(4).map(makeOption)); more.append(summary, extra);
+  options.replaceChildren(...keys.slice(0, 4).map(makeOption), more);
+})();

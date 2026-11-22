@@ -11,13 +11,6 @@
     }
     return;
   }
-  const header = document.querySelector('.page-header');
-  if (header) {
-    const note = document.createElement('p');
-    note.className = 'gv-source-note';
-    note.textContent = 'Tên đề tài và tác giả lấy từ nguồn UIT; các thông tin chi tiết và thao tác trên trang là demo.';
-    header.after(note);
-  }
   function defaultImages() {
     document.querySelectorAll('.topic-card__image-placeholder, .topic-summary__image, .request-topic__image, .topic-image__placeholder, .topic-image-placeholder').forEach(node => {
       if (node.querySelector('img')) return;

@@ -16,7 +16,7 @@
     main.replaceChildren(message, back); return;
   }
   const code = data.formatCode(record.topicType, record.code);
-  const courseLabel = record.courseLabel || 'Không áp dụng';
+  const courseLabel = data.subjectLabel(record, true);
   const set = (selector, value) => document.querySelectorAll(selector).forEach(node => { node.textContent = value; });
   if (file.startsWith('chinh-sua-de-tai-')) {
     const fields = {

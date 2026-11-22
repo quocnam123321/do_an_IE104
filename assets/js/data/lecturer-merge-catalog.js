@@ -51,7 +51,10 @@
   data.lecturerTopics = catalog.decorateTopics([
     ...created,
     ...supervised,
-    ...(data.lecturerTopics || []).filter(topic => topic.kind === 'created'),
+    ...(data.lecturerTopics || []).filter(topic => topic.kind === 'created').map(topic => {
+      const guide = topic.topicType === 'course' && catalog.courseGuidance?.[catalog.courseKey(topic.course)];
+      return guide ? { ...topic, objectives: [...guide.objectives], outcomes: [...guide.outcomes], technologies: guide.technology } : topic;
+    }),
   ]);
   data.lecturerRealDefaultTopicId = created[0]?.id;
 })();

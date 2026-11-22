@@ -6,9 +6,10 @@
   const actor = () => app.data.currentLecturer;
 
   function context(projectId, checkActor = true) {
-    const project = app.data.myTopics.find(item => item.id === projectId) || app.data.lecturerProjects?.find(item => item.id === projectId)
+    let project = app.data.myTopics.find(item => item.id === projectId) || app.data.lecturerProjects?.find(item => item.id === projectId)
       || app.services.approvedProjects?.get(projectId)?.project;
     if (!project) throw new Error('Không tìm thấy đề tài cần quản lý.');
+    if (project.id === 'DA005') project = { ...project, semester: 1 };
     const team = app.services.projectTeams.getState(projectId);
     if (checkActor && !team.supervisorIds.includes(actor()?.id)) throw new Error('Giảng viên hiện tại không hướng dẫn đề tài này.');
     const initialEvaluation = app.data.projectEvaluations?.find(item => item.projectId === projectId && item.published);
@@ -23,7 +24,7 @@
       return position >= 0 ? [{ project, role: position === 0 ? 'primary' : 'secondary' }] : [];
     });
     const dynamic = (app.services.approvedProjects?.list('lecturer') || []).map(project => ({ project, role: 'primary' }));
-    const projects = [...dynamic, ...initial];
+    const projects = [...dynamic, ...initial].filter(entry => !window.UITLecturerCatalog || window.UITLecturerCatalog.isAvailableTopic(entry.project)).map(entry => entry.project.id === 'DA005' ? { ...entry, project: { ...entry.project, semester: 1 } } : entry);
     return app.topicIdentity?.uniqueTitles(projects, entry => entry.project.title) || projects;
   }
 

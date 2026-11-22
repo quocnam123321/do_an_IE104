@@ -50,7 +50,7 @@
       (project.workspaceId && project.sourceRecord
         ? app.services.lecturerTopics.detailUrl(project)
         : `chi-tiet-de-tai-dang-huong-dan-giang-vien.html?project=${encodeURIComponent(project.id)}`) + '#tien-do');
-    const group = element('p', 'Nhóm thực hiện: ' + (project.groupName || 'Chưa có nhóm thực hiện'));
+    const group = element('p', 'Nhóm thực hiện: ' + window.UITLecturerCatalog.groupLabel(project));
     let detail;
     try {
       const sample = project.sourceRecord?.supervision?.tasks;

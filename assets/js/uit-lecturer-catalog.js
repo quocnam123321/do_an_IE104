@@ -9,16 +9,40 @@ window.UITLecturerCatalog = {
   courseCatalog: {
     web: { code: 'IE104', label: 'Internet và công nghệ web', faculty: 'ISE' },
     database: { code: 'IT004', label: 'Cơ sở dữ liệu', faculty: 'HTTT' },
-    software: { code: 'SE104', label: 'Nhập môn Công nghệ phần mềm', faculty: 'CNPM' },
-    'phan-tich-thiet-ke-he-thong': { code: 'IS201', label: 'Phân tích thiết kế hệ thống', faculty: 'HTTT' },
-    'thuong-mai-dien-tu': { code: 'IS334', label: 'Thương mại điện tử', faculty: 'HTTT' },
-    'quan-ly-du-an-cntt': { code: 'IS208', label: 'Quản lý dự án công nghệ thông tin', faculty: 'HTTT' },
+    'phan-tich-thiet-ke-phan-mem': { code: 'IE108', label: 'Phân tích thiết kế phần mềm', faculty: 'ISE' },
     // IE101, IE103, IE105: https://student.uit.edu.vn/danh-muc-mon-hoc-dai-hoc
     IE101: { code: 'IE101', label: 'Cơ sở hạ tầng công nghệ thông tin', faculty: 'ISE' },
     IE103: { code: 'IE103', label: 'Quản lý thông tin', faculty: 'ISE' },
     IE105: { code: 'IE105', label: 'Nhập môn bảo đảm và an ninh thông tin', faculty: 'ISE' },
   },
-  typeCodes: { course: 'ĐAMH', graduation: 'ĐATN', thesis: 'KLTN' },
+  typeCodes: { course: 'DAMH', graduation: 'DATN', thesis: 'KTLN' },
+  groupLabel(topic) {
+    if (typeof topic === 'string') {
+      const match = /^Nhóm\s*(\d+)/i.exec(topic.trim());
+      return match ? `Nhóm ${match[1].padStart(2, '0')}` : topic;
+    }
+    const record = this.records.find(item => item.id === topic.id || item.id === topic.topicId || item.id === topic.workspaceId || item.title === topic.title);
+    return this.groupLabel(record?.supervision?.group || topic.sourceRecord?.supervision?.group || topic.groupName || topic.group || 'Chưa có nhóm thực hiện');
+  },
+  courseKey(value) {
+    const aliases = { SE104: 'software', IS334: 'thuong-mai-dien-tu', IS208: 'quan-ly-du-an-cntt', 'phan-tich-thiet-ke-he-thong': 'phan-tich-thiet-ke-phan-mem', IS201: 'phan-tich-thiet-ke-phan-mem', 'internet-va-cong-nghe-web': 'web', 'co-so-du-lieu': 'database', 'cong-nghe-phan-mem': 'software' };
+    return aliases[value] || Object.keys(this.courseCatalog).find(key => this.courseCatalog[key].code === value) || value || '';
+  },
+  isAvailableTopic(topic) {
+    const type = topic.filterType || topic.topicType || topic.type;
+    const courseTopic = ['course', 'do-an-mon-hoc', 'do-an'].includes(type) || topic.typeLabel === 'Đồ án môn học';
+    return !courseTopic || !['software', 'thuong-mai-dien-tu', 'quan-ly-du-an-cntt'].includes(this.courseKey(topic.course || topic.courseId));
+  },
+  subjectLabel(topic, detail = false) {
+    const type = topic.filterType || topic.topicType || topic.type;
+    if (['thesis', 'khoa-luan'].includes(type) || topic.typeLabel === 'Khóa luận tốt nghiệp') return 'Khóa luận tốt nghiệp';
+    if (['graduation', 'do-an-tot-nghiep'].includes(type) || topic.typeLabel === 'Đồ án tốt nghiệp') return 'Đồ án tốt nghiệp';
+    const key = this.courseKey(topic.course || topic.courseId);
+    const subject = this.courseCatalog[key] || Object.values(this.courseCatalog).find(item => item.code === key);
+    const name = subject?.label || String(topic.courseLabel || '').replace(/^[A-Z]{2,}\d{3}\s*[-–·:]\s*/, '') || 'Chưa có thông tin';
+    const code = subject?.code || topic.courseCode;
+    return detail && code ? `${code} - ${name}` : name;
+  },
   facultyCode(value) {
     const normalize = text => String(text || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/đ/gi, 'd').toLowerCase().replace(/&/g, ' va ').replace(/\s+/g, ' ').trim();
     const aliases = { KTTT: 'ISE', 'MMT&TT': 'MMTT' };
@@ -41,16 +65,16 @@ window.UITLecturerCatalog = {
     if (!number) return code;
     const record = this.records.find(item => item.id === code || item.code === code);
     const existingFaculty = /^(KHMT|CNPM|MMTT|HTTT|ISE|KTMT)-/.exec(raw)?.[1];
-    const department = this.facultyCode(faculty) || existingFaculty || (record && this.facultyFor(record)) || 'ISE';
-    return `${department}-${this.typeCodes[type]}-${number.padStart(3, '0')}`;
+    const department = 'ISE';
+    return `${department}${this.typeCodes[type]}-${number.padStart(3, '0')}`;
   },
   decorateTopics(topics) {
     const normalized = topics.map(topic => {
       const type = topic.filterType || topic.topicType || topic.type;
       const faculty = this.facultyFor(topic);
       const displayId = this.formatCode(type, topic.displayId || topic.id || topic.code, faculty);
-      const courseLabel = type === 'graduation' ? 'Đồ án tốt nghiệp' : type === 'thesis' ? 'Khóa luận tốt nghiệp' : this.courseCatalog[topic.course]?.label || topic.courseLabel;
-      return { ...topic, facultyCode: faculty, displayId, courseLabel };
+      const courseLabel = this.subjectLabel(topic);
+      return { ...topic, facultyCode: faculty, displayId, courseLabel, ...(topic.kind === 'supervised' || topic.groupName ? { groupName: this.groupLabel(topic) } : {}), ...(topic.kind === 'created' ? { status: topic.status === 'closed' ? 'closed' : 'open', statusLabel: topic.status === 'closed' ? 'Đã đóng đăng ký' : 'Đang mở đăng ký' } : {}) };
     });
     const largest = new Map();
     normalized.forEach(topic => {
@@ -65,9 +89,9 @@ window.UITLecturerCatalog = {
     const ordered = [...normalized].sort((a, b) => Number(Boolean(b.sourceRecord)) - Number(Boolean(a.sourceRecord)));
     ordered.forEach(topic => {
       const title = String(topic.title || topic.name || '').normalize('NFC').trim().replace(/\s+/g, ' ').toLocaleLowerCase('vi');
-      const match = /^(KHMT|CNPM|MMTT|HTTT|ISE|KTMT)-(ĐAMH|ĐATN|KLTN)-(\d+)$/.exec(topic.displayId || '');
+      const match = /^(KHMT|CNPM|MMTT|HTTT|ISE|KTMT)(DAMH|DATN|KTLN)-(\d+)$/.exec(topic.displayId || '');
       if (!match) return;
-      const family = `${match[1]}-${match[2]}`;
+      const family = `${match[1]}${match[2]}`;
       const key = `${family}:${title}`;
       if (title && byTitle.has(key)) { topic.displayId = byTitle.get(key); return; }
       if (used.has(topic.displayId)) {
@@ -80,9 +104,9 @@ window.UITLecturerCatalog = {
     return normalized;
   },
   nextCode(type, records, faculty) {
-    const department = this.facultyCode(faculty);
+    const department = 'ISE';
     if (!department || !this.typeCodes[type]) return '';
-    const prefix = `${department}-${this.typeCodes[type]}-`;
+    const prefix = `${department}${this.typeCodes[type]}-`;
     let largest = 0n;
     for (const record of records) {
       const code = this.formatCode(record.filterType || record.topicType || record.type, record.displayId || record.code || record.id, this.facultyFor(record));
@@ -1185,7 +1209,7 @@ window.UITLecturerCatalog = {
       "id": "DX-ISE-011",
       "topicId": "ISE-011",
       "title": "Ứng dụng điểm danh lớp học bằng bluetooth",
-      "studentName": "Trương Đức Nghĩa · Nguyễn Phương Phi",
+      "studentName": "Trương Đức Nghĩa",
       "studentId": "xxxxxxxx",
       "topicType": "khoa-luan",
       "topicTypeLabel": "Khóa luận tốt nghiệp",
@@ -1227,7 +1251,7 @@ window.UITLecturerCatalog = {
       "id": "DX-ISE-013",
       "topicId": "ISE-013",
       "title": "Ứng dụng quản lý dữ liệu người dùng trên nhiều tài khoản đám mây",
-      "studentName": "Hoàng Trọng Nghĩa · Võ Thị Ngọc Huyên",
+      "studentName": "Hoàng Trọng Nghĩa",
       "studentId": "xxxxxxxx",
       "topicType": "khoa-luan",
       "topicTypeLabel": "Khóa luận tốt nghiệp",
@@ -1248,7 +1272,7 @@ window.UITLecturerCatalog = {
       "id": "DX-ISE-014",
       "topicId": "ISE-014",
       "title": "Xây dựng ứng dụng thương mại điện tử tích hợp hệ thống gợi ý sản phẩm",
-      "studentName": "Bùi Văn Thuận · Nguyễn Văn Tài",
+      "studentName": "Bùi Văn Thuận",
       "studentId": "xxxxxxxx",
       "topicType": "khoa-luan",
       "topicTypeLabel": "Khóa luận tốt nghiệp",
@@ -1276,7 +1300,7 @@ window.UITLecturerCatalog = {
     if (record.topicType === 'thesis') record.courseLabel = 'Khóa luận tốt nghiệp';
     if (record.topicType === 'graduation') record.courseLabel = 'Đồ án tốt nghiệp';
   });
-  const courses = { web: 'Internet và công nghệ Web', database: 'Cơ sở dữ liệu', software: 'Công nghệ phần mềm' };
+  const courses = Object.fromEntries(Object.entries(catalog.courseCatalog).map(([key, item]) => [key, item.label]));
   const samples = [
     {
       id: 'ISEDATN-004', title: 'Hệ thống điều phối thu gom và phân loại rác tái chế trong khuôn viên trường',
@@ -1349,6 +1373,232 @@ window.UITLecturerCatalog = {
       features: ['danh mục món ăn', 'thực đơn theo ngày', 'đơn đặt suất ăn', 'chi tiết số lượng từng món', 'ràng buộc số suất còn lại', 'quy tắc hủy trước giờ chốt', 'ghi nhận lượt nhận suất', 'truy vấn đơn chưa nhận', 'thống kê nhu cầu theo món', 'báo cáo suất ăn theo ngày'],
     },
   ];
+  samples.push(...[
+  {
+    "id": "ISEDAMH-009",
+    "title": "Thiết kế hạ tầng công nghệ thông tin cho trung tâm đào tạo quy mô nhỏ",
+    "course": "IE101",
+    "semester": "1",
+    "academicYear": "2026–2027",
+    "start": "2026-09-07",
+    "group": "Nhóm 24",
+    "authors": [
+      "Nguyễn Văn A",
+      "Trần Thị B"
+    ],
+    "studentIds": [
+      "xxxxxxxx",
+      "xxxxxxxx"
+    ],
+    "description": "Khảo sát nhu cầu máy trạm, kết nối mạng, lưu trữ và dịch vụ dùng chung của một trung tâm đào tạo. Đề xuất kiến trúc hạ tầng, ước tính chi phí và xây dựng phương án vận hành, sao lưu, phục hồi khi có sự cố.",
+    "features": [
+      "khảo sát số lượng người dùng",
+      "kiểm kê máy trạm và thiết bị",
+      "sơ đồ kết nối mạng nội bộ",
+      "phân vùng mạng theo bộ phận",
+      "lựa chọn dịch vụ dùng chung",
+      "ước tính nhu cầu lưu trữ",
+      "phương án sao lưu dữ liệu",
+      "quy trình xử lý sự cố",
+      "so sánh chi phí các phương án",
+      "báo cáo thiết kế hạ tầng"
+    ],
+    "syllabusUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE101%20-%20Co%20so%20ha%20tang%20cong%20nghe%20thong%20tin.pdf",
+    "secondary": false
+  },
+  {
+    "id": "ISEDAMH-010",
+    "title": "Khảo sát và đề xuất phương án nâng cấp hạ tầng CNTT cho thư viện trường học",
+    "course": "IE101",
+    "semester": "1",
+    "academicYear": "2026–2027",
+    "start": "2026-09-07",
+    "group": "Nhóm 25",
+    "authors": [
+      "Nguyễn Văn A",
+      "Trần Thị B"
+    ],
+    "studentIds": [
+      "xxxxxxxx",
+      "xxxxxxxx"
+    ],
+    "description": "Đánh giá hiện trạng thiết bị, phần mềm, mạng và lưu trữ của một thư viện giả định. Xác định điểm nghẽn và lập kế hoạch nâng cấp theo nhu cầu tra cứu, quản lý tài nguyên và phục vụ bạn đọc.",
+    "features": [
+      "mô tả quy trình phục vụ bạn đọc",
+      "khảo sát tài nguyên phần cứng",
+      "đánh giá phần mềm hiện có",
+      "sơ đồ mạng và điểm truy cập",
+      "ước tính tải truy cập",
+      "phân tích điểm nghẽn lưu trữ",
+      "so sánh triển khai tại chỗ và đám mây",
+      "lập kế hoạch nâng cấp theo giai đoạn",
+      "quy trình bảo trì và phục hồi",
+      "báo cáo đánh giá hiệu quả đầu tư"
+    ],
+    "syllabusUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE101%20-%20Co%20so%20ha%20tang%20cong%20nghe%20thong%20tin.pdf",
+    "secondary": true
+  },
+  {
+    "id": "ISEDAMH-011",
+    "title": "Hệ thống tổ chức và tra cứu hồ sơ hoạt động câu lạc bộ sinh viên",
+    "course": "IE103",
+    "semester": "1",
+    "academicYear": "2026–2027",
+    "start": "2026-09-07",
+    "group": "Nhóm 26",
+    "authors": [
+      "Nguyễn Văn A",
+      "Trần Thị B"
+    ],
+    "studentIds": [
+      "xxxxxxxx",
+      "xxxxxxxx"
+    ],
+    "description": "Xây dựng mô hình quản lý thông tin hoạt động, thành viên và tài liệu của câu lạc bộ. Thực hiện thu thập, chuẩn hóa, lưu trữ, tra cứu và trình bày thông tin; kiểm soát quyền đọc, sửa hồ sơ trên bộ dữ liệu giả lập.",
+    "features": [
+      "thu thập hồ sơ hoạt động",
+      "xây dựng từ điển dữ liệu",
+      "chuẩn hóa thông tin thành viên",
+      "mô hình lưu trữ hồ sơ",
+      "chuyển đổi dữ liệu từ bảng tính",
+      "tra cứu theo chủ đề và thời gian",
+      "phân quyền đọc và sửa hồ sơ",
+      "kiểm tra chất lượng thông tin",
+      "trình bày báo cáo hoạt động",
+      "đánh giá mô hình quản lý thông tin"
+    ],
+    "syllabusUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE103%20-%20Quan%20ly%20Thong%20tin.pdf",
+    "secondary": false
+  },
+  {
+    "id": "ISEDAMH-012",
+    "title": "Tích hợp và quản lý thông tin học bổng từ nhiều nguồn dữ liệu",
+    "course": "IE103",
+    "semester": "1",
+    "academicYear": "2026–2027",
+    "start": "2026-09-07",
+    "group": "Nhóm 27",
+    "authors": [
+      "Nguyễn Văn A",
+      "Trần Thị B"
+    ],
+    "studentIds": [
+      "xxxxxxxx",
+      "xxxxxxxx"
+    ],
+    "description": "Thiết kế quy trình tiếp nhận danh mục học bổng từ các tệp dữ liệu giả lập, chuẩn hóa tên đơn vị và tiêu chí, nhận diện bản ghi trùng và xây dựng bộ tra cứu. So sánh phương án lưu trữ quan hệ với mô hình tài liệu.",
+    "features": [
+      "khảo sát cấu trúc các nguồn dữ liệu",
+      "mô hình thông tin học bổng",
+      "chuẩn hóa đơn vị và tiêu chí",
+      "chuyển đổi dữ liệu CSV và JSON",
+      "phát hiện bản ghi trùng",
+      "quản lý phiên bản dữ liệu",
+      "truy vấn điều kiện học bổng",
+      "phân quyền cập nhật thông tin",
+      "so sánh mô hình quan hệ và tài liệu",
+      "báo cáo chất lượng dữ liệu"
+    ],
+    "syllabusUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE103%20-%20Quan%20ly%20Thong%20tin.pdf",
+    "secondary": true
+  },
+  {
+    "id": "ISEDAMH-013",
+    "title": "Xây dựng mô hình phân quyền và kiểm soát truy cập tài liệu nội bộ",
+    "course": "IE105",
+    "semester": "1",
+    "academicYear": "2026–2027",
+    "start": "2026-09-07",
+    "group": "Nhóm 28",
+    "authors": [
+      "Nguyễn Văn A",
+      "Trần Thị B"
+    ],
+    "studentIds": [
+      "xxxxxxxx",
+      "xxxxxxxx"
+    ],
+    "description": "Phân tích rủi ro đối với tài liệu nội bộ và thiết kế ma trận quyền cho các vai trò trong tổ chức giả định. Dựng môi trường thử nghiệm cô lập để kiểm tra truy cập hợp lệ, truy cập bị từ chối và khả năng truy vết thao tác.",
+    "features": [
+      "phân loại mức độ nhạy cảm tài liệu",
+      "nhận diện nguy cơ lộ lọt thông tin",
+      "xây dựng ma trận quyền truy cập",
+      "mô hình tài khoản và nhóm quyền",
+      "cấu hình chính sách truy cập",
+      "nguyên tắc quyền tối thiểu",
+      "kiểm tra truy cập được phép",
+      "kiểm tra truy cập bị từ chối",
+      "ghi nhận nhật ký thao tác",
+      "đánh giá rủi ro còn lại"
+    ],
+    "syllabusUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE105_Nhap%20Mon%20Bao%20Dam%20va%20An%20Ninh%20Thong%20Tin-CDIO_v1-05122016.pdf",
+    "secondary": false
+  },
+  {
+    "id": "ISEDAMH-014",
+    "title": "Thiết kế phương án bảo vệ mạng nội bộ cho văn phòng nhỏ",
+    "course": "IE105",
+    "semester": "1",
+    "academicYear": "2026–2027",
+    "start": "2026-09-07",
+    "group": "Nhóm 29",
+    "authors": [
+      "Nguyễn Văn A",
+      "Trần Thị B"
+    ],
+    "studentIds": [
+      "xxxxxxxx",
+      "xxxxxxxx"
+    ],
+    "description": "Phân tích tài sản và nguy cơ đối với mạng văn phòng giả định. Đề xuất phân vùng mạng, chính sách tường lửa, bảo vệ máy trạm và sao lưu. Kiểm tra chính sách trong môi trường thực hành cô lập bằng các tình huống kết nối hợp lệ và bị chặn.",
+    "features": [
+      "kiểm kê tài sản thông tin",
+      "đánh giá nguy cơ mạng nội bộ",
+      "thiết kế phân vùng mạng",
+      "chính sách tường lửa theo dịch vụ",
+      "bảo vệ thiết bị đầu cuối",
+      "cấu hình an toàn mạng không dây",
+      "quản lý cập nhật hệ điều hành",
+      "phương án sao lưu và phục hồi",
+      "kiểm tra các tình huống truy cập",
+      "báo cáo đánh giá an toàn mạng"
+    ],
+    "syllabusUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE105_Nhap%20Mon%20Bao%20Dam%20va%20An%20Ninh%20Thong%20Tin-CDIO_v1-05122016.pdf",
+    "secondary": true
+  },
+  {
+    "id": "ISEDAMH-015",
+    "title": "Phân tích và thiết kế phần mềm quản lý lịch tư vấn học tập",
+    "course": "phan-tich-thiet-ke-phan-mem",
+    "semester": "1",
+    "academicYear": "2026–2027",
+    "start": "2026-09-07",
+    "group": "Nhóm 30",
+    "authors": [
+      "Nguyễn Văn A",
+      "Trần Thị B"
+    ],
+    "studentIds": [
+      "xxxxxxxx",
+      "xxxxxxxx"
+    ],
+    "description": "Khảo sát nghiệp vụ đăng ký lịch tư vấn, xác định các tác nhân và yêu cầu chức năng. Xây dựng mô hình ca sử dụng, mô hình dữ liệu, sơ đồ tương tác và bản mẫu giao diện; đối chiếu thiết kế với yêu cầu nghiệp vụ.",
+    "features": [
+      "khảo sát quy trình tư vấn",
+      "xác định tác nhân hệ thống",
+      "đặc tả yêu cầu phần mềm",
+      "sơ đồ ca sử dụng",
+      "mô hình lớp phân tích",
+      "sơ đồ trình tự đặt lịch",
+      "thiết kế mô hình dữ liệu",
+      "bản mẫu giao diện đăng ký",
+      "ma trận truy vết yêu cầu",
+      "báo cáo đánh giá thiết kế"
+    ],
+    "syllabusUrl": "",
+    "secondary": false
+  }
+]);
   const dateAt = (start, days) => {
     const date = new Date(`${start}T00:00:00Z`);
     date.setUTCDate(date.getUTCDate() + days);
@@ -1356,7 +1606,7 @@ window.UITLecturerCatalog = {
   };
   samples.forEach(({ createdOnly, ...sample }, index) => {
     const graduation = sample.id.startsWith('ISEDATN');
-    const supervised = index < 7 && !createdOnly;
+    const supervised = !createdOnly;
     const record = {
       ...sample, code: sample.id, demo: true, source: 'illustrative',
       type: graduation ? 'Đồ án tốt nghiệp' : 'Đồ án môn học', topicType: graduation ? 'graduation' : 'course',
@@ -1437,4 +1687,177 @@ window.UITLecturerCatalog = {
     if (subject) { record.courseCode = subject.code; record.courseLabel = subject.label; }
     if (record.topicType === 'graduation') record.courseLabel = 'Đồ án tốt nghiệp';
   });
+})();
+
+(() => {
+  const catalog = window.UITLecturerCatalog;
+  catalog.records = catalog.records.filter(record => record.topicType !== 'master' && record.type !== 'Luận văn thạc sĩ');
+  const ids = new Set(catalog.records.map(record => record.id));
+  for (const key of ['created', 'supervised']) catalog[key] = catalog[key].filter(id => ids.has(id));
+  catalog.pending = catalog.pending.filter(record => record.topicType !== 'luan-van-thac-si' && record.topicTypeLabel !== 'Luận văn thạc sĩ');
+  catalog.records.forEach(record => { record.courseLabel = catalog.subjectLabel(record); });
+})();
+
+(() => {
+  const catalog = window.UITLecturerCatalog;
+  for (const id of ['ISEDATN-001', 'ISEDATN-002', 'ISEDATN-003']) {
+    if (!catalog.created.includes(id)) catalog.created.push(id);
+  }
+})();
+
+(() => {
+  const catalog = window.UITLecturerCatalog;
+  const deliverables = {
+    IE101: { technology: 'Sơ đồ hạ tầng, công cụ mô phỏng mạng và bảng dự toán', outcomes: ['Hồ sơ khảo sát và sơ đồ kiến trúc hạ tầng cho tổ chức giả định.', 'Bảng so sánh thiết bị, chi phí và phương án triển khai.', 'Kế hoạch vận hành, sao lưu, phục hồi và báo cáo đánh giá.'] },
+    IE103: { technology: 'SQL, dữ liệu CSV/JSON và mô hình tài liệu', outcomes: ['Mô hình quản lý thông tin và từ điển dữ liệu.', 'Quy trình chuẩn hóa, chuyển đổi và tra cứu trên bộ dữ liệu giả lập.', 'Báo cáo kiểm tra chất lượng dữ liệu và đánh giá mô hình lưu trữ.'] },
+    IE105: { technology: 'Máy ảo, phân quyền hệ điều hành và tường lửa trong mạng thực hành cô lập', outcomes: ['Hồ sơ phân loại tài sản và đánh giá rủi ro thông tin.', 'Mô hình thực hành có cấu hình phân quyền hoặc chính sách bảo vệ mạng.', 'Bộ tình huống kiểm tra, nhật ký kết quả và báo cáo khuyến nghị.'] },
+  };
+  for (const record of catalog.records) {
+    if (record.syllabusUrl && deliverables[record.course]) Object.assign(record, deliverables[record.course]);
+  }
+})();
+
+(() => {
+  const catalog = window.UITLecturerCatalog;
+  const phases = [
+    'Khảo sát bài toán và phạm vi nghiên cứu', 'Tổng hợp tài liệu liên quan',
+    'Xác định yêu cầu và tiêu chí đánh giá', 'Chuẩn bị bộ dữ liệu nghiên cứu',
+    'Thiết kế phương pháp giải quyết', 'Xây dựng mô hình thử nghiệm',
+    'Kiểm tra chất lượng kết quả', 'So sánh và phân tích các phương án',
+    'Hoàn thiện báo cáo nghiên cứu', 'Chuẩn bị tài liệu trình bày',
+  ];
+  const dateAt = (start, days) => {
+    const date = new Date(`${start}T00:00:00Z`);
+    date.setUTCDate(date.getUTCDate() + days);
+    return date.toISOString().slice(0, 10);
+  };
+  for (const id of catalog.supervised) {
+    const record = catalog.records.find(item => item.id === id);
+    if (!record) continue;
+    const start = record.startsAt || record.supervision?.milestones?.[0] || '2026-09-07';
+    const work = record.supervision ||= {
+      group: `Nhóm ${String(catalog.supervised.indexOf(id) + 1).padStart(2, '0')}`,
+      milestones: [start, dateAt(start, 42), dateAt(start, 90)],
+      tasks: { notStarted: [], inProgress: [], completed: [] },
+      deliverables: [],
+      criteria: ['Nội dung bám sát mục tiêu và phạm vi đề tài.', 'Phương pháp được trình bày rõ và có kết quả đối chiếu.', 'Báo cáo đầy đủ minh chứng và nêu giới hạn nghiên cứu.'],
+      comment: 'Cần đối chiếu kết quả với tiêu chí đã đặt ra và trình bày các giới hạn của phương pháp.',
+      source: 'illustrative',
+    };
+    for (const [status, offset] of [['notStarted', 65], ['inProgress', 35], ['completed', 7]]) {
+      const tasks = work.tasks[status] ||= [];
+      for (let i = tasks.length; i < 10; i++) {
+        tasks.push([phases[i], dateAt(start, offset + i * 2)]);
+      }
+    }
+    const groups = [
+      { entries: work.deliverables.filter(item => !item.submittedAt), tasks: work.tasks.notStarted, label: 'Kế hoạch thực hiện' },
+      { entries: work.deliverables.filter(item => item.submittedAt && !item.feedback), tasks: work.tasks.inProgress, label: 'Báo cáo thực hiện', submitted: true },
+      { entries: work.deliverables.filter(item => item.feedback), tasks: work.tasks.completed, label: 'Tài liệu kết quả', submitted: true, reviewed: true },
+    ];
+    groups.forEach((group, groupIndex) => {
+      for (let i = group.entries.length; i < 10; i++) {
+        const [task, day] = group.tasks[i % group.tasks.length];
+        work.deliverables.push({
+          title: `${group.label}: ${task.charAt(0).toLocaleLowerCase('vi') + task.slice(1)}`,
+          description: `Trình bày công việc “${task}” trong đề tài “${record.title}”. Nêu phương pháp, minh chứng và kết quả đối chiếu với mục tiêu nghiên cứu.`,
+          due: `${day}T23:59`,
+          ...(group.submitted ? { file: `${record.code}-bao-cao-${groupIndex}-${i + 1}.pdf`, submittedAt: `${dateAt(day, i % 3 === 0 ? 1 : 0)}T16:00` } : {}),
+          ...(group.reviewed ? { feedback: `Đã xem nội dung “${task}”. Bổ sung minh chứng, so sánh kết quả và nêu các hạn chế còn lại.` } : {}),
+        });
+      }
+    });
+  }
+})();
+
+(() => {
+  const catalog = window.UITLecturerCatalog;
+  catalog.records.forEach((record, index) => {
+    if (record.createdAt || !catalog.created.includes(record.id)) return;
+    const year = Number(record.academicYear?.slice(0, 4)) || 2026;
+    const semester = String(record.semester || '1');
+    const plannedStart = semester === '2' ? `${year + 1}-02-09` : ['3', 'summer'].includes(semester) ? `${year + 1}-06-08` : `${year}-09-07`;
+    const date = new Date(`${record.startsAt || record.supervision?.milestones?.[0] || plannedStart}T00:00:00Z`);
+    date.setUTCDate(date.getUTCDate() - 21 - index % 10);
+    record.createdAt = date.toISOString().slice(0, 10);
+    record.createdAtSource = 'illustrative';
+  });
+})();
+
+(() => {
+  const catalog = window.UITLecturerCatalog;
+  catalog.records.forEach(record => {
+    if (record.supervision) record.supervision.group = catalog.groupLabel(record.supervision.group);
+    if (record.group) record.group = catalog.groupLabel(record.group);
+  });
+})();
+
+(() => {
+  const catalog = window.UITLecturerCatalog;
+  catalog.records = catalog.records.filter(record => catalog.isAvailableTopic(record));
+  const ids = new Set(catalog.records.map(record => record.id));
+  for (const kind of ['created', 'supervised']) catalog[kind] = catalog[kind].filter(id => ids.has(id));
+  catalog.pending = catalog.pending.filter(record => catalog.isAvailableTopic(record));
+})();
+
+(() => {
+  const catalog = window.UITLecturerCatalog;
+  const guidance = {
+    web: {
+      file: '[DC] Internet va cong nghe web.pdf', pages: '1–12',
+      technology: 'HTML5, CSS3, JavaScript, JSON và công cụ phát triển web',
+      objectives: ['Phân tích nhu cầu người dùng và tổ chức nội dung website theo phạm vi đề tài.', 'Xây dựng giao diện HTML/CSS và tương tác JavaScript; xử lý biểu mẫu và dữ liệu JSON.', 'Hoàn thiện website, trình bày cách triển khai và phối hợp báo cáo theo nhóm.'],
+      outcomes: ['Website có giao diện và các chức năng trong phạm vi đã xác định.', 'Mã nguồn HTML/CSS/JavaScript, dữ liệu sử dụng và hướng dẫn chạy website.', 'Báo cáo đồ án, bảng phân công công việc và slide thuyết trình.'],
+      tasks: ['Khảo sát người dùng và phạm vi website', 'Tổ chức nội dung và cấu trúc điều hướng', 'Thiết kế bố cục các trang chính', 'Xây dựng cấu trúc HTML', 'Định dạng giao diện bằng CSS', 'Điều chỉnh bố cục cho nhiều màn hình', 'Xử lý sự kiện và biểu mẫu JavaScript', 'Tổ chức dữ liệu JSON và tương tác nội dung', 'Chuẩn bị website và hướng dẫn triển khai', 'Hoàn thiện báo cáo và slide thuyết trình'],
+      criteria: ['Báo cáo rõ phạm vi, phương pháp xây dựng và phân công công việc.', 'Thuyết trình rõ ràng, giải thích và trả lời được câu hỏi về website.', 'Website đáp ứng chức năng, giao diện và tương tác đã mô tả.'],
+    },
+    database: {
+      file: 'IT004 - Cơ sở dữ liệu (2022-Rubric) - Update 2026.pdf', pages: '1–9',
+      technology: 'Microsoft SQL Server, SQL Server Management Studio, ERD và SQL',
+      objectives: ['Xác định thực thể, thuộc tính và mối liên kết; xây dựng ERD và chuyển sang mô hình quan hệ.', 'Hiện thực lược đồ, khóa và ràng buộc toàn vẹn; viết truy vấn SQL trên Microsoft SQL Server.', 'Phân tích phụ thuộc hàm, xác định khóa và đánh giá dạng chuẩn của lược đồ.'],
+      outcomes: ['ERD, lược đồ quan hệ và tài liệu giải thích các khóa, ràng buộc toàn vẹn.', 'Tệp SQL tạo cơ sở dữ liệu, dữ liệu giả lập và bộ truy vấn có kết quả đối chiếu.', 'Báo cáo phân tích phụ thuộc hàm, dạng chuẩn và đề xuất cải tiến lược đồ.'],
+      tasks: ['Khảo sát dữ kiện và quy tắc nghiệp vụ', 'Xác định thực thể và mối liên kết', 'Xây dựng sơ đồ ERD', 'Chuyển ERD sang mô hình quan hệ', 'Xác định khóa chính và khóa ngoại', 'Tạo lược đồ và dữ liệu trên SQL Server', 'Viết truy vấn SQL và đối chiếu đại số quan hệ', 'Phát biểu và hiện thực ràng buộc toàn vẹn', 'Phân tích phụ thuộc hàm và dạng chuẩn', 'Tổng hợp tệp SQL và báo cáo thiết kế'],
+      criteria: ['ERD và lược đồ quan hệ phản ánh đúng dữ kiện và các khóa.', 'Truy vấn và ràng buộc toàn vẹn được hiện thực đúng trên SQL Server.', 'Phân tích được phụ thuộc hàm, khóa và dạng chuẩn; giải thích cải tiến lược đồ.'],
+    },
+    'phan-tich-thiet-ke-phan-mem': {
+      file: 'Buoi1-1-6.pdf', pages: '5–6',
+      technology: 'UML, công cụ vẽ sơ đồ và thiết kế bản mẫu giao diện',
+      objectives: ['Khảo sát quy trình nghiệp vụ và đặc tả yêu cầu của phần mềm trong phạm vi đề tài.', 'Mô hình hóa yêu cầu và thiết kế phần mềm bằng UML.', 'Hoàn thiện bộ hồ sơ phân tích, thiết kế và thuyết trình kết quả làm việc nhóm.'],
+      outcomes: ['Tài liệu khảo sát, mô tả nghiệp vụ và đặc tả yêu cầu phần mềm.', 'Bộ mô hình UML và bản mẫu giao diện thể hiện phương án thiết kế.', 'Báo cáo phân tích, thiết kế phần mềm và slide trình bày đồ án.'],
+      tasks: ['Khảo sát quy trình và bên liên quan', 'Xác định phạm vi và tác nhân', 'Đặc tả yêu cầu chức năng', 'Đặc tả yêu cầu phi chức năng', 'Xây dựng mô hình ca sử dụng UML', 'Mô hình hóa luồng hoạt động', 'Thiết kế mô hình lớp', 'Thiết kế tương tác và sơ đồ trình tự', 'Đối chiếu bản mẫu giao diện với yêu cầu', 'Hoàn thiện hồ sơ phân tích và thiết kế'],
+      criteria: ['Yêu cầu và phạm vi được mô tả rõ, nhất quán với nghiệp vụ.', 'Mô hình UML và phương án thiết kế thể hiện đúng yêu cầu.', 'Báo cáo và thuyết trình giải thích được các quyết định phân tích, thiết kế.'],
+    },
+  };
+  const dateAt = (start, days) => {
+    const date = new Date(`${start}T00:00:00Z`);
+    date.setUTCDate(date.getUTCDate() + days);
+    return date.toISOString().slice(0, 10);
+  };
+  catalog.courseGuidance = guidance;
+  for (const record of catalog.records) {
+    if (record.topicType !== 'course') continue;
+    const course = catalog.courseKey(record.course);
+    const guide = guidance[course];
+    if (!guide) continue;
+    record.technology = guide.technology;
+    record.objectives = [...guide.objectives];
+    record.outcomes = [...guide.outcomes];
+    record.requirements = ['Vận dụng kiến thức '+catalog.subjectLabel(record)+' trong phạm vi đề tài.', ...guide.outcomes];
+    record.outlineReference = { file: guide.file, pages: guide.pages, kind: course === 'phan-tich-thiet-ke-phan-mem' ? 'course-introduction-slides' : 'course-syllabus' };
+    if (course === 'phan-tich-thiet-ke-phan-mem') record.description = 'Khảo sát nghiệp vụ quản lý lịch tư vấn học tập, xác định tác nhân và đặc tả yêu cầu chức năng, phi chức năng. Xây dựng mô hình UML và phương án thiết kế giao diện; đối chiếu sự nhất quán giữa yêu cầu, mô hình và bản mẫu. Sản phẩm chính là bộ hồ sơ phân tích và thiết kế phần mềm.';
+    if (!record.supervision) continue;
+    const work = record.supervision;
+    const start = record.startsAt || work.milestones[0];
+    for (const [status, verb, offset] of [['notStarted', 'Lập kế hoạch', 65], ['inProgress', 'Thực hiện', 35], ['completed', 'Hoàn thiện', 7]]) {
+      work.tasks[status] = guide.tasks.map((task, index) => [`${verb}: ${task.charAt(0).toLocaleLowerCase('vi')+task.slice(1)}`, dateAt(start, offset+index*2)]);
+    }
+    work.deliverables = [];
+    for (let status = 0; status < 3; status++) guide.tasks.forEach((task, index) => {
+      const day = dateAt(start, 14+index*2);
+      const title = `${['Đề xuất phương án', 'Báo cáo thực hiện', 'Hồ sơ kết quả'][status]}: ${task.charAt(0).toLocaleLowerCase('vi')+task.slice(1)}`;
+      work.deliverables.push({ title, description: `Trình bày nội dung “${task}” cho đề tài “${record.title}”. Kèm mô hình, tài liệu hoặc kết quả phù hợp với công việc và giải thích các quyết định đã thực hiện.`, due: `${status===0?dateAt(start,65+index*2):day}T23:59`, ...(status>0?{file:`${record.code}-${status}-${index+1}.${course==='database'&&index===6?'sql':'pdf'}`,submittedAt:`${dateAt(day,index%3===0?1:0)}T16:00`}:{}), ...(status===2?{feedback:`Đã xem hồ sơ “${task}”. Cần giải thích rõ quyết định và đối chiếu với yêu cầu của đề tài.`}:{}) });
+    });
+    work.criteria = [...guide.criteria];
+    work.comment = 'Nhóm cần làm rõ các quyết định trong hồ sơ và đối chiếu kết quả với phạm vi, mục tiêu đã đặt ra.';
+  }
 })();

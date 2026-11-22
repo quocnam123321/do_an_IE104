@@ -49,7 +49,7 @@
         badge.replaceChildren(label, document.createTextNode(current.project.statusLabel));
         badge.dataset.status = current.project.status;
       }
-      const fields = [current.project.displayId || current.project.topicId, current.project.typeLabel, current.project.courseLabel, `Học kỳ ${current.project.semester} - ${current.project.academicYear}`];
+      const fields = [current.project.displayId || current.project.topicId, current.project.typeLabel, window.UITLecturerCatalog.subjectLabel(current.project, true), `Học kỳ ${current.project.semester} · ${current.project.academicYear}`];
       overview.querySelectorAll('.topic-summary dd').forEach((node, index) => { node.textContent = fields[index]; });
       return;
     }
@@ -58,7 +58,7 @@
     const cover = el('img', null, 'gv-default-cover'); cover.src = '../../assets/images/uit-logo.png'; cover.alt = 'Ảnh UIT mặc định';
     card.append(cover, el('h2', current.project.title));
     const dl = el('dl', '', 'teaching-metadata');
-    const fields = [['Mã đề tài', current.project.displayId || current.project.topicId || current.project.id], ['Loại đề tài', current.project.typeLabel], ['Môn học', current.project.courseLabel || current.project.courseId || 'Không áp dụng'], ['Vai trò hướng dẫn', current.project.roleLabel || 'Chưa có thông tin'], ['Nhóm thực hiện', current.project.groupName], ['Trạng thái', current.project.statusLabel || 'Đang thực hiện'], ['Học kỳ', current.project.semester], ['Năm học', current.project.academicYear]];
+    const fields = [['Mã đề tài', current.project.displayId || current.project.topicId || current.project.id], ['Loại đề tài', current.project.typeLabel], ['Môn học', window.UITLecturerCatalog.subjectLabel(current.project, true)], ['Vai trò hướng dẫn', current.project.roleLabel || 'Chưa có thông tin'], ['Nhóm thực hiện', current.project.groupName], ['Trạng thái', current.project.statusLabel || 'Đang thực hiện'], ['Học kỳ', current.project.semester], ['Năm học', current.project.academicYear]];
     fields.forEach(([name, value]) => { const row = el('div'); row.append(el('dt', name), el('dd', value || 'Chưa có thông tin')); dl.append(row); });
     card.append(dl, el('h3', 'Nhóm thực hiện'));
     if (!current.team.members.length) card.append(el('p', 'Chưa có thông tin thành viên nhóm.'));
@@ -86,7 +86,7 @@
       document.querySelector('.page-header__topic-name').textContent = state.project.title;
       overviewView(state);
       subscribers.forEach(render => render(state));
-      notify(state.warning || (app.ui.lecturerWorkspace.dirty ? 'Đánh giá đang có thay đổi chưa lưu. Dữ liệu mới ở tab khác sẽ không ghi đè phần đang nhập.' : app.data.lecturerRealMode ? '' : 'Dữ liệu mẫu. Thay đổi được lưu trên trình duyệt này.'));
+      notify(state.warning || (app.ui.lecturerWorkspace.dirty ? 'Đánh giá đang có thay đổi chưa lưu. Dữ liệu mới ở tab khác sẽ không ghi đè phần đang nhập.' : ''));
       document.body.dataset.projectId = projectId;
       const back = document.querySelector('.back-navigation .back-link');
       if (back && topics) back.href = topics.returnUrl('supervised', new URLSearchParams(location.search).get('return'), location.href);

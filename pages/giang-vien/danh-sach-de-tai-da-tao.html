@@ -14,13 +14,13 @@
     <script src="../../assets/js/nav-indicator.js" defer=""></script>
 
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css" />
-    <script src="../../assets/js/uit-lecturer-catalog.js" defer></script>
+    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261122-outlines" defer></script>
     <script src="../../assets/js/shared/topic-identity.js" defer></script>
     <script src="../../assets/js/teacher-topic-store.js" defer></script>
     <script src="../../assets/js/data/mock-data.js" defer></script>
     <script src="../../assets/js/data/proposal-actors.js" defer></script>
     <script src="../../assets/js/data/lecturer-topics.js" defer></script>
-    <script src="../../assets/js/data/lecturer-merge-catalog.js" defer></script>
+    <script src="../../assets/js/data/lecturer-merge-catalog.js?v=20261122-outlines" defer></script>
     <script src="../../assets/js/services/storage.js" defer></script>
     <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
     <script src="../../assets/js/shared/validation.js" defer></script>
@@ -38,11 +38,12 @@
     <script src="../../assets/js/services/project-progress-service.js" defer></script>
     <script src="../../assets/js/services/teaching-service.js" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-list.js?v=20261121-uit-records" defer></script>
-    <script src="../../assets/js/uit-topic-list.js?v=20261122-topic-sort" defer></script>
+    <script src="../../assets/js/shared/lecturer-filters.js?v=20261122-filter-sync3" defer></script>
+    <script src="../../assets/js/uit-topic-list.js?v=20261122-filter-sync3" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-sort.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
-    <script src="../../assets/js/shared/logout.js" defer></script>
-  </head>
+  <script src="../../assets/js/shared/logout.js" defer></script>
+</head>
 
   <body id="page-top" tabindex="-1" data-lecturer-list="created" class="teacher-workspace-page teacher-topic-list-page teacher-created-topics-page">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
@@ -268,9 +269,6 @@
                       <label for="topic-type-thesis">
                         <input type="checkbox" id="topic-type-thesis" name="topic-type" value="thesis">
                         <span class="topic-filters__option-text">Khóa luận</span>
-                      </label><label for="uit-filter-topic-type-master">
-                        <input type="checkbox" id="uit-filter-topic-type-master" name="topic-type" value="master">
-                        <span class="topic-filters__option-text">Luận văn thạc sĩ</span>
                       </label>
                     </div>
                   </div>
@@ -281,25 +279,25 @@
                     <div class="topic-filters__option">
                       <label for="semester-2026-2027-1">
                         <input type="checkbox" id="semester-2026-2027-1" name="hoc-ky" value="2026-2027-1">
-                        <span class="topic-filters__option-text">Học kỳ 1 • 2026–2027</span>
+                        <span class="topic-filters__option-text">Học kỳ 1 · 2026–2027</span>
                       </label>
                     </div>
                     <div class="topic-filters__option">
                       <label for="semester-2026-2027-2">
                         <input type="checkbox" id="semester-2026-2027-2" name="hoc-ky" value="2026-2027-2">
-                        <span class="topic-filters__option-text">Học kỳ 2 • 2026–2027</span>
+                        <span class="topic-filters__option-text">Học kỳ 2 · 2026–2027</span>
                       </label>
                     </div>
                     <div class="topic-filters__option">
                       <label for="semester-2026-2027-3">
                         <input type="checkbox" id="semester-2026-2027-3" name="hoc-ky" value="2026-2027-3">
-                        <span class="topic-filters__option-text">Học kỳ 3 • 2026–2027</span>
+                        <span class="topic-filters__option-text">Học kỳ 3 · 2026–2027</span>
                       </label>
                     </div>
                     <div class="topic-filters__option">
                       <label for="semester-2025-2026-1">
                         <input type="checkbox" id="semester-2025-2026-1" name="hoc-ky" value="2025-2026-1">
-                        <span class="topic-filters__option-text">Học kỳ 1 • 2025–2026</span>
+                        <span class="topic-filters__option-text">Học kỳ 1 · 2025–2026</span>
                       </label>
                     </div>
                     <details class="topic-filters__more">
@@ -313,13 +311,13 @@
                         <div class="topic-filters__option">
                           <label for="semester-2025-2026-2">
                             <input type="checkbox" id="semester-2025-2026-2" name="hoc-ky" value="2025-2026-2">
-                            <span class="topic-filters__option-text">Học kỳ 2 • 2025–2026</span>
+                            <span class="topic-filters__option-text">Học kỳ 2 · 2025–2026</span>
                           </label>
                         </div>
                         <div class="topic-filters__option">
                           <label for="semester-2025-2026-3">
                             <input type="checkbox" id="semester-2025-2026-3" name="hoc-ky" value="2025-2026-3">
-                            <span class="topic-filters__option-text">Học kỳ 3 • 2025–2026</span>
+                            <span class="topic-filters__option-text">Học kỳ 3 · 2025–2026</span>
                           </label>
                         </div>
                       </div>
@@ -349,8 +347,8 @@
     </div>
     <div class="topic-filters__option">
     <label for="course-analysis">
-    <input type="checkbox" id="course-analysis" name="course" value="phan-tich-thiet-ke-he-thong">
-    <span class="topic-filters__option-text">Phân tích thiết kế hệ thống</span>
+    <input type="checkbox" id="course-analysis" name="course" value="phan-tich-thiet-ke-phan-mem">
+    <span class="topic-filters__option-text">Phân tích thiết kế phần mềm</span>
     </label>
     </div>
     <details class="topic-filters__more">
@@ -411,7 +409,7 @@
             <p id="topic-scroll-help" class="visually-hidden">Danh sách có thanh cuộn riêng. Dùng phím mũi tên hoặc Page Down để xem các đề tài bên dưới.</p>
             <div class="topic-list-scroll" role="region" tabindex="0" aria-labelledby="topic-results-title" aria-describedby="topic-scroll-help">
               <ul class="topic-list"><li>
-                  <article class="topic-card" aria-labelledby="uit-ISE-001" data-topic-id="ISE-001" data-topic-type="thesis" data-course="" data-status="catalog" data-created-at="2026-11-20">
+                  <article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISE-001" data-topic-id="ISE-001" data-topic-type="thesis" data-course="" data-status="open" data-created-at="2026-11-20">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -424,28 +422,28 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
 <circle cx="7" cy="7" r="1.25"></circle>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEKLTN-001</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEKTLN-001</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
 <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">Tác giả: Văn Cặp Hùng</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Khóa luận tốt nghiệp</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">Khóa: 2017</span></li>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">GVHD: Chưa công bố</span></li>
+</svg><span class="topic-card__meta-text">17/08/2026</span></li>
                       </ul>
                     </div>
                     <div class="topic-card__actions">
-                      <p class="topic-card__status topic-card__status--catalog">Hồ sơ UIT</p>
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
                       <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISE-001" aria-label="Xem chi tiết Xây dựng mô hình dự đoán kết quả thi đấu bóng đá">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
                   </article>
                 </li><li>
-                  <article class="topic-card" aria-labelledby="uit-ISE-002" data-topic-id="ISE-002" data-topic-type="thesis" data-course="" data-status="catalog" data-created-at="2026-11-20">
+                  <article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISE-002" data-topic-id="ISE-002" data-topic-type="thesis" data-course="" data-status="open" data-created-at="2026-11-20">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -458,28 +456,28 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
 <circle cx="7" cy="7" r="1.25"></circle>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEKLTN-002</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEKTLN-002</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
 <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">Tác giả: Nguyễn Thành Luân</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Khóa luận tốt nghiệp</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">Khóa: 2017</span></li>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">GVHD: Chưa công bố</span></li>
+</svg><span class="topic-card__meta-text">16/08/2026</span></li>
                       </ul>
                     </div>
                     <div class="topic-card__actions">
-                      <p class="topic-card__status topic-card__status--catalog">Hồ sơ UIT</p>
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
                       <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISE-002" aria-label="Xem chi tiết Nhận diện tính xây dựng và tính độc hại của bình luận Tiếng Việt">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
                   </article>
                 </li><li>
-                  <article class="topic-card" aria-labelledby="uit-ISE-003" data-topic-id="ISE-003" data-topic-type="thesis" data-course="" data-status="catalog" data-created-at="2026-11-20">
+                  <article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISE-003" data-topic-id="ISE-003" data-topic-type="thesis" data-course="" data-status="open" data-created-at="2026-11-20">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -492,28 +490,28 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
 <circle cx="7" cy="7" r="1.25"></circle>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEKLTN-003</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEKTLN-003</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
 <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">Tác giả: Bùi Thị Ngọc Mai</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Khóa luận tốt nghiệp</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">Khóa: 2017</span></li>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">GVHD: Chưa công bố</span></li>
+</svg><span class="topic-card__meta-text">15/08/2026</span></li>
                       </ul>
                     </div>
                     <div class="topic-card__actions">
-                      <p class="topic-card__status topic-card__status--catalog">Hồ sơ UIT</p>
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
                       <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISE-003" aria-label="Xem chi tiết Dự đoán chuỗi hành động liên quan tới nhau của con người">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
                   </article>
                 </li><li>
-                  <article class="topic-card" aria-labelledby="uit-ISE-004" data-topic-id="ISE-004" data-topic-type="thesis" data-course="" data-status="catalog" data-created-at="2026-11-20">
+                  <article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISE-004" data-topic-id="ISE-004" data-topic-type="thesis" data-course="" data-status="open" data-created-at="2026-11-20">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -526,28 +524,28 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
 <circle cx="7" cy="7" r="1.25"></circle>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEKLTN-004</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEKTLN-004</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
 <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">Tác giả: Vũ Cao Nguyên</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Khóa luận tốt nghiệp</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">Khóa: 2017</span></li>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">GVHD: Chưa công bố</span></li>
+</svg><span class="topic-card__meta-text">14/08/2026</span></li>
                       </ul>
                     </div>
                     <div class="topic-card__actions">
-                      <p class="topic-card__status topic-card__status--catalog">Hồ sơ UIT</p>
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
                       <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISE-004" aria-label="Xem chi tiết Phát triển ứng dụng di động gợi ý phim cho người dùng">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
                   </article>
                 </li><li>
-                  <article class="topic-card" aria-labelledby="uit-ISE-005" data-topic-id="ISE-005" data-topic-type="thesis" data-course="" data-status="catalog" data-created-at="2026-11-20">
+                  <article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISE-005" data-topic-id="ISE-005" data-topic-type="thesis" data-course="" data-status="open" data-created-at="2026-11-20">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -560,28 +558,28 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
 <circle cx="7" cy="7" r="1.25"></circle>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEKLTN-005</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEKTLN-005</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
 <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">Tác giả: Nguyễn Tiến Khang, Phạm Nhật Duy</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Khóa luận tốt nghiệp</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">Khóa: 2017</span></li>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">GVHD: Chưa công bố</span></li>
+</svg><span class="topic-card__meta-text">13/08/2026</span></li>
                       </ul>
                     </div>
                     <div class="topic-card__actions">
-                      <p class="topic-card__status topic-card__status--catalog">Hồ sơ UIT</p>
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
                       <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISE-005" aria-label="Xem chi tiết Xây dựng hệ thống phân công và đánh giá công việc trong cơ quan">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
                   </article>
                 </li><li>
-                  <article class="topic-card" aria-labelledby="uit-ISE-006" data-topic-id="ISE-006" data-topic-type="thesis" data-course="" data-status="catalog" data-created-at="2026-11-20">
+                  <article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISE-006" data-topic-id="ISE-006" data-topic-type="thesis" data-course="" data-status="open" data-created-at="2026-11-20">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -594,28 +592,28 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
 <circle cx="7" cy="7" r="1.25"></circle>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEKLTN-006</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEKTLN-006</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
 <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">Tác giả: Lê Bảo Lâm, Trần Nguyên Lợi</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Khóa luận tốt nghiệp</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">Khóa: 2017</span></li>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">GVHD: Chưa công bố</span></li>
+</svg><span class="topic-card__meta-text">12/08/2026</span></li>
                       </ul>
                     </div>
                     <div class="topic-card__actions">
-                      <p class="topic-card__status topic-card__status--catalog">Hồ sơ UIT</p>
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
                       <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISE-006" aria-label="Xem chi tiết Xây dựng hệ thống bán vé cho bến xe Miền Đông">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
                   </article>
                 </li><li>
-                  <article class="topic-card" aria-labelledby="uit-ISE-007" data-topic-id="ISE-007" data-topic-type="thesis" data-course="" data-status="catalog" data-created-at="2026-11-20">
+                  <article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISE-007" data-topic-id="ISE-007" data-topic-type="thesis" data-course="" data-status="open" data-created-at="2026-11-20">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -628,28 +626,27 @@
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
 <circle cx="7" cy="7" r="1.25"></circle>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEKLTN-007</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEKTLN-007</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
 <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">Tác giả: Đặng Quang Huy, Trần Vũ Lộc</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Khóa luận tốt nghiệp</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">Khóa: 2017</span></li>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">GVHD: Chưa công bố</span></li>
+</svg><span class="topic-card__meta-text">11/08/2026</span></li>
                       </ul>
                     </div>
                     <div class="topic-card__actions">
-                      <p class="topic-card__status topic-card__status--catalog">Hồ sơ UIT</p>
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
                       <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISE-007" aria-label="Xem chi tiết Website quản lý bán hàng tích hợp đồng bộ đa sàng thương mại điện tử">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
                   </article>
-                </li><li>
-                  <article class="topic-card" aria-labelledby="uit-ISE-008" data-topic-id="ISE-008" data-topic-type="master" data-course="" data-status="catalog" data-created-at="2026-11-20">
+                </li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDATN-001" data-topic-id="ISEDATN-001" data-topic-type="graduation" data-course="" data-status="open" data-created-at="2026-11-20">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -657,33 +654,31 @@
 </svg></div>
                     </div>
                     <div class="topic-card__content">
-                      <h3 id="uit-ISE-008" class="topic-card__title">Phân tích các yếu tố ảnh hưởng đến tiến độ và tỉ lệ nộp chứng chỉ tiếng Anh của sinh viên Trường Đại học Công nghệ Thông tin.</h3>
+                      <h3 id="uit-ISEDATN-001" class="topic-card__title">Xây dựng hệ thống quản lý mượn và trả thiết bị phòng thí nghiệm</h3>
                       <ul class="topic-card__meta">
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
 <circle cx="7" cy="7" r="1.25"></circle>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">ISE-008</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDATN-001</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
 <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">Tác giả: Nguyễn Thị Hoài</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Đồ án tốt nghiệp</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">Đợt bảo vệ: 06/2023</span></li>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">GVHD: PGS.TS. Lê Đình Duy</span></li>
+</svg><span class="topic-card__meta-text">09/10/2026</span></li>
                       </ul>
                     </div>
                     <div class="topic-card__actions">
-                      <p class="topic-card__status topic-card__status--catalog">Hồ sơ UIT</p>
-                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISE-008" aria-label="Xem chi tiết Phân tích các yếu tố ảnh hưởng đến tiến độ và tỉ lệ nộp chứng chỉ tiếng Anh của sinh viên Trường Đại học Công nghệ Thông tin.">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDATN-001" aria-label="Xem chi tiết Xây dựng hệ thống quản lý mượn và trả thiết bị phòng thí nghiệm">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
-                  </article>
-                </li><li>
-                  <article class="topic-card" aria-labelledby="uit-ISE-009" data-topic-id="ISE-009" data-topic-type="master" data-course="" data-status="catalog" data-created-at="2026-11-20">
+                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDATN-002" data-topic-id="ISEDATN-002" data-topic-type="graduation" data-course="" data-status="open" data-created-at="2026-11-20">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -691,33 +686,31 @@
 </svg></div>
                     </div>
                     <div class="topic-card__content">
-                      <h3 id="uit-ISE-009" class="topic-card__title">Phát hiện lỗ hổng trên ứng dụng web sử dụng kỹ thuật phân tích động và thuật giải di truyền</h3>
+                      <h3 id="uit-ISEDATN-002" class="topic-card__title">Xây dựng cổng quản lý thực tập và đánh giá sinh viên</h3>
                       <ul class="topic-card__meta">
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
 <circle cx="7" cy="7" r="1.25"></circle>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">ISE-009</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDATN-002</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
 <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">Tác giả: Ngô Khánh Khoa</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Đồ án tốt nghiệp</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">Đợt bảo vệ: 06/2023</span></li>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">GVHD: TS. Phạm Văn Hậu</span></li>
+</svg><span class="topic-card__meta-text">08/10/2026</span></li>
                       </ul>
                     </div>
                     <div class="topic-card__actions">
-                      <p class="topic-card__status topic-card__status--catalog">Hồ sơ UIT</p>
-                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISE-009" aria-label="Xem chi tiết Phát hiện lỗ hổng trên ứng dụng web sử dụng kỹ thuật phân tích động và thuật giải di truyền">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDATN-002" aria-label="Xem chi tiết Xây dựng cổng quản lý thực tập và đánh giá sinh viên">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
-                  </article>
-                </li><li>
-                  <article class="topic-card" aria-labelledby="uit-ISE-010" data-topic-id="ISE-010" data-topic-type="master" data-course="" data-status="catalog" data-created-at="2026-11-20">
+                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDATN-003" data-topic-id="ISEDATN-003" data-topic-type="graduation" data-course="" data-status="open" data-created-at="2026-11-20">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -725,32 +718,511 @@
 </svg></div>
                     </div>
                     <div class="topic-card__content">
-                      <h3 id="uit-ISE-010" class="topic-card__title">Rút trích quan hệ giữa các thực thể trong văn bản tiếng Việt</h3>
+                      <h3 id="uit-ISEDATN-003" class="topic-card__title">Xây dựng hệ thống số hóa và tra cứu văn bản nội bộ</h3>
                       <ul class="topic-card__meta">
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
 <circle cx="7" cy="7" r="1.25"></circle>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">ISE-010</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDATN-003</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
 <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
-</svg><span class="topic-card__meta-text" data-topic-search-term="">Tác giả: Phạm Minh Mẫn</span></li>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Đồ án tốt nghiệp</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">Đợt bảo vệ: 06/2023</span></li>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
                         <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
 <rect height="18" rx="2" width="18" x="3" y="4"></rect>
 <path d="M16 2v4M8 2v4M3 10h18"></path>
-</svg><span class="topic-card__meta-text">GVHD: TS. Nguyễn Lưu Thùy Ngân</span></li>
+</svg><span class="topic-card__meta-text">07/10/2026</span></li>
                       </ul>
                     </div>
                     <div class="topic-card__actions">
-                      <p class="topic-card__status topic-card__status--catalog">Hồ sơ UIT</p>
-                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISE-010" aria-label="Xem chi tiết Rút trích quan hệ giữa các thực thể trong văn bản tiếng Việt">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDATN-003" aria-label="Xem chi tiết Xây dựng hệ thống số hóa và tra cứu văn bản nội bộ">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
-                  </article>
-                </li></ul>
+                  </article></li><li><article data-hoc-ky="2025-2026-2" class="topic-card" aria-labelledby="uit-ISEDATN-004" data-topic-id="ISEDATN-004" data-topic-type="graduation" data-course="" data-status="closed" data-created-at="2026-11-20">
+                    <div class="topic-card__media">
+                      <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+<path d="M9 13h6M9 16h4"></path>
+</svg></div>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="uit-ISEDATN-004" class="topic-card__title">Hệ thống điều phối thu gom và phân loại rác tái chế trong khuôn viên trường</h3>
+                      <ul class="topic-card__meta">
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
+<circle cx="7" cy="7" r="1.25"></circle>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDATN-004</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
+<path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Đồ án tốt nghiệp</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">Học kỳ 2 · 2025–2026</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">19/01/2026</span></li>
+                      </ul>
+                    </div>
+                    <div class="topic-card__actions">
+                      <p class="topic-card__status topic-card__status--catalog">Đã đóng đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDATN-004" aria-label="Xem chi tiết Hệ thống điều phối thu gom và phân loại rác tái chế trong khuôn viên trường">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                    </div>
+                  </article></li><li><article data-hoc-ky="2025-2026-1" class="topic-card" aria-labelledby="uit-ISEDATN-005" data-topic-id="ISEDATN-005" data-topic-type="graduation" data-course="" data-status="closed" data-created-at="2026-11-20">
+                    <div class="topic-card__media">
+                      <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+<path d="M9 13h6M9 16h4"></path>
+</svg></div>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="uit-ISEDATN-005" class="topic-card__title">Cổng hỗ trợ sinh viên tìm kiếm và đăng ký hoạt động tình nguyện</h3>
+                      <ul class="topic-card__meta">
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
+<circle cx="7" cy="7" r="1.25"></circle>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDATN-005</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
+<path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Đồ án tốt nghiệp</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2025–2026</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">18/08/2025</span></li>
+                      </ul>
+                    </div>
+                    <div class="topic-card__actions">
+                      <p class="topic-card__status topic-card__status--catalog">Đã đóng đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDATN-005" aria-label="Xem chi tiết Cổng hỗ trợ sinh viên tìm kiếm và đăng ký hoạt động tình nguyện">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                    </div>
+                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-001" data-topic-id="ISEDAMH-001" data-topic-type="course" data-course="web" data-status="open" data-created-at="2026-11-20">
+                    <div class="topic-card__media">
+                      <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+<path d="M9 13h6M9 16h4"></path>
+</svg></div>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="uit-ISEDAMH-001" class="topic-card__title">Website đặt chỗ phòng tự học theo khung giờ</h3>
+                      <ul class="topic-card__meta">
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
+<circle cx="7" cy="7" r="1.25"></circle>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDAMH-001</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
+<path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Internet và công nghệ web</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">17/08/2026</span></li>
+                      </ul>
+                    </div>
+                    <div class="topic-card__actions">
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-001" aria-label="Xem chi tiết Website đặt chỗ phòng tự học theo khung giờ">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                    </div>
+                  </article></li><li><article data-hoc-ky="2025-2026-2" class="topic-card" aria-labelledby="uit-ISEDAMH-002" data-topic-id="ISEDAMH-002" data-topic-type="course" data-course="database" data-status="closed" data-created-at="2026-11-20">
+                    <div class="topic-card__media">
+                      <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+<path d="M9 13h6M9 16h4"></path>
+</svg></div>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="uit-ISEDAMH-002" class="topic-card__title">Thiết kế cơ sở dữ liệu quản lý kho vật tư phòng thực hành</h3>
+                      <ul class="topic-card__meta">
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
+<circle cx="7" cy="7" r="1.25"></circle>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDAMH-002</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
+<path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Cơ sở dữ liệu</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">Học kỳ 2 · 2025–2026</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">19/01/2026</span></li>
+                      </ul>
+                    </div>
+                    <div class="topic-card__actions">
+                      <p class="topic-card__status topic-card__status--catalog">Đã đóng đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-002" aria-label="Xem chi tiết Thiết kế cơ sở dữ liệu quản lý kho vật tư phòng thực hành">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                    </div>
+                  </article></li><li></li><li><article data-hoc-ky="2026-2027-2" class="topic-card" aria-labelledby="uit-ISEDAMH-004" data-topic-id="ISEDAMH-004" data-topic-type="course" data-course="web" data-status="open" data-created-at="2026-11-20">
+                    <div class="topic-card__media">
+                      <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+<path d="M9 13h6M9 16h4"></path>
+</svg></div>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="uit-ISEDAMH-004" class="topic-card__title">Website trao đổi giáo trình và sách cũ cho sinh viên</h3>
+                      <ul class="topic-card__meta">
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
+<circle cx="7" cy="7" r="1.25"></circle>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDAMH-004</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
+<path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Internet và công nghệ web</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">Học kỳ 2 · 2026–2027</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">18/01/2027</span></li>
+                      </ul>
+                    </div>
+                    <div class="topic-card__actions">
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-004" aria-label="Xem chi tiết Website trao đổi giáo trình và sách cũ cho sinh viên">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                    </div>
+                  </article></li><li><article data-hoc-ky="2025-2026-1" class="topic-card" aria-labelledby="uit-ISEDAMH-005" data-topic-id="ISEDAMH-005" data-topic-type="course" data-course="database" data-status="closed" data-created-at="2026-11-20">
+                    <div class="topic-card__media">
+                      <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+<path d="M9 13h6M9 16h4"></path>
+</svg></div>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="uit-ISEDAMH-005" class="topic-card__title">Cơ sở dữ liệu theo dõi đăng ký và kết quả thi chứng chỉ ngoại ngữ</h3>
+                      <ul class="topic-card__meta">
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
+<circle cx="7" cy="7" r="1.25"></circle>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDAMH-005</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
+<path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Cơ sở dữ liệu</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2025–2026</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">18/08/2025</span></li>
+                      </ul>
+                    </div>
+                    <div class="topic-card__actions">
+                      <p class="topic-card__status topic-card__status--catalog">Đã đóng đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-005" aria-label="Xem chi tiết Cơ sở dữ liệu theo dõi đăng ký và kết quả thi chứng chỉ ngoại ngữ">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                    </div>
+                  </article></li><li></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-007" data-topic-id="ISEDAMH-007" data-topic-type="course" data-course="web" data-status="open" data-created-at="2026-11-20">
+                    <div class="topic-card__media">
+                      <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+<path d="M9 13h6M9 16h4"></path>
+</svg></div>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="uit-ISEDAMH-007" class="topic-card__title">Website giới thiệu và đăng ký workshop kỹ năng số</h3>
+                      <ul class="topic-card__meta">
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
+<circle cx="7" cy="7" r="1.25"></circle>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDAMH-007</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
+<path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Internet và công nghệ web</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">17/08/2026</span></li>
+                      </ul>
+                    </div>
+                    <div class="topic-card__actions">
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-007" aria-label="Xem chi tiết Website giới thiệu và đăng ký workshop kỹ năng số">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                    </div>
+                  </article></li><li><article data-hoc-ky="2026-2027-2" class="topic-card" aria-labelledby="uit-ISEDAMH-008" data-topic-id="ISEDAMH-008" data-topic-type="course" data-course="database" data-status="open" data-created-at="2026-11-20">
+                    <div class="topic-card__media">
+                      <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+<path d="M9 13h6M9 16h4"></path>
+</svg></div>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="uit-ISEDAMH-008" class="topic-card__title">Thiết kế cơ sở dữ liệu quản lý đặt suất ăn tại căn tin</h3>
+                      <ul class="topic-card__meta">
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
+<circle cx="7" cy="7" r="1.25"></circle>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDAMH-008</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
+<path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Cơ sở dữ liệu</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">Học kỳ 2 · 2026–2027</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">18/01/2027</span></li>
+                      </ul>
+                    </div>
+                    <div class="topic-card__actions">
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-008" aria-label="Xem chi tiết Thiết kế cơ sở dữ liệu quản lý đặt suất ăn tại căn tin">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                    </div>
+                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-009" data-topic-id="ISEDAMH-009" data-topic-type="course" data-course="IE101" data-status="open" data-created-at="2026-11-20">
+                    <div class="topic-card__media">
+                      <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+<path d="M9 13h6M9 16h4"></path>
+</svg></div>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="uit-ISEDAMH-009" class="topic-card__title">Thiết kế hạ tầng công nghệ thông tin cho trung tâm đào tạo quy mô nhỏ</h3>
+                      <ul class="topic-card__meta">
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
+<circle cx="7" cy="7" r="1.25"></circle>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDAMH-009</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
+<path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Cơ sở hạ tầng công nghệ thông tin</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">17/08/2026</span></li>
+                      </ul>
+                    </div>
+                    <div class="topic-card__actions">
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-009" aria-label="Xem chi tiết Thiết kế hạ tầng công nghệ thông tin cho trung tâm đào tạo quy mô nhỏ">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                    </div>
+                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-010" data-topic-id="ISEDAMH-010" data-topic-type="course" data-course="IE101" data-status="open" data-created-at="2026-11-20">
+                    <div class="topic-card__media">
+                      <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+<path d="M9 13h6M9 16h4"></path>
+</svg></div>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="uit-ISEDAMH-010" class="topic-card__title">Khảo sát và đề xuất phương án nâng cấp hạ tầng CNTT cho thư viện trường học</h3>
+                      <ul class="topic-card__meta">
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
+<circle cx="7" cy="7" r="1.25"></circle>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDAMH-010</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
+<path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Cơ sở hạ tầng công nghệ thông tin</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">17/08/2026</span></li>
+                      </ul>
+                    </div>
+                    <div class="topic-card__actions">
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-010" aria-label="Xem chi tiết Khảo sát và đề xuất phương án nâng cấp hạ tầng CNTT cho thư viện trường học">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                    </div>
+                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-011" data-topic-id="ISEDAMH-011" data-topic-type="course" data-course="IE103" data-status="open" data-created-at="2026-11-20">
+                    <div class="topic-card__media">
+                      <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+<path d="M9 13h6M9 16h4"></path>
+</svg></div>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="uit-ISEDAMH-011" class="topic-card__title">Hệ thống tổ chức và tra cứu hồ sơ hoạt động câu lạc bộ sinh viên</h3>
+                      <ul class="topic-card__meta">
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
+<circle cx="7" cy="7" r="1.25"></circle>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDAMH-011</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
+<path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Quản lý thông tin</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">17/08/2026</span></li>
+                      </ul>
+                    </div>
+                    <div class="topic-card__actions">
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-011" aria-label="Xem chi tiết Hệ thống tổ chức và tra cứu hồ sơ hoạt động câu lạc bộ sinh viên">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                    </div>
+                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-012" data-topic-id="ISEDAMH-012" data-topic-type="course" data-course="IE103" data-status="open" data-created-at="2026-11-20">
+                    <div class="topic-card__media">
+                      <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+<path d="M9 13h6M9 16h4"></path>
+</svg></div>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="uit-ISEDAMH-012" class="topic-card__title">Tích hợp và quản lý thông tin học bổng từ nhiều nguồn dữ liệu</h3>
+                      <ul class="topic-card__meta">
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
+<circle cx="7" cy="7" r="1.25"></circle>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDAMH-012</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
+<path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Quản lý thông tin</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">17/08/2026</span></li>
+                      </ul>
+                    </div>
+                    <div class="topic-card__actions">
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-012" aria-label="Xem chi tiết Tích hợp và quản lý thông tin học bổng từ nhiều nguồn dữ liệu">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                    </div>
+                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-013" data-topic-id="ISEDAMH-013" data-topic-type="course" data-course="IE105" data-status="open" data-created-at="2026-11-20">
+                    <div class="topic-card__media">
+                      <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+<path d="M9 13h6M9 16h4"></path>
+</svg></div>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="uit-ISEDAMH-013" class="topic-card__title">Xây dựng mô hình phân quyền và kiểm soát truy cập tài liệu nội bộ</h3>
+                      <ul class="topic-card__meta">
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
+<circle cx="7" cy="7" r="1.25"></circle>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDAMH-013</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
+<path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Nhập môn bảo đảm và an ninh thông tin</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">17/08/2026</span></li>
+                      </ul>
+                    </div>
+                    <div class="topic-card__actions">
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-013" aria-label="Xem chi tiết Xây dựng mô hình phân quyền và kiểm soát truy cập tài liệu nội bộ">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                    </div>
+                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-014" data-topic-id="ISEDAMH-014" data-topic-type="course" data-course="IE105" data-status="open" data-created-at="2026-11-20">
+                    <div class="topic-card__media">
+                      <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+<path d="M9 13h6M9 16h4"></path>
+</svg></div>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="uit-ISEDAMH-014" class="topic-card__title">Thiết kế phương án bảo vệ mạng nội bộ cho văn phòng nhỏ</h3>
+                      <ul class="topic-card__meta">
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
+<circle cx="7" cy="7" r="1.25"></circle>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDAMH-014</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
+<path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Nhập môn bảo đảm và an ninh thông tin</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">17/08/2026</span></li>
+                      </ul>
+                    </div>
+                    <div class="topic-card__actions">
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-014" aria-label="Xem chi tiết Thiết kế phương án bảo vệ mạng nội bộ cho văn phòng nhỏ">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                    </div>
+                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-015" data-topic-id="ISEDAMH-015" data-topic-type="course" data-course="phan-tich-thiet-ke-phan-mem" data-status="open" data-created-at="2026-11-20">
+                    <div class="topic-card__media">
+                      <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
+<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
+<path d="M9 13h6M9 16h4"></path>
+</svg></div>
+                    </div>
+                    <div class="topic-card__content">
+                      <h3 id="uit-ISEDAMH-015" class="topic-card__title">Phân tích và thiết kế phần mềm quản lý lịch tư vấn học tập</h3>
+                      <ul class="topic-card__meta">
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82Z"></path>
+<circle cx="7" cy="7" r="1.25"></circle>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">ISEDAMH-015</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2V4Z"></path>
+<path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z"></path>
+</svg><span class="topic-card__meta-text" data-topic-search-term="">Phân tích thiết kế phần mềm</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">Học kỳ 1 · 2026–2027</span></li>
+                        <li class="topic-card__meta-item"><svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
+<rect height="18" rx="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18"></path>
+</svg><span class="topic-card__meta-text">17/08/2026</span></li>
+                      </ul>
+                    </div>
+                    <div class="topic-card__actions">
+                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-015" aria-label="Xem chi tiết Phân tích và thiết kế phần mềm quản lý lịch tư vấn học tập">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
+                    </div>
+                  </article></li></ul>
             </div>
             <div class="topic-results__footer">
               <nav class="pagination" aria-label="Phân trang đề tài">

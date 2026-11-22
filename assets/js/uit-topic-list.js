@@ -9,15 +9,43 @@
   if (!status || !list || !pagination) return;
   const catalog = window.UITLecturerCatalog;
   const isSupervised = document.body.dataset.lecturerList === 'supervised';
-  function refreshCodes() { for (const card of list.querySelectorAll('.topic-card:not([data-approved-proposal])')) {
-    const record = catalog?.records.find(topic => topic.id === card.dataset.topicId);
-    if (!record) continue;
-    if (document.body.classList.contains('teacher-created-topics-page') && card.dataset.status !== 'catalog') continue;
-    const [code, course] = card.querySelectorAll('.topic-card__meta-text');
-    code.textContent = catalog.formatCode(record.topicType, record.code);
-    if (!document.body.classList.contains('teacher-created-topics-page')) course.textContent = record.courseLabel || 'Không áp dụng';
-    card.querySelector('.topic-card__meta[aria-label]')?.setAttribute('aria-label', `Thông tin đề tài ${code.textContent}`);
-  } }
+  function refreshCodes() {
+    for (const item of [...list.children]) {
+      if (!item.matches('.topic-card') && !item.querySelector('.topic-card')) item.remove();
+    }
+    for (const card of list.querySelectorAll('.topic-card')) {
+      if (card.dataset.topicType === 'master') { (card.parentElement.matches('li') ? card.parentElement : card).remove(); continue; }
+      const record = catalog?.records.find(topic => topic.id === card.dataset.topicId);
+      const type = record?.topicType || card.dataset.topicType;
+      card.dataset.course = catalog.courseKey(card.dataset.course);
+      const nodes = card.querySelectorAll('.topic-card__meta-text');
+      if (record && nodes[0]) nodes[0].textContent = catalog.formatCode(type, record.code);
+      if (nodes[1]) nodes[1].textContent = catalog.subjectLabel(record || { topicType: type, course: card.dataset.course, courseLabel: nodes[1].textContent });
+      if (record) {
+        if (nodes[2]) nodes[2].textContent = `Học kỳ ${record.semester === 'summer' ? 'hè' : record.semester} · ${String(record.academicYear || '').replace(/[-—]/g, '–')}`;
+        card.dataset.topicType = record.topicType;
+        card.dataset.course = catalog.courseKey(record.course);
+        card.dataset.hocKy = `${String(record.academicYear).replace(/[–—]/g, '-')}-${record.semester === 'summer' ? '3' : record.semester}`;
+        if (record.supervisionRole || record.role) card.dataset.role = record.role || record.supervisionRole;
+      }
+      if (!['course', 'do-an-mon-hoc', 'do-an'].includes(type)) card.dataset.course = '';
+      nodes.forEach(node => { node.textContent = node.textContent.trim().replace(/^(Mã đề tài|Môn học|Loại đề tài|Nhóm thực hiện|Tác giả|GVHD theo nguồn|Ngày tạo|Ngày gửi|Vai trò của tôi):\s*/, '').replace(/(Học kỳ[^•·]*)\s[-•]\s(?=20)/, '$1 · '); });
+      if (nodes[0]) card.querySelector('.topic-card__meta')?.setAttribute('aria-label', `Thông tin đề tài ${nodes[0].textContent}`);
+      if (isSupervised && nodes[3]) nodes[3].textContent = catalog.groupLabel(record || { id: card.dataset.topicId, groupName: nodes[3].textContent });
+      if (document.body.classList.contains('teacher-created-topics-page')) {
+        const createdAt = record ? record.createdAt || '' : card.dataset.createdAt || '';
+        const row = nodes[3]?.closest('.topic-card__meta-item');
+        if (row) row.hidden = !Number.isFinite(Date.parse(createdAt));
+        card.dataset.createdAt = createdAt;
+        if (nodes[3]) nodes[3].textContent = createdAt ? createdAt.split('T')[0].split('-').reverse().join('/') : '';
+
+        const closed = card.dataset.status === 'closed';
+        card.dataset.status = closed ? 'closed' : 'open';
+        const badge = card.querySelector('.topic-card__status');
+        if (badge) { badge.textContent = closed ? 'Đã đóng đăng ký' : 'Đang mở đăng ký'; badge.className = `topic-card__status topic-card__status--${card.dataset.status}`; }
+      }
+    }
+  }
   const viewport = list.closest('.topic-list-scroll') || list;
   const controls = Array.from(form.elements).filter(node => node.matches('input, select'));
   const filterControls = controls.filter(node => node.type === 'checkbox' || node.type === 'radio' || (node.tagName === 'SELECT' && node.name !== 'topic_sort'));
@@ -113,7 +141,7 @@
       if (!originalOrder.has(item)) originalOrder.set(item, nextOrder++);
       const card = item.matches('.topic-card') ? item : item.querySelector('.topic-card');
       const date = isSupervised ? Date.parse(card.dataset.sortDate) : card.dataset.createdAt || card.querySelector('time[datetime]')?.dateTime || '';
-      return { item, card, title: card.querySelector('.topic-card__title').textContent.trim(), date, terms: normalize([card.querySelector('.topic-card__title').textContent, card.dataset.topicId, ...Array.from(card.querySelectorAll('[data-topic-search-term]'), node => node.textContent)].join(' ')) };
+      return { item, card, title: card.querySelector('.topic-card__title').textContent.trim(), date, terms: normalize([card.querySelector('.topic-card__title').textContent, card.dataset.topicId, ...Array.from(card.querySelectorAll('[data-topic-search-term], .topic-card__meta-text'), node => node.textContent)].join(' ')) };
     });
     topics.sort((a, b) => originalOrder.get(a.item) - originalOrder.get(b.item));
     const unique = window.IE104?.topicIdentity?.uniqueTitles(topics) || topics;

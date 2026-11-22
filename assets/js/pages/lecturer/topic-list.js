@@ -54,18 +54,22 @@
       card.dataset.status = kind === 'created' ? topic.status : topic.status === 'hoan-thanh' ? 'completed' : 'in-progress';
       if (topic.role) card.dataset.role = topic.role;
       const date = card.querySelector('time[datetime]');
-      const createdAt = topic.createdAt || (existing && topic.sourceRecord ? date?.dateTime : '') || '';
+      const createdAt = topic.createdAt || '';
       const values = [
-        `Mã đề tài: ${topic.displayId || topic.id}`,
-        `Môn học: ${topic.courseLabel || topic.typeLabel}`,
-        `Học kỳ ${topic.semester === 'summer' ? 'hè' : topic.semester} - ${topic.academicYear}`,
-        kind === 'created' ? createdAt.split('-').reverse().join('/') : `Nhóm thực hiện: ${topic.groupName}`,
+        `${topic.displayId || topic.id}`,
+        `${topic.courseLabel || topic.typeLabel}`,
+        `Học kỳ ${topic.semester === 'summer' ? 'hè' : topic.semester} · ${topic.academicYear.replace(/[-—]/g, '–')}`,
+        kind === 'created' ? createdAt.split('-').reverse().join('/') : `${topic.groupName}`,
       ];
       if (topic.sourceRecord && !topic.demo && kind === 'supervised') {
-        values.splice(0, values.length, `Mã đề tài: ${topic.id}`, `Tác giả: ${topic.sourceRecord.authors.join(', ')}`,
-          `GVHD theo nguồn: ${topic.sourceRecord.advisors.join(', ') || 'Chưa công bố trong nguồn'}`, `${topic.typeLabel}${topic.sourceRecord.cohort ? ' - Khóa ' + topic.sourceRecord.cohort : ' - Năm ' + topic.sourceRecord.year}`);
+        values.splice(0, values.length, `${topic.displayId || topic.id}`, `${topic.sourceRecord.authors.join(', ')}`,
+          `${topic.sourceRecord.advisors.join(', ') || 'Chưa công bố trong nguồn'}`, `${topic.typeLabel}${topic.sourceRecord.cohort ? ' - Khóa ' + topic.sourceRecord.cohort : ' - Năm ' + topic.sourceRecord.year}`);
       }
       card.querySelectorAll('.topic-card__meta-text').forEach((node, index) => { node.textContent = values[index]; });
+      if (kind === 'created') {
+        const row = card.querySelectorAll('.topic-card__meta-text')[3]?.closest('.topic-card__meta-item');
+        if (row) row.hidden = !Number.isFinite(Date.parse(createdAt));
+      }
       if (date) date.dateTime = createdAt;
       card.dataset.createdAt = createdAt;
       const badge = card.querySelector('.topic-card__status');

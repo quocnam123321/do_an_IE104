@@ -17,13 +17,13 @@
    <script src="../../assets/js/nav-indicator.js" defer=""></script>
 
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css" />
-    <script src="../../assets/js/uit-lecturer-catalog.js" defer></script>
+    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261122-outlines" defer></script>
     <script src="../../assets/js/shared/topic-identity.js" defer></script>
     <script src="../../assets/js/teacher-topic-store.js" defer></script>
     <script src="../../assets/js/data/mock-data.js" defer></script>
     <script src="../../assets/js/data/proposal-actors.js" defer></script>
     <script src="../../assets/js/data/lecturer-topics.js" defer></script>
-    <script src="../../assets/js/data/lecturer-merge-catalog.js" defer></script>
+    <script src="../../assets/js/data/lecturer-merge-catalog.js?v=20261122-outlines" defer></script>
     <script src="../../assets/js/services/storage.js" defer></script>
     <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
     <script src="../../assets/js/shared/validation.js" defer></script>
@@ -33,15 +33,16 @@
     <script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
     <script src="../../assets/js/services/published-topic-service.js" defer></script>
     <script src="../../assets/js/proposal-store.js" defer></script>
-    <script src="../../assets/js/pending-proposals.js" defer></script>
+    <script src="../../assets/js/shared/lecturer-filters.js?v=20261122-filter-sync3" defer></script>
+    <script src="../../assets/js/pending-proposals.js?v=20261122-filter-sync3" defer></script>
     <link rel="stylesheet" href="../../assets/css/supervision-invitations.css">
     <script src="../../assets/js/supervision-store.js" defer></script>
     <script src="../../assets/js/detail-tabs.js" defer></script>
     <script src="../../assets/js/supervision-attachment-ui.js" defer></script>
     <script src="../../assets/js/supervision-inbox.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
-    <script src="../../assets/js/shared/logout.js" defer></script>
-  </head>
+  <script src="../../assets/js/shared/logout.js" defer></script>
+</head>
  <body id="page-top" tabindex="-1" class="teacher-workspace-page teacher-topic-list-page teacher-pending-proposals-page">
   <a class="skip-link" href="#main-content">
    Chuyển đến nội dung chính
@@ -346,9 +347,6 @@
             <span class="topic-filters__option-text">
              Khóa luận
             </span>
-           </label><label for="uit-filter-topic_type-luan-van-thac-si">
-            <input id="uit-filter-topic_type-luan-van-thac-si" name="topic_type" type="checkbox" value="luan-van-thac-si">
-            <span class="topic-filters__option-text">Luận văn thạc sĩ</span>
            </label>
           </div>
          </div>
@@ -374,18 +372,11 @@
     </span>
     </label>
     </div>
-    <div class="proposal-filters__option topic-filters__option">
-    <label for="course-software">
-    <input id="course-software" name="course" type="checkbox" value="cong-nghe-phan-mem">
-    <span class="topic-filters__option-text">
-    Công nghệ phần mềm
-    </span>
-    </label>
-    </div>
+    
     <div class="topic-filters__option">
     <label for="course-analysis">
-    <input type="checkbox" id="course-analysis" name="course" value="phan-tich-thiet-ke-he-thong">
-    <span class="topic-filters__option-text">Phân tích thiết kế hệ thống</span>
+    <input type="checkbox" id="course-analysis" name="course" value="phan-tich-thiet-ke-phan-mem">
+    <span class="topic-filters__option-text">Phân tích thiết kế phần mềm</span>
     </label>
     </div>
     <details class="topic-filters__more">
@@ -396,18 +387,8 @@
         <svg class="topic-filters__more-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
       </summary>
       <div class="topic-filters__more-options">
-        <div class="topic-filters__option">
-        <label for="course-ecommerce">
-        <input type="checkbox" id="course-ecommerce" name="course" value="thuong-mai-dien-tu">
-        <span class="topic-filters__option-text">Thương mại điện tử</span>
-        </label>
-        </div>
-        <div class="topic-filters__option">
-        <label for="course-it-project">
-        <input type="checkbox" id="course-it-project" name="course" value="quan-ly-du-an-cntt">
-        <span class="topic-filters__option-text">Quản lý dự án công nghệ thông tin</span>
-        </label>
-        </div>
+        
+        
       </div>
     </details>
   </div>
@@ -492,9 +473,7 @@
              <circle cx="7" cy="7" r="1.25">
              </circle>
             </svg>
-            <span class="topic-card__meta-text">
-             Loại đề tài: Đồ án môn học
-            </span>
+            <span class="topic-card__meta-text">Đồ án môn học</span>
            </p>
            <p class="proposal-card__course topic-card__meta-item">
             <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -503,9 +482,7 @@
              <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z">
              </path>
             </svg>
-            <span class="topic-card__meta-text">
-             Môn học: Internet và công nghệ Web
-            </span>
+            <span class="topic-card__meta-text">Internet và công nghệ Web</span>
            </p>
            <p class="proposal-card__student topic-card__meta-item">
             <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -518,9 +495,7 @@
              <path d="M16 3.13a4 4 0 0 1 0 7.75">
              </path>
             </svg>
-            <span class="topic-card__meta-text">
-             Sinh viên: Nguyễn Văn A · 22520001
-            </span>
+            <span class="topic-card__meta-text">Nguyễn Văn A · 22520001</span>
            </p>
            <p class="proposal-card__role topic-card__meta-item">
             <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -529,9 +504,7 @@
              <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 11l2 2 4-4">
              </path>
             </svg>
-            <span class="topic-card__meta-text">
-             Vai trò của tôi: Hướng dẫn chính
-            </span>
+            <span class="topic-card__meta-text">Hướng dẫn chính</span>
            </p>
           </div>
          </div>
@@ -571,9 +544,7 @@
              <circle cx="7" cy="7" r="1.25">
              </circle>
             </svg>
-            <span class="topic-card__meta-text">
-             Loại đề tài: Đồ án môn học
-            </span>
+            <span class="topic-card__meta-text">Đồ án môn học</span>
            </p>
            <p class="proposal-card__course topic-card__meta-item">
             <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -582,9 +553,7 @@
              <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z">
              </path>
             </svg>
-            <span class="topic-card__meta-text">
-             Môn học: Cơ sở dữ liệu
-            </span>
+            <span class="topic-card__meta-text">Cơ sở dữ liệu</span>
            </p>
            <p class="proposal-card__student topic-card__meta-item">
             <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -597,9 +566,7 @@
              <path d="M16 3.13a4 4 0 0 1 0 7.75">
              </path>
             </svg>
-            <span class="topic-card__meta-text">
-             Sinh viên: Trần Thị B · 22520002
-            </span>
+            <span class="topic-card__meta-text">Trần Thị B · 22520002</span>
            </p>
            <p class="proposal-card__role topic-card__meta-item">
             <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -608,9 +575,7 @@
              <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 11l2 2 4-4">
              </path>
             </svg>
-            <span class="topic-card__meta-text">
-             Vai trò của tôi: Đồng hướng dẫn
-            </span>
+            <span class="topic-card__meta-text">Đồng hướng dẫn</span>
            </p>
           </div>
          </div>
@@ -650,9 +615,7 @@
              <circle cx="7" cy="7" r="1.25">
              </circle>
             </svg>
-            <span class="topic-card__meta-text">
-             Loại đề tài: Khóa luận
-            </span>
+            <span class="topic-card__meta-text">Khóa luận</span>
            </p>
            <p class="proposal-card__course topic-card__meta-item">
             <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -661,9 +624,7 @@
              <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z">
              </path>
             </svg>
-            <span class="topic-card__meta-text">
-             Môn học: Công nghệ phần mềm
-            </span>
+            <span class="topic-card__meta-text">Công nghệ phần mềm</span>
            </p>
            <p class="proposal-card__student topic-card__meta-item">
             <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -676,9 +637,7 @@
              <path d="M16 3.13a4 4 0 0 1 0 7.75">
              </path>
             </svg>
-            <span class="topic-card__meta-text">
-             Sinh viên: Lê Văn C · 22520003
-            </span>
+            <span class="topic-card__meta-text">Lê Văn C · 22520003</span>
            </p>
            <p class="proposal-card__role topic-card__meta-item">
             <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -687,9 +646,7 @@
              <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 11l2 2 4-4">
              </path>
             </svg>
-            <span class="topic-card__meta-text">
-             Vai trò của tôi: Hướng dẫn chính
-            </span>
+            <span class="topic-card__meta-text">Hướng dẫn chính</span>
            </p>
           </div>
          </div>
@@ -729,9 +686,7 @@
              <circle cx="7" cy="7" r="1.25">
              </circle>
             </svg>
-            <span class="topic-card__meta-text">
-             Loại đề tài: Đồ án môn học
-            </span>
+            <span class="topic-card__meta-text">Đồ án môn học</span>
            </p>
            <p class="proposal-card__course topic-card__meta-item">
             <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -740,9 +695,7 @@
              <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z">
              </path>
             </svg>
-            <span class="topic-card__meta-text">
-             Môn học: Internet và công nghệ Web
-            </span>
+            <span class="topic-card__meta-text">Internet và công nghệ Web</span>
            </p>
            <p class="proposal-card__student topic-card__meta-item">
             <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -755,9 +708,7 @@
              <path d="M16 3.13a4 4 0 0 1 0 7.75">
              </path>
             </svg>
-            <span class="topic-card__meta-text">
-             Sinh viên: Phạm Thị D · 22520004
-            </span>
+            <span class="topic-card__meta-text">Phạm Thị D · 22520004</span>
            </p>
            <p class="proposal-card__role topic-card__meta-item">
             <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -766,9 +717,7 @@
              <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 11l2 2 4-4">
              </path>
             </svg>
-            <span class="topic-card__meta-text">
-             Vai trò của tôi: Hướng dẫn chính
-            </span>
+            <span class="topic-card__meta-text">Hướng dẫn chính</span>
            </p>
           </div>
          </div>
@@ -808,9 +757,7 @@
              <circle cx="7" cy="7" r="1.25">
              </circle>
             </svg>
-            <span class="topic-card__meta-text">
-             Loại đề tài: Đồ án môn học
-            </span>
+            <span class="topic-card__meta-text">Đồ án môn học</span>
            </p>
            <p class="proposal-card__course topic-card__meta-item">
             <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -819,9 +766,7 @@
              <path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7V4Z">
              </path>
             </svg>
-            <span class="topic-card__meta-text">
-             Môn học: Cơ sở dữ liệu
-            </span>
+            <span class="topic-card__meta-text">Cơ sở dữ liệu</span>
            </p>
            <p class="proposal-card__student topic-card__meta-item">
             <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -834,9 +779,7 @@
              <path d="M16 3.13a4 4 0 0 1 0 7.75">
              </path>
             </svg>
-            <span class="topic-card__meta-text">
-             Sinh viên: Hoàng Văn E · 22520005
-            </span>
+            <span class="topic-card__meta-text">Hoàng Văn E · 22520005</span>
            </p>
            <p class="proposal-card__role topic-card__meta-item">
             <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
@@ -845,9 +788,7 @@
              <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 11l2 2 4-4">
              </path>
             </svg>
-            <span class="topic-card__meta-text">
-             Vai trò của tôi: Đồng hướng dẫn
-            </span>
+            <span class="topic-card__meta-text">Đồng hướng dẫn</span>
            </p>
           </div>
          </div>
