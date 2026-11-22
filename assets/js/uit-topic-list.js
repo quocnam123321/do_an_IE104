@@ -165,11 +165,16 @@
       document.body.classList.contains('teacher-created-topics-page')
         ? '[data-topic-tab-count="created"]' : '[data-topic-tab-count="teaching"]');
     if (tabCount) tabCount.textContent = unique.length;
-    status.textContent = matched.length ? `Hiển thị ${(page - 1) * pageSize + 1}–${Math.min(page * pageSize, matched.length)} trên ${matched.length} đề tài` : 'Không tìm thấy đề tài phù hợp. Thử từ khóa khác hoặc xóa bộ lọc.';
-    if (results.dataset.topicSourceError) {
-      status.append(` · Danh sách có thể chưa cập nhật. ${results.dataset.topicSourceError}`);
-    }
-    status.hidden = false; status.toggleAttribute('data-empty', !matched.length); viewport.hidden = !matched.length;
+    const hasMatches = matched.length > 0;
+    const sourceError = results.dataset.topicSourceError;
+    const emptyMessage = hasMatches ? '' : 'Không tìm thấy đề tài phù hợp. Thử từ khóa khác hoặc xóa bộ lọc.';
+    const warning = sourceError ? `Danh sách có thể chưa cập nhật. ${sourceError}` : '';
+    const count = `Hiển thị ${(page - 1) * pageSize + 1}–${Math.min(page * pageSize, matched.length)} trên ${matched.length} đề tài`;
+    status.textContent = [emptyMessage, warning].filter(Boolean).join(' ') || count;
+    status.classList.toggle('visually-hidden', hasMatches && !sourceError);
+    status.hidden = false;
+    status.toggleAttribute('data-empty', !hasMatches);
+    viewport.hidden = !hasMatches;
     const pages = document.createElement('ul'); pages.className = 'pagination__list';
     const add = (target, text, label, disabled = false) => {
       const item = document.createElement('li');

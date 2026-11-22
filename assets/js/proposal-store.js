@@ -40,13 +40,14 @@
     {
       ...courseProject, ...primary, id: 'DX001', topicId: 'DT-DX001',
       title: 'Cổng thông tin nghiên cứu sinh viên', studentName: 'Nguyễn Minh Anh', studentId: '24520001',
-      course: 'internet-va-cong-nghe-web', courseLabel: 'Internet và công nghệ Web',
+      course: 'internet-va-cong-nghe-web', courseLabel: 'IE104 - Internet và Công nghệ Web',
       semester: '6', academicYear: '2026–2027', submittedAt: '2026-10-11T16:00:00+07:00',
       supervisor: 'Nguyễn Văn A',
       description: 'Xây dựng cổng thông tin giúp sinh viên tra cứu công trình nghiên cứu, tìm đề tài quan tâm và tìm nhóm cùng thực hiện nghiên cứu.',
       objectives: 'Tập trung thông tin công trình nghiên cứu và hỗ trợ sinh viên tìm nhóm theo lĩnh vực quan tâm.',
       outcomes: 'Cổng thông tin có chức năng tra cứu nghiên cứu, tìm nhóm theo lĩnh vực, kèm mã nguồn, dữ liệu mẫu và báo cáo.',
-      attachment: 'De_cuong_de_tai.pdf',
+      scope: 'Trình bày danh sách công trình, tìm kiếm theo tên hoặc lĩnh vực, xem chi tiết công trình và thông tin nhóm nghiên cứu.',
+      attachment: 'de-cuong-de-tai-mau.txt',
     },
   ].map((record) => ({ submittedAt: '', semester: '', academicYear: '', ...record }));
   const uitSeeds = window.UITLecturerCatalog?.pending;
@@ -102,6 +103,23 @@
     return [...initial, ...saved, ...registrations];
   }
 
+  function get(id) {
+    const record = getAll().find(item => item.id === id);
+    if (!record || record.source || !legacySeeds.some(seed => seed.id === id)) return record;
+    // Hồ sơ mẫu cũ có thể đã được sinh viên cập nhật tệp từ biểu mẫu đề xuất.
+    try {
+      const saved = window.IE104?.storage?.readRequests?.().find(item => item.id === id && item.kind === 'de-xuat');
+      if (saved) return {
+        ...record,
+        attachment: saved.attachment?.name || saved.attachmentName || '',
+        attachmentSize: saved.attachment?.size,
+        attachmentFileKey: saved.attachment?.fileKey,
+        coverImage: saved.coverImage,
+      };
+    } catch { /* Giữ thông tin tệp của hồ sơ mẫu khi không đọc được dữ liệu cũ. */ }
+    return record;
+  }
+
   function notify() {
     for (const listener of listeners) listener();
   }
@@ -132,14 +150,14 @@
   }
 
   window.addEventListener('storage', (event) => {
-    if (event.key === null || event.key.startsWith(prefix) || event.key === window.IE104?.storage?.proposalKey || event.key === window.IE104?.storage?.registrationKey) notify();
+    if (event.key === null || event.key.startsWith(prefix) || event.key === window.IE104?.storage?.proposalKey || event.key === window.IE104?.storage?.registrationKey || event.key === window.IE104?.storage?.requestKey) notify();
   });
   window.addEventListener('pageshow', notify);
   window.addEventListener('ie104:proposals-updated', notify);
   window.addEventListener('ie104:registrations-updated', notify);
   window.IE104Proposals = Object.freeze({
     getAll,
-    get: (id) => getAll().find((record) => record.id === id),
+    get,
     getSeed: (id) => {
       const seed = seeds.find(record => record.id === id) || legacySeeds.find(record => record.id === id);
       return canViewSeed() && seed ? seedRecord(seed) : null;

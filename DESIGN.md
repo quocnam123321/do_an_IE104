@@ -297,10 +297,22 @@ Ngày 21/11/2026, danh sách Đề tài đã tạo hiện tên tác giả, khóa
 
 Hai tab Quản lý đề tài của giảng viên dùng chung menu Sắp xếp với ba lựa chọn Mới nhất, Cũ nhất và Tên A–Z. Menu mở đè lên nội dung, mục đã chọn có nền xanh nhạt và chữ xanh. Tab Đề tài đang hướng dẫn ưu tiên ngày bắt đầu thực hiện, dùng ngày duyệt hoặc ngày ghi nhận nếu có và xếp hồ sơ thiếu ngày ở cuối khi sắp xếp theo thời gian.
 
+Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề với khoảng cách 16px trên máy tính và 12px trên điện thoại. Dòng đếm kết quả được đọc bởi trình đọc màn hình. Trạng thái trống và cảnh báo dữ liệu hiển thị dưới tiêu đề.
+
 ### Tổng quan chi tiết đề tài sinh viên — 21/11/2026
 
 - Tab Tổng quan của Đề tài của tôi dùng chung khung ảnh tóm tắt 16:9, bố cục thẻ, danh sách mục tiêu và kết quả, cách hiển thị thành viên và mốc thời gian với trang Đề tài đang hướng dẫn. Khối Yêu cầu thực hiện xuất hiện khi đề tài đăng ký có dữ liệu tương ứng. Khối Giảng viên hướng dẫn đặt sau Mốc thời gian chính. Các thao tác nhóm và lời mời hiển thị theo quyền hiện có của sinh viên.
 - Thông báo giới hạn thành viên đặt ngay dưới tên nhóm với biểu tượng thông tin và cụm “tối đa X thành viên” in đậm. Dùng nền vàng nhạt, viền vàng mảnh, chữ và biểu tượng màu nâu ở mọi trạng thái sức chứa.
+
+### Chi tiết đề xuất đề tài của sinh viên và giảng viên — 22/11/2026
+
+- Mục Ảnh đại diện đề tài nằm sau Tài liệu đính kèm trong biểu mẫu sinh viên. Khi chưa chọn ảnh, hiện nút Chọn ảnh và ghi chú dùng ảnh mặc định. Khi đã chọn, hiện biểu tượng ảnh, tên tệp và nút bỏ ảnh trên một hàng nền trắng. Ảnh PNG hoặc JPG tối đa 5 MB được lưu trong IndexedDB khi gửi hoặc lưu chỉnh sửa.
+- Biểu mẫu tạo đề xuất hiển thị mã dự kiến ở trường chỉ đọc sau khi chọn loại đề tài. Mã chính thức có tiền tố ISEKLTN, ISEDAMH hoặc ISEDATN và ba chữ số, được cấp khi lưu. Mã đã cấp xuất hiện trong biểu mẫu chỉnh sửa và trang chi tiết ở cả hai vai trò.
+- Nút Lưu thay đổi kiểm tra và lưu trực tiếp từ biểu mẫu. Sau khi lưu thành công, hiện hộp thoại Đã lưu thay đổi với dấu tích xanh, nút đóng và nút Xem chi tiết trỏ đến đề xuất vừa lưu.
+- Hộp thoại Rút đề xuất đề tài phía sinh viên dùng một câu xác nhận với tên đề tài in đậm, nút đóng ở góc phải trên và một nút đỏ Xác nhận rút ở cuối. Hai đường kẻ mảnh ngăn tiêu đề, câu xác nhận và vùng nút.
+- Trang chi tiết đề xuất của giảng viên theo bố cục đã duyệt phía sinh viên. Khung ảnh đứng nằm bên trái trên máy tính và chuyển sang khung ngang phía trên thông tin trên điện thoại. Nhãn trạng thái nằm cạnh tên đề tài. Tên tiếng Anh nằm ngay dưới tên tiếng Việt khi có. Khối thông tin có ba hàng gồm Loại đề tài và Môn học, Mã đề tài và Học kỳ / Năm học, rồi đến hai ngày dự kiến. Giá trị lấy theo hồ sơ.
+- Sau khối tóm tắt, trang sinh viên hiển thị giảng viên hướng dẫn với avatar, tên, bộ môn và email. Trang giảng viên hiển thị sinh viên gửi đề xuất với avatar, họ tên, MSSV và thời điểm gửi.
+- Tổng quan đề tài, Mục tiêu, Kết quả dự kiến, Phương pháp và phạm vi thực hiện, Kế hoạch thực hiện và phân công hiển thị theo từng thẻ với đường kẻ mảnh dưới tiêu đề. Hai thẻ phương pháp và kế hoạch xuất hiện khi có nội dung. Thẻ Tài liệu đính kèm có đường kẻ dưới tiêu đề. Biểu tượng, tên tệp và nút Tải xuống nằm trực tiếp trên nền thẻ. Nội dung tệp được lưu trong IndexedDB khi gửi hoặc cập nhật đề xuất để hai vai trò tải trong cùng trình duyệt và cùng địa chỉ web. Hồ sơ mẫu DX001 có tệp đề cương mẫu tải được từ cả hai trang. Với hồ sơ cũ chỉ có thông tin tệp, nút bị khóa và có hướng dẫn đính kèm lại tệp gốc bên dưới. Hàng nút cuối trang theo vai trò và trạng thái hồ sơ.
 
 ### Tiến độ chi tiết đề tài sinh viên — 21/11/2026
 

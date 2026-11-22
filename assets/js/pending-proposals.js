@@ -71,15 +71,16 @@
     const card = cardTemplate.cloneNode(true);
     card.querySelectorAll('.proposal-card__date').forEach(node => node.remove());
     card.dataset.proposalId = proposal.id;
+    void window.IE104.shared?.renderProposalCover?.(card.querySelector('.topic-card__media'), proposal.coverImage);
     const title = card.querySelector('.proposal-card__title');
     title.id = `proposal-${proposal.id.toLowerCase()}-title`;
     title.textContent = proposal.title;
     card.setAttribute('aria-labelledby', title.id);
     const fields = [
-      ['type', `${proposal.topicTypeLabel}`],
+      ['type', [proposal.topicCode, proposal.topicTypeLabel].filter(Boolean).join(' · ')],
       ['course', `${window.UITLecturerCatalog.subjectLabel(proposal)}`],
       ['student', `${proposal.studentName} · ${proposal.studentId}`],
-      ['role', `${proposal.supervisionRoleLabel}`],
+      ['role', [proposal.supervisionRoleLabel, proposal.supervisorName].filter(Boolean).join(' · ')],
     ];
     for (const [name, value] of fields) {
       card.querySelector(`.proposal-card__${name} .topic-card__meta-text`).textContent = value;
@@ -103,7 +104,7 @@
     const returnUrl = pageUrl(page);
     detailUrl.searchParams.set('return', `yeu-cau-cho-duyet.html${returnUrl.search}`);
     link.href = detailUrl.href;
-    link.setAttribute('aria-label', `Xem đề xuất ${proposal.title} (${proposal.id})`);
+    link.setAttribute('aria-label', `Xem đề xuất ${proposal.title} (${proposal.topicCode || proposal.id})`);
     return card;
   }
 
@@ -145,7 +146,7 @@
     const selected = Object.entries(filterFields).map(([name, field]) =>
       [field, data.getAll(name)]);
     const matching = pending.filter((proposal) => {
-      const haystack = normalize([proposal.id, proposal.title, proposal.studentName, proposal.studentId].join(' '));
+      const haystack = normalize([proposal.id, proposal.topicCode, proposal.title, proposal.studentName, proposal.studentId].join(' '));
       return terms.every((term) => haystack.includes(term)) &&
         selected.every(([field, values]) => !values.length || values.some(value => field === 'course' ? ['course', 'do-an-mon-hoc', 'do-an'].includes(proposal.topicType) && window.UITLecturerCatalog.courseKey(value) === window.UITLecturerCatalog.courseKey(proposal[field]) : value === proposal[field]));
     });

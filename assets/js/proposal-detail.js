@@ -6,9 +6,14 @@
 
   const params = new URLSearchParams(window.location.search);
   const id = params.has('ma') ? params.get('ma').trim() : (window.IE104?.data?.lecturerRealProposalSeeds?.[0]?.id || 'DX-GV001');
-  const badge = document.querySelector('.request-detail-heading .status-badge');
+  const pageHeading = document.querySelector('.request-detail-heading');
+  const titleHeading = content.querySelector('.request-topic__heading');
+  const badge = pageHeading.querySelector('.status-badge');
+  const studentNameLabel = content.querySelector('.request-student__meta dt');
   const feedback = document.getElementById('proposal-decision-feedback');
   const actions = content.querySelector('.request-detail__actions');
+  const proposalOnly = content.querySelectorAll('[data-proposal-only]');
+  const registrationOnly = content.querySelectorAll('[data-registration-only]');
   const reason = document.getElementById('rejection-reason');
   const reasonError = document.getElementById('rejection-reason-error');
   const result = document.getElementById('proposal-result');
@@ -60,7 +65,13 @@
       return;
     }
     const registration = record.source === 'registration';
-    document.querySelector('.request-detail-heading h1').textContent = registration ? 'Chi tiết đăng ký đề tài' : 'Chi tiết đề xuất đề tài';
+    content.classList.toggle('request-detail--proposal', !registration);
+    for (const field of proposalOnly) field.hidden = registration;
+    for (const field of registrationOnly) field.hidden = !registration;
+    const badgeParent = registration ? pageHeading : titleHeading;
+    if (badge.parentElement !== badgeParent) badgeParent.append(badge);
+    studentNameLabel.classList.toggle('visually-hidden', !registration);
+    pageHeading.querySelector('h1').textContent = registration ? 'Chi tiết đăng ký đề tài' : 'Chi tiết đề xuất đề tài';
     text('#proposal-student-title', registration ? 'Nhóm trưởng gửi đăng ký' : 'Sinh viên gửi đề xuất');
     actions.querySelector('.request-action--approve span').textContent = registration ? 'Duyệt đăng ký' : 'Duyệt đề xuất';
     for (const [index, action] of ['Duyệt', 'Từ chối'].entries()) {
@@ -95,15 +106,18 @@
         group.append(message);
       }
     }
-    document.title = `${record.id} — ${record.title} | Chi tiết ${registration ? 'đăng ký' : 'đề xuất'}`;
+    const topicCode = record.topicCode || record.id;
+    document.title = `${topicCode} — ${record.title} | Chi tiết ${registration ? 'đăng ký' : 'đề xuất'}`;
     content.dataset.proposalId = record.id;
     displayedRevision = record.revision;
     badge.textContent = labels[record.status];
     badge.dataset.status = record.status;
-    text('#proposal-topic-title', `${record.id} — ${record.title}`);
-    const topicFields = content.querySelectorAll('.request-topic__meta dd');
-    [record.topicTypeLabel, window.UITLecturerCatalog.subjectLabel(record, true), record.semester ? `Học kỳ ${record.semester}` : '', record.academicYear]
-      .forEach((value, index) => { topicFields[index].textContent = value || 'Chưa có thông tin'; });
+    window.IE104.shared.proposalDetailFields.render(content, {
+      ...record,
+      title: registration ? `${record.id} — ${record.title}` : record.title,
+      typeLabel: record.topicTypeLabel,
+      courseLabel: !registration && record.courseLabel || window.UITLecturerCatalog.subjectLabel(record, true),
+    });
     const studentFields = content.querySelectorAll('.request-student__meta dd');
     studentFields[0].textContent = record.studentName;
     studentFields[1].textContent = record.studentId;
@@ -113,31 +127,21 @@
       sent.textContent = dateFormat.format(new Date(record.submittedAt));
       studentFields[2].replaceChildren(sent);
     } else studentFields[2].textContent = 'Chưa có thông tin';
-    text('.request-student__avatar', record.studentName.split(/\s+/).slice(-2).map((part) => part[0]).join(''));
-    text('.request-description p', record.description);
-    text('.request-objectives p', record.objectives);
-    text('.request-outcomes p', record.outcomes);
-    let outlinePanel = content.querySelector('[data-proposal-outline-view]');
-    if (!outlinePanel) {
-      outlinePanel = document.createElement('section');
-      outlinePanel.dataset.proposalOutlineView = '';
-      outlinePanel.className = 'proposal-outline-panel';
-      content.querySelector('.request-outcomes').after(outlinePanel);
-    }
-    window.IE104.shared?.proposalOutline?.render(outlinePanel, record);
-    text('.request-attachments__file span', record.attachment);
+    text('.request-student__avatar', record.studentName?.trim().split(/\s+/).slice(-2)
+      .map(part => part.charAt(0)).join('').toLocaleUpperCase('vi'));
+    content.querySelector('#proposal-description-title').textContent = registration ? 'Mô tả đề tài' : 'Tổng quan đề tài';
     content.querySelector('.request-attachments').hidden = registration;
     document.getElementById('proposal-student-preview').href = registration ? `../sinh-vien/chi-tiet-dang-ky-da-luu.html?registration=${encodeURIComponent(record.id)}` : record.source === 'student' ? `../sinh-vien/${globalThis.IE104.services.proposals.detailUrl(record.id)}` : `../sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=${encodeURIComponent(record.id)}`;
     document.getElementById('proposal-student-preview').hidden = record.source === 'uit-demo';
     for (const form of forms) {
-      form.querySelector('strong').textContent = `${record.id} — ${record.title}`;
+      form.querySelector('strong').textContent = `${topicCode} — ${record.title}`;
       form.querySelector('button[type="submit"]').disabled = busy || record.status !== 'pending';
     }
     actions.hidden = record.status !== 'pending';
     for (const button of actions.querySelectorAll('button')) button.disabled = busy || record.status !== 'pending';
     result.hidden = record.status === 'pending';
     text('[data-proposal-result]', record.status === 'approved'
-      ? `${record.topicId} — ${record.title}: Đang thực hiện.` : record.status === 'withdrawn' ? 'Sinh viên đã rút đề xuất.' : 'Đề xuất đã bị từ chối.');
+      ? `${record.topicCode || record.topicId} — ${record.title}: Đang thực hiện.` : record.status === 'withdrawn' ? 'Sinh viên đã rút đề xuất.' : 'Đề xuất đã bị từ chối.');
     text('[data-proposal-reason]', record.reason ? `Lý do từ chối: ${record.reason}` : '');
     content.querySelector('[data-proposal-reason]').hidden = !record.reason;
     text('[data-proposal-decision-time]', record.decidedAt ? `Thời điểm xử lý: ${dateFormat.format(new Date(record.decidedAt))}.` : '');

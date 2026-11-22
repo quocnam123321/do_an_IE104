@@ -105,3 +105,71 @@ test('khóa dùng chung ngăn hai tab ghi hai quyết định cho cùng hồ sơ
   assert.equal(results.filter(result => result.status === 'fulfilled').length, 1);
   assert.equal(second.get('DX001').status, 'approved');
 });
+
+test('đề xuất gửi giảng viên trong danh mục hiện trong hộp chờ duyệt mẫu và giữ người nhận khi duyệt', async () => {
+  const saved = new Map();
+  const context = vm.createContext({
+    location: { protocol: 'http:' },
+    localStorage: {
+      getItem: key => saved.get(key) ?? null,
+      setItem: (key, value) => saved.set(key, value),
+    },
+    IE104SupervisionEntry: {
+      getTeachers: async () => [{ id: 'giang-vien-1', name: 'Giảng viên nhận thử' }],
+    },
+  });
+  for (const file of [
+    'data/proposal-actors.js', 'services/storage.js', 'shared/validation.js',
+    'services/proposal-service.js', 'services/approved-project-service.js',
+  ]) {
+    vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js', file), 'utf8'), context, { filename: file });
+  }
+  const { data, storage, services: { proposals, approvedProjects } } = context.IE104;
+  const reviewer = data.currentLecturer;
+  await proposals.listSupervisors();
+  const input = {
+    title: 'Xử lý ngôn ngữ tự nhiên', description: 'Phân tích văn bản tiếng Việt.',
+    objectives: 'Phân loại văn bản.', outcomes: 'Mô hình và báo cáo.',
+    type: 'do-an-mon-hoc', courseId: 'IE104', semester: '1', academicYear: '2026-2027',
+    supervisorId: 'giang-vien-1',
+  };
+  assert.equal(proposals.nextTopicCode(input.type), 'ISEDAMH-001');
+  const record = proposals.create(input);
+  assert.equal(record.topicCode, 'ISEDAMH-001');
+  assert.equal(proposals.nextTopicCode(input.type), 'ISEDAMH-002');
+  assert.equal(proposals.nextTopicCode('khoa-luan'), 'ISEKLTN-001');
+  assert.equal(proposals.nextTopicCode('do-an-tot-nghiep'), 'ISEDATN-001');
+  assert.throws(() => proposals.nextTopicCode(input.type, [{ topicCode: 'ISEDAMH-999' }]), /Đã hết mã ba chữ số/);
+  const edited = proposals.update(record.id, { ...input, type: 'do-an-tot-nghiep', courseId: 'IE501' }, record.revision);
+  assert.equal(edited.topicCode, record.topicCode);
+  assert.equal(proposals.nextTopicCode(input.type), 'ISEDAMH-002');
+  assert.equal(proposals.listMyTopics()[0].displayId, record.topicCode);
+  assert.equal(record.lecturerId, 'giang-vien-1');
+  assert.equal(proposals.listForLecturer().find(item => item.id === record.id)?.status, 'pending');
+  assert.equal(proposals.listForLecturer().find(item => item.id === record.id)?.supervisorName, record.supervisorName);
+
+  data.currentLecturer = { id: 'giang-vien-2' };
+  assert.equal(proposals.listForLecturer().length, 0);
+  await assert.rejects(proposals.decide(record.id, 'approved', '', edited.revision), /không được xử lý/);
+
+  data.currentLecturer = { id: record.lecturerId };
+  assert.equal(proposals.listForLecturer().find(item => item.id === record.id)?.status, 'pending');
+  data.currentLecturer = reviewer;
+  const decision = await proposals.decide(record.id, 'approved', '', edited.revision);
+  assert.equal(decision.status, 'approved');
+  assert.equal(decision.topicCode, record.topicCode);
+  const persisted = storage.readProposals()[0];
+  assert.equal(persisted.topicCode, record.topicCode);
+  assert.equal(persisted.lecturerId, record.lecturerId);
+  assert.equal(persisted.decision.lecturerId, record.lecturerId);
+  const projectId = approvedProjects.projectIdFor(record.id);
+  const { project, team } = approvedProjects.forStudent(projectId);
+  assert.equal(project.status, 'dang-thuc-hien');
+  assert.equal(project.displayId, record.topicCode);
+  assert.equal(project.lecturer, record.supervisorName);
+  assert.equal(team.supervisorIds[0], record.lecturerId);
+  assert.equal(approvedProjects.list('lecturer').find(item => item.id === projectId)?.lecturerId, record.lecturerId);
+
+  data.currentLecturer = { id: 'giang-vien-2' };
+  assert.equal(approvedProjects.list('lecturer').length, 0);
+});

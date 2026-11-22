@@ -8,17 +8,15 @@
     dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh',
   });
   const date = value => value ? dateFormat.format(new Date(value)) : '';
-  const outlineDate = value => value ? value.split('-').reverse().join('/') : '';
-  const missing = 'Chưa có thông tin';
   const article = document.getElementById('dx001');
   const recipientTitle = article.querySelector('#proposal-recipient-title');
-  const recipientLabel = article.querySelector('[data-recipient-label]');
   const recipientAvatar = article.querySelector('.proposal-recipient__avatar');
   const recipientDepartment = article.querySelector('[data-recipient-department]');
-  const attachmentRow = article.querySelector('[data-proposal-attachment]');
-  const attachmentNote = article.querySelector('[data-proposal-attachment-note]');
-  const badge = document.querySelector('.proposal-status');
-  const actions = document.querySelector('.pending-proposal-header__actions');
+  const recipientEmail = article.querySelector('[data-recipient-email]');
+  const recipientNoEmail = article.querySelector('[data-recipient-no-email]');
+  const badge = article.querySelector('.request-topic__heading .status-badge');
+  const badgeText = badge.querySelector('[data-proposal-status]');
+  const actions = article.querySelector('.pending-proposal-actions');
   const notice = document.querySelector('.pending-proposal-notice');
   const result = document.querySelector('[data-pending-result]');
   const edit = actions.querySelector('[data-proposal-edit]');
@@ -26,7 +24,10 @@
   const buttons = actions.querySelectorAll('[data-proposal-action]');
   const dialog = document.getElementById('withdraw-proposal-dialog');
   const dialogTitle = document.getElementById('withdraw-proposal-title');
-  const question = dialog.querySelector('[data-pending-question]');
+  const question = document.getElementById('withdraw-proposal-question');
+  const dialogNotice = document.getElementById('withdraw-proposal-notice');
+  const closeDialog = dialog.querySelector('.pending-withdraw-dialog__close');
+  const cancel = dialog.querySelector('[data-pending-cancel]');
   const confirm = dialog.querySelector('[data-confirm-pending-withdraw]');
   const error = dialog.querySelector('[data-pending-error]');
   const actionLabels = { withdraw: 'Rút đề xuất', remove: 'Xóa khỏi danh sách' };
@@ -42,7 +43,6 @@
       return {
         ...record, owner: true, permissions: requests.permissions(record),
         recipient: record.lecturerName, recipientRole: record.supervisionRoleLabel || IE104Proposals.getSeed(id)?.supervisionRoleLabel,
-        submittedDate: date(record.resubmittedAt || record.createdAt),
       };
     }
 
@@ -53,7 +53,6 @@
       return {
         ...record, owner: true, permissions: { edit: canChange, withdraw: canChange },
         recipient: record.supervisorName, recipientRole: 'Hướng dẫn chính',
-        submittedDate: date(record.createdAt), dateLabel: 'Ngày lưu đề xuất',
       };
     }
 
@@ -61,8 +60,7 @@
     if (!seed) return null;
     return {
       ...seed, permissions: {},
-      typeLabel: seed.topicTypeLabel, recipient: seed.studentName, recipientRole: seed.studentId,
-      submittedDate: date(seed.submittedAt),
+      typeLabel: seed.topicTypeLabel, recipient: seed.lecturerName, recipientRole: seed.supervisionRoleLabel,
       status: { pending: 'cho-duyet', approved: 'da-duyet', rejected: 'tu-choi' }[seed.status],
       decision: seed.decidedAt ? { reason: seed.reason, decidedAt: seed.decidedAt } : null,
     };
@@ -70,7 +68,6 @@
 
   function statusMessage(record) {
     const messages = {
-      'cho-duyet': 'Đề xuất đang chờ giảng viên xét duyệt.',
       'yeu-cau-chinh-sua': 'Giảng viên yêu cầu chỉnh sửa đề xuất.',
       'da-duyet': 'Đề xuất đã được giảng viên duyệt.',
       'tu-choi': 'Đề xuất đã bị từ chối.',
@@ -81,40 +78,7 @@
     return [messages[record.status], feedback].filter(Boolean).join(' ');
   }
 
-  function renderRecord(record) {
-    const details = article.querySelector('[data-proposal-record]');
-    const outline = record.outline;
-    const people = outline?.members || record.members;
-    const supervisor = outline?.supervisor;
-    const hasExtraSupervisorInfo = supervisor && (supervisor.name !== record.recipient || supervisor.degree || supervisor.workplace);
-    const person = value => value && [value.name, value.degree, value.workplace].filter(Boolean).join(' - ');
-    const fields = [
-      ['Mã đề xuất', record.id],
-      [record.dateLabel || 'Ngày gửi đề xuất', record.submittedDate],
-      ['Hình thức', record.mode && (record.mode === 'nhom' ? 'Nhóm' : 'Cá nhân')],
-      ['Tên nhóm', record.groupName],
-      ['Sinh viên thực hiện', people?.map(member => [member.name, member.code, member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên'].join(' - ')).join('\n')],
-      ['Thông tin GVHD trong đề cương', hasExtraSupervisorInfo && person(supervisor)],
-      ['Người hướng dẫn phụ trong đề cương', person(outline?.secondarySupervisor)],
-      ['Phạm vi', outline && record.scope !== (outline.methodAndScope ?? (outline.scope || record.scope)) && record.scope],
-      ['Lời nhắn', record.message],
-      ['Ngày gửi ban đầu', record.resubmittedAt && date(record.createdAt)],
-      ['Phản hồi trước khi gửi lại', record.resubmittedAt && record.feedback],
-      ['Lần sửa gần nhất', date(record.updatedAt)],
-      ['Ngày xét duyệt', date(record.decision?.decidedAt)],
-      ['Ngày rút', date(record.withdrawnAt)],
-    ];
-    details.replaceChildren();
-    for (const [label, value] of fields) {
-      if (!value) continue;
-      const row = document.createElement('div');
-      const term = document.createElement('dt');
-      const description = document.createElement('dd');
-      term.textContent = label;
-      description.textContent = value;
-      row.append(term, description);
-      details.append(row);
-    }
+  function renderHistory(record) {
     const history = article.querySelector('[data-proposal-history]');
     history.replaceChildren();
     for (const event of record.history || []) {
@@ -126,25 +90,36 @@
   }
 
   async function renderRecipient(record) {
-    recipientTitle.textContent = record.owner ? 'Thông tin hướng dẫn' : 'Sinh viên gửi đề xuất';
-    recipientLabel.textContent = record.owner
-      ? (record.recipientRole === 'Đồng hướng dẫn' ? 'Giảng viên đồng hướng dẫn' : 'Giảng viên hướng dẫn chính')
-      : 'Họ và tên';
+    recipientTitle.textContent = record.recipientRole === 'Đồng hướng dẫn'
+      ? 'Giảng viên đồng hướng dẫn'
+      : 'Giảng viên hướng dẫn chính';
     recipientAvatar.textContent = record.recipient?.trim().split(/\s+/).slice(-2)
       .map(part => part.charAt(0)).join('').toLocaleUpperCase('vi') || '';
     recipientAvatar.hidden = !recipientAvatar.textContent;
-    recipientDepartment.textContent = !record.owner && record.recipientRole ? `MSSV: ${record.recipientRole}` : '';
-    recipientDepartment.hidden = !recipientDepartment.textContent;
+    recipientDepartment.textContent = 'Chưa cập nhật bộ môn';
+    recipientDepartment.hidden = !record.recipient;
+    recipientEmail.hidden = true;
+    recipientEmail.textContent = '';
+    recipientEmail.removeAttribute('href');
+    recipientNoEmail.hidden = !record.recipient;
 
     const supervisorId = record.supervisorId || record.lecturerId;
     const entry = globalThis.IE104SupervisionEntry;
-    if (!entry || !record.owner || !supervisorId?.startsWith('giang-vien-')) return;
+    if (!entry || !/^giang-vien-\d+$/.test(supervisorId)) return;
     const teachers = await entry.getTeachers().catch(() => []);
     if (displayed !== record) return;
     const teacher = teachers.find(person => person.id === supervisorId);
     if (!teacher) return;
-    recipientDepartment.textContent = entry.departmentLabel(teacher.department);
+
+    const department = entry.departmentLabel(teacher.department);
+    recipientDepartment.textContent = department === 'Chưa cập nhật bộ môn' ? department : `Bộ môn ${department}`;
     recipientDepartment.hidden = false;
+    const email = teacher.email;
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return;
+    recipientEmail.textContent = email;
+    recipientEmail.href = `mailto:${encodeURIComponent(email).replace('%40', '@')}`;
+    recipientEmail.hidden = false;
+    recipientNoEmail.hidden = true;
   }
 
   function render() {
@@ -154,10 +129,9 @@
       const status = record.deletedAt ? 'da-xoa' : record.status;
       const label = status === 'da-xoa' ? 'Đã xóa khỏi danh sách' : requests.labels[status];
       displayed = record;
-      badge.hidden = false;
+      badge.hidden = Boolean(record.deletedAt);
       badge.dataset.requestStatus = status;
-      badge.dataset.status = { 'da-duyet': 'approved', 'tu-choi': 'rejected' }[status] || '';
-      badge.textContent = label;
+      badgeText.textContent = label;
       notice.textContent = statusMessage({ ...record, status });
       document.title = `${record.title} — ${label} | Đề tài của tôi`;
       article.hidden = Boolean(record.deletedAt);
@@ -171,35 +145,16 @@
       actions.hidden = edit.hidden && project.hidden && Array.from(buttons).every(button => button.hidden);
       if (article.hidden) return;
 
-      const attachment = record.attachment?.name || record.attachmentName || record.attachment;
-      const outline = record.outline;
-      const fields = {
-        ...record,
-        englishTitle: outline?.englishTitle,
-        semester: record.semester && `Học kỳ ${['he', 'summer'].includes(record.semester) ? '3' : record.semester}`,
-        academicYear: record.academicYear?.replace(/\s*[-–]\s*/, ' – '),
-        startDate: outlineDate(outline?.startDate),
-        endDate: outlineDate(outline?.endDate),
-        methodAndScope: outline?.methodAndScope ?? [outline?.method, outline?.scope || record.scope].filter(Boolean).join('\n\n'),
-        plan: outline?.plan,
-        attachmentText: attachment && `${attachment}${Number.isFinite(record.attachment?.size) ? ` (${record.attachment.size} byte)` : ''}`,
-      };
-      for (const field of article.querySelectorAll('[data-proposal-field]')) {
-        const value = fields[field.dataset.proposalField];
-        field.textContent = value || missing;
-        field.classList.toggle('is-missing', !value);
-      }
-      attachmentRow.hidden = !attachment;
-      attachmentNote.textContent = attachment ? 'Bản demo chỉ lưu thông tin tệp.' : 'Chưa có tài liệu đính kèm.';
+      app.shared.proposalDetailFields.render(article, record);
       void renderRecipient(record);
-      renderRecord(record);
+      renderHistory(record);
     } catch (failure) {
       displayed = null;
+      badge.hidden = true;
       actions.hidden = true;
       article.hidden = true;
-      badge.hidden = true;
       notice.textContent = failure.message;
-      document.title = 'Chi tiết đề tài | Đề tài của tôi';
+      document.title = 'Chi tiết đề xuất đề tài | Đề tài của tôi';
     }
   }
 
@@ -209,14 +164,23 @@
       const action = button.dataset.proposalAction;
       if (!displayed?.permissions[action]) return;
       pending = { action, revision: displayed.revision || 0 };
-      dialogTitle.textContent = actionLabels[action];
-      question.textContent = action === 'withdraw'
-        ? `Bạn có chắc muốn rút đề xuất “${displayed.title}”?`
-        : `Bạn có chắc muốn xóa đề xuất “${displayed.title}” khỏi danh sách?`;
-      confirm.textContent = actionLabels[action];
+      const withdrawing = action === 'withdraw';
+      dialog.dataset.action = action;
+      dialogTitle.textContent = withdrawing ? 'Rút đề xuất đề tài' : actionLabels[action];
+      if (withdrawing) {
+        const topic = document.createElement('strong');
+        topic.textContent = displayed.title;
+        question.replaceChildren('Bạn có muốn rút đề xuất đề tài ', topic, '?');
+      } else {
+        question.textContent = `Bạn có chắc muốn xóa đề xuất “${displayed.title}” khỏi danh sách?`;
+      }
+      dialogNotice.hidden = cancel.hidden = withdrawing;
+      dialog.setAttribute('aria-describedby', withdrawing ? question.id : `${question.id} ${dialogNotice.id}`);
+      confirm.textContent = withdrawing ? 'Xác nhận rút' : actionLabels[action];
       error.hidden = true;
       confirm.disabled = false;
       dialog.showModal();
+      (withdrawing ? closeDialog : cancel).focus();
     });
   }
 
@@ -224,13 +188,13 @@
     if (!pending || saving) return;
     const { action, revision } = pending;
     saving = true;
-    confirm.disabled = true;
+    confirm.disabled = closeDialog.disabled = cancel.disabled = true;
     try {
       if (isLegacy) {
         if (action === 'withdraw') await requests.withdrawProposal(id, revision);
         else await requests.removeProposal(id, revision);
       } else {
-        await proposals.withdraw(id, revision);
+        await proposals.withWriteLock(() => proposals.withdraw(id, revision));
       }
       dialog.close();
       render();
@@ -243,10 +207,11 @@
       error.focus();
     } finally {
       saving = false;
-      confirm.disabled = false;
+      confirm.disabled = closeDialog.disabled = cancel.disabled = false;
     }
   });
 
+  dialog.addEventListener('cancel', event => { if (saving) event.preventDefault(); });
   dialog.addEventListener('close', () => { pending = null; });
   window.addEventListener('pageshow', render);
   window.addEventListener('ie104:proposals-updated', render);

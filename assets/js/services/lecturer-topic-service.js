@@ -84,7 +84,7 @@
     const decorated = codes.decorateTopics([...initial, ...projects, adapt(project)]).at(-1);
     const position = app.data.projectTeams?.find(team => team.projectId === project.id)?.supervisorIds.indexOf(actorId());
     const role = project.role || (position >= 0 ? position === 0 ? 'primary' : 'secondary' : undefined);
-    return { ...project, role, roleLabel: project.roleLabel || ({ primary: 'Hướng dẫn chính', secondary: 'Đồng hướng dẫn' })[role], displayId: decorated.displayId, courseLabel: decorated.courseLabel, groupName: codes.groupLabel(project) };
+    return { ...project, role, roleLabel: project.roleLabel || ({ primary: 'Hướng dẫn chính', secondary: 'Đồng hướng dẫn' })[role], displayId: project.topicCode || decorated.displayId, courseLabel: decorated.courseLabel, groupName: codes.groupLabel(project) };
   }
 
   function workspaceState(projectId) {

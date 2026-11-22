@@ -25,7 +25,7 @@
     const statuses = filters.statuses || [];
     const semesters = filters.semesters || [];
     const results = source.filter(topic => {
-      const matchesKeyword = !keyword || normalizeText(`${topic.id} ${topic.title}`).includes(keyword);
+      const matchesKeyword = !keyword || normalizeText([topic.id, topic.displayId, topic.title].filter(Boolean).join(' ')).includes(keyword);
       const matchesLecturer = !lecturer || normalizeText(topic.lecturer) === lecturer;
       const matchesType = !types.length || types.includes(topic.type);
       const matchesCourse = !courses.length || courses.includes(topic.courseId);

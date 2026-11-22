@@ -32,6 +32,7 @@
   app.ui.initTopicList({
     query: app.services.topics.listOpenTopics,
     createCard,
+    hideResultSummary: true,
     storageKey: globalThis.TeacherTopicStore?.key,
     emptyTitle: 'Chưa có đề tài mở đăng ký',
     emptyDescription: 'Các đề tài sẽ xuất hiện ở đây khi được mở đăng ký.',

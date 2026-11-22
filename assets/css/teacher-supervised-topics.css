@@ -469,7 +469,7 @@
    4. TIÊU ĐỀ DANH SÁCH & GHI CHÚ DỮ LIỆU MINH HỌA
    -------------------------------------------------------------------------- */
 .topic-results__header {
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-1);
 }
 
 #topic-results-title {

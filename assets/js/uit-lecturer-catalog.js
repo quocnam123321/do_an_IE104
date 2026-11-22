@@ -109,7 +109,8 @@ window.UITLecturerCatalog = {
     const prefix = `${department}${this.typeCodes[type]}-`;
     let largest = 0n;
     for (const record of records) {
-      const code = this.formatCode(record.filterType || record.topicType || record.type, record.displayId || record.code || record.id, this.facultyFor(record));
+      const code = record.topicCode?.replace(/^ISEKLTN-/, 'ISEKTLN-') ||
+        this.formatCode(record.filterType || record.topicType || record.type, record.displayId || record.code || record.id, this.facultyFor(record));
       if (code?.startsWith(prefix) && /^\d+$/.test(code.slice(prefix.length))) {
         const number = BigInt(code.slice(prefix.length));
         if (number > largest) largest = number;

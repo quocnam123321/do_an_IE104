@@ -23,6 +23,7 @@
     article.setAttribute('aria-labelledby', title.id);
     article.dataset.topicId = topic.id;
     article.dataset.status = statusStyles[topic.status];
+    void app.shared?.renderProposalCover?.(article.querySelector('.topic-card__image'), topic.coverImage);
     values[0].textContent = `${topic.displayId || topic.id} - ${topic.typeLabel}`;
     values[1].textContent = topic.lecturer;
     values[2].textContent = topic.groupName;
@@ -54,6 +55,7 @@
   app.ui.initTopicList({
     query: app.services.topics.listMyTopics,
     createCard,
+    hideResultSummary: true,
     emptyTitle: 'Bạn chưa có đề tài',
     emptyDescription: 'Đề tài của bạn sẽ xuất hiện trong danh sách này khi có dữ liệu.',
   });

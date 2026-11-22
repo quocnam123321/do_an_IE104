@@ -22,6 +22,7 @@
     supervisors: {},
   };
   const labels = { 'cho-duyet': 'Chờ duyệt', 'da-rut': 'Đã rút', 'da-duyet': 'Đã duyệt', 'tu-choi': 'Từ chối' };
+  const topicCodePrefixes = { 'do-an-mon-hoc': 'ISEDAMH', 'do-an-tot-nghiep': 'ISEDATN', 'khoa-luan': 'ISEKLTN' };
   const detailUrl = id => `chi-tiet-de-tai-cho-duyet-sinh-vien.html?proposal=${encodeURIComponent(id)}`;
   const clone = value => JSON.parse(JSON.stringify(value));
   const defaultStudent = () => app.data.currentStudent;
@@ -68,6 +69,32 @@
     return validateForStudent(input, record ? record.student || defaultStudent() : submittingStudent(), catalogFor(record));
   }
 
+  function nextTopicCode(type, proposals = app.storage.readProposals()) {
+    if (!Object.hasOwn(topicCodePrefixes, type)) return '';
+    const prefix = topicCodePrefixes[type];
+    const uit = globalThis.UITLecturerCatalog;
+    const lecturerTopics = app.services.lecturerTopics;
+    const topics = [
+      ...(uit?.records || []),
+      ...(app.services.lecturerTopicRepository?.read() || []),
+      ...(lecturerTopics?.allCreated() || []),
+      ...(lecturerTopics?.list('supervised') || []),
+    ];
+    const used = proposals.map(record => record.topicCode || record.id);
+    for (const topic of topics) {
+      const code = topic.code || topic.id;
+      used.push(topic.id, code, topic.displayId || uit?.formatCode(topic.topicType, code));
+    }
+    let highest = 0;
+    for (const code of used) {
+      const match = /^(ISEDAMH|ISEDATN|ISEKLTN|ISEKTLN)-(\d+)$/.exec(code);
+      if (!match || match[1].replace('ISEKTLN', 'ISEKLTN') !== prefix) continue;
+      highest = Math.max(highest, Number(match[2]));
+    }
+    if (highest >= 999) throw new Error('Đã hết mã ba chữ số cho loại đề tài này.');
+    return `${prefix}-${String(highest + 1).padStart(3, '0')}`;
+  }
+
   function create(input) {
     const student = submittingStudent();
     const checked = validateForStudent(input, student);
@@ -79,6 +106,7 @@
     const record = {
       ...value,
       id: `DX-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`}`,
+      topicCode: nextTopicCode(value.type, records),
       typeLabel: catalog.types[value.type].label,
       courseLabel: catalog.types[value.type].courses[value.courseId],
       supervisorName: catalog.supervisors[value.supervisorId],
@@ -134,7 +162,7 @@
   function listMyTopics() {
     const approved = app.services.approvedProjects;
     const pending = app.storage.readProposals().filter(record => studentOwns(record) && !(record.status === 'da-duyet' && approved)).map(record => ({
-      id: record.id, requestId: record.id, title: record.title,
+      id: record.id, requestId: record.id, displayId: record.topicCode, title: record.title, coverImage: record.coverImage,
       type: record.type === 'khoa-luan' ? 'khoa-luan' : 'do-an', typeLabel: record.typeLabel,
       courseId: record.courseId, semester: record.semester,
       academicYear: record.academicYear, lecturer: record.supervisorName,
@@ -145,12 +173,17 @@
     return [...pending, ...(approved?.list('student') || []).filter(project => project.source === 'approved-proposal').map(project => ({ ...project, requestStatusLabel: 'Đã duyệt', feedback: '' }))];
   }
 
-  function listForLecturer() {
+  function canReview(lecturerId) {
     const actor = app.data.currentLecturer?.id;
-    return app.storage.readProposals().filter(record => assignedLecturer(record) === actor).map(record => {
+    return Boolean(actor && lecturerId && (actor === lecturerId ||
+      (actor === app.data.proposalDemoReviewerId && /^giang-vien-\d+$/.test(lecturerId))));
+  }
+
+  function listForLecturer() {
+    return app.storage.readProposals().filter(record => canReview(assignedLecturer(record))).map(record => {
       const student = record.student || app.data.legacyProposalStudent;
       return {
-        id: record.id, topicId: `DT-${record.id}`, title: record.title, source: 'student', revision: record.revision || 0,
+        id: record.id, topicId: `DT-${record.id}`, topicCode: record.topicCode, title: record.title, source: 'student', revision: record.revision || 0,
         status: ({ 'cho-duyet': 'pending', 'da-duyet': 'approved', 'tu-choi': 'rejected', 'da-rut': 'withdrawn' })[record.status],
         topicStatus: record.status === 'da-duyet' ? 'in-progress' : record.status,
         topicType: record.type, topicTypeLabel: record.typeLabel, courseId: record.courseId,
@@ -159,10 +192,20 @@
         supervisionRole: 'huong-dan-chinh', supervisionRoleLabel: 'Hướng dẫn chính',
         studentName: student.name, studentId: student.code, submittedAt: record.createdAt,
         description: record.description, objectives: record.objectives, outcomes: record.outcomes, outline: record.outline ? clone(record.outline) : null,
-        attachment: record.attachment?.name || '', lecturerId: assignedLecturer(record),
+        attachment: record.attachment?.name || '', attachmentSize: record.attachment?.size, attachmentFileKey: record.attachment?.fileKey,
+        coverImage: record.coverImage,
+        lecturerId: assignedLecturer(record), supervisorName: record.supervisorName,
         reason: record.decision?.reason || '', decidedAt: record.decision?.decidedAt || '',
       };
     });
+  }
+
+  function withWriteLock(operation, { reservesTopicCode = false } = {}) {
+    const locks = globalThis.navigator?.locks;
+    if (!locks?.request) return operation();
+    const lecturerKey = app.services.lecturerTopicRepository?.key;
+    return locks.request(app.storage.proposalKey, () => reservesTopicCode && lecturerKey
+      ? locks.request(lecturerKey, operation) : operation());
   }
 
   async function decide(id, status, reason, revision) {
@@ -170,8 +213,8 @@
       const records = app.storage.readProposals();
       const previous = records.find(record => record.id === id);
       if (!previous) throw new Error('Không tìm thấy đề xuất.');
-      const lecturerId = app.data.currentLecturer?.id;
-      if (assignedLecturer(previous) !== lecturerId) throw new Error('Giảng viên hiện tại không được xử lý đề xuất này.');
+      const lecturerId = assignedLecturer(previous);
+      if (!canReview(lecturerId)) throw new Error('Giảng viên hiện tại không được xử lý đề xuất này.');
       if (previous.status !== 'cho-duyet') throw new Error('Đề xuất đã rút hoặc đã được xử lý. Hãy tải lại kết quả mới nhất.');
       if (!Number.isInteger(revision) || revision !== (previous.revision || 0)) throw new Error('Sinh viên đã sửa đề xuất. Hãy tải lại để đọc nội dung mới trước khi xét duyệt.');
       if (!['approved', 'rejected'].includes(status)) throw new Error('Quyết định không hợp lệ.');
@@ -181,8 +224,8 @@
       save(records.map(item => item.id === id ? record : item));
       return listForLecturer().find(item => item.id === id);
     };
-    return globalThis.navigator?.locks?.request ? navigator.locks.request(app.storage.proposalKey, apply) : apply();
+    return withWriteLock(apply);
   }
 
-  app.services.proposals = { catalog, catalogFor, listSupervisors, lecturerIdFor, labels, detailUrl, validate, create, findById, update, withdraw, listMyTopics, listForLecturer, decide };
+  app.services.proposals = { catalog, catalogFor, listSupervisors, lecturerIdFor, labels, detailUrl, validate, nextTopicCode, create, findById, update, withdraw, listMyTopics, listForLecturer, canReview, withWriteLock, decide };
 })();
