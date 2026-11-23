@@ -13,7 +13,7 @@
     try { projects = teaching.listSupervisedProjects(); } catch { /* Keep the available proposal records. */ }
     const byId = new Map(projects.map(({ project, role }) => [project.id, {
       id: project.id, topicId: project.topicId || project.id, projectId: project.id,
-      title: project.title, topicType: project.type || ({ 'Đồ án môn học': 'do-an-mon-hoc', 'Đồ án tốt nghiệp': 'do-an-tot-nghiep', 'Khóa luận tốt nghiệp': 'khoa-luan' })[project.typeLabel], course: project.courseId, courseLabel: project.courseLabel,
+      title: project.title, representativeName: project.representativeName, topicType: project.type || ({ 'Đồ án môn học': 'do-an-mon-hoc', 'Đồ án tốt nghiệp': 'do-an-tot-nghiep', 'Khóa luận tốt nghiệp': 'khoa-luan' })[project.typeLabel], course: project.courseId, courseLabel: project.courseLabel,
       sortDate: project.startsAt || project.createdAt,
       semester: project.semester, academicYear: project.academicYear, groupName: project.groupName,
       supervisionRole: role === 'secondary' ? 'dong-huong-dan' : 'huong-dan-chinh',
@@ -46,7 +46,7 @@
       const courseLabel = card.dataset.topicType === 'graduation' ? 'Đồ án tốt nghiệp' : card.dataset.topicType === 'thesis' ? 'Khóa luận tốt nghiệp' : record.courseLabel || 'Không áp dụng';
       [code, courseLabel,
         record.semester ? `Học kỳ ${record.semester} • ${record.academicYear.replace('-', '–')}` : 'Chưa có học kỳ và năm học',
-        [record.groupName || record.studentName, record.studentId, record.supervisionRoleLabel].filter(Boolean).join(' · ')]
+        record.representativeName || record.studentName ? `${record.representativeName || record.studentName} · xxxxxxxx` : record.groupName || 'Chưa có nhóm thực hiện']
         .forEach((value, index) => { meta.querySelectorAll('.topic-card__meta-text')[index].textContent = value; });
       const badge = card.querySelector('.topic-card__status');
       badge.textContent = record.supervisionRoleLabel || record.statusLabel || 'Đang thực hiện';

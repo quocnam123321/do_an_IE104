@@ -67,7 +67,18 @@
       pagination.hidden = result.total === 0;
     }
 
+    function refreshLecturers() {
+      const allTopics = config.query({}, { pageSize: 10000 }).items;
+      const names = [...new Set(allTopics.map(topic => topic.lecturer).filter(Boolean))].sort(new Intl.Collator('vi').compare);
+      const previous = [...lecturer.options].map(option => option.value);
+      if (previous.length === names.length + 1 && names.every((name, index) => previous[index + 1] === name)) return;
+      const selected = lecturer.value;
+      lecturer.replaceChildren(new Option('Tất cả giảng viên', ''), ...names.map(name => new Option(name, name)));
+      if (names.includes(selected)) lecturer.value = selected;
+    }
+
     function render(options = {}) {
+      refreshLecturers();
       const result = config.query(readFilters(), { page, pageSize: 5 });
       app.ui.renderCourseFilters(form, result.courseOptions);
       page = result.page;

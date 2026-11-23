@@ -15,11 +15,14 @@
     }
     for (const card of list.querySelectorAll('.topic-card')) {
       if (card.dataset.topicType === 'master') { (card.parentElement.matches('li') ? card.parentElement : card).remove(); continue; }
-      const record = catalog?.records.find(topic => topic.id === card.dataset.topicId);
+      const kind = isSupervised ? 'supervised' : 'created';
+      const model = window.IE104.services.lecturerTopics?.list(kind).find(topic => topic.id === card.dataset.topicId || topic.workspaceId === card.dataset.topicId);
+      const project = window.IE104.data.myTopics?.find(topic => topic.id === card.dataset.topicId || topic.topicId === card.dataset.topicId);
+      const record = model || project || catalog?.records.find(topic => topic.id === card.dataset.topicId);
       const type = record?.topicType || card.dataset.topicType;
       card.dataset.course = catalog.courseKey(card.dataset.course);
       const nodes = card.querySelectorAll('.topic-card__meta-text');
-      if (record && nodes[0]) nodes[0].textContent = catalog.formatCode(type, record.code);
+      if (record && nodes[0]) nodes[0].textContent = record.displayId || catalog.formatCode(type, record.code);
       if (nodes[1]) nodes[1].textContent = catalog.subjectLabel(record || { topicType: type, course: card.dataset.course, courseLabel: nodes[1].textContent });
       if (record) {
         if (nodes[2]) nodes[2].textContent = `Học kỳ ${record.semester === 'summer' ? 'hè' : record.semester} · ${String(record.academicYear || '').replace(/[-—]/g, '–')}`;
@@ -31,7 +34,10 @@
       if (!['course', 'do-an-mon-hoc', 'do-an'].includes(type)) card.dataset.course = '';
       nodes.forEach(node => { node.textContent = node.textContent.trim().replace(/^(Mã đề tài|Môn học|Loại đề tài|Nhóm thực hiện|Tác giả|GVHD theo nguồn|Ngày tạo|Ngày gửi|Vai trò của tôi):\s*/, '').replace(/(Học kỳ[^•·]*)\s[-•]\s(?=20)/, '$1 · '); });
       if (nodes[0]) card.querySelector('.topic-card__meta')?.setAttribute('aria-label', `Thông tin đề tài ${nodes[0].textContent}`);
-      if (isSupervised && nodes[3]) nodes[3].textContent = catalog.groupLabel(record || { id: card.dataset.topicId, groupName: nodes[3].textContent });
+      if (isSupervised && nodes[3]) {
+        const name = record?.representativeName || record?.sourceRecord?.authors?.[0] || record?.authors?.[0];
+        nodes[3].textContent = name ? `${name} · xxxxxxxx` : catalog.groupLabel(record || { id: card.dataset.topicId, groupName: nodes[3].textContent });
+      }
       if (document.body.classList.contains('teacher-created-topics-page')) {
         const createdAt = record ? record.createdAt || '' : card.dataset.createdAt || '';
         const row = nodes[3]?.closest('.topic-card__meta-item');

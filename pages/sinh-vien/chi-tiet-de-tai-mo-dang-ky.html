@@ -20,19 +20,20 @@
 <script src="../../assets/js/shared/validation.js" defer></script>
 <script src="../../assets/js/data/proposal-actors.js" defer></script>
 <script src="../../assets/js/data/lecturer-topics.js" defer></script>
-<script src="../../assets/js/uit-lecturer-catalog.js" defer></script>
-<script src="../../assets/js/data/lecturer-merge-catalog.js" defer></script>
+<script src="../../assets/js/uit-lecturer-catalog.js?v=20261123-audit-names2" defer></script>
+<script src="../../assets/js/data/lecturer-merge-catalog.js?v=20261123-audit-names2" defer></script>
 <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
-<script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
-<script src="../../assets/js/services/published-topic-service.js" defer></script>
+<script src="../../assets/js/services/lecturer-topic-service.js?v=20261123-merged-8f1631f" defer></script>
+<script src="../../assets/js/services/published-topic-service.js?v=20261123-merged-8f1631f" defer></script>
 <script src="../../assets/js/services/registration-service.js" defer></script>
 <script src="../../assets/js/data/student-profile.js" defer></script>
 <script src="../../assets/js/services/profile-service.js" defer></script>
 <script src="../../assets/js/data/student-projects.js" defer></script>
-<script src="../../assets/js/services/student-topic-codes.js?v=20261122-topic-code" defer></script>
+<script src="../../assets/js/data/student-uit-catalog.js?v=20261123-audit-names2" defer></script>
+<script src="../../assets/js/services/student-topic-codes.js?v=20261123-sv-uit-2" defer></script>
 <script src="../../assets/js/shared/student-course-label.js?v=20261122-course-label" defer></script>
 <script src="../../assets/js/pages/student/open-topic.js?v=20261122-topic-code" defer></script>
-<script src="../../assets/js/pages/student/topic-enrollment.js" defer></script>
+<script src="../../assets/js/pages/student/topic-enrollment.js?v=20261123-members-match-2" defer></script>
 <link rel="stylesheet" href="../../assets/css/topic-enrollment.css">
 <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css" />
 <link rel="stylesheet" href="../../assets/css/student-topic-overview.css" />
@@ -40,8 +41,9 @@
 <link rel="stylesheet" href="../../assets/css/topic-media-shared.css">
   <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script src="../../assets/js/shared/logout.js" defer></script>
+    <link rel="stylesheet" href="../../assets/css/registration-detail.css?v=20261123-members-match-2" />
   </head>
-  <body id="page-top" tabindex="-1" class="registration-page">
+  <body id="page-top" tabindex="-1" class="registration-page registration-detail-page">
     <a class="skip-link" href="#main-content">
       Chuyển đến nội dung chính
     </a>
@@ -150,9 +152,7 @@
           </ol>
         </nav>
         <p class="page-back">
-          <a href="dang-ky-de-tai.html">
-            ← Quay lại danh sách đề tài
-          </a>
+          <a class="back-link" href="dang-ky-de-tai.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 5-7 7 7 7M5 12h14" /></svg><span>Quay lại danh sách đề tài</span></a>
         </p>
         <h1 class="page-header__title">
           Chi tiết đề tài
@@ -164,7 +164,6 @@
         <p data-open-topic-notice role="status" hidden></p>
         <article data-open-topic aria-labelledby="open-topic-title" hidden>
           <div class="detail-layout">
-            <div class="detail-body">
           <div class="overview">
             <div class="topic-image topic-image--uit">
               <img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" />
@@ -181,6 +180,7 @@
               </dl>
             </div>
           </div>
+            <div class="detail-body">
               <section class="panel supervisor" aria-labelledby="supervisor-title">
                 <h3 id="supervisor-title">Giảng viên hướng dẫn</h3>
                 <div class="supervisor__profile">
@@ -230,6 +230,7 @@
               </section>
             </div>
             <div class="detail-sidebar">
+
               <aside class="registration-notes" aria-labelledby="registration-notes-title">
                 <h3 id="registration-notes-title">Lưu ý khi đăng ký</h3>
                 <ol>
@@ -241,7 +242,7 @@
               </aside>
               <section id="topic-registration" class="panel" aria-labelledby="registration-title">
               <h3 id="registration-title">
-                Thông tin đăng ký
+                Nhóm thực hiện
               </h3>
               <form class="registration-form">
                 <p class="registration-form__group-size">Đăng ký từ 1 đến 3 thành viên.</p>
@@ -342,6 +343,7 @@
                 </div>
               </template>
               </section>
+
             </div>
           </div>
         </article>
@@ -392,6 +394,18 @@
       <header><h2 id="registration-confirm-title">Xác nhận đăng ký đề tài</h2><button type="button" commandfor="registration-confirm-dialog" command="close" aria-label="Đóng xác nhận đăng ký">×</button></header>
       <div data-registration-review></div>
       <footer><button type="button" commandfor="registration-confirm-dialog" command="close">Quay lại chỉnh sửa</button><button type="button" data-confirm-registration disabled>Xác nhận đăng ký</button></footer>
+    </dialog>
+      <dialog id="registration-member-dialog" class="registration-member-dialog" aria-labelledby="registration-member-title">
+      <form id="registration-member-form">
+        <header><h2 id="registration-member-title">Thêm thành viên</h2><button type="button" class="registration-member-close" aria-label="Đóng hộp thoại">×</button></header>
+        <div class="registration-member-dialog__body">
+          <div><label for="registration-member-name">Họ tên</label><input id="registration-member-name" placeholder="Nhập họ tên sinh viên" maxlength="100" required autofocus></div>
+          <div><label for="registration-member-code">Mã số sinh viên</label><input id="registration-member-code" placeholder="Nhập mã số sinh viên" maxlength="20" required></div>
+          <div><label for="registration-member-role">Vai trò</label><select id="registration-member-role"><option value="thanh-vien">Thành viên</option><option value="nhom-truong">Nhóm trưởng</option></select></div>
+          <p id="registration-member-error" class="form-error" role="alert" hidden></p>
+        </div>
+        <footer><button type="submit" class="registration-member-save">Thêm thành viên</button></footer>
+      </form>
     </dialog>
   </body>
 </html>

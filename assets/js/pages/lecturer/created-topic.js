@@ -56,15 +56,12 @@
     } else {
       setText('#topic-summary-title', topic.title);
       document.querySelectorAll('.topic-summary__image[role="img"]').forEach(image => image.setAttribute('aria-label', `Chưa có ảnh đại diện cho đề tài ${topic.title}`));
-      const proposalType = { graduation: 'do-an-tot-nghiep', thesis: 'khoa-luan' }[topic.topicType];
-      const fixedCourses = globalThis.IE104.services.proposals?.catalog.types[proposalType]?.courses;
-      const fixedCourse = topic.typeLabel === 'Luận văn thạc sĩ' ? '' : Object.values(fixedCourses || {})[0];
       const semester = topic.semester === '3' || topic.semester === 3 ? 'summer' : topic.semester;
       const year = topic.academicYear?.replace(/\s*[-–]\s*/, ' – ');
       const completion = !topic.finalReportDate && formatDate(topic.completesAt);
       const fields = {
         type: topic.typeLabel,
-        course: fixedCourse || window.UITLecturerCatalog.subjectLabel(topic, true),
+        course: window.UITLecturerCatalog.subjectLabel(topic, true),
         code: topic.displayId || topic.id,
         semester: globalThis.IE104.services.lecturerTopicEditor.catalog.semesters[semester],
         year,
@@ -73,13 +70,29 @@
         final: formatDate(topic.finalReportDate),
         completion,
         deadline: formatDate(topic.registration?.deadline, true),
-        minMembers: topic.registration?.minMembers,
-        maxMembers: topic.registration?.maxMembers,
       };
       for (const [key, value] of Object.entries(fields)) {
         const field = document.querySelector(`[data-topic-field="${key}"]`);
         field.textContent = value || missing;
         field.classList.toggle('is-missing', !value);
+      }
+      const memberRange = document.querySelector('[data-topic-member-range]');
+      const minimum = topic.registration?.minMembers;
+      const maximum = topic.registration?.maxMembers;
+      const hasMinimum = Number.isInteger(minimum) && minimum > 0;
+      const hasMaximum = Number.isInteger(maximum) && maximum > 0;
+      memberRange.replaceChildren();
+      if (hasMinimum && hasMaximum && minimum <= maximum) {
+        const amount = document.createElement('span');
+        amount.textContent = minimum === maximum ? String(minimum) : `${minimum}–${maximum}`;
+        if (minimum !== maximum) memberRange.append('Từ ');
+        memberRange.append(amount, ' thành viên / nhóm');
+      } else if (hasMinimum && !hasMaximum) {
+        memberRange.textContent = `Tối thiểu ${minimum} thành viên / nhóm`;
+      } else if (hasMaximum && !hasMinimum) {
+        memberRange.textContent = `Tối đa ${maximum} thành viên / nhóm`;
+      } else {
+        memberRange.textContent = missing;
       }
       document.querySelector('[data-topic-completion]').hidden = !completion;
       const method = topic.methodAndScope?.trim();

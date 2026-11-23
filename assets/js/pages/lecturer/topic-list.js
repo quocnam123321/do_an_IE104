@@ -59,12 +59,8 @@
         `${topic.displayId || topic.id}`,
         `${topic.courseLabel || topic.typeLabel}`,
         `Học kỳ ${topic.semester === 'summer' ? 'hè' : topic.semester} · ${topic.academicYear.replace(/[-—]/g, '–')}`,
-        kind === 'created' ? createdAt.split('-').reverse().join('/') : `${topic.groupName}`,
+        kind === 'created' ? createdAt.split('T')[0].split('-').reverse().join('/') : topic.representativeName || topic.sourceRecord?.authors?.[0] ? `${topic.representativeName || topic.sourceRecord.authors[0]} · xxxxxxxx` : `${topic.groupName}`,
       ];
-      if (topic.sourceRecord && !topic.demo && kind === 'supervised') {
-        values.splice(0, values.length, `${topic.displayId || topic.id}`, `${topic.sourceRecord.authors.join(', ')}`,
-          `${topic.sourceRecord.advisors.join(', ') || 'Chưa công bố trong nguồn'}`, `${topic.typeLabel}${topic.sourceRecord.cohort ? ' - Khóa ' + topic.sourceRecord.cohort : ' - Năm ' + topic.sourceRecord.year}`);
-      }
       card.querySelectorAll('.topic-card__meta-text').forEach((node, index) => { node.textContent = values[index]; });
       if (kind === 'created') {
         const row = card.querySelectorAll('.topic-card__meta-text')[3]?.closest('.topic-card__meta-item');

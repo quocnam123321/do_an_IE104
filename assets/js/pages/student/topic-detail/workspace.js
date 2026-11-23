@@ -3,7 +3,7 @@
   const root = document.querySelector('[data-project-content]');
   const notice = document.querySelector('[data-project-notice]');
   if (!root || !notice || !app?.services?.approvedProjects) return;
-  const projectId = new URLSearchParams(location.search).get('project') ?? 'DA001';
+  const projectId = new URLSearchParams(location.search).get('project') ?? app.data.myTopics[0]?.id ?? 'DA001';
   const sample = app.data.myTopics.find(topic => topic.id === projectId);
   const overview = Object.hasOwn(app.data.studentProjectOverviews, projectId)
     ? app.data.studentProjectOverviews[projectId]
@@ -123,7 +123,7 @@
       host.removeAttribute('data-student-submissions');
       return;
     }
-    if (!overview) return;
+    if (!overview?.submissionTemplate) return;
     const template = document.getElementById(overview.submissionTemplate);
     host.replaceWith(template.content.cloneNode(true));
     const dialogs = document.getElementById('sample-submission-dialogs');

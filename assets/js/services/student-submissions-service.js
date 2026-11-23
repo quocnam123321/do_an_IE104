@@ -9,7 +9,7 @@
       throw new Error('Sinh viên hiện tại không thuộc nhóm thực hiện đề tài này.');
     }
 
-    const record = app.storage.readTeachingRecords().find(item => item.projectId === projectId);
+    const record = app.storage.readTeachingRecords().find(item => item.projectId === projectId) || app.data.teachingSeeds?.find(item => item.projectId === projectId);
     const completed = team.project.status === 'hoan-thanh';
     const canUpload = team.project.status === 'dang-thuc-hien';
     const submissionsLocked = Boolean(record?.submissionsLocked);
@@ -113,6 +113,42 @@
     } catch (failure) {
       if (failure === conflict) throw conflict;
       throw new Error('Chưa lưu được bài nộp. Hãy kiểm tra dung lượng trình duyệt và thử lại.');
+    }
+    const submissions = app.storage.readTeachingRecords();
+    const initial = submissions.find(item => item.projectId === projectId) || app.data.teachingSeeds?.find(item => item.projectId === projectId);
+    if (initial) {
+      let teaching = JSON.parse(JSON.stringify(initial));
+      const submissionId = `SV-UP-${requirement.id}`;
+      let previous = teaching.submissions.find(item => item.id === submissionId);
+      const fileName = files.length === 1 ? files[0].name : `bai-nop-${requirement.id}.zip`;
+      const blob = files.length === 1 ? files[0] : await app.ui.createSubmissionZip(files);
+      await new Promise((resolve, reject) => {
+        const opening = indexedDB.open('ie104.demo.submission-files', 1);
+        opening.onupgradeneeded = () => opening.result.createObjectStore('files', { keyPath: ['projectId', 'submissionId'] });
+        opening.onerror = () => reject(new Error('Chưa lưu được tệp để giảng viên tải xuống.'));
+        opening.onblocked = () => reject(new Error('Kho tệp đang được sử dụng ở tab khác.'));
+        opening.onsuccess = () => {
+          const db = opening.result;
+          const transaction = db.transaction('files', 'readwrite');
+          transaction.objectStore('files').put({ projectId, submissionId, fileName, submittedAt: record.submittedAt, blob });
+          transaction.oncomplete = () => { db.close(); resolve(); };
+          transaction.onerror = () => { db.close(); reject(new Error('Chưa lưu được nội dung tệp.')); };
+        };
+      });
+      const latestRecords = app.storage.readTeachingRecords();
+      const latest = latestRecords.find(item => item.projectId === projectId);
+      if (latest) teaching = JSON.parse(JSON.stringify(latest));
+      const currentState = forStudent(projectId);
+      const currentRequirement = currentState.requirements.find(item => item.id === requirement.id);
+      if (!currentState.canUpload || currentState.submissionsLocked || !currentRequirement || currentRequirement.locked) throw new Error('Yêu cầu đã thay đổi hoặc bị khóa. Hãy tải lại bài nộp.');
+      previous = teaching.submissions.find(item => item.id === submissionId);
+      teaching.submissions = teaching.submissions.filter(item => item.id !== submissionId);
+      teaching.submissions.push({ id: submissionId, requirementId: requirement.id, title: record.title,
+        fileName, submittedAt: record.submittedAt, studentNote: record.notes, source: 'student-upload',
+        feedback: '', feedbackHistory: [...(previous?.feedbackHistory || []), ...(previous?.feedback ? [{ content: previous.feedback, at: previous.feedbackAt, authorId: previous.feedbackBy }] : [])] });
+      teaching.revision += 1;
+      teaching.audit.push({ action: 'student-upload', targetId: submissionId, actorId: app.data.currentStudent.code, at: record.submittedAt });
+      app.storage.writeTeachingRecords([...latestRecords.filter(item => item.projectId !== projectId), teaching]);
     }
     return record;
   }

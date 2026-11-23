@@ -86,7 +86,7 @@
         .filter(record => ['da-dang-ky', 'da-duyet'].includes(record.status));
     } catch (failure) { warnings.push(failure.message); }
     let samples = app.data?.openTopics || [];
-    try { samples = globalThis.TeacherTopicStore?.studentTopics(samples) || samples; }
+    try { samples = app.data.studentUITCatalog ? [] : globalThis.TeacherTopicStore?.studentTopics(samples) || samples; }
     catch (failure) { warnings.push(failure.message); samples = []; }
     const key = app.topicIdentity?.titleKey;
     const registeredIds = new Set(registrations.map(record => record.topic.id));

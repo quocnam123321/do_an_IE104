@@ -55,7 +55,7 @@
         `chi-tiet-de-tai-dang-huong-dan-giang-vien.html?project=${encodeURIComponent(project.id)}`, 'Xem chi tiết', `teaching-topic-${index}`));
     const proposals = store.getAll().filter(proposal => proposal.status === 'approved').map(record =>
       createCard(record, record.supervisionRole === 'dong-huong-dan' ? 'secondary' : 'primary',
-        record.course, record.groupName || `${record.studentName} · ${record.studentId}`,
+        record.course, record.groupName || `${record.studentName} · xxxxxxxx`,
         `chi-tiet-de-xuat-giang-vien.html?ma=${encodeURIComponent(record.id)}&return=danh-sach-de-tai-dang-huong-dan.html`,
         'Xem đề xuất đã duyệt', `approved-${record.id.toLowerCase()}-title`));
     list.replaceChildren(...projects, ...proposals);

@@ -50,7 +50,7 @@
       (project.workspaceId && project.sourceRecord
         ? app.services.lecturerTopics.detailUrl(project)
         : `chi-tiet-de-tai-dang-huong-dan-giang-vien.html?project=${encodeURIComponent(project.id)}`) + '#tien-do');
-    const group = element('p', 'Nhóm thực hiện: ' + window.UITLecturerCatalog.groupLabel(project));
+    const group = element('p', 'Nhóm thực hiện: ' + (window.UITLecturerCatalog?.groupLabel(project) || project.groupName || 'Chưa có nhóm thực hiện'));
     let detail;
     try {
       const sample = project.sourceRecord?.supervision?.tasks;
@@ -82,7 +82,7 @@
       `overview-${pending ? 'request' : 'approved'}-${index}`, record.title, record.topicId,
       pending ? 'Xem đề xuất' : 'Xem đề xuất đã duyệt',
       `chi-tiet-de-xuat-giang-vien.html?ma=${encodeURIComponent(record.id)}${pending ? '' : '&return=danh-sach-de-tai-dang-huong-dan.html'}`);
-    link.before(element('p', `Sinh viên: ${record.studentName} · ${record.studentId}`));
+    link.before(element('p', `Sinh viên: ${record.studentName} · xxxxxxxx`));
     if (pending) {
       article.querySelector('h3').after(element('p', 'Chờ duyệt', 'status-badge'));
       const submitted = element('p', 'Ngày gửi: ');

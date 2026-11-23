@@ -126,7 +126,7 @@
       if (!canUpdateTask({ ...state, team }, task)) throw new Error('Bạn chỉ được cập nhật công việc được phân công cho mình.');
       task.status = value.status;
       task.percent = value.percent;
-      state.history.unshift({ ...value, id: newId('UPDATE'), taskTitle: task.title, actorCode: app.data.currentStudent.code, actorName: app.data.currentStudent.name, createdAt: new Date().toISOString() });
+      state.history.unshift({ ...value, id: newId('UPDATE'), taskTitle: task.title, actorCode: app.data.currentStudent.code, actorName: team.members.find(member => member.code === app.data.currentStudent.code)?.name || app.data.currentStudent.name, createdAt: new Date().toISOString() });
     });
   }
 

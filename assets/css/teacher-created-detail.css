@@ -56,11 +56,7 @@
   margin-block-start: var(--space-2);
 }
 
-.teacher-created-detail-page .topic-members {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-4) var(--space-6);
-}
+
 
 .teacher-created-detail-page .request-detail .topic-editor-status {
   margin-block: 0;
@@ -76,4 +72,22 @@
 
 .teacher-created-detail-page :is(.registration-close-button, .registration-reopen-button):hover {
   background: var(--button-secondary-bg-hover);
+}
+
+
+
+
+
+
+
+
+.teacher-created-detail-page .request-detail .topic-member-range {
+  margin: 0;
+  color: var(--color-foreground);
+  font-size: var(--text-base);
+  line-height: 1.65;
+}
+.teacher-created-detail-page .topic-member-range span {
+  font-weight: var(--weight-regular);
+  font-variant-numeric: tabular-nums;
 }

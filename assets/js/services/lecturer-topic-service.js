@@ -70,7 +70,7 @@
   }
 
   function detailUrl(record) {
-    return record.kind === 'created' ? `chi-tiet-de-tai-da-tao-giang-vien.html?topic=${encodeURIComponent(record.id)}` : record.sourceRecord ? `chi-tiet-de-tai-dang-huong-dan-giang-vien.html?topic=${encodeURIComponent(record.id)}`
+    return record.kind === 'created' ? `chi-tiet-de-tai-da-tao-giang-vien.html?topic=${encodeURIComponent(record.id)}` : record.sourceRecord && !record.sharedStudentProject ? `chi-tiet-de-tai-dang-huong-dan-giang-vien.html?topic=${encodeURIComponent(record.id)}`
       : `chi-tiet-de-tai-dang-huong-dan-giang-vien.html?project=${encodeURIComponent(record.workspaceId)}`;
   }
 

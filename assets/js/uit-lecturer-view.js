@@ -25,9 +25,9 @@
       'mo-ta': record.description,
       'muc-tieu': record.objectives.join('\n'),
       'yeu-cau-thuc-hien': record.requirements?.join('\n') || '[Yêu cầu thực hiện]',
-      'ho-ten-giang-vien': 'Nguyễn Văn A',
+      'ho-ten-giang-vien': record.demoSupervisor?.name || 'Chưa có thông tin',
       'khoa-bo-mon': record.faculty,
-      'email-lien-he': 'giangvien@example.com',
+      'email-lien-he': record.demoSupervisor?.email || '',
       'cong-nghe-goi-y': record.technology || '[Công nghệ gợi ý]',
     };
     for (const [id, value] of Object.entries(fields)) {
@@ -68,7 +68,7 @@
     link.href = record.summaryUrl || record.sourceUrl; link.target = '_blank'; link.rel = 'noopener noreferrer';
     link.textContent = record.summaryUrl ? 'Xem tóm tắt tại nguồn UIT' : 'Xem hồ sơ tại nguồn UIT'; paragraph.append(link); description.append(paragraph);
   }
-  const supervisor = ['Nguyễn Văn A', record.faculty, 'giangvien@example.com', 'Khoa học dữ liệu và Hệ thống thông tin'];
+  const supervisor = [record.demoSupervisor?.name, record.faculty, record.demoSupervisor?.email, record.demoSupervisor?.research];
   document.querySelectorAll('.topic-supervisor__details dd').forEach((node, index) => { node.textContent = supervisor[index] || 'Chưa có thông tin'; });
   const work = kind === 'supervised' ? record.supervision : undefined;
   if (work) window.IE104.ui.renderSupervisedDemo(record);

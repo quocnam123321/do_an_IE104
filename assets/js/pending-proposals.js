@@ -94,7 +94,7 @@
     const fields = [
       ['code', proposal.id],
       ['course', `${window.UITLecturerCatalog.subjectLabel(proposal)}`],
-      ['student', `${proposal.studentName} · ${proposal.studentId}`],
+      ['student', `${proposal.studentName} · xxxxxxxx`],
       ['role', [proposal.supervisionRoleLabel, proposal.supervisorName].filter(Boolean).join(' · ')],
     ];
     for (const [name, value] of fields) {

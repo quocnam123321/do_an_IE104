@@ -1609,6 +1609,7 @@ window.UITLecturerCatalog = {
     const graduation = sample.id.startsWith('ISEDATN');
     const supervised = !createdOnly;
     const record = {
+      ...catalog.records.find(item => item.id === sample.id),
       ...sample, code: sample.id, demo: true, source: 'illustrative',
       type: graduation ? 'Đồ án tốt nghiệp' : 'Đồ án môn học', topicType: graduation ? 'graduation' : 'course',
       courseLabel: courses[sample.course] || 'Không áp dụng', faculty: 'Khoa Khoa học và Kỹ thuật Thông tin',
@@ -1861,4 +1862,33 @@ window.UITLecturerCatalog = {
     work.criteria = [...guide.criteria];
     work.comment = 'Nhóm cần làm rõ các quyết định trong hồ sơ và đối chiếu kết quả với phạm vi, mục tiêu đã đặt ra.';
   }
+})();
+
+(() => {
+  const catalog = window.UITLecturerCatalog;
+  const faculty = 'Khoa Khoa học và Kỹ thuật Thông tin';
+  catalog.demoLecturers = [
+    { name: 'Nguyễn Gia Tuấn Anh', email: 'anhngt@uit.edu.vn', faculty, research: 'Dữ liệu và hệ thống thông tin' },
+    { name: 'Nguyễn Thị Anh Thư', email: 'thunta@uit.edu.vn', faculty, research: 'Khoa học dữ liệu và học máy' },
+    { name: 'Võ Tấn Khoa', email: 'khoavt@uit.edu.vn', faculty, research: 'Ứng dụng web, di động và học sâu' },
+    { name: 'Lưu Thanh Sơn', email: 'sonlt@uit.edu.vn', faculty, research: 'Quản lý thông tin' },
+    { name: 'Tạ Thu Thủy', email: 'thuthuyt@uit.edu.vn', faculty, research: 'Quản lý dữ liệu và thông tin' },
+  ];
+  const sampleTeams = [
+    ['Phạm Minh Đức', 'Vũ Hoàng Nam'],
+    ['Nguyễn Hoàng Phúc', 'Trần Ngọc Hân'],
+    ['Lê Quốc Huy', 'Phan Minh Châu'],
+    ['Đỗ Tuấn Kiệt', 'Nguyễn Bảo Trân'],
+    ['Trương Gia Bảo', 'Võ Thanh Trúc'],
+    ['Bùi Nhật Minh', 'Lê Phương Thảo'],
+  ];
+  catalog.records.forEach((record, index) => {
+    if (record.authors?.some(name => /^Nguyễn Văn [AB]$/.test(name))) {
+      const names = sampleTeams[index % sampleTeams.length];
+      record.authors = record.authors.map((name, memberIndex) => /^Nguyễn Văn [AB]$/.test(name) ? names[memberIndex % names.length] : name);
+    }
+    const course = catalog.courseKey(record.course);
+    const selected = course === 'web' ? 2 : course === 'database' || course === 'IE103' ? 0 : course === 'IE101' ? 1 : course === 'IE105' ? 3 : index % catalog.demoLecturers.length;
+    record.demoSupervisor = { ...catalog.demoLecturers[selected] };
+  });
 })();

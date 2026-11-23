@@ -32,7 +32,7 @@
   const created = catalog.records.filter(record => catalog.created.includes(record.id)).map(record => ({
     ...shared(record),
     kind: 'created',
-    supervisor: { name: 'Nguyễn Văn A', faculty: record.faculty, email: 'giangvien@example.com', research: 'Khoa học dữ liệu và Hệ thống thông tin' },
+    supervisor: { ...(record.demoSupervisor || { name: 'Chưa có thông tin', faculty: record.faculty, email: '', research: '' }) },
     status: record.status || 'open',
     statusLabel: record.status === 'closed' ? 'Đã đóng đăng ký' : 'Đang mở đăng ký',
     createdAt: record.createdAt || '',

@@ -289,6 +289,11 @@
     body.append(details, actions);
 
     card.append(header, body, error, element('p', 'Đã lưu trên trình duyệt', 'student-submission-status'));
+    if (record.feedback) {
+      const feedback = element('details');
+      feedback.append(element('summary', 'Xem phản hồi'), element('p', record.feedback, 'student-submission-content'));
+      card.append(feedback);
+    }
     if (record.notes) {
       const notes = element('details');
       notes.append(element('summary', 'Ghi chú cho giảng viên'),
@@ -446,15 +451,17 @@
           item.locked ? 'Đã khóa nhận bài' : state.completed ? 'Đề tài đã hoàn thành' : 'Chưa nộp';
         return requirementCard({ ...item, deadline: time(item.deadline), canUpload: !item.locked && state.canUpload }, badge, status);
       });
-      const local = [...uploads.values()].filter(record => deadlines.has(record.requirementId));
+      const local = [...uploads.values()].filter(record => deadlines.has(record.requirementId)).map(record => ({ ...record, feedback: state.submissions.find(item => item.id === `SV-UP-${record.requirementId}` && item.submittedAt === record.submittedAt)?.feedback || '' }));
+      const remote = state.submissions.filter(item => !local.some(record => item.id === `SV-UP-${record.requirementId}` && item.submittedAt === record.submittedAt));
       const submissions = board('Bài nộp của nhóm', 'submissions', [
-        { label: 'Chờ phản hồi', variant: 'warning', items: [...local, ...state.submissions.filter(item => !item.feedback)] },
-        { label: 'Đã phản hồi', variant: 'success', items: state.submissions.filter(item => item.feedback) },
+        { label: 'Chờ phản hồi', variant: 'warning', items: [...local.filter(item => !item.feedback), ...remote.filter(item => !item.feedback)] },
+        { label: 'Đã phản hồi', variant: 'success', items: [...local.filter(item => item.feedback), ...remote.filter(item => item.feedback)] },
       ], item => item.files ? localSubmissionCard(item, deadlines.get(item.requirementId)) :
         detailCard(item.id, item.title, item.feedback ? 'Đã phản hồi' : 'Chờ phản hồi', item.submittedAt, 'Thời điểm nộp:', [
         element('p', item.fileName || 'Chưa có tên tệp.'),
         element('p', item.feedback || 'Chưa có phản hồi của giảng viên.', 'student-submission-content'),
       ], item.late === null ? null : item.late ? 'late' : 'success'));
+      notice.hidden = Boolean(app.data.studentUITCatalog?.myIds.some(id => app.data.studentUITCatalog.projectId(id) === document.body.dataset.projectId));
       host.replaceChildren(notice, requirements, submissions);
       for (const card of host.querySelectorAll('[data-record-id]')) {
         if (card.matches('details')) card.open = open.has(card.dataset.recordId);

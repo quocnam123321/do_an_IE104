@@ -29,7 +29,7 @@
     if (proposalId) code.previousElementSibling.querySelector('.visually-hidden').textContent = 'Mã đề xuất';
     code.textContent = displayId || proposalId || 'Chưa có mã đề tài';
     course.textContent = app.ui.studentCourseLabel(topic);
-    lecturer.textContent = topic.lecturer;
+    lecturer.textContent = topic.representativeName ? `${topic.representativeName} · xxxxxxxx` : topic.lecturer;
     group.textContent = topic.groupName;
     const semester = topic.semester ? `Học kỳ ${topic.semester}` : 'Học kỳ chưa xác định';
     period.textContent = [semester, topic.academicYear.replace('-', '–')].filter(Boolean).join(' • ');

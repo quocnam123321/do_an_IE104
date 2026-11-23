@@ -26,6 +26,23 @@
   const errorBox = document.getElementById('registration-error');
   const resultBox = document.getElementById('registration-result');
   const availability = document.querySelector('[data-published-availability]');
+  const memberDialog = document.getElementById('registration-member-dialog');
+  const memberForm = document.getElementById('registration-member-form');
+  const memberName = document.getElementById('registration-member-name');
+  const memberCode = document.getElementById('registration-member-code');
+  const memberRole = document.getElementById('registration-member-role');
+  const memberError = document.getElementById('registration-member-error');
+  let editingCard = null;
+  let memberOpener = add;
+  const heading = document.createElement('div');
+  heading.className = 'registration-group-heading';
+  const title = document.getElementById('registration-title');
+  title.before(heading);
+  heading.append(title, add);
+  add.setAttribute('aria-haspopup', 'dialog');
+  add.setAttribute('aria-controls', memberDialog.id);
+  form.querySelector('fieldset > legend').classList.add('visually-hidden');
+  form.querySelector('#group-name').closest('div').classList.add('registration-group-name');
   let nextIndex = 2;
   let pending;
   let pendingRevision;
@@ -81,7 +98,10 @@
     });
     errorBox.textContent = errors.map(error => error.message).filter((message, index, all) => all.indexOf(message) === index).join(' ');
     errorBox.hidden = false;
-    (first || studentRole).focus();
+    const card = first?.closest('.member-card');
+    if (card && first.closest('.member-fields')) openMember(card, card.querySelector('.registration-member-edit'));
+    else if (first) first.focus();
+    else openMember(cards()[0], cards()[0].querySelector('.registration-member-edit'));
   }
 
   function refreshMembers() {
@@ -91,18 +111,35 @@
     studentRole.querySelector('option[value="thanh-vien"]').disabled = solo;
     all.slice(1).forEach((card, index) => {
       const label = `Thành viên ${index + 2}`;
-      card.querySelector('strong').textContent = label;
+      card.querySelector('.member-heading strong').textContent = label;
       const remove = card.querySelector('.remove-member');
       remove.disabled = false;
       remove.setAttribute('aria-label', `Xóa ${label.toLocaleLowerCase('vi')}`);
       card.querySelectorAll('input').forEach(input => { input.required = true; });
     });
-    groupSize.textContent = rules.maxMembers === 1 ? 'Đăng ký cá nhân.' : `Đăng ký từ 1 đến ${rules.maxMembers} thành viên.`;
+    groupSize.textContent = rules.maxMembers === 1 ? 'Đề tài đăng ký cá nhân.' : `Đề tài cho phép tối đa ${rules.maxMembers} thành viên, bao gồm nhóm trưởng${rules.minMembers > 1 ? `. Nhóm cần ít nhất ${rules.minMembers} thành viên` : ''}.`;
+    const limitText = document.createElement('span');
+    limitText.textContent = groupSize.textContent;
+    const info = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    info.setAttribute('viewBox', '0 0 24 24');
+    info.setAttribute('fill', 'none');
+    info.setAttribute('stroke', 'currentColor');
+    info.setAttribute('stroke-width', '1.75');
+    info.setAttribute('aria-hidden', 'true');
+    const circle = document.createElementNS(info.namespaceURI, 'circle');
+    circle.setAttribute('cx', '12'); circle.setAttribute('cy', '12'); circle.setAttribute('r', '9');
+    const path = document.createElementNS(info.namespaceURI, 'path');
+    path.setAttribute('d', 'M12 11v6M12 7v1');
+    info.append(circle, path);
+    groupSize.replaceChildren(info, limitText);
+    all.forEach(renderMember);
     add.disabled = all.length >= rules.maxMembers;
   }
 
   function showSaved(record) {
     form.hidden = true;
+    add.hidden = true;
+    if (memberDialog.open) memberDialog.close();
     if (availability) availability.hidden = true;
     resultBox.hidden = false;
     errorBox.hidden = true;
@@ -134,6 +171,7 @@
         showSaved(record);
       } else {
         form.hidden = false;
+        add.hidden = false;
         if (availability) availability.hidden = false;
         resultBox.hidden = true;
         const topic = service.getTopic(topicId);
@@ -141,7 +179,7 @@
         refreshMembers();
         const unavailable = !topic || topic.status === 'closed' || (topic.source === 'lecturer-created' && !topic.availability.allowed);
         submit.disabled = unavailable;
-        if (unavailable) { availabilityError = true; errorBox.textContent = topic?.availability?.reason || 'Đề tài không còn mở đăng ký.'; errorBox.hidden = false; add.disabled = true; if (dialog.open) dialog.close(); }
+        if (unavailable) { availabilityError = true; errorBox.textContent = topic?.availability?.reason || 'Đề tài không còn mở đăng ký.'; errorBox.hidden = false; add.disabled = true; if (memberDialog.open) memberDialog.close(); if (dialog.open) dialog.close(); }
         else if (availabilityError) { errorBox.hidden = true; availabilityError = false; }
       }
     } catch (error) {
@@ -183,19 +221,123 @@
     dialog.showModal();
   }
 
-  add.addEventListener('click', () => {
-    if (cards().length >= rules.maxMembers) return;
-    clearErrors();
-    const fragment = template.content.cloneNode(true);
-    fragment.querySelectorAll('*').forEach(node => {
-      for (const attribute of ['id', 'name', 'for', 'aria-labelledby']) {
-        if (node.hasAttribute(attribute)) node.setAttribute(attribute, node.getAttribute(attribute).replaceAll('INDEX', String(nextIndex)));
+  function renderMember(card) {
+    const fields = card.querySelector('.member-fields');
+    fields.hidden = true;
+    card.querySelector('.member-heading').hidden = true;
+    const code = card.querySelector('input[name$="mssv"], #student-code');
+    const name = card.querySelector('input[name$="ho-ten"], #student-name');
+    let summary = card.querySelector('.registration-member-summary');
+    if (!summary) {
+      summary = document.createElement('div');
+      summary.className = 'registration-member-summary';
+      const avatar = document.createElement('span');
+      avatar.className = 'registration-member-avatar';
+      avatar.setAttribute('aria-hidden', 'true');
+      const identity = document.createElement('div');
+      identity.className = 'registration-member-identity';
+      identity.append(document.createElement('strong'), document.createElement('span'));
+      const actions = document.createElement('div');
+      actions.className = 'registration-member-actions';
+      const edit = document.createElement('button');
+      edit.type = 'button';
+      edit.className = 'registration-member-edit';
+      edit.textContent = 'Sửa';
+      edit.setAttribute('aria-haspopup', 'dialog');
+      edit.setAttribute('aria-controls', memberDialog.id);
+      edit.addEventListener('click', () => openMember(card, edit));
+      actions.append(edit);
+      const remove = card.querySelector('.remove-member');
+      if (remove) actions.append(remove);
+      summary.append(avatar, identity, actions);
+      card.prepend(summary);
+      const role = card.querySelector('select');
+      const roleLabel = card.querySelector(`label[for="${role.id}"]`);
+      roleLabel.classList.add('visually-hidden');
+      role.parentElement.hidden = true;
+      const roleText = document.createElement('p');
+      roleText.className = 'registration-member-role-text';
+      identity.append(roleText);
+      card.querySelector(':scope > p')?.remove();
+    }
+    const parts = name.value.trim().split(/\s+/).filter(Boolean);
+    summary.querySelector('.registration-member-avatar').textContent = parts.slice(-2).map(part => part[0]).join('').toLocaleUpperCase('vi');
+    summary.querySelector('strong').textContent = name.value;
+    summary.querySelector('.registration-member-role-text').textContent = card.querySelector('select').value === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
+    summary.querySelector('.registration-member-identity > span').textContent = ` · ${code.value}`;
+    summary.querySelector('.registration-member-edit').setAttribute('aria-label', `Sửa thành viên ${name.value}`);
+    const remove = summary.querySelector('.remove-member');
+    if (remove) { remove.disabled = false; remove.setAttribute('aria-label', `Xóa thành viên ${name.value}`); }
+  }
+
+  function openMember(card = null, opener = add) {
+    if (!card && (add.disabled || cards().length >= rules.maxMembers)) return;
+    editingCard = card;
+    memberOpener = opener;
+    memberForm.reset();
+    memberRole.value = card ? card.querySelector('select').value : 'thanh-vien';
+    memberError.hidden = true;
+    memberName.removeAttribute('aria-invalid');
+    memberCode.removeAttribute('aria-invalid');
+    memberRole.removeAttribute('aria-invalid');
+    document.getElementById('registration-member-title').textContent = card ? 'Sửa thành viên' : 'Thêm thành viên';
+    memberForm.querySelector('[type="submit"]').textContent = card ? 'Lưu thay đổi' : 'Thêm thành viên';
+    if (card) {
+      memberName.value = card.querySelector('input[name$="ho-ten"], #student-name').value;
+      memberCode.value = card.querySelector('input[name$="mssv"], #student-code').value;
+    }
+    memberDialog.showModal();
+    memberName.focus();
+  }
+
+  add.addEventListener('click', () => openMember());
+  memberForm.noValidate = true;
+  memberForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const value = readValue();
+    const index = editingCard ? cards().indexOf(editingCard) : value.members.length;
+    const candidate = { name: memberName.value, code: memberCode.value, role: memberRole.value };
+    if (editingCard) value.members[index] = candidate;
+    else value.members.push(candidate);
+    if (candidate.role === 'nhom-truong') value.members.forEach((member, other) => { if (other !== index) member.role = 'thanh-vien'; });
+    const checked = service.validateEnrollment(value, rules);
+    const errors = checked.errors.filter(error => error.field.startsWith(`members.${index}.`) || (!editingCard && error.field === 'members' && value.members.length > rules.maxMembers));
+    if (value.members.some((member, other) => other !== index && member.code.trim().toUpperCase() === candidate.code.trim().toUpperCase()) && !errors.some(error => error.message === 'MSSV này đã có trong nhóm.')) errors.push({ field: `members.${index}.code`, message: 'MSSV này đã có trong nhóm.' });
+    if (!value.members.some(member => member.role === 'nhom-truong')) errors.push({ field: `members.${index}.role`, message: 'Nhóm cần một nhóm trưởng. Hãy chọn một thành viên khác làm nhóm trưởng trước.' });
+    for (const field of [memberName, memberCode, memberRole]) field.removeAttribute('aria-invalid');
+    if (errors.length) {
+      memberError.textContent = errors.map(error => error.message).join(' ');
+      memberError.hidden = false;
+      for (const error of errors) {
+        const field = error.field.endsWith('.name') ? memberName : error.field.endsWith('.role') ? memberRole : memberCode;
+        field.setAttribute('aria-invalid', 'true');
+        field.setAttribute('aria-describedby', memberError.id);
       }
-    });
-    nextIndex += 1;
-    extra.append(fragment);
+      (errors[0].field.endsWith('.name') ? memberName : errors[0].field.endsWith('.role') ? memberRole : memberCode).focus();
+      return;
+    }
+    if (!editingCard) {
+      const fragment = template.content.cloneNode(true);
+      fragment.querySelectorAll('*').forEach(node => {
+        for (const attribute of ['id', 'name', 'for', 'aria-labelledby']) {
+          if (node.hasAttribute(attribute)) node.setAttribute(attribute, node.getAttribute(attribute).replaceAll('INDEX', String(nextIndex)));
+        }
+      });
+      nextIndex += 1;
+      extra.append(fragment);
+      editingCard = extra.lastElementChild;
+    }
+    const normalized = checked.value.members[index];
+    editingCard.querySelector('input[name$="ho-ten"], #student-name').value = normalized.name;
+    editingCard.querySelector('input[name$="mssv"], #student-code').value = normalized.code;
+    cards().forEach((card, memberIndex) => { card.querySelector('select').value = checked.value.members[memberIndex].role; });
+    clearErrors();
     refreshMembers();
-    extra.lastElementChild.querySelector('input').focus();
+    memberDialog.close();
+  });
+  memberDialog.querySelector('.registration-member-close').addEventListener('click', () => memberDialog.close());
+  memberDialog.addEventListener('close', () => {
+    (memberOpener?.isConnected && !memberOpener.disabled ? memberOpener : form.querySelector('.registration-member-edit')).focus();
   });
   extra.addEventListener('click', event => {
     const button = event.target.closest('.remove-member');

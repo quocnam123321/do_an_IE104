@@ -24,7 +24,14 @@
   }
 
   function refreshLecturers() {
-    try { const select = document.getElementById('lecturer-filter'); for (const topic of app.services.publishedTopics?.list() || []) if (![...select.options].some(option => option.value === topic.lecturer)) select.add(new Option(topic.lecturer,topic.lecturer)); } catch {}
+    try {
+      const select = document.getElementById('lecturer-filter');
+      const value = select.value;
+      const topics = app.services.topics.listOpenTopics({}, { pageSize: 10000 }).items;
+      const names = [...new Set(topics.map(topic => topic.lecturer).filter(Boolean))];
+      select.replaceChildren(new Option('Tất cả giảng viên', ''), ...names.map(name => new Option(name, name)));
+      if (names.includes(value)) select.value = value;
+    } catch {}
   }
   refreshLecturers();
   window.addEventListener('storage',event => { if ([app.services.lecturerTopicRepository?.key,null].includes(event.key)) refreshLecturers(); });
