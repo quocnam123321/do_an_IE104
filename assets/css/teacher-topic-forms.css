@@ -1,3 +1,8 @@
+[data-lecturer-topic-editor="create"] .back-navigation,
+[data-lecturer-topic-editor="create"] .back-navigation + .page-header {
+  margin-block-start: var(--space-4);
+}
+
 .teacher-topic-form-page .page-header {
   display: flex;
   align-items: center;
@@ -15,7 +20,6 @@
 }
 
 .teacher-topic-form,
-.teacher-topic-form__layout,
 .teacher-topic-form__grid,
 .topic-edit-form__sidebar {
   display: grid;
@@ -28,29 +32,88 @@
   gap: var(--space-6);
 }
 
-.teacher-topic-form__panel {
+.teacher-topic-form__panel,
+.teacher-topic-form__section {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
   min-inline-size: 0;
+}
+
+.teacher-topic-form__panel {
   padding: var(--space-4);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-surface);
   background: var(--color-surface);
 }
 
-.teacher-topic-form__panel > :is(legend, h2) {
+#create-topic-form > .teacher-topic-form__panel {
+  gap: var(--space-6);
+}
+
+.teacher-topic-form__section {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+:is(.teacher-topic-form__panel, .teacher-topic-form__section) > :is(legend, h2) {
   color: var(--color-heading);
   font-size: var(--font-size-section-title);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-tight);
 }
 
-fieldset.teacher-topic-form__panel > legend {
+.teacher-topic-form .topic-required { color: var(--color-danger-fg); }
+.topic-form__field-error {
+  margin-block-start: var(--space-2);
+  color: var(--color-danger-fg);
+  font-size: var(--font-size-secondary);
+  overflow-wrap: anywhere;
+}
+
+.topic-form__basic .topic-form__hint {
+  margin-block-start: var(--space-2);
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+}
+
+.topic-form__basic select:has(option[value=""]:checked) { color: var(--color-muted-foreground); }
+.teacher-topic-form .proposal-picker-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  padding-block: var(--space-2);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  line-height: 1.5;
+}
+
+.topic-form__basic .proposal-date-control button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: var(--control-min-height);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+}
+
+fieldset:is(.teacher-topic-form__panel, .teacher-topic-form__section) > legend {
   float: inline-start;
   width: 100%;
-  margin-block-end: var(--space-4);
   padding: 0;
+}
+
+fieldset.teacher-topic-form__panel > legend {
+  margin-block-end: var(--space-4);
+}
+
+.teacher-topic-form__section + .teacher-topic-form__section > :is(legend, h2) {
+  padding-block-start: var(--space-4);
+  border-block-start: 1px solid var(--color-border);
 }
 
 .teacher-topic-form label {
@@ -84,12 +147,22 @@ fieldset.teacher-topic-form__panel > legend {
   resize: vertical;
 }
 
+.teacher-topic-form .topic-form__content textarea {
+  min-block-size: 6.5rem;
+  line-height: 1.5;
+}
+
+.teacher-topic-form .topic-form__content textarea::placeholder {
+  font-size: var(--font-size-secondary);
+}
+
 .teacher-topic-form :is(input, textarea)::placeholder {
   color: var(--color-muted-foreground);
   opacity: 1;
 }
 
-.teacher-topic-form :is(input, select, textarea):user-invalid {
+.teacher-topic-form :is(input, select, textarea):user-invalid,
+#create-topic-form :is(input, select, textarea)[aria-invalid="true"] {
   border-color: var(--color-danger-fg);
 }
 
@@ -123,50 +196,46 @@ fieldset.teacher-topic-form__panel > legend {
   background: var(--color-info-bg);
 }
 
-.teacher-topic-form .topic-supervisor__details dt {
-  color: var(--color-muted-foreground);
-  font-size: var(--font-size-secondary);
-}
-
-.teacher-topic-form .topic-supervisor__details {
-  display: grid;
-  gap: var(--space-3);
-  overflow-wrap: anywhere;
-}
-
-.teacher-topic-form .topic-supervisor__details dt {
-  font-weight: var(--font-weight-medium);
-}
-
-.teacher-topic-form .topic-supervisor__details dd {
-  margin: 0;
-}
-
 .teacher-topic-form .topic-image {
   margin: 0;
 }
 
-.teacher-topic-form .teacher-topic-form__button {
+.topic-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.teacher-topic-form .topic-form__submit {
   display: inline-flex;
   min-block-size: var(--control-min-height);
   align-items: center;
   justify-content: center;
-  padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--color-secondary-btn-border);
+  margin-inline-start: auto;
+  padding: var(--space-2) var(--space-6);
+  border: 1px solid var(--color-primary);
   border-radius: var(--radius-control);
-  color: var(--color-primary);
-  background: var(--color-surface);
+  color: var(--color-on-primary);
+  background: var(--color-primary);
   font-weight: var(--font-weight-semibold);
   text-decoration: none;
+  cursor: pointer;
 }
 
-.teacher-topic-form .teacher-topic-form__button:hover:not(:disabled) {
-  background: var(--color-info-bg);
+.teacher-topic-form .topic-form__submit:hover:not(:disabled) {
+  background: var(--color-primary-hover);
 }
 
-.teacher-topic-form .teacher-topic-form__button:disabled {
-  color: var(--color-muted-foreground);
-  background: var(--color-neutral-bg);
+.teacher-topic-form .topic-form__submit:disabled {
+  border-color: var(--color-disabled-border);
+  color: var(--color-disabled-fg);
+  background: var(--color-disabled-bg);
+  cursor: not-allowed;
+}
+
+.teacher-topic-form[aria-busy="true"] .topic-form__submit {
+  cursor: progress;
 }
 
 @media (min-width: 40rem) {
@@ -175,12 +244,13 @@ fieldset.teacher-topic-form__panel > legend {
   }
 }
 
-@media (min-width: 56rem) {
-  .teacher-topic-form__layout {
-    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
-    gap: var(--space-6);
+@media (min-width: 48rem) {
+  #create-topic-form > .teacher-topic-form__panel {
+    padding: var(--space-6);
   }
+}
 
+@media (min-width: 56rem) {
   .teacher-topic-form__panel {
     padding: var(--space-6);
   }

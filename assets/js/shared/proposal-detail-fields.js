@@ -7,6 +7,8 @@
 
   function render(container, record) {
     const outline = record.outline;
+    const hasReportDates = outline?.version === 3;
+    const legacyEndDate = !hasReportDates && outline?.endDate;
     const attachment = typeof record.attachment === 'string'
       ? record.attachment
       : record.attachment?.name || record.attachmentName;
@@ -20,8 +22,13 @@
       semester,
       academicYear,
       academicPeriod: [semester, academicYear].filter(Boolean).join(' · '),
+      startDateLabel: hasReportDates ? 'Ngày bắt đầu thực hiện' : 'Ngày bắt đầu dự kiến',
       startDate: outlineDate(outline?.startDate),
       endDate: outlineDate(outline?.endDate),
+      progressReportDate: outlineDate(outline?.progressReportDate),
+      finalReportDate: outlineDate(outline?.finalReportDate),
+      lastMilestoneLabel: legacyEndDate ? 'Ngày kết thúc dự kiến' : 'Ngày nộp báo cáo cuối cùng',
+      lastMilestoneDate: outlineDate(legacyEndDate || outline?.finalReportDate),
       methodAndScope: outline?.methodAndScope ?? [outline?.method, outline?.scope || record.scope].filter(Boolean).join('\n\n'),
       plan: outline?.plan,
       attachmentText: attachment,
@@ -35,6 +42,9 @@
     }
     for (const section of container.querySelectorAll('[data-optional-section]')) {
       section.hidden = !fields[section.dataset.optionalSection];
+    }
+    for (const row of container.querySelectorAll('[data-proposal-schedule]')) {
+      row.hidden = record.source === 'registration' || (row.dataset.proposalSchedule === 'current') !== hasReportDates;
     }
     void app.shared.renderProposalCover?.(container.querySelector('.request-topic__image'), record.coverImage);
     renderAttachment(container, {

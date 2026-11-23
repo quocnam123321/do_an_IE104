@@ -96,11 +96,10 @@ test('legacy codes continue the sequence and a failed save does not consume a nu
   assert.equal((await store.save(draft, 0, 'create')).code, 'KL010');
 });
 
-test('creation form exposes a read-only code with an associated hint', () => {
+test('creation form presents the generated code as output with an associated hint', () => {
   const html = fs.readFileSync('pages/giang-vien/tao-de-tai-giang-vien.html', 'utf8');
-  const field = html.match(/<input\b[^>]*\bid="topic-code"[^>]*>/)?.[0] || '';
-  assert.match(field, /\breadonly\b/);
+  const field = html.match(/<output\b[^>]*\bid="topic-code"[^>]*>/)?.[0] || '';
   assert.match(field, /aria-describedby="topic-code-hint"/);
   assert.doesNotMatch(field, /\brequired\b/);
-  assert.match(html, /id="topic-code-hint" role="status"/);
+  assert.match(html, /<p id="topic-code-hint"/);
 });

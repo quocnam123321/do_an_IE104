@@ -17,6 +17,7 @@
     <script src="../../assets/js/nav-indicator.js" defer></script>
   <link rel="stylesheet" href="../../assets/css/lecturer-topic-editor.css">
     <link rel="stylesheet" href="../../assets/css/teacher-topic-forms.css" />
+    <link rel="stylesheet" href="../../assets/css/proposal-pickers.css" />
 <link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
 
     <script src="../../assets/js/uit-lecturer-catalog.js?v=20261122-outlines" defer></script>
@@ -46,6 +47,8 @@
     <script src="../../assets/js/services/lecturer-profile-service.js" defer></script>
     <script src="../../assets/js/services/student-topic-codes.js?v=20261122-topic-code" defer></script>
     <script src="../../assets/js/services/lecturer-topic-editor-service.js?v=20261122-topic-code" defer></script>
+    <script src="../../assets/js/pages/student/proposal-pickers.js" defer></script>
+    <script src="../../assets/js/pages/student/proposal-date-picker.js" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-editor.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js" defer></script>
@@ -179,6 +182,12 @@
             </li>
           </ol>
         </nav>
+        <p class="back-navigation">
+          <a class="back-link" href="danh-sach-de-tai-da-tao.html" data-topic-editor-return>
+            <svg class="back-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 5-7 7 7 7M5 12h14" /></svg>
+            <span>Quay lại danh sách</span>
+          </a>
+        </p>
         <header class="page-header">
           <h1 class="page-header__title">
             Tạo đề tài
@@ -188,106 +197,166 @@
           <!-- HTML thuần. Các lựa chọn danh mục là dữ liệu minh họa.
                Form chỉ bật khi JavaScript đã khởi tạo đủ chức năng lưu.
                Khi tích hợp cần kiểm tra số thành viên tối thiểu <= tối đa, hạn đăng ký và tệp trên máy chủ. -->
-          <form class="topic-form teacher-topic-form" id="create-topic-form" aria-label="Tạo đề tài mới" aria-describedby="topic-form-notice" method="post" enctype="multipart/form-data">
-            <div class="teacher-topic-form__layout">
-            <fieldset class="topic-form__basic teacher-topic-form__panel">
-              <legend>Thông tin cơ bản</legend>
-              <p><label for="topic-code">Mã đề tài *</label><input id="topic-code" name="topic-code" type="text" readonly aria-describedby="topic-code-hint" />
-                <span id="topic-code-hint" role="status">Mã đề tài được cấp tự động theo khoa quản lý môn học và loại đề tài.</span></p>
-              <p><label for="topic-name">Tên đề tài *</label><input id="topic-name" name="topic-name" type="text" placeholder="Nhập tên đề tài" required/></p>
-              <div class="teacher-topic-form__grid">
-              <p><label for="topic-type">Loại đề tài *</label>
-                <select id="topic-type" name="topic-type" required>
-                  <option value="" selected>Chọn loại đề tài</option>
-                  <option value="course">Đồ án môn học</option>
-                  <option value="graduation">Đồ án tốt nghiệp</option>
-                  <option value="thesis">Khóa luận</option>
-                </select>
-              </p>
-              <p><label for="course">Môn học *</label>
-                <select id="course" name="course" required>
-                  <option value="" selected>Chọn môn học</option>
-                  <option value="web">Internet và công nghệ Web</option>
-                  <option value="database">Cơ sở dữ liệu</option>
-                  <option value="software">Công nghệ phần mềm</option>
-                </select>
-              </p>
-              <p><label for="semester">Học kỳ *</label>
-                <select id="semester" name="semester" required>
-                  <option value="" selected>Chọn học kỳ</option>
-                  <option value="1">Học kỳ 1</option><option value="2">Học kỳ 2</option><option value="summer">Học kỳ hè</option>
-                </select>
-              </p>
-              <p><label for="academic-year">Năm học *</label>
-                <select id="academic-year" name="academic-year" required>
-                  <option value="" selected>Chọn năm học</option><option value="2026-2027">2026–2027</option>
-                </select>
-              </p>
-              </div>
-            </fieldset>
-            <section class="topic-supervisor teacher-topic-form__panel" aria-labelledby="create-supervisor-title">
-              <h2 id="create-supervisor-title">Giảng viên hướng dẫn</h2>
-              <div class="topic-supervisor__content">
-                <div class="topic-supervisor__avatar" role="img" aria-label="Ảnh đại diện giảng viên chưa được cung cấp">Ảnh đại diện giảng viên</div>
-                <dl class="topic-supervisor__details">
-                  <div><dt>Họ tên:</dt><dd>Tên giảng viên</dd></div>
-                  <div><dt>Khoa/Bộ môn:</dt><dd>Tên khoa/bộ môn</dd></div>
-                  <div><dt>Email liên hệ:</dt><dd>email@truong.edu.vn</dd></div>
-                  <div><dt>Hướng nghiên cứu:</dt><dd>Hướng nghiên cứu của giảng viên</dd></div>
-                </dl>
-              </div>
-              <p class="topic-supervisor__note">Thông tin lấy từ hồ sơ giảng viên.</p>
-            </section>
+          <form class="topic-form teacher-topic-form" id="create-topic-form" aria-label="Tạo đề tài mới" method="post" enctype="multipart/form-data">
+            <div class="teacher-topic-form__panel">
+              <fieldset class="topic-form__basic teacher-topic-form__section">
+                <legend>Thông tin đề tài</legend>
+                <div>
+                  <label for="topic-name">Tên đề tài tiếng Việt <span class="topic-required" aria-hidden="true">*</span></label>
+                  <input id="topic-name" name="topic-name" type="text" placeholder="Nhập tên đề tài" required />
+                </div>
+                <div class="teacher-topic-form__grid">
+                  <div>
+                    <label for="topic-type">Loại đề tài <span class="topic-required" aria-hidden="true">*</span></label>
+                    <select id="topic-type" name="topic-type" data-proposal-picker required>
+                      <option value="" selected>Chọn loại đề tài</option>
+                      <option value="course">Đồ án môn học</option>
+                      <option value="graduation">Đồ án tốt nghiệp</option>
+                      <option value="thesis">Khóa luận</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="course">Môn học <span class="topic-required" aria-hidden="true">*</span></label>
+                    <select id="course" name="course" data-proposal-picker required disabled>
+                      <option value="" selected disabled>Chọn loại đề tài trước</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="topic-code">Mã đề tài</label>
+                    <output id="topic-code" class="topic-code-preview" for="topic-type course" aria-describedby="topic-code-hint">Chọn loại đề tài</output>
+                    <p id="topic-code-hint" class="topic-form__hint">Mã dự kiến được chốt khi lưu đề tài.</p>
+                  </div>
+                  <div>
+                    <label for="semester">Học kỳ <span class="topic-required" aria-hidden="true">*</span></label>
+                    <select id="semester" name="semester" data-proposal-picker required>
+                      <option value="" selected>Chọn học kỳ</option>
+                      <option value="1">Học kỳ 1</option><option value="2">Học kỳ 2</option><option value="summer">Học kỳ hè</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="academic-year">Năm học <span class="topic-required" aria-hidden="true">*</span></label>
+                    <select id="academic-year" name="academic-year" data-proposal-picker required>
+                      <option value="" selected>Chọn năm học</option><option value="2026-2027">2026–2027</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="topic-start-date">Ngày bắt đầu thực hiện <span class="topic-required" aria-hidden="true">*</span></label>
+                    <input id="topic-start-date" name="topic-start-date" type="date" data-proposal-picker required />
+                  </div>
+                  <div>
+                    <label for="topic-progress-report-date">Ngày nộp báo cáo tiến độ <span class="topic-required" aria-hidden="true">*</span></label>
+                    <input id="topic-progress-report-date" name="topic-progress-report-date" type="date" data-proposal-picker required />
+                  </div>
+                  <div>
+                    <label for="topic-final-report-date">Ngày nộp báo cáo cuối cùng <span class="topic-required" aria-hidden="true">*</span></label>
+                    <input id="topic-final-report-date" name="topic-final-report-date" type="date" data-proposal-picker required />
+                  </div>
+                </div>
+                <div>
+                  <label for="registration-closes">Hạn đăng ký <span class="topic-required" aria-hidden="true">*</span></label>
+                  <input id="registration-closes" name="registration-closes" type="datetime-local" data-proposal-picker required />
+                </div>
+              </fieldset>
+              <section class="teacher-topic-form__section topic-form__content" aria-labelledby="topic-editor-content-title">
+                <h2 id="topic-editor-content-title">Nội dung đề tài</h2>
+                <div class="topic-form__field">
+                  <label for="topic-description">Tổng quan đề tài <span class="topic-required" aria-hidden="true">*</span></label>
+                  <textarea id="topic-description" name="topic-description" rows="3" placeholder="Giới thiệu bối cảnh, đối tượng và vấn đề cần giải quyết" required></textarea>
+                </div>
+                <div class="topic-form__field">
+                  <label for="topic-objectives">Mục tiêu <span class="topic-required" aria-hidden="true">*</span></label>
+                  <textarea id="topic-objectives" name="topic-objectives" rows="3" placeholder="Nhập các mục tiêu cần đạt" required></textarea>
+                </div>
+                <div class="topic-form__field">
+                  <label for="topic-outcomes">Kết quả dự kiến <span class="topic-required" aria-hidden="true">*</span></label>
+                  <textarea id="topic-outcomes" name="topic-outcomes" rows="3" placeholder="Nhập sản phẩm, mô hình, báo cáo hoặc tài liệu dự kiến" required></textarea>
+                </div>
+                <div class="topic-form__field">
+                  <label for="topic-requirements">Yêu cầu đối với sinh viên <span class="topic-required" aria-hidden="true">*</span></label>
+                  <textarea id="topic-requirements" name="topic-requirements" rows="3" placeholder="Nhập kiến thức, kỹ năng và điều kiện tham gia" required></textarea>
+                </div>
+              </section>
+              <section class="teacher-topic-form__section topic-form__content" aria-labelledby="topic-method-plan-title">
+                <h2 id="topic-method-plan-title">Phương pháp và kế hoạch</h2>
+                <div class="topic-form__field">
+                  <label for="topic-method-and-scope">Phương pháp và phạm vi thực hiện <span class="topic-required" aria-hidden="true" hidden>*</span></label>
+                  <textarea id="topic-method-and-scope" name="methodAndScope" rows="4" maxlength="20002" placeholder="Nêu cách thực hiện, nội dung chính, giới hạn của đề tài và cách đánh giá kết quả."></textarea>
+                </div>
+                <div class="topic-form__field">
+                  <label for="topic-plan">Kế hoạch thực hiện và phân công <span class="topic-required" aria-hidden="true" hidden>*</span></label>
+                  <textarea id="topic-plan" name="plan" rows="4" maxlength="10000" placeholder="Nêu các giai đoạn, mốc hoàn thành và người phụ trách từng phần việc nếu làm theo nhóm."></textarea>
+                </div>
+              </section>
+              <fieldset class="topic-form__members teacher-topic-form__section">
+                <legend>Số thành viên</legend>
+                <div class="teacher-topic-form__grid">
+                  <div>
+                    <label for="minimum-members">Tối thiểu / nhóm <span class="topic-required" aria-hidden="true">*</span></label>
+                    <input id="minimum-members" name="minimum-members" type="number" min="1" step="1" value="2" required />
+                  </div>
+                  <div>
+                    <label for="maximum-members">Tối đa / nhóm <span class="topic-required" aria-hidden="true">*</span></label>
+                    <input id="maximum-members" name="maximum-members" type="number" min="1" step="1" value="3" required />
+                  </div>
+                </div>
+              </fieldset>
+              <section class="teacher-topic-form__section topic-file-picker" data-topic-file="attachment" aria-labelledby="topic-attachment-title">
+                <h2 id="topic-attachment-title">Tài liệu đính kèm</h2>
+                <div class="topic-file-picker__trigger">
+                  <input id="topic-attachment" name="topic-attachment" type="file" accept=".pdf,.doc,.docx,.txt" aria-describedby="topic-attachment-hint topic-attachment-error" />
+                  <label class="topic-file-picker__button" for="topic-attachment"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-6 6 6-6 6 6M5 16v5h14v-5" /></svg>Chọn tệp</label>
+                </div>
+                <p class="topic-file-picker__hint" id="topic-attachment-hint">Đính kèm tối đa 1 tệp.</p>
+                <div class="topic-file-picker__selection" hidden>
+                  <svg class="topic-file-picker__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8M8 17h6" /></svg>
+                  <p class="topic-file-picker__name" id="topic-attachment-name"></p>
+                  <button class="topic-file-picker__remove" type="button" aria-label="Bỏ tệp đính kèm" aria-describedby="topic-attachment-name" title="Bỏ tệp đính kèm">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18m-2 0-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6m4 0V3h6v3m-5 4v7m4-7v7" /></svg>
+                  </button>
+                </div>
+                <p class="topic-file-picker__error" id="topic-attachment-error" role="alert" hidden></p>
+              </section>
+              <section class="teacher-topic-form__section topic-file-picker" data-topic-file="image" aria-labelledby="topic-image-title">
+                <h2 id="topic-image-title">Ảnh đại diện đề tài</h2>
+                <div class="topic-file-picker__trigger">
+                  <input id="topic-image" name="topic-image" type="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg" aria-describedby="topic-image-hint topic-image-error" />
+                  <label class="topic-file-picker__button" for="topic-image"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-6 6 6-6 6 6M5 16v5h14v-5" /></svg>Chọn ảnh</label>
+                </div>
+                <p class="topic-file-picker__hint" id="topic-image-hint">Hệ thống sẽ dùng ảnh mặc định nếu bạn chưa chọn ảnh.</p>
+                <div class="topic-file-picker__selection" hidden>
+                  <svg class="topic-file-picker__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 16-5-5L5 21"/></svg>
+                  <p class="topic-file-picker__name" id="topic-image-name"></p>
+                  <button class="topic-file-picker__remove" type="button" aria-label="Bỏ ảnh đại diện" aria-describedby="topic-image-name" title="Bỏ ảnh đại diện">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18m-2 0-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6m4 0V3h6v3m-5 4v7m4-7v7" /></svg>
+                  </button>
+                </div>
+                <p class="topic-file-picker__error" id="topic-image-error" role="alert" hidden></p>
+              </section>
             </div>
-            <section class="teacher-topic-form__panel" aria-labelledby="topic-editor-content-title">
-            <h2 id="topic-editor-content-title">Nội dung đề tài</h2>
-            <div class="topic-form__field">
-              <label for="topic-description">Mô tả đề tài *</label>
-              <textarea id="topic-description" name="topic-description" rows="3" placeholder="Giới thiệu bối cảnh, đối tượng và vấn đề cần giải quyết" required></textarea>
-            </div>
-            <div class="topic-form__field">
-              <label for="topic-objectives">Mục tiêu *</label>
-              <textarea id="topic-objectives" name="topic-objectives" rows="3" placeholder="Nhập các mục tiêu cần đạt" required></textarea>
-            </div>
-            <div class="topic-form__field">
-              <label for="topic-outcomes">Kết quả dự kiến *</label>
-              <textarea id="topic-outcomes" name="topic-outcomes" rows="3" placeholder="Nhập sản phẩm, mô hình, báo cáo hoặc tài liệu dự kiến" required></textarea>
-            </div>
-            <div class="topic-form__field">
-              <label for="topic-requirements">Yêu cầu đối với sinh viên *</label>
-              <textarea id="topic-requirements" name="topic-requirements" rows="3" placeholder="Nhập kiến thức, kỹ năng và điều kiện tham gia" required></textarea>
-            </div>
-            </section>
-            <fieldset class="topic-form__members teacher-topic-form__panel">
-              <legend>Số thành viên</legend>
-              <p><label for="minimum-members">Tối thiểu / nhóm *</label><input id="minimum-members" name="minimum-members" type="number" min="1" step="1" value="2" aria-describedby="members-hint" required/></p>
-              <p><label for="maximum-members">Tối đa / nhóm *</label><input id="maximum-members" name="maximum-members" type="number" min="1" step="1" value="3" aria-describedby="members-hint" required/></p>
-              <p id="members-hint">Nhập số nguyên; số tối đa không nhỏ hơn số tối thiểu.</p>
-            </fieldset>
-            <div class="teacher-topic-form__grid">
-            <fieldset class="topic-form__image teacher-topic-form__panel">
-              <legend>Ảnh đề tài</legend>
-              <div class="topic-image-placeholder" role="img" aria-label="Chưa có ảnh minh họa đề tài">Ảnh minh họa đề tài</div>
-              <p><label for="topic-image">Tải ảnh lên</label><input id="topic-image" name="topic-image" type="file" accept="image/png,image/jpeg" aria-describedby="topic-image-hint"/></p>
-              <p id="topic-image-hint">Chưa có ảnh, dùng ảnh mặc định của hệ thống. PNG/JPG, tối đa 5 MB, khung xem trước vuông 1:1.</p>
-            </fieldset>
-            <fieldset class="topic-form__attachment teacher-topic-form__panel">
-              <legend>Tài liệu đính kèm</legend>
-              <p><label for="topic-attachment">Tải tài liệu lên</label><input id="topic-attachment" name="topic-attachment" type="file" aria-describedby="topic-attachment-hint"/></p>
-              <p>Chưa có tài liệu đính kèm.</p>
-              <p id="topic-attachment-hint">PDF/DOC/DOCX/TXT không quá 10 MB (không bắt buộc).</p>
-            </fieldset>
-            </div>
-            <p class="topic-form__field"><label for="registration-closes">Hạn đăng ký *</label><input id="registration-closes" name="registration-closes" type="datetime-local" required/></p>
-            <p id="topic-form-notice">* Thông tin bắt buộc.</p>
             <div class="topic-form__actions">
-              <a class="topic-form__cancel teacher-topic-form__button" href="danh-sach-de-tai-da-tao.html">Hủy</a>
-              <button class="topic-form__submit" type="submit" disabled title="Chức năng tạo và lưu đề tài chưa được kết nối">Tạo đề tài</button>
+              <button class="topic-form__submit" type="submit" aria-haspopup="dialog" aria-controls="topic-created-dialog" disabled>Tạo đề tài</button>
+              <a id="view-created-topic" class="topic-form__submit" hidden>Xem đề tài</a>
             </div>
           </form>
         </div>
       </div>
     </main>
+    <dialog id="topic-created-dialog" class="confirmation-dialog success-dialog" aria-labelledby="topic-created-title">
+      <button class="success-dialog__close" type="button" aria-label="Đóng thông báo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+          <path d="m6 6 12 12M18 6 6 18" />
+        </svg>
+      </button>
+      <div class="success-dialog__content">
+        <span class="success-dialog__icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m5 12 4 4L19 6" />
+          </svg>
+        </span>
+        <h2 id="topic-created-title">Tạo đề tài thành công</h2>
+        <a class="success-dialog__link" autofocus>Xem đề tài</a>
+      </div>
+    </dialog>
     <footer class="project-footer">
       <div class="project-footer__columns">
         <div class="project-footer__identity">

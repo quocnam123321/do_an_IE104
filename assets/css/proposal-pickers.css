@@ -1,4 +1,4 @@
-.student-proposal-page .proposal-form .proposal-picker-trigger {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger {
   width: 100%;
   min-width: 0;
   justify-content: space-between;
@@ -8,31 +8,38 @@
   text-align: start;
 }
 
-.student-proposal-page .proposal-form .proposal-picker-trigger span {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger span {
   min-width: 0;
   overflow-wrap: anywhere;
 }
 
-.student-proposal-page .proposal-form .proposal-picker-trigger.is-placeholder {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger.is-placeholder {
   color: var(--color-muted-foreground);
 }
 
-.student-proposal-page .proposal-form .proposal-picker-trigger:disabled svg {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger:disabled {
+  background: var(--color-neutral-bg);
+  color: var(--color-muted-foreground);
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger:disabled svg {
   visibility: hidden;
 }
 
-.student-proposal-page .proposal-form .proposal-picker-trigger[aria-invalid="true"] {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger[aria-invalid="true"] {
   border-color: var(--color-danger-fg);
 }
 
-.student-proposal-page .proposal-form .proposal-picker-trigger:not(:disabled):hover,
-.student-proposal-page .proposal-form .proposal-picker-trigger[aria-expanded="true"] {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger:not(:disabled):hover,
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger[aria-expanded="true"] {
   border-color: var(--color-primary);
   background: var(--color-surface);
 }
 
-.student-proposal-page .proposal-form .proposal-picker-trigger[aria-expanded="true"],
-.student-proposal-page .proposal-form .proposal-date-control:has(.proposal-date-trigger[aria-expanded="true"]) > input {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger[aria-expanded="true"],
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-date-control:not(.proposal-date-control--with-time):has(.proposal-date-trigger[aria-expanded="true"]) > input {
   border-color: var(--color-primary);
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
@@ -99,12 +106,12 @@
   min-width: 0;
 }
 
-.student-proposal-page .proposal-form .proposal-date-control > input {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-date-control > input {
   width: 100%;
   padding-inline-end: calc(var(--control-min-height) + var(--space-2));
 }
 
-.student-proposal-page .proposal-form .proposal-date-trigger {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-date-trigger {
   position: absolute;
   inset-block: 1px;
   inset-inline-end: 1px;
@@ -116,13 +123,71 @@
   color: var(--color-muted-foreground);
 }
 
-.student-proposal-page .proposal-form .proposal-date-trigger:not(:disabled):is(:hover, [aria-expanded="true"]) {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-date-trigger:not(:disabled):is(:hover, [aria-expanded="true"]) {
   background: var(--color-info-bg);
   color: var(--color-primary);
 }
 
-.student-proposal-page .proposal-form .proposal-date-trigger:focus-visible {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-date-trigger:focus-visible {
   outline-offset: -3px;
+}
+
+.teacher-topic-form .proposal-date-control--with-time {
+  --date-input-width: 7rem;
+  display: grid;
+  grid-template-columns: minmax(0, var(--date-input-width)) auto minmax(0, 4.75rem) minmax(0, 1fr) var(--control-min-height);
+  align-items: center;
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+}
+
+.teacher-topic-form .proposal-date-control--with-time:has(> input:first-child:placeholder-shown) {
+  --date-input-width: 7.375rem;
+}
+
+.teacher-topic-form .proposal-date-control--with-time:has(> input[aria-invalid="true"]) {
+  border-color: var(--color-danger-fg);
+}
+
+.teacher-topic-form .proposal-date-control--with-time:is(:focus-within, :has(> .proposal-date-trigger[aria-expanded="true"])) {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.teacher-topic-form .proposal-date-control.proposal-date-control--with-time > input {
+  min-height: calc(var(--control-min-height) - 2px);
+  padding-inline: var(--space-3) 0;
+  border: 0;
+  background: transparent;
+}
+
+.teacher-topic-form .proposal-date-control--with-time > :is(input, .proposal-date-trigger):focus {
+  outline: none;
+}
+
+.teacher-topic-form .proposal-date-control--with-time > .proposal-date-trigger:focus-visible {
+  background: var(--color-info-bg);
+  color: var(--color-primary);
+}
+
+.teacher-topic-form .proposal-date-control--with-time > input.proposal-date-time {
+  padding-inline-start: var(--space-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.proposal-date-separator {
+  color: var(--color-muted-foreground);
+  font-size: 1.125em;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+}
+
+.teacher-topic-form .proposal-date-control--with-time > .proposal-date-trigger {
+  grid-column: -2;
+  position: static;
+  min-height: calc(var(--control-min-height) - 2px);
+  width: 100%;
 }
 
 .proposal-calendar {
@@ -135,6 +200,10 @@
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
   overflow: hidden;
+}
+
+.proposal-calendar--with-time:popover-open {
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
 }
 
 .proposal-calendar__body {
@@ -151,23 +220,23 @@
   gap: var(--space-1);
 }
 
-.student-proposal-page .proposal-form .proposal-calendar button {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar button {
   padding: var(--space-1);
   border-color: transparent;
   background: var(--color-surface);
   font-size: var(--font-size-secondary);
 }
 
-.student-proposal-page .proposal-form .proposal-calendar button:focus-visible {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar button:focus-visible {
   outline-offset: -2px;
 }
 
-.student-proposal-page .proposal-form .proposal-calendar button:not(:disabled):hover {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar button:not(:disabled):hover {
   background: var(--color-info-bg);
   color: var(--color-primary);
 }
 
-.student-proposal-page .proposal-form .proposal-calendar .proposal-calendar__heading {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar .proposal-calendar__heading {
   min-width: 0;
   color: var(--color-heading);
   font-size: var(--font-size-body);
@@ -175,12 +244,12 @@
   text-align: start;
 }
 
-.student-proposal-page .proposal-form .proposal-calendar__navigation button {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__navigation button {
   width: var(--control-min-height);
   border-color: var(--color-border);
 }
 
-.student-proposal-page .proposal-form .proposal-calendar__navigation button:disabled {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__navigation button:disabled {
   background: var(--color-neutral-bg);
 }
 
@@ -201,50 +270,54 @@
 
 .proposal-calendar__grid td { padding: 0; }
 
-.student-proposal-page .proposal-form .proposal-calendar__grid button {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__grid button {
   width: 100%;
   padding: 0;
 }
 
-.student-proposal-page .proposal-form .proposal-calendar__grid .is-outside-month {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__grid .is-outside-month {
   color: var(--color-muted-foreground);
 }
 
-.student-proposal-page .proposal-form .proposal-calendar__grid button[aria-current="date"] {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__grid button[aria-current="date"] {
   border-color: var(--color-primary);
   background: var(--color-info-bg);
   color: var(--color-primary);
   font-weight: var(--font-weight-bold);
 }
 
-.student-proposal-page .proposal-form .proposal-calendar__grid [aria-selected="true"] button,
-.student-proposal-page .proposal-form .proposal-calendar__grid [aria-selected="true"] button:hover {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__grid [aria-selected="true"] button,
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__grid [aria-selected="true"] button:hover {
   border-color: var(--color-primary);
   background: var(--color-primary);
   color: var(--color-on-primary);
 }
 
-.student-proposal-page .proposal-form .proposal-calendar__grid [aria-selected="true"] button:focus-visible {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__grid [aria-selected="true"] button:focus-visible {
   outline-color: var(--color-on-primary);
 }
 
 .proposal-calendar__months { margin-block: var(--space-2); }
 
 .proposal-calendar__months label {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-2);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-1);
   padding: var(--space-1);
   font-size: var(--font-size-secondary);
   font-weight: var(--font-weight-semibold);
 }
 
-.student-proposal-page .proposal-form .proposal-calendar__months input {
-  width: 8rem;
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__months input {
+  width: 100%;
   padding: var(--space-2);
   border: 1px solid var(--color-control-border);
   border-radius: var(--radius-control);
+}
+
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__months input[type="number"]:focus {
+  border-color: var(--color-control-border);
+  outline: none;
 }
 
 .proposal-calendar__month-grid {
@@ -254,33 +327,124 @@
   margin-top: var(--space-2);
 }
 
-.student-proposal-page .proposal-form .proposal-calendar__month-grid button[aria-pressed="true"] {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__month-grid button[aria-pressed="true"] {
   border-color: var(--color-primary);
   color: var(--color-primary);
   background: var(--color-info-bg);
 }
 
 .proposal-calendar__footer {
+  flex-wrap: wrap;
   padding-top: var(--space-2);
   border-top: 1px solid var(--color-border);
 }
 
-.student-proposal-page .proposal-form .proposal-calendar__footer button {
+.teacher-topic-form .proposal-calendar__time {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: var(--space-2);
+  padding-block: var(--space-2);
+  border-block-start: 1px solid var(--color-border);
+  font-size: var(--font-size-secondary);
+}
+
+.proposal-calendar__time-column {
+  display: grid;
+  gap: var(--space-1);
+  text-align: center;
+}
+
+.proposal-calendar__time-column > span {
+  color: var(--color-heading);
+  font-weight: var(--font-weight-semibold);
+}
+
+.proposal-calendar__time-options {
+  position: relative;
+  max-block-size: clamp(var(--control-min-height), 20dvh, calc(3 * var(--control-min-height) + 2px));
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scrollbar-gutter: stable both-edges;
+  scrollbar-width: thin;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+}
+
+.proposal-calendar__time-options:focus-visible { outline-offset: -2px; }
+
+.proposal-calendar__time-options > [role="option"] {
+  display: grid;
+  min-block-size: var(--control-min-height);
+  place-items: center;
+  border-radius: var(--radius-control);
+  cursor: pointer;
+}
+
+.proposal-calendar__time-options > [role="option"]:hover {
+  color: var(--color-primary);
+  background: var(--color-info-bg);
+}
+
+.proposal-calendar__time-options > [aria-selected="true"],
+.proposal-calendar__time-options > [aria-selected="true"]:hover {
+  color: var(--color-on-primary);
+  background: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.proposal-calendar__time-options:focus-visible > .is-active {
+  outline: 2px solid currentColor;
+  outline-offset: -3px;
+}
+
+@media (min-width: 34rem) {
+  .proposal-calendar--with-time {
+    width: min(33rem, calc(100vw - var(--space-4)));
+  }
+
+  .proposal-calendar--with-time:popover-open {
+    grid-template: "header time" auto "days time" minmax(0, 1fr) "footer footer" auto / minmax(0, 1fr) 9rem;
+    column-gap: var(--space-3);
+  }
+
+  .proposal-calendar--with-time .proposal-calendar__header { grid-area: header; }
+  .proposal-calendar--with-time .proposal-calendar__body { grid-area: days; }
+  .proposal-calendar--with-time .proposal-calendar__footer { grid-area: footer; }
+
+  .teacher-topic-form .proposal-calendar--with-time .proposal-calendar__time {
+    grid-area: time;
+    grid-auto-rows: minmax(0, 1fr);
+    min-block-size: 0;
+    padding-block: 0;
+    padding-inline-start: var(--space-3);
+    border-block-start: 0;
+    border-inline-start: 1px solid var(--color-border);
+  }
+
+  .proposal-calendar__time-column { grid-template-rows: auto minmax(0, 1fr); }
+
+  .proposal-calendar__time-options {
+    max-block-size: calc(7 * var(--control-min-height) + 2px);
+  }
+}
+
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__footer button {
   padding-inline: var(--space-2);
   color: var(--color-muted-foreground);
 }
 
-.student-proposal-page .proposal-form .proposal-calendar__footer [data-today] {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__footer [data-today] {
   color: var(--color-primary);
   font-weight: var(--font-weight-semibold);
 }
 
-.student-proposal-page .proposal-form .proposal-calendar__footer [data-clear-date]:disabled {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__footer [data-clear-date]:disabled {
   opacity: .65;
 }
 
 @media (pointer: fine) {
-  .student-proposal-page .proposal-form .proposal-calendar__grid button {
+  :is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__grid button {
     min-height: 2.5rem;
   }
 }

@@ -35,6 +35,11 @@
     return codes.nextCode(type, [...service.allCreated(), ...service.list('supervised'), ...projects, ...samples, ...proposals], faculty);
   }
 
+  function requiresMethodPlan(type, previous) {
+    const isMasterThesis = previous?.topicType === 'thesis' && previous.sourceRecord?.type === 'Luận văn thạc sĩ';
+    return type === 'thesis' && !isMasterThesis;
+  }
+
   function validate(input, previous = null, now = new Date()) {
     const value = Object.fromEntries(['id', 'title', 'topicType', 'course', 'semester', 'academicYear', 'description', 'objectives', 'outcomes', 'requirements', 'domain', 'technologies', 'opensAt', 'deadline', 'startsAt', 'completesAt'].map(field => [field, text(input[field])]));
     value.id = value.id.toUpperCase();
@@ -45,6 +50,11 @@
     if (!/^[A-ZĐ0-9][A-ZĐ0-9_-]{0,29}$/.test(value.id)) error('id', 'Mã đề tài gồm 1–30 chữ cái, chữ số, dấu gạch ngang hoặc gạch dưới.');
     if (previous && value.id !== previous.id) error('id', 'Không được đổi mã của đề tài đã tạo.');
     for (const [field, limit] of [['title', 200], ['description', 10000], ['objectives', 5000], ['outcomes', 5000], ['requirements', 5000]]) if (!value[field] || value[field].length > limit) error(field, `Nhập nội dung từ 1 đến ${limit} ký tự.`);
+    for (const [field, limit] of [['methodAndScope', 20002], ['plan', 10000]]) {
+      value[field] = text(input[field] ?? previous?.[field]);
+      if (requiresMethodPlan(value.topicType, previous) && !value[field]) error(field, 'Bắt buộc nhập đối với khóa luận tốt nghiệp.');
+      else if (value[field].length > limit) error(field, `Nội dung tối đa ${limit} ký tự.`);
+    }
     if (!Object.hasOwn(catalog.types, value.topicType)) error('topicType', 'Chọn loại đề tài trong danh sách.');
     if (value.topicType === 'course' && !Object.hasOwn(catalog.courses, value.course)) error('course', 'Chọn môn học trong danh sách.');
     if (value.topicType !== 'course') value.course = '';
@@ -53,7 +63,31 @@
     if (!Number.isInteger(value.minMembers) || value.minMembers < 1 || value.minMembers > 100) error('minMembers', 'Nhập số nguyên từ 1 đến 100.');
     if (!Number.isInteger(value.maxMembers) || value.maxMembers < value.minMembers || value.maxMembers > 100) error('maxMembers', 'Số tối đa phải là số nguyên, không nhỏ hơn tối thiểu và không vượt quá 100.');
     for (const [field, limit] of [['domain', 100], ['technologies', 300]]) if (value[field].length > limit) error(field, `Nội dung tối đa ${limit} ký tự.`);
-    for (const field of ['opensAt', 'deadline', 'startsAt', 'completesAt']) { const converted = date(value[field]); if (converted === null || (!converted && (field === 'deadline' || (previous && ['opensAt', 'completesAt'].includes(field))))) error(field, 'Nhập ngày và giờ hợp lệ.'); value[field] = converted; }
+    const hasReportDates = !previous || Boolean(previous.progressReportDate);
+    for (const field of ['opensAt', 'deadline', 'startsAt', 'completesAt']) {
+      const converted = date(value[field]);
+      if (field === 'startsAt' && hasReportDates) {
+        if (!converted || !/^\d{4}-\d{2}-\d{2}$/.test(value[field])) error(field, 'Chọn ngày bắt đầu thực hiện hợp lệ.');
+      } else if (converted === null || (!converted && (field === 'deadline' || (!hasReportDates && ['opensAt', 'completesAt'].includes(field))))) {
+        error(field, 'Nhập ngày và giờ hợp lệ.');
+      }
+      value[field] = converted;
+    }
+    if (!previous) {
+      for (const field of ['progressReportDate', 'finalReportDate']) {
+        const day = text(input[field]);
+        value[field] = /^\d{4}-\d{2}-\d{2}$/.test(day) && date(day) ? day : '';
+        if (!value[field]) error(field, 'Chọn ngày nộp báo cáo hợp lệ.');
+      }
+      if (value.progressReportDate && value.startsAt && date(value.progressReportDate) <= value.startsAt) {
+        error('progressReportDate', 'Ngày nộp báo cáo tiến độ phải sau ngày bắt đầu thực hiện.');
+      }
+      if (value.finalReportDate && value.progressReportDate && value.finalReportDate <= value.progressReportDate) {
+        error('finalReportDate', 'Ngày nộp báo cáo cuối cùng phải sau ngày nộp báo cáo tiến độ.');
+      }
+    } else if (previous.progressReportDate && value.startsAt && value.startsAt >= date(previous.progressReportDate)) {
+      error('startsAt', 'Ngày bắt đầu thực hiện phải trước ngày nộp báo cáo tiến độ.');
+    }
     if (value.deadline && Date.parse(value.deadline) <= now.getTime() && value.deadline !== (previous?.registration?.deadline ? new Date(previous.registration.deadline).toISOString() : null)) error('deadline', 'Hạn đăng ký mới phải sau thời điểm hiện tại.');
     if (value.opensAt && value.deadline && value.opensAt >= value.deadline) error('opensAt', 'Thời điểm mở phải trước hạn đăng ký.');
     if (value.startsAt && value.completesAt && value.startsAt >= value.completesAt) error('completesAt', 'Hạn hoàn thành phải sau ngày bắt đầu.');
@@ -87,9 +121,11 @@
       courseLabel: value.topicType === 'course' ? catalog.courses[value.course] : catalog.types[value.topicType],
       semester: value.semester, academicYear: value.academicYear, description: value.description,
       ...Object.fromEntries(['objectives', 'outcomes', 'requirements'].map(field => [field, value[field].split(/\r?\n/).map(text).filter(Boolean)])),
+      methodAndScope: value.methodAndScope, plan: value.plan,
       domain: value.domain, technologies: value.technologies,
       registration: { ...previous?.registration, minMembers: value.minMembers, maxMembers: value.maxMembers, deadline: value.deadline, opensAt: value.opensAt || '' },
       startsAt: value.startsAt || '', completesAt: value.completesAt || '',
+      ...(!previous && { progressReportDate: value.progressReportDate, finalReportDate: value.finalReportDate }),
       supervisor: previous?.supervisor || getSupervisor(),
       status: previous?.status || 'open', statusLabel: previous?.statusLabel || 'Đang mở đăng ký', createdAt: previous?.createdAt || createdAt,
       revision: (previous?.revision || 0) + 1, updatedAt: now.toISOString(),
@@ -122,5 +158,5 @@
     repository.write([...saved.filter(item => item.id !== id),record]);
     return app.services.lecturerTopics.get('created',id);
   }
-  app.services.lecturerTopicEditor = { catalog, validate, nextCode, getSupervisor, setRegistration, create: (input, files, owner) => save(null, input, null, files, owner), update: (id, input, revision, files, owner) => save(id, input,revision,files,owner) };
+  app.services.lecturerTopicEditor = { catalog, validate, requiresMethodPlan, nextCode, getSupervisor, setRegistration, create: (input, files, owner) => save(null, input, null, files, owner), update: (id, input, revision, files, owner) => save(id, input,revision,files,owner) };
 })();

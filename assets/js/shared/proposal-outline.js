@@ -8,11 +8,15 @@
     const date = value => value ? value.split('-').reverse().join('/') : 'Chưa xác định';
     return [
       ['Tên đề tài tiếng Anh', outline.englishTitle],
-      ['Thời gian dự kiến', outline.startDate || outline.endDate ? `${date(outline.startDate)} - ${date(outline.endDate)}` : ''],
+      ...(outline.version === 3 ? [
+        ['Ngày bắt đầu thực hiện', date(outline.startDate)],
+        ['Ngày nộp báo cáo tiến độ', date(outline.progressReportDate)],
+        ['Ngày nộp báo cáo cuối cùng', date(outline.finalReportDate)],
+      ] : [['Thời gian dự kiến', outline.startDate || outline.endDate ? `${date(outline.startDate)} - ${date(outline.endDate)}` : '']]),
       ['Sinh viên thực hiện', outline.members.map(member => `${member.name} - ${member.code}${member.role === 'nhom-truong' ? ' - Nhóm trưởng' : ''}`).join('\n')],
       ['Thông tin GVHD trong đề cương', person(outline.supervisor)],
       ['Người hướng dẫn phụ trong đề cương', person(outline.secondarySupervisor)],
-      ...(outline.version === 2
+      ...(outline.version !== 1
         ? [['Phương pháp và phạm vi thực hiện', outline.methodAndScope]]
         : [['Phương pháp thực hiện', outline.method], ['Nội dung chính, phạm vi và cách đánh giá', outline.scope]]),
       ['Kế hoạch thực hiện và phân công', outline.plan],

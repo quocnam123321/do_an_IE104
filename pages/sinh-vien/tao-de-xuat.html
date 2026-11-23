@@ -127,19 +127,15 @@
         </header>
 
         <div class="page-content proposal-layout">
-          <form id="proposal-form" class="proposal-form" aria-labelledby="proposal-title" aria-describedby="proposal-required-note">
+          <form id="proposal-form" class="proposal-form" aria-labelledby="proposal-title">
             <p id="proposal-error" class="form-error" role="alert" tabindex="-1" hidden>Vui lòng kiểm tra thông tin bắt buộc và giảng viên hướng dẫn.</p>
             <p id="proposal-result" class="form-result" role="status" tabindex="-1" hidden></p>
             <div class="proposal-form__panel">
-              <fieldset class="proposal-form__section">
+              <fieldset class="proposal-form__section" data-proposal-outline>
                 <legend>Thông tin đề tài</legend>
                 <div class="proposal-form__field">
                   <label for="topic-name">Tên đề tài tiếng Việt <span class="proposal-form__required" aria-hidden="true">*</span></label>
                   <input id="topic-name" name="ten-de-tai" type="text" placeholder="Nhập tên đề tài bạn muốn đề xuất" required />
-                </div>
-                <div class="proposal-form__field">
-                  <label for="outline-englishTitle">Tên đề tài tiếng Anh <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label>
-                  <input id="outline-englishTitle" data-outline-field="englishTitle" type="text" maxlength="250" placeholder="Nhập tên đề tài bằng tiếng Anh" />
                 </div>
                 <div class="proposal-form__row">
                   <div class="proposal-form__field">
@@ -153,26 +149,20 @@
                   </div>
                   <div class="proposal-form__field">
                     <label for="course">Môn học <span class="proposal-form__required" aria-hidden="true">*</span></label>
-                    <select id="course" name="mon-hoc" aria-describedby="course-status" data-proposal-picker required>
-                      <option value="" selected disabled>Chọn môn học</option>
-                      <option value="IE104">IE104 - Internet và Công nghệ Web</option>
-                      <option value="IT004">IT004 - Cơ sở dữ liệu</option>
-                      <option value="IE101">IE101 - Cơ sở hạ tầng công nghệ thông tin</option>
-                      <option value="IE108">IE108 - Phân tích thiết kế phần mềm</option>
-                      <option value="IE103">IE103 - Quản lý thông tin</option>
-                      <option value="IE105">IE105 - Nhập môn bảo đảm và an ninh thông tin</option>
+                    <select id="course" name="mon-hoc" aria-describedby="course-status" data-proposal-picker required disabled>
+                      <option value="" selected disabled>Chọn loại đề tài trước</option>
                     </select>
                     <!-- Select bị khóa không được đưa vào FormData; input này giữ mã môn tương ứng. -->
                     <input id="fixed-course" name="mon-hoc" type="hidden" value="" disabled />
                     <p id="course-status" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
                   </div>
                 </div>
-                <div class="proposal-form__field">
-                  <label for="proposal-topic-code">Mã đề tài</label>
-                  <input id="proposal-topic-code" type="text" placeholder="Chọn loại đề tài" aria-describedby="proposal-topic-code-note" readonly />
-                  <p id="proposal-topic-code-note" class="proposal-outline-hint" role="status">Mã dự kiến được chốt khi lưu đề xuất.</p>
-                </div>
                 <div class="proposal-form__row">
+                  <div class="proposal-form__field">
+                    <label for="proposal-topic-code">Mã đề tài</label>
+                    <output id="proposal-topic-code" class="topic-code-preview" for="topic-type" aria-describedby="proposal-topic-code-note">Chọn loại đề tài</output>
+                    <p id="proposal-topic-code-note" class="proposal-outline-hint" role="status">Mã dự kiến được chốt khi lưu đề xuất.</p>
+                  </div>
                   <div class="proposal-form__field">
                     <label for="semester">Học kỳ <span class="proposal-form__required" aria-hidden="true">*</span></label>
                     <select id="semester" name="hoc-ky" data-proposal-picker required>
@@ -182,6 +172,8 @@
                     </select>
                     <p id="proposal-legacy-semester" class="proposal-form__selected-supervisor" hidden></p>
                   </div>
+                </div>
+                <div class="proposal-form__row">
                   <div class="proposal-form__field">
                     <label for="academic-year">Năm học <span class="proposal-form__required" aria-hidden="true">*</span></label>
                     <select id="academic-year" name="nam-hoc" data-proposal-picker required>
@@ -189,23 +181,24 @@
                       <option value="2025-2026">2025 – 2026</option>
                     </select>
                   </div>
+                  <div class="proposal-form__field">
+                    <label for="outline-startDate">Ngày bắt đầu thực hiện <span class="proposal-form__required" aria-hidden="true">*</span></label>
+                    <input id="outline-startDate" data-outline-field="startDate" data-proposal-picker type="date" required />
+                  </div>
+                </div>
+                <div class="proposal-form__row">
+                  <div class="proposal-form__field">
+                    <label for="outline-progressReportDate">Ngày nộp báo cáo tiến độ <span class="proposal-form__required" aria-hidden="true">*</span></label>
+                    <input id="outline-progressReportDate" data-outline-field="progressReportDate" data-proposal-picker type="date" required />
+                  </div>
+                  <div class="proposal-form__field">
+                    <label for="outline-finalReportDate">Ngày nộp báo cáo cuối cùng <span class="proposal-form__required" aria-hidden="true">*</span></label>
+                    <input id="outline-finalReportDate" data-outline-field="finalReportDate" data-proposal-picker type="date" required />
+                  </div>
                 </div>
               </fieldset>
 
-              <fieldset class="proposal-form__section" data-proposal-outline aria-label="Thông tin bổ sung đề tài">
-
-                <div class="proposal-form__row">
-                  <div class="proposal-form__field">
-                    <label for="outline-startDate">Ngày bắt đầu dự kiến <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label>
-                    <input id="outline-startDate" data-outline-field="startDate" data-proposal-picker type="date" />
-                  </div>
-                  <div class="proposal-form__field">
-                    <label for="outline-endDate">Ngày kết thúc dự kiến <span data-outline-required class="proposal-form__required" aria-hidden="true" hidden>*</span></label>
-                    <input id="outline-endDate" data-outline-field="endDate" data-proposal-picker type="date" />
-                  </div>
-                </div>
-</fieldset>
-<fieldset class="proposal-form__section">
+              <fieldset class="proposal-form__section">
                 <legend>Nội dung đề xuất</legend>
                 <div class="proposal-form__field">
                   <label for="topic-description">Tổng quan đề tài <span class="proposal-form__required" aria-hidden="true">*</span></label>
@@ -257,17 +250,17 @@
               <fieldset class="proposal-form__section">
                 <legend>Tài liệu đính kèm</legend>
                 <div class="proposal-form__field">
-                  <p id="proposal-attachment-limit" class="proposal-outline-hint">Đính kèm tối đa 1 tệp.</p>
-                  <div class="proposal-form__attachment">
+                  <div class="topic-file-picker__trigger">
                     <input id="proposal-attachment" name="tai-lieu-dinh-kem" type="file" aria-describedby="proposal-attachment-limit proposal-attachment-status" />
-                    <label class="proposal-form__file-button" for="proposal-attachment"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-6 6 6-6 6 6M5 16v5h14v-5" /></svg>Chọn tệp</label>
+                    <label class="topic-file-picker__button" for="proposal-attachment"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-6 6 6-6 6 6M5 16v5h14v-5" /></svg>Chọn tệp</label>
                   </div>
-                  <div class="proposal-form__attachment-selection" hidden>
-                    <svg class="proposal-form__attachment-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <p id="proposal-attachment-limit" class="proposal-outline-hint">Đính kèm tối đa 1 tệp.</p>
+                  <div class="topic-file-picker__selection" hidden>
+                    <svg class="topic-file-picker__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8M8 17h6" />
                     </svg>
-                    <p id="proposal-attachment-status" aria-live="polite"></p>
-                    <button type="button" data-remove-proposal-attachment aria-label="Bỏ tệp đính kèm" aria-describedby="proposal-attachment-status" title="Bỏ tệp">
+                    <p class="topic-file-picker__name" id="proposal-attachment-status" aria-live="polite"></p>
+                    <button class="topic-file-picker__remove" type="button" data-remove-proposal-attachment aria-label="Bỏ tệp đính kèm" aria-describedby="proposal-attachment-status" title="Bỏ tệp">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="M3 6h18m-2 0-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6m4 0V3h6v3m-5 4v7m4-7v7" />
                       </svg>
@@ -279,18 +272,18 @@
                 <legend>Ảnh đại diện đề tài</legend>
                 <div class="proposal-form__field">
                   <div id="proposal-cover-picker" class="proposal-form__field">
-                    <div class="proposal-form__attachment">
+                    <div class="topic-file-picker__trigger">
                       <input id="proposal-cover-image" type="file" accept="image/png,image/jpeg" aria-describedby="proposal-cover-hint" />
-                      <label class="proposal-form__file-button" for="proposal-cover-image"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-6 6 6-6 6 6M5 16v5h14v-5" /></svg>Chọn ảnh</label>
+                      <label class="topic-file-picker__button" for="proposal-cover-image"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-6 6 6-6 6 6M5 16v5h14v-5" /></svg>Chọn ảnh</label>
                     </div>
                     <p id="proposal-cover-hint" class="proposal-outline-hint">Hệ thống sẽ dùng ảnh mặc định nếu bạn chưa chọn ảnh.</p>
                   </div>
-                  <div id="proposal-cover-selection" class="proposal-form__attachment-selection" hidden>
-                    <svg class="proposal-form__attachment-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <div id="proposal-cover-selection" class="topic-file-picker__selection" hidden>
+                    <svg class="topic-file-picker__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 16-5-5L5 21"/>
                     </svg>
-                    <p id="proposal-cover-status" aria-live="polite"></p>
-                    <button type="button" data-remove-proposal-cover aria-label="Bỏ ảnh đại diện" aria-describedby="proposal-cover-status" title="Bỏ ảnh">
+                    <p class="topic-file-picker__name" id="proposal-cover-status" aria-live="polite"></p>
+                    <button class="topic-file-picker__remove" type="button" data-remove-proposal-cover aria-label="Bỏ ảnh đại diện" aria-describedby="proposal-cover-status" title="Bỏ ảnh">
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18m-2 0-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6m4 0V3h6v3m-5 4v7m4-7v7" /></svg>
                     </button>
                   </div>
@@ -300,7 +293,6 @@
             </div>
 
             <div class="proposal-form__footer">
-              <p id="proposal-required-note">* Thông tin bắt buộc</p>
               <div class="proposal-form__actions">
                 <button class="proposal-form__submit" type="button" aria-haspopup="dialog" aria-controls="proposal-success-dialog" disabled>Gửi đề xuất</button>
                 <button class="proposal-form__submit" type="submit" data-resubmit-proposal aria-haspopup="dialog" aria-controls="proposal-confirm-dialog" hidden disabled>Lưu và gửi lại</button>
@@ -427,20 +419,20 @@
       </div>
     </dialog>
 
-    <dialog id="proposal-success-dialog" class="confirmation-dialog proposal-success-dialog" aria-labelledby="proposal-success-title">
-      <button class="proposal-success-dialog__close" type="button" command="close" commandfor="proposal-success-dialog" aria-label="Đóng thông báo">
+    <dialog id="proposal-success-dialog" class="confirmation-dialog success-dialog" aria-labelledby="proposal-success-title">
+      <button class="success-dialog__close" type="button" command="close" commandfor="proposal-success-dialog" aria-label="Đóng thông báo">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
           <path d="m6 6 12 12M18 6 6 18" />
         </svg>
       </button>
-      <div class="proposal-success-dialog__content">
-        <span class="proposal-success-dialog__icon" aria-hidden="true">
+      <div class="success-dialog__content">
+        <span class="success-dialog__icon" aria-hidden="true">
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
             <path d="m5 12 4 4L19 6" />
           </svg>
         </span>
         <h2 id="proposal-success-title">Đã lưu đề xuất</h2>
-        <a id="view-saved-proposal" class="proposal-success-dialog__link" autofocus>Xem đề xuất</a>
+        <a id="view-saved-proposal" class="success-dialog__link" autofocus>Xem đề xuất</a>
       </div>
     </dialog>
 

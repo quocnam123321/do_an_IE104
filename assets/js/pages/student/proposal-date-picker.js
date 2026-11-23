@@ -1,5 +1,5 @@
 (() => {
-  const form = document.getElementById('proposal-form');
+  const form = document.querySelector('#proposal-form, #create-topic-form');
   const app = globalThis.IE104;
   const pickers = app?.ui?.proposalPickers;
   if (!form || !pickers) return;
@@ -30,9 +30,85 @@
     return Number.isFinite(date.getTime()) && inRange(date) && isoDate(date) === iso ? date : null;
   }
 
+  function parseTime(value) {
+    const parts = /^(\d{1,2}):([0-5]\d)$/.exec(value.trim());
+    return parts && Number(parts[1]) <= 23 ? `${parts[1].padStart(2, '0')}:${parts[2]}` : '';
+  }
+
+  function parseDateTime(day, clock) {
+    const date = parseDate(day);
+    const time = parseTime(clock);
+    return date && time ? `${isoDate(date)}T${time}` : '';
+  }
+
   const icon = path => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;
   const weekdays = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
   const enhanced = new Set();
+  const dateTimeFields = new Map();
+
+  function fillEnhancedDate(input, value) {
+    const [day, time = ''] = value.split('T');
+    input.value = day ? displayDate(day) : '';
+    const timeInput = dateTimeFields.get(input);
+    if (timeInput) timeInput.value = time;
+  }
+
+  function createTimeColumn(list, count, onSelect) {
+    const options = Array.from({ length: count }, (_, index) => {
+      const option = document.createElement('div');
+      option.id = `${list.id}-${index}`;
+      option.textContent = String(index).padStart(2, '0');
+      option.setAttribute('role', 'option');
+      option.setAttribute('aria-selected', 'false');
+      return option;
+    });
+    list.append(...options);
+    let selected = -1;
+    let active = 0;
+
+    function activate(index) {
+      options[active].classList.remove('is-active');
+      active = index;
+      const option = options[index];
+      option.classList.add('is-active');
+      list.setAttribute('aria-activedescendant', option.id);
+      if (option.offsetTop < list.scrollTop) list.scrollTop = option.offsetTop;
+      else if (option.offsetTop + option.offsetHeight > list.scrollTop + list.clientHeight) {
+        list.scrollTop = option.offsetTop + option.offsetHeight - list.clientHeight;
+      }
+    }
+
+    function select(index) {
+      options[selected]?.setAttribute('aria-selected', 'false');
+      selected = index;
+      options[selected]?.setAttribute('aria-selected', 'true');
+      activate(Math.max(0, selected));
+    }
+
+    list.addEventListener('click', event => {
+      const index = options.indexOf(event.target.closest('[role="option"]'));
+      if (index < 0) return;
+      list.focus({ preventScroll: true });
+      select(index);
+      onSelect();
+    });
+    list.addEventListener('keydown', event => {
+      const { key } = event;
+      if (!['ArrowUp', 'ArrowDown', 'Home', 'End', 'Enter', ' '].includes(key)) return;
+      event.preventDefault();
+      if (key === 'Enter' || key === ' ') {
+        select(active);
+        onSelect();
+      } else if (key === 'End') activate(count - 1);
+      else if (key === 'Home') activate(0);
+      else if (key === 'ArrowUp') activate(Math.max(0, active - 1));
+      else activate(Math.min(count - 1, active + 1));
+    });
+    return {
+      get value() { return options[selected]?.textContent || ''; },
+      set value(value) { select(value ? Number(value) : -1); },
+    };
+  }
 
   function enhanceDate(input) {
     const group = document.createElement('div');
@@ -40,13 +116,29 @@
     input.before(group);
     group.append(input);
     const initial = input.value;
+    const withTime = input.type === 'datetime-local';
     input.type = 'text';
     input.inputMode = 'numeric';
     input.placeholder = 'dd/mm/yyyy';
     input.maxLength = 10;
     input.autocomplete = 'off';
-    input.value = initial ? displayDate(initial) : '';
     enhanced.add(input);
+    if (withTime) {
+      group.classList.add('proposal-date-control--with-time');
+      group.insertAdjacentHTML('beforeend', `
+        <span class="proposal-date-separator" aria-hidden="true">·</span>
+        <input class="proposal-date-time" type="text" placeholder="hh:mm" maxlength="5" autocomplete="off"
+          aria-label="Giờ hết hạn đăng ký">
+      `);
+    }
+    const timeInput = group.querySelector('.proposal-date-time');
+    if (timeInput) {
+      timeInput.required = input.required;
+      dateTimeFields.set(input, timeInput);
+    }
+    fillEnhancedDate(input, initial);
+    input.defaultValue = input.value;
+    if (timeInput) timeInput.defaultValue = timeInput.value;
 
     const label = input.labels[0];
     label.id ||= `${input.id}-label`;
@@ -57,7 +149,7 @@
         aria-label="Mở lịch: ${label.firstChild.textContent.trim()}">
         ${icon('M20 7v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2ZM8 3v4m8-4v4M4 10h16')}
       </button>
-      <div id="${panelId}" class="proposal-picker-popup proposal-calendar" role="dialog"
+      <div id="${panelId}" class="proposal-picker-popup proposal-calendar${withTime ? ' proposal-calendar--with-time' : ''}" role="dialog"
         aria-labelledby="${label.id}">
         <div class="proposal-calendar__header">
           <button type="button" id="${headingId}" class="proposal-calendar__heading"
@@ -79,6 +171,20 @@
             <tbody></tbody>
           </table>
         </div>
+        ${withTime ? `
+          <div class="proposal-calendar__time">
+            <div class="proposal-calendar__time-column">
+              <span id="${panelId}-hours-label">Giờ</span>
+              <div id="${panelId}-hours" class="proposal-calendar__time-options" role="listbox" tabindex="0"
+                aria-labelledby="${panelId}-hours-label"></div>
+            </div>
+            <div class="proposal-calendar__time-column">
+              <span id="${panelId}-minutes-label">Phút</span>
+              <div id="${panelId}-minutes" class="proposal-calendar__time-options" role="listbox" tabindex="0"
+                aria-labelledby="${panelId}-minutes-label"></div>
+            </div>
+          </div>
+        ` : ''}
         <div class="proposal-calendar__footer">
           <button type="button" data-clear-date>Xóa</button>
           <button type="button" data-today>Hôm nay</button>
@@ -98,6 +204,8 @@
     const grid = panel.querySelector('table');
     const gridBody = grid.tBodies[0];
     const clear = panel.querySelector('[data-clear-date]');
+    const hours = withTime && createTimeColumn(panel.querySelector(`#${panelId}-hours`), 24, updateDateTime);
+    const minutes = withTime && createTimeColumn(panel.querySelector(`#${panelId}-minutes`), 60, updateDateTime);
     let today;
     let selected;
     let active;
@@ -122,6 +230,7 @@
       title.textContent = `Tháng ${month + 1} năm ${year}`;
       navigation[0].disabled = year === 1 && (!jump.hidden || month === 0);
       navigation[1].disabled = year === 9999 && (!jump.hidden || month === 11);
+      updateActions();
       if (!jump.hidden) {
         yearField.value = year;
         months.forEach((button, index) => button.setAttribute('aria-pressed', String(index === month)));
@@ -195,35 +304,80 @@
       const date = parseDate(input.value);
       selected = date ? isoDate(date) : '';
       active = date || today;
-      clear.disabled = !input.value;
       showMonths(false);
       popup.open();
+      if (withTime) {
+        const [hour = '', minute = ''] = parseTime(timeInput.value).split(':');
+        hours.value = hour;
+        minutes.value = minute;
+        updateActions();
+      }
       focusDay();
     }
 
-    function choose(value) {
-      input.value = value ? displayDate(value) : '';
+    function commit(value) {
+      fillEnhancedDate(input, value);
       input.dispatchEvent(new Event('input', { bubbles: true }));
       input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    function updateActions() {
+      clear.disabled = !(input.value || timeInput?.value || (withTime && (selected || hours.value || minutes.value)));
+    }
+
+    function updateDateTime() {
+      const value = parseDateTime(selected, `${hours.value}:${minutes.value}`);
+      if (!value) {
+        updateActions();
+        return false;
+      }
+      commit(value);
       close();
+      return true;
+    }
+
+    function choose(value) {
+      if (!withTime) {
+        commit(value);
+        close();
+        return;
+      }
+      selected = value;
+      active = parseDate(value);
+      if (updateDateTime()) return;
+      render();
+      focusDay();
     }
 
     trigger.addEventListener('click', () => {
       if (popup.isOpen()) close();
       else open();
     });
-    input.addEventListener('keydown', event => {
-      if (event.altKey && event.key === 'ArrowDown') {
-        event.preventDefault();
-        if (!popup.isOpen()) {
-          trigger.focus({ preventScroll: true });
-          open();
-        }
+    function openFromKeyboard(event) {
+      if (!event.altKey || event.key !== 'ArrowDown') return;
+      event.preventDefault();
+      if (!popup.isOpen()) {
+        trigger.focus({ preventScroll: true });
+        open();
       }
-    });
+    }
+    input.addEventListener('keydown', openFromKeyboard);
+    timeInput?.addEventListener('keydown', openFromKeyboard);
     input.addEventListener('blur', () => {
       const value = parseDate(input.value);
       if (value) input.value = displayDate(isoDate(value));
+    });
+    timeInput?.addEventListener('blur', () => {
+      const time = parseTime(timeInput.value);
+      if (time) timeInput.value = time;
+    });
+    if (withTime) input.addEventListener('paste', event => {
+      const parts = /^(\S+?)(?:\s*[T·.]\s*|\s+)(\d{1,2}:\d{2})$/.exec(event.clipboardData.getData('text').trim());
+      const value = parts && parseDateTime(parts[1], parts[2]);
+      if (!value) return;
+      event.preventDefault();
+      fillEnhancedDate(input, value);
+      input.dispatchEvent(new Event('input', { bubbles: true }));
     });
     panel.addEventListener('keydown', event => {
       if (event.key === 'Escape') {
@@ -277,19 +431,25 @@
       render();
       focusDay();
     });
-    clear.addEventListener('click', () => choose(''));
+    clear.addEventListener('click', () => {
+      commit('');
+      close();
+    });
     panel.querySelector('[data-today]').addEventListener('click', () => choose(isoDate(today)));
     form.addEventListener('reset', popup.close);
   }
 
-  form.querySelectorAll('input[type="date"][data-proposal-picker]').forEach(enhanceDate);
+  form.querySelectorAll('input[data-proposal-picker]:is([type="date"], [type="datetime-local"])').forEach(enhanceDate);
   app.ui.proposalDatePicker = {
     read(input) {
+      const timeInput = dateTimeFields.get(input);
+      if (timeInput) return parseDateTime(input.value, timeInput.value);
       const date = parseDate(input.value);
       return date ? isoDate(date) : input.value;
     },
     fill(input, value) {
-      input.value = enhanced.has(input) && value ? displayDate(value) : value;
+      if (enhanced.has(input)) fillEnhancedDate(input, value);
+      else input.value = value;
     },
   };
 })();

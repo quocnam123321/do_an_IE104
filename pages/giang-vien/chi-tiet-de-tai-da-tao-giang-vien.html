@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261111-heading-sync-1">
     <link rel="stylesheet" href="../../assets/css/components.css">
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
-    <link rel="stylesheet" href="../../assets/css/teacher-created-detail.css?v=20261121-matching-topic-covers">
+    <link rel="stylesheet" href="../../assets/css/proposal-request-detail.css">
+    <link rel="stylesheet" href="../../assets/css/teacher-created-detail.css">
     <script src="../../assets/js/nav-indicator.js" defer=""></script>
     <script src="../../assets/js/dialog-commands.js" defer=""></script>
 
@@ -35,12 +36,13 @@
     <script src="../../assets/js/services/lecturer-topic-file-service.js" defer></script>
     <script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
     <script src="../../assets/js/pages/lecturer/created-topic.js?v=20261121-created-topics" defer></script>
+    <script src="../../assets/js/shared/download-file.js" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-media.js" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-registration-state.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js" defer></script>
 </head>
-  <body id="page-top" tabindex="-1" data-lecturer-topic-view="detail" class="teacher-workspace-page teacher-created-detail-page">
+  <body id="page-top" tabindex="-1" data-lecturer-topic-view="detail" class="teacher-workspace-page teacher-created-detail-page proposal-request-detail-page">
     <a class="skip-link" href="#main-content">
       Chuyển đến nội dung chính
     </a>
@@ -206,71 +208,96 @@
         </nav>
         <a class="back-link" href="danh-sach-de-tai-da-tao.html"><svg class="back-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 5-7 7 7 7M5 12h14"></path></svg><span>Quay lại đề tài đã tạo</span></a>
         <header class="page-header">
-          <div class="created-detail-heading"><h1 class="page-header__title">Chi tiết đề tài</h1><p class="status-badge status-badge--open">Đang mở đăng ký</p></div>
-          <div class="page-header__actions">
-            <a class="topic-edit-link" href="chinh-sua-de-tai-giang-vien.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 3 5 5M4 16 16 4a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"></path></svg><span>Chỉnh sửa đề tài</span></a>
-            <button class="registration-close-button" type="button" commandfor="close-registration" command="show-modal" aria-haspopup="dialog" aria-controls="close-registration">Đóng đăng ký</button>
+          <div class="request-detail-heading">
+            <h1 class="page-header__title">Chi tiết đề tài</h1>
           </div>
         </header>
-        <!-- Dữ liệu mẫu dùng dựng giao diện; chưa kết nối lưu trữ hoặc trạng thái đăng ký. -->
-        <div class="page-content topic-detail">
-          <section class="topic-summary" aria-labelledby="topic-summary-title">
-            <div class="topic-summary__image" data-topic-cover="wide" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7V5a2 2 0 0 1 2-2h4l3 4h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path><path d="M3 7h9"></path></svg></div>
-            <div class="topic-summary__content">
-              <h2 id="topic-summary-title">Website quản lý thư viện</h2>
-              <dl class="topic-summary__meta">
-                <div><dt>Mã đề tài:</dt><dd>DT001</dd></div>
-                <div><dt>Loại đề tài:</dt><dd>Đồ án môn học</dd></div>
-                <div><dt>Môn học:</dt><dd>Internet và công nghệ Web</dd></div>
-                <div><dt>Học kỳ:</dt><dd>Học kỳ 1</dd></div>
-                <div><dt>Năm học:</dt><dd>2026–2027</dd></div>
+        <article class="request-detail request-detail--proposal" aria-labelledby="topic-summary-title">
+          <section class="request-topic" aria-labelledby="topic-summary-title">
+            <div class="request-topic__image topic-summary__image" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z" />
+                <path d="M9 13h6M9 16h4" />
+              </svg>
+            </div>
+            <div class="request-topic__content">
+              <div class="request-topic__heading">
+                <h2 id="topic-summary-title"></h2>
+                <p class="status-badge" data-topic-status></p>
+              </div>
+              <dl class="request-topic__meta">
+                <div><dt>Loại đề tài</dt><dd data-topic-field="type"></dd></div>
+                <div><dt>Môn học</dt><dd data-topic-field="course"></dd></div>
+                <div><dt>Học kỳ</dt><dd data-topic-field="semester"></dd></div>
+                <div><dt>Năm học</dt><dd data-topic-field="year"></dd></div>
+                <div><dt>Mã đề tài</dt><dd data-topic-field="code"></dd></div>
+                <div><dt>Ngày bắt đầu thực hiện</dt><dd data-topic-field="start"></dd></div>
+                <div><dt>Ngày nộp báo cáo tiến độ</dt><dd data-topic-field="progress"></dd></div>
+                <div><dt>Ngày nộp báo cáo cuối cùng</dt><dd data-topic-field="final"></dd></div>
+                <div data-topic-completion hidden><dt>Hạn hoàn thành đề tài</dt><dd data-topic-field="completion"></dd></div>
+                <div><dt>Hạn đăng ký</dt><dd data-topic-field="deadline"></dd></div>
               </dl>
             </div>
           </section>
-            <section class="topic-supervisor" aria-labelledby="supervisor-title">
-              <h2 id="supervisor-title">Giảng viên hướng dẫn</h2>
-              <div class="topic-supervisor__content">
-                <div class="topic-supervisor__avatar" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg></div>
-                <dl class="topic-supervisor__details">
-                  <div><dt>Họ tên:</dt><dd>Nguyễn Văn Minh</dd></div>
-                  <div><dt>Khoa/Bộ môn:</dt><dd>Khoa Hệ thống thông tin</dd></div>
-                  <div><dt>Email liên hệ:</dt><dd>minh.nv@uit.edu.vn</dd></div>
-                  <div><dt>Hướng nghiên cứu:</dt><dd>Hệ thống thông tin và ứng dụng web</dd></div>
-                </dl>
-              </div>
-            </section>
-          <section class="topic-description" aria-labelledby="topic-description-title">
-            <h2 id="topic-description-title">Mô tả đề tài</h2>
-            <p>Xây dựng website hỗ trợ quản lý sách, bạn đọc và hoạt động mượn trả tại thư viện. Hệ thống giúp tra cứu thông tin và theo dõi tình trạng sách.</p>
+          <section class="request-detail__body-card topic-description" aria-labelledby="topic-description-title">
+            <h2 id="topic-description-title">Tổng quan đề tài</h2>
+            <p></p>
           </section>
-          <section class="topic-objectives" aria-labelledby="topic-objectives-title">
+          <section class="request-detail__body-card topic-objectives" aria-labelledby="topic-objectives-title">
             <h2 id="topic-objectives-title">Mục tiêu</h2>
-            <ul><li>Quản lý danh mục sách và thông tin bạn đọc</li><li>Hỗ trợ tra cứu, mượn và trả sách</li><li>Theo dõi và thống kê hoạt động thư viện</li></ul>
+            <ul></ul>
           </section>
-          <section class="topic-outcomes" aria-labelledby="topic-outcomes-title">
+          <section class="request-detail__body-card topic-outcomes" aria-labelledby="topic-outcomes-title">
             <h2 id="topic-outcomes-title">Kết quả dự kiến</h2>
-            <ul><li>Website quản lý thư viện với các chức năng cơ bản</li><li>Báo cáo và tài liệu hướng dẫn sử dụng</li></ul>
+            <ul></ul>
           </section>
-          <section class="topic-requirements" aria-labelledby="topic-requirements-title">
+          <section class="request-detail__body-card topic-requirements" aria-labelledby="topic-requirements-title">
             <h2 id="topic-requirements-title">Yêu cầu đối với sinh viên</h2>
-            <ul><li>Có kiến thức HTML, CSS, JavaScript và cơ sở dữ liệu</li><li>Có khả năng làm việc nhóm và tự nghiên cứu</li></ul>
+            <ul></ul>
           </section>
-          <section class="topic-registration" aria-labelledby="registration-title">
-            <h2 id="registration-title">Thông tin đăng ký</h2>
-            <p class="topic-registration__members"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="3"></circle><path d="M3 20v-2a6 6 0 0 1 12 0v2M16 4a3 3 0 0 1 0 6M18 14a5 5 0 0 1 3 4v2"></path></svg><span>Nhóm gồm 2–3 sinh viên</span></p>
-            <dl><div><dt>Hạn đăng ký:</dt><dd><time datetime="2026-11-15T23:59:00+07:00">15/11/2026 · 23:59</time></dd></div></dl>
+          <section class="request-detail__body-card" aria-labelledby="topic-method-title" data-topic-method hidden>
+            <h2 id="topic-method-title">Phương pháp và phạm vi thực hiện</h2>
+            <p></p>
           </section>
-          <section class="topic-attachments" aria-labelledby="attachments-title">
+          <section class="request-detail__body-card" aria-labelledby="topic-plan-title" data-topic-plan hidden>
+            <h2 id="topic-plan-title">Kế hoạch thực hiện và phân công</h2>
+            <p></p>
+          </section>
+          <section class="request-detail__body-card" aria-labelledby="topic-members-title">
+            <h2 id="topic-members-title">Số thành viên</h2>
+            <dl class="topic-members">
+              <div><dt>Tối thiểu / nhóm</dt><dd data-topic-field="minMembers"></dd></div>
+              <div><dt>Tối đa / nhóm</dt><dd data-topic-field="maxMembers"></dd></div>
+            </dl>
+          </section>
+          <section class="request-attachments topic-attachments" aria-labelledby="attachments-title">
             <h2 id="attachments-title">Tài liệu đính kèm</h2>
-            <p class="topic-attachments__file"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H5v20h14V7l-5-5Z"></path><path d="M14 2v6h5"></path></svg><span>Đề cương đề tài.pdf</span></p>
-            <button class="topic-attachments__download" type="button" disabled="" title="Chưa có tệp tài liệu thực để tải xuống"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 17v4h16v-4"></path></svg><span>Tải xuống</span></button>
+            <div class="request-attachments__row" data-topic-attachment hidden>
+              <div class="request-attachments__file topic-attachments__file">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8M8 17h6" />
+                </svg>
+                <span></span>
+              </div>
+              <button class="request-attachments__download topic-attachments__download" type="button" disabled title="Chưa có tệp tài liệu thực để tải xuống">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5" />
+                </svg>
+                <span>Tải xuống</span>
+              </button>
+            </div>
+            <p data-topic-attachment-empty>Chưa có tài liệu đính kèm</p>
           </section>
-        </div>
-        <!-- Biến thể đóng đăng ký dành cho tích hợp: thay nhãn trạng thái và nút đóng
-             bằng nội dung template này. HTML thuần không tự đổi hoặc lưu trạng thái. -->
+          <div class="request-detail__actions" role="group" aria-label="Thao tác với đề tài">
+            <button class="request-action registration-close-button" type="button" commandfor="close-registration" command="show-modal" aria-haspopup="dialog" aria-controls="close-registration">Đóng đăng ký</button>
+            <a class="request-action request-action--primary topic-edit-link" href="chinh-sua-de-tai-giang-vien.html">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 3 5 5M4 16 16 4a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
+              <span>Chỉnh sửa đề tài</span>
+            </a>
+          </div>
+        </article>
         <template id="registration-closed-template">
-          <p class="status-badge status-badge--closed">Đã đóng đăng ký</p>
-          <button class="registration-reopen-button" type="button" commandfor="reopen-registration" command="show-modal" aria-haspopup="dialog" aria-controls="reopen-registration">Mở lại đăng ký</button>
+          <button class="request-action registration-reopen-button" type="button" commandfor="reopen-registration" command="show-modal" aria-haspopup="dialog" aria-controls="reopen-registration">Mở lại đăng ký</button>
         </template>
       </div>
     </main>

@@ -47,6 +47,11 @@
       const requirements = root.querySelector('.topic-requirements');
       requirements.hidden = !project.requirements?.trim();
       if (!requirements.hidden) renderList(requirements.querySelector('.topic-bullet-list'), project.requirements);
+      root.querySelectorAll('[data-project-method-plan]').forEach(section => {
+        const content = project[section.dataset.projectMethodPlan]?.trim() || '';
+        section.hidden = !content;
+        section.querySelector('p').textContent = content;
+      });
       let outlinePanel = root.querySelector('[data-proposal-outline-view]');
       if (!outlinePanel) {
         outlinePanel = document.createElement('section');

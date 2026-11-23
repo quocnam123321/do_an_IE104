@@ -59,7 +59,7 @@
 
   function validateForStudent(input, student, options = catalog) {
     const outline = input.outline;
-    if ([1, 2].includes(outline?.version) && outline.members === undefined && student) {
+    if ([1, 2, 3].includes(outline?.version) && outline.members === undefined && student) {
       input = { ...input, outline: { ...outline, members: [{ ...student, role: 'nhom-truong' }] } };
     }
     return app.validation.validateProposal(input, options, student);

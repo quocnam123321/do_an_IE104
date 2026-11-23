@@ -30,20 +30,39 @@
 
   function validateProposalOutline(input, type, student) {
     const errors = [];
-    if (![1, 2].includes(input?.version)) return { errors: [{ field: 'outline.englishTitle', message: 'Thông tin đề cương không hợp lệ.' }], value: null };
+    if (![1, 2, 3].includes(input?.version)) return { errors: [{ message: 'Thông tin đề cương không hợp lệ.' }], value: null };
     const value = { version: input.version };
+    const hasReportDates = input.version === 3;
+    const reportDateLabels = { progressReportDate: 'ngày nộp báo cáo tiến độ', finalReportDate: 'ngày nộp báo cáo cuối cùng' };
     const methodLimits = input.version === 1 ? { method: 10000, scope: 10000 } : { methodAndScope: 20002 };
     const limits = { englishTitle: 250, startDate: 10, endDate: 10, ...methodLimits, plan: 10000 };
     const labels = { englishTitle: 'tên tiếng Anh', startDate: 'ngày bắt đầu', endDate: 'ngày kết thúc', method: 'phương pháp thực hiện', scope: 'nội dung chính, phạm vi và cách đánh giá', methodAndScope: 'phương pháp và phạm vi thực hiện', plan: 'kế hoạch thực hiện và phân công' };
     Object.entries(limits).forEach(([key, max]) => {
       value[key] = String(input[key] || '').trim();
       if (value[key].length > max) errors.push({ field: `outline.${key}`, message: `${labels[key]} tối đa ${max} ký tự.` });
-      if (type === 'khoa-luan' && !value[key]) errors.push({ field: `outline.${key}`, message: `Vui lòng nhập ${labels[key]} cho đề cương khóa luận.` });
+      if (type === 'khoa-luan' && !value[key] && (!hasReportDates || key in methodLimits || key === 'plan')) {
+        errors.push({ field: `outline.${key}`, message: `Vui lòng nhập ${labels[key]} cho đề cương khóa luận.` });
+      }
     });
     const validDate = text => /^\d{4}-\d{2}-\d{2}$/.test(text) && Number.isFinite(Date.parse(text)) && new Date(text).toISOString().slice(0, 10) === text && Number(text.slice(0, 4)) > 0;
     for (const key of ['startDate', 'endDate']) if (value[key] && !validDate(value[key])) errors.push({ field: `outline.${key}`, message: 'Chọn ngày tồn tại theo định dạng ngày/tháng/năm.' });
-    if (type !== 'khoa-luan' && Boolean(value.startDate) !== Boolean(value.endDate)) errors.push({ field: `outline.${value.startDate ? 'endDate' : 'startDate'}`, message: 'Điền cả ngày bắt đầu và kết thúc dự kiến.' });
-    if (validDate(value.startDate) && validDate(value.endDate) && value.endDate <= value.startDate) errors.push({ field: 'outline.endDate', message: 'Ngày kết thúc phải sau ngày bắt đầu.' });
+    if (hasReportDates) {
+      if (!value.startDate) errors.push({ field: 'outline.startDate', message: 'Vui lòng nhập ngày bắt đầu thực hiện.' });
+      for (const [key, label] of Object.entries(reportDateLabels)) {
+        value[key] = String(input[key] || '').trim();
+        if (!value[key]) errors.push({ field: `outline.${key}`, message: `Vui lòng nhập ${label}.` });
+        else if (!validDate(value[key])) errors.push({ field: `outline.${key}`, message: 'Chọn ngày tồn tại theo định dạng ngày/tháng/năm.' });
+      }
+      if (validDate(value.startDate) && validDate(value.progressReportDate) && value.progressReportDate <= value.startDate) {
+        errors.push({ field: 'outline.progressReportDate', message: 'Ngày nộp báo cáo tiến độ phải sau ngày bắt đầu thực hiện.' });
+      }
+      if (validDate(value.progressReportDate) && validDate(value.finalReportDate) && value.finalReportDate <= value.progressReportDate) {
+        errors.push({ field: 'outline.finalReportDate', message: 'Ngày nộp báo cáo cuối cùng phải sau ngày nộp báo cáo tiến độ.' });
+      }
+    } else {
+      if (type !== 'khoa-luan' && Boolean(value.startDate) !== Boolean(value.endDate)) errors.push({ field: `outline.${value.startDate ? 'endDate' : 'startDate'}`, message: 'Điền cả ngày bắt đầu và kết thúc dự kiến.' });
+      if (validDate(value.startDate) && validDate(value.endDate) && value.endDate <= value.startDate) errors.push({ field: 'outline.endDate', message: 'Ngày kết thúc phải sau ngày bắt đầu.' });
+    }
     for (const key of ['supervisor', 'secondarySupervisor']) {
       const person = input[key] || {};
       value[key] = {};

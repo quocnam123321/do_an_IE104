@@ -217,28 +217,7 @@
                 </div>
               </section>
 
-              <aside class="topic-edit-form__sidebar" aria-label="Ảnh và giảng viên hướng dẫn">
-                <section class="topic-edit-form__image teacher-topic-form__panel" aria-labelledby="topic-image-title">
-                  <h2 id="topic-image-title">Ảnh minh họa đề tài</h2>
-                  <figure class="topic-image">
-                    <div class="topic-image__placeholder">
-                      <p>Chưa có ảnh minh họa</p>
-                    </div>
-                    <figcaption>Ảnh minh họa đề tài</figcaption>
-                  </figure>
-                  <div class="topic-image__actions" role="group" aria-label="Thao tác ảnh minh họa">
-                    <button type="button" aria-describedby="topic-image-notice" disabled="">
-                      Thay ảnh
-                    </button>
-                    <button type="button" aria-describedby="topic-image-notice" disabled="">
-                      Gỡ ảnh
-                    </button>
-                  </div>
-                  <p id="topic-image-notice" class="topic-image__notice">
-                    Chưa có ảnh minh họa. Chưa có xử lý thay, gỡ và lưu ảnh.
-                  </p>
-                </section>
-
+              <aside class="topic-edit-form__sidebar" aria-label="Giảng viên hướng dẫn">
                 <section class="topic-edit-form__lecturer teacher-topic-form__panel" aria-labelledby="topic-lecturer-title">
                   <h2 id="topic-lecturer-title">Giảng viên hướng dẫn</h2>
                   <p>Thông tin sẽ lấy từ hồ sơ giảng viên.</p>
@@ -289,9 +268,48 @@
               <label for="ket-qua-du-kien">Kết quả dự kiến *</label>
               <textarea id="ket-qua-du-kien" name="ket-qua-du-kien" rows="4" required></textarea>
             </section>
-            <section class="topic-edit-form__content teacher-topic-form__panel" aria-labelledby="topic-attachment-title" data-editor-attachment>
+            <section class="topic-edit-form__content teacher-topic-form__panel" aria-labelledby="topic-method-plan-title">
+              <h2 id="topic-method-plan-title">Phương pháp và kế hoạch</h2>
+              <div class="topic-edit-form__field">
+                <label for="topic-method-and-scope">Phương pháp và phạm vi thực hiện <span class="topic-required" aria-hidden="true" hidden>*</span></label>
+                <textarea id="topic-method-and-scope" name="methodAndScope" rows="4" maxlength="20002" placeholder="Nêu cách thực hiện, nội dung chính, giới hạn của đề tài và cách đánh giá kết quả."></textarea>
+              </div>
+              <div class="topic-edit-form__field">
+                <label for="topic-plan">Kế hoạch thực hiện và phân công <span class="topic-required" aria-hidden="true" hidden>*</span></label>
+                <textarea id="topic-plan" name="plan" rows="4" maxlength="10000" placeholder="Nêu các giai đoạn, mốc hoàn thành và người phụ trách từng phần việc nếu làm theo nhóm."></textarea>
+              </div>
+            </section>
+            <section class="teacher-topic-form__panel topic-file-picker" data-topic-file="attachment" aria-labelledby="topic-attachment-title">
               <h2 id="topic-attachment-title">Tài liệu đính kèm</h2>
-              <p>PDF/DOC/DOCX/TXT không quá 10 MB.</p>
+              <div class="topic-file-picker__trigger">
+                <input id="topic-attachment" name="topic-attachment" type="file" accept=".pdf,.doc,.docx,.txt" aria-describedby="topic-attachment-hint topic-attachment-error" />
+                <label class="topic-file-picker__button" for="topic-attachment"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-6 6 6-6 6 6M5 16v5h14v-5" /></svg>Chọn tệp</label>
+              </div>
+              <p class="topic-file-picker__hint" id="topic-attachment-hint">Đính kèm tối đa 1 tệp PDF, DOC, DOCX hoặc TXT, không quá 10 MB.</p>
+              <div class="topic-file-picker__selection" hidden>
+                <svg class="topic-file-picker__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8M8 17h6" /></svg>
+                <p class="topic-file-picker__name" id="topic-attachment-name"></p>
+                <button class="topic-file-picker__remove" type="button" aria-label="Bỏ tệp đính kèm" aria-describedby="topic-attachment-name" title="Bỏ tệp đính kèm">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18m-2 0-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6m4 0V3h6v3m-5 4v7m4-7v7" /></svg>
+                </button>
+              </div>
+              <p class="topic-file-picker__error" id="topic-attachment-error" role="alert" hidden></p>
+            </section>
+            <section class="teacher-topic-form__panel topic-file-picker" data-topic-file="image" aria-labelledby="topic-image-title">
+              <h2 id="topic-image-title">Ảnh đại diện đề tài</h2>
+              <div class="topic-file-picker__trigger">
+                <input id="topic-image" name="topic-image" type="file" accept="image/png,image/jpeg,.png,.jpg,.jpeg" aria-describedby="topic-image-hint topic-image-error" />
+                <label class="topic-file-picker__button" for="topic-image"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-6 6 6-6 6 6M5 16v5h14v-5" /></svg>Chọn ảnh</label>
+              </div>
+              <p class="topic-file-picker__hint" id="topic-image-hint">Hệ thống sẽ dùng ảnh mặc định nếu bạn chưa chọn ảnh. Ảnh PNG hoặc JPG tối đa 5 MB.</p>
+              <div class="topic-file-picker__selection" hidden>
+                <svg class="topic-file-picker__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 16-5-5L5 21"/></svg>
+                <p class="topic-file-picker__name" id="topic-image-name"></p>
+                <button class="topic-file-picker__remove" type="button" aria-label="Bỏ ảnh đại diện" aria-describedby="topic-image-name" title="Bỏ ảnh đại diện">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18m-2 0-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6m4 0V3h6v3m-5 4v7m4-7v7" /></svg>
+                </button>
+              </div>
+              <p class="topic-file-picker__error" id="topic-image-error" role="alert" hidden></p>
             </section>
             <section class="topic-edit-form__conditions teacher-topic-form__panel" aria-labelledby="registration-conditions-title">
               <h2 id="registration-conditions-title">Điều kiện đăng ký</h2>
@@ -346,7 +364,7 @@
             </section>
 
             <p id="topic-save-notice" class="topic-edit-form__notice">
-              Chưa có xử lý kiểm tra dữ liệu và lưu thay đổi đề tài.
+              Thay đổi được lưu trên trình duyệt này.
             </p>
             <div class="topic-edit-form__actions">
               <a class="topic-edit-form__cancel" href="chi-tiet-de-tai-da-tao-giang-vien.html">Hủy</a>

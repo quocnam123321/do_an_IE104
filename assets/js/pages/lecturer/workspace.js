@@ -73,7 +73,18 @@
     }
     const lecturers = current.team.supervisorIds.map(id => current.project.lecturerId === id ? current.project.lecturer : app.data.projectLecturers.find(item => item.id === id)?.name || id);
     card.append(el('h3', current.project.sourceRecord ? 'GVHD theo hồ sơ UIT' : 'Giảng viên hướng dẫn'), el('p', current.project.sourceRecord ? (current.project.sourceRecord.advisors.join(' - ') || 'Chưa công bố trong nguồn') : lecturers.join(' - ')));
-    overview.replaceChildren(card);
+    const methodPlanCards = [];
+    for (const [title, value] of [
+      ['Phương pháp và phạm vi thực hiện', current.project.methodAndScope],
+      ['Kế hoạch thực hiện và phân công', current.project.plan],
+    ]) {
+      if (!value?.trim()) continue;
+      const section = el('section', null, 'topic-overview-card');
+      section.setAttribute('data-project-method-plan', '');
+      section.append(el('h2', title), el('p', value, 'project-method-plan-text'));
+      methodPlanCards.push(section);
+    }
+    overview.replaceChildren(card, ...methodPlanCards);
   }
   function notify(message, failure = false) {
     notice.textContent = message;

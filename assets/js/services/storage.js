@@ -52,7 +52,7 @@
   }
 
   function isProposalOutline(outline) {
-    if (![1, 2].includes(outline?.version)) return false;
+    if (![1, 2, 3].includes(outline?.version)) return false;
     const methodLimits = outline.version === 1 ? { method: 10000, scope: 10000 } : { methodAndScope: 20002 };
     const limits = { englishTitle: 250, startDate: 10, endDate: 10, ...methodLimits, plan: 10000 };
     if (!Object.entries(limits).every(([key, max]) => typeof outline[key] === 'string' && outline[key].length <= max)) return false;
@@ -62,6 +62,11 @@
     if (!Array.isArray(outline.members) || outline.members.length < 1 || outline.members.length > 4 || !outline.members.every(member => member && typeof member.code === 'string' && member.code.trim() && typeof member.name === 'string' && member.name.trim() && ['nhom-truong', 'thanh-vien'].includes(member.role))) return false;
     if (new Set(outline.members.map(member => member.code)).size !== outline.members.length || outline.members.filter(member => member.role === 'nhom-truong').length !== 1) return false;
     const validDate = text => /^\d{4}-\d{2}-\d{2}$/.test(text) && Number.isFinite(Date.parse(text)) && new Date(text).toISOString().slice(0, 10) === text && Number(text.slice(0, 4)) > 0;
+    if (outline.version === 3) {
+      const { startDate, progressReportDate, finalReportDate, endDate } = outline;
+      return [startDate, progressReportDate, finalReportDate].every(date => typeof date === 'string' && validDate(date)) &&
+        startDate < progressReportDate && progressReportDate < finalReportDate && (!endDate || validDate(endDate));
+    }
     if (Boolean(outline.startDate) !== Boolean(outline.endDate) || (outline.startDate && (!validDate(outline.startDate) || !validDate(outline.endDate) || outline.endDate <= outline.startDate))) return false;
     return true;
   }
@@ -74,7 +79,8 @@
     if (record.outline !== undefined && (!isProposalOutline(record.outline) || (record.student && !record.outline.members.some(member => member.code === record.student.code && member.name === record.student.name && member.role === 'nhom-truong')))) return false;
     if (record.outline && record.type === 'khoa-luan') {
       const methodFields = record.outline.version === 1 ? ['method', 'scope'] : ['methodAndScope'];
-      if (['englishTitle', 'startDate', 'endDate', ...methodFields, 'plan'].some(key => !record.outline[key].trim())) return false;
+      const required = record.outline.version === 3 ? [...methodFields, 'plan'] : ['englishTitle', 'startDate', 'endDate', ...methodFields, 'plan'];
+      if (required.some(key => !record.outline[key].trim())) return false;
     }
     if (!Number.isFinite(Date.parse(record.createdAt)) || !['cho-duyet', 'da-rut', 'da-duyet', 'tu-choi'].includes(record.status)) return false;
     if (['da-duyet', 'tu-choi'].includes(record.status) && (!record.decision || !Number.isFinite(Date.parse(record.decision.decidedAt)) || typeof record.decision.lecturerId !== 'string' || typeof record.decision.reason !== 'string' || record.decision.proposalRevision !== record.revision - 1 || (record.status === 'tu-choi' && record.decision.reason.trim().length < 10))) return false;

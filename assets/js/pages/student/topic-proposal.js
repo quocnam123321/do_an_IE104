@@ -33,8 +33,6 @@
     error.hidden = false;
     return;
   }
-  const regularOptions = Array.from(fields.courseId.options, option => option.cloneNode(true));
-  let courseIsFixed = false;
   let pending = null;
   let saved = false;
   let saving = false;
@@ -46,6 +44,7 @@
   let retainedAttachment = null;
   let retainedAttachmentName = '';
   const attachmentPicker = fields.attachment.parentElement;
+  const attachmentHint = document.getElementById('proposal-attachment-limit');
   const attachmentStatus = document.getElementById('proposal-attachment-status');
   const attachmentSelection = attachmentStatus.parentElement;
   const removeAttachment = attachmentSelection.querySelector('[data-remove-proposal-attachment]');
@@ -69,17 +68,16 @@
   function showAttachment() {
     const name = (fields.attachment.files[0] || retainedAttachment)?.name || retainedAttachmentName;
     attachmentPicker.hidden = Boolean(name);
+    attachmentHint.hidden = Boolean(name);
     attachmentSelection.hidden = !name;
     attachmentStatus.textContent = name;
   }
 
   function fillOriginal() {
-    fields.type.value = original.type;
-    updateCourse();
     Object.entries(fields).forEach(([key, field]) => {
-      if (!['supervisorId', 'attachment'].includes(key)) field.value = original[key] ?? '';
+      if (!['courseId', 'supervisorId', 'attachment'].includes(key)) field.value = original[key] ?? '';
     });
-    pickers?.syncSelects();
+    updateCourse(original.courseId);
     supervisorId.value = original.supervisorId;
     supervisorId.dispatchEvent(new CustomEvent('change', { detail: { name: original.supervisorName } }));
     fields.attachment.value = '';
@@ -104,23 +102,25 @@
     }
   }
 
-  function updateCourse() {
+  function updateCourse(selectedCourse = fields.courseId.value) {
     const type = fields.type.value;
-    const fixed = ['khoa-luan', 'do-an-tot-nghiep'].includes(type);
+    const courses = Object.entries(service.catalog.types[type]?.courses || {});
+    const fixed = courses.length === 1;
     if (fixed) {
-      const [code, label] = Object.entries(service.catalog.types[type].courses)[0];
+      const [code, label] = courses[0];
       fields.courseId.replaceChildren(new Option(label, code, true, true));
       fixedCourse.value = code;
       status.textContent = `${label}. Môn học được chọn tự động theo loại đề tài.`;
-    } else if (courseIsFixed) {
-      fields.courseId.replaceChildren(...regularOptions.map(option => option.cloneNode(true)));
-      fields.courseId.selectedIndex = 0;
+    } else {
+      const placeholder = new Option(courses.length ? 'Chọn môn học' : 'Chọn loại đề tài trước', '', true, true);
+      placeholder.disabled = true;
+      fields.courseId.replaceChildren(placeholder, ...courses.map(([code, label]) => new Option(label, code)));
+      fields.courseId.value = courses.some(([code]) => code === selectedCourse) ? selectedCourse : '';
       fixedCourse.value = '';
-      status.textContent = 'Vui lòng chọn môn học cho đồ án môn học.';
+      status.textContent = courses.length ? 'Vui lòng chọn môn học cho đồ án môn học.' : '';
     }
-    fields.courseId.disabled = fixed;
+    fields.courseId.disabled = courses.length <= 1;
     fixedCourse.disabled = !fixed;
-    courseIsFixed = fixed;
     outline?.setType(type);
     pickers?.syncSelects();
     updateTopicCode();
@@ -134,10 +134,10 @@
     }
     const type = fields.type.value;
     try {
-      topicCode.value = type ? service.nextTopicCode(type) : '';
+      topicCode.value = type ? service.nextTopicCode(type) : topicCode.defaultValue;
       topicCodeNote.textContent = 'Mã dự kiến được chốt khi lưu đề xuất.';
     } catch (failure) {
-      topicCode.value = '';
+      topicCode.value = 'Chưa có mã';
       topicCodeNote.textContent = failure.message;
     }
   }
@@ -240,7 +240,7 @@
     }
   }
   form.dataset.proposalReady = 'true';
-  fields.type.addEventListener('change', updateCourse);
+  fields.type.addEventListener('change', () => updateCourse());
   supervisorId.addEventListener('change', () => {
     const note = document.getElementById('proposal-field-error-supervisorId');
     if (!supervisorId.value || !note) return;

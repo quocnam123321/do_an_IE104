@@ -67,7 +67,8 @@ test('Unicode IDs save and reload, without changing existing display codes or co
   const before = service.list('created').map(topic => [topic.id, topic.displayId]);
   const input = { id: editor.nextCode('course', 'database'), title: 'Đề tài kiểm thử mã khoa', topicType: 'course',
     course: 'database', semester: '1', academicYear: '2026-2027', description: 'Mô tả đề tài',
-    objectives: 'Mục tiêu', outcomes: 'Kết quả', requirements: 'Yêu cầu', minMembers: '2', maxMembers: '3', deadline: '2030-12-01T23:59' };
+    objectives: 'Mục tiêu', outcomes: 'Kết quả', requirements: 'Yêu cầu', minMembers: '2', maxMembers: '3', deadline: '2030-12-01T23:59',
+    startsAt: '2030-12-02', progressReportDate: '2030-12-10', finalReportDate: '2030-12-20' };
   assert.throws(() => editor.create({ ...input, title: '' }, {}, 'GV001'));
   assert.equal(editor.nextCode('course', 'database'), input.id);
   const record = editor.create(input, {}, 'GV001');

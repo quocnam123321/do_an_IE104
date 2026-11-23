@@ -28,15 +28,18 @@
       };
     });
   }
-  async function stage(topicId, purpose, file, ownerId) {
+  async function validateSelection(file, purpose) {
     validate(file, purpose);
-    if (ownerId !== app.data.currentLecturer?.id) throw new Error('Giảng viên hiện tại đã thay đổi.');
     if (purpose === 'image') {
       const url = URL.createObjectURL(file);
       try { const image = new Image(); image.src = url; await image.decode(); }
       catch { throw new Error('Không đọc được nội dung ảnh. Chọn ảnh PNG/JPG khác.'); }
       finally { URL.revokeObjectURL(url); }
     }
+  }
+  async function stage(topicId, purpose, file, ownerId) {
+    if (ownerId !== app.data.currentLecturer?.id) throw new Error('Giảng viên hiện tại đã thay đổi.');
+    await validateSelection(file, purpose);
     const ref = { key: crypto.randomUUID(), name: String(file.name || 'anh-de-tai').split(/[\\/]/).pop(), size: file.size, type: file.type || 'application/octet-stream', ownerId, topicId, purpose };
     if (ownerId !== app.data.currentLecturer?.id) throw new Error('Giảng viên hiện tại đã thay đổi.');
     await transaction('readwrite', store => store.add({ ...ref, file }));
@@ -66,5 +69,5 @@
       if (!used && ref.ownerId === app.data.currentLecturer?.id) await transaction('readwrite', store => store.delete(ref.key));
     }
   }
-  app.services.lecturerTopicFiles = { validate, stage, read, readPublished, discard };
+  app.services.lecturerTopicFiles = { validate, validateSelection, stage, read, readPublished, discard };
 })();

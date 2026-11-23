@@ -3,7 +3,7 @@
   if (document.body.dataset.lecturerTopicView !== 'detail' || !app?.services?.lecturerTopicEditor) return;
   const dialogs = { close:document.getElementById('close-registration'), open:document.getElementById('reopen-registration') };
   const status = document.createElement('p'); status.setAttribute('role','status'); status.className = 'topic-editor-status'; status.tabIndex = -1;
-  document.querySelector('.created-detail-heading')?.after(status);
+  document.querySelector('.request-detail__actions')?.before(status);
   const deadline = document.createElement('input'); deadline.type = 'datetime-local'; deadline.id = 'registration-reopen-deadline'; deadline.required = true;
   const label = document.createElement('label'); label.htmlFor = deadline.id; label.textContent = 'Hạn đăng ký mới (giờ Việt Nam)';
   const hint = document.createElement('p'); hint.textContent = 'Chọn hạn còn hiệu lực. Thời điểm mở đã cấu hình vẫn được giữ.';

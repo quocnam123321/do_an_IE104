@@ -85,8 +85,7 @@
   outline-offset: 2px;
 }
 .student-proposal-page .proposal-form :is(input, textarea):user-invalid { border-color: var(--color-danger-fg); }
-.student-proposal-page .main-content .proposal-form__add-supervisor,
-.student-proposal-page .main-content .proposal-form__file-button {
+.student-proposal-page .main-content .proposal-form__add-supervisor {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -106,8 +105,7 @@
   cursor: pointer;
   transition: background-color var(--transition-fast), border-color var(--transition-fast);
 }
-.student-proposal-page .main-content .proposal-form__add-supervisor:hover,
-.student-proposal-page .main-content .proposal-form__file-button:hover { background: var(--color-info-bg); }
+.student-proposal-page .main-content .proposal-form__add-supervisor:hover { background: var(--color-info-bg); }
 .student-proposal-page .main-content .proposal-form__add-supervisor[aria-invalid="true"] {
   border-color: var(--color-danger-fg);
 }
@@ -141,47 +139,8 @@
   color: var(--color-muted-foreground);
   font-size: var(--font-size-secondary);
 }
-.student-proposal-page .proposal-form__attachment { position: relative; justify-self: start; max-width: 100%; }
-/* Input tệp native vẫn nhận focus bàn phím và lưu lựa chọn của người dùng. */
-.student-proposal-page .main-content :is(#proposal-attachment, #proposal-cover-image) {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  min-height: 0;
-  padding: 0;
-  border: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-.student-proposal-page :is(#proposal-attachment, #proposal-cover-image):focus-visible + .proposal-form__file-button {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 3px;
-}
-.student-proposal-page :is(.page-back-link, .proposal-form__add-supervisor, .proposal-form__file-button) svg { flex: 0 0 auto; }
+.student-proposal-page :is(.page-back-link, .proposal-form__add-supervisor) svg { flex: 0 0 auto; }
 .student-proposal-page .proposal-form__selected-supervisor { margin: 0; }
-.student-proposal-page .proposal-form__attachment-selection {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
-  align-items: center;
-  gap: var(--space-3);
-}
-.student-proposal-page .proposal-form__attachment-icon { color: var(--color-muted-foreground); }
-.student-proposal-page :is(#proposal-attachment-status, #proposal-cover-status) {
-  margin: 0;
-  font-size: var(--font-size-secondary);
-  overflow-wrap: anywhere;
-}
-.student-proposal-page .main-content :is([data-remove-proposal-attachment], [data-remove-proposal-cover]) {
-  width: var(--control-min-height);
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--color-danger-fg);
-}
-.student-proposal-page .main-content :is([data-remove-proposal-attachment], [data-remove-proposal-cover]):not(:disabled):hover {
-  background: var(--color-danger-bg);
-}
 .student-proposal-page .proposal-form__footer {
   display: flex;
   justify-content: space-between;
@@ -299,57 +258,6 @@
 #proposal-confirm-dialog dd, #saved-proposal dd { margin: var(--space-1) 0 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .proposal-review-actions { display: flex; justify-content: flex-end; gap: var(--space-3); flex-wrap: wrap; }
 #proposal-confirm-dialog [data-confirm-proposal] { background: var(--color-primary); color: var(--color-on-primary); border-color: var(--color-primary); }
-.proposal-success-dialog {
-  width: min(28rem, calc(100% - 2rem));
-  margin: auto;
-  padding: var(--space-8) var(--space-6);
-}
-.proposal-success-dialog::backdrop { backdrop-filter: blur(3px); }
-.proposal-success-dialog__content {
-  display: grid;
-  justify-items: center;
-  gap: var(--space-4);
-  text-align: center;
-}
-.proposal-success-dialog__icon {
-  display: grid;
-  place-items: center;
-  width: 3.5rem;
-  height: 3.5rem;
-  border-radius: var(--radius-full);
-  background: var(--green-100);
-  color: var(--color-success-fg);
-}
-.proposal-success-dialog h2 {
-  margin: 0;
-  color: var(--color-heading);
-  font-size: var(--text-2xl);
-  line-height: var(--leading-tight);
-}
-#proposal-success-dialog .proposal-success-dialog__close {
-  position: absolute;
-  inset-block-start: var(--space-2);
-  inset-inline-end: var(--space-2);
-  width: var(--control-min-height);
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--color-muted-foreground);
-}
-#proposal-success-dialog .proposal-success-dialog__close:hover { background: var(--color-neutral-bg); }
-.proposal-success-dialog__link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--control-min-height);
-  padding: var(--space-2) var(--space-6);
-  border-radius: var(--radius-control);
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-  font-weight: var(--font-weight-semibold);
-  text-decoration: none;
-}
-.proposal-success-dialog__link:hover { background: var(--color-primary-hover); color: var(--color-on-primary); }
 #saved-proposal h3 { margin-block: var(--space-4); overflow-wrap: anywhere; }
 .saved-proposal-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-bottom: var(--space-4); }
 .saved-proposal-actions[hidden] { display: none; }

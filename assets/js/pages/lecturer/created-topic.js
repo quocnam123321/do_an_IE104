@@ -6,6 +6,19 @@
   const params = new URLSearchParams(location.search);
   const id = params.has('topic') ? params.get('topic') : (globalThis.IE104.data.lecturerRealDefaultTopicId || 'DA001');
   const setText = (selector, value) => document.querySelectorAll(selector).forEach(node => { node.textContent = value || missing; });
+  const dateFormat = new Intl.DateTimeFormat('vi-VN', {
+    day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Asia/Ho_Chi_Minh',
+  });
+  const timeFormat = new Intl.DateTimeFormat('vi-VN', {
+    hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone: 'Asia/Ho_Chi_Minh',
+  });
+  function formatDate(value, includeTime = false) {
+    if (!value) return '';
+    const instant = new Date(value);
+    if (!Number.isFinite(instant.getTime())) return '';
+    const day = dateFormat.format(instant);
+    return includeTime ? `${day} · ${timeFormat.format(instant)}` : day;
+  }
   const listUrl = service.returnUrl('created', params.get('return'), location.href);
   document.body.classList.add('lecturer-routing-page');
   function render() {
@@ -43,12 +56,38 @@
     } else {
       setText('#topic-summary-title', topic.title);
       document.querySelectorAll('.topic-summary__image[role="img"]').forEach(image => image.setAttribute('aria-label', `Chưa có ảnh đại diện cho đề tài ${topic.title}`));
-      const fields = [topic.displayId || topic.id, topic.typeLabel, window.UITLecturerCatalog.subjectLabel(topic, true), `Học kỳ ${topic.semester === 'summer' ? 'hè' : topic.semester}`, topic.academicYear];
-      document.querySelectorAll('.topic-summary__meta dd').forEach((node, index) => { node.textContent = fields[index] || missing; });
-      const supervisor = ['name', 'faculty', 'email', 'research'];
-      document.querySelectorAll('.topic-supervisor__details dd').forEach((node, index) => { node.textContent = topic.supervisor?.[supervisor[index]] || missing; });
-      const avatar = document.querySelector('.topic-supervisor__avatar');
-      if (avatar) { const parts = topic.supervisor?.name?.trim().split(/\s+/) || []; avatar.textContent = parts.length ? `${parts[0][0]}${parts.at(-1)[0]}` : 'GV'; avatar.setAttribute('aria-label', parts.length ? `Ảnh đại diện mặc định của ${topic.supervisor.name}` : 'Chưa có thông tin giảng viên hướng dẫn'); }
+      const proposalType = { graduation: 'do-an-tot-nghiep', thesis: 'khoa-luan' }[topic.topicType];
+      const fixedCourses = globalThis.IE104.services.proposals?.catalog.types[proposalType]?.courses;
+      const fixedCourse = topic.typeLabel === 'Luận văn thạc sĩ' ? '' : Object.values(fixedCourses || {})[0];
+      const semester = topic.semester === '3' || topic.semester === 3 ? 'summer' : topic.semester;
+      const year = topic.academicYear?.replace(/\s*[-–]\s*/, ' – ');
+      const completion = !topic.finalReportDate && formatDate(topic.completesAt);
+      const fields = {
+        type: topic.typeLabel,
+        course: fixedCourse || window.UITLecturerCatalog.subjectLabel(topic, true),
+        code: topic.displayId || topic.id,
+        semester: globalThis.IE104.services.lecturerTopicEditor.catalog.semesters[semester],
+        year,
+        start: formatDate(topic.startsAt),
+        progress: formatDate(topic.progressReportDate),
+        final: formatDate(topic.finalReportDate),
+        completion,
+        deadline: formatDate(topic.registration?.deadline, true),
+        minMembers: topic.registration?.minMembers,
+        maxMembers: topic.registration?.maxMembers,
+      };
+      for (const [key, value] of Object.entries(fields)) {
+        const field = document.querySelector(`[data-topic-field="${key}"]`);
+        field.textContent = value || missing;
+        field.classList.toggle('is-missing', !value);
+      }
+      document.querySelector('[data-topic-completion]').hidden = !completion;
+      const method = topic.methodAndScope?.trim();
+      const plan = topic.plan?.trim();
+      document.querySelector('[data-topic-method]').hidden = !method;
+      document.querySelector('[data-topic-plan]').hidden = !plan;
+      setText('[data-topic-method] p', method);
+      setText('[data-topic-plan] p', plan);
       setText('.topic-description p:not([data-topic-source])', topic.description);
       const source = topic.sourceRecord?.summaryUrl || topic.sourceRecord?.sourceUrl;
       const description = document.querySelector('.topic-description');
@@ -68,10 +107,11 @@
         if (!list) return;
         list.replaceChildren(...(items?.length ? items : [missing]).map(text => { const item = document.createElement('li'); item.textContent = text; return item; }));
       });
-      setText('.topic-registration__members', topic.registration ? `Nhóm gồm ${topic.registration.minMembers} - ${topic.registration.maxMembers} sinh viên` : missing);
-      setText('.topic-registration dd', topic.registration?.deadline ? new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh' }).format(new Date(topic.registration.deadline)) : missing);
-      setText('.topic-attachments__file span', topic.attachmentName || 'Chưa có tài liệu đính kèm');
-      const badge = document.querySelector('.created-detail-heading .status-badge');
+      const attachmentName = topic.attachmentName || topic.attachmentRef?.name;
+      document.querySelector('[data-topic-attachment]').hidden = !attachmentName;
+      document.querySelector('[data-topic-attachment-empty]').hidden = Boolean(attachmentName);
+      if (attachmentName) setText('.topic-attachments__file span', attachmentName);
+      const badge = document.querySelector('[data-topic-status]');
       if (badge) { badge.textContent = topic.statusLabel; badge.className = `status-badge status-badge--${topic.status}`; }
       document.querySelectorAll('.registration-close-button').forEach(button => { button.hidden = readOnly || topic.status !== 'open'; });
       let reopen = document.querySelector('.registration-reopen-button');

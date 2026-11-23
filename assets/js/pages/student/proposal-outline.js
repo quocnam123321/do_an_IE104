@@ -2,7 +2,7 @@
   const app = globalThis.IE104;
   const root = document.querySelector('[data-proposal-outline]');
   if (!root || !app?.data?.currentStudent) return;
-  const keys = ['englishTitle', 'startDate', 'endDate', 'methodAndScope', 'plan'];
+  const keys = ['startDate', 'progressReportDate', 'finalReportDate', 'methodAndScope', 'plan'];
   const fields = Object.fromEntries(keys.map(key => [key, document.querySelector(`[data-outline-field="${key}"]`)]));
   const datePicker = app.ui?.proposalDatePicker;
   const membersTemplate = document.getElementById('proposal-edit-members');
@@ -60,6 +60,7 @@
   function fill(record) {
     original = record;
     const outline = { ...record?.outline };
+    outline.finalReportDate ??= outline.endDate;
     outline.methodAndScope ??= [outline.method, outline.scope].filter(Boolean).join('\n\n');
     keys.forEach(key => {
       const field = fields[key];
@@ -76,7 +77,9 @@
   }
   function read() {
     const value = {
-      version: 2,
+      version: 3,
+      englishTitle: original?.outline?.englishTitle || '',
+      endDate: original?.outline?.endDate || '',
       supervisor: supervisorId.value === original?.supervisorId ? { ...original.outline?.supervisor } : {},
       secondarySupervisor: { ...original?.outline?.secondarySupervisor },
     };
@@ -98,7 +101,7 @@
     return fields[key];
   }
   function setType(type) {
-    for (const key of ['englishTitle', 'startDate', 'endDate', 'methodAndScope', 'plan']) {
+    for (const key of ['methodAndScope', 'plan']) {
       fields[key].required = type === 'khoa-luan';
       const star = fields[key].closest('.proposal-form__field').querySelector('[data-outline-required]');
       if (star) star.hidden = type !== 'khoa-luan';

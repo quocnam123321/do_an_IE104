@@ -139,10 +139,7 @@
             </div>
             <div class="request-topic__content">
               <div class="request-topic__heading">
-                <div>
-                  <h2 id="proposal-topic-title" data-proposal-field="title"></h2>
-                  <p class="request-topic__translation" lang="en" data-proposal-field="englishTitle" data-optional-field hidden></p>
-                </div>
+                <h2 id="proposal-topic-title" data-proposal-field="title"></h2>
                 <p class="status-badge status-badge--pending" hidden>
                   <span class="visually-hidden">Trạng thái đề xuất: </span><span data-proposal-status></span>
                 </p>
@@ -150,10 +147,12 @@
               <dl class="request-topic__meta">
                 <div><dt>Loại đề tài</dt><dd data-proposal-field="typeLabel"></dd></div>
                 <div><dt>Môn học</dt><dd data-proposal-field="courseLabel"></dd></div>
+                <div><dt>Học kỳ</dt><dd data-proposal-field="semester"></dd></div>
+                <div><dt>Năm học</dt><dd data-proposal-field="academicYear"></dd></div>
                 <div><dt>Mã đề tài</dt><dd data-proposal-field="topicCode"></dd></div>
-                <div><dt>Học kỳ / Năm học</dt><dd data-proposal-field="academicPeriod"></dd></div>
-                <div><dt>Ngày bắt đầu dự kiến</dt><dd data-proposal-field="startDate"></dd></div>
-                <div><dt>Ngày kết thúc dự kiến</dt><dd data-proposal-field="endDate"></dd></div>
+                <div><dt data-proposal-field="startDateLabel">Ngày bắt đầu thực hiện</dt><dd data-proposal-field="startDate"></dd></div>
+                <div><dt>Ngày nộp báo cáo tiến độ</dt><dd data-proposal-field="progressReportDate"></dd></div>
+                <div><dt data-proposal-field="lastMilestoneLabel">Ngày nộp báo cáo cuối cùng</dt><dd data-proposal-field="lastMilestoneDate"></dd></div>
               </dl>
             </div>
           </section>

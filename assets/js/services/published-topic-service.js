@@ -21,7 +21,9 @@
       semester:topic.semester === 'summer' ? 'he' : topic.semester, academicYear:topic.academicYear, lecturer:topic.supervisor.name,
       createdAt:topic.createdAt, revision:topic.revision || 0, description:topic.description,
       objectives:[...topic.objectives], outcomes:[...topic.outcomes], requirements:[...topic.requirements], supervisor:{...topic.supervisor},
+      methodAndScope:topic.methodAndScope || '', plan:topic.plan || '',
       registrationRules:{minMembers:1,maxMembers:topic.registration.maxMembers}, registration:{...topic.registration},
+      startsAt:topic.startsAt, progressReportDate:topic.progressReportDate, finalReportDate:topic.finalReportDate,
       availability:availability(topic,now), imageRef:topic.imageRef || null, attachmentRef:topic.attachmentRef || null, attachmentName:topic.attachmentName || '',
       detailUrl:`chi-tiet-de-tai-gv-mo-dang-ky.html?topic=${encodeURIComponent(publicId(topic))}`,
     };
