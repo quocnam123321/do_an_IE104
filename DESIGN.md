@@ -343,9 +343,17 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 - Khi cập nhật bài nộp, biểu mẫu điền tệp và ghi chú sẵn có. Thêm hoặc gỡ tệp chỉ thay đổi bản nháp cho đến khi bấm Lưu thay đổi và lưu thành công. Hộp xác nhận cập nhật hiển thị dấu tích xanh, “Đã lưu thay đổi” và nút Xong.
 - Các hộp thoại Chi tiết yêu cầu, Phản hồi, Nộp bài và Cập nhật bài nộp dùng chung biểu tượng × nét bo đầu, khung biểu tượng 20px và vùng bấm 44px không viền.
 
+### Tổng quan đề tài đang hướng dẫn
+
+- Đề tài trong danh mục và đề tài phát sinh từ đăng ký hoặc đề xuất dùng chung khung ảnh 16:9, thẻ thông tin, bố cục nội dung và cột nhóm thực hiện, mốc thời gian. Đề cương, phương pháp và kế hoạch xuất hiện khi đề tài có dữ liệu tương ứng.
+
+### Công bố đánh giá bên giảng viên
+
+- Tab hiển thị ba khối Đánh giá theo tiêu chí, Điểm tổng kết và Nhận xét. Nút Công bố đánh giá kiểm tra điểm và nhận xét đang nhập, sau đó mở hộp xác nhận có điểm tổng kết. Xác nhận lưu kết quả để sinh viên xem trong cùng trình duyệt và cùng địa chỉ web. Giao diện hiển thị thông báo sau khi lưu thành công.
+
 ### Kết quả đánh giá bên sinh viên
 
-- Dùng cùng bố cục, kiểu thẻ, bảng và thang điểm với tab của giảng viên: Thông tin đánh giá, Đánh giá theo tiêu chí, Điểm tổng kết và Nhận xét. Phía sinh viên hiển thị nhận xét theo tiêu chí, điểm và thông tin công bố dưới dạng chỉ đọc. Khi chưa công bố, hiển thị tên nhóm và trạng thái, giữ nội dung đánh giá trong bản nháp riêng của giảng viên.
+- Dùng cùng kiểu thẻ, bảng và thang điểm với tab của giảng viên. Phía sinh viên có thêm Thông tin đánh giá và hiển thị nhận xét theo tiêu chí, điểm và thông tin công bố dưới dạng chỉ đọc. Khi chưa công bố, hiển thị tên nhóm và trạng thái.
 - Khi chưa công bố, hiển thị giảng viên hướng dẫn nếu có dữ liệu, nhãn vàng “Chưa công bố” chỉ có chữ và thông báo xanh nhạt. Tiêu đề thông báo là “Đề tài đang thực hiện.” khi đề tài đang thực hiện, hoặc “Kết quả đánh giá chưa được công bố.” khi đề tài đã hoàn thành.
 - Nhận xét của giảng viên là văn bản trải rộng trực tiếp trên thẻ. Hàng tệp đánh giá dùng nền nhạt không viền, biểu tượng tệp và nút Tải xuống. Khi chỉ có tên tệp, nút bị khóa và hiện giải thích. Hai bản đánh giá mẫu có PDF minh họa để thử tải.
 - Thẻ Điểm tổng kết giữ hai dòng. Điểm hiển thị bằng số đen in đậm trực tiếp trên nền trắng, bỏ hậu tố “/10”. Kết quả “Đạt yêu cầu” dùng nhãn xanh lá nhạt chỉ có chữ, cùng kiểu với nhãn “Đã công bố”.

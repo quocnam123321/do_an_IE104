@@ -12,12 +12,16 @@
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
     <link rel="stylesheet" href="../../assets/css/teacher-dialogs.css?v=20261030-1">
     <link rel="stylesheet" href="../../assets/css/topic-detail-boards.css?v=20261120-progress-columns">
-    <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css">
+    <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css?v=20261123-publish-evaluation">
     <link rel="stylesheet" href="../../assets/css/teacher-topic-detail.css?v=20261121-progress-restore">
+    <link rel="stylesheet" href="../../assets/css/teaching-workspace.css">
+    <link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
+    <link rel="stylesheet" href="../../assets/css/lecturer-topic-routing.css">
+    <link rel="stylesheet" href="../../assets/css/proposal-outline.css">
     <script src="../../assets/js/uit-lecturer-catalog.js?v=20261122-outlines" defer=""></script><script src="../../assets/js/nav-indicator.js" defer=""></script>
     <script src="../../assets/js/detail-tabs.js" defer=""></script>
     <script src="../../assets/js/dialog-commands.js" defer=""></script>
-    <script src="../../assets/js/uit-supervised-demo.js?v=20261120-progress-columns" defer></script>
+    <script src="../../assets/js/uit-supervised-demo.js?v=20261123-evaluation-sections" defer></script>
   <script src="../../assets/js/uit-lecturer-view.js" defer=""></script><link rel="stylesheet" href="../../assets/css/uit-restored-submissions.css">
     <link rel="stylesheet" href="../../assets/css/workflow-detail-shared.css?v=20261121-progress-restore" />
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css?v=20261121-matching-topic-covers" />
@@ -42,15 +46,15 @@
     <script src="../../assets/js/data/teaching-data.js" defer></script>
     <script src="../../assets/js/services/project-team-service.js" defer></script>
     <script src="../../assets/js/services/project-progress-service.js" defer></script>
-    <script src="../../assets/js/services/teaching-service.js" defer></script>
+    <script src="../../assets/js/services/teaching-service.js?v=20261123-publish-evaluation" defer></script>
     <script src="../../assets/js/shared/proposal-outline.js" defer></script>
     <script src="../../assets/js/shared/workflow-dialog.js" defer></script>
     <script src="../../assets/js/shared/download-file.js" defer></script>
     <script src="../../assets/js/services/submission-file-service.js" defer></script>
-    <script src="../../assets/js/pages/lecturer/workspace.js?v=20261122-sync" defer></script>
-    <script src="../../assets/js/pages/lecturer/submissions.js" defer></script>
+    <script src="../../assets/js/pages/lecturer/workspace.js?v=20261123-overview-cards" defer></script>
+    <script src="../../assets/js/pages/lecturer/submissions.js?v=20261123-supervised-layout" defer></script>
     <script src="../../assets/js/pages/lecturer/progress.js?v=20261121-progress-restore" defer></script>
-    <script src="../../assets/js/pages/lecturer/evaluation.js" defer></script>
+    <script src="../../assets/js/pages/lecturer/evaluation.js?v=20261123-publish-evaluation" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js" defer></script>
 </head>
@@ -3497,16 +3501,6 @@
 <section class="topic-panel" id="evaluation-section" aria-label="Kết quả đánh giá">
             <div id="ket-qua-danh-gia" tabindex="-1">
               <h2 class="visually-hidden">Kết quả đánh giá đề tài</h2>
-              <section class="evaluation-info" aria-labelledby="evaluation-info-title">
-                <h3 id="evaluation-info-title">Thông tin đánh giá</h3>
-                <dl class="evaluation-info__list">
-                  <div><dt>Nhóm thực hiện</dt><dd>Nhóm 01</dd></div>
-                  <div>
-                    <dt>Trạng thái đánh giá</dt>
-                    <dd><span class="evaluation-info__status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>Chưa công bố</span></dd>
-                  </div>
-                </dl>
-              </section>
               <!-- Tiêu chí và trọng số 40/40/20 là dữ liệu mẫu của bản CSS đã duyệt.
                    Chưa tự tính điểm hoặc công bố. Khi tích hợp phải kiểm tra tổng
                    trọng số = 100%, tính lại trên máy chủ và đồng bộ hộp xác nhận. -->

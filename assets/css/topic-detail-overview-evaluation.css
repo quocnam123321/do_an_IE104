@@ -426,6 +426,10 @@
   flex-shrink: 0;
 }
 
+#evaluation-section .evaluation-total__status {
+  margin-top: var(--space-4);
+}
+
 /* Cuộn riêng bảng trên màn hình hẹp, giữ semantics table và nhãn input. */
 #evaluation-section .evaluation-criteria__scroll {
   position: relative;
@@ -540,6 +544,12 @@
 
 #evaluation-section .evaluation-form__publish:hover { background-color: var(--color-primary-hover); }
 #evaluation-section .evaluation-form__publish:active { background-color: var(--color-primary-active); }
+#evaluation-section .evaluation-form__publish:disabled {
+  border-color: var(--color-disabled-border);
+  color: var(--color-disabled-fg);
+  background-color: var(--color-disabled-bg);
+  cursor: not-allowed;
+}
 
 @media (max-width: 47.99rem) {
   #evaluation-section :is(.evaluation-info, .evaluation-criteria, .evaluation-total, .evaluation-comment, .evaluation-attachments) {

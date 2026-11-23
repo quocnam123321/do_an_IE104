@@ -2,21 +2,26 @@
   const app = globalThis.IE104;
   const ui = app?.ui?.lecturerWorkspace;
   if (!ui) return;
-  const { el, field, button, modal, service } = ui;
+  const { el, field, modal, service } = ui;
+  const template = document.getElementById('ket-qua-danh-gia').cloneNode(true);
   const panel = ui.region('evaluation-section', 'ket-qua-danh-gia');
   let form;
   let loadedRevision;
   let loadedProject;
   let current;
-  let publishButton;
   function input() {
     const values = new FormData(form);
-    return { scores: Object.fromEntries(current.criteria.map(item => [item.id, values.get(`score-${item.id}`)])), comments: Object.fromEntries(current.criteria.map(item => [item.id, values.get(`comment-${item.id}`)])), feedback: values.get('feedback'), resultLabel: values.get('resultLabel') };
+    const source = current.draft || current.publication;
+    return {
+      scores: Object.fromEntries(current.criteria.map(item => [item.id, values.get(`score-${item.id}`)])),
+      comments: Object.fromEntries((source?.criteria || []).map(item => [item.id, item.comment])),
+      feedback: values.get('feedback'),
+      resultLabel: source?.resultLabel,
+    };
   }
   function preview() {
     const checked = service.validateEvaluation(input(), current.criteria);
-    form.querySelector('output').textContent = checked.errors.length ? 'Chưa đủ điểm hợp lệ' : `${checked.value.score.toFixed(1)} / 10`;
-    publishButton.disabled = ui.dirty || !current.draft;
+    form.querySelector('output').textContent = checked.errors.length ? 'Chưa tính / 10' : `${checked.value.score.toFixed(1)} / 10`;
   }
   ui.subscribe(state => {
     if (state && loadedProject === state.projectId && ui.dirty) {
@@ -25,69 +30,75 @@
     }
     panel.replaceChildren();
     if (!state) return;
-    if (state.readOnly) { panel.append(el('p', 'Chưa có dữ liệu đánh giá của đề tài này.', 'teaching-card')); return; }
+    panel.append(...template.cloneNode(true).children);
+    form = panel.querySelector('form');
+    if (state.readOnly) {
+      form.replaceWith(el('p', 'Chưa có dữ liệu đánh giá của đề tài này.'));
+      return;
+    }
     current = state;
     loadedRevision = state.revision;
     loadedProject = state.projectId;
     const source = state.draft || state.publication;
-    const card = el('section', '', 'teaching-card');
-    card.append(el('h2', 'Đánh giá đề tài'), el('p', state.publication ? `Đã công bố: ${state.publication.score.toFixed(1)} / 10 - ${state.publication.resultLabel}` : 'Chưa công bố kết quả.'));
-    if (state.draft) card.append(el('p', `Bản nháp lưu lúc ${ui.date(state.draft.savedAt)}. Lưu nháp không thay đổi kết quả SV đang xem.`));
-    form = el('form');
-    form.id = 'teaching-evaluation-form';
     const error = el('p', '', 'teaching-error');
     error.setAttribute('role', 'alert');
     error.dataset.teachingError = '';
     error.tabIndex = -1;
-    const tableWrap = el('div', '', 'teaching-table-wrap');
-    const table = el('table', '', 'teaching-table');
-    table.append(el('caption', 'Tiêu chí đánh giá - điểm theo thang 10'));
-    const head = el('thead');
-    const headings = el('tr');
-    ['Tiêu chí', 'Trọng số', 'Điểm và nhận xét'].forEach(text => { const th = el('th', text); th.scope = 'col'; headings.append(th); });
-    head.append(headings);
-    const body = el('tbody');
+    const table = form.querySelector('table');
+    table.caption.textContent = `Tiêu chí đánh giá đề tài của ${state.project.groupName || 'nhóm'}`;
+    const body = table.tBodies[0];
+    body.replaceChildren();
     state.criteria.forEach(criterion => {
       const saved = source?.criteria.find(item => item.id === criterion.id);
       const row = el('tr');
       const title = el('th', criterion.title);
       title.scope = 'row';
       const fields = el('td');
-      field(fields, `score-${criterion.id}`, `Điểm ${criterion.title}`, 'number', saved?.score ?? '', { required: true, min: '0', max: '10', step: '0.1' });
-      field(fields, `comment-${criterion.id}`, `Nhận xét ${criterion.title}`, 'textarea', saved?.comment || '', { rows: 2, maxLength: 2000 });
-      row.append(title, el('td', `${criterion.weight}%`), fields);
+      field(fields, `score-${criterion.id}`, `Điểm ${criterion.title} / 10`, 'number', saved?.score ?? '', { required: true, min: '0', max: '10', step: '0.1', inputMode: 'decimal', placeholder: 'Nhập điểm' });
+      fields.firstElementChild.classList.add('visually-hidden');
+      row.append(title, el('td', criterion.description || 'Chưa có mô tả'), el('td', `${criterion.weight}%`), fields);
       body.append(row);
     });
-    table.append(head, body);
-    tableWrap.append(table);
-    const total = el('output');
-    total.id = 'teaching-total-score';
+    const total = form.querySelector('output');
+    total.removeAttribute('title');
+    total.setAttribute('for', state.criteria.map(criterion => `teaching-score-${criterion.id}`).join(' '));
     total.setAttribute('aria-live', 'polite');
-    const fields = el('div', '', 'teaching-fields');
-    fields.append(el('p', 'Điểm tổng kết'), total);
-    field(fields, 'resultLabel', 'Kết quả công bố', 'text', source?.resultLabel || '', { maxLength: 100, placeholder: 'Ví dụ: Đạt yêu cầu' });
-    field(fields, 'feedback', 'Nhận xét chung của giảng viên', 'textarea', source?.feedback || '', { maxLength: 2000, rows: 5 });
-    const actions = el('div', '', 'teaching-actions');
-    const save = el('button', 'Lưu bản nháp', 'topic-dialog__btn topic-dialog__btn--primary');
-    save.type = 'submit';
-    publishButton = button('Công bố kết quả', () => modal('Công bố kết quả đánh giá', 'Xác nhận công bố', dialogBody => {
-      dialogBody.append(el('p', `${state.project.title} - ${state.project.groupName}`), el('p', `${state.draft.score.toFixed(1)} / 10 - ${state.draft.resultLabel || 'Chưa nhập kết quả'}`), el('p', 'Kết quả công bố sẽ thay thế kết quả SV đang xem.'));
-    }, (_, snapshot) => service.publish(snapshot.projectId, snapshot.revision)), !state.draft);
-    actions.append(save, publishButton, button('Bỏ thay đổi chưa lưu', () => { if (!ui.dirty || window.confirm('Bỏ phần đánh giá chưa lưu?')) { ui.dirty = false; ui.refresh(); } }));
-    form.append(error, tableWrap, fields, actions);
-    form.addEventListener('input', () => { ui.dirty = true; preview(); });
+    const summary = form.querySelector('.evaluation-total');
+    if (state.publication) {
+      const publishedAt = state.publication.publishedAt ? ui.date(state.publication.publishedAt) : state.publication.evaluatedAt?.split('-').reverse().join('/');
+      summary.append(el('p', publishedAt ? `Đã công bố ngày ${publishedAt}` : 'Đã công bố', 'evaluation-total__status'));
+    }
+    const comment = form.querySelector('.evaluation-comment');
+    const feedback = comment.querySelector('textarea');
+    feedback.name = 'feedback';
+    feedback.value = source?.feedback || '';
+    feedback.maxLength = 2000;
+    feedback.required = true;
+    const actions = form.querySelector('.evaluation-form__actions');
+    const publishButton = el('button', 'Công bố đánh giá', 'evaluation-form__publish');
+    publishButton.type = 'submit';
+    publishButton.setAttribute('aria-haspopup', 'dialog');
+    actions.replaceChildren(publishButton);
+    form.prepend(error);
+    form.addEventListener('input', () => { ui.dirty = true; error.textContent = ''; preview(); });
     form.addEventListener('submit', event => {
       event.preventDefault();
-      const snapshot = { projectId: loadedProject, revision: loadedRevision };
-      try {
-        service.saveDraft(snapshot.projectId, input(), snapshot.revision);
+      const values = input();
+      const checked = service.validateEvaluation(values, state.criteria, true);
+      if (checked.errors.length) {
+        error.textContent = checked.errors.join(' ');
+        error.focus();
+        return;
+      }
+      const revision = loadedRevision;
+      modal('Công bố đánh giá', 'Xác nhận công bố', body => {
+        body.append(el('p', `${state.project.title} · ${state.project.groupName}`));
+        body.append(el('p', `Điểm tổng kết: ${checked.value.score.toFixed(1)} / 10`));
+      }, (_, snapshot) => {
+        service.publish(snapshot.projectId, values, revision);
         ui.dirty = false;
-        ui.refresh();
-        ui.notify('Đã lưu bản nháp trên trình duyệt. SV chỉ thấy kết quả đã công bố.');
-      } catch (failure) { error.textContent = failure.message; error.focus(); }
+      }, 'Đã công bố đánh giá trên trình duyệt này.');
     });
-    card.append(form);
-    panel.append(card);
     preview();
   });
   document.body.dataset.lecturerReady = 'true';

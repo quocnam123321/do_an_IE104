@@ -24,6 +24,7 @@
     const section = document.getElementById(sectionId);
     const node = el('div');
     node.id = anchorId;
+    node.tabIndex = -1;
     section.replaceChildren(node);
     return node;
   };
@@ -39,52 +40,80 @@
   const overviewTemplate = document.getElementById('tong-quan').cloneNode(true);
   const overview = region('overview-section', 'tong-quan');
   function overviewView(current) {
-    if (current.projectId === 'GV-DT001-N01') {
-      overview.replaceChildren(...[...overviewTemplate.childNodes].map(node => node.cloneNode(true)));
-      const title = overview.querySelector('.topic-summary h2');
-      if (title) title.textContent = current.project.title;
-      const badge = overview.querySelector('.topic-summary__status');
-      if (badge) {
-        const label = el('span', 'Trạng thái đề tài: ', 'visually-hidden');
-        badge.replaceChildren(label, document.createTextNode(current.project.statusLabel));
-        badge.dataset.status = current.project.status;
+    const project = current.project;
+    const sample = app.data.studentProjectOverviews?.[current.projectId];
+    const originalSample = current.projectId === 'GV-DT001-N01';
+    overview.replaceChildren(...overviewTemplate.cloneNode(true).children);
+    const main = overview.querySelector('.topic-overview-layout__main');
+    const aside = overview.querySelector('.topic-overview-layout__aside');
+    overview.querySelector('.topic-summary h2').textContent = project.title;
+    const badge = overview.querySelector('.topic-summary__status');
+    badge.replaceChildren(el('span', 'Trạng thái đề tài: ', 'visually-hidden'), project.statusLabel || 'Chưa có thông tin');
+    badge.dataset.status = project.status;
+    const semester = project.semester === 'he' ? 'hè' : project.semester;
+    const period = [semester && 'Học kỳ ' + semester, project.academicYear].filter(Boolean).join(' · ');
+    const fields = [project.displayId || project.topicId || project.id, project.typeLabel, window.UITLecturerCatalog.subjectLabel(project, true), period];
+    overview.querySelectorAll('.topic-summary dd').forEach((node, index) => {
+      node.textContent = fields[index] || 'Chưa có thông tin';
+    });
+
+    const cover = overview.querySelector('.topic-summary__image');
+    if (!originalSample) {
+      const image = el('img', null, 'gv-default-image');
+      image.src = '../../assets/images/uit-logo.png';
+      image.alt = '';
+      cover.replaceChildren(image);
+      cover.setAttribute('aria-label', 'Ảnh UIT mặc định');
+      const content = { ...sample, ...project };
+      main.querySelector('.topic-description p').textContent = content.description || 'Chưa có thông tin';
+      for (const key of ['objectives', 'outcomes', 'requirements']) {
+        const section = main.querySelector('.topic-' + key);
+        const value = content[key];
+        const items = (Array.isArray(value) ? value : String(value || '').split(/\r?\n/)).map(item => item.trim()).filter(Boolean);
+        section.hidden = key === 'requirements' && !items.length;
+        section.querySelector('ul').replaceChildren(...(items.length ? items : ['Chưa có thông tin']).map(item => el('li', item)));
       }
-      const fields = [current.project.displayId || current.project.topicId, current.project.typeLabel, window.UITLecturerCatalog.subjectLabel(current.project, true), `Học kỳ ${current.project.semester} · ${current.project.academicYear}`];
-      overview.querySelectorAll('.topic-summary dd').forEach((node, index) => { node.textContent = fields[index]; });
-      return;
+      const milestones = sample?.milestones || [
+        project.outline?.startDate || project.startsAt,
+        project.outline?.progressReportDate || project.progressReportDate,
+        project.outline?.finalReportDate || project.finalReportDate,
+      ];
+      aside.querySelectorAll('.topic-milestones dd').forEach((node, index) => {
+        const value = milestones[index];
+        node.textContent = /^\d{4}-\d{2}-\d{2}$/.test(value) ? value.split('-').reverse().join('/') : value || 'Chưa có thông tin';
+      });
     }
-    const card = el('section', '', 'teaching-card');
-    if (current.readOnly) card.dataset.catalogOnly = 'true';
-    const cover = el('img', null, 'gv-default-cover'); cover.src = '../../assets/images/uit-logo.png'; cover.alt = 'Ảnh UIT mặc định';
-    card.append(cover, el('h2', current.project.title));
-    const dl = el('dl', '', 'teaching-metadata');
-    const fields = [['Mã đề tài', current.project.displayId || current.project.topicId || current.project.id], ['Loại đề tài', current.project.typeLabel], ['Môn học', window.UITLecturerCatalog.subjectLabel(current.project, true)], ['Vai trò hướng dẫn', current.project.roleLabel || 'Chưa có thông tin'], ['Nhóm thực hiện', current.project.groupName], ['Trạng thái', current.project.statusLabel || 'Đang thực hiện'], ['Học kỳ', current.project.semester], ['Năm học', current.project.academicYear]];
-    fields.forEach(([name, value]) => { const row = el('div'); row.append(el('dt', name), el('dd', value || 'Chưa có thông tin')); dl.append(row); });
-    card.append(dl, el('h3', 'Nhóm thực hiện'));
-    if (!current.team.members.length) card.append(el('p', 'Chưa có thông tin thành viên nhóm.'));
-    current.team.members.forEach(member => card.append(el('p', `${member.name} - ${member.code}${member.role === 'nhom-truong' ? ' - Nhóm trưởng' : ''}`)));
-    if (['approved-proposal', 'approved-registration'].includes(current.project.source)) {
-      for (const [name, value] of [['Mô tả đề tài', current.project.description], ['Mục tiêu', current.project.objectives], ['Kết quả dự kiến', current.project.outcomes]]) card.append(el('h3', name), el('p', value || 'Chưa có thông tin'));
+
+    aside.querySelector('.topic-team__group-name').textContent = project.groupName || 'Chưa đặt tên nhóm';
+    const members = aside.querySelector('.topic-team__members');
+    const memberTemplate = members.firstElementChild;
+    members.replaceChildren(...current.team.members.map(member => {
+      const row = memberTemplate.cloneNode(true);
+      const avatar = row.querySelector('.team-member__avatar');
+      avatar.textContent = member.name.trim().split(/\s+/).slice(-2).map(part => part[0]).join('');
+      avatar.setAttribute('aria-label', member.name);
+      row.querySelector('.team-member__name').textContent = member.name;
+      row.querySelector('.team-member__id').textContent = member.code;
+      row.querySelector('.team-member__role').textContent = member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
+      return row;
+    }));
+    if (!members.children.length) members.append(el('li', 'Chưa có thông tin thành viên nhóm.'));
+
+    if (project.outline && app.shared?.proposalOutline) {
+      const section = el('section', null, 'topic-overview-card');
+      app.shared.proposalOutline.render(section, project);
+      main.append(section);
     }
-    if (current.project.outline && app.shared?.proposalOutline) {
-      const outlinePanel = el('section');
-      app.shared.proposalOutline.render(outlinePanel, current.project);
-      card.append(outlinePanel);
-    }
-    const lecturers = current.team.supervisorIds.map(id => current.project.lecturerId === id ? current.project.lecturer : app.data.projectLecturers.find(item => item.id === id)?.name || id);
-    card.append(el('h3', current.project.sourceRecord ? 'GVHD theo hồ sơ UIT' : 'Giảng viên hướng dẫn'), el('p', current.project.sourceRecord ? (current.project.sourceRecord.advisors.join(' - ') || 'Chưa công bố trong nguồn') : lecturers.join(' - ')));
-    const methodPlanCards = [];
     for (const [title, value] of [
-      ['Phương pháp và phạm vi thực hiện', current.project.methodAndScope],
-      ['Kế hoạch thực hiện và phân công', current.project.plan],
+      ['Phương pháp và phạm vi thực hiện', project.methodAndScope],
+      ['Kế hoạch thực hiện và phân công', project.plan],
     ]) {
       if (!value?.trim()) continue;
       const section = el('section', null, 'topic-overview-card');
       section.setAttribute('data-project-method-plan', '');
       section.append(el('h2', title), el('p', value, 'project-method-plan-text'));
-      methodPlanCards.push(section);
+      main.append(section);
     }
-    overview.replaceChildren(card, ...methodPlanCards);
   }
   function notify(message, failure = false) {
     notice.textContent = message;
@@ -127,7 +156,7 @@
       else notify(failure.message, true);
     } finally { saving = false; }
   }
-  function modal(title, submitText, build, submit) {
+  function modal(title, submitText, build, submit, message) {
     if (!state || document.querySelector('.teaching-dialog[open]')) return;
     const snapshot = { projectId, revision: state.revision, progressRevision: state.progress?.revision };
     const dialog = el('dialog', '', 'topic-dialog teaching-dialog');
@@ -148,7 +177,7 @@
     form.append(error, body, actions);
     form.addEventListener('submit', event => {
       event.preventDefault();
-      commit(snapshot, captured => submit(new FormData(form), captured), dialog);
+      commit(snapshot, captured => submit(new FormData(form), captured), dialog, message);
     });
     dialog.classList.add('workflow-dialog');
     const dialogHeader = el('header');

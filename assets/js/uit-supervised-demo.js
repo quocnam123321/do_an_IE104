@@ -177,7 +177,6 @@
     setText('#bai-nop > h2', `Bài nộp đề tài ${record.title} · ${work.group}`);
     renderRequirements(work.deliverables);
     renderSubmissions(work.deliverables);
-    setText('.evaluation-info__list > div:first-child dd', work.group);
     setText('.evaluation-criteria__table caption', `Tiêu chí đánh giá đề tài của ${work.group}`);
     document.querySelectorAll('.evaluation-criteria__table tbody tr').forEach((row, index) => {
       row.cells[1].textContent = work.criteria[index];

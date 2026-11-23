@@ -179,27 +179,18 @@
     const resultLabel = String(input.resultLabel || '').trim();
     if (feedback.length > 2000 || rows.some(item => item.comment.length > 2000)) errors.push('Nhận xét tối đa 2000 ký tự.');
     if (resultLabel.length > 100) errors.push('Kết quả đánh giá tối đa 100 ký tự.');
-    if (publishing && (!feedback || !resultLabel)) errors.push('Bổ sung kết quả và nhận xét chung, rồi lưu bản nháp trước khi công bố.');
+    if (publishing && !feedback) errors.push('Nhập nhận xét cho nhóm trước khi công bố.');
     return { errors, value: { criteria: rows, feedback, resultLabel, score: Math.round(rows.reduce((sum, item) => sum + item.score * item.weight / 100, 0) * 10) / 10 } };
   }
 
-  function saveDraft(projectId, input, revision) {
-    return mutate(projectId, revision, 'save-evaluation', null, (record, meta) => {
-      const checked = validateEvaluation(input, meta.criteria);
-      if (checked.errors.length) throw new Error(checked.errors.join(' '));
-      record.draft = { ...checked.value, lecturerName: actor().name, savedAt: new Date().toISOString() };
-    });
-  }
-
-  function publish(projectId, revision) {
+  function publish(projectId, input, revision) {
     return mutate(projectId, revision, 'publish-evaluation', null, (record, meta) => {
-      if (!record.draft) throw new Error('Lưu bản nháp trước khi công bố.');
-      const input = { ...record.draft, scores: Object.fromEntries(record.draft.criteria.map(item => [item.id, item.score])), comments: Object.fromEntries(record.draft.criteria.map(item => [item.id, item.comment])) };
       const checked = validateEvaluation(input, meta.criteria, true);
       if (checked.errors.length) throw new Error(checked.errors.join(' '));
       const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
       const date = Object.fromEntries(parts.map(part => [part.type, part.value]));
-      record.publishedEvaluation = { ...clone(checked.value), projectId, published: true, lecturerName: actor().name, evaluatedAt: `${date.year}-${date.month}-${date.day}`, publishedAt: new Date().toISOString(), attachment: null };
+      record.publishedEvaluation = { ...checked.value, resultLabel: checked.value.resultLabel || 'Đã đánh giá', projectId, published: true, lecturerName: actor().name, evaluatedAt: `${date.year}-${date.month}-${date.day}`, publishedAt: new Date().toISOString(), attachment: record.publishedEvaluation?.attachment ?? meta.initialEvaluation?.attachment ?? null };
+      record.draft = null;
     });
   }
 
@@ -213,5 +204,5 @@
     return { allowed: true, late: now.getTime() > Date.parse(requirement.deadline), reason: '' };
   }
 
-  app.services.teaching = { listProjects, listActiveProjects, listSupervisedProjects, getState, getSubmission, validateRequirement, saveRequirement, deleteRequirement, setLocked, addProgressReview, saveFeedback, validateEvaluation, saveDraft, publish, submissionAccess };
+  app.services.teaching = { listProjects, listActiveProjects, listSupervisedProjects, getState, getSubmission, validateRequirement, saveRequirement, deleteRequirement, setLocked, addProgressReview, saveFeedback, validateEvaluation, publish, submissionAccess };
 })();

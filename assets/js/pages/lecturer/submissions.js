@@ -25,16 +25,22 @@
   function viewRequirement(item) {
     globalThis.IE104.ui.workflowDetails({ title: 'Chi tiết yêu cầu bài nộp', fields: [['Tên bài nộp', item.title], ['Nội dung yêu cầu', item.content, true], ['Hạn nộp', ui.date(item.deadline)]], actionText: 'Sửa yêu cầu', action: () => editRequirement(item), disabled: !ui.state?.canManageRequirements, extraActions: [{ text: item.locked ? 'Mở nhận bài' : 'Khóa nhận bài', action: () => lock(item, !item.locked), disabled: item.locked && !ui.state?.canManageRequirements }] });
   }
-  function board(title, groups, cardBuilder, className) {
-    const section = el('section', '', 'teaching-card');
-    section.dataset.workflowBoard = title === 'Danh sách yêu cầu' ? 'requirements' : 'submissions';
-    section.append(el('h3', title));
-    const columns = el('div', '', `teaching-board ${className || ''}`);
-    groups.forEach(group => {
-      const column = el('section', '', 'teaching-column');
-      const heading = el('h4', `${group.title} (${group.items.length})`);
+  function board(title, groups, cardBuilder, kind = 'requirements') {
+    const section = el('section', '', kind);
+    const header = el('header', '', `${kind}__header`);
+    header.append(el('h3', title, `${kind}__title`));
+    const viewport = el('div', '', 'task-board submission-board');
+    viewport.tabIndex = 0;
+    viewport.setAttribute('role', 'region');
+    viewport.setAttribute('aria-label', title);
+    const variant = kind === 'requirements' ? 'requirements' : 'files';
+    const columns = el('div', '', `task-board__columns submission-board__columns submission-board__columns--${variant}`);
+    const accents = kind === 'requirements' ? ['neutral', 'info'] : ['warning', 'success'];
+    groups.forEach((group, index) => {
+      const column = el('section', '', `task-column submission-column submission-column--${accents[index]}`);
+      const heading = el('h4', `${group.title} (${group.items.length})`, 'task-column__title');
       heading.prepend(globalThis.IE104.ui.workflowIcon(group.title === 'Đã nộp' || group.title === 'Chờ phản hồi' ? 'progress' : group.title === 'Đã phản hồi' ? 'done' : 'pending'));
-      const list = el('div', '', 'teaching-column-list');
+      const list = el('div', '', 'task-column__list submission-column__list teaching-column-list');
       list.tabIndex = 0;
       list.setAttribute('role', 'region');
       list.setAttribute('aria-label', group.title);
@@ -43,26 +49,26 @@
       column.append(heading, list);
       columns.append(column);
     });
-    section.append(columns);
+    viewport.append(columns);
+    section.append(header, viewport);
     return section;
   }
   ui.subscribe(state => {
     fileChecks.clear();
     panel.replaceChildren();
     if (!state) return;
-    const toolbar = el('div', '', 'teaching-toolbar');
+    const toolbar = el('div', '', 'requirements__actions');
     const mode = button(deleteMode ? 'Xong' : 'Xóa', () => { deleteMode = !deleteMode; ui.refresh(); }, !state.canManageRequirements); mode.classList.add('workflow-delete-mode'); mode.setAttribute('aria-pressed', String(deleteMode));
-    toolbar.append(el('h2', 'Yêu cầu bài nộp'), button('+ Tạo yêu cầu', () => editRequirement(null), !state.canManageRequirements), button(state.submissionsLocked ? 'Mở nhận bài toàn đề tài' : 'Khóa nhận bài toàn đề tài', () => lock(null, !state.submissionsLocked), state.readOnly || (state.submissionsLocked && !state.canManageRequirements)));
-    toolbar.children[1].classList.add('workflow-primary-action');
-    toolbar.insertBefore(mode, toolbar.children[1]);
-    if (deleteMode) toolbar.querySelector('h2').append(el('span', ' Chế độ xóa', 'student-delete-mode-label'));
-    panel.append(toolbar, el('p', state.readOnly ? 'Chưa có dữ liệu yêu cầu và bài nộp cho nhóm này.' : state.submissionsLocked ? 'Toàn bộ đề tài đang khóa nhận bài.' : state.canManageRequirements ? 'Đang mở nhận bài theo từng yêu cầu.' : 'Đề tài đã hoàn thành. Không mở nhận bài mới.'));
+    const create = button('+ Tạo yêu cầu', () => editRequirement(null), !state.canManageRequirements);
+    create.classList.add('workflow-primary-action');
+    toolbar.append(mode, create, button(state.submissionsLocked ? 'Mở nhận bài toàn đề tài' : 'Khóa nhận bài toàn đề tài', () => lock(null, !state.submissionsLocked), state.readOnly || (state.submissionsLocked && !state.canManageRequirements)));
+    const notice = el('p', state.readOnly ? 'Chưa có dữ liệu yêu cầu và bài nộp cho nhóm này.' : state.submissionsLocked ? 'Toàn bộ đề tài đang khóa nhận bài.' : state.canManageRequirements ? 'Đang mở nhận bài theo từng yêu cầu.' : 'Đề tài đã hoàn thành. Không mở nhận bài mới.', 'submission-board-demo-note');
     const requirements = state.requirements.filter(item => !item.deletedAt);
     const stage = item => {
       const linked = state.submissions.filter(submission => submission.requirementId === item.id);
       return linked.length ? linked.every(submission => Boolean(submission.feedback)) ? 'reviewed' : 'submitted' : item.sourceStage || 'pending';
     };
-    panel.append(board('Danh sách yêu cầu', [['pending', 'Chưa nộp'], ['submitted', 'Đã nộp']].map(([id, title]) => ({ title, items: requirements.filter(item => id === 'pending' ? stage(item) === 'pending' : stage(item) !== 'pending') })), item => {
+    const requirementsBoard = board('Yêu cầu bài nộp', [['pending', 'Chưa nộp'], ['submitted', 'Đã nộp']].map(([id, title]) => ({ title, items: requirements.filter(item => id === 'pending' ? stage(item) === 'pending' : stage(item) !== 'pending') })), item => {
       const card = el('article', '', 'teaching-board-card');
       card.dataset.requirementId = item.id;
       const controls = el('div', '', 'teaching-actions');
@@ -74,7 +80,12 @@
       if (!hasSubmissions && Date.now() > Date.parse(item.deadline)) open.append(el('span','Quá hạn · Chưa nộp','workflow-overdue-badge'));
       card.append(open, controls);
       return card;
-    }, 'teaching-board--two'));
+    });
+    const header = requirementsBoard.querySelector('header');
+    if (deleteMode) header.querySelector('h3').append(el('span', 'Chế độ xóa', 'student-delete-mode-label'));
+    header.append(toolbar);
+    header.after(notice);
+    panel.append(requirementsBoard);
     panel.append(board('Bài đã nộp', [false, true].map(reviewed => ({ title: reviewed ? 'Đã phản hồi' : 'Chờ phản hồi', items: state.submissions.filter(item => Boolean(item.feedback) === reviewed) })), item => {
       const card = el('article', '', 'teaching-board-card');
       card.dataset.submissionId = item.id;
@@ -144,7 +155,7 @@
       queueMicrotask(checkFile);
       fileChecks.add(checkFile);
       return card;
-    }, 'teaching-board--two'));
+    }, 'submissions'));
     panel.append(el('p', 'Chỉ tải được bài đã có nội dung tệp thật. Bài mới có tên tệp sẽ chưa bật tải xuống.'));
   });
 })();

@@ -15,6 +15,7 @@ function createTab(storage) {
     'data/mock-data.js', 'data/proposal-actors.js', 'data/student-projects.js', 'data/student-progress.js',
     'data/student-deadlines.js', 'services/storage.js', 'shared/validation.js', 'services/registration-service.js',
     'services/approved-project-service.js', 'services/project-team-service.js', 'services/project-progress-service.js',
+    'data/student-evaluations.js', 'data/teaching-data.js', 'services/evaluation-service.js',
     'services/teaching-service.js', 'services/student-submissions-service.js', 'services/deadline-service.js',
   ];
   for (const module of modules) {
@@ -22,6 +23,27 @@ function createTab(storage) {
   }
   return tab.IE104;
 }
+
+test('publishes the current assessment directly and exposes the result to the student', () => {
+  const storage = new Map();
+  const { teaching } = createTab(storage).services;
+  const { evaluations } = createTab(storage).services;
+  const projectId = 'DA005';
+  const { revision } = teaching.getState(projectId);
+  const assessment = { scores: { TC001: '8', TC002: '9', TC003: '7' }, feedback: 'Nhóm đã hoàn thành báo cáo.' };
+
+  assert.equal(evaluations.getResult(projectId).status, 'unpublished');
+  assert.throws(() => teaching.publish(projectId, { ...assessment, scores: { ...assessment.scores, TC001: '11' } }, revision));
+  assert.equal(evaluations.getResult(projectId).status, 'unpublished');
+  const published = teaching.publish(projectId, assessment, revision);
+  assert.equal(published.revision, revision + 1);
+  assert.equal(published.draft, null);
+  assert.throws(() => teaching.publish(projectId, assessment, revision));
+  const result = evaluations.getResult(projectId);
+  assert.equal(result.status, 'published');
+  assert.equal(result.score, 8.2);
+  assert.equal(result.feedback, assessment.feedback);
+});
 
 test('yêu cầu lưu phía giảng viên cập nhật ở bài nộp và lịch theo giờ Việt Nam', async () => {
   const storage = new Map();
