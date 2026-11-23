@@ -1,5 +1,9 @@
 /* Tổng quan và Kết quả đánh giá dùng chung giữa sinh viên và giảng viên. */
 
+#overview-section {
+  min-width: 0;
+}
+
 /* --------------------------------------------------------------------------
    4. THẺ TÓM TẮT ĐỀ TÀI (.topic-summary)
    -------------------------------------------------------------------------- */
@@ -127,6 +131,11 @@
   max-width: 100%;
 }
 
+.topic-summary__status--completed {
+  color: var(--color-success-fg);
+  background: var(--color-success-bg);
+}
+
 /* --------------------------------------------------------------------------
    5. LƯỚI 2 CỘT PHẦN TỔNG QUAN (.topic-overview-layout)
    Desktop: Cột trái ~60% (3fr), cột phải ~40% (2fr), gap 24px
@@ -165,10 +174,6 @@
   border-bottom: 1px solid var(--color-border);
 }
 
-.teacher-workspace-page .topic-overview-card[data-project-method-plan] {
-  margin-block-start: var(--space-6);
-}
-
 .project-method-plan-text {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -179,6 +184,7 @@
   line-height: 1.65;
   color: var(--color-foreground);
   max-width: 72ch;
+  overflow-wrap: anywhere;
 }
 
 /* Danh sách mục tiêu & kết quả dự kiến với chấm tròn xanh */
@@ -196,6 +202,7 @@
   font-size: var(--text-base);
   line-height: 1.55;
   color: var(--color-foreground);
+  overflow-wrap: anywhere;
 }
 
 .topic-bullet-list > li::before {
@@ -226,6 +233,27 @@
   color: var(--color-heading);
   font-size: var(--text-base);
   font-weight: var(--weight-bold);
+}
+
+#overview-section .project-team__note {
+  display: grid;
+  grid-template-columns: 1.125rem minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--amber-200);
+  border-radius: var(--radius-control);
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning-fg);
+  font-size: var(--font-size-secondary);
+  line-height: 1.5;
+}
+
+#overview-section .project-team__note > svg {
+  width: 100%;
+  height: auto;
+  margin-block-start: 0.09375rem;
 }
 
 .topic-team__members {
@@ -291,6 +319,120 @@
   color: var(--color-muted-foreground);
 }
 
+#overview-section .project-team__note {
+  display: grid;
+  grid-template-columns: 1.125rem minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--amber-200);
+  border-radius: var(--radius-control);
+  background-color: var(--color-warning-bg);
+  color: var(--color-warning-fg);
+  font-size: var(--font-size-secondary);
+  line-height: 1.5;
+}
+
+#overview-section .project-team__note > svg {
+  width: 100%;
+  height: auto;
+  margin-block-start: 0.09375rem;
+}
+
+.project-supervisors__header,
+.project-team__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+#overview-section :is(.project-supervisors, .project-team) h2 {
+  font-size: var(--text-xl);
+  font-weight: var(--weight-bold);
+}
+
+.supervisor-list {
+  display: grid;
+  gap: var(--space-3);
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.supervisor-card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.supervisor-card__avatar {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: var(--radius-full);
+  background: var(--color-neutral-bg);
+  color: var(--color-muted-foreground);
+  font-size: var(--text-xs);
+}
+
+.supervisor-card__content {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--space-2);
+}
+
+.supervisor-card__name,
+.supervisor-card__department {
+  grid-column: 1;
+  overflow-wrap: anywhere;
+}
+
+.supervisor-card__name {
+  font-size: var(--font-size-secondary);
+  font-weight: var(--weight-semibold);
+}
+
+.supervisor-card__department {
+  color: var(--color-muted-foreground);
+  font-size: var(--text-xs);
+}
+
+.supervisor-card__content .supervisor-card__role {
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--role-badge-min-height);
+  margin: 0;
+  padding: var(--role-badge-padding-y) var(--role-badge-padding-x);
+  border-radius: var(--role-badge-radius);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+  text-align: center;
+}
+
+.supervisor-card__role--primary {
+  background-color: var(--role-primary-bg);
+  color: var(--role-primary-fg);
+}
+
+.supervisor-card__role--secondary {
+  background-color: var(--role-secondary-bg);
+  color: var(--role-secondary-fg);
+}
+
 /* --------------------------------------------------------------------------
    7. THẺ MỐC THỜI GIAN CHÍNH (.topic-milestones)
    -------------------------------------------------------------------------- */
@@ -301,6 +443,7 @@
 .topic-milestones__list {
   display: grid;
   margin: 0;
+  padding: 0;
 }
 
 .topic-milestones__item {
@@ -389,18 +532,14 @@
   margin: 0;
 }
 
-#evaluation-section :is(.evaluation-info__list > div, .evaluation-total__field, .evaluation-comment__field) {
+#evaluation-section :is(.evaluation-info__list > div, .evaluation-total__field) {
   display: grid;
   grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr);
-  align-items: start;
+  align-items: center;
   gap: var(--space-3) var(--space-6);
 }
 
-#evaluation-section :is(.evaluation-info__list > div, .evaluation-total__field) {
-  align-items: center;
-}
-
-#evaluation-section :is(dt, .evaluation-total__field > label, .evaluation-comment__field > label) {
+#evaluation-section :is(dt, .evaluation-total__field > label) {
   color: var(--color-heading);
   font-weight: var(--weight-semibold);
 }
@@ -530,7 +669,6 @@
   resize: vertical;
 }
 
-#evaluation-section .evaluation-comment__field > label { padding-top: var(--space-2); }
 #evaluation-section .evaluation-form__actions { display: flex; justify-content: flex-end; }
 
 #evaluation-section .evaluation-form__publish {
@@ -554,16 +692,18 @@
 }
 
 @media (max-width: 47.99rem) {
+  .supervisor-card__content { grid-template-columns: minmax(0,1fr); }
+  .supervisor-card__content .supervisor-card__role { grid-column: 1; grid-row: auto; justify-self: start; }
+
   #evaluation-section :is(.evaluation-info, .evaluation-criteria, .evaluation-total, .evaluation-comment, .evaluation-attachments) {
     padding: var(--space-4);
   }
 
-  #evaluation-section :is(.evaluation-info__list > div, .evaluation-total__field, .evaluation-comment__field) {
+  #evaluation-section :is(.evaluation-info__list > div, .evaluation-total__field) {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-2);
   }
 
-  #evaluation-section .evaluation-comment__field > label { padding-top: 0; }
   #evaluation-section .evaluation-form__publish { width: 100%; }
 }
 

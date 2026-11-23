@@ -78,6 +78,21 @@ test('new student tasks preserve multiple assignees, description and initial sta
   assert.equal(edited.percent, 60);
   assert.deepEqual(Array.from(edited.assigneeCodes), input.assigneeCodes);
 
+  let revision = service.getState(projectId).revision;
+  assert.throws(() => service.saveTask(projectId, task.id, { ...input, status: 'khong-hop-le' }, revision), /trạng thái hợp lệ/);
+  for (const [status, percent] of [
+    ['dang-thuc-hien', 60],
+    ['da-hoan-thanh', 100],
+    ['dang-thuc-hien', null],
+    ['chua-thuc-hien', 0],
+  ]) {
+    const stored = service.saveTask(projectId, task.id, { ...input, status }, revision);
+    revision = stored.revision;
+    const savedTask = service.getState(projectId).tasks.at(-1);
+    assert.equal(savedTask.status, status);
+    assert.equal(savedTask.percent, percent);
+  }
+
   const legacy = service.saveTask(projectId, null, {
     title: 'Việc mới mặc định', assigneeCode: '24520001', deadline: input.deadline,
   }, service.getState(projectId).revision).tasks.at(-1);

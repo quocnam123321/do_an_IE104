@@ -1,7 +1,7 @@
 (() => {
   const form = document.querySelector('#proposal-form, #create-topic-form');
   const app = globalThis.IE104;
-  if (!form || !app || typeof HTMLElement.prototype.showPopover !== 'function') return;
+  if (!app || typeof HTMLElement.prototype.showPopover !== 'function') return;
 
   let placeOpenPopup;
   window.addEventListener('resize', () => placeOpenPopup?.());
@@ -199,7 +199,7 @@
     sync();
   }
 
-  form.querySelectorAll('select[data-proposal-picker]').forEach(enhanceSelect);
+  form?.querySelectorAll('select[data-proposal-picker]').forEach(enhanceSelect);
   app.ui ||= {};
   app.ui.proposalPickers = {
     setupPopup,

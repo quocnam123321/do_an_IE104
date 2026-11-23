@@ -1,43 +1,7 @@
 .active-topic-page [data-team-notice], .active-topic-page [data-team-result] { margin: 0; padding: var(--space-3); border-radius: var(--radius-control); background: var(--color-info-bg); color: var(--color-info-fg); font-size: var(--font-size-secondary); overflow-wrap: anywhere; }
 .active-topic-page .team-error { color: var(--color-danger-fg); font-size: var(--font-size-secondary); }
 .active-topic-page #add-team-member-form [aria-invalid="true"] { border-color: var(--color-danger-fg); }
-.active-topic-page :is(#add-team-member-dialog, #invite-supervisor-dialog, #cancel-team-invitation-dialog) { max-height: calc(100svh - 2rem); overflow-y: auto; overflow-wrap: anywhere; }
-.active-topic-page #cancel-team-invitation-dialog { width: min(36rem, calc(100% - 2rem)); }
-
-#cancel-team-invitation-dialog h2 {
-  font-size: var(--font-size-section-title);
-}
-
-#cancel-team-invitation-dialog .cancel-team-invitation__close {
-  display: grid;
-  flex: 0 0 var(--control-min-height);
-  place-items: center;
-  padding: 0;
-  border: 0;
-  background: transparent;
-}
-
-#cancel-team-invitation-dialog .cancel-team-invitation__close:hover {
-  background: var(--color-neutral-bg);
-}
-
-#cancel-team-invitation-dialog footer {
-  margin-block-start: var(--space-4);
-  padding-block-start: var(--space-4);
-}
-
-#cancel-team-invitation-dialog [data-confirm-cancel-invitation] {
-  padding-inline: var(--space-4);
-  border-color: var(--color-danger-fg);
-  background-color: var(--color-danger-fg);
-  color: var(--color-on-danger);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-}
-
-#cancel-team-invitation-dialog [data-confirm-cancel-invitation]:hover {
-  background-color: color-mix(in srgb, var(--color-danger-fg) 88%, black);
-}
+.active-topic-page :is(#add-team-member-dialog, #invite-supervisor-dialog) { max-height: calc(100svh - 2rem); overflow-y: auto; overflow-wrap: anywhere; }
 
 #overview-section :is(.project-team__add, .project-supervisors__invite) {
   min-height: var(--control-min-height);
@@ -65,29 +29,6 @@
   border-color: var(--color-border);
   background-color: var(--color-neutral-bg);
   color: var(--color-muted-foreground);
-}
-
-#overview-section .supervisor-card__role {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--role-badge-min-height);
-  padding: var(--role-badge-padding-y) var(--role-badge-padding-x);
-  border-radius: var(--role-badge-radius);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-  line-height: 1.4;
-  text-align: center;
-}
-
-#overview-section .supervisor-card__role--primary {
-  background-color: var(--role-primary-bg);
-  color: var(--role-primary-fg);
-}
-
-#overview-section .supervisor-card__role--secondary {
-  background-color: var(--role-secondary-bg);
-  color: var(--role-secondary-fg);
 }
 
 .pending-invitations__list:has(> .supervisor-card) {

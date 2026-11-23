@@ -1,6 +1,5 @@
 .lecturer-routing-page [hidden] { display: none !important; }
 .lecturer-routing-page main [role="alert"] { color: var(--color-danger-fg); margin-block: var(--space-4); }
-.teacher-workspace-page .topic-summary__status[data-status="hoan-thanh"] { background: var(--color-success-bg); color: var(--color-success-fg); }
 .teacher-workspace-page .teaching-card > h2 { margin-bottom: var(--space-4); font-size: var(--font-size-section-title); }
 .teacher-workspace-page .teaching-card > h3 { margin-top: var(--space-4); margin-bottom: var(--space-2); }
 .teacher-workspace-page .teaching-card .teaching-metadata > div { display: grid; grid-template-columns: 9.5rem minmax(0, 1fr); gap: var(--space-3); }

@@ -51,14 +51,36 @@
     document.title = `${record.title} | Chỉnh sửa đề tài`; return;
   }
   set('#topic-summary-title, .page-header__topic-name', record.title);
-  const semesterLabel = record.semester ? `Học kỳ ${record.semester}` : 'Chưa có thông tin';
-  const values = kind === 'supervised' ? [code, record.type, courseLabel, `${semesterLabel} · ${record.academicYear || 'Chưa có thông tin'}`] : [code, record.type, courseLabel, semesterLabel, record.academicYear];
-  document.querySelectorAll('.topic-summary__meta dd, .topic-summary__details dd').forEach((node, index) => { node.textContent = values[index] || 'Chưa có thông tin'; });
-  set('.topic-description p', record.description);
+  if (kind === 'supervised') {
+    const app = window.IE104;
+    const topic = app.data.lecturerTopics.find(item => item.kind === 'supervised' && item.id === record.id);
+    app.shared.topicOverview.renderSupervisedSummary(document.querySelector('.topic-summary--supervised'), {
+      ...topic,
+      displayId: code,
+      typeLabel: record.type,
+      courseLabel,
+      semester: record.semester,
+      academicYear: record.academicYear,
+    });
+    const supervisors = document.querySelector('.project-supervisors');
+    app.shared.topicOverview.renderLecturerSupervisors(supervisors, { ...topic, sourceRecord: record });
+  } else {
+    const semesterLabel = record.semester ? `Học kỳ ${record.semester}` : 'Chưa có thông tin';
+    const values = [code, record.type, courseLabel, semesterLabel, record.academicYear];
+    document.querySelectorAll('.topic-summary__meta dd, .topic-summary__details dd').forEach((node, index) => {
+      node.textContent = values[index] || 'Chưa có thông tin';
+    });
+  }
+  set('.topic-description p', record.description || 'Chưa có thông tin');
   for (const key of ['objectives', 'outcomes', 'requirements']) {
     const section = document.querySelector(`.topic-${key}`);
-    if (!section || !record[key]) continue;
+    if (!section) continue;
     const list = section.querySelector('ul');
+    if (kind === 'supervised' && list) {
+      window.IE104.shared.topicOverview.renderList(list, record[key]);
+      continue;
+    }
+    if (!record[key]) continue;
     if (list) list.replaceChildren(...record[key].map(text => { const item = document.createElement('li'); item.textContent = text; return item; }));
     else { const paragraph = section.querySelector('p'); if (paragraph) paragraph.textContent = record[key].join('\n'); }
   }

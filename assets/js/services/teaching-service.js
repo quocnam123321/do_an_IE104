@@ -43,7 +43,10 @@
   }
 
   function stateFrom(projectId, records) {
-    const source = records.find(item => item.projectId === projectId) || app.data.teachingSeeds?.find(item => item.projectId === projectId) || { projectId, revision: 0, requirements: [], submissions: [], progressReviews: [], draft: null, publishedEvaluation: null, audit: [] };
+    const saved = records.find(item => item.projectId === projectId);
+    const source = app.data.studentWebSubmissions?.forProject(projectId, saved) || saved ||
+      app.data.teachingSeeds?.find(item => item.projectId === projectId) ||
+      { projectId, revision: 0, requirements: [], submissions: [], progressReviews: [], draft: null, publishedEvaluation: null, audit: [] };
     const record = clone(source);
     record.submissionsLocked = Boolean(record.submissionsLocked);
     record.submissions.forEach(item => { item.feedbackHistory ||= []; });

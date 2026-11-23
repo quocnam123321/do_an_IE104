@@ -99,6 +99,7 @@
 
   function renderRequirements(deliverables) {
     const groups = [deliverables.filter(item => !item.submittedAt), deliverables.filter(item => item.submittedAt)];
+    const now = Date.now();
     for (const mode of ['normal', 'delete']) {
       const columns = document.querySelectorAll(`#requirements-${mode}-content .submission-column`);
       columns.forEach((column, index) => {
@@ -107,22 +108,59 @@
           const entry = entries[position];
           const card = item.querySelector('.requirement-board-card');
           card.querySelector('.requirement-board-card__title').textContent = entry.title;
-          card.classList.remove('requirement-board-card--overdue');
           card.querySelector('.submission-board__badge--danger')?.remove();
+          const overdue = !entry.submittedAt && Date.parse(entry.due + ':00+07:00') < now;
+          const late = entry.submittedAt > entry.due;
+          card.classList.toggle('requirement-board-card--overdue', overdue);
+          if (overdue || late) {
+            const badge = document.createElement('span');
+            badge.className = 'submission-board__badge submission-board__badge--' + (late ? 'late' : 'danger');
+            badge.textContent = late ? 'Nộp sau hạn' : 'Quá hạn';
+            card.querySelector('.requirement-board-card__header').append(badge);
+            const open = card.querySelector('.requirement-board-card__open');
+            if (open) {
+              badge.id = card.id + '-status';
+              open.setAttribute('aria-describedby', `${open.getAttribute('aria-describedby')} ${badge.id}`);
+            }
+          }
           setDate(card.querySelector('time'), entry.due);
           if (mode === 'delete') {
-            card.querySelector('.requirement-board-card__remove').setAttribute('aria-label', `Xóa yêu cầu: ${entry.title}`);
-            const dialog = document.getElementById(card.querySelector('[commandfor]').getAttribute('commandfor'));
+            if (entry.submittedAt) return;
+            const remove = card.querySelector('.requirement-board-card__remove');
+            remove.setAttribute('aria-label', `Xóa yêu cầu: ${entry.title}`);
+            const dialog = document.getElementById(remove.getAttribute('commandfor'));
             dialog.querySelector('.topic-dialog__desc strong').textContent = entry.title;
             return;
           }
           const view = document.getElementById(card.querySelector('[commandfor]').getAttribute('commandfor'));
           const edit = document.getElementById(view.querySelector('[commandfor^="edit-"]').getAttribute('commandfor'));
-          for (const [prefix, dialog] of [['view', view], ['edit', edit]]) {
-            dialog.querySelector(`[id^="${prefix}-name-"]`).value = entry.title;
-            dialog.querySelector(`[id^="${prefix}-content-"]`).value = entry.description;
-            dialog.querySelector(`[id^="${prefix}-deadline-"]`).value = prefix === 'edit' ? entry.due : displayDate(entry.due);
+          view.querySelector('h2').textContent = entry.title;
+          const body = view.querySelector('.requirement-view-dialog__body');
+          body.querySelector('section p').textContent = entry.description;
+          const dates = body.querySelector('dl');
+          setDate(dates.querySelector('time'), entry.due);
+          if (entry.submittedAt) {
+            const label = document.createElement('dt');
+            label.textContent = 'Ngày giờ nộp';
+            const value = document.createElement('dd');
+            const time = document.createElement('time');
+            setDate(time, entry.submittedAt);
+            value.append(time);
+            dates.append(label, value);
+            if (entry.file) {
+              const attachments = document.createElement('section');
+              attachments.className = 'requirement-view-dialog__attachments';
+              const heading = document.createElement('h3');
+              heading.textContent = 'Tệp đã nộp';
+              const file = document.createElement('p');
+              file.textContent = entry.file;
+              attachments.append(heading, file);
+              body.append(attachments);
+            }
           }
+          edit.querySelector('[id^="edit-name-"]').value = entry.title;
+          edit.querySelector('[id^="edit-content-"]').value = entry.description;
+          edit.querySelector('[id^="edit-deadline-"]').value = entry.due;
         });
       });
     }
@@ -136,7 +174,7 @@
     document.querySelectorAll('.submissions .submission-column').forEach((column, index) => {
       const entries = groups[index];
       const onTimeBadge = column.querySelector('.submission-board__badge--success');
-      const lateBadge = column.querySelector('.submission-board__badge--danger');
+      const lateBadge = column.querySelector('.submission-board__badge--late');
       keepCards(column, entries.length, true).forEach((item, position) => {
         const entry = entries[position];
         const card = item.querySelector('.submission-board-card');
@@ -151,18 +189,21 @@
         const button = card.querySelector('.submission-board-card__feedback');
         button.setAttribute('aria-label', `${entry.feedback ? 'Xem phản hồi' : 'Phản hồi'}: ${entry.title}`);
         const dialog = document.getElementById(button.getAttribute('commandfor'));
-        dialog.querySelector('[name="submission-choice"]').value = entry.title;
-        dialog.querySelector('.topic-dialog__info-row strong').textContent = entry.file;
-        setDate(dialog.querySelector('time'), entry.submittedAt);
-        dialog.querySelector('[name="submission-comment"]').value = entry.feedback || '';
+        const summary = dialog.querySelector('.submission-feedback-dialog__summary');
+        summary.querySelector('h3').textContent = entry.title;
+        const timestamp = summary.querySelector('time');
+        const [day, clock] = displayDate(entry.submittedAt).split(' · ');
+        timestamp.dateTime = entry.submittedAt;
+        timestamp.textContent = `${clock} ngày ${day}`;
+        const readout = dialog.querySelector('.submission-feedback-dialog__readout p');
+        if (readout) readout.textContent = entry.feedback;
+        else dialog.querySelector('[name="submission-comment"]').value = '';
       });
     });
   }
 
   ui.renderSupervisedDemo = record => {
     const work = record.supervision;
-    document.querySelector('.topic-requirements').hidden = false;
-    setText('[data-supervised-technology]', `Công nghệ gợi ý · ${record.technology}`);
     const requestedReturn = new URLSearchParams(location.search).get('return');
     const listUrl = new URL('danh-sach-de-tai-dang-huong-dan.html', location.href);
     let returnUrl = listUrl.href;

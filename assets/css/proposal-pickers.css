@@ -39,7 +39,7 @@
 }
 
 :is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger[aria-expanded="true"],
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-date-control:not(.proposal-date-control--with-time):has(.proposal-date-trigger[aria-expanded="true"]) > input {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-date-control:not(.proposal-date-control--with-time):has(.proposal-date-trigger[aria-expanded="true"]) > input {
   border-color: var(--color-primary);
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
@@ -106,12 +106,12 @@
   min-width: 0;
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-date-control > input {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-date-control > input {
   width: 100%;
   padding-inline-end: calc(var(--control-min-height) + var(--space-2));
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-date-trigger {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-date-trigger {
   position: absolute;
   inset-block: 1px;
   inset-inline-end: 1px;
@@ -123,16 +123,16 @@
   color: var(--color-muted-foreground);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-date-trigger:not(:disabled):is(:hover, [aria-expanded="true"]) {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-date-trigger:not(:disabled):is(:hover, [aria-expanded="true"]) {
   background: var(--color-info-bg);
   color: var(--color-primary);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-date-trigger:focus-visible {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-date-trigger:focus-visible {
   outline-offset: -3px;
 }
 
-.teacher-topic-form .proposal-date-control--with-time {
+:is(.teacher-topic-form, .requirement-deadline) .proposal-date-control--with-time {
   --date-input-width: 7rem;
   display: grid;
   grid-template-columns: minmax(0, var(--date-input-width)) auto minmax(0, 4.75rem) minmax(0, 1fr) var(--control-min-height);
@@ -142,36 +142,36 @@
   background: var(--color-surface);
 }
 
-.teacher-topic-form .proposal-date-control--with-time:has(> input:first-child:placeholder-shown) {
+:is(.teacher-topic-form, .requirement-deadline) .proposal-date-control--with-time:has(> input:first-child:placeholder-shown) {
   --date-input-width: 7.375rem;
 }
 
-.teacher-topic-form .proposal-date-control--with-time:has(> input[aria-invalid="true"]) {
+:is(.teacher-topic-form, .requirement-deadline) .proposal-date-control--with-time:has(> input[aria-invalid="true"]) {
   border-color: var(--color-danger-fg);
 }
 
-.teacher-topic-form .proposal-date-control--with-time:is(:focus-within, :has(> .proposal-date-trigger[aria-expanded="true"])) {
+:is(.teacher-topic-form, .requirement-deadline) .proposal-date-control--with-time:is(:focus-within, :has(> .proposal-date-trigger[aria-expanded="true"])) {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
-.teacher-topic-form .proposal-date-control.proposal-date-control--with-time > input {
+:is(.teacher-topic-form, .requirement-deadline) .proposal-date-control.proposal-date-control--with-time > input {
   min-height: calc(var(--control-min-height) - 2px);
   padding-inline: var(--space-3) 0;
   border: 0;
   background: transparent;
 }
 
-.teacher-topic-form .proposal-date-control--with-time > :is(input, .proposal-date-trigger):focus {
+:is(.teacher-topic-form, .requirement-deadline) .proposal-date-control--with-time > :is(input, .proposal-date-trigger):focus {
   outline: none;
 }
 
-.teacher-topic-form .proposal-date-control--with-time > .proposal-date-trigger:focus-visible {
+:is(.teacher-topic-form, .requirement-deadline) .proposal-date-control--with-time > .proposal-date-trigger:focus-visible {
   background: var(--color-info-bg);
   color: var(--color-primary);
 }
 
-.teacher-topic-form .proposal-date-control--with-time > input.proposal-date-time {
+:is(.teacher-topic-form, .requirement-deadline) .proposal-date-control--with-time > input.proposal-date-time {
   padding-inline-start: var(--space-1);
   font-variant-numeric: tabular-nums;
 }
@@ -183,7 +183,7 @@
   line-height: 1;
 }
 
-.teacher-topic-form .proposal-date-control--with-time > .proposal-date-trigger {
+:is(.teacher-topic-form, .requirement-deadline) .proposal-date-control--with-time > .proposal-date-trigger {
   grid-column: -2;
   position: static;
   min-height: calc(var(--control-min-height) - 2px);
@@ -220,23 +220,23 @@
   gap: var(--space-1);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar button {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar button {
   padding: var(--space-1);
   border-color: transparent;
   background: var(--color-surface);
   font-size: var(--font-size-secondary);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar button:focus-visible {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar button:focus-visible {
   outline-offset: -2px;
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar button:not(:disabled):hover {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar button:not(:disabled):hover {
   background: var(--color-info-bg);
   color: var(--color-primary);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar .proposal-calendar__heading {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar .proposal-calendar__heading {
   min-width: 0;
   color: var(--color-heading);
   font-size: var(--font-size-body);
@@ -244,12 +244,12 @@
   text-align: start;
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__navigation button {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar__navigation button {
   width: var(--control-min-height);
   border-color: var(--color-border);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__navigation button:disabled {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar__navigation button:disabled {
   background: var(--color-neutral-bg);
 }
 
@@ -270,30 +270,30 @@
 
 .proposal-calendar__grid td { padding: 0; }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__grid button {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar__grid button {
   width: 100%;
   padding: 0;
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__grid .is-outside-month {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar__grid .is-outside-month {
   color: var(--color-muted-foreground);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__grid button[aria-current="date"] {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar__grid button[aria-current="date"] {
   border-color: var(--color-primary);
   background: var(--color-info-bg);
   color: var(--color-primary);
   font-weight: var(--font-weight-bold);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__grid [aria-selected="true"] button,
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__grid [aria-selected="true"] button:hover {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar__grid [aria-selected="true"] button,
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar__grid [aria-selected="true"] button:hover {
   border-color: var(--color-primary);
   background: var(--color-primary);
   color: var(--color-on-primary);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__grid [aria-selected="true"] button:focus-visible {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar__grid [aria-selected="true"] button:focus-visible {
   outline-color: var(--color-on-primary);
 }
 
@@ -308,14 +308,14 @@
   font-weight: var(--font-weight-semibold);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__months input {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar__months input {
   width: 100%;
   padding: var(--space-2);
   border: 1px solid var(--color-control-border);
   border-radius: var(--radius-control);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__months input[type="number"]:focus {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar__months input[type="number"]:focus {
   border-color: var(--color-control-border);
   outline: none;
 }
@@ -327,7 +327,7 @@
   margin-top: var(--space-2);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__month-grid button[aria-pressed="true"] {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar__month-grid button[aria-pressed="true"] {
   border-color: var(--color-primary);
   color: var(--color-primary);
   background: var(--color-info-bg);
@@ -339,7 +339,7 @@
   border-top: 1px solid var(--color-border);
 }
 
-.teacher-topic-form .proposal-calendar__time {
+:is(.teacher-topic-form, .requirement-deadline) .proposal-calendar__time {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-content: start;
@@ -412,7 +412,7 @@
   .proposal-calendar--with-time .proposal-calendar__body { grid-area: days; }
   .proposal-calendar--with-time .proposal-calendar__footer { grid-area: footer; }
 
-  .teacher-topic-form .proposal-calendar--with-time .proposal-calendar__time {
+  :is(.teacher-topic-form, .requirement-deadline) .proposal-calendar--with-time .proposal-calendar__time {
     grid-area: time;
     grid-auto-rows: minmax(0, 1fr);
     min-block-size: 0;
@@ -429,22 +429,46 @@
   }
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__footer button {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar__footer button {
   padding-inline: var(--space-2);
   color: var(--color-muted-foreground);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__footer [data-today] {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar__footer [data-today] {
   color: var(--color-primary);
   font-weight: var(--font-weight-semibold);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__footer [data-clear-date]:disabled {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar__footer [data-clear-date]:disabled {
   opacity: .65;
 }
 
 @media (pointer: fine) {
-  :is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-calendar__grid button {
+  :is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-calendar__grid button {
     min-height: 2.5rem;
+  }
+}
+
+.requirement-deadline :is(.proposal-date-trigger, .proposal-calendar button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-control);
+}
+
+.requirement-deadline .proposal-calendar button {
+  min-height: var(--control-min-height);
+  border-width: 1px;
+  border-style: solid;
+}
+
+.requirement-deadline .proposal-calendar__heading {
+  gap: var(--space-1);
+}
+
+@media (max-width: 33.99rem) {
+  .requirement-deadline .proposal-calendar--with-time:popover-open {
+    grid-template-rows: auto auto auto auto;
+    overflow-y: auto;
   }
 }

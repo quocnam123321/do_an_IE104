@@ -1,27 +1,94 @@
 (() => {
   const app = globalThis.IE104;
-  const ui = app?.ui?.lecturerWorkspace;
-  if (!ui) return;
-  const { el, field, modal, service } = ui;
   const panel = document.getElementById('tien-do');
-  const title = panel.querySelector('h2');
+  if (!panel) return;
+  const { labels, today, memberIndex, renderMemberPopover, renderCard, fillDetails, fillStats } = app.ui.progressTaskView;
+  const progress = app.services.projectProgress;
   const overview = panel.querySelector('.progress-overview');
+  const dialog = panel.querySelector('#task-detail-dialog');
+  const showComments = app.ui.mountTaskComments(dialog, 'lecturer');
+  const board = panel.querySelector('.task-board');
+  const tasksById = new Map();
+  const columns = [...board.querySelectorAll('.task-column')].map((column, index) => ({
+    status: Object.keys(labels)[index],
+    list: column.querySelector('.task-column__list'),
+    count: column.querySelector('.task-column__count'),
+  }));
+  const popovers = document.createElement('div');
+  board.after(popovers);
+
+  function taskCard(task, people, date, projectId) {
+    tasksById.set(task.id, { task, people, projectId });
+    return renderCard(task, people, date, dialog.id);
+  }
+
+  board.addEventListener('click', event => {
+    const trigger = event.target.closest('.task-card__open');
+    if (!trigger || dialog.open) return;
+    const entry = tasksById.get(trigger.closest('[data-task-id]').dataset.taskId);
+    if (!entry) return;
+    const { task, people, projectId } = entry;
+    fillDetails(dialog, task, people.map(({ member }) => member.name).join(', ') || task.assigneeCode);
+    dialog.dataset.taskId = task.id;
+    showComments({ projectId, taskId: task.id });
+    dialog.showModal();
+    dialog.scrollTop = 0;
+  });
+
+  dialog.addEventListener('close', () => {
+    const card = Array.from(board.querySelectorAll('[data-task-id]')).find(item => item.dataset.taskId === dialog.dataset.taskId);
+    (card?.querySelector('.task-card__open') || board).focus({ preventScroll: true });
+  });
+
+  function renderCatalogCards() {
+    const previous = [...panel.querySelectorAll('.progress-member-popover')];
+    const peopleById = new Map(previous.map((node, index) => {
+      const member = {
+        name: node.querySelector('.progress-member-popover__name').textContent.trim(),
+        code: node.querySelector('.progress-member-popover__id').textContent.trim().replace(/^Mã số sinh viên:\s*/, ''),
+        role: node.querySelector('.progress-member-popover__role').textContent.includes('Nhóm trưởng') ? 'nhom-truong' : 'thanh-vien',
+      };
+      return [node.id, { member, index, popoverId: node.id }];
+    }));
+    previous.forEach(node => node.remove());
+    popovers.replaceChildren(...Array.from(peopleById.values(), renderMemberPopover));
+    const date = today();
+    const tasks = [];
+    columns.forEach(({ status, list }) => {
+      const cards = Array.from(list.querySelectorAll('.task-card'), (card, index) => {
+        const task = {
+          id: `${status}-${index}`,
+          title: card.querySelector('.task-card__title').textContent.trim(),
+          deadline: card.querySelector('time')?.dateTime,
+          status,
+        };
+        tasks.push(task);
+        const people = Array.from(card.querySelectorAll('.task-assignee:not(.task-assignee--more)'),
+          button => peopleById.get(button.getAttribute('popovertarget'))).filter(Boolean);
+        return taskCard(task, [...new Set(people)], date);
+      });
+      list.replaceChildren(...cards);
+      if (!cards.length) list.append(Object.assign(document.createElement('li'), { className: 'task-column__empty', textContent: 'Chưa có công việc.' }));
+    });
+    fillStats(overview, progress.summarize({ tasks }), tasks, date);
+  }
+
+  const ui = app.ui.lecturerWorkspace;
+  if (!ui) {
+    renderCatalogCards();
+    return;
+  }
+  const { el, field, modal, service } = ui;
+  panel.querySelectorAll('.progress-member-popover').forEach(node => node.remove());
+  const title = panel.querySelector('h2');
   const work = panel.querySelector('.progress-tasks');
   const meter = overview.querySelector('progress');
   const percentLabel = overview.querySelector('.progress-overview__percent');
-  const stats = overview.querySelectorAll('.progress-stat dd');
   const review = overview.querySelector('.progress-overview__review');
   const message = el('p');
   const summaryNote = el('p', 'Tính theo số công việc đã hoàn thành vì một số công việc chưa có phần trăm cụ thể.', 'progress-overview__note');
   const history = el('section', '', 'progress-overview progress-reviews');
   const reviews = el('div');
-  const labels = { 'chua-thuc-hien': 'Chưa thực hiện', 'dang-thuc-hien': 'Đang thực hiện', 'da-hoan-thanh': 'Đã hoàn thành' };
-  const columns = [...work.querySelectorAll('.task-column')].map((column, index) => ({
-    status: Object.keys(labels)[index],
-    list: column.querySelector('.task-column__list'),
-    count: column.querySelector('.task-column__count'),
-  }));
-
   review.removeAttribute('command');
   review.removeAttribute('commandfor');
   review.removeAttribute('aria-controls');
@@ -45,60 +112,8 @@
   history.append(el('h3', 'Nhận xét của giảng viên', 'progress-overview__title'), reviews);
   panel.append(history, message);
 
-  function renderTask(task, state) {
-    const assignees = task.assignees ?? (task.assigneeCodes ?? [task.assigneeCode])
-      .map(code => state.team.members.find(member => member.code === code)).filter(Boolean);
-    const names = assignees.map(person => `${person.name} - ${person.code}`).join('\n') || task.assigneeCode || 'Chưa phân công';
-    const completion = Number.isFinite(task.percent) ? `${task.percent}%` : 'Chưa có phần trăm cụ thể';
-    const deadline = task.deadline ? task.deadline.split('-').reverse().join('/') : 'Chưa có hạn';
-    const item = el('li');
-    const card = el('article', '', 'task-card task-card--interactive');
-    const heading = el('h5', '', 'task-card__title');
-    const open = el('button', task.title, 'task-card__open');
-    open.type = 'button';
-    open.setAttribute('aria-haspopup', 'dialog');
-    open.addEventListener('click', () => app.ui.workflowDetails({
-      title: 'Chi tiết công việc',
-      fields: [
-        ['Tên công việc', task.title],
-        ['Người phụ trách', names, assignees.length > 1],
-        ['Hạn hoàn thành', deadline],
-        ['Trạng thái', labels[task.status]],
-        ['Mức hoàn thành', completion],
-      ],
-      progressHistory: { entries: state.progress.history, taskId: task.id },
-      returnTo: () => open,
-    }));
-    heading.append(open);
-
-    const footer = el('div', '', 'task-card__footer');
-    const due = el('p', '', 'task-card__deadline');
-    const calendar = app.ui.workflowIcon('calendar');
-    calendar.setAttribute('class', 'task-card__icon');
-    const dueDate = task.deadline ? el('time', deadline) : el('span', deadline);
-    if (task.deadline) dueDate.dateTime = task.deadline;
-    due.append(calendar, el('span', 'Hạn hoàn thành', 'visually-hidden'), dueDate);
-    const people = el('span', '', 'task-assignees');
-    people.append(el('span', `Người phụ trách: ${names}`, 'visually-hidden'));
-    const avatars = ['task-assignee__avatar--an', 'task-assignee__avatar--binh'];
-    assignees.slice(0, avatars.length).forEach((person, index) => {
-      const initials = person.name.trim().split(/\s+/).slice(-2).map(word => word[0]).join('');
-      const avatar = el('span', initials, `task-assignee__avatar ${avatars[index]}`);
-      avatar.setAttribute('aria-hidden', 'true');
-      people.append(avatar);
-    });
-    if (assignees.length > avatars.length) {
-      const more = el('span', `+${assignees.length - avatars.length}`, 'task-assignee__avatar task-assignee__avatar--more');
-      more.setAttribute('aria-hidden', 'true');
-      people.append(more);
-    }
-    footer.append(due, people);
-    card.append(heading, footer, el('p', completion, 'task-card__completion'));
-    item.append(card);
-    return item;
-  }
-
   ui.subscribe(state => {
+    tasksById.clear();
     const hasProgress = Boolean(state?.progress);
     title.hidden = overview.hidden = work.hidden = history.hidden = !hasProgress;
     message.hidden = hasProgress || !state;
@@ -106,21 +121,34 @@
     if (!hasProgress) return;
 
     title.textContent = `Tiến độ đề tài ${state.project.title}`;
-    const summary = app.services.projectProgress.summarize(state.progress);
+    const date = today();
+    const summary = progress.summarize(state.progress);
     meter.max = 100;
     meter.value = summary.percent;
     meter.textContent = `${summary.percent}%`;
     percentLabel.textContent = `${summary.percent}% hoàn thành`;
-    [summary.total, summary.completed, summary.remaining].forEach((value, index) => {
-      stats[index].textContent = value;
-    });
+    fillStats(overview, summary, state.progress.tasks, date);
     summaryNote.hidden = summary.method !== 'completed-ratio';
 
+    const members = new Map(state.team.members.map(member => [member.code, member]));
+    for (const task of state.progress.tasks) {
+      for (const member of task.assignees || []) {
+        if (member.name && member.code && !members.has(member.code)) members.set(member.code, member);
+      }
+    }
+    const people = memberIndex([...members.values()]);
+    popovers.replaceChildren(...Array.from(people.values(), renderMemberPopover));
     columns.forEach(({ status, list, count }) => {
       const tasks = state.progress.tasks.filter(task => task.status === status);
+      const scrollTop = list.scrollTop;
       count.replaceChildren(count.querySelector('.visually-hidden'), `(${tasks.length})`);
-      list.replaceChildren(...tasks.map(task => renderTask(task, state)));
-      if (!tasks.length) list.append(el('li', 'Chưa có công việc.'));
+      list.replaceChildren(...tasks.map(task => {
+        const codes = task.assignees?.map(member => member.code) ?? task.assigneeCodes ?? [task.assigneeCode];
+        const assignees = [...new Set(codes)].map(code => people.get(code)).filter(Boolean);
+        return taskCard(task, assignees, date, state.projectId);
+      }));
+      if (!tasks.length) list.append(el('li', 'Chưa có công việc.', 'task-column__empty'));
+      list.scrollTop = scrollTop;
     });
     reviews.replaceChildren();
     if (!state.progressReviews.length) reviews.append(el('p', 'Chưa có nhận xét.'));

@@ -12,14 +12,7 @@
   let initialized = false;
   const text = (selector, value) => { const node = document.querySelector(selector); if (node) node.textContent = value; };
 
-  function renderList(list, value) {
-    const items = String(value ?? '').split(/\r?\n/).map(line => line.trim()).filter(Boolean);
-    list.replaceChildren(...(items.length ? items : ['Chưa có thông tin']).map(item => {
-      const row = document.createElement('li');
-      row.textContent = item;
-      return row;
-    }));
-  }
+  const { renderList, renderSupervisors } = app.shared.topicOverview;
 
   function refresh() {
     try {
@@ -61,11 +54,10 @@
       }
       app.shared?.proposalOutline?.render(outlinePanel, project);
       text('.topic-team__group-name', project.groupName);
-      const instructors = root.querySelector('.supervisor-list');
-      instructors.replaceChildren(...[
-        ['primary', project.lecturer, project.lecturerId],
-        ['secondary', project.coSupervisor, project.coSupervisorId],
-      ].filter(([, name]) => name).map(([role, name, id]) => supervisorCard(name, role, id)));
+      renderSupervisors(root.querySelector('.project-supervisors'), [
+        { role: 'primary', name: project.lecturer, id: project.lecturerId },
+        { role: 'secondary', name: project.coSupervisor, id: project.coSupervisorId },
+      ]);
       const dates = root.querySelectorAll('.topic-milestones__list dd');
       const milestones = project.milestones || (!project.isArchivedSample && project.createdAt
         ? [new Date(project.createdAt).toLocaleDateString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })]
@@ -83,35 +75,6 @@
       notice.textContent = failure.message;
       document.querySelectorAll('dialog[open]').forEach(dialog => dialog.close());
     }
-  }
-
-  function supervisorCard(name, roleKind, lecturerId) {
-    const lecturer = app.data.projectLecturers.find(profile =>
-      profile.name === name && (!lecturerId || profile.id === lecturerId));
-    const department = lecturer?.department?.trim().replace(/^Bộ môn(?:\s*:\s*|\s+|$)/i, '');
-    const item = document.createElement('li');
-    item.className = 'supervisor-list__item';
-    const article = document.createElement('article');
-    article.className = 'supervisor-card';
-    const avatar = document.createElement('div');
-    avatar.className = 'supervisor-card__avatar';
-    avatar.setAttribute('aria-hidden', 'true');
-    avatar.textContent = name.trim().split(/\s+/).slice(-2).map(part => part[0]).join('');
-    const content = document.createElement('div');
-    content.className = 'supervisor-card__content';
-    const title = document.createElement('h3');
-    title.className = 'supervisor-card__name';
-    title.textContent = name;
-    const role = document.createElement('p');
-    role.className = `supervisor-card__role supervisor-card__role--${roleKind}`;
-    role.textContent = roleKind === 'primary' ? 'Hướng dẫn chính' : 'Đồng hướng dẫn';
-    const details = document.createElement('p');
-    details.className = 'supervisor-card__department';
-    details.textContent = department || 'Chưa cập nhật bộ môn';
-    content.append(title, details, role);
-    article.append(avatar, content);
-    item.append(article);
-    return item;
   }
 
   function initializeSubmissions() {

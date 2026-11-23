@@ -10,6 +10,55 @@
   color: var(--color-text);
 }
 
+.active-topic-page dialog.student-destructive-confirm {
+  width: min(36rem, calc(100% - 2rem));
+  overflow-wrap: anywhere;
+}
+
+.active-topic-page .student-destructive-confirm h2 {
+  font-size: var(--font-size-section-title);
+}
+
+.active-topic-page .student-destructive-confirm .student-destructive-confirm__close {
+  display: grid;
+  flex: 0 0 var(--control-min-height);
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+}
+
+.active-topic-page .student-destructive-confirm .student-destructive-confirm__close:hover {
+  background-color: var(--color-neutral-bg);
+}
+
+.active-topic-page .student-destructive-confirm footer {
+  margin-block-start: var(--space-4);
+  padding-block-start: var(--space-4);
+}
+
+.active-topic-page .student-destructive-confirm .student-destructive-confirm__submit:enabled {
+  padding-inline: var(--space-4);
+  border-color: var(--color-danger-fg);
+  background-color: var(--color-danger-fg);
+  color: var(--color-on-primary);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.active-topic-page .student-destructive-confirm .student-destructive-confirm__submit:enabled:hover {
+  background-color: color-mix(in srgb, var(--color-danger-fg) 88%, black);
+}
+
+#task-delete-cv-01::backdrop {
+  background: rgb(15 23 42 / .42);
+  backdrop-filter: blur(3px);
+}
+
+.active-topic-page .student-destructive-confirm .task-delete-confirm__form {
+  margin: 0;
+}
+
 /* Điều chỉnh phạm vi sinh viên khi dùng bảng chi tiết chung với giảng viên. */
 #progress-section.student-progress-view {
   min-width: 0;
@@ -48,13 +97,9 @@
   margin-bottom: var(--space-3);
 }
 
-#progress-section .task-card--interactive :is(.task-assignee, .student-task-remove) {
+#progress-section .task-card--interactive .student-task-remove {
   position: relative;
   z-index: 1;
-}
-
-#progress-section .task-card--interactive:has(.task-card__open:hover) {
-  border-color: var(--color-primary);
 }
 
 #progress-section .student-task-remove {
@@ -65,16 +110,6 @@
   border-radius: var(--control-radius);
   background-color: var(--color-surface);
   color: var(--color-danger-fg);
-}
-
-#progress-section .task-column__empty {
-  color: var(--color-muted-foreground);
-  font-size: var(--text-sm);
-  padding: var(--space-2);
-}
-
-#progress-section .progress-member-popover__info {
-  overflow-wrap: anywhere;
 }
 
 #submissions-section .requirement-board-card__open {
@@ -99,37 +134,6 @@
   color: var(--color-danger-fg);
 }
 
-.active-topic-page .workflow-dialog.task-detail-dialog {
-  width: min(46rem, calc(100% - 2rem));
-  overscroll-behavior: contain;
-}
-
-.active-topic-page .task-detail-dialog > header {
-  align-items: flex-start;
-}
-
-.active-topic-page .task-detail-dialog h2 {
-  align-self: center;
-  font-size: var(--text-2xl);
-  line-height: var(--leading-tight);
-  overflow-wrap: anywhere;
-}
-
-.active-topic-page .task-detail-dialog .workflow-dialog__close {
-  flex: 0 0 var(--control-min-height);
-  padding: 0;
-  border-color: transparent;
-}
-
-.active-topic-page .task-detail-dialog .workflow-dialog__close:hover {
-  background: var(--color-neutral-bg);
-}
-
-.active-topic-page .workflow-dialog.task-detail-dialog > footer {
-  padding: var(--space-4) var(--space-6);
-  border-top: 1px solid var(--color-border);
-}
-
 .active-topic-page :is(.task-detail-dialog, .task-saved-dialog, .workflow-saved-dialog) .workflow-dialog__primary {
   border-color: var(--color-primary);
   background: var(--color-primary);
@@ -140,81 +144,6 @@
 .active-topic-page :is(.task-detail-dialog, .task-saved-dialog, .workflow-saved-dialog) .workflow-dialog__primary:hover {
   background: var(--color-primary-hover);
   border-color: var(--color-primary-hover);
-}
-
-.task-detail-dialog__summary {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--space-4) var(--space-6);
-  margin: 0;
-}
-
-.active-topic-page .task-detail-dialog__summary dd {
-  margin: var(--space-1) 0 0;
-  font-size: var(--text-base);
-  font-weight: var(--weight-semibold);
-  overflow-wrap: anywhere;
-}
-
-.task-detail-dialog__status {
-  display: inline-block;
-  padding: var(--space-1) var(--space-2);
-  border-radius: var(--radius-control);
-  font-size: var(--text-sm);
-  line-height: var(--leading-normal);
-  background: var(--task-not-started-badge-bg);
-  color: var(--task-not-started-badge-fg);
-}
-
-.task-detail-dialog__status[data-status="dang-thuc-hien"] {
-  background: var(--task-in-progress-badge-bg);
-  color: var(--task-in-progress-badge-fg);
-}
-
-.task-detail-dialog__status[data-status="da-hoan-thanh"] {
-  background: var(--task-done-badge-bg);
-  color: var(--task-done-badge-fg);
-}
-
-.task-detail-dialog__deadline {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
-
-.task-detail-dialog__calendar {
-  flex: 0 0 auto;
-  color: var(--color-muted-foreground);
-}
-
-.task-detail-dialog__description {
-  padding-top: var(--space-4);
-  border-top: 1px solid var(--color-border);
-}
-
-.task-detail-dialog__description h3 {
-  margin: 0 0 var(--space-1);
-}
-
-.task-detail-dialog__description p {
-  margin: 0;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-
-@media (max-width: 38rem) {
-  .active-topic-page .workflow-dialog.task-detail-dialog > :is(header, .workflow-dialog__body, footer) {
-    padding: var(--space-4);
-  }
-
-  .task-detail-dialog__summary {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: var(--space-3);
-  }
-
-  .task-detail-dialog__summary > :first-child {
-    grid-column: 1 / -1;
-  }
 }
 
 .active-topic-page .workflow-dialog:is(.task-saved-dialog, .workflow-saved-dialog) {
@@ -262,6 +191,12 @@
 .active-topic-page #tien-do .task-editor {
   width: min(42rem, calc(100% - 2rem));
   padding: 0;
+}
+
+/* Giữ hộp chi tiết cho thao tác Hủy, chỉ hiển thị hộp sửa ở lớp trên. */
+#tien-do .task-detail-dialog:has(~ .task-editor--edit[open]),
+#tien-do .task-detail-dialog:has(~ .task-editor--edit[open])::backdrop {
+  visibility: hidden;
 }
 
 #tien-do .task-editor .popover-header {
@@ -400,8 +335,13 @@
   margin-block-start: var(--space-2);
 }
 
+#tien-do .task-editor--edit .task-editor__status-options {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 #tien-do .task-editor__status-options label {
   position: relative;
+  display: grid;
   margin: 0;
   cursor: pointer;
 }
@@ -429,8 +369,11 @@
   border-end-start-radius: var(--control-radius);
 }
 
-#tien-do .task-editor__status-options label:last-child > span {
+#tien-do .task-editor__status-options label + label > span {
   margin-inline-start: -1px;
+}
+
+#tien-do .task-editor__status-options label:last-child > span {
   border-start-end-radius: var(--control-radius);
   border-end-end-radius: var(--control-radius);
 }
@@ -450,6 +393,7 @@
   outline-offset: 2px;
 }
 
+#tien-do .task-editor__status-options input[aria-invalid="true"] + span,
 #tien-do .task-editor :is(input, textarea, summary)[aria-invalid="true"] {
   border-color: var(--color-danger-fg);
 }
@@ -492,15 +436,6 @@
 }
 
 /* Tổng quan dùng chung nội dung đề tài, nhóm và mốc thời gian. */
-#overview-section {
-  min-width: 0;
-}
-
-#overview-section .topic-summary__status--completed {
-  color: var(--color-success-fg);
-  background: var(--color-success-bg);
-}
-
 #overview-section .topic-summary__image--logo {
   padding: var(--space-3);
   border: 1px solid var(--media-placeholder-border);
@@ -510,27 +445,6 @@
   object-fit: contain;
 }
 
-#overview-section .project-team__note {
-  display: grid;
-  grid-template-columns: 1.125rem minmax(0, 1fr);
-  align-items: start;
-  gap: var(--space-2);
-  margin: 0 0 var(--space-2);
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--amber-200);
-  border-radius: var(--radius-control);
-  background-color: var(--color-warning-bg);
-  color: var(--color-warning-fg);
-  font-size: var(--font-size-secondary);
-  line-height: 1.5;
-}
-
-#overview-section .project-team__note > svg {
-  width: 100%;
-  height: auto;
-  margin-block-start: 0.09375rem;
-}
-
 #overview-section .project-team :is([data-team-notice], [data-team-result]) {
   margin-block-start: var(--space-3);
 }
@@ -538,10 +452,6 @@
 #overview-section .project-team [data-team-notice]:empty {
   margin: 0;
   padding: 0;
-}
-
-#overview-section :is(.topic-description > p, .topic-bullet-list > li) {
-  overflow-wrap: anywhere;
 }
 
 #overview-section .topic-overview-card:has(> .student-overview-actions) {
@@ -609,12 +519,6 @@
   overflow-wrap: anywhere;
 }
 
-@media (max-width: 63.99rem) {
-  #progress-section .progress-overview__stats {
-    gap: var(--space-3);
-  }
-}
-
 @media (max-width: 47.99rem) {
   #submissions-section .requirements,
   #submissions-section .submissions {
@@ -636,15 +540,6 @@
   overflow-wrap: anywhere;
 }
 
-.active-topic-page :is(.project-supervisors, .project-team) h2 {
-  font-size: var(--text-xl);
-  font-weight: var(--weight-bold);
-}
-
-#overview-section .topic-milestones__list {
-  padding: 0;
-}
-
 #progress-section .task-list.task-board__columns {
   max-height: none;
   grid-auto-rows: auto;
@@ -655,6 +550,34 @@
 
 #submissions-section .submission-board__columns--requirements {
   grid-template-columns: repeat(2, minmax(17.5rem, 1fr));
+}
+
+#submissions-section .submission-board-card__details {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.active-topic-page #submissions-section .submission-board-card__feedback {
+  border-color: var(--button-outline-primary-border);
+  background: var(--button-outline-primary-bg);
+  color: var(--button-outline-primary-fg);
+  font-weight: var(--weight-semibold);
+}
+
+.active-topic-page #submissions-section .submission-board-card__feedback:hover {
+  background: var(--button-outline-primary-bg-hover);
+  color: var(--button-outline-primary-fg-hover);
+}
+
+#submissions-section .submission-board-card__feedback > .submission-board__icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin: 0;
+}
+
+@media (max-width: 47.99875rem) {
+  #submissions-section .submission-board-card__actions:has(> .submission-board-card__feedback) {
+    display: flex;
+  }
 }
 
 #submissions-section .student-submission-notice {
@@ -695,153 +618,6 @@
   background: var(--color-danger-bg);
   color: var(--color-danger-fg);
   box-shadow: none;
-}
-
-#submissions-section a.submission-board-card__download {
-  text-decoration: none;
-}
-
-#submissions-section .submission-board-card__download:not(:disabled):hover {
-  background-color: var(--button-secondary-bg-hover);
-}
-
-#submissions-section .submission-file-toggle {
-  display: inline-grid;
-  place-items: center;
-  align-self: center;
-  flex: 0 0 auto;
-  min-height: var(--control-min-height);
-  /* Keep the full hit area while contributing only one text line to the row. */
-  margin-block: min(0px, calc((1lh - var(--control-min-height)) / 2));
-  padding: 0;
-  border: 0;
-  color: var(--color-foreground);
-  background: transparent;
-}
-
-.submission-file-toggle__label {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: .125rem var(--space-2);
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-control);
-  background: var(--color-surface);
-  white-space: nowrap;
-}
-
-#submissions-section .submission-file-toggle:focus-visible {
-  outline: none;
-}
-
-.submission-file-toggle:focus-visible .submission-file-toggle__label {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
-}
-
-.submission-file-toggle[aria-expanded="true"] .submission-file-toggle__label {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-  background: var(--color-info-bg);
-}
-
-.submission-file-toggle__chevron {
-  width: .42rem;
-  height: .42rem;
-  margin-block-start: -.2rem;
-  border-right: 1.5px solid currentColor;
-  border-bottom: 1.5px solid currentColor;
-  transform: rotate(45deg);
-}
-
-.submission-file-toggle[aria-expanded="true"] .submission-file-toggle__chevron {
-  margin-block-start: .16rem;
-  transform: rotate(225deg);
-}
-
-.submission-file-popup {
-  position: fixed;
-  inset: auto;
-  width: min(17.5rem, calc(100% - 24px));
-  max-height: var(--submission-file-popup-height, none);
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-control);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-floating);
-  color: var(--color-foreground);
-}
-
-.submission-file-popup:popover-open {
-  display: flex;
-  flex-direction: column;
-}
-
-.submission-file-popup > p {
-  flex-shrink: 0;
-  padding: var(--space-2) var(--space-3);
-  border-bottom: 1px solid var(--color-border);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-}
-
-.submission-file-names {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.submission-file-names li {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-width: 0;
-  padding-inline: var(--space-3);
-  font-size: var(--text-sm);
-}
-
-.submission-file-names .workflow-state-icon {
-  width: 1rem;
-  height: 1rem;
-  margin: 0;
-}
-
-.submission-file-popup .submission-file-names {
-  --submission-file-row-height: 2.25rem;
-  min-height: 0;
-  max-height: calc(2 * var(--submission-file-row-height));
-  overflow-y: auto;
-  overscroll-behavior: contain;
-}
-
-.submission-file-popup .submission-file-names::-webkit-scrollbar {
-  width: 6px;
-}
-
-.submission-file-popup .submission-file-names::-webkit-scrollbar-track {
-  background: var(--color-neutral-bg);
-}
-
-.submission-file-popup .submission-file-names::-webkit-scrollbar-thumb {
-  background: var(--color-control-border);
-  border-radius: var(--radius-control);
-}
-
-.submission-file-popup .submission-file-names:focus-visible {
-  outline-offset: -2px;
-}
-
-.submission-file-popup li {
-  height: var(--submission-file-row-height);
-}
-
-.submission-file-popup li > span {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .active-topic-page .submission-requirement-dialog h2 {
@@ -885,7 +661,7 @@
   margin-bottom: var(--space-2);
 }
 
-.active-topic-page dialog .submission-dialog__download-all {
+#bai-nop .submission-requirement-dialog .submission-dialog__download-all {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -893,14 +669,22 @@
   padding: var(--space-2);
   border: 0;
   border-radius: var(--radius-control);
+  background-color: var(--color-surface);
   color: var(--color-primary);
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);
   text-decoration: none;
+  cursor: pointer;
 }
 
-.active-topic-page dialog .submission-dialog__download-all:not(:disabled):hover {
+#bai-nop .submission-requirement-dialog .submission-dialog__download-all:not(:disabled):hover {
   background: var(--color-info-bg);
+}
+
+#bai-nop .submission-requirement-dialog .submission-dialog__download-all:disabled {
+  background-color: var(--color-neutral-bg);
+  color: var(--color-muted-foreground);
+  cursor: not-allowed;
 }
 
 .submission-dialog__attachment .submission-board__icon {
@@ -949,40 +733,12 @@
   min-width: 0;
 }
 
-.submission-dialog__file-info {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-1);
-  min-width: 0;
-  line-height: var(--leading-snug);
-}
-
-.submission-dialog__file-info [data-submission-filename] {
+.submission-dialog__filename [data-submission-filename] {
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-.submission-dialog__file-size {
-  flex-shrink: 0;
-  color: var(--color-muted-foreground);
-  white-space: nowrap;
-}
-
-.submission-dialog__file-size::before {
-  content: "· ";
-}
-
-@media (max-width: 30rem) {
-  .submission-dialog__file-info {
-    display: grid;
-    gap: 0;
-  }
-
-  .submission-dialog__file-size::before {
-    content: none;
-  }
+  line-height: var(--leading-snug);
 }
 
 .submission-dialog .submission-dialog__submit:enabled {

@@ -4,6 +4,12 @@
   const clone = value => JSON.parse(JSON.stringify(value));
   const newId = prefix => `${prefix}-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`}`;
 
+  const defaultPercent = {
+    'chua-thuc-hien': 0,
+    'dang-thuc-hien': null,
+    'da-hoan-thanh': 100,
+  };
+
   function stateFrom(projectId, records, preview = false) {
     const initial = app.data.projectProgress.find(item => item.projectId === projectId)
       || (!preview && app.services.approvedProjects?.get(projectId)?.progress);
@@ -32,7 +38,7 @@
     return permission.update && (permission.manage || (task.assigneeCodes || [task.assigneeCode]).includes(app.data.currentStudent.code));
   }
 
-  function validateTask(input, team) {
+  function validateTask(input, team, { editing = false } = {}) {
     const requestedCodes = input.assigneeCodes ?? [input.assigneeCode];
     const assigneeCodes = Array.isArray(requestedCodes)
       ? [...new Set(requestedCodes.map(code => String(code ?? '').trim()))]
@@ -53,8 +59,10 @@
       errors.push({ field: 'assigneeCode', message: 'Chọn ít nhất một người phụ trách trong nhóm hiện tại.' });
     }
     if (value.description?.length > 2000) errors.push({ field: 'description', message: 'Nhập mô tả tối đa 2000 ký tự.' });
-    if (value.status !== undefined && !['chua-thuc-hien', 'dang-thuc-hien'].includes(value.status)) {
-      errors.push({ field: 'status', message: 'Chọn trạng thái Chưa bắt đầu hoặc Đang thực hiện.' });
+    const validStatus = typeof value.status === 'string' && Object.hasOwn(defaultPercent, value.status) &&
+      (editing || value.status !== 'da-hoan-thanh');
+    if (value.status !== undefined && !validStatus) {
+      errors.push({ field: 'status', message: editing ? 'Chọn trạng thái hợp lệ.' : 'Chọn trạng thái Chưa bắt đầu hoặc Đang thực hiện.' });
     }
     const date = new Date(`${value.deadline}T00:00:00.000Z`);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value.deadline) || !Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== value.deadline) errors.push({ field: 'deadline', message: 'Chọn hạn hoàn thành là ngày hợp lệ.' });
@@ -66,7 +74,7 @@
     const errors = [];
     if (!value.taskId) errors.push({ field: 'taskId', message: 'Chọn công việc cần cập nhật.' });
     if (!value.content || value.content.length > 2000) errors.push({ field: 'content', message: 'Nhập nội dung đã làm từ 1 đến 2000 ký tự.' });
-    if (!['chua-thuc-hien', 'dang-thuc-hien', 'da-hoan-thanh'].includes(value.status)) errors.push({ field: 'status', message: 'Chọn trạng thái hợp lệ.' });
+    if (!Object.hasOwn(defaultPercent, value.status)) errors.push({ field: 'status', message: 'Chọn trạng thái hợp lệ.' });
     if (!Number.isInteger(value.percent) || value.percent < 0 || value.percent > 100) errors.push({ field: 'percent', message: 'Nhập mức hoàn thành là số nguyên từ 0 đến 100.' });
     else if ((value.status === 'chua-thuc-hien' && value.percent !== 0) || (value.status === 'dang-thuc-hien' && (value.percent === 0 || value.percent === 100)) || (value.status === 'da-hoan-thanh' && value.percent !== 100)) errors.push({ field: 'percent', message: 'Chưa thực hiện: 0%; Đang thực hiện: 1–99%; Đã hoàn thành: 100%.' });
     return { errors, value };
@@ -89,16 +97,21 @@
   function saveTask(projectId, taskId, input, revision) {
     return mutate(projectId, revision, (state, team, permission) => {
       if (!permission.manage) throw new Error('Chỉ nhóm trưởng được thêm hoặc sửa công việc.');
-      const checked = validateTask(input, team);
+      const checked = validateTask(input, team, { editing: Boolean(taskId) });
       if (checked.errors.length) throw new Error(checked.errors[0].message);
-      const { status = 'chua-thuc-hien', ...fields } = checked.value;
+      const { status, ...fields } = checked.value;
       if (taskId) {
         const task = state.tasks.find(item => item.id === taskId);
         if (!task) throw new Error('Công việc không còn tồn tại.');
         Object.assign(task, fields);
         delete task.assignees;
+        if (status !== undefined && status !== task.status) {
+          task.status = status;
+          task.percent = defaultPercent[status];
+        }
       } else {
-        state.tasks.push({ ...fields, id: newId('CV'), status, percent: status === 'chua-thuc-hien' ? 0 : null });
+        const initialStatus = status ?? 'chua-thuc-hien';
+        state.tasks.push({ ...fields, id: newId('CV'), status: initialStatus, percent: defaultPercent[initialStatus] });
       }
     });
   }

@@ -32,6 +32,57 @@
   color: var(--color-muted-foreground);
 }
 
+.topic-summary--supervised .topic-summary__content {
+  gap: var(--space-4);
+}
+
+.topic-summary--supervised .topic-summary__role {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--role-badge-min-height);
+  max-width: 100%;
+  padding: var(--role-badge-padding-y) var(--role-badge-padding-x);
+  border-radius: var(--role-badge-radius);
+  background-color: var(--role-primary-bg);
+  color: var(--role-primary-fg);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  overflow-wrap: anywhere;
+}
+
+.topic-summary--supervised .topic-summary__role[data-supervised-role="secondary"] {
+  background-color: var(--role-secondary-bg);
+  color: var(--role-secondary-fg);
+}
+
+.topic-summary--supervised .topic-summary__details {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: none;
+  gap: var(--space-4) var(--space-6);
+}
+
+@media (min-width: 48rem) {
+  #overview-section .topic-summary--supervised {
+    grid-template-columns: min(36%, 24rem) minmax(0, 1fr);
+  }
+
+  .topic-summary--supervised .topic-summary__image {
+    align-self: center;
+  }
+}
+
+@media (max-width: 29.99875rem) {
+  .topic-summary--supervised .topic-summary__details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.project-supervisors__notice {
+  color: var(--color-muted-foreground);
+  font-size: var(--text-sm);
+  overflow-wrap: anywhere;
+}
+
 /* --------------------------------------------------------------------------
    2. THANH ĐIỀU HƯỚNG 4 MỤC (TỔNG QUAN / TIẾN ĐỘ / BÀI NỘP / KẾT QUẢ ĐÁNH GIÁ)
    Trạng thái gạch xanh khớp với mục đang hiển thị (fragment :target)
@@ -352,13 +403,6 @@
 /* --------------------------------------------------------------------------
    9. RESPONSIVE (1024px / 768px / 390px)
    -------------------------------------------------------------------------- */
-@media (max-width: 63.99875rem) {
-
-  .progress-overview__stats {
-    gap: var(--space-3);
-  }
-}
-
 @media (max-width: 47.99875rem) {
 
   .topic-tabs--detail .topic-tabs__list {
@@ -368,18 +412,6 @@
 
   .topic-tabs--detail .topic-tabs__link {
     padding-inline: var(--space-2);
-  }
-
-  .requirement-view-dialog > .topic-dialog__header {
-    padding-inline: var(--space-4);
-  }
-
-  .requirement-view-dialog > .topic-dialog__body {
-    padding: var(--space-4);
-  }
-
-  .requirement-view-dialog > .topic-dialog__actions {
-    padding: 0 var(--space-4) var(--space-4);
   }
 
   /* Tối ưu mục Bài nộp trên tablet và mobile */

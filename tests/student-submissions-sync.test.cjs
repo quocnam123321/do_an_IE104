@@ -12,7 +12,7 @@ function createTab(storage) {
     },
   });
   const modules = [
-    'data/mock-data.js', 'data/proposal-actors.js', 'data/student-projects.js', 'data/student-progress.js',
+    'data/mock-data.js', 'data/proposal-actors.js', 'data/student-projects.js', 'data/student-web-submissions.js', 'data/student-progress.js',
     'data/student-deadlines.js', 'services/storage.js', 'shared/validation.js', 'services/registration-service.js',
     'services/approved-project-service.js', 'services/project-team-service.js', 'services/project-progress-service.js',
     'data/student-evaluations.js', 'data/teaching-data.js', 'services/evaluation-service.js',
@@ -23,6 +23,27 @@ function createTab(storage) {
   }
   return tab.IE104;
 }
+
+test('DA005 exposes the same sample requests and submissions to both roles, without restoring deleted requests', () => {
+  const storage = new Map();
+  const teacher = createTab(storage);
+  const student = createTab(storage);
+  const projectId = 'DA005';
+  const teaching = teacher.services.teaching;
+  const forStudent = () => student.services.studentSubmissions.forStudent(projectId);
+  const initial = teaching.getState(projectId);
+  const ids = entries => Array.from(entries, entry => entry.id).sort();
+  assert.equal(initial.requirements.length, 27);
+  assert.equal(initial.submissions.length, 18);
+  assert.deepEqual(ids(forStudent().requirements), ids(initial.requirements));
+  assert.deepEqual(ids(forStudent().submissions), ids(initial.submissions));
+
+  const next = teaching.deleteRequirement(projectId, 'requirement-3', initial.revision);
+  assert.equal(forStudent().requirements.some(item => item.id === 'requirement-3'), false);
+  assert.equal(teaching.getState(projectId).requirements.filter(item => item.id === 'requirement-3').length, 1);
+  teaching.saveFeedback(projectId, 'submission-2', 'Đã nhận bài mẫu.', next.revision);
+  assert.equal(forStudent().submissions.find(item => item.id === 'submission-2').feedback, 'Đã nhận bài mẫu.');
+});
 
 test('publishes the current assessment directly and exposes the result to the student', () => {
   const storage = new Map();
@@ -110,7 +131,8 @@ test('nhãn thời hạn dùng giờ gửi của từng bài và lần gửi g�
   }]);
 
   const state = student.services.studentSubmissions.forStudent(projectId, new Date('2026-11-22T00:00:00Z'));
-  assert.deepEqual(Array.from(state.submissions, item => item.late), [true, false, false, null]);
+  assert.deepEqual(['late', 'exact', 'early', 'unlinked'].map(id =>
+    state.submissions.find(item => item.id === id).late), [true, false, false, null]);
   const requirements = new Map(Array.from(state.requirements, item => [item.id, item]));
   assert.equal(requirements.get('req').late, true);
   assert.equal(requirements.get('req').submitted, true);
