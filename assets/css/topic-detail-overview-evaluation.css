@@ -148,6 +148,7 @@
 
 .topic-overview-card {
   min-width: 0;
+  overflow-wrap: anywhere;
   padding: var(--space-6);
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -450,6 +451,7 @@
 
 #evaluation-section .evaluation-criteria__table :is(th, td) {
   padding: var(--space-4);
+  overflow-wrap: anywhere;
   vertical-align: middle;
   text-align: left;
   border-bottom: 1px solid var(--color-border);
