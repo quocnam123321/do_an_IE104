@@ -5,7 +5,7 @@
   const storeName = 'files';
   const missingMessage = 'Chưa có nội dung tệp của lần nộp này. Tên tệp chưa đủ để tải xuống.';
 
-  function readRecord(projectId, submissionId) {
+  function accessFile(mode, requestFile) {
     if (location.protocol === 'file:') return Promise.reject(new Error('Mở website qua localhost để đọc tệp bài nộp.'));
     return new Promise((resolve, reject) => {
       let database;
@@ -26,8 +26,8 @@
           if (failed) { database.close(); return; }
           database.onversionchange = () => database.close();
           try {
-            const transaction = database.transaction(storeName, 'readonly');
-            const request = transaction.objectStore(storeName).get([projectId, submissionId]);
+            const transaction = database.transaction(storeName, mode);
+            const request = requestFile(transaction.objectStore(storeName));
             request.onsuccess = () => { result = request.result || null; };
             transaction.oncomplete = () => { database.close(); resolve(result); };
             transaction.onerror = fail;
@@ -40,11 +40,12 @@
 
   async function lookup(projectId, submissionId) {
     const initial = app.services.teaching.getSubmission(projectId, submissionId);
-    const record = await readRecord(projectId, submissionId);
+    const key = initial.fileKey || submissionId;
+    const record = await accessFile('readonly', store => store.get([projectId, key]));
     const current = app.services.teaching.getSubmission(projectId, submissionId);
-    if (current.fileName !== initial.fileName || current.submittedAt !== initial.submittedAt) throw new Error('Bài nộp đã thay đổi. Hãy tải lại danh sách trước khi tải tệp.');
+    if (current.fileKey !== initial.fileKey || current.fileName !== initial.fileName || current.submittedAt !== initial.submittedAt) throw new Error('Bài nộp đã thay đổi. Hãy tải lại danh sách trước khi tải tệp.');
     if (!record) return null;
-    if (record.projectId !== projectId || record.submissionId !== submissionId || record.fileName !== current.fileName || record.submittedAt !== current.submittedAt) throw new Error('Tệp đã lưu không khớp với lần nộp hiện tại. Không thể tải nhầm phiên bản.');
+    if (record.projectId !== projectId || record.submissionId !== key || record.fileName !== current.fileName || record.submittedAt !== current.submittedAt) throw new Error('Tệp đã lưu không khớp với lần nộp hiện tại. Không thể tải nhầm phiên bản.');
     if (!(record.blob instanceof Blob) || record.blob.size === 0) throw new Error('Nội dung tệp đã lưu không hợp lệ hoặc đang rỗng.');
     return { blob: record.blob, fileName: current.fileName.replace(/[\u0000-\u001f\u007f<>:"/\\|?*]/g, '_').trim() || 'bai-nop', size: record.blob.size };
   }
@@ -60,5 +61,7 @@
     return result;
   }
 
-  app.services.submissionFiles = { availability, read, databaseName, storeName };
+  const stage = record => accessFile('readwrite', store => store.add(record));
+  const discard = (projectId, key) => accessFile('readwrite', store => store.delete([projectId, key]));
+  app.services.submissionFiles = { availability, read, stage, discard, databaseName, storeName };
 })();

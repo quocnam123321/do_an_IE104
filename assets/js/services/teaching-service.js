@@ -120,13 +120,14 @@
   }
 
   function deleteRequirement(projectId, id, revision) {
-    return mutate(projectId, revision, 'delete-requirement', id, (record, meta) => {
+    const remove = hasLocalUpload => mutate(projectId, revision, 'delete-requirement', id, (record, meta) => {
       active(meta);
       const requirement = record.requirements.find(item => item.id === id && !item.deletedAt);
       if (!requirement) throw new Error('Yêu cầu không còn tồn tại.');
-      if (record.submissions.some(item => item.requirementId === id) || requirement.sourceStage !== 'pending') throw new Error('Yêu cầu đã có bài nộp. Hãy khóa nhận bài để giữ lịch sử.');
+      if (hasLocalUpload || record.submissions.some(item => item.requirementId === id) || requirement.sourceStage !== 'pending') throw new Error('Yêu cầu đã có bài nộp. Hãy khóa nhận bài để giữ lịch sử.');
       requirement.deletedAt = new Date().toISOString();
     });
+    return app.services.studentSubmissions.withUploadCheck(projectId, id, remove);
   }
 
   function setLocked(projectId, id, locked, revision) {

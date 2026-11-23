@@ -4,8 +4,9 @@ const path = require('node:path');
 const test = require('node:test');
 const vm = require('node:vm');
 
-function createTab(storage) {
+function createTab(storage, globals = {}) {
   const tab = vm.createContext({
+    ...globals,
     localStorage: {
       getItem: key => storage.get(key) ?? null,
       setItem: (key, value) => storage.set(key, value),
@@ -78,7 +79,8 @@ test('yêu cầu lưu phía giảng viên cập nhật ở bài nộp và lịch
   assert.equal(calendar('2099-02')[0].id, id);
   assert.equal(calendar('2099-02')[0].locked, true);
 
-  teaching.deleteRequirement(projectId, id, state.revision);
+  teacher.services.studentSubmissions.withUploadCheck = async (_, __, remove) => remove(false);
+  await teaching.deleteRequirement(projectId, id, state.revision);
   assert.equal(studentSubmissions.forStudent(projectId).requirements.length, 0);
   assert.equal(calendar('2099-02').length, 0);
 
@@ -122,4 +124,90 @@ test('nhãn thời hạn dùng giờ gửi của từng bài và lần gửi g�
   assert.equal(requirements.get('legacy').submitted, true);
   assert.equal(requirements.get('legacy').late, null);
   assert.equal(requirements.get('legacy').latestSubmission, null);
+});
+
+
+test('shares a newly uploaded file and the lecturer feedback, and keeps the previous version on failed storage', async () => {
+  const storage = new Map();
+  const uploads = new Map();
+  const staged = new Map();
+  const key = parts => parts.join('/');
+  const indexedDB = {
+    open() {
+      const opening = {
+        result: {
+          close() {},
+          transaction() {
+            let aborted = false;
+            let pending;
+            const transaction = {
+              abort() { aborted = true; this.onabort(); },
+              objectStore() {
+                return {
+                  get(parts) {
+                    const request = { result: uploads.get(key(parts)) };
+                    queueMicrotask(() => {
+                      request.onsuccess();
+                      queueMicrotask(() => {
+                        if (aborted) return;
+                        if (pending) uploads.set(key([pending.projectId, pending.requirementId]), pending);
+                        transaction.oncomplete();
+                      });
+                    });
+                    return request;
+                  },
+                  put(record) {
+                    const request = {};
+                    pending = record;
+                    queueMicrotask(() => request.onsuccess?.());
+                    return request;
+                  },
+                };
+              },
+            };
+            return transaction;
+          },
+        },
+      };
+      queueMicrotask(() => opening.onsuccess());
+      return opening;
+    },
+  };
+  const student = createTab(storage, { indexedDB, File, crypto: require('node:crypto').webcrypto });
+  const teacher = createTab(storage, { indexedDB });
+  student.services.submissionFiles = {
+    stage: async record => staged.set(record.submissionId, record),
+    discard: async (_, id) => staged.delete(id),
+  };
+  const projectId = 'DA005';
+  const teaching = teacher.services.teaching;
+  const state = teaching.saveRequirement(projectId, null, {
+    title: 'Báo cáo thử', content: 'Nộp PDF', deadline: '2099-01-01T10:00',
+  }, teaching.getState(projectId).revision);
+  const requirement = state.requirements.at(-1);
+  const file = new File(['bao cao'], 'report.pdf');
+  const first = await student.services.studentSubmissions.saveUpload(projectId, requirement, [file], '', null);
+  const current = teaching.getState(projectId);
+  const submission = current.submissions.find(item => item.id === `SV-UP-${requirement.id}`);
+  assert.equal(submission.submittedAt, first.submittedAt);
+  assert.equal(await staged.get(submission.fileKey).blob.text(), 'bao cao');
+  teaching.saveFeedback(projectId, submission.id, 'Đã xem', current.revision);
+  assert.equal(student.services.studentSubmissions.forStudent(projectId).submissions.find(item => item.id === submission.id).feedback, 'Đã xem');
+
+  student.storage.writeTeachingRecords = () => { throw new Error('quota'); };
+  await assert.rejects(student.services.studentSubmissions.saveUpload(projectId, requirement, [new File(['ban moi'], 'new.pdf')], '', first.submittedAt), /Chưa đồng bộ/);
+  assert.equal(staged.size, 1);
+  assert.equal(uploads.get(key([projectId, requirement.id])).submittedAt, first.submittedAt);
+  assert.equal(teaching.getSubmission(projectId, submission.id).fileKey, submission.fileKey);
+  const savedState = teaching.getState(projectId);
+  const records = teacher.storage.readTeachingRecords();
+  const legacy = records.find(item => item.projectId === projectId);
+  assert.ok(legacy.submissions.some(item => item.id === submission.id));
+  legacy.submissions = legacy.submissions.filter(item => item.id !== submission.id);
+  teacher.storage.writeTeachingRecords(records);
+  await assert.rejects(teaching.deleteRequirement(projectId, requirement.id, savedState.revision), /đã có bài nộp/);
+  assert.equal(teaching.getState(projectId).requirements.find(item => item.id === requirement.id).deletedAt, undefined);
+  const locked = teaching.setLocked(projectId, requirement.id, true, savedState.revision);
+  assert.equal(locked.requirements.find(item => item.id === requirement.id).locked, true);
+  assert.equal(uploads.get(key([projectId, requirement.id])).files[0].name, 'report.pdf');
 });

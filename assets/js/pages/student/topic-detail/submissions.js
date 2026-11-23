@@ -443,8 +443,13 @@
         const status = item.locked ? 'Đã khóa nhận bài' : state.completed ? 'Đề tài đã hoàn thành' : null;
         return requirementCard({ ...item, deadline: time(item.deadline), canUpload: !item.locked && state.canUpload }, badge, status);
       });
-      const local = [...uploads.values()].filter(record => deadlines.has(record.requirementId)).map(record => ({ ...record, feedback: state.submissions.find(item => item.id === `SV-UP-${record.requirementId}` && item.submittedAt === record.submittedAt)?.feedback || '' }));
-      const remote = state.submissions.filter(item => !local.some(record => item.id === `SV-UP-${record.requirementId}` && item.submittedAt === record.submittedAt));
+      const matchesUpload = (item, record) =>
+        item.id === `SV-UP-${record.requirementId}` && item.submittedAt === record.submittedAt;
+      const local = [...uploads.values()].filter(record => deadlines.has(record.requirementId)).map(record => ({
+        ...state.submissions.find(item => matchesUpload(item, record)),
+        ...record,
+      }));
+      const remote = state.submissions.filter(item => !local.some(record => matchesUpload(item, record)));
       const submissions = board('Bài nộp của nhóm', 'submissions', [
         { label: 'Chờ phản hồi', variant: 'warning', items: [...local.filter(item => !item.feedback), ...remote.filter(item => !item.feedback)] },
         { label: 'Đã phản hồi', variant: 'success', items: [...local.filter(item => item.feedback), ...remote.filter(item => item.feedback)] },
@@ -467,21 +472,25 @@
   if (!isLivePage) prepareSampleRequirements();
   if (!isLivePage && location.protocol === 'file:') return;
   const fallback = [...host.childNodes];
-  window.addEventListener('pageshow', async () => {
-    render();
+  async function refreshUploads() {
+    const projectId = document.body.dataset.projectId;
+    if (!projectId) return;
     const version = ++readVersion;
     try {
-      const records = await service.readUploads(document.body.dataset.projectId);
-      if (version !== readVersion || !records.length) return;
+      const records = await service.readUploads(projectId);
+      if (version !== readVersion || document.body.dataset.projectId !== projectId) return;
+      uploads.clear();
       for (const record of records) uploads.set(record.requirementId, record);
       render();
     } catch {
       // Keep the board available even when browser file storage cannot be opened.
     }
-  });
+  }
+  window.addEventListener('pageshow', () => { render(); refreshUploads(); });
   window.addEventListener('storage', event => {
     const { teachingKey, teamKey, proposalKey, registrationKey } = app.storage;
     if ([teachingKey, teamKey, proposalKey, registrationKey, null].includes(event.key)) render();
+    if (event.key === teachingKey || event.key === null) refreshUploads();
   });
   // The approved-project renderer sets the project ID before this deferred script.
   render();

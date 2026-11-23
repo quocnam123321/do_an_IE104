@@ -139,13 +139,13 @@
       notify(failure.message, true);
     }
   }
-  function commit(snapshot, operation, dialog, message) {
+  async function commit(snapshot, operation, dialog, message) {
     if (saving) return;
     try {
       if (!state || snapshot.projectId !== projectId) throw new Error('Đề tài đã thay đổi. Hãy mở lại hộp thoại.');
       if (state.readOnly) throw new Error('Đề tài này chưa có dữ liệu xử lý. Hiện chỉ được xem thông tin trong danh mục.');
       saving = true;
-      operation(snapshot);
+      await operation(snapshot);
       dialog?.close();
       refresh();
       notify(message || 'Đã lưu thay đổi trên trình duyệt này.');

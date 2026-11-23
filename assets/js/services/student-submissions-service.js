@@ -100,58 +100,73 @@
       files,
     };
     const conflict = new Error('Bài nộp đã được lưu ở một tab khác. Hãy tải lại trang trước khi cập nhật.');
+    const submissionId = `SV-UP-${requirement.id}`;
+    const fileName = files.length === 1 ? files[0].name : `bai-nop-${requirement.id}.zip`;
+    let fileKey;
+    if (saved) {
+      const blob = files.length === 1 ? files[0] : await app.ui.createSubmissionZip(files);
+      fileKey = `${submissionId}:${globalThis.crypto.randomUUID()}`;
+      await app.services.submissionFiles.stage({ projectId, submissionId: fileKey, fileName, submittedAt: record.submittedAt, blob });
+    }
+    let previousFileKey;
     try {
       await localUploads('readwrite', (store, abort) => {
-        if (expectedSavedAt === undefined) return store.put(record);
         const current = store.get([projectId, requirement.id]);
         current.onsuccess = () => {
-          if ((current.result?.submittedAt ?? null) === expectedSavedAt) store.put(record);
-          else abort(conflict);
+          if (expectedSavedAt !== undefined && (current.result?.submittedAt ?? null) !== expectedSavedAt) {
+            abort(conflict);
+            return;
+          }
+          const write = store.put(record);
+          if (!fileKey) return;
+          write.onsuccess = () => {
+            try {
+              const currentState = forStudent(projectId);
+              const active = currentState.requirements.find(item => item.id === requirement.id);
+              if (!currentState.canUpload || !active || active.locked) {
+                throw new Error('Yêu cầu đã thay đổi hoặc bị khóa. Hãy tải lại bài nộp.');
+              }
+              const records = app.storage.readTeachingRecords();
+              const initial = records.find(item => item.projectId === projectId) ||
+                app.data.teachingSeeds?.find(item => item.projectId === projectId);
+              const teaching = JSON.parse(JSON.stringify(initial));
+              const previous = teaching.submissions.find(item => item.id === submissionId);
+              previousFileKey = previous?.fileKey;
+              const feedbackHistory = [...(previous?.feedbackHistory || [])];
+              if (previous?.feedback) feedbackHistory.push({ content: previous.feedback, at: previous.feedbackAt, authorId: previous.feedbackBy });
+              teaching.submissions = teaching.submissions.filter(item => item.id !== submissionId);
+              teaching.submissions.push({ id: submissionId, requirementId: requirement.id, title: record.title,
+                fileName, fileKey, submittedAt: record.submittedAt, studentNote: record.notes, source: 'student-upload',
+                feedback: '', feedbackHistory });
+              teaching.revision += 1;
+              teaching.audit.push({ action: 'student-upload', targetId: submissionId, actorId: app.data.currentStudent.code, at: record.submittedAt });
+              app.storage.writeTeachingRecords([...records.filter(item => item.projectId !== projectId), teaching]);
+            } catch (failure) { abort(failure); }
+          };
         };
         return current;
       });
     } catch (failure) {
+      if (fileKey) await app.services.submissionFiles.discard(projectId, fileKey).catch(() => {});
       if (failure === conflict) throw conflict;
-      throw new Error('Chưa lưu được bài nộp. Hãy kiểm tra dung lượng trình duyệt và thử lại.');
+      throw new Error('Chưa đồng bộ được bài nộp. Hãy kiểm tra yêu cầu, bộ nhớ trình duyệt và thử lại.', { cause: failure });
     }
-    const submissions = app.storage.readTeachingRecords();
-    const initial = submissions.find(item => item.projectId === projectId) || app.data.teachingSeeds?.find(item => item.projectId === projectId);
-    if (initial) {
-      let teaching = JSON.parse(JSON.stringify(initial));
-      const submissionId = `SV-UP-${requirement.id}`;
-      let previous = teaching.submissions.find(item => item.id === submissionId);
-      const fileName = files.length === 1 ? files[0].name : `bai-nop-${requirement.id}.zip`;
-      const blob = files.length === 1 ? files[0] : await app.ui.createSubmissionZip(files);
-      await new Promise((resolve, reject) => {
-        const opening = indexedDB.open('ie104.demo.submission-files', 1);
-        opening.onupgradeneeded = () => opening.result.createObjectStore('files', { keyPath: ['projectId', 'submissionId'] });
-        opening.onerror = () => reject(new Error('Chưa lưu được tệp để giảng viên tải xuống.'));
-        opening.onblocked = () => reject(new Error('Kho tệp đang được sử dụng ở tab khác.'));
-        opening.onsuccess = () => {
-          const db = opening.result;
-          const transaction = db.transaction('files', 'readwrite');
-          transaction.objectStore('files').put({ projectId, submissionId, fileName, submittedAt: record.submittedAt, blob });
-          transaction.oncomplete = () => { db.close(); resolve(); };
-          transaction.onerror = () => { db.close(); reject(new Error('Chưa lưu được nội dung tệp.')); };
-        };
-      });
-      const latestRecords = app.storage.readTeachingRecords();
-      const latest = latestRecords.find(item => item.projectId === projectId);
-      if (latest) teaching = JSON.parse(JSON.stringify(latest));
-      const currentState = forStudent(projectId);
-      const currentRequirement = currentState.requirements.find(item => item.id === requirement.id);
-      if (!currentState.canUpload || currentState.submissionsLocked || !currentRequirement || currentRequirement.locked) throw new Error('Yêu cầu đã thay đổi hoặc bị khóa. Hãy tải lại bài nộp.');
-      previous = teaching.submissions.find(item => item.id === submissionId);
-      teaching.submissions = teaching.submissions.filter(item => item.id !== submissionId);
-      teaching.submissions.push({ id: submissionId, requirementId: requirement.id, title: record.title,
-        fileName, submittedAt: record.submittedAt, studentNote: record.notes, source: 'student-upload',
-        feedback: '', feedbackHistory: [...(previous?.feedbackHistory || []), ...(previous?.feedback ? [{ content: previous.feedback, at: previous.feedbackAt, authorId: previous.feedbackBy }] : [])] });
-      teaching.revision += 1;
-      teaching.audit.push({ action: 'student-upload', targetId: submissionId, actorId: app.data.currentStudent.code, at: record.submittedAt });
-      app.storage.writeTeachingRecords([...latestRecords.filter(item => item.projectId !== projectId), teaching]);
-    }
+    if (previousFileKey) await app.services.submissionFiles.discard(projectId, previousFileKey).catch(() => {});
     return record;
   }
 
-  app.services.studentSubmissions = { forStudent, readUploads, saveUpload };
+  async function withUploadCheck(projectId, requirementId, operation) {
+    let result;
+    await localUploads('readwrite', (store, abort) => {
+      const request = store.get([projectId, requirementId]);
+      request.onsuccess = () => {
+        try { result = operation(Boolean(request.result)); }
+        catch (failure) { abort(failure); }
+      };
+      return request;
+    });
+    return result;
+  }
+
+  app.services.studentSubmissions = { forStudent, readUploads, saveUpload, withUploadCheck };
 })();
