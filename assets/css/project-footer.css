@@ -28,7 +28,7 @@
 
 .project-footer h2,
 .project-footer .project-footer__name {
-  color: var(--color-on-primary);
+  color: var(--color-on-brand);
   font-size: var(--font-size-body);
   font-weight: 700;
 }
@@ -61,13 +61,13 @@
 
 .project-footer a:hover,
 .project-footer a:focus-visible {
-  color: var(--color-on-primary);
+  color: var(--color-on-brand);
   text-decoration: underline;
   text-underline-offset: .25em;
 }
 
 .project-footer a:focus-visible {
-  outline-color: var(--color-on-primary);
+  outline-color: var(--color-on-brand);
 }
 
 .project-footer__logo {
@@ -126,4 +126,9 @@
   .project-footer__bottom p {
     grid-column: 1;
   }
+}
+
+:root[data-theme="dark"] .project-footer {
+  --project-footer-background: #101e34;
+  --project-footer-border: var(--color-border);
 }

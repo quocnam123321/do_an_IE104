@@ -23,7 +23,7 @@
 #tien-do .task-popover > header { padding-bottom: var(--space-4); border-bottom: 1px solid var(--color-border); }
 #tien-do .task-popover::backdrop { background: rgb(15 23 42 / .42); backdrop-filter: blur(3px); }
 .workflow-delete-confirm > header :is(h2,h3) { color: var(--color-danger-fg); }
-.workflow-delete-confirm button[type="submit"]:not(:disabled) { color: var(--color-on-primary); background: var(--color-danger-fg); border-color: var(--color-danger-fg); }
+.workflow-delete-confirm button[type="submit"]:not(:disabled) { color: var(--color-on-danger); background: var(--color-danger-fg); border-color: var(--color-danger-fg); }
 .workflow-dialog .teaching-fields :is(input,select,textarea) { min-height: var(--control-min-height); border: 1px solid var(--color-control-border); border-radius: var(--radius-control); padding: .75rem; background: var(--color-surface); color: var(--color-foreground); font: inherit; }
 .workflow-dialog > footer { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-3); padding: var(--space-4) var(--space-6) var(--space-6); }
 .workflow-dialog button { min-height: var(--control-min-height); padding: .65rem 1rem; border: 1px solid var(--color-control-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-foreground); font: inherit; cursor: pointer; }

@@ -1,6 +1,10 @@
 /* Layout for the shared sign-in and account-recovery pages.
    Colors, controls and typography inherit the shared design tokens. */
 
+.theme-toolbar:has(+ .login-page--portal) {
+  display: none;
+}
+
 /* Keep the established project palette within the reference-inspired layout. */
 .login-page--portal {
   color: var(--color-foreground);
@@ -660,7 +664,7 @@
   gap: 1.125rem;
   min-width: 0;
   padding: 1.0625rem 1.375rem;
-  border: 1px solid rgb(255 255 255 / 0.9);
+  border: 1px solid var(--login-feature-border, rgb(255 255 255 / 0.9));
   border-radius: 0.9375rem;
   background: var(--color-surface);
   box-shadow: 0 8px 24px rgb(30 58 138 / 0.06);
@@ -1058,4 +1062,15 @@
   .common-page .login-page--portal .login-panel__header h1 {
     font-size: 1.625rem;
   }
+}
+
+:root[data-theme="dark"] .login-introduction {
+  --login-feature-border: var(--color-border);
+  background: linear-gradient(145deg, var(--color-background), var(--color-info-bg));
+}
+
+:root[data-theme="dark"] .login-introduction__backdrop { opacity: .22; }
+
+:root[data-theme="dark"] .recovery-page {
+  background-image: linear-gradient(rgb(12 20 34 / .92), rgb(12 20 34 / .82)), url("../images/recovery-waves.jpg");
 }

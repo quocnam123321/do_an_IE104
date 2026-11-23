@@ -555,8 +555,8 @@
     -45deg,
     transparent,
     transparent 6px,
-    rgb(226 232 240 / 0.45) 6px,
-    rgb(226 232 240 / 0.45) 7px
+    color-mix(in srgb, var(--color-border) 45%, transparent) 6px,
+    color-mix(in srgb, var(--color-border) 45%, transparent) 7px
   );
 }
 

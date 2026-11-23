@@ -9,8 +9,8 @@
 .gv-source-panel :is(summary, a):focus-visible { outline: 2px solid var(--color-focus); outline-offset: 3px; }
 @media (max-width: 42rem) { .gv-source-panel dl > div { grid-template-columns: 1fr; gap: var(--space-1); } }
 
-.gv-default-image { width: 100%; height: 100%; object-fit: contain; padding: 1rem; background: var(--color-primary-50, #eff6ff); box-sizing: border-box; }
-.gv-default-cover { width: 8rem; height: 8rem; object-fit: contain; padding: 1rem; background: var(--color-primary-50, #eff6ff); border-radius: var(--radius-md, 12px); margin-bottom: 1rem; }
+.gv-default-image { width: 100%; height: 100%; object-fit: contain; padding: 1rem; background: var(--color-info-bg); box-sizing: border-box; }
+.gv-default-cover { width: 8rem; height: 8rem; object-fit: contain; padding: 1rem; background: var(--color-info-bg); border-radius: var(--radius-md, 12px); margin-bottom: 1rem; }
 .teaching-notice:empty { display: none; }
 .topic-card__image-placeholder:has(.gv-default-image),
 .request-topic__image:has(.gv-default-image) { padding: 0; }

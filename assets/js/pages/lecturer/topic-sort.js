@@ -6,13 +6,14 @@
 
   const sortControl = trigger.parentElement;
   const currentLabel = trigger.querySelector('[data-topic-sort-value]');
+  const labelOf = option => option ? globalThis.IE104Language?.optionLabel(option) ?? option.label : '';
   const items = Array.from(select.options, (option, index) => {
     const item = document.createElement('button');
     item.type = 'button';
     item.className = 'topic-sort-option';
     item.setAttribute('role', 'menuitemradio');
     item.tabIndex = -1;
-    item.textContent = option.label;
+    item.textContent = labelOf(option);
     item.addEventListener('click', () => {
       const changed = select.selectedIndex !== index;
       select.selectedIndex = index;
@@ -24,7 +25,7 @@
   });
 
   function syncSelection() {
-    currentLabel.textContent = select.selectedOptions[0]?.label ?? '';
+    currentLabel.textContent = labelOf(select.selectedOptions[0]);
     items.forEach((item, index) => {
       item.setAttribute('aria-checked', String(index === select.selectedIndex));
     });

@@ -224,11 +224,11 @@
 .topic-dialog__btn--danger {
   border: 1px solid var(--color-danger);
   background-color: var(--color-danger);
-  color: #ffffff;
+  color: var(--color-on-danger);
 }
 
 .topic-dialog__btn--danger:hover:not(:disabled) {
-  background-color: #b91c1c;
+  background-color: var(--color-danger);
 }
 
 .topic-dialog__btn:disabled {
@@ -238,3 +238,8 @@
   cursor: not-allowed;
 }
 
+
+:where([data-theme="dark"]) .topic-dialog--danger .topic-dialog__header {
+  border-bottom-color: var(--color-danger-border);
+  background-color: var(--color-danger-bg);
+}

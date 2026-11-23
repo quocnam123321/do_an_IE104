@@ -113,6 +113,43 @@
 .common-page dialog::backdrop { background: rgb(15 23 42 / 0.4); }
 
 /* Header và footer dùng components.css như các trang vai trò. */
+.site-header .site-header__inner > .account-menu--public { margin-inline-start: 0; }
+
+.account-menu--public .account-menu__panel {
+  width: min(16rem, calc(100vw - 2 * var(--page-gutter)));
+}
+
+.account-menu--public :is(.account-menu__profile, button.account-menu__logout) {
+  display: block;
+  padding: var(--space-3);
+  border: 0;
+  border-radius: var(--radius-control);
+  color: var(--color-foreground);
+  text-align: start;
+}
+
+.account-menu--public :is(.account-menu__profile, button.account-menu__logout):hover {
+  background: var(--color-neutral-bg);
+}
+
+.public-logout-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.public-logout-dialog [data-logout-status] { margin-bottom: 0; }
+.public-logout-dialog [data-logout-status]:empty { margin: 0; }
+
+@media (max-width: 39.99rem) {
+  .site-header .site-header__inner.site-header__inner--theme > .account-menu--public {
+    order: 1;
+    align-self: start;
+    margin-block-start: var(--space-2);
+  }
+}
+
 .notifications-page, .notification-detail-page { padding-block: 2rem 4rem; }
 .notifications-page .page-header h1 { margin: 0; }
 .notification-tools { margin-bottom: var(--space-6); }
@@ -218,7 +255,7 @@
 .notification-list__footer .pagination ul { justify-content: center; }
 .notification-list__footer .pagination .button { min-width: var(--control-height); }
 .notification-detail-page .notification-detail__back { margin-block: var(--space-3) var(--space-4); }
-.notification-detail__back > .back-link { max-width: 100%; border-color: #93c5fd; }
+.notification-detail__back > .back-link { max-width: 100%; border-color: var(--notification-back-border, #93c5fd); }
 .notification-detail__back > .back-link--filtered,
 #tu-bo-loc:target .notification-detail__back > .back-link--list { display: none; }
 #tu-bo-loc:target .notification-detail__back > .back-link--filtered { display: inline-flex; }
@@ -301,3 +338,5 @@
   .related-notifications__list { grid-template-columns: minmax(0, 1fr); }
   .related-notifications__list > li + li { padding-top: 1.25rem; border-top: 1px solid var(--color-border); }
 }
+
+:root[data-theme="dark"] { --notification-back-border: var(--color-info-border); }

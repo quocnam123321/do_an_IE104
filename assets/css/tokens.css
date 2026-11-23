@@ -14,6 +14,9 @@
   --color-primary-hover: #1e40af;
   --color-primary-active: #1e3a8a;
   --color-on-primary: #fff;
+  --color-on-danger: #fff;
+  --color-on-brand: #fff;
+  --brand-logo-surface: #fff;
   --color-focus: #1d4ed8;
   --color-success-fg: #166534;
   --color-success-bg: #f0fdf4;
@@ -226,4 +229,73 @@
   --task-overdue-border: var(--red-200);
   --task-overdue-badge-bg: var(--red-100);
   --task-overdue-badge-fg: var(--color-danger-fg);
+}
+
+/* Hai chế độ dùng chung bố cục, typography và tên token. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-background: #0c1422;
+  --color-surface: #152234;
+  --color-heading: #f8fafc;
+  --color-brand: #a9c5ff;
+  --color-foreground: #e4edf8;
+  --color-muted-foreground: #afc0d4;
+  --color-border: #33465e;
+  --color-control-border: #7c91ab;
+  --color-primary: #93c5fd;
+  --color-primary-hover: #bfdbfe;
+  --color-primary-active: #7db6fa;
+  --color-on-primary: #0c1b31;
+  --color-on-danger: #30202a;
+  --color-focus: #93c5fd;
+  --color-success-fg: #86efac;
+  --color-success-bg: #142d26;
+  --color-warning-fg: #fcd594;
+  --color-warning-bg: #372a1c;
+  --color-danger-fg: #fecaca;
+  --color-danger-bg: #3a202b;
+  --color-info-fg: #bfdbfe;
+  --color-info-bg: #172d49;
+  --color-neutral-fg: #cad8e8;
+  --color-neutral-bg: #1e2e43;
+
+  --header-background: #152a46;
+  --shadow-floating: 0 12px 32px rgb(0 0 0 / .38);
+  --color-backdrop: rgb(3 8 18 / .68);
+  --color-secondary-btn-border: var(--slate-300);
+  --color-success-border: var(--green-200);
+  --color-warning-border: var(--amber-200);
+  --color-danger-border: var(--red-200);
+  --color-info-border: var(--blue-200);
+  --color-info-hover-bg: var(--blue-100);
+
+  /* Các bí danh cũ được dùng trong bảng, biểu mẫu và nhãn trạng thái. */
+  --slate-50: var(--color-background);
+  --slate-100: var(--color-neutral-bg);
+  --slate-200: var(--color-border);
+  --slate-300: #465d78;
+  --slate-500: #97abc4;
+  --slate-600: var(--color-muted-foreground);
+  --slate-700: var(--color-neutral-fg);
+  --slate-900: var(--color-foreground);
+  --navy-700: var(--color-brand);
+  --blue-50: var(--color-info-bg);
+  --blue-100: #203c5d;
+  --blue-200: #3c5a7b;
+  --blue-700: var(--color-primary);
+  --blue-800: var(--color-info-fg);
+  --blue-900: #d5e8ff;
+  --green-50: var(--color-success-bg);
+  --green-100: #1c3b2f;
+  --green-200: #386750;
+  --green-800: var(--color-success-fg);
+  --amber-50: var(--color-warning-bg);
+  --amber-100: #4a3621;
+  --amber-200: #775c33;
+  --amber-800: var(--color-warning-fg);
+  --red-50: var(--color-danger-bg);
+  --red-100: #482a36;
+  --red-200: #734654;
+  --red-700: #fca5a5;
+  --red-800: var(--color-danger-fg);
 }

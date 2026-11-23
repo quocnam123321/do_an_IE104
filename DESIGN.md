@@ -91,6 +91,12 @@ Cặp chữ/nền dành cho trạng thái:
 
 Các cặp chữ/nền trạng thái trên đã được tính tương phản ở màu đặc và đạt tối thiểu 4.5:1. Chữ trắng trên primary đạt khoảng 6.70:1. Cần kiểm tra lại khi triển khai nếu đổi nền, opacity, font hoặc trạng thái; đây không phải chứng nhận accessibility cho toàn giao diện.
 
+### Chế độ tối
+
+- Giao diện sáng là mặc định. Nút “Chế độ tối” đặt ở thanh đầu trang hoặc thanh công cụ của trang xác thực. Nút thể hiện trạng thái bằng `aria-pressed` và có thể dùng bằng bàn phím. Lựa chọn được lưu trong trình duyệt theo cùng nguồn với khóa `ie104-theme`.
+- Chế độ tối dùng nền xanh đen `#0C1422`, bề mặt `#152234`, tiêu đề `#F8FAFC`, chữ chính `#E4EDF8` và chữ phụ `#AFC0D4`. Liên kết và focus dùng xanh sáng `#93C5FD`. Chữ trên nút nền xanh sáng dùng `#0C1B31`.
+- Dùng bộ token trong `assets/css/tokens.css` cho biểu mẫu, bảng, hộp thoại và các cặp nền/chữ trạng thái. Header giữ gạch xanh dưới mục đang chọn, còn logo giữ nền sáng để nhận diện. Các ảnh nội dung giữ màu gốc.
+
 ## 4. Typography và nội dung song ngữ — họ font đã chốt, cỡ chữ được phép dùng thử
 
 - Font chính đã chốt: `"Be Vietnam Pro", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif`, dùng chung cho tiêu đề, nội dung và control. Khi font chính chưa tải xong hoặc tải lỗi, dùng font dự phòng.
@@ -102,6 +108,13 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 - Tên đề tài và tên người được xuống dòng tự nhiên; mã/URL dài được wrap khi cần. Không dùng ellipsis khiến mất thông tin thiết yếu nếu không có cách xem đầy đủ.
 - Thông báo nêu rõ việc gì đã xảy ra và người dùng cần làm gì. Giữ thuật ngữ nhất quán như “đề tài”, “đăng ký”, “đề xuất”, “bài nộp”.
 - Màu và hình thức không được tự quyết định nghiệp vụ hoặc đổi nhãn trạng thái đang có.
+
+### Chuyển ngôn ngữ giao diện
+
+- Tiếng Việt là mặc định. Nút EN / VI nằm cạnh nút chế độ sáng/tối, có tên thao tác cho trình đọc màn hình. Khi chuyển, cập nhật thuộc tính `lang` trên trang và ghi nhớ lựa chọn trong trình duyệt.
+- Trang Đăng nhập áp dụng chế độ màu và ngôn ngữ đã lưu. Hai nút chuyển được ẩn trên trang này.
+- Dùng bản dịch chung cho header, footer, điều hướng và tên thao tác. Giữ nguyên tên riêng, mã hồ sơ, giá trị biểu mẫu và nội dung do người dùng nhập.
+- Kiểm tra chữ dài ở cả hai ngôn ngữ trên màn hình hẹp. Tên thao tác và liên kết có thể xuống dòng khi thiếu chỗ.
 
 ### 4.1. Thông số được phép áp dụng khi dựng thử
 
@@ -205,6 +218,7 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 
 ### Modal, menu và thông báo
 
+- Trên các trang chung, khi có phiên đăng nhập, header hiển thị menu tài khoản thay cho nút Đăng nhập. Menu có lối về Tổng quan, Hồ sơ cá nhân và Đăng xuất theo vai trò.
 - Modal ưu tiên `dialog` khi phù hợp; có tiêu đề, đường đóng, hành vi Escape phù hợp và quản lý focus khi triển khai JavaScript.
 - Không dùng popover như dialog modal nếu nó không thực hiện hành vi modal. Giữ các bản demo HTML hiện có cho tới khi được yêu cầu nâng cấp.
 - Nút xác nhận nêu rõ hành động như “Xóa công việc”, “Gửi đăng ký”; tránh “OK” khi không rõ hậu quả.

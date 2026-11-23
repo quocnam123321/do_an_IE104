@@ -76,11 +76,12 @@
     const source = await getDirectory();
     const teachers = Array.from(source.querySelectorAll('.research-card[id]'), card => {
       const affiliations = Array.from(card.querySelectorAll('.research-affiliations > div'));
-      const department = affiliations.find(row => row.querySelector('dt')?.textContent.trim() === 'Bộ môn');
+      const originalText = node => node ? window.IE104Language?.sourceText(node) ?? node.textContent : '';
+      const department = affiliations.find(row => originalText(row.querySelector('dt')).trim() === 'Bộ môn');
       return {
         id: card.id,
         name: card.querySelector('h2')?.textContent.trim(),
-        department: department?.querySelector('dd')?.textContent.trim() || '',
+        department: originalText(department?.querySelector('dd')).trim(),
         email: card.querySelector('.research-email span')?.textContent.trim() || '',
       };
     }).filter(teacher => teacher.name && teacherIdPattern.test(teacher.id));

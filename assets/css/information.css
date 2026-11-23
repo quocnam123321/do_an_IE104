@@ -554,7 +554,7 @@
   z-index: 0;
   background: radial-gradient(
     18rem circle at var(--spot-x, 86%) var(--spot-y, 18%),
-    rgb(219 234 254 / 0.5),
+    var(--about-tint-half, rgb(219 234 254 / 0.5)),
     transparent 72%
   );
   opacity: 0;
@@ -741,8 +741,8 @@
   width: 2.5rem;
   background: radial-gradient(
     ellipse at center,
-    rgb(147 197 253 / 0.28) 0%,
-    rgb(219 234 254 / 0.14) 55%,
+    var(--about-tint-accent, rgb(147 197 253 / 0.28)) 0%,
+    var(--about-tint-soft, rgb(219 234 254 / 0.14)) 55%,
     transparent 76%
   );
   pointer-events: none;
@@ -854,7 +854,7 @@
   z-index: 0;
   background: radial-gradient(
     18rem circle at var(--spot-x, 20%) var(--spot-y, 50%),
-    rgb(219 234 254 / 0.52),
+    var(--about-tint-half, rgb(219 234 254 / 0.52)),
     transparent 72%
   );
   opacity: 0;
@@ -1017,7 +1017,7 @@
   z-index: 0;
   background: radial-gradient(
     16rem circle at var(--spot-x, 50%) var(--spot-y, 24%),
-    rgb(219 234 254 / 0.48),
+    var(--about-tint-half, rgb(219 234 254 / 0.48)),
     transparent 72%
   );
   opacity: 0;
@@ -1031,7 +1031,7 @@
   border: 2px solid var(--color-border);
   border-radius: 50%;
   overflow: hidden;
-  background: #eeeeee;
+  background: var(--about-image-background, #eeeeee);
   transition: border-color 220ms ease, box-shadow 220ms ease, transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 .member-card__avatar {
@@ -1199,7 +1199,7 @@
   z-index: 0;
   background: radial-gradient(
     18rem circle at var(--spot-x, 82%) var(--spot-y, 20%),
-    rgb(219 234 254 / 0.52),
+    var(--about-tint-half, rgb(219 234 254 / 0.52)),
     transparent 72%
   );
   opacity: 0;
@@ -1513,7 +1513,7 @@
   align-items: center;
   padding: 0.375rem 0.875rem;
   border-radius: 999px;
-  background: rgb(191 219 254 / 0.78);
+  background: var(--contact-divider, rgb(191 219 254 / 0.78));
   color: var(--color-info-fg);
   font-size: 0.8125rem;
   font-weight: 600;
@@ -1592,7 +1592,7 @@
   position: absolute;
   padding: 0.4375rem 0.9375rem;
   border-radius: 999px;
-  background: rgb(255 255 255 / 0.95);
+  background: var(--contact-thumbnail-label, rgb(255 255 255 / 0.95));
   color: var(--color-heading);
   font-size: 0.8125rem;
   font-weight: 600;
@@ -1752,7 +1752,7 @@
 }
 .common-page .contact-form .contact-input-wrap input:not([type="checkbox"]),
 .common-page .contact-form textarea {
-  border-color: #cbd5e1;
+  border-color: var(--color-border-strong);
   background: var(--color-surface);
 }
 .common-page .contact-form .contact-input-wrap input:not([type="checkbox"]) {
@@ -2149,4 +2149,23 @@
   .dashboard-preview__summary {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+:root[data-theme="dark"] .about-hero {
+  background: linear-gradient(135deg, var(--color-info-bg), var(--color-background));
+}
+
+:root[data-theme="dark"] .contact-layout {
+  background: linear-gradient(135deg, var(--color-background), var(--color-info-bg));
+}
+
+:root[data-theme="dark"] :is(.about-hero__backdrop, .contact-layout__backdrop) { opacity: .22; }
+
+:root[data-theme="dark"] {
+  --about-tint-half: var(--color-info-bg);
+  --about-tint-accent: var(--blue-100);
+  --about-tint-soft: var(--color-info-bg);
+  --about-image-background: var(--color-surface-subtle);
+  --contact-divider: var(--color-info-border);
+  --contact-thumbnail-label: var(--color-surface);
 }

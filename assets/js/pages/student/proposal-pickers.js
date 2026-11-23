@@ -92,9 +92,11 @@
     let prefix = '';
     let lastKeyTime = 0;
 
+    const labelOf = option => option ? globalThis.IE104Language?.optionLabel(option) ?? option.label : '';
+
     function sync() {
       const selected = select.selectedOptions[0];
-      selectedText.textContent = selected?.label || '';
+      selectedText.textContent = labelOf(selected);
       trigger.classList.toggle('is-placeholder', !select.value);
       trigger.disabled = select.disabled;
       if (trigger.disabled) popup.close();
@@ -131,7 +133,7 @@
         item.setAttribute('role', 'option');
         item.setAttribute('aria-selected', String(option.selected));
         item.dataset.value = option.value;
-        item.textContent = option.label;
+        item.textContent = labelOf(option);
         return item;
       });
       if (!choices.length) return;

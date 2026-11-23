@@ -129,6 +129,10 @@
     nav.classList.add('main-nav--js');
     moveIndicator(currentTab, true);
 
+    document.addEventListener('ie104:languagechange', () => {
+      moveIndicator(activeTarget || currentTab, true);
+    });
+
     compact.addEventListener('change', () => {
       pointerTab = null;
       moveIndicator(getFocusedTab() || currentTab, true);

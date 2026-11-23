@@ -316,7 +316,9 @@
     try {
       const errors = store.validate(data, store.read(), mode);
       for (const [key, text] of Object.entries(errors)) if (fields[key]) {
-        fields[key].setCustomValidity(text); fields[key].setAttribute('aria-invalid', 'true');
+        if (globalThis.IE104Language) globalThis.IE104Language.setCustomValidity(fields[key], text);
+        else fields[key].setCustomValidity(text);
+        fields[key].setAttribute('aria-invalid', 'true');
       }
       if (!form.checkValidity()) {
         error('Chưa lưu. Kiểm tra các trường được đánh dấu; nội dung đã nhập vẫn được giữ.');
