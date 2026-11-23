@@ -18,6 +18,11 @@
   color: var(--color-neutral-fg);
 }
 
+.teacher-created-detail-page .status-badge--registered {
+  background: var(--color-info-bg);
+  color: var(--color-primary);
+}
+
 .teacher-created-detail-page .request-topic__heading h2 {
   overflow-wrap: anywhere;
 }

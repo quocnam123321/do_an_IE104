@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../../assets/css/components.css">
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
     <link rel="stylesheet" href="../../assets/css/teacher-supervised-topics.css?v=20261122-list-spacing">
-    <link rel="stylesheet" href="../../assets/css/teacher-created-topics.css?v=20261121-uit-records">
+    <link rel="stylesheet" href="../../assets/css/teacher-created-topics.css?v=20261123-registration-sync">
     <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css?v=20261122-empty-state">
     <script src="../../assets/js/nav-indicator.js" defer=""></script>
 
@@ -27,7 +27,7 @@
     <script src="../../assets/js/services/proposal-service.js" defer></script>
     <script src="../../assets/js/services/registration-service.js" defer></script>
     <script src="../../assets/js/services/approved-project-service.js" defer></script>
-    <script src="../../assets/js/services/lecturer-topic-service.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-service.js?v=20261123-registration-ids" defer></script>
     <script src="../../assets/js/services/published-topic-service.js" defer></script>
     <script src="../../assets/js/proposal-store.js" defer></script>
     <script src="../../assets/js/data/student-projects.js" defer></script>
@@ -37,10 +37,10 @@
     <script src="../../assets/js/services/project-team-service.js" defer></script>
     <script src="../../assets/js/services/project-progress-service.js" defer></script>
     <script src="../../assets/js/services/teaching-service.js" defer></script>
-    <script src="../../assets/js/pages/lecturer/topic-list.js?v=20261121-uit-records" defer></script>
+    <script src="../../assets/js/pages/lecturer/topic-list.js?v=20261123-registration-sync" defer></script>
     <script src="../../assets/js/shared/course-filters.js?v=20261122-course-options" defer></script>
     <script src="../../assets/js/shared/topic-list-empty.js?v=20261122-empty-state" defer></script>
-    <script src="../../assets/js/uit-topic-list.js?v=20261122-empty-state" defer></script>
+    <script src="../../assets/js/uit-topic-list.js?v=20261123-registration-sync" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-sort.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js" defer></script>
@@ -247,6 +247,12 @@
                       <label for="status-closed">
                         <input type="checkbox" id="status-closed" name="status" value="closed">
                         <span class="topic-filters__option-text">Đã đóng đăng ký</span>
+                      </label>
+                    </div>
+                    <div class="topic-filters__option">
+                      <label for="status-registered">
+                        <input type="checkbox" id="status-registered" name="status" value="registered">
+                        <span class="topic-filters__option-text">Đã có nhóm đăng ký</span>
                       </label>
                     </div>
                   </div>

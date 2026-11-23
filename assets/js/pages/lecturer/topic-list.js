@@ -26,7 +26,7 @@
     topics.forEach(topic => {
       let card = [...container.querySelectorAll('.topic-card:not([data-approved-proposal])')].find(node => node.dataset.topicId === topic.id);
       const catalogCard = catalogCards.get(topic.id);
-      if (catalogCard && !topic.registration) {
+      if (catalogCard && !topic.registration && topic.status !== 'registered') {
         if (!card) container.append(catalogCard.cloneNode(true));
         else if (card.dataset.status !== 'catalog') listItemFor(card).replaceWith(catalogCard.cloneNode(true));
         return;
@@ -113,10 +113,20 @@
   container.addEventListener('click', refreshReturn);
   container.addEventListener('pointerdown', refreshReturn);
   if (!window.UITLecturerCatalog) document.addEventListener('ie104:topics-updated', render);
-  window.addEventListener('ie104:lecturer-topics-updated', () => document.dispatchEvent(new Event('ie104:lecturer-topics-updated')));
+  const refreshTopics = () => document.dispatchEvent(new Event('ie104:lecturer-topics-updated'));
+  window.addEventListener('ie104:lecturer-topics-updated', refreshTopics);
+  window.addEventListener('ie104:registrations-updated', refreshTopics);
   document.addEventListener('ie104:lecturer-topics-updated', () => { render(); document.dispatchEvent(new Event('ie104:topics-updated')); });
-  window.addEventListener('storage',event => { if (event.key === globalThis.IE104.services.lecturerTopicRepository?.key || event.key === null) document.dispatchEvent(new Event('ie104:lecturer-topics-updated')); });
-  window.addEventListener('pageshow',() => document.dispatchEvent(new Event('ie104:lecturer-topics-updated')));
+  window.addEventListener('storage', event => {
+    const app = globalThis.IE104;
+    if ([app.services.lecturerTopicRepository?.key, app.storage?.registrationKey, null].includes(event.key)) {
+      refreshTopics();
+    }
+  });
+  window.addEventListener('pageshow', refreshTopics);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) refreshTopics();
+  });
   render();
   document.body.dataset.lecturerTopicsReady = 'true';
 })();

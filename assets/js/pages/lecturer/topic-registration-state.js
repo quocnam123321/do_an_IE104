@@ -10,7 +10,16 @@
   dialogs.open.querySelector('form').before(label,deadline,hint);
   let pending = null; let busy = false;
   const describe = () => {
-    try { const topic = app.services.lecturerTopics.get('created',document.body.dataset.topicId); const state = app.services.publishedTopics.availability(topic); status.textContent = `Tiếp nhận đăng ký: ${state.label}.${state.allowed ? '' : ` ${state.reason}`}`; }
+    try {
+      const topics = app.services.lecturerTopics;
+      const topic = topics.get('created', document.body.dataset.topicId);
+      if (topics.createdStatus(topic).status === 'registered') {
+        status.textContent = '';
+        return;
+      }
+      const state = app.services.publishedTopics.availability(topic);
+      status.textContent = `Tiếp nhận đăng ký: ${state.label}.${state.allowed ? '' : ` ${state.reason}`}`;
+    }
     catch (failure) { status.textContent = failure.message; }
   };
   describe();

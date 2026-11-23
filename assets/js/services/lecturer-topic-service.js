@@ -21,10 +21,36 @@
     return decorate(merged);
   };
 
+  function registeredTopicIds() {
+    const registrations = app.storage?.readRegistrations() || [];
+    const ids = new Set();
+    const publicId = app.services.publishedTopics?.publicId;
+    for (const record of registrations) {
+      if (record.status !== 'da-dang-ky' && record.status !== 'da-duyet') continue;
+      const { topic } = record;
+      if (topic.id.startsWith('GV:')) ids.add(topic.id);
+      const ownerId = topic.ownerId || record.lecturerId;
+      const legacyId = topic.catalogId || (!topic.id.startsWith('GV:') ? topic.id : '');
+      if (publicId && ownerId && legacyId) ids.add(publicId({ ownerId, id: legacyId }));
+    }
+    return ids;
+  }
+
+  function createdStatus(topic, registeredIds = registeredTopicIds()) {
+    const publicId = app.services.publishedTopics?.publicId;
+    const matches = publicId && [topic.id, topic.displayId].some(id =>
+      id && registeredIds.has(publicId({ ...topic, id })));
+    return matches
+      ? { status: 'registered', statusLabel: 'Đã có nhóm đăng ký' }
+      : { status: topic.status, statusLabel: topic.statusLabel };
+  }
+
   function list(kind, { catalogOnly = false } = {}) {
     const available = catalogOnly ? decorate(app.data.lecturerTopics || []).filter(topic => topic.sourceRecord) : records(kind);
     const owned = available.filter(record => record.kind === kind && record.ownerId === actorId() && record.sourceRecord?.type !== 'Luận văn thạc sĩ' && record.topicType !== 'master');
-    return clone(app.topicIdentity?.uniqueTitles(owned) || owned);
+    const registeredIds = kind === 'created' && !catalogOnly ? registeredTopicIds() : new Set();
+    const visible = kind === 'created' ? owned.map(topic => ({ ...topic, ...createdStatus(topic, registeredIds) })) : owned;
+    return clone(app.topicIdentity?.uniqueTitles(visible) || visible);
   }
 
   function get(kind, id, { onSourceError } = {}) {
@@ -106,5 +132,5 @@
     };
   }
 
-  app.services.lecturerTopics = { list, get, detailUrl, returnUrl, workspaceChoices, workspaceState, projectIdentity, allCreated: () => clone(records('created').filter(topic => topic.kind === 'created')) };
+  app.services.lecturerTopics = { list, get, createdStatus, detailUrl, returnUrl, workspaceChoices, workspaceState, projectIdentity, allCreated: () => clone(records('created').filter(topic => topic.kind === 'created')) };
 })();

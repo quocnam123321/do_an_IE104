@@ -16,6 +16,11 @@
   color: var(--color-success-fg);
 }
 
+.teacher-created-topics-page .topic-card__status--registered {
+  background-color: var(--color-info-bg);
+  color: var(--color-primary);
+}
+
 .teacher-created-topics-page :is(.topic-card__status--closed, .topic-card__status--catalog) {
   background-color: var(--color-neutral-bg);
   color: var(--color-neutral-fg);

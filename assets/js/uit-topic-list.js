@@ -39,6 +39,7 @@
         card.dataset.createdAt = createdAt;
         if (nodes[3]) nodes[3].textContent = createdAt ? createdAt.split('T')[0].split('-').reverse().join('/') : '';
 
+        if (card.dataset.status === 'registered') continue;
         const closed = card.dataset.status === 'closed';
         card.dataset.status = closed ? 'closed' : 'open';
         const badge = card.querySelector('.topic-card__status');

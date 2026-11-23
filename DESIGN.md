@@ -345,6 +345,8 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 
 ### Tổng quan đề tài đang hướng dẫn
 
+- Đề tài giảng viên đã tạo vẫn nằm trong danh sách Đề tài đã tạo sau khi có nhóm đăng ký thành công hoặc được duyệt. Thẻ và trang chi tiết dùng nhãn Đã có nhóm đăng ký. Giảng viên chỉnh sửa hồ sơ gốc từ trang chi tiết và theo dõi nhóm trong danh sách Đề tài đang hướng dẫn.
+
 - Đề tài trong danh mục và đề tài phát sinh từ đăng ký hoặc đề xuất dùng chung khung ảnh 16:9, thẻ thông tin, bố cục nội dung và cột nhóm thực hiện, mốc thời gian. Đề cương, phương pháp và kế hoạch xuất hiện khi đề tài có dữ liệu tương ứng.
 
 ### Công bố đánh giá bên giảng viên

@@ -112,14 +112,15 @@
       document.querySelector('[data-topic-attachment-empty]').hidden = Boolean(attachmentName);
       if (attachmentName) setText('.topic-attachments__file span', attachmentName);
       const badge = document.querySelector('[data-topic-status]');
-      if (badge) { badge.textContent = topic.statusLabel; badge.className = `status-badge status-badge--${topic.status}`; }
-      document.querySelectorAll('.registration-close-button').forEach(button => { button.hidden = readOnly || topic.status !== 'open'; });
+      const status = readOnly ? topic : service.createdStatus(topic);
+      if (badge) { badge.textContent = status.statusLabel; badge.className = `status-badge status-badge--${status.status}`; }
+      document.querySelectorAll('.registration-close-button').forEach(button => { button.hidden = readOnly || status.status !== 'open'; });
       let reopen = document.querySelector('.registration-reopen-button');
       if (!reopen && topic.status === 'closed') {
         const prototype = document.getElementById('registration-closed-template')?.content.querySelector('.registration-reopen-button');
         if (prototype) { reopen = prototype.cloneNode(true); document.querySelector('.registration-close-button')?.after(reopen); }
       }
-      if (reopen) reopen.hidden = readOnly || topic.status !== 'closed';
+      if (reopen) reopen.hidden = readOnly || status.status !== 'closed';
       const edit = document.querySelector('.topic-edit-link');
       if (edit) {
         const url = new URL('chinh-sua-de-tai-giang-vien.html', location.href);
@@ -143,8 +144,12 @@
   }
   if (mode === 'detail') {
     window.addEventListener('pageshow',render);
+    window.addEventListener('ie104:registrations-updated', render);
     document.addEventListener('ie104:lecturer-topic-state-changed',render);
-    window.addEventListener('storage',event => { if (event.key === globalThis.IE104.services.lecturerTopicRepository?.key || event.key === null) render(); });
+    window.addEventListener('storage', event => {
+      const app = globalThis.IE104;
+      if ([app.services.lecturerTopicRepository?.key, app.storage?.registrationKey, null].includes(event.key)) render();
+    });
   }
   render();
 })();

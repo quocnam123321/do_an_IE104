@@ -161,7 +161,7 @@
       approved.includes(record) && !supervised.some(project => project.id === record.topicId));
     const inProgress = active.length + remainingApproved.length;
     const chartCreated = unique([...active, ...completed, ...remainingApproved, ...(created || [])],
-      entry => entry.title || entry.name).filter(entry => created?.includes(entry));
+      entry => entry.title || entry.name).filter(entry => created?.includes(entry) && entry.status !== 'registered');
     const total = created && !proposalError && !progressError ? chartCreated.length + inProgress + completed.length : null;
     const open = chartCreated.filter(topic => topic.status === 'open').length;
     const values = { total, created: created?.length, supervised: proposalError || progressError ? null : inProgress, pending: proposalError ? null : pending.length };
@@ -185,8 +185,9 @@
 
   proposals.subscribe(render);
   window.addEventListener('storage', event => {
-    if ([topics.key, app.storage.progressKey, app.storage.teamKey, app.services.lecturerTopicRepository?.key, null].includes(event.key)) render();
+    if ([topics.key, app.storage.registrationKey, app.storage.progressKey, app.storage.teamKey, app.services.lecturerTopicRepository?.key, null].includes(event.key)) render();
   });
   window.addEventListener('ie104:lecturer-topics-updated', render);
+  window.addEventListener('ie104:registrations-updated', render);
   render();
 })();
