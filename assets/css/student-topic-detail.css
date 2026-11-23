@@ -692,9 +692,9 @@
 }
 
 #submissions-section .submission-board__badge--late {
-  background: var(--sub-late-bg);
-  color: var(--sub-late-badge-fg);
-  box-shadow: inset 0 0 0 1px var(--sub-late-border);
+  background: var(--color-danger-bg);
+  color: var(--color-danger-fg);
+  box-shadow: none;
 }
 
 #submissions-section a.submission-board-card__download {

@@ -19,7 +19,7 @@
 
   const deadlineLabels = {
     danger: 'Quá hạn',
-    late: 'Nộp sau hạn',
+    late: 'Đã nộp trễ',
     success: 'Đúng hạn',
   };
 
@@ -31,7 +31,8 @@
   }
 
   function time(value) {
-    const node = element('time', format.format(new Date(value)));
+    const parts = Object.fromEntries(format.formatToParts(new Date(value)).map(part => [part.type, part.value]));
+    const node = element('time', `${parts.day.padStart(2, '0')}/${parts.month.padStart(2, '0')}/${parts.year.length === 2 ? '20' + parts.year : parts.year} · ${parts.hour.padStart(2, '0')}:${parts.minute}`);
     node.dateTime = value;
     return node;
   }
@@ -181,7 +182,7 @@
     heading.append(element('span', item.title, 'requirement-board-card__title'));
     if (badge) heading.append(deadlineBadge(badge));
     const due = element('span', undefined, 'requirement-board-card__deadline');
-    due.append(element('span', 'Hạn nộp:', 'visually-hidden'), item.deadline.cloneNode(true));
+    due.append(boardIcon('calendar'), element('span', 'Hạn nộp:', 'visually-hidden'), item.deadline.cloneNode(true));
     open.append(heading, due);
     if (status) open.append(element('span', status, 'student-submission-status'));
 
@@ -255,15 +256,15 @@
     }
   }
 
-  function localSubmissionCard(record, deadline) {
-    const { files, title, submittedAt } = record;
-    const [first] = files;
-    const names = files.length > 1 ? app.ui.submissionZipNames(files) : [first.name];
+  function submissionCard(record, deadline) {
+    const { title, submittedAt } = record;
+    const files = record.files || [];
+    const names = files.length > 1 ? app.ui.submissionZipNames(files) : [files[0]?.name || record.fileName || 'Chưa có tên tệp.'];
     const card = element('article', undefined, 'submission-board-card submission-board-sample-card');
-    card.dataset.recordId = 'upload:' + record.requirementId;
+    card.dataset.recordId = files.length ? 'upload:' + record.requirementId : record.id;
     const header = element('header', undefined, 'submission-board-card__header');
-    header.append(element('h5', title, 'submission-board-card__title'),
-      deadlineBadge(Date.parse(submittedAt) > deadline ? 'late' : 'success'));
+    header.append(element('h5', title, 'submission-board-card__title'));
+    if (Number.isFinite(deadline)) header.append(deadlineBadge(Date.parse(submittedAt) > deadline ? 'late' : 'success'));
 
     const body = element('div', undefined, 'submission-board-card__body');
     const details = element('div', undefined, 'submission-board-card__details');
@@ -274,32 +275,42 @@
     const dateLine = element('p', undefined, 'submission-board-card__meta');
     dateLine.append(boardIcon('calendar'), element('span', 'Ngày nộp:', 'visually-hidden'), time(submittedAt));
     details.append(fileLine, dateLine);
-    app.ui.submissionFileList.attach(fileLine, names);
+    if (files.length) app.ui.submissionFileList.attach(fileLine, names);
 
     const actions = element('div', undefined, 'submission-board-card__actions');
     const download = element('button', undefined, 'submission-board-card__download');
     download.type = 'button';
-    const icon = fileTemplate.content.querySelector('a svg').cloneNode(true);
-    download.append(icon, element('span', 'Tải xuống'));
+    download.setAttribute('aria-label', 'Tải xuống ' + names[0]);
+    download.append(fileTemplate.content.querySelector('a svg').cloneNode(true), element('span', 'Tải xuống'));
     const error = element('p', undefined, 'submission-upload__error');
     error.setAttribute('role', 'alert');
     error.hidden = true;
-    bindUploadDownload(download, error, files, files.length === 1 ? first.name : archiveName(record.requirementId));
+    if (files.length) bindUploadDownload(download, error, files, files.length === 1 ? files[0].name : archiveName(record.requirementId));
+    else {
+      download.disabled = true;
+      download.title = 'Chưa có nội dung tệp của lần nộp này.';
+    }
     actions.append(download);
-    body.append(details, actions);
-
-    card.append(header, body, error, element('p', 'Đã lưu trên trình duyệt', 'student-submission-status'));
+    const viewDetails = (label, fields) => {
+      const action = element('button', label, 'submission-board-card__feedback');
+      action.type = 'button';
+      action.setAttribute('aria-haspopup', 'dialog');
+      action.setAttribute('aria-label', `${label}: ${title}`);
+      action.addEventListener('click', () => app.ui.workflowDetails({
+        title: label, fields: [['Tên bài nộp', title], ['Tệp đã nộp', names.join('\n'), names.length > 1], ...fields],
+        returnTo: () => [...host.querySelectorAll('[data-record-id]')].find(node => node.dataset.recordId === card.dataset.recordId)?.querySelector('.submission-board-card__feedback'),
+      }));
+      actions.append(action);
+    };
     if (record.feedback) {
-      const feedback = element('details');
-      feedback.append(element('summary', 'Xem phản hồi'), element('p', record.feedback, 'student-submission-content'));
-      card.append(feedback);
-    }
-    if (record.notes) {
-      const notes = element('details');
-      notes.append(element('summary', 'Ghi chú cho giảng viên'),
-        element('p', record.notes, 'student-submission-content'));
-      card.append(notes);
-    }
+      const feedbackFields = [['Nội dung phản hồi', record.feedback, true]];
+      if (record.feedbackAt) feedbackFields.push(['Thời gian phản hồi', time(record.feedbackAt).textContent]);
+      if (record.feedbackHistory?.length) feedbackFields.push(['Phản hồi trước', record.feedbackHistory.slice().reverse().map(entry => [entry.at ? time(entry.at).textContent : '', entry.content].filter(Boolean).join(' · ')).join('\n\n'), true]);
+      if (record.notes) feedbackFields.push(['Ghi chú cho giảng viên', record.notes, true]);
+      viewDetails('Xem phản hồi', feedbackFields);
+    } else if (record.notes) viewDetails('Xem ghi chú', [['Ghi chú cho giảng viên', record.notes, true]]);
+    body.append(details, actions);
+    card.append(header, body, error);
     return card;
   }
 
@@ -334,14 +345,11 @@
         }
         oldBadge?.remove();
         card.classList.remove('requirement-board-card--overdue');
-        if (Date.parse(record.submittedAt) > deadline) {
-          trigger.querySelector('.requirement-board-card__header').append(deadlineBadge('late'));
-        }
         if (pendingColumn.contains(card)) submittedColumn.querySelector('.submission-column__list').prepend(card.closest('li'));
       }
       const row = element('li');
       row.dataset.localUpload = id;
-      row.append(localSubmissionCard(record, deadline));
+      row.append(submissionCard(record, deadline));
       waiting.prepend(row);
     }
     for (const column of [pendingColumn, submittedColumn, waitingColumn, reviewedColumn]) {
@@ -366,21 +374,6 @@
     (card?.querySelector('.requirement-board-card__open') || host.querySelector('.task-board'))?.focus();
   });
 
-  function detailCard(id, title, status, date, dateLabel, content, badge) {
-    const details = element('details', undefined, 'submission-board-card student-submission-detail');
-    details.dataset.recordId = id;
-    const summary = element('summary');
-    const heading = element('span', undefined, 'student-submission-heading');
-    heading.append(element('strong', title, 'submission-board-card__title'));
-    if (badge) heading.append(deadlineBadge(badge));
-    summary.append(heading);
-    if (status) summary.append(element('span', status, 'student-submission-status'));
-    const line = element('p', dateLabel + ' ');
-    line.append(time(date));
-    details.append(summary, line, ...content);
-    return details;
-  }
-
   function board(title, className, columns, view) {
     const section = element('section', undefined, className);
     const heading = element('h3', title, className + '__title');
@@ -394,6 +387,7 @@
       const labelId = 'student-' + className + '-' + index;
       const columnHeading = element('h4', label + ' (' + items.length + ')', 'task-column__title');
       columnHeading.id = labelId;
+      columnHeading.prepend(app.ui.workflowIcon(variant === 'success' ? 'done' : variant === 'neutral' ? 'pending' : 'progress'));
       const viewport = element('div', undefined, 'submission-column__viewport');
       viewport.tabIndex = 0;
       viewport.setAttribute('role', 'region');
@@ -420,7 +414,6 @@
   function render() {
     const projectId = document.body.dataset.projectId;
     if (!projectId) return;
-    const open = new Set([...host.querySelectorAll('details[open][data-record-id]')].map(node => node.dataset.recordId));
     const active = host.contains(document.activeElement) ? document.activeElement : null;
     const focused = active?.closest('[data-record-id]')?.dataset.recordId;
     try {
@@ -446,9 +439,8 @@
         { label: 'Đã nộp', variant: 'info', items: requirementsWithUploads.filter(item => item.submitted) },
       ], item => {
         const overdue = !item.submitted && !item.locked && item.overdue;
-        const badge = overdue ? 'danger' : item.late ? 'late' : null;
-        const status = overdue ? null : item.submitted ? 'Đã nộp' :
-          item.locked ? 'Đã khóa nhận bài' : state.completed ? 'Đề tài đã hoàn thành' : 'Chưa nộp';
+        const badge = overdue ? 'danger' : null;
+        const status = item.locked ? 'Đã khóa nhận bài' : state.completed ? 'Đề tài đã hoàn thành' : null;
         return requirementCard({ ...item, deadline: time(item.deadline), canUpload: !item.locked && state.canUpload }, badge, status);
       });
       const local = [...uploads.values()].filter(record => deadlines.has(record.requirementId)).map(record => ({ ...record, feedback: state.submissions.find(item => item.id === `SV-UP-${record.requirementId}` && item.submittedAt === record.submittedAt)?.feedback || '' }));
@@ -456,15 +448,10 @@
       const submissions = board('Bài nộp của nhóm', 'submissions', [
         { label: 'Chờ phản hồi', variant: 'warning', items: [...local.filter(item => !item.feedback), ...remote.filter(item => !item.feedback)] },
         { label: 'Đã phản hồi', variant: 'success', items: [...local.filter(item => item.feedback), ...remote.filter(item => item.feedback)] },
-      ], item => item.files ? localSubmissionCard(item, deadlines.get(item.requirementId)) :
-        detailCard(item.id, item.title, item.feedback ? 'Đã phản hồi' : 'Chờ phản hồi', item.submittedAt, 'Thời điểm nộp:', [
-        element('p', item.fileName || 'Chưa có tên tệp.'),
-        element('p', item.feedback || 'Chưa có phản hồi của giảng viên.', 'student-submission-content'),
-      ], item.late === null ? null : item.late ? 'late' : 'success'));
+      ], item => submissionCard(item, deadlines.get(item.requirementId)));
       notice.hidden = Boolean(app.data.studentUITCatalog?.myIds.some(id => app.data.studentUITCatalog.projectId(id) === document.body.dataset.projectId));
       host.replaceChildren(notice, requirements, submissions);
       for (const card of host.querySelectorAll('[data-record-id]')) {
-        if (card.matches('details')) card.open = open.has(card.dataset.recordId);
         if (card.dataset.recordId === focused) {
           card.querySelector('summary, .requirement-board-card__open, .submission-board-card__download')?.focus({ preventScroll: true });
         }
