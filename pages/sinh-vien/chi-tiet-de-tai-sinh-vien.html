@@ -37,7 +37,7 @@
       body:has(#ket-qua-danh-gia:target, #ket-qua-danh-gia :target) > .skip-link--ket-qua-danh-gia { display: inline; }
     </style>
   <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-  <script defer src="../../assets/js/i18n/en-student.js"></script>
+  <script defer src="../../assets/js/i18n/en-student.js?v=20261124-evaluation-attachment"></script>
   <script defer src="../../assets/js/i18n/en-shared.js"></script>
   <script defer src="../../assets/js/shared/language.js"></script>
   <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
@@ -58,37 +58,37 @@
 
 
 
-<link rel="stylesheet" href="../../assets/css/project-evaluation.css">
+<link rel="stylesheet" href="../../assets/css/project-evaluation.css?v=20261124-evaluation-summary">
 
 
 
 <link rel="stylesheet" href="../../assets/css/topic-detail-boards.css?v=20261123-submission-files" />
-<link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css?v=20261123-overview" />
-<link rel="stylesheet" href="../../assets/css/student-topic-detail.css?v=20261124-download-all-style" />
+<link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css?v=20261124-evaluation-summary" />
+<link rel="stylesheet" href="../../assets/css/student-topic-detail.css?v=20261124-evaluation-summary" />
 
 <script src="../../assets/js/shared/proposal-outline.js" defer></script>
 <script src="../../assets/js/shared/nav-indicator.js" defer></script>
 <script src="../../assets/js/shared/dialog-commands.js" defer></script>
-<script src="../../assets/js/data/mock-data.js" defer></script>
+<script src="../../assets/js/data/mock-data.js?v=20261124-completed-actions" defer></script>
 <script src="../../assets/js/shared/workflow-dialog.js?v=20261123-progress-detail" defer></script>
 <script src="../../assets/js/shared/progress-task-view.js?v=20261123-progress-parity" defer></script>
 <script src="../../assets/js/data/student-projects.js" defer></script>
 <script src="../../assets/js/data/student-web-submissions.js" defer></script>
 <script src="../../assets/js/data/student-progress.js" defer></script>
-<script src="../../assets/js/data/student-evaluations.js" defer></script>
+<script src="../../assets/js/data/student-evaluations.js?v=20261124-da005-evaluation" defer></script>
 <script src="../../assets/js/data/proposal-actors.js" defer></script>
 <script src="../../assets/js/services/storage.js" defer></script>
 <script src="../../assets/js/services/approved-project-service.js" defer></script>
 <script src="../../assets/js/supervision-entry.js?v=20261123-language" defer></script>
 <script src="../../assets/js/services/project-team-service.js" defer></script>
-<script src="../../assets/js/services/project-progress-service.js?v=20261124-rebase" defer></script>
+<script src="../../assets/js/services/project-progress-service.js?v=20261124-completed-actions" defer></script>
 <script src="../../assets/js/services/task-comments-service.js" defer></script>
-<script src="../../assets/js/services/evaluation-service.js" defer></script>
+<script src="../../assets/js/services/evaluation-service.js?v=20261124-evaluation-attachment" defer></script>
 <script src="../../assets/js/uit-lecturer-catalog.js?v=20261123-audit-names2" defer></script>
 <script src="../../assets/js/shared/topic-identity.js" defer></script>
 <script src="../../assets/js/data/lecturer-topics.js" defer></script>
 <script src="../../assets/js/data/lecturer-merge-catalog.js?v=20261123-audit-names2" defer></script>
-<script src="../../assets/js/data/student-uit-catalog.js?v=20261124-rebase" defer></script>
+<script src="../../assets/js/data/student-uit-catalog.js?v=20261124-da005" defer></script>
 <script src="../../assets/js/services/student-topic-codes.js?v=20261123-sv-uit-2" defer></script>
 <script src="../../assets/js/shared/student-course-label.js?v=20261122-course-label" defer></script>
 <script src="../../assets/js/services/proposal-file-service.js" defer></script>
@@ -98,8 +98,9 @@
 <script src="../../assets/js/shared/detail-tabs.js" defer></script>
 <script src="../../assets/js/pages/student/topic-detail/team.js" defer></script>
 <script src="../../assets/js/shared/task-comments.js?v=20261123-comment-composer" defer></script>
-<script src="../../assets/js/pages/student/topic-detail/progress.js?v=20261123-progress-parity" defer></script>
-<script src="../../assets/js/pages/student/topic-detail/evaluation.js" defer></script>
+<script src="../../assets/js/pages/student/topic-detail/progress.js?v=20261124-completed-actions" defer></script>
+<script src="../../assets/js/shared/evaluation-attachment.js" defer></script>
+<script src="../../assets/js/pages/student/topic-detail/evaluation.js?v=20261124-evaluation-attachment" defer></script>
 <script src="../../assets/js/pages/student/topic-detail/lecturer-reviews.js" defer></script>
 <link rel="stylesheet" href="../../assets/css/proposal-outline.css">
 <link rel="stylesheet" href="../../assets/css/topic-media-shared.css">
@@ -456,7 +457,7 @@
                 <circle cx="12" cy="12" r="9"></circle>
                 <path d="M12 11v5m0-8h.01"></path>
               </svg>
-              <span>Đề tài đã hoàn thành. Chức năng thêm và xóa công việc đã được khóa.</span>
+              <span>Đề tài đã hoàn thành. Bạn có thể xem công việc và tiến độ đã lưu.</span>
             </p>
             <p id="student-task-board-help" class="visually-hidden">Cuộn dọc trong từng cột và cuộn ngang để xem các cột khác trên màn hình hẹp. Chọn thẻ để xem chi tiết hoặc chọn ảnh đại diện để xem thông tin người phụ trách.</p>
             <div class="task-board" role="region" aria-label="Các cột công việc" aria-describedby="student-task-board-help" tabindex="0">
@@ -757,6 +758,23 @@
               <p>Bật JavaScript để xem bài nộp của nhóm.</p>
             </section>
           </div>
+          <dialog class="submission-dialog student-feedback-dialog" id="student-feedback-dialog" aria-labelledby="student-feedback-title">
+            <header>
+              <h2 id="student-feedback-title" tabindex="-1" autofocus>Xem phản hồi</h2>
+            </header>
+            <div class="student-feedback-dialog__summary">
+              <h3></h3>
+              <p>Đã nộp lúc <time></time></p>
+            </div>
+            <section class="student-feedback-dialog__content" aria-labelledby="student-feedback-content-title">
+              <h3 id="student-feedback-content-title">Nội dung phản hồi</h3>
+              <p></p>
+            </section>
+            <dl class="student-feedback-dialog__details" hidden></dl>
+            <footer>
+              <button command="close" commandfor="student-feedback-dialog" type="button">Đóng</button>
+            </footer>
+          </dialog>
           <dialog class="submission-dialog submission-upload-dialog" id="student-upload-dialog"></dialog>
           <dialog id="student-upload-success" class="workflow-dialog workflow-saved-dialog" aria-labelledby="student-upload-success-title">
             <div class="workflow-saved-dialog__body">
@@ -838,7 +856,6 @@
                 <dt>Điểm tổng kết của nhóm</dt>
                 <dd class="evaluation-total__score"><strong class="evaluation-total__value"></strong></dd>
               </div>
-              <div><dt>Kết quả</dt><dd><span data-evaluation-result></span></dd></div>
             </dl>
           </section>
 
@@ -850,7 +867,7 @@
           <section class="evaluation-attachments" aria-labelledby="evaluation-attachments-title">
             <h3 id="evaluation-attachments-title">Tệp đánh giá đính kèm</h3>
             <div class="evaluation-attachments__item">
-              <p class="evaluation-attachments__file"><span class="evaluation-attachments__name"></span></p>
+              <p class="evaluation-attachments__file"><span class="evaluation-attachments__name" translate="no"></span></p>
               <button type="button" class="evaluation-attachments__download" aria-describedby="evaluation-attachment-note" disabled>
                 <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5"></path>
@@ -858,7 +875,7 @@
                 <span>Tải xuống</span>
               </button>
             </div>
-            <p class="evaluation-attachment-note" id="evaluation-attachment-note">Tệp này chưa có nội dung để tải xuống.</p>
+            <p class="evaluation-attachment-note" id="evaluation-attachment-note" role="status">Tệp này chưa có nội dung để tải xuống.</p>
           </section>
           </template>
         </div>
@@ -3306,409 +3323,148 @@
             <dialog class="submission-dialog submission-upload-dialog" id="submission-upload-19" data-upload-requirement="requirement-19"></dialog>
             <dialog class="submission-dialog submission-upload-dialog" id="submission-upload-20" data-upload-requirement="requirement-20"></dialog>
             <dialog class="submission-dialog submission-upload-dialog" id="submission-upload-21" data-upload-requirement="requirement-21"></dialog>
-            <dialog aria-labelledby="submission-feedback-1-title" class="submission-dialog" id="submission-feedback-1">
+            <dialog class="submission-dialog student-feedback-dialog" id="submission-feedback-1" aria-labelledby="submission-feedback-1-title">
               <header>
-                <h2 id="submission-feedback-1-title">
-                  Phản hồi bài nộp
-                </h2>
-                <button class="submission-dialog__close" aria-label="Đóng hộp thoại phản hồi bài nộp" command="close" commandfor="submission-feedback-1" type="button">
-                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#student-submission-close-icon"></use></svg>
-                </button>
+                <h2 id="submission-feedback-1-title" tabindex="-1" autofocus>Xem phản hồi</h2>
               </header>
-              <div class="submission-dialog__body">
-                <h3>
-                  Báo cáo đề cương và kế hoạch thực hiện
-                </h3>
-                <dl>
-                  <dt>
-                    Tệp đã nộp
-                  </dt>
-                  <dd>
-                    De_cuong.pdf
-                  </dd>
-                  <dt>
-                    Ngày nộp
-                  </dt>
-                  <dd>
-                    14/10/2026 · 21:30
-                  </dd>
-                </dl>
-                <section aria-labelledby="submission-feedback-1-content-title">
-                  <h3 id="submission-feedback-1-content-title">
-                    Nội dung phản hồi mẫu
-                  </h3>
-                  <p>
-                    Nhóm đã trình bày rõ mục tiêu và kế hoạch. Cần bổ sung mốc kiểm thử cho từng giai đoạn.
-                  </p>
-                </section>
-                <p class="student-board-note">
-                  Phản hồi mẫu để xem bố cục, chưa gửi hoặc lưu vào hệ thống.
-                </p>
+              <div class="student-feedback-dialog__summary">
+                <h3>Báo cáo đề cương và kế hoạch thực hiện</h3>
+                <p>Đã nộp lúc <time datetime="2026-10-14T21:30">21:30 ngày 14/10/2026</time></p>
               </div>
+              <section class="student-feedback-dialog__content" aria-labelledby="submission-feedback-1-content-title">
+                <h3 id="submission-feedback-1-content-title">Nội dung phản hồi</h3>
+                <p>Nhóm đã trình bày rõ mục tiêu và kế hoạch. Cần bổ sung mốc kiểm thử cho từng giai đoạn.</p>
+              </section>
               <footer>
-                <button command="close" commandfor="submission-feedback-1" type="button">
-                  Đóng
-                </button>
+                <button command="close" commandfor="submission-feedback-1" type="button">Đóng</button>
               </footer>
             </dialog>
-            <dialog aria-labelledby="submission-feedback-sample-done-1-title" class="submission-dialog" id="submission-feedback-sample-done-1">
+            <dialog class="submission-dialog student-feedback-dialog" id="submission-feedback-sample-done-1" aria-labelledby="submission-feedback-sample-done-1-title">
               <header>
-                <h2 id="submission-feedback-sample-done-1-title">
-                  Phản hồi bài nộp
-                </h2>
-                <button class="submission-dialog__close" aria-label="Đóng hộp thoại phản hồi bài nộp" command="close" commandfor="submission-feedback-sample-done-1" type="button">
-                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#student-submission-close-icon"></use></svg>
-                </button>
+                <h2 id="submission-feedback-sample-done-1-title" tabindex="-1" autofocus>Xem phản hồi</h2>
               </header>
-              <div class="submission-dialog__body">
-                <h3>
-                  Bản hiệu chỉnh báo cáo tiến độ
-                </h3>
-                <dl>
-                  <dt>
-                    Tệp đã nộp
-                  </dt>
-                  <dd>
-                    Hieu_chinh_tien_do.pdf
-                  </dd>
-                  <dt>
-                    Ngày nộp
-                  </dt>
-                  <dd>
-                    24/10/2026 · 17:00
-                  </dd>
-                </dl>
-                <section aria-labelledby="submission-feedback-sample-done-1-content-title">
-                  <h3 id="submission-feedback-sample-done-1-content-title">
-                    Nội dung phản hồi mẫu
-                  </h3>
-                  <p>
-                    Bản hiệu chỉnh đã cập nhật các mốc tiến độ và thống nhất định dạng báo cáo. Nhóm cần rà soát lỗi trình bày trước khi nộp bản cuối.
-                  </p>
-                </section>
-                <p class="student-board-note">
-                  Phản hồi mẫu để xem bố cục, chưa gửi hoặc lưu vào hệ thống.
-                </p>
+              <div class="student-feedback-dialog__summary">
+                <h3>Bản hiệu chỉnh báo cáo tiến độ</h3>
+                <p>Đã nộp lúc <time datetime="2026-10-24T17:00">17:00 ngày 24/10/2026</time></p>
               </div>
+              <section class="student-feedback-dialog__content" aria-labelledby="submission-feedback-sample-done-1-content-title">
+                <h3 id="submission-feedback-sample-done-1-content-title">Nội dung phản hồi</h3>
+                <p>Bản hiệu chỉnh đã cập nhật các mốc tiến độ và thống nhất định dạng báo cáo. Nhóm cần rà soát lỗi trình bày trước khi nộp bản cuối.</p>
+              </section>
               <footer>
-                <button command="close" commandfor="submission-feedback-sample-done-1" type="button">
-                  Đóng
-                </button>
+                <button command="close" commandfor="submission-feedback-sample-done-1" type="button">Đóng</button>
               </footer>
             </dialog>
-            <dialog aria-labelledby="submission-feedback-sample-done-2-title" class="submission-dialog" id="submission-feedback-sample-done-2">
+            <dialog class="submission-dialog student-feedback-dialog" id="submission-feedback-sample-done-2" aria-labelledby="submission-feedback-sample-done-2-title">
               <header>
-                <h2 id="submission-feedback-sample-done-2-title">
-                  Phản hồi bài nộp
-                </h2>
-                <button class="submission-dialog__close" aria-label="Đóng hộp thoại phản hồi bài nộp" command="close" commandfor="submission-feedback-sample-done-2" type="button">
-                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#student-submission-close-icon"></use></svg>
-                </button>
+                <h2 id="submission-feedback-sample-done-2-title" tabindex="-1" autofocus>Xem phản hồi</h2>
               </header>
-              <div class="submission-dialog__body">
-                <h3>
-                  Báo cáo tổng hợp kết quả nghiệm thu các chức năng quản lý thư viện
-                </h3>
-                <dl>
-                  <dt>
-                    Tệp đã nộp
-                  </dt>
-                  <dd>
-                    Tong_hop_nghiem_thu.pdf
-                  </dd>
-                  <dt>
-                    Ngày nộp
-                  </dt>
-                  <dd>
-                    26/10/2026 · 19:30
-                  </dd>
-                </dl>
-                <section aria-labelledby="submission-feedback-sample-done-2-content-title">
-                  <h3 id="submission-feedback-sample-done-2-content-title">
-                    Nội dung phản hồi mẫu
-                  </h3>
-                  <p>
-                    Báo cáo đã tổng hợp các chức năng quản lý thư viện và kết quả kiểm thử. Cần bổ sung minh chứng cho các trường hợp kiểm thử còn thiếu.
-                  </p>
-                </section>
-                <p class="student-board-note">
-                  Phản hồi mẫu để xem bố cục, chưa gửi hoặc lưu vào hệ thống.
-                </p>
+              <div class="student-feedback-dialog__summary">
+                <h3>Báo cáo tổng hợp kết quả nghiệm thu các chức năng quản lý thư viện</h3>
+                <p>Đã nộp lúc <time datetime="2026-10-26T19:30">19:30 ngày 26/10/2026</time></p>
               </div>
+              <section class="student-feedback-dialog__content" aria-labelledby="submission-feedback-sample-done-2-content-title">
+                <h3 id="submission-feedback-sample-done-2-content-title">Nội dung phản hồi</h3>
+                <p>Báo cáo đã tổng hợp các chức năng quản lý thư viện và kết quả kiểm thử. Cần bổ sung minh chứng cho các trường hợp kiểm thử còn thiếu.</p>
+              </section>
               <footer>
-                <button command="close" commandfor="submission-feedback-sample-done-2" type="button">
-                  Đóng
-                </button>
+                <button command="close" commandfor="submission-feedback-sample-done-2" type="button">Đóng</button>
               </footer>
             </dialog>
-            <dialog aria-labelledby="submission-feedback-5-title" class="submission-dialog" id="submission-feedback-5">
+            <dialog class="submission-dialog student-feedback-dialog" id="submission-feedback-5" aria-labelledby="submission-feedback-5-title">
               <header>
-                <h2 id="submission-feedback-5-title">
-                  Phản hồi bài nộp
-                </h2>
-                <button class="submission-dialog__close" aria-label="Đóng hộp thoại phản hồi bài nộp" command="close" commandfor="submission-feedback-5" type="button">
-                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#student-submission-close-icon"></use></svg>
-                </button>
+                <h2 id="submission-feedback-5-title" tabindex="-1" autofocus>Xem phản hồi</h2>
               </header>
-              <div class="submission-dialog__body">
-                <h3>
-                  Kết quả kiểm thử phiên bản thử nghiệm
-                </h3>
-                <dl>
-                  <dt>
-                    Tệp đã nộp
-                  </dt>
-                  <dd>
-                    Kiem_thu.pdf
-                  </dd>
-                  <dt>
-                    Ngày nộp
-                  </dt>
-                  <dd>
-                    22/10/2026 · 08:00
-                  </dd>
-                </dl>
-                <section aria-labelledby="submission-feedback-5-content-title">
-                  <h3 id="submission-feedback-5-content-title">
-                    Nội dung phản hồi mẫu
-                  </h3>
-                  <p>
-                    Cần bổ sung kết quả kiểm thử các trường hợp biên và cập nhật danh sách lỗi còn tồn tại.
-                  </p>
-                </section>
-                <p class="student-board-note">
-                  Phản hồi mẫu để xem bố cục, chưa gửi hoặc lưu vào hệ thống.
-                </p>
+              <div class="student-feedback-dialog__summary">
+                <h3>Kết quả kiểm thử phiên bản thử nghiệm</h3>
+                <p>Đã nộp lúc <time datetime="2026-10-22T08:00">08:00 ngày 22/10/2026</time></p>
               </div>
+              <section class="student-feedback-dialog__content" aria-labelledby="submission-feedback-5-content-title">
+                <h3 id="submission-feedback-5-content-title">Nội dung phản hồi</h3>
+                <p>Cần bổ sung kết quả kiểm thử các trường hợp biên và cập nhật danh sách lỗi còn tồn tại.</p>
+              </section>
               <footer>
-                <button command="close" commandfor="submission-feedback-5" type="button">
-                  Đóng
-                </button>
+                <button command="close" commandfor="submission-feedback-5" type="button">Đóng</button>
               </footer>
             </dialog>
-            <dialog aria-labelledby="submission-feedback-10-title" class="submission-dialog" id="submission-feedback-10">
+            <dialog class="submission-dialog student-feedback-dialog" id="submission-feedback-10" aria-labelledby="submission-feedback-10-title">
               <header>
-                <h2 id="submission-feedback-10-title">
-                  Phản hồi bài nộp
-                </h2>
-                <button class="submission-dialog__close" aria-label="Đóng hộp thoại phản hồi bài nộp" command="close" commandfor="submission-feedback-10" type="button">
-                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#student-submission-close-icon"></use></svg>
-                </button>
+                <h2 id="submission-feedback-10-title" tabindex="-1" autofocus>Xem phản hồi</h2>
               </header>
-              <div class="submission-dialog__body">
-                <h3>
-                  Khảo sát quy trình thư viện
-                </h3>
-                <dl>
-                  <dt>
-                    Tệp đã nộp
-                  </dt>
-                  <dd>
-                    Khao_sat.pdf
-                  </dd>
-                  <dt>
-                    Ngày nộp
-                  </dt>
-                  <dd>
-                    11/10/2026 · 14:00
-                  </dd>
-                </dl>
-                <section aria-labelledby="submission-feedback-10-content-title">
-                  <h3 id="submission-feedback-10-content-title">
-                    Nội dung phản hồi mẫu
-                  </h3>
-                  <p>
-                    Phản hồi mẫu: tài liệu đã được xem xét. Nhóm cần rà soát nội dung và hoàn thiện theo yêu cầu.
-                  </p>
-                </section>
-                <p class="student-board-note">
-                  Phản hồi mẫu để xem bố cục, chưa gửi hoặc lưu vào hệ thống.
-                </p>
+              <div class="student-feedback-dialog__summary">
+                <h3>Khảo sát quy trình thư viện</h3>
+                <p>Đã nộp lúc <time datetime="2026-10-11T14:00">14:00 ngày 11/10/2026</time></p>
               </div>
+              <section class="student-feedback-dialog__content" aria-labelledby="submission-feedback-10-content-title">
+                <h3 id="submission-feedback-10-content-title">Nội dung phản hồi</h3>
+                <p>Phản hồi mẫu: tài liệu đã được xem xét. Nhóm cần rà soát nội dung và hoàn thiện theo yêu cầu.</p>
+              </section>
               <footer>
-                <button command="close" commandfor="submission-feedback-10" type="button">
-                  Đóng
-                </button>
+                <button command="close" commandfor="submission-feedback-10" type="button">Đóng</button>
               </footer>
             </dialog>
-            <dialog aria-labelledby="submission-feedback-11-title" class="submission-dialog" id="submission-feedback-11">
+            <dialog class="submission-dialog student-feedback-dialog" id="submission-feedback-11" aria-labelledby="submission-feedback-11-title">
               <header>
-                <h2 id="submission-feedback-11-title">
-                  Phản hồi bài nộp
-                </h2>
-                <button class="submission-dialog__close" aria-label="Đóng hộp thoại phản hồi bài nộp" command="close" commandfor="submission-feedback-11" type="button">
-                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#student-submission-close-icon"></use></svg>
-                </button>
+                <h2 id="submission-feedback-11-title" tabindex="-1" autofocus>Xem phản hồi</h2>
               </header>
-              <div class="submission-dialog__body">
-                <h3>
-                  Phân tích yêu cầu người dùng
-                </h3>
-                <dl>
-                  <dt>
-                    Tệp đã nộp
-                  </dt>
-                  <dd>
-                    Yeu_cau.pdf
-                  </dd>
-                  <dt>
-                    Ngày nộp
-                  </dt>
-                  <dd>
-                    13/10/2026 · 16:30
-                  </dd>
-                </dl>
-                <section aria-labelledby="submission-feedback-11-content-title">
-                  <h3 id="submission-feedback-11-content-title">
-                    Nội dung phản hồi mẫu
-                  </h3>
-                  <p>
-                    Phản hồi mẫu: tài liệu đã được xem xét. Nhóm cần rà soát nội dung và hoàn thiện theo yêu cầu.
-                  </p>
-                </section>
-                <p class="student-board-note">
-                  Phản hồi mẫu để xem bố cục, chưa gửi hoặc lưu vào hệ thống.
-                </p>
+              <div class="student-feedback-dialog__summary">
+                <h3>Phân tích yêu cầu người dùng</h3>
+                <p>Đã nộp lúc <time datetime="2026-10-13T16:30">16:30 ngày 13/10/2026</time></p>
               </div>
+              <section class="student-feedback-dialog__content" aria-labelledby="submission-feedback-11-content-title">
+                <h3 id="submission-feedback-11-content-title">Nội dung phản hồi</h3>
+                <p>Phản hồi mẫu: tài liệu đã được xem xét. Nhóm cần rà soát nội dung và hoàn thiện theo yêu cầu.</p>
+              </section>
               <footer>
-                <button command="close" commandfor="submission-feedback-11" type="button">
-                  Đóng
-                </button>
+                <button command="close" commandfor="submission-feedback-11" type="button">Đóng</button>
               </footer>
             </dialog>
-            <dialog aria-labelledby="submission-feedback-12-title" class="submission-dialog" id="submission-feedback-12">
+            <dialog class="submission-dialog student-feedback-dialog" id="submission-feedback-12" aria-labelledby="submission-feedback-12-title">
               <header>
-                <h2 id="submission-feedback-12-title">
-                  Phản hồi bài nộp
-                </h2>
-                <button class="submission-dialog__close" aria-label="Đóng hộp thoại phản hồi bài nộp" command="close" commandfor="submission-feedback-12" type="button">
-                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#student-submission-close-icon"></use></svg>
-                </button>
+                <h2 id="submission-feedback-12-title" tabindex="-1" autofocus>Xem phản hồi</h2>
               </header>
-              <div class="submission-dialog__body">
-                <h3>
-                  Thiết kế sơ đồ use case
-                </h3>
-                <dl>
-                  <dt>
-                    Tệp đã nộp
-                  </dt>
-                  <dd>
-                    Use_case.pdf
-                  </dd>
-                  <dt>
-                    Ngày nộp
-                  </dt>
-                  <dd>
-                    15/10/2026 · 09:20
-                  </dd>
-                </dl>
-                <section aria-labelledby="submission-feedback-12-content-title">
-                  <h3 id="submission-feedback-12-content-title">
-                    Nội dung phản hồi mẫu
-                  </h3>
-                  <p>
-                    Phản hồi mẫu: tài liệu đã được xem xét. Nhóm cần rà soát nội dung và hoàn thiện theo yêu cầu.
-                  </p>
-                </section>
-                <p class="student-board-note">
-                  Phản hồi mẫu để xem bố cục, chưa gửi hoặc lưu vào hệ thống.
-                </p>
+              <div class="student-feedback-dialog__summary">
+                <h3>Thiết kế sơ đồ use case</h3>
+                <p>Đã nộp lúc <time datetime="2026-10-15T09:20">09:20 ngày 15/10/2026</time></p>
               </div>
+              <section class="student-feedback-dialog__content" aria-labelledby="submission-feedback-12-content-title">
+                <h3 id="submission-feedback-12-content-title">Nội dung phản hồi</h3>
+                <p>Phản hồi mẫu: tài liệu đã được xem xét. Nhóm cần rà soát nội dung và hoàn thiện theo yêu cầu.</p>
+              </section>
               <footer>
-                <button command="close" commandfor="submission-feedback-12" type="button">
-                  Đóng
-                </button>
+                <button command="close" commandfor="submission-feedback-12" type="button">Đóng</button>
               </footer>
             </dialog>
-            <dialog aria-labelledby="submission-feedback-13-title" class="submission-dialog" id="submission-feedback-13">
+            <dialog class="submission-dialog student-feedback-dialog" id="submission-feedback-13" aria-labelledby="submission-feedback-13-title">
               <header>
-                <h2 id="submission-feedback-13-title">
-                  Phản hồi bài nộp
-                </h2>
-                <button class="submission-dialog__close" aria-label="Đóng hộp thoại phản hồi bài nộp" command="close" commandfor="submission-feedback-13" type="button">
-                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#student-submission-close-icon"></use></svg>
-                </button>
+                <h2 id="submission-feedback-13-title" tabindex="-1" autofocus>Xem phản hồi</h2>
               </header>
-              <div class="submission-dialog__body">
-                <h3>
-                  Kế hoạch phân công công việc
-                </h3>
-                <dl>
-                  <dt>
-                    Tệp đã nộp
-                  </dt>
-                  <dd>
-                    Ke_hoach.pdf
-                  </dd>
-                  <dt>
-                    Ngày nộp
-                  </dt>
-                  <dd>
-                    17/10/2026 · 20:00
-                  </dd>
-                </dl>
-                <section aria-labelledby="submission-feedback-13-content-title">
-                  <h3 id="submission-feedback-13-content-title">
-                    Nội dung phản hồi mẫu
-                  </h3>
-                  <p>
-                    Phản hồi mẫu: tài liệu đã được xem xét. Nhóm cần rà soát nội dung và hoàn thiện theo yêu cầu.
-                  </p>
-                </section>
-                <p class="student-board-note">
-                  Phản hồi mẫu để xem bố cục, chưa gửi hoặc lưu vào hệ thống.
-                </p>
+              <div class="student-feedback-dialog__summary">
+                <h3>Kế hoạch phân công công việc</h3>
+                <p>Đã nộp lúc <time datetime="2026-10-17T20:00">20:00 ngày 17/10/2026</time></p>
               </div>
+              <section class="student-feedback-dialog__content" aria-labelledby="submission-feedback-13-content-title">
+                <h3 id="submission-feedback-13-content-title">Nội dung phản hồi</h3>
+                <p>Phản hồi mẫu: tài liệu đã được xem xét. Nhóm cần rà soát nội dung và hoàn thiện theo yêu cầu.</p>
+              </section>
               <footer>
-                <button command="close" commandfor="submission-feedback-13" type="button">
-                  Đóng
-                </button>
+                <button command="close" commandfor="submission-feedback-13" type="button">Đóng</button>
               </footer>
             </dialog>
-            <dialog aria-labelledby="submission-feedback-14-title" class="submission-dialog" id="submission-feedback-14">
+            <dialog class="submission-dialog student-feedback-dialog" id="submission-feedback-14" aria-labelledby="submission-feedback-14-title">
               <header>
-                <h2 id="submission-feedback-14-title">
-                  Phản hồi bài nộp
-                </h2>
-                <button class="submission-dialog__close" aria-label="Đóng hộp thoại phản hồi bài nộp" command="close" commandfor="submission-feedback-14" type="button">
-                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#student-submission-close-icon"></use></svg>
-                </button>
+                <h2 id="submission-feedback-14-title" tabindex="-1" autofocus>Xem phản hồi</h2>
               </header>
-              <div class="submission-dialog__body">
-                <h3>
-                  Biên bản họp nhóm
-                </h3>
-                <dl>
-                  <dt>
-                    Tệp đã nộp
-                  </dt>
-                  <dd>
-                    Hop_nhom.pdf
-                  </dd>
-                  <dt>
-                    Ngày nộp
-                  </dt>
-                  <dd>
-                    19/10/2026 · 17:00
-                  </dd>
-                </dl>
-                <section aria-labelledby="submission-feedback-14-content-title">
-                  <h3 id="submission-feedback-14-content-title">
-                    Nội dung phản hồi mẫu
-                  </h3>
-                  <p>
-                    Phản hồi mẫu: tài liệu đã được xem xét. Nhóm cần rà soát nội dung và hoàn thiện theo yêu cầu.
-                  </p>
-                </section>
-                <p class="student-board-note">
-                  Phản hồi mẫu để xem bố cục, chưa gửi hoặc lưu vào hệ thống.
-                </p>
+              <div class="student-feedback-dialog__summary">
+                <h3>Biên bản họp nhóm</h3>
+                <p>Đã nộp lúc <time datetime="2026-10-19T17:00">17:00 ngày 19/10/2026</time></p>
               </div>
+              <section class="student-feedback-dialog__content" aria-labelledby="submission-feedback-14-content-title">
+                <h3 id="submission-feedback-14-content-title">Nội dung phản hồi</h3>
+                <p>Phản hồi mẫu: tài liệu đã được xem xét. Nhóm cần rà soát nội dung và hoàn thiện theo yêu cầu.</p>
+              </section>
               <footer>
-                <button command="close" commandfor="submission-feedback-14" type="button">
-                  Đóng
-                </button>
+                <button command="close" commandfor="submission-feedback-14" type="button">Đóng</button>
               </footer>
             </dialog>
           </div>
@@ -4374,214 +4130,99 @@
               </footer>
             </dialog>
             <dialog class="submission-dialog submission-upload-dialog" id="submission-upload-5" data-upload-requirement="requirement-5"></dialog>
-            <dialog aria-labelledby="submission-feedback-1-title" class="submission-dialog" id="submission-feedback-1">
-              <header class="submission-dialog__header">
-                <h2 id="submission-feedback-1-title">
-                  Phản hồi bài nộp
-                </h2>
-                <button class="submission-dialog__close" aria-label="Đóng hộp thoại phản hồi bài nộp" command="close" commandfor="submission-feedback-1" type="button">
-                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#student-submission-close-icon"></use></svg>
-                </button>
+            <dialog class="submission-dialog student-feedback-dialog" id="submission-feedback-1" aria-labelledby="submission-feedback-1-title">
+              <header>
+                <h2 id="submission-feedback-1-title" tabindex="-1" autofocus>Xem phản hồi</h2>
               </header>
-              <h3 class="student-dialog-context">
-                Đề cương
-              </h3>
-              <div class="submission-dialog__body">
-                <dl>
-                  <dt>
-                    Giảng viên
-                  </dt>
-                  <dd>
-                    Trần Thị Bình
-                  </dd>
-                  <dt>
-                    Ngày phản hồi
-                  </dt>
-                  <dd>
-                    15/11/2026 - 23:59
-                  </dd>
-                </dl>
-                <section aria-labelledby="submission-feedback-1-content-title">
-                  <h3 id="submission-feedback-1-content-title">
-                    Nội dung phản hồi
-                  </h3>
-                  <p>
-                    Nhóm đã trình bày được các chức năng chính. Cần bổ sung sơ đồ cơ sở dữ liệu, làm rõ luồng xử lý và chỉnh sửa bố cục báo cáo.
-                  </p>
-                </section>
+              <div class="student-feedback-dialog__summary">
+                <h3>Đề cương</h3>
+                <p>Đã nộp lúc <time datetime="2026-10-19T20:00">20:00 ngày 19/10/2026</time></p>
               </div>
+              <section class="student-feedback-dialog__content" aria-labelledby="submission-feedback-1-content-title">
+                <h3 id="submission-feedback-1-content-title">Nội dung phản hồi</h3>
+                <p>Nhóm đã trình bày được các chức năng chính. Cần bổ sung sơ đồ cơ sở dữ liệu, làm rõ luồng xử lý và chỉnh sửa bố cục báo cáo.</p>
+              </section>
+                <dl class="student-feedback-dialog__details">
+                  <div><dt>Giảng viên</dt><dd>Trần Thị Bình</dd></div>
+                </dl>
               <footer>
-                <button command="close" commandfor="submission-feedback-1" type="button">
-                  Đóng
-                </button>
+                <button command="close" commandfor="submission-feedback-1" type="button">Đóng</button>
               </footer>
             </dialog>
-            <dialog aria-labelledby="submission-feedback-2-title" class="submission-dialog" id="submission-feedback-2">
-              <header class="submission-dialog__header">
-                <h2 id="submission-feedback-2-title">
-                  Phản hồi bài nộp
-                </h2>
-                <button class="submission-dialog__close" aria-label="Đóng hộp thoại phản hồi bài nộp" command="close" commandfor="submission-feedback-2" type="button">
-                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#student-submission-close-icon"></use></svg>
-                </button>
+            <dialog class="submission-dialog student-feedback-dialog" id="submission-feedback-2" aria-labelledby="submission-feedback-2-title">
+              <header>
+                <h2 id="submission-feedback-2-title" tabindex="-1" autofocus>Xem phản hồi</h2>
               </header>
-              <h3 class="student-dialog-context">
-                Đề cương
-              </h3>
-              <div class="submission-dialog__body">
-                <dl>
-                  <dt>
-                    Giảng viên
-                  </dt>
-                  <dd>
-                    Trần Thị Bình
-                  </dd>
-                  <dt>
-                    Ngày phản hồi
-                  </dt>
-                  <dd>
-                    15/11/2026 - 23:59
-                  </dd>
-                </dl>
-                <section aria-labelledby="submission-feedback-2-content-title">
-                  <h3 id="submission-feedback-2-content-title">
-                    Nội dung phản hồi
-                  </h3>
-                  <p>
-                    Nhóm đã trình bày được các chức năng chính. Cần bổ sung sơ đồ cơ sở dữ liệu, làm rõ luồng xử lý và chỉnh sửa bố cục báo cáo.
-                  </p>
-                </section>
+              <div class="student-feedback-dialog__summary">
+                <h3>Đề cương</h3>
+                <p>Đã nộp lúc <time datetime="2026-10-21T20:00">20:00 ngày 21/10/2026</time></p>
               </div>
+              <section class="student-feedback-dialog__content" aria-labelledby="submission-feedback-2-content-title">
+                <h3 id="submission-feedback-2-content-title">Nội dung phản hồi</h3>
+                <p>Nhóm đã trình bày được các chức năng chính. Cần bổ sung sơ đồ cơ sở dữ liệu, làm rõ luồng xử lý và chỉnh sửa bố cục báo cáo.</p>
+              </section>
+                <dl class="student-feedback-dialog__details">
+                  <div><dt>Giảng viên</dt><dd>Trần Thị Bình</dd></div>
+                </dl>
               <footer>
-                <button command="close" commandfor="submission-feedback-2" type="button">
-                  Đóng
-                </button>
+                <button command="close" commandfor="submission-feedback-2" type="button">Đóng</button>
               </footer>
             </dialog>
-            <dialog aria-labelledby="submission-feedback-3-title" class="submission-dialog" id="submission-feedback-3">
-              <header class="submission-dialog__header">
-                <h2 id="submission-feedback-3-title">
-                  Phản hồi bài nộp
-                </h2>
-                <button class="submission-dialog__close" aria-label="Đóng hộp thoại phản hồi bài nộp" command="close" commandfor="submission-feedback-3" type="button">
-                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#student-submission-close-icon"></use></svg>
-                </button>
+            <dialog class="submission-dialog student-feedback-dialog" id="submission-feedback-3" aria-labelledby="submission-feedback-3-title">
+              <header>
+                <h2 id="submission-feedback-3-title" tabindex="-1" autofocus>Xem phản hồi</h2>
               </header>
-              <h3 class="student-dialog-context">
-                Báo cáo tuần 1
-              </h3>
-              <div class="submission-dialog__body">
-                <dl>
-                  <dt>
-                    Giảng viên
-                  </dt>
-                  <dd>
-                    Trần Thị Bình
-                  </dd>
-                  <dt>
-                    Ngày phản hồi
-                  </dt>
-                  <dd>
-                    15/11/2026 - 23:59
-                  </dd>
-                </dl>
-                <section aria-labelledby="submission-feedback-3-content-title">
-                  <h3 id="submission-feedback-3-content-title">
-                    Nội dung phản hồi
-                  </h3>
-                  <p>
-                    Nhóm đã trình bày được các chức năng chính. Cần bổ sung sơ đồ cơ sở dữ liệu, làm rõ luồng xử lý và chỉnh sửa bố cục báo cáo.
-                  </p>
-                </section>
+              <div class="student-feedback-dialog__summary">
+                <h3>Báo cáo tuần 1</h3>
+                <p>Đã nộp lúc <time datetime="2026-10-24T20:00">20:00 ngày 24/10/2026</time></p>
               </div>
+              <section class="student-feedback-dialog__content" aria-labelledby="submission-feedback-3-content-title">
+                <h3 id="submission-feedback-3-content-title">Nội dung phản hồi</h3>
+                <p>Nhóm đã trình bày được các chức năng chính. Cần bổ sung sơ đồ cơ sở dữ liệu, làm rõ luồng xử lý và chỉnh sửa bố cục báo cáo.</p>
+              </section>
+                <dl class="student-feedback-dialog__details">
+                  <div><dt>Giảng viên</dt><dd>Trần Thị Bình</dd></div>
+                </dl>
               <footer>
-                <button command="close" commandfor="submission-feedback-3" type="button">
-                  Đóng
-                </button>
+                <button command="close" commandfor="submission-feedback-3" type="button">Đóng</button>
               </footer>
             </dialog>
-            <dialog aria-labelledby="submission-feedback-4-title" class="submission-dialog" id="submission-feedback-4">
-              <header class="submission-dialog__header">
-                <h2 id="submission-feedback-4-title">
-                  Phản hồi bài nộp
-                </h2>
-                <button class="submission-dialog__close" aria-label="Đóng hộp thoại phản hồi bài nộp" command="close" commandfor="submission-feedback-4" type="button">
-                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#student-submission-close-icon"></use></svg>
-                </button>
+            <dialog class="submission-dialog student-feedback-dialog" id="submission-feedback-4" aria-labelledby="submission-feedback-4-title">
+              <header>
+                <h2 id="submission-feedback-4-title" tabindex="-1" autofocus>Xem phản hồi</h2>
               </header>
-              <h3 class="student-dialog-context">
-                Báo cáo tuần 1
-              </h3>
-              <div class="submission-dialog__body">
-                <dl>
-                  <dt>
-                    Giảng viên
-                  </dt>
-                  <dd>
-                    Trần Thị Bình
-                  </dd>
-                  <dt>
-                    Ngày phản hồi
-                  </dt>
-                  <dd>
-                    15/11/2026 - 23:59
-                  </dd>
-                </dl>
-                <section aria-labelledby="submission-feedback-4-content-title">
-                  <h3 id="submission-feedback-4-content-title">
-                    Nội dung phản hồi
-                  </h3>
-                  <p>
-                    Nhóm đã trình bày được các chức năng chính. Cần bổ sung sơ đồ cơ sở dữ liệu, làm rõ luồng xử lý và chỉnh sửa bố cục báo cáo.
-                  </p>
-                </section>
+              <div class="student-feedback-dialog__summary">
+                <h3>Báo cáo tuần 1</h3>
+                <p>Đã nộp lúc <time datetime="2026-10-27T20:00">20:00 ngày 27/10/2026</time></p>
               </div>
+              <section class="student-feedback-dialog__content" aria-labelledby="submission-feedback-4-content-title">
+                <h3 id="submission-feedback-4-content-title">Nội dung phản hồi</h3>
+                <p>Nhóm đã trình bày được các chức năng chính. Cần bổ sung sơ đồ cơ sở dữ liệu, làm rõ luồng xử lý và chỉnh sửa bố cục báo cáo.</p>
+              </section>
+                <dl class="student-feedback-dialog__details">
+                  <div><dt>Giảng viên</dt><dd>Trần Thị Bình</dd></div>
+                </dl>
               <footer>
-                <button command="close" commandfor="submission-feedback-4" type="button">
-                  Đóng
-                </button>
+                <button command="close" commandfor="submission-feedback-4" type="button">Đóng</button>
               </footer>
             </dialog>
-            <dialog aria-labelledby="submission-feedback-5-title" class="submission-dialog" id="submission-feedback-5">
-              <header class="submission-dialog__header">
-                <h2 id="submission-feedback-5-title">
-                  Phản hồi bài nộp
-                </h2>
-                <button class="submission-dialog__close" aria-label="Đóng hộp thoại phản hồi bài nộp" command="close" commandfor="submission-feedback-5" type="button">
-                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#student-submission-close-icon"></use></svg>
-                </button>
+            <dialog class="submission-dialog student-feedback-dialog" id="submission-feedback-5" aria-labelledby="submission-feedback-5-title">
+              <header>
+                <h2 id="submission-feedback-5-title" tabindex="-1" autofocus>Xem phản hồi</h2>
               </header>
-              <h3 class="student-dialog-context">
-                Báo cáo giữa kỳ
-              </h3>
-              <div class="submission-dialog__body">
-                <dl>
-                  <dt>
-                    Giảng viên
-                  </dt>
-                  <dd>
-                    Trần Thị Bình
-                  </dd>
-                  <dt>
-                    Ngày phản hồi
-                  </dt>
-                  <dd>
-                    15/11/2026 - 23:59
-                  </dd>
-                </dl>
-                <section aria-labelledby="submission-feedback-5-content-title">
-                  <h3 id="submission-feedback-5-content-title">
-                    Nội dung phản hồi
-                  </h3>
-                  <p>
-                    Nhóm đã trình bày được các chức năng chính. Cần bổ sung sơ đồ cơ sở dữ liệu, làm rõ luồng xử lý và chỉnh sửa bố cục báo cáo.
-                  </p>
-                </section>
+              <div class="student-feedback-dialog__summary">
+                <h3>Báo cáo giữa kỳ</h3>
+                <p>Đã nộp lúc <time datetime="2026-10-28T20:00">20:00 ngày 28/10/2026</time></p>
               </div>
+              <section class="student-feedback-dialog__content" aria-labelledby="submission-feedback-5-content-title">
+                <h3 id="submission-feedback-5-content-title">Nội dung phản hồi</h3>
+                <p>Nhóm đã trình bày được các chức năng chính. Cần bổ sung sơ đồ cơ sở dữ liệu, làm rõ luồng xử lý và chỉnh sửa bố cục báo cáo.</p>
+              </section>
+                <dl class="student-feedback-dialog__details">
+                  <div><dt>Giảng viên</dt><dd>Trần Thị Bình</dd></div>
+                </dl>
               <footer>
-                <button command="close" commandfor="submission-feedback-5" type="button">
-                  Đóng
-                </button>
+                <button command="close" commandfor="submission-feedback-5" type="button">Đóng</button>
               </footer>
             </dialog>
           </div>
@@ -4709,6 +4350,6 @@
     <script src="../../assets/js/pages/student/topic-detail/submission-upload.js" defer></script>
     <script src="../../assets/js/shared/submission-file-list.js" defer></script>
     <script src="../../assets/js/pages/student/topic-detail/submission-zip.js" defer></script>
-    <script src="../../assets/js/pages/student/topic-detail/submissions.js?v=20261124-rebase" defer></script>
+    <script src="../../assets/js/pages/student/topic-detail/submissions.js?v=20261124-completed-actions" defer></script>
   </body>
 </html>

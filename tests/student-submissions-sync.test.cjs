@@ -24,7 +24,7 @@ function createTab(storage) {
   return tab.IE104;
 }
 
-test('DA005 exposes the same sample requests and submissions to both roles, without restoring deleted requests', () => {
+test('DA005 shares submissions across roles and locks feedback writes after completion', async () => {
   const storage = new Map();
   const teacher = createTab(storage);
   const student = createTab(storage);
@@ -37,7 +37,21 @@ test('DA005 exposes the same sample requests and submissions to both roles, with
   assert.equal(initial.submissions.length, 18);
   assert.deepEqual(ids(forStudent().requirements), ids(initial.requirements));
   assert.deepEqual(ids(forStudent().submissions), ids(initial.submissions));
+  assert.equal(initial.project.status, 'hoan-thanh');
+  assert.equal(initial.canManageRequirements, false);
+  assert.equal(forStudent().canUpload, false);
+  assert.throws(() => teaching.deleteRequirement(projectId, 'requirement-3', initial.revision), /không đang thực hiện/);
+  for (const id of ['submission-1', 'submission-2']) {
+    assert.throws(() => teaching.saveFeedback(projectId, id, 'Thử thay đổi phản hồi.', initial.revision), /Đề tài đã hoàn thành/);
+  }
+  await assert.rejects(teacher.services.studentSubmissions.reviewUpload(
+    projectId, { requirementId: 'requirement-3' }, 'Thử phản hồi cho tệp đã nộp.',
+  ), /Đề tài đã hoàn thành/);
+  assert.equal(teaching.getState(projectId).revision, initial.revision);
+  assert.equal(teaching.getSubmission(projectId, 'submission-1').feedback,
+    initial.submissions.find(item => item.id === 'submission-1').feedback);
 
+  teacher.data.myTopics.find(topic => topic.id === projectId).status = 'dang-thuc-hien';
   const next = teaching.deleteRequirement(projectId, 'requirement-3', initial.revision);
   assert.equal(forStudent().requirements.some(item => item.id === 'requirement-3'), false);
   assert.equal(teaching.getState(projectId).requirements.filter(item => item.id === 'requirement-3').length, 1);
@@ -53,17 +67,58 @@ test('publishes the current assessment directly and exposes the result to the st
   const { revision } = teaching.getState(projectId);
   const assessment = { scores: { TC001: '8', TC002: '9', TC003: '7' }, feedback: 'Nhóm đã hoàn thành báo cáo.' };
 
-  assert.equal(evaluations.getResult(projectId).status, 'unpublished');
+  assert.equal(evaluations.getResult(projectId).score, 8.4);
   assert.throws(() => teaching.publish(projectId, { ...assessment, scores: { ...assessment.scores, TC001: '11' } }, revision));
-  assert.equal(evaluations.getResult(projectId).status, 'unpublished');
+  assert.equal(evaluations.getResult(projectId).score, 8.4);
   const published = teaching.publish(projectId, assessment, revision);
   assert.equal(published.revision, revision + 1);
   assert.equal(published.draft, null);
   assert.throws(() => teaching.publish(projectId, assessment, revision));
   const result = evaluations.getResult(projectId);
   assert.equal(result.status, 'published');
-  assert.equal(result.score, 8.2);
+  assert.equal(result.score, 8.1);
   assert.equal(result.feedback, assessment.feedback);
+});
+
+test('publishing an assessment preserves, replaces, or removes its attachment across roles', () => {
+  const storage = new Map();
+  const { teaching } = createTab(storage).services;
+  const { evaluations } = createTab(storage).services;
+  const projectId = 'DA005';
+  const assessment = { scores: { TC001: '8', TC002: '9', TC003: '7' }, feedback: 'Nhóm đã hoàn thành báo cáo.' };
+  const initial = teaching.getState(projectId);
+  const file = { name: 'Phiếu đánh giá.pdf', fileKey: 'uploaded-assessment', size: 42 };
+
+  assert.equal(evaluations.getResult(projectId).attachment.name, 'Phieu_danh_gia.pdf');
+  assert.throws(() => teaching.publish(projectId, { ...assessment, attachment: { ...file, size: 0 } }, initial.revision), /không hợp lệ/);
+  const attached = teaching.publish(projectId, { ...assessment, attachment: file }, initial.revision);
+  const readAttachment = () => evaluations.getResult(projectId).attachment;
+  assert.equal(readAttachment().fileKey, file.fileKey);
+  assert.equal(readAttachment().name, file.name);
+  assert.equal(readAttachment().size, file.size);
+  assert.throws(() => teaching.publish(projectId, { ...assessment, attachment: null }, initial.revision), /đã thay đổi/);
+  const preserved = teaching.publish(projectId, assessment, attached.revision);
+  assert.equal(readAttachment().fileKey, file.fileKey);
+  const removed = teaching.publish(projectId, { ...assessment, attachment: null }, preserved.revision);
+  assert.equal(readAttachment(), null);
+  teaching.publish(projectId, assessment, removed.revision);
+  assert.equal(readAttachment(), null);
+});
+
+test('an existing DA005 evaluation keeps its original rubric and takes precedence over the sample', () => {
+  const storage = new Map();
+  const projectId = 'DA005';
+  const prior = createTab(storage);
+  prior.data.projectEvaluations = prior.data.projectEvaluations.filter(item => item.projectId !== projectId);
+  const assessment = { scores: { TC001: '8', TC002: '9', TC003: '7' }, feedback: 'Nhận xét đã công bố.' };
+  prior.services.teaching.publish(projectId, assessment, prior.services.teaching.getState(projectId).revision);
+
+  const { teaching, evaluations } = createTab(storage).services;
+  const state = teaching.getState(projectId);
+  assert.equal(state.publication.score, 8.2);
+  assert.deepEqual(Array.from(state.criteria, item => item.weight), [40, 40, 20]);
+  assert.equal(evaluations.getResult(projectId).feedback, assessment.feedback);
+  assert.equal(teaching.publish(projectId, assessment, state.revision).publication.score, 8.2);
 });
 
 test('yêu cầu lưu phía giảng viên cập nhật ở bài nộp và lịch theo giờ Việt Nam', async () => {
@@ -110,6 +165,7 @@ test('yêu cầu lưu phía giảng viên cập nhật ở bài nộp và lịch
 test('nhãn thời hạn dùng giờ gửi của từng bài và lần gửi gần nhất cho yêu cầu', () => {
   const student = createTab(new Map());
   const projectId = 'DA005';
+  student.data.myTopics.find(topic => topic.id === projectId).status = 'dang-thuc-hien';
   const deadline = '2026-11-20T17:00:00+07:00';
   const requirement = { id: 'req', title: 'Báo cáo', content: '', deadline, locked: false };
   const file = { title: 'Báo cáo', fileName: 'Bao_cao.pdf', feedback: '', feedbackHistory: [] };

@@ -125,10 +125,10 @@ function setup(protocol) {
 test('demo counts, chart slices and on-chart percentages agree', () => {
   const { context, counts, legend, segments, chartLabels } = setup();
   const pending = context.IE104Proposals.getAll().filter(record => record.status === 'pending').length;
-  assert.deepEqual(Object.values(counts).map(node => node.textContent), [7, 5, 2, pending]);
-  assert.deepEqual(legend.map(row => row.querySelector('dd').textContent), [2, 2, 1, 2]);
+  assert.deepEqual(Object.values(counts).map(node => node.textContent), [7, 5, 1, pending]);
+  assert.deepEqual(legend.map(row => row.querySelector('dd').textContent), [1, 2, 2, 2]);
   assert.deepEqual(chartLabels.querySelectorAll('.topic-status__percent')
-    .map(label => parseFloat(label.textContent.replace(',', '.'))), [28.6, 28.6, 14.3, 28.6]);
+    .map(label => parseFloat(label.textContent.replace(',', '.'))), [14.3, 28.6, 28.6, 28.6]);
   const circumference = segments.reduce((sum, segment) => sum + parseFloat(segment.attributes['stroke-dasharray']), 0);
   assert.ok(Math.abs(circumference - 100) < 1e-8);
 });
@@ -151,7 +151,7 @@ test('approval refreshes counts and chart without duplicating labels', async () 
   const initialPending = pending.children.length;
   await context.IE104Proposals.decide(record.id, 'approved');
   assert.equal(counts.pending.textContent, initialPending - 1);
-  assert.equal(counts.supervised.textContent, 3);
+  assert.equal(counts.supervised.textContent, 2);
   assert.equal(counts.total.textContent, 8);
   assert.equal(pending.children.length, initialPending - 1);
   const approvedCard = progress.children.find(card => card.querySelector('a').href.includes('ma=' + record.id));
@@ -159,7 +159,7 @@ test('approval refreshes counts and chart without duplicating labels', async () 
   assert.ok(approvedCard.querySelectorAll('p').some(node => node.textContent === 'Chưa có dữ liệu tiến độ.'));
   const labels = chartLabels.querySelectorAll('.topic-status__percent');
   assert.equal(labels.length, 4);
-  assert.equal(parseFloat(labels[0].textContent.replace(',', '.')), 37.5);
+  assert.equal(parseFloat(labels[0].textContent.replace(',', '.')), 25);
 });
 
 test('empty data hides the chart and shows separate empty messages', async () => {

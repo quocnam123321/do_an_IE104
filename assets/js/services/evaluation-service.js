@@ -25,14 +25,19 @@
     if (!hasText(record.evaluatedAt) || !/^\d{4}-\d{2}-\d{2}$/.test(record.evaluatedAt)) invalid();
     const date = new Date(`${record.evaluatedAt}T00:00:00.000Z`);
     if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== record.evaluatedAt) invalid();
-    if (record.attachment !== null && (!record.attachment || !hasText(record.attachment.name))) invalid();
-    const file = record.attachment?.assetFile;
-    const assetFile = typeof file === 'string' && /^[a-z0-9][a-z0-9._-]*$/i.test(file) ? file : null;
+    const file = record.attachment;
+    if (file != null && !hasText(file.name)) invalid();
+    const assetFile = typeof file?.assetFile === 'string' && /^[a-z0-9][a-z0-9._-]*$/i.test(file.assetFile) ? file.assetFile : null;
+    const attachment = file ? { name: file.name, assetFile } : null;
+    if (attachment && hasText(file.fileKey) && Number.isSafeInteger(file.size) && file.size > 0) {
+      attachment.fileKey = file.fileKey;
+      attachment.size = file.size;
+    }
     return {
       projectId, groupName, status: 'published', score: record.score, resultLabel: record.resultLabel,
       criteria: record.criteria.map(item => ({ id: item.id, title: item.title, weight: item.weight, score: item.score, comment: item.comment })),
       lecturerName: record.lecturerName, evaluatedAt: record.evaluatedAt, feedback: record.feedback,
-      attachment: record.attachment ? { name: record.attachment.name, assetFile } : null,
+      attachment,
     };
   }
 

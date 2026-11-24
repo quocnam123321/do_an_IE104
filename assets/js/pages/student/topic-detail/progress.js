@@ -60,7 +60,9 @@
     const assignees = state.team.members.filter(member => codes.has(member.code));
     fillDetails(detailDialog, task, assignees.map(member => member.name).join(', '));
 
-    editDetailButton.hidden = !service.getPermissions(state).manage;
+    const { manage } = service.getPermissions(state);
+    editDetailButton.disabled = !manage;
+    editDetailButton.hidden = !manage && state.team.project.status !== 'hoan-thanh';
     detailActions.hidden = editDetailButton.hidden;
   }
 
@@ -128,7 +130,7 @@
           const task = state?.tasks.find(item => item.id === pending.taskId);
           if (task) {
             renderDetail(task);
-            const target = editDetailButton.hidden ? detailDialog.querySelector('.workflow-dialog__close') : editDetailButton;
+            const target = editDetailButton.disabled ? detailDialog.querySelector('.workflow-dialog__close') : editDetailButton;
             target.focus({ preventScroll: true });
           } else detailDialog.close();
         } else focusTask(pending.taskId);

@@ -4,10 +4,13 @@
   const dialogs = { close:document.getElementById('close-registration'), open:document.getElementById('reopen-registration') };
   const status = document.createElement('p'); status.setAttribute('role','status'); status.className = 'topic-editor-status'; status.tabIndex = -1;
   document.querySelector('.request-detail__actions')?.before(status);
-  const deadline = document.createElement('input'); deadline.type = 'datetime-local'; deadline.id = 'registration-reopen-deadline'; deadline.required = true;
-  const label = document.createElement('label'); label.htmlFor = deadline.id; label.textContent = 'Hạn đăng ký mới (giờ Việt Nam)';
-  const hint = document.createElement('p'); hint.textContent = 'Chọn hạn còn hiệu lực. Thời điểm mở đã cấu hình vẫn được giữ.';
-  dialogs.open.querySelector('form').before(label,deadline,hint);
+  const deadline = document.getElementById('registration-reopen-deadline');
+  const datePicker = app.ui?.proposalDatePicker;
+  datePicker?.enhanceDate(deadline, { timeZone: 'Asia/Ho_Chi_Minh', preferAbove: true });
+  const setDeadlineValidity = message => {
+    if (globalThis.IE104Language) globalThis.IE104Language.setCustomValidity(deadline, message);
+    else deadline.setCustomValidity(message);
+  };
   let pending = null; let busy = false;
   const describe = () => {
     try {
@@ -18,15 +21,22 @@
         return;
       }
       const state = app.services.publishedTopics.availability(topic);
-      status.textContent = `Tiếp nhận đăng ký: ${state.label}.${state.allowed ? '' : ` ${state.reason}`}`;
+      status.textContent = state.allowed ? '' : `Tiếp nhận đăng ký: ${state.label}. ${state.reason}`;
     }
     catch (failure) { status.textContent = failure.message; }
   };
   describe();
   window.addEventListener('storage',event => { if ([app.services.lecturerTopicRepository.key,null].includes(event.key)) describe(); });
   for (const [action,dialog] of Object.entries(dialogs)) {
-    const button = dialog.querySelector('button[type="button"]'); button.disabled = false; button.removeAttribute('title');
-    const error = document.createElement('p'); error.setAttribute('role','alert'); error.tabIndex = -1; error.className = 'topic-editor-error'; error.hidden = true; dialog.querySelector('form').before(error);
+    const button = dialog.querySelector('[data-registration-confirm]'); button.disabled = false; button.removeAttribute('title');
+    const error = dialog.querySelector('[data-registration-error]');
+    const form = button.form;
+    if (action === 'open') {
+      form.addEventListener('input', () => {
+        setDeadlineValidity('');
+        error.hidden = true;
+      });
+    }
     dialog.addEventListener('close',() => { if (!busy) pending = null; });
     dialog.addEventListener('cancel',event => { if (busy) event.preventDefault(); });
     dialog.addEventListener('keydown',event => {
@@ -35,14 +45,21 @@
       const target = event.shiftKey && document.activeElement === controls[0] ? controls.at(-1) : !event.shiftKey && document.activeElement === controls.at(-1) ? controls[0] : null;
       if (target) { event.preventDefault(); target.focus({preventScroll:true}); }
     });
-    button.addEventListener('click',async () => {
+    form.addEventListener('submit',async event => {
+      event.preventDefault();
       if (!pending || busy || pending.action !== action) return;
+      const value = action === 'open' ? datePicker?.read(deadline) ?? deadline.value : '';
+      if (action === 'open' && !value) {
+        setDeadlineValidity('Nhập ngày và giờ hợp lệ.');
+        deadline.reportValidity();
+        return;
+      }
       busy = true; button.disabled = true; error.hidden = true;
       const controls = [...dialog.querySelectorAll('button,input')].map(node => [node,node.disabled]);
       controls.forEach(([node]) => { node.disabled = true; });
       try {
         const snapshot = pending;
-        const commit = () => app.services.lecturerTopicEditor.setRegistration(snapshot.id,action === 'open',deadline.value,snapshot.revision,snapshot.ownerId);
+        const commit = () => app.services.lecturerTopicEditor.setRegistration(snapshot.id,action === 'open',value,snapshot.revision,snapshot.ownerId);
         if (navigator.locks?.request) await navigator.locks.request(app.services.lecturerTopicRepository.key,commit); else commit();
         dialog.close(); pending = null;
         document.dispatchEvent(new Event('ie104:lecturer-topic-state-changed'));
@@ -58,7 +75,13 @@
         const topic = app.services.lecturerTopics.get('created',document.body.dataset.topicId);
         pending = { id:topic.id,revision:topic.revision || 0,ownerId:app.data.currentLecturer.id,action };
         dialog.querySelector('strong').textContent = topic.title; error.hidden = true;
-        deadline.value = topic.registration?.deadline ? new Date(Date.parse(topic.registration.deadline)+7*3600000).toISOString().slice(0,16) : '';
+        if (action === 'open') {
+          const timestamp = Date.parse(topic.registration?.deadline);
+          const value = Number.isFinite(timestamp) ? new Date(timestamp + 7 * 3600000).toISOString().slice(0, 16) : '';
+          setDeadlineValidity('');
+          if (datePicker) datePicker.fill(deadline, value);
+          else deadline.value = value;
+        }
         dialog.showModal();
       } catch (failure) { status.textContent = failure.message; }
     });

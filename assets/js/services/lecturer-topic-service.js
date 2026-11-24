@@ -3,6 +3,16 @@
   app.services ||= {};
   const clone = value => JSON.parse(JSON.stringify(value));
   const actorId = () => app.data.currentLecturer?.id;
+  const excludedCreatedTopicIds = new Set([
+    'DA001', 'DA002', 'DA004', 'DA005',
+    'ISE-004', 'ISE-006', 'ISE-007',
+    'ISEDAMH-007', 'ISEDAMH-008', 'ISEDAMH-012',
+  ]);
+  const isListedInCreatedTab = ({ id, title }) =>
+    !excludedCreatedTopicIds.has(id) && app.topicIdentity?.titleKey(title) !== 'web bán quần áo';
+  const excludedSupervisedTopicIds = new Set(['DA005', 'ISE-011', 'ISE-004', 'ISE-006', 'ISE-007', 'DT001']);
+  const isListedInSupervisedTab = ({ id, topicId }) =>
+    !excludedSupervisedTopicIds.has(id) && !excludedSupervisedTopicIds.has(topicId);
   const decorate = topics => window.UITLecturerCatalog?.decorateTopics(topics.filter(topic => window.UITLecturerCatalog.isAvailableTopic(topic))) || topics;
   const records = kind => {
     const initial = app.data.lecturerTopics || [];
@@ -132,5 +142,5 @@
     };
   }
 
-  app.services.lecturerTopics = { list, get, createdStatus, detailUrl, returnUrl, workspaceChoices, workspaceState, projectIdentity, allCreated: () => clone(records('created').filter(topic => topic.kind === 'created')) };
+  app.services.lecturerTopics = { list, get, isListedInCreatedTab, isListedInSupervisedTab, createdStatus, detailUrl, returnUrl, workspaceChoices, workspaceState, projectIdentity, allCreated: () => clone(records('created').filter(topic => topic.kind === 'created')) };
 })();

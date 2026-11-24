@@ -532,20 +532,35 @@
   margin: 0;
 }
 
-#evaluation-section :is(.evaluation-info__list > div, .evaluation-total__field) {
+#evaluation-section .evaluation-info__list > div {
   display: grid;
   grid-template-columns: minmax(12rem, 15rem) minmax(0, 1fr);
   align-items: center;
   gap: var(--space-3) var(--space-6);
 }
 
-#evaluation-section :is(dt, .evaluation-total__field > label) {
+#evaluation-section dt {
   color: var(--color-heading);
   font-weight: var(--weight-semibold);
 }
 
 #evaluation-section dd {
   margin: 0;
+}
+
+#evaluation-section .evaluation-total__score {
+  font-variant-numeric: tabular-nums;
+}
+
+#evaluation-section .evaluation-total__value {
+  color: var(--color-heading);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+}
+
+#evaluation-section [data-evaluation-result] {
+  overflow-wrap: anywhere;
 }
 
 #evaluation-section .evaluation-info__status {
@@ -560,14 +575,15 @@
   font-weight: var(--weight-medium);
 }
 
+#evaluation-section .evaluation-info__status--success {
+  color: var(--color-success-fg);
+  background: var(--color-success-bg);
+}
+
 #evaluation-section .evaluation-info__status svg {
   width: 1.25rem;
   height: 1.25rem;
   flex-shrink: 0;
-}
-
-#evaluation-section .evaluation-total__status {
-  margin-top: var(--space-4);
 }
 
 /* Cuộn riêng bảng trên màn hình hẹp, giữ semantics table và nhãn input. */
@@ -582,7 +598,7 @@
 
 #evaluation-section .evaluation-criteria__table {
   width: 100%;
-  min-width: 42rem;
+  min-width: 46rem;
   table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
@@ -606,16 +622,16 @@
   font-weight: var(--weight-semibold);
 }
 
-#evaluation-section .evaluation-criteria__table th:nth-child(1) { width: 22%; }
-#evaluation-section .evaluation-criteria__table th:nth-child(2) { width: 38%; }
-#evaluation-section .evaluation-criteria__table th:nth-child(3) { width: 18%; }
-#evaluation-section .evaluation-criteria__table th:nth-child(4) { width: 22%; }
+#evaluation-section .evaluation-criteria__table thead th:nth-child(1) { width: 27%; }
+#evaluation-section .evaluation-criteria__table thead th:nth-child(2) { width: 39%; }
+#evaluation-section .evaluation-criteria__table thead th:nth-child(n + 3) { width: 17%; }
 
 #evaluation-section .evaluation-criteria__table tbody th {
   font-weight: var(--weight-regular);
 }
 
 #evaluation-section .evaluation-criteria__table :is(th, td):nth-child(n + 3) {
+  padding-inline: clamp(var(--space-2), 1vw, var(--space-4));
   text-align: center;
   font-variant-numeric: tabular-nums;
 }
@@ -624,7 +640,7 @@
   border-bottom: 0;
 }
 
-#evaluation-section :is(input, textarea) {
+#evaluation-section :is(input[type="number"], textarea) {
   width: 100%;
   min-width: 0;
   min-height: var(--control-min-height);
@@ -636,31 +652,21 @@
   font: inherit;
 }
 
-#evaluation-section input { max-width: 11rem; }
-#evaluation-section input::placeholder { font-size: var(--text-sm); }
+#evaluation-section input[type="number"] {
+  max-width: 11rem;
+  text-align: center;
+}
+#evaluation-section input[type="number"]::placeholder { font-size: var(--text-sm); }
 
-#evaluation-section :is(input, textarea):focus-visible {
+#evaluation-section :is(input[type="number"], textarea):focus-visible {
   border-color: var(--color-primary);
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
-#evaluation-section input:user-invalid {
+#evaluation-section input[type="number"]:user-invalid {
   border-color: var(--color-danger-fg);
   border-style: dashed;
-}
-
-#evaluation-section #total-score {
-  display: flex;
-  align-items: center;
-  width: min(100%, 16rem);
-  min-height: var(--control-min-height);
-  padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--color-border);
-  border-radius: var(--control-radius);
-  color: var(--color-muted-foreground);
-  background-color: var(--color-neutral-bg);
-  font-variant-numeric: tabular-nums;
 }
 
 #evaluation-section textarea {
@@ -699,7 +705,7 @@
     padding: var(--space-4);
   }
 
-  #evaluation-section :is(.evaluation-info__list > div, .evaluation-total__field) {
+  #evaluation-section .evaluation-info__list > div {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-2);
   }

@@ -7,15 +7,17 @@
       Chi tiết đề tài đã tạo | Quản lý đồ án và khóa luận tốt nghiệp
     </title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-lecturer.js"></script>
+    <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261124-reopen-registration-dialog"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme">
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language">
     <link rel="stylesheet" href="../../assets/css/components.css">
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
+    <link rel="stylesheet" href="../../assets/css/teacher-dialogs.css">
     <link rel="stylesheet" href="../../assets/css/proposal-request-detail.css">
-    <link rel="stylesheet" href="../../assets/css/teacher-created-detail.css?v=20261123-merged-8f1631f">
+    <link rel="stylesheet" href="../../assets/css/teacher-created-detail.css?v=20261124-reopen-registration-dialog">
+    <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261124-requirement-datetime">
     <script src="../../assets/js/nav-indicator.js" defer=""></script>
     <script src="../../assets/js/dialog-commands.js" defer=""></script>
 
@@ -43,7 +45,9 @@
     <script src="../../assets/js/pages/lecturer/created-topic.js?v=20261123-merged-8f1631f" defer></script>
     <script src="../../assets/js/shared/download-file.js" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-media.js" defer></script>
-    <script src="../../assets/js/pages/lecturer/topic-registration-state.js?v=20261123-registration-sync" defer></script>
+    <script src="../../assets/js/pages/student/proposal-pickers.js?v=20261124-reopen-registration-dialog" defer></script>
+    <script src="../../assets/js/pages/student/proposal-date-picker.js?v=20261124-reopen-registration-dialog" defer></script>
+    <script src="../../assets/js/pages/lecturer/topic-registration-state.js?v=20261124-reopen-registration-dialog" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js" defer></script>
 </head>
@@ -291,7 +295,13 @@
             <p data-topic-attachment-empty>Chưa có tài liệu đính kèm</p>
           </section>
           <div class="request-detail__actions" role="group" aria-label="Thao tác với đề tài">
-            <button class="request-action registration-close-button" type="button" commandfor="close-registration" command="show-modal" aria-haspopup="dialog" aria-controls="close-registration">Đóng đăng ký</button>
+            <button class="request-action request-action--danger registration-close-button" type="button" commandfor="close-registration" command="show-modal" aria-haspopup="dialog" aria-controls="close-registration">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="5" y="11" width="14" height="10" rx="2" />
+                <path d="M8 11V7a4 4 0 1 1 8 0v4" />
+              </svg>
+              <span>Đóng đăng ký</span>
+            </button>
             <a class="request-action request-action--primary topic-edit-link" href="chinh-sua-de-tai-giang-vien.html">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m16 3 5 5M4 16 16 4a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
               <span>Chỉnh sửa đề tài</span>
@@ -299,26 +309,54 @@
           </div>
         </article>
         <template id="registration-closed-template">
-          <button class="request-action registration-reopen-button" type="button" commandfor="reopen-registration" command="show-modal" aria-haspopup="dialog" aria-controls="reopen-registration">Mở lại đăng ký</button>
+          <button class="request-action registration-reopen-button" type="button" commandfor="reopen-registration" command="show-modal" aria-haspopup="dialog" aria-controls="reopen-registration">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="5" y="11" width="14" height="10" rx="2" />
+              <path d="M8 11V7a4 4 0 0 1 8 0" />
+            </svg>
+            <span>Mở lại đăng ký</span>
+          </button>
         </template>
       </div>
     </main>
     <!-- Hộp thoại HTML gốc mở bằng command/commandfor và đóng bằng form method="dialog".
          Các nút xác nhận disabled vì chưa có xử lý thay đổi trạng thái đề tài. -->
-    <dialog class="confirmation-dialog" id="close-registration" aria-labelledby="close-registration-title" aria-describedby="close-registration-description">
-      <h2 id="close-registration-title">Đóng đăng ký đề tài?</h2>
-      <p id="close-registration-description">Đề tài <strong>Website quản lý thư viện</strong> sẽ không nhận thêm yêu cầu đăng ký mới. Các yêu cầu đã gửi vẫn được giữ để bạn xem xét, và bạn có thể mở lại đăng ký bất cứ lúc nào.</p>
-      <form method="dialog" class="confirmation-dialog__actions">
-        <button type="submit" value="cancel" autofocus="">Hủy</button>
-        <button type="button" disabled="" title="Chức năng thay đổi trạng thái đăng ký chưa được kết nối">Đóng đăng ký</button>
+    <dialog class="topic-dialog registration-confirmation-dialog" id="close-registration" aria-labelledby="close-registration-title" aria-describedby="close-registration-description">
+      <header class="topic-dialog__header">
+        <h2 id="close-registration-title">Đóng đăng ký đề tài</h2>
+        <button class="topic-dialog__close" type="button" command="close" commandfor="close-registration" aria-label="Đóng hộp thoại" autofocus>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+            <path d="m6 6 12 12M18 6 6 18" />
+          </svg>
+        </button>
+      </header>
+      <form method="dialog" class="topic-dialog__form">
+        <p id="close-registration-description" class="topic-dialog__desc">Bạn có muốn đóng đăng ký cho đề tài <strong translate="no">Website quản lý thư viện</strong>?</p>
+        <p class="topic-editor-error" data-registration-error role="alert" tabindex="-1" hidden></p>
+        <div class="topic-dialog__actions">
+          <button class="topic-dialog__btn topic-dialog__btn--danger" type="submit" data-registration-confirm disabled title="Chức năng thay đổi trạng thái đăng ký chưa được kết nối">Xác nhận đóng đăng ký</button>
+        </div>
       </form>
     </dialog>
-    <dialog class="confirmation-dialog" id="reopen-registration" aria-labelledby="reopen-registration-title" aria-describedby="reopen-registration-description">
-      <h2 id="reopen-registration-title">Mở lại đăng ký đề tài?</h2>
-      <p id="reopen-registration-description">Đề tài <strong>Website quản lý thư viện</strong> sẽ tiếp tục nhận yêu cầu đăng ký mới từ sinh viên. Các yêu cầu đã gửi trước đó vẫn được giữ để bạn xem xét.</p>
-      <form method="dialog" class="confirmation-dialog__actions">
-        <button type="submit" value="cancel" autofocus="">Hủy</button>
-        <button type="button" disabled="" title="Chức năng thay đổi trạng thái đăng ký chưa được kết nối">Mở lại đăng ký</button>
+    <dialog class="topic-dialog registration-confirmation-dialog" id="reopen-registration" aria-labelledby="reopen-registration-title" aria-describedby="reopen-registration-description">
+      <header class="topic-dialog__header">
+        <h2 id="reopen-registration-title">Mở lại đăng ký đề tài</h2>
+        <button class="topic-dialog__close" type="button" command="close" commandfor="reopen-registration" aria-label="Đóng hộp thoại" autofocus>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+            <path d="m6 6 12 12M18 6 6 18" />
+          </svg>
+        </button>
+      </header>
+      <form method="dialog" class="topic-dialog__form">
+        <p id="reopen-registration-description" class="topic-dialog__desc">Bạn có muốn mở lại đăng ký cho đề tài <strong translate="no">Website quản lý thư viện</strong>?</p>
+        <div class="topic-dialog__field requirement-deadline">
+          <label for="registration-reopen-deadline">Hạn đăng ký mới</label>
+          <input id="registration-reopen-deadline" type="datetime-local" required>
+        </div>
+        <p class="topic-editor-error" data-registration-error role="alert" tabindex="-1" hidden></p>
+        <div class="topic-dialog__actions">
+          <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" data-registration-confirm disabled title="Chức năng thay đổi trạng thái đăng ký chưa được kết nối">Xác nhận mở lại đăng ký</button>
+        </div>
       </form>
     </dialog>
     <footer class="project-footer">

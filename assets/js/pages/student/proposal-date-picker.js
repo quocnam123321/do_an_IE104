@@ -110,7 +110,7 @@
     };
   }
 
-  function enhanceDate(input, { timeZone, timeLabel = 'Giờ hết hạn đăng ký', label = input.labels[0] } = {}) {
+  function enhanceDate(input, { timeZone, timeLabel = 'Giờ hết hạn đăng ký', label = input.labels[0], preferAbove = false } = {}) {
     const group = document.createElement('div');
     group.className = 'proposal-date-control';
     input.before(group);
@@ -193,7 +193,7 @@
     const trigger = group.querySelector('.proposal-date-trigger');
     const panel = group.querySelector('.proposal-calendar');
     const body = panel.querySelector('.proposal-calendar__body');
-    const popup = pickers.setupPopup(group, trigger, panel, { scrollArea: body });
+    const popup = pickers.setupPopup(group, trigger, panel, { scrollArea: body, preferAbove });
     const heading = panel.querySelector('.proposal-calendar__heading');
     const title = heading.querySelector('span');
     const navigation = [...panel.querySelectorAll('[data-step]')];

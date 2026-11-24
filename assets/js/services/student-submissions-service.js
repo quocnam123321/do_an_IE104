@@ -179,7 +179,7 @@
       const request = store.get([projectId, requirementId]);
       request.onsuccess = () => {
         if (request.result) {
-          abort(new Error('Yêu cầu đã có bài nộp. Có thể khóa nhận bài để giữ lịch sử.'));
+          abort(new Error('Yêu cầu đã có bài nộp nên không thể xóa.'));
           return;
         }
         try {
@@ -193,7 +193,9 @@
   }
 
   async function reviewUpload(projectId, upload, feedback) {
-    const state = app.services.teaching.getState(projectId);
+    const teaching = app.services.teaching;
+    const state = teaching.getState(projectId);
+    teaching.assertFeedbackAllowed(state.project);
     if (!state.requirements.some(item => item.id === upload.requirementId && !item.deletedAt)) {
       throw new Error('Không còn tìm thấy yêu cầu của bài nộp này.');
     }
@@ -205,6 +207,12 @@
     await localUploads('readwrite', (store, abort) => {
       const request = store.get([projectId, upload.requirementId]);
       request.onsuccess = () => {
+        try {
+          teaching.assertFeedbackAllowed(teaching.getState(projectId).project);
+        } catch (failure) {
+          abort(failure);
+          return;
+        }
         const raw = request.result;
         const current = raw && withLegacyFeedback(raw, legacyCopy(raw, savedById));
         if (!current || current.submittedAt !== upload.submittedAt ||

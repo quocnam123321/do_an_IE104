@@ -2,9 +2,10 @@
   const app = globalThis.IE104 = globalThis.IE104 || {};
   app.data = app.data || {};
   app.data.projectEvaluations = [
-    ['DA001', 'Nguyễn Văn An'],
-    ['DA002', 'Trần Thị Bình'],
-  ].map(([projectId, lecturerName]) => ({
+    ['DA001', 'Nguyễn Văn An', 'phieu-danh-gia-minh-hoa.pdf'],
+    ['DA002', 'Trần Thị Bình', 'phieu-danh-gia-minh-hoa.pdf'],
+    ['DA005', 'Nguyễn Văn An'],
+  ].map(([projectId, lecturerName, assetFile]) => ({
     projectId,
     published: true,
     score: 8.4,
@@ -17,6 +18,6 @@
     lecturerName,
     evaluatedAt: '2026-11-15',
     feedback: 'Nhóm triển khai được các chức năng chính và phối hợp tốt. Cần bổ sung kiểm thử các trường hợp biên và hoàn thiện tài liệu sử dụng.',
-    attachment: { name: 'Phieu_danh_gia.pdf', assetFile: 'phieu-danh-gia-minh-hoa.pdf' },
+    attachment: { name: 'Phieu_danh_gia.pdf', assetFile },
   }));
 })();

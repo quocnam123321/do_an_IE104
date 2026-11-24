@@ -33,16 +33,7 @@
     }
     section.querySelector('.evaluation-attachments__name').textContent = file.name;
     section.querySelector('.evaluation-attachments__file').prepend(globalThis.IE104.ui.workflowIcon('file'));
-    if (!file.assetFile) return;
-
-    const button = section.querySelector('.evaluation-attachments__download');
-    const link = document.createElement('a');
-    link.className = button.className;
-    link.href = '../../assets/files/' + encodeURIComponent(file.assetFile);
-    link.download = file.name;
-    link.append(...button.childNodes);
-    button.replaceWith(link);
-    section.querySelector('.evaluation-attachment-note').hidden = true;
+    globalThis.IE104.ui.bindEvaluationAttachmentDownload(section, file);
   }
 
   function renderPublished(fragment, result) {
@@ -55,11 +46,6 @@
 
     fragment.append(published.content.cloneNode(true));
     fragment.querySelector('.evaluation-total__value').textContent = result.score.toFixed(1);
-    const resultLabel = fragment.querySelector('[data-evaluation-result]');
-    resultLabel.textContent = result.resultLabel;
-    if (result.resultLabel.trim().normalize().toLocaleLowerCase('vi-VN') === 'đạt yêu cầu') {
-      resultLabel.classList.add('evaluation-info__status', 'evaluation-info__status--success');
-    }
     const rows = fragment.querySelector('.evaluation-criteria__table tbody');
     rows.replaceChildren(...result.criteria.map(criterion => {
       const row = document.createElement('tr');

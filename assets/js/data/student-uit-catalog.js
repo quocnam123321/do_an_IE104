@@ -59,8 +59,9 @@
   });
   const query = new URLSearchParams(globalThis.location?.search || '');
   const requestedProjectId = query.get('project');
-  const legacyProject = data.myTopics?.find(project => project.id === requestedProjectId);
-  data.myTopics = legacyProject ? [...projects, legacyProject] : projects;
+  const retainedProjects = (data.myTopics || []).filter(project =>
+    project.id === 'DA005' || project.id === requestedProjectId);
+  data.myTopics = [...projects, ...retainedProjects];
   data.studentProjectOverviews ||= {};
   data.projectTeams ||= [];
   data.projectProgress ||= [];

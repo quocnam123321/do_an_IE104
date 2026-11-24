@@ -2,6 +2,7 @@
   const service = globalThis.IE104?.services?.lecturerTopics;
   const kind = document.body.dataset.lecturerList;
   if (!service || !kind) return;
+  const listFilters = { created: service.isListedInCreatedTab, supervised: service.isListedInSupervisedTab };
   const container = document.querySelector('.topic-list');
   const firstCard = container?.querySelector('.topic-card');
   if (!firstCard) return;
@@ -20,6 +21,7 @@
       if (results) results.dataset.topicSourceError = failure.message;
       topics = service.list(kind, { catalogOnly: true });
     }
+    topics = topics.filter(listFilters[kind]);
     container.querySelectorAll('.topic-card:not([data-approved-proposal])').forEach(card => {
       if (!topics.some(topic => topic.id === card.dataset.topicId)) listItemFor(card).remove();
     });
@@ -88,6 +90,7 @@
               ...(window.IE104Proposals?.getAll() || []).filter(entry => entry.status === 'approved')];
           } catch { /* Vẫn đếm được danh mục mẫu khi không đọc được dữ liệu đã lưu. */ }
         }
+        entries = entries.filter(listFilters[tabKind]);
         node.textContent = (globalThis.IE104.topicIdentity?.uniqueTitles(entries) || entries).length;
       } catch { node.textContent = '—'; }
     });

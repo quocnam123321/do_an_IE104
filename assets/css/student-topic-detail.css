@@ -113,25 +113,17 @@
 }
 
 #submissions-section .requirement-board-card__open {
-  display: grid;
   justify-content: stretch;
-  padding: var(--space-3);
-  border: 0;
-  border-radius: inherit;
-  background: transparent;
-  text-align: left;
 }
 
-#submissions-section .requirement-board-card__open:hover {
-  background: var(--color-info-bg);
-}
-
-#submissions-section .requirement-board-card__deadline {
+#tien-do :is(.student-task-mode, .btn-add-task, [data-task-detail-action="edit"]):disabled,
+#bai-nop .submission-requirement-dialog .submission-dialog__submit:disabled {
+  background-color: var(--color-disabled-bg);
+  border-color: var(--color-disabled-border);
   color: var(--color-muted-foreground);
-}
-
-#submissions-section .requirement-board-card--overdue .requirement-board-card__deadline {
-  color: var(--color-danger-fg);
+  font-weight: var(--weight-semibold);
+  opacity: 1;
+  cursor: not-allowed;
 }
 
 .active-topic-page :is(.task-detail-dialog, .task-saved-dialog, .workflow-saved-dialog) .workflow-dialog__primary {
@@ -509,13 +501,7 @@
   background: var(--amber-100);
 }
 
-#evaluation-section .evaluation-info__status--success {
-  color: var(--color-success-fg);
-  background: var(--color-success-bg);
-}
-
-#evaluation-section .evaluation-criteria__table--published tbody :is(th, td):nth-child(-n + 2),
-#evaluation-section [data-evaluation-result] {
+#evaluation-section .evaluation-criteria__table--published tbody :is(th, td):nth-child(-n + 2) {
   overflow-wrap: anywhere;
 }
 
@@ -546,10 +532,6 @@
   padding: 0;
   overflow: visible;
   scrollbar-gutter: auto;
-}
-
-#submissions-section .submission-board__columns--requirements {
-  grid-template-columns: repeat(2, minmax(17.5rem, 1fr));
 }
 
 #submissions-section .submission-board-card__details {
@@ -607,17 +589,10 @@
   flex-basis: 9rem;
 }
 
-#submissions-section .student-submission-status {
-  display: block;
-  margin-top: var(--space-1);
-  color: var(--color-muted-foreground);
-  font-size: var(--text-sm);
-}
-
 #submissions-section .submission-board__badge--late {
-  background: var(--color-danger-bg);
-  color: var(--color-danger-fg);
-  box-shadow: none;
+  background: var(--sub-late-bg);
+  color: var(--sub-late-badge-fg);
+  box-shadow: inset 0 0 0 1px var(--sub-late-border);
 }
 
 .active-topic-page .submission-requirement-dialog h2 {
@@ -646,6 +621,88 @@
 .submission-dialog__close svg {
   width: 1.25rem;
   height: 1.25rem;
+}
+
+#bai-nop .student-feedback-dialog {
+  width: min(36rem, calc(100% - 2rem));
+  margin: auto;
+  padding: clamp(var(--space-4), 3vw, var(--space-5));
+  border: 0;
+  box-shadow: var(--shadow-overlay);
+  overflow-wrap: anywhere;
+}
+
+#bai-nop .student-feedback-dialog::backdrop {
+  backdrop-filter: blur(3px);
+}
+
+#bai-nop .student-feedback-dialog > header {
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+#bai-nop .student-feedback-dialog h2 {
+  font-size: var(--text-xl);
+}
+
+#bai-nop .student-feedback-dialog h3 {
+  font-size: var(--text-base);
+  line-height: var(--leading-snug);
+}
+
+#bai-nop .student-feedback-dialog :is(h2, h3, p) {
+  margin: 0;
+}
+
+#bai-nop .student-feedback-dialog__summary h3 {
+  font-size: var(--text-lg);
+}
+
+#bai-nop .student-feedback-dialog__summary p {
+  margin-top: var(--space-1);
+  color: var(--color-muted-foreground);
+  line-height: var(--leading-normal);
+}
+
+.student-feedback-dialog__content {
+  margin-top: var(--space-5);
+}
+
+#bai-nop .student-feedback-dialog__content p {
+  margin-top: var(--space-2);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  white-space: pre-wrap;
+}
+
+.student-feedback-dialog__details {
+  margin: var(--space-4) 0 0;
+}
+
+#bai-nop .student-feedback-dialog__details dd {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.student-feedback-dialog__details > div + div {
+  margin-top: var(--space-2);
+}
+
+#bai-nop .student-feedback-dialog > footer {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+}
+
+#bai-nop .student-feedback-dialog > footer button {
+  padding-inline: var(--space-4);
+  border-color: var(--button-primary-bg);
+  background: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+}
+
+#bai-nop .student-feedback-dialog > footer button:hover {
+  border-color: var(--button-primary-bg-hover);
+  background: var(--button-primary-bg-hover);
 }
 
 .submission-dialog__attachment {

@@ -26,15 +26,49 @@ test('file preview shows bundled student project data without reading or writing
   const { projectTeams, projectProgress, evaluations } = context.IE104.services;
   const preview = { preview: true };
   const progress = projectProgress.getState('DA005', preview);
+  assert.equal(progress.team.project.status, 'hoan-thanh');
   assert.equal(progress.tasks.length, 7);
   assert.equal(projectProgress.summarize(progress).percent, 45);
   assert.equal(projectTeams.getPermission(progress.team).allowed, false);
   assert.equal(projectProgress.getPermissions(progress).manage, false);
   assert.equal(projectProgress.canUpdateTask(progress, progress.tasks[0]), false);
-  assert.equal(evaluations.getResult('DA005', preview).status, 'unpublished');
+  const evaluation = evaluations.getResult('DA005', preview);
+  assert.equal(evaluation.status, 'published');
+  assert.equal(evaluation.score, 8.4);
+  assert.deepEqual(Array.from(evaluation.criteria, item => item.score), [8.5, 8.0, 8.8]);
   assert.equal(evaluations.getResult('DA001', preview).score, 8.4);
   assert.throws(() => projectProgress.getState('DA005'), /localhost/);
   assert.throws(() => evaluations.getResult('DA005'), /localhost/);
+});
+
+test('the DA005 group leader can delete tasks only while the project is active', () => {
+  const values = new Map();
+  const context = createContext({
+    location: { protocol: 'http:' },
+    localStorage: { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value) },
+  });
+  loadStudentServices(context);
+  const { data, services: { projectProgress: service } } = context.IE104;
+  const state = service.getState('DA005');
+  const task = state.tasks[0];
+  assert.equal(state.team.project.status, 'hoan-thanh');
+  assert.equal(service.getPermissions(state).manage, false);
+  assert.throws(() => service.saveTask('DA005', task.id, { title: 'Thử sửa' }, state.revision));
+  assert.throws(() => service.deleteTask('DA005', task.id, state.revision), /chỉ được xem công việc và tiến độ/);
+
+  data.myTopics.find(topic => topic.id === 'DA005').status = 'dang-thuc-hien';
+  const leader = data.currentStudent;
+  data.currentStudent = { code: '24520002' };
+  assert.throws(() => service.deleteTask('DA005', task.id, state.revision));
+  data.currentStudent = leader;
+  assert.throws(() => service.deleteTask('DA005', task.id, state.revision + 1), /đã thay đổi ở tab khác/);
+  assert.equal(service.getState('DA005').tasks.length, state.tasks.length);
+
+  service.deleteTask('DA005', task.id, state.revision);
+  const saved = service.getState('DA005');
+  assert.equal(saved.revision, state.revision + 1);
+  assert.equal(saved.tasks.some(item => item.id === task.id), false);
+  assert.equal(saved.tasks.length, state.tasks.length - 1);
 });
 
 test('new student tasks preserve multiple assignees, description and initial status across edits', () => {
@@ -46,6 +80,7 @@ test('new student tasks preserve multiple assignees, description and initial sta
   loadStudentServices(context);
   const { data, services: { projectProgress: service } } = context.IE104;
   const projectId = 'DA005';
+  data.myTopics.find(topic => topic.id === projectId).status = 'dang-thuc-hien';
   const input = {
     title: 'Thử phân công nhiều thành viên',
     deadline: '2099-11-25',

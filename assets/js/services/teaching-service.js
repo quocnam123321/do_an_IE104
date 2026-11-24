@@ -15,7 +15,7 @@
       team.supervisorIds.includes(actor()?.id);
     if (checkActor && !canSupervise) throw new Error('Giảng viên hiện tại không hướng dẫn đề tài này.');
     const initialEvaluation = app.data.projectEvaluations?.find(item => item.projectId === projectId && item.published);
-    const criteria = initialEvaluation?.criteria || app.data.teachingCriteria;
+    const criteria = initialEvaluation?.criteria || app.data.teachingCriteria || [];
     return { project, team, initialEvaluation, criteria };
   }
 
@@ -53,12 +53,24 @@
     return record;
   }
 
+  function evaluationCriteria(record, meta) {
+    const saved = record.draft?.criteria || record.publishedEvaluation?.criteria;
+    if (!saved) return meta.criteria;
+    const defaults = [...meta.criteria, ...(app.data.teachingCriteria || [])];
+    return saved.map(criterion => ({
+      ...defaults.find(item => item.id === criterion.id && item.title === criterion.title),
+      ...criterion,
+    }));
+  }
+
   function decorate(record, meta) {
     let progress = null;
     let warning = '';
     try { progress = app.services.projectProgress.getState(record.projectId); }
     catch (failure) { warning = failure.message; }
-    return { ...clone(record), ...clone(meta), progress, warning, publication: clone(record.publishedEvaluation || meta.initialEvaluation || null), canManageRequirements: meta.project.status === 'dang-thuc-hien' };
+    return { ...clone(record), ...clone(meta), criteria: clone(evaluationCriteria(record, meta)),
+      progress, warning, publication: clone(record.publishedEvaluation || meta.initialEvaluation || null),
+      canManageRequirements: meta.project.status === 'dang-thuc-hien' };
   }
 
   function getState(projectId) {
@@ -127,7 +139,7 @@
       active(meta);
       const requirement = record.requirements.find(item => item.id === id && !item.deletedAt);
       if (!requirement) throw new Error('Yêu cầu không còn tồn tại.');
-      if (record.submissions.some(item => item.requirementId === id) || requirement.sourceStage !== 'pending') throw new Error('Yêu cầu đã có bài nộp. Hãy khóa nhận bài để giữ lịch sử.');
+      if (record.submissions.some(item => item.requirementId === id) || requirement.sourceStage !== 'pending') throw new Error('Yêu cầu đã có bài nộp nên không thể xóa.');
       requirement.deletedAt = new Date().toISOString();
     });
   }
@@ -156,8 +168,15 @@
     });
   }
 
+  function assertFeedbackAllowed(project) {
+    if (project.status === 'hoan-thanh') {
+      throw new Error('Đề tài đã hoàn thành. Bạn có thể xem phản hồi và tải bài đã nộp.');
+    }
+  }
+
   function saveFeedback(projectId, submissionId, content, revision) {
-    return mutate(projectId, revision, 'review-submission', submissionId, record => {
+    return mutate(projectId, revision, 'review-submission', submissionId, (record, { project }) => {
+      assertFeedbackAllowed(project);
       const submission = record.submissions.find(item => item.id === submissionId);
       if (!submission) throw new Error('Lần nộp không còn tồn tại.');
       const text = String(content || '').trim();
@@ -188,11 +207,18 @@
 
   function publish(projectId, input, revision) {
     return mutate(projectId, revision, 'publish-evaluation', null, (record, meta) => {
-      const checked = validateEvaluation(input, meta.criteria, true);
+      const checked = validateEvaluation(input, evaluationCriteria(record, meta), true);
       if (checked.errors.length) throw new Error(checked.errors.join(' '));
+      const previousAttachment = record.publishedEvaluation ? record.publishedEvaluation.attachment : meta.initialEvaluation?.attachment;
+      const attachment = input.attachment === undefined ? previousAttachment ?? null : input.attachment;
+      if (input.attachment != null && (typeof attachment.fileKey !== 'string' || !attachment.fileKey ||
+          typeof attachment.name !== 'string' || !attachment.name.trim() ||
+          !Number.isSafeInteger(attachment.size) || attachment.size <= 0)) {
+        throw new Error('Tệp đánh giá đính kèm không hợp lệ.');
+      }
       const parts = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date());
       const date = Object.fromEntries(parts.map(part => [part.type, part.value]));
-      record.publishedEvaluation = { ...checked.value, resultLabel: checked.value.resultLabel || 'Đã đánh giá', projectId, published: true, lecturerName: actor().name, evaluatedAt: `${date.year}-${date.month}-${date.day}`, publishedAt: new Date().toISOString(), attachment: record.publishedEvaluation?.attachment ?? meta.initialEvaluation?.attachment ?? null };
+      record.publishedEvaluation = { ...checked.value, resultLabel: checked.value.resultLabel || 'Đã đánh giá', projectId, published: true, lecturerName: actor().name, evaluatedAt: `${date.year}-${date.month}-${date.day}`, publishedAt: new Date().toISOString(), attachment };
       record.draft = null;
     });
   }
@@ -207,5 +233,5 @@
     return { allowed: true, late: now.getTime() > Date.parse(requirement.deadline), reason: '' };
   }
 
-  app.services.teaching = { listProjects, listActiveProjects, listSupervisedProjects, getState, getSubmission, validateRequirement, saveRequirement, deleteRequirement, setLocked, addProgressReview, saveFeedback, validateEvaluation, publish, submissionAccess };
+  app.services.teaching = { listProjects, listActiveProjects, listSupervisedProjects, getState, getSubmission, validateRequirement, saveRequirement, deleteRequirement, setLocked, addProgressReview, assertFeedbackAllowed, saveFeedback, validateEvaluation, publish, submissionAccess };
 })();

@@ -192,8 +192,8 @@
   "lecturer": "Nguyễn Văn An",
   "lecturerLabel": "Giảng viên hướng dẫn",
   "groupName": "Nhóm 7 - Web UIT",
-  "status": "dang-thuc-hien",
-  "statusLabel": "Đang thực hiện",
+  "status": "hoan-thanh",
+  "statusLabel": "Hoàn thành",
   "createdAt": "2026-11-19",
   "detailUrl": "chi-tiet-de-tai-sinh-vien.html?project=DA005#tong-quan"
 }

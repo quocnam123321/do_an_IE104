@@ -158,7 +158,7 @@
     } finally { saving = false; }
   }
   function modal(title, submitText, build, submit, message, {
-    showCancel = true, className, closeIcon, beforeSubmit, submitVariant = 'primary', descriptionId,
+    showCancel = true, className, closeIcon, beforeSubmit, submitVariant = 'primary', descriptionId, submitDisabled = false,
   } = {}) {
     if (!state || document.querySelector('.teaching-dialog[open]')) return;
     const snapshot = { projectId, revision: state.revision, progressRevision: state.progress?.revision };
@@ -178,11 +178,13 @@
     const actions = el('div', '', 'topic-dialog__actions');
     const save = el('button', submitText, `topic-dialog__btn topic-dialog__btn--${submitVariant}`);
     save.type = 'submit';
+    save.disabled = submitDisabled;
     if (showCancel) actions.append(button('Hủy', () => dialog.close()));
     actions.append(save);
     form.append(error, body, actions);
     form.addEventListener('submit', event => {
       event.preventDefault();
+      if (save.disabled) return;
       if (beforeSubmit?.({ form, submitButton: save, heading }) === false) return;
       commit(snapshot, captured => submit(new FormData(form), captured), dialog, message);
     });

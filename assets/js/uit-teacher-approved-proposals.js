@@ -1,6 +1,7 @@
 (() => {
   'use strict';
   const store = window.IE104Proposals;
+  const topics = window.IE104.services.lecturerTopics;
   const list = document.querySelector('[data-topic-results] .topic-list');
   const template = list?.querySelector('.topic-card')?.cloneNode(true);
   if (!store || !template) return;
@@ -22,6 +23,7 @@
     }]));
     for (const record of entries) if (!byId.has(record.topicId)) byId.set(record.topicId, record);
     for (const record of byId.values()) {
+      if (!topics.isListedInSupervisedTab(record)) continue;
       const card = template.cloneNode(true);
       card.hidden = false;
       card.dataset.approvedProposal = record.id;
@@ -40,7 +42,7 @@
       card.querySelector('.topic-card__image-placeholder').setAttribute('aria-label', `Chưa có ảnh đại diện cho đề tài ${record.title}`);
       const meta = card.querySelector('.topic-card__meta');
       const project = projects.find(entry => entry.project.id === record.projectId)?.project;
-      const code = project ? window.IE104.services.lecturerTopics.projectIdentity(project).displayId
+      const code = project ? topics.projectIdentity(project).displayId
         : record.topicCode || window.UITLecturerCatalog.formatCode(card.dataset.topicType, record.topicId);
       meta.setAttribute('aria-label', `Thông tin đề tài ${code}`);
       const courseLabel = card.dataset.topicType === 'graduation' ? 'Đồ án tốt nghiệp' : card.dataset.topicType === 'thesis' ? 'Khóa luận tốt nghiệp' : record.courseLabel || 'Không áp dụng';

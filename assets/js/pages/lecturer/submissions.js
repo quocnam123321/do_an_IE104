@@ -81,11 +81,10 @@
     });
   }
 
-  function lock(item, locked) {
-    modal(locked ? 'Khóa nhận bài' : 'Mở nhận bài', 'Xác nhận', body => {
-      body.append(el('p', `${locked ? 'Khóa' : 'Mở'} nhận bài ${item ? `cho yêu cầu “${item.title}”` : 'cho toàn bộ đề tài'}?`));
-      body.append(el('p', 'Khóa nhận bài không xóa bài đã nộp. Hạn nộp vẫn được dùng để xác định bài trễ hạn.'));
-    }, (_, snapshot) => service.setLocked(snapshot.projectId, item?.id || null, locked, snapshot.revision));
+  function reopenSubmissions(item) {
+    modal('Mở nhận bài', 'Xác nhận', body => {
+      body.append(el('p', item ? `Mở nhận bài cho yêu cầu “${item.title}”?` : 'Mở nhận bài cho toàn bộ đề tài?'));
+    }, (_, snapshot) => service.setLocked(snapshot.projectId, item?.id || null, false, snapshot.revision));
   }
   function submissionTime(value) {
     const time = el('time', ui.date(value).replace(' - ', ' · '));
@@ -185,16 +184,18 @@
     }
 
     const footer = el('footer', '', 'topic-dialog__actions');
-    const lockAction = button(item.locked ? 'Mở nhận bài' : 'Khóa nhận bài', () => {
-      dialog.close();
-      lock(item, !item.locked);
-    }, item.locked && !state.canManageRequirements);
+    if (item.locked) {
+      footer.append(button('Mở nhận bài', () => {
+        dialog.close();
+        reopenSubmissions(item);
+      }, !state.canManageRequirements));
+    }
     const edit = button('Sửa yêu cầu', () => {
       dialog.close();
       editRequirement(item);
     }, !state.canManageRequirements);
     edit.className = 'topic-dialog__btn topic-dialog__btn--primary';
-    footer.append(lockAction, edit);
+    footer.append(edit);
 
     dialog.append(header, body, footer);
     dialog.addEventListener('close', () => dialog.remove(), { once: true });
@@ -294,7 +295,7 @@
     create.classList.add('workflow-primary-action');
     toolbar.append(mode, create);
     if (state.submissionsLocked && state.canManageRequirements && !state.readOnly) {
-      toolbar.append(button('Mở nhận bài toàn đề tài', () => lock(null, false)));
+      toolbar.append(button('Mở nhận bài toàn đề tài', () => reopenSubmissions(null)));
     }
     const requirements = state.requirements.filter(item => !item.deletedAt);
     const activeRequirements = new Map(requirements.map(item => [item.id, item]));
@@ -359,7 +360,8 @@
     panel.append(requirementsBoard);
     if (restoreModeFocus) mode.focus({ preventScroll: true });
     if (uploadError) panel.append(el('p', uploadError, 'submission-board-demo-note'));
-    panel.append(board('Bài đã nộp', [false, true].map(reviewed => ({ title: reviewed ? 'Đã phản hồi' : 'Chờ phản hồi', items: submissions.filter(item => Boolean(item.feedback) === reviewed) })), item => {
+    const feedbackLocked = state.project.status === 'hoan-thanh';
+    const submissionsBoard = board('Bài đã nộp', [false, true].map(reviewed => ({ title: reviewed ? 'Đã phản hồi' : 'Chờ phản hồi', items: submissions.filter(item => Boolean(item.feedback) === reviewed) })), item => {
       const sample = app.data.studentWebSubmissions?.attachment(state.projectId, item);
       const names = sample?.names ?? (item.files?.length > 1
         ? app.ui.submissionZipNames(item.files)
@@ -464,7 +466,6 @@
           body.append(feedbackEditor('', true));
         }
         if (item.notes) body.append(el('p', item.notes, 'teaching-prewrap'));
-        if (item.feedbackAt) body.append(el('p', `Phản hồi gần nhất: ${ui.date(item.feedbackAt)}`));
         item.feedbackHistory?.slice().reverse().forEach(previous => body.append(el('p', `${previous.at ? ui.date(previous.at) : 'Phản hồi trước'}: ${previous.content}`, 'teaching-prewrap')));
       }, (values, snapshot) => {
         const feedback = values.get('submission-feedback');
@@ -472,6 +473,7 @@
           : service.saveFeedback(snapshot.projectId, item.id, feedback, snapshot.revision);
       }, undefined, {
         showCancel: false,
+        submitDisabled: feedbackLocked,
         className: 'submission-feedback-dialog',
         closeIcon: createSymbolIcon('submission-feedback-close-icon'),
         beforeSubmit({ form, submitButton, heading }) {
@@ -483,7 +485,7 @@
           form.elements.namedItem('submission-feedback').focus();
           return false;
         },
-      }));
+      }), feedbackLocked && !hasFeedback);
       feedbackButton.className = 'submission-board-card__feedback';
       feedbackButton.classList.toggle('submission-board-card__feedback--view', hasFeedback);
       feedbackButton.setAttribute('aria-haspopup', 'dialog');
@@ -496,7 +498,12 @@
       queueMicrotask(checkFile);
       fileChecks.add(checkFile);
       return card;
-    }, 'submissions'));
+    }, 'submissions');
+    if (feedbackLocked && submissions.length) {
+      submissionsBoard.querySelector('header').after(el('p',
+        'Đề tài đã hoàn thành. Bạn có thể xem phản hồi và tải bài đã nộp.', 'submission-board-demo-note'));
+    }
+    panel.append(submissionsBoard);
     if (submissions.some(item => !item.files && !app.data.studentWebSubmissions?.attachment(state.projectId, item))) {
       panel.append(el('p', 'Các bài nộp chỉ có tên tệp sẽ hiện nút tải khi tìm thấy nội dung tệp đã lưu.'));
     }

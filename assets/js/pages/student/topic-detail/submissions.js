@@ -10,7 +10,9 @@
   const fileTemplate = document.getElementById('student-submission-file-template');
   const uploadDialog = document.getElementById('student-upload-dialog');
   const successDialog = document.getElementById('student-upload-success');
+  const feedbackDialog = document.getElementById('student-feedback-dialog');
   const uploads = new Map();
+  let feedbackTrigger;
   let lastSavedId;
   let readVersion = 0;
   const format = new Intl.DateTimeFormat('vi-VN', {
@@ -20,7 +22,7 @@
 
   const deadlineLabels = {
     danger: 'Quá hạn',
-    late: 'Đã nộp trễ',
+    late: 'Nộp sau hạn',
     success: 'Đúng hạn',
   };
 
@@ -31,9 +33,11 @@
     return node;
   }
 
-  function time(value) {
+  function time(value, forFeedback = false) {
     const parts = Object.fromEntries(format.formatToParts(new Date(value)).map(part => [part.type, part.value]));
-    const node = element('time', `${parts.day}/${parts.month}/${parts.year} · ${parts.hour}:${parts.minute}`);
+    const date = `${parts.day}/${parts.month}/${parts.year}`;
+    const clock = `${parts.hour}:${parts.minute}`;
+    const node = element('time', forFeedback ? `${clock} ngày ${date}` : `${date} · ${clock}`);
     node.dateTime = value;
     return node;
   }
@@ -169,6 +173,8 @@
   function uploadButton(item) {
     const button = element('button', item.submitted ? 'Cập nhật bài nộp' : 'Nộp bài', 'submission-dialog__submit');
     button.type = 'button';
+    button.disabled = !item.canUpload;
+    if (button.disabled) return button;
     button.setAttribute('aria-haspopup', 'dialog');
     button.setAttribute('aria-controls', uploadDialog.id);
     button.addEventListener('click', () => {
@@ -197,22 +203,23 @@
     card.classList.toggle('requirement-board-card--overdue', badge === 'danger');
     due.append(boardIcon('calendar'), element('span', 'Hạn nộp:', 'visually-hidden'), item.deadline.cloneNode(true));
     open.append(heading, due);
-    if (status) open.append(element('span', status, 'student-submission-status'));
 
     const dialog = requirementTemplate.content.firstElementChild.cloneNode(true);
+    const details = dialog.querySelector('.submission-dialog__body');
     dialog.querySelector('h2').textContent = item.title;
     dialog.setAttribute('aria-label', item.title);
-    dialog.querySelector('dd').append(item.deadline);
-    dialog.querySelector('.student-submission-content').textContent = item.content || 'Chưa có nội dung yêu cầu.';
+    if (status) details.prepend(element('p', status));
+    details.querySelector('dd').append(item.deadline);
+    details.querySelector('.student-submission-content').textContent = item.content || 'Chưa có nội dung yêu cầu.';
     if (item.submitted) {
       const latest = item.latestSubmission;
       const sample = sampleBundle(latest);
-      appendSubmittedDetails(dialog.querySelector('.submission-dialog__body'),
+      appendSubmittedDetails(details,
         latest?.submittedAt ? time(latest.submittedAt) : null, latest?.fileName, {
           sample: Boolean(sample), bundle: sample?.names.length > 1 ? sample : null, record: latest,
         });
     }
-    if (item.canUpload) {
+    if (item.canUpload || item.projectCompleted) {
       const footer = element('footer');
       footer.append(uploadButton(item));
       dialog.append(footer);
@@ -225,7 +232,9 @@
 
   function prepareSampleRequirements() {
     const projectId = document.body.dataset.projectId;
-    const canUpload = app.services.projectTeams.getState(projectId, { preview: true }).project.status === 'dang-thuc-hien';
+    const { status } = app.services.projectTeams.getState(projectId, { preview: true }).project;
+    const canUpload = status === 'dang-thuc-hien';
+    const projectCompleted = status === 'hoan-thanh';
     for (const dialog of host.querySelectorAll('.submission-requirement-dialog[data-submission-card]')) {
       const card = document.getElementById(dialog.dataset.submissionCard);
       const submittedTime = card?.querySelector('time')?.cloneNode(true);
@@ -266,6 +275,7 @@
         deadline: card.querySelector('time').cloneNode(true),
         submitted: Boolean(card.closest('.submission-column--info')),
         canUpload,
+        projectCompleted,
       });
       replacement.id = card.id;
       card.replaceWith(replacement);
@@ -308,36 +318,31 @@
     }
     actions.append(download);
     const notes = record.notes ?? record.studentNote;
-    const viewDetails = (label, fields) => {
-      const action = label === 'Xem phản hồi' ? viewFeedbackTrigger('button') :
-        element('button', label, 'submission-board-card__feedback');
+    if (record.feedback) {
+      actions.append(viewFeedbackTrigger(record));
+    } else if (notes) {
+      const action = element('button', 'Xem ghi chú', 'submission-board-card__feedback');
       action.type = 'button';
       action.setAttribute('aria-haspopup', 'dialog');
-      action.setAttribute('aria-label', `${label}: ${title}`);
+      action.setAttribute('aria-label', 'Xem ghi chú: ' + title);
       action.addEventListener('click', () => app.ui.workflowDetails({
-        title: label, fields: [['Tên bài nộp', title], ['Tệp đã nộp', names.join('\n'), names.length > 1], ...fields],
+        title: 'Xem ghi chú',
+        fields: [['Tên bài nộp', title], ['Tệp đã nộp', names.join('\n'), names.length > 1], ['Ghi chú cho giảng viên', notes, true]],
         returnTo: () => [...host.querySelectorAll('[data-record-id]')].find(node => node.dataset.recordId === card.dataset.recordId)?.querySelector('.submission-board-card__feedback'),
       }));
       actions.append(action);
-    };
+    }
     body.append(details, actions);
     card.append(header, body, error);
-    if (record.feedback && isSharedSample) {
-      const { button, dialog } = submissionFeedback(record, names[0]);
-      actions.append(button);
-      card.append(dialog);
-    } else if (record.feedback) {
-      const feedbackFields = [['Nội dung phản hồi', record.feedback, true]];
-      if (record.feedbackAt) feedbackFields.push(['Thời gian phản hồi', time(record.feedbackAt).textContent]);
-      if (record.feedbackHistory?.length) feedbackFields.push(['Phản hồi trước', record.feedbackHistory.slice().reverse().map(entry => [entry.at ? time(entry.at).textContent : '', entry.content].filter(Boolean).join(' · ')).join('\n\n'), true]);
-      if (notes) feedbackFields.push(['Ghi chú cho giảng viên', notes, true]);
-      viewDetails('Xem phản hồi', feedbackFields);
-    } else if (notes) viewDetails('Xem ghi chú', [['Ghi chú cho giảng viên', notes, true]]);
     return card;
   }
 
-  function viewFeedbackTrigger(tag) {
-    const trigger = element(tag, undefined, 'submission-board-card__feedback');
+  function viewFeedbackTrigger(record) {
+    const trigger = element('button', undefined, 'submission-board-card__feedback');
+    trigger.type = 'button';
+    trigger.setAttribute('aria-haspopup', 'dialog');
+    trigger.setAttribute('aria-controls', feedbackDialog.id);
+    trigger.setAttribute('aria-label', 'Xem phản hồi: ' + record.title);
     const namespace = 'http://www.w3.org/2000/svg';
     const icon = document.createElementNS(namespace, 'svg');
     icon.setAttribute('class', 'submission-board__icon');
@@ -348,39 +353,44 @@
     shape.setAttribute('href', '#student-submission-eye-icon');
     icon.append(shape);
     trigger.append(icon, element('span', 'Xem phản hồi'));
+    trigger.addEventListener('click', () => openFeedback(record, trigger));
     return trigger;
   }
 
-  function submissionFeedback(record, fileName) {
-    const dialog = host.querySelector('#submission-feedback-1').cloneNode(true);
-    dialog.removeAttribute('open');
-    dialog.removeAttribute('id');
-    dialog.removeAttribute('aria-labelledby');
-    dialog.setAttribute('aria-label', 'Phản hồi bài nộp');
-    for (const node of dialog.querySelectorAll('[id]')) node.removeAttribute('id');
-    const body = dialog.querySelector('.submission-dialog__body');
-    body.querySelector('h3').textContent = record.title;
-    const [file, submittedTime] = body.querySelectorAll('dd');
-    file.textContent = fileName || 'Chưa có tên tệp.';
-    submittedTime.replaceChildren(time(record.submittedAt));
-    const section = body.querySelector('section');
-    section.removeAttribute('aria-labelledby');
-    section.querySelector('h3').textContent = 'Nội dung phản hồi';
-    section.querySelector('p').textContent = record.feedback;
-    section.querySelector('p').classList.add('student-submission-content');
-    body.querySelector('.student-board-note').remove();
-    for (const close of dialog.querySelectorAll('button[command="close"]')) {
-      close.removeAttribute('command');
-      close.removeAttribute('commandfor');
-      close.addEventListener('click', () => dialog.close());
+  function openFeedback(record, trigger) {
+    const summary = feedbackDialog.querySelector('.student-feedback-dialog__summary');
+    summary.querySelector('h3').textContent = record.title;
+    summary.querySelector('time').replaceWith(time(record.submittedAt, true));
+    feedbackDialog.querySelector('.student-feedback-dialog__content p').textContent = record.feedback;
+
+    const details = feedbackDialog.querySelector('.student-feedback-dialog__details');
+    const history = record.feedbackHistory?.slice().reverse().map(entry =>
+      [entry.at && time(entry.at).textContent, entry.content].filter(Boolean).join(' · ')).join('\n\n');
+    const rows = [
+      ['Phản hồi trước', history],
+      ['Ghi chú cho giảng viên', record.notes ?? record.studentNote],
+    ];
+    details.replaceChildren();
+    for (const [label, value] of rows) {
+      if (!value) continue;
+      const row = element('div');
+      row.append(element('dt', label), element('dd', value));
+      details.append(row);
     }
-    const button = viewFeedbackTrigger('button');
-    button.type = 'button';
-    button.setAttribute('aria-haspopup', 'dialog');
-    button.setAttribute('aria-label', 'Xem phản hồi: ' + record.title);
-    button.addEventListener('click', () => dialog.showModal());
-    return { button, dialog };
+    details.hidden = !details.childElementCount;
+    feedbackTrigger = trigger;
+    feedbackDialog.showModal();
   }
+
+  feedbackDialog.addEventListener('close', () => {
+    const card = feedbackTrigger?.closest('[data-record-id]');
+    if (card && !document.querySelector('dialog[open]')) {
+      const currentCard = card.isConnected ? card : [...host.querySelectorAll('[data-record-id]')]
+        .find(node => node.dataset.recordId === card.dataset.recordId);
+      currentCard?.querySelector('.submission-board-card__feedback')?.focus({ preventScroll: true });
+    }
+    feedbackTrigger = null;
+  });
 
   function sampleCardDeadline(card) {
     return Date.parse(card.querySelector('.requirement-board-card__deadline time').dateTime + '+07:00');
@@ -503,7 +513,7 @@
     return row;
   }
 
-  function sharedRequirementRow(item, canUpload) {
+  function sharedRequirementRow(item, { canUpload, completed }) {
     const badge = !item.submitted && !item.locked && item.overdue ? 'danger' : item.late ? 'late' : null;
     const original = sharedRequirementRows.get(item.id);
     const seed = sharedRequirements.get(item.id);
@@ -527,8 +537,9 @@
       card.classList.toggle('requirement-board-card--overdue', badge === 'danger');
       return original;
     }
-    return newRow(requirementCard({ ...item, deadline: time(item.deadline), canUpload: canUpload && !item.locked },
-      badge, item.locked ? 'Đã khóa nhận bài' : null));
+    return newRow(requirementCard({
+      ...item, deadline: time(item.deadline), canUpload: canUpload && !item.locked, projectCompleted: completed,
+    }, badge, item.locked ? 'Đã khóa nhận bài' : null));
   }
 
   function renderSharedSample(state, requirements, submissions, deadlines) {
@@ -539,7 +550,7 @@
     // Duyệt theo thứ tự của giao diện sinh viên, rồi thêm các yêu cầu mới.
     for (const id of new Set([...sharedRequirementRows.keys(), ...active.keys()])) {
       const item = active.get(id);
-      if (item) (item.submitted ? submitted : pending).push(sharedRequirementRow(item, state.canUpload));
+      if (item) (item.submitted ? submitted : pending).push(sharedRequirementRow(item, state));
     }
     const waiting = [];
     const reviewed = [];
@@ -613,9 +624,11 @@
     ], item => {
       const overdue = !item.submitted && !item.locked && item.overdue;
       const badge = overdue ? 'danger' : item.late ? 'late' : null;
-      const status = overdue ? null : item.submitted ? 'Đã nộp' :
-        item.locked ? 'Đã khóa nhận bài' : state.completed ? 'Đề tài đã hoàn thành' : 'Chưa nộp';
-      return requirementCard({ ...item, deadline: time(item.deadline), canUpload: !item.locked && state.canUpload }, badge, status);
+      const status = item.submitted ? null :
+        item.locked ? 'Đã khóa nhận bài' : state.completed ? 'Đề tài đã hoàn thành' : null;
+      return requirementCard({
+        ...item, deadline: time(item.deadline), canUpload: !item.locked && state.canUpload, projectCompleted: state.completed,
+      }, badge, status);
     });
     const submissions = board('Bài nộp của nhóm', 'submissions', [
       { label: 'Chờ phản hồi', variant: 'warning', items: allSubmissions.filter(item => !item.feedback) },

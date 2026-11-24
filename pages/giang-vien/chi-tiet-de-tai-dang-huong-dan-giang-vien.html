@@ -7,7 +7,7 @@
       Chi tiết đề tài đang hướng dẫn | Quản lý đồ án
     </title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-lecturer.js"></script>
+    <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261124-evaluation-attachment"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme">
@@ -16,8 +16,9 @@
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
     <link rel="stylesheet" href="../../assets/css/teacher-dialogs.css?v=20261124-requirement-filenames">
     <link rel="stylesheet" href="../../assets/css/topic-detail-boards.css?v=20261124-requirements-done">
-    <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css?v=20261124-evaluation-comment">
-    <link rel="stylesheet" href="../../assets/css/teacher-topic-detail.css?v=20261124-requirement-details">
+    <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css?v=20261124-centered-scores">
+    <link rel="stylesheet" href="../../assets/css/project-evaluation.css?v=20261124-evaluation-attachment">
+    <link rel="stylesheet" href="../../assets/css/teacher-topic-detail.css?v=20261124-evaluation-attachment-card">
     <link rel="stylesheet" href="../../assets/css/teaching-workspace.css">
     <link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
     <link rel="stylesheet" href="../../assets/css/lecturer-topic-routing.css">
@@ -33,7 +34,7 @@
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css?v=20261121-matching-topic-covers" />
     <script src="../../assets/js/shared/topic-identity.js" defer></script>
     <script src="../../assets/js/teacher-topic-store.js" defer></script>
-    <script src="../../assets/js/data/mock-data.js" defer></script>
+    <script src="../../assets/js/data/mock-data.js?v=20261124-completed-actions" defer></script>
     <script src="../../assets/js/data/proposal-actors.js" defer></script>
     <script src="../../assets/js/data/lecturer-topics.js" defer></script>
     <script src="../../assets/js/data/lecturer-merge-catalog.js?v=20261123-audit-names2" defer></script>
@@ -48,15 +49,15 @@
     <script src="../../assets/js/proposal-store.js" defer></script>
     <script src="../../assets/js/data/student-projects.js" defer></script>
     <script src="../../assets/js/data/student-progress.js" defer></script>
-    <script src="../../assets/js/data/student-evaluations.js" defer></script>
+    <script src="../../assets/js/data/student-evaluations.js?v=20261124-da005-evaluation" defer></script>
     <script src="../../assets/js/data/teaching-data.js" defer></script>
     <script src="../../assets/js/data/student-uit-catalog.js?v=20261124-rebase" defer></script>
     <script src="../../assets/js/data/student-web-submissions.js" defer></script>
     <script src="../../assets/js/services/project-team-service.js" defer></script>
     <script src="../../assets/js/services/project-progress-service.js?v=20261124-rebase" defer></script>
     <script src="../../assets/js/services/task-comments-service.js" defer></script>
-    <script src="../../assets/js/services/teaching-service.js?v=20261124-rebase" defer></script>
-    <script src="../../assets/js/services/student-submissions-service.js?v=20261124-rebase" defer></script>
+    <script src="../../assets/js/services/teaching-service.js?v=20261124-evaluation-attachment" defer></script>
+    <script src="../../assets/js/services/student-submissions-service.js?v=20261124-reopen-submissions" defer></script>
     <script src="../../assets/js/services/proposal-file-service.js" defer></script>
     <script src="../../assets/js/shared/proposal-cover.js" defer></script>
     <script src="../../assets/js/shared/proposal-outline.js" defer></script>
@@ -67,13 +68,14 @@
     <script src="../../assets/js/pages/student/topic-detail/submission-zip.js" defer></script>
     <script src="../../assets/js/services/submission-file-service.js" defer></script>
     <script src="../../assets/js/uit-lecturer-view.js?v=20261123-supervisor-list" defer></script>
-    <script src="../../assets/js/pages/lecturer/workspace.js?v=20261124-confirm-requirement-delete" defer></script>
+    <script src="../../assets/js/pages/lecturer/workspace.js?v=20261124-completed-feedback" defer></script>
     <script src="../../assets/js/pages/student/proposal-pickers.js?v=20261124-requirement-calendar" defer></script>
     <script src="../../assets/js/pages/student/proposal-date-picker.js?v=20261124-requirement-datetime" defer></script>
-    <script src="../../assets/js/pages/lecturer/submissions.js?v=20261124-requirement-datetime" defer></script>
+    <script src="../../assets/js/pages/lecturer/submissions.js?v=20261124-reopen-submissions" defer></script>
     <script src="../../assets/js/shared/task-comments.js?v=20261123-comment-composer" defer></script>
     <script src="../../assets/js/pages/lecturer/progress.js?v=20261123-progress-parity" defer></script>
-    <script src="../../assets/js/pages/lecturer/evaluation.js?v=20261123-publish-evaluation" defer></script>
+    <script src="../../assets/js/shared/evaluation-attachment.js" defer></script>
+    <script src="../../assets/js/pages/lecturer/evaluation.js?v=20261124-evaluation-attachment-card" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js" defer></script>
 </head>
@@ -91,6 +93,12 @@
       <symbol id="submission-feedback-eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
         <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path>
         <circle cx="12" cy="12" r="3"></circle>
+      </symbol>
+      <symbol id="evaluation-publish-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 10v4a1 1 0 0 0 1 1h3c4 0 8 1 12 4V5c-4 3-8 4-12 4H5a1 1 0 0 0-1 1Zm4-1v6m-1 0 1.4 5h3.2L10 15m10-5a2 2 0 0 1 0 4"></path>
+      </symbol>
+      <symbol id="evaluation-edit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m3 21 5-1L20.5 7.5a2.12 2.12 0 0 0-3-3L5 17l-2 4Zm12-14 3 3M5 17l3 3"></path>
       </symbol>
     </svg>
     <a class="skip-link" href="#main-content">
@@ -3475,16 +3483,54 @@
                 </section>
                 <section class="evaluation-total" aria-labelledby="total-title">
                   <h3 id="total-title">Điểm tổng kết</h3>
-                  <p class="evaluation-total__field"><label for="total-score">Điểm tổng kết của nhóm</label> <output id="total-score" for="score-1 score-2 score-3" title="Chưa có xử lý tính điểm tự động">Chưa tính / 10</output></p>
+                  <dl class="evaluation-info__list">
+                    <div>
+                      <dt id="total-score-label">Điểm tổng kết của nhóm</dt>
+                      <dd class="evaluation-total__score"><output id="total-score" class="evaluation-total__value evaluation-total__value--pending" for="score-1 score-2 score-3" aria-labelledby="total-score-label" aria-live="polite">Chưa tính</output></dd>
+                    </div>
+                    <div data-evaluation-result-row hidden>
+                      <dt>Kết quả</dt>
+                      <dd><span data-evaluation-result></span></dd>
+                    </div>
+                  </dl>
                 </section>
                 <section class="evaluation-comment" aria-labelledby="evaluation-comment-title">
                   <h3 id="evaluation-comment-title">Nhận xét</h3>
                   <textarea id="evaluation-comment" name="evaluation-comment" rows="4" aria-labelledby="evaluation-comment-title" placeholder="Nhập nhận xét về kết quả thực hiện đề tài…"></textarea>
                 </section>
+                <section class="evaluation-attachments lecturer-evaluation__attachment" aria-labelledby="evaluation-attachment-title">
+                  <h3 id="evaluation-attachment-title">Tệp đánh giá đính kèm</h3>
+                  <div class="topic-file-picker">
+                    <div class="topic-file-picker__trigger">
+                      <input id="evaluation-attachment-file" type="file" aria-describedby="evaluation-attachment-hint evaluation-attachment-error">
+                      <label class="topic-file-picker__button" for="evaluation-attachment-file">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-6 6 6-6 6 6M5 16v5h14v-5"></path></svg>
+                        <span>Chọn tệp</span>
+                      </label>
+                    </div>
+                    <p class="topic-file-picker__hint" id="evaluation-attachment-hint">Đính kèm tối đa 1 tệp.</p>
+                    <div class="topic-file-picker__selection" hidden>
+                      <svg class="topic-file-picker__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8M8 17h6"></path></svg>
+                      <p class="topic-file-picker__name evaluation-attachments__name" id="evaluation-attachment-name" translate="no"></p>
+                      <button class="topic-file-picker__remove" type="button" aria-label="Bỏ tệp đính kèm" aria-describedby="evaluation-attachment-name" title="Bỏ tệp đính kèm">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18m-2 0-1 14a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1L5 6m4 0V3h6v3m-5 4v7m4-7v7"></path></svg>
+                      </button>
+                      <button type="button" class="evaluation-attachments__download" disabled hidden>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5"></path></svg>
+                        <span>Tải xuống</span>
+                      </button>
+                    </div>
+                    <p class="topic-file-picker__error" id="evaluation-attachment-error" role="alert" hidden></p>
+                    <p class="evaluation-attachment-note topic-file-picker__hint" role="status" hidden>Tệp này chưa có nội dung để tải xuống.</p>
+                  </div>
+                </section>
                 <div class="evaluation-form__actions">
                   <!-- Nút submit mặc định disabled chặn gửi form bằng Enter. -->
                   <button type="submit" hidden="" disabled="" aria-hidden="true" tabindex="-1">Lưu đánh giá</button>
-                  <button class="evaluation-form__publish" type="button" command="show-modal" commandfor="publish-evaluation" aria-controls="publish-evaluation" aria-haspopup="dialog">Công bố đánh giá</button>
+                  <button class="evaluation-form__publish" type="button" command="show-modal" commandfor="publish-evaluation" aria-controls="publish-evaluation" aria-haspopup="dialog">
+                    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#evaluation-publish-icon"></use></svg>
+                    <span>Công bố đánh giá</span>
+                  </button>
                 </div>
               </form>
             </div>
