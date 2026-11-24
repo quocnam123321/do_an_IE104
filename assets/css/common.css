@@ -270,6 +270,140 @@
 .notification-detail__content > :last-child { margin-bottom: 0; }
 .notification-detail__content h2 { margin-top: 2rem; }
 
+@font-face {
+  font-family: "Roboto UIT";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../fonts/roboto/roboto-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Roboto UIT";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../fonts/roboto/roboto-latin-ext-wght-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Roboto UIT";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../fonts/roboto/roboto-vietnamese-wght-normal.woff2") format("woff2");
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+1EA0-1EF9, U+20AB;
+}
+
+:is(.notification-detail--honors, .notification-detail--faculty) {
+  padding: clamp(.875rem, 2vw, 1.5rem);
+}
+
+:is(.notification-detail--honors, .notification-detail--faculty) .notification-detail__header {
+  padding-bottom: 0;
+  margin-bottom: 1rem;
+  border-bottom: 0;
+  font-family: "Roboto UIT", Roboto, Arial, sans-serif;
+}
+
+:is(.notification-detail--honors, .notification-detail--faculty) .notification-detail__header h1 {
+  margin-bottom: .5rem;
+  font-size: clamp(1.5rem, 3.4vw, 2rem);
+  line-height: 1.3;
+  font-family: inherit;
+}
+
+:is(.notification-detail--honors, .notification-detail--faculty) .notification-detail__header time {
+  font-style: italic;
+}
+
+.notification-detail--faculty .notification-detail__content {
+  font-family: "Roboto UIT", Roboto, Arial, sans-serif;
+}
+
+:is(.notification-detail--honors, .notification-detail--faculty-serif) .notification-detail__content {
+  max-width: none;
+  font-family: "Times New Roman", Times, serif;
+  font-size: clamp(1rem, 2vw, 1.125rem);
+  line-height: 1.7;
+}
+
+.notification-detail--honors .notification-honors-heading {
+  margin: 0 0 1rem;
+  font-family: inherit;
+  font-size: 1.15em;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.notification-detail--faculty .notification-detail__content {
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.notification-detail--faculty .notification-detail__content p {
+  margin-block: 0 .625rem;
+}
+
+.notification-detail--faculty .notification-detail__content h2 {
+  margin-block: 1rem .375rem;
+  font-size: 1.1em;
+  line-height: 1.4;
+}
+
+.notification-detail--faculty .notification-table {
+  margin-block: .75rem;
+}
+
+.notification-detail--faculty .notification-table code {
+  overflow-wrap: anywhere;
+}
+
+.notification-detail__content .notification-numbered-notes {
+  margin-block: 0 .75rem;
+  padding-inline-start: 1.25em;
+}
+
+.notification-numbered-notes > li::marker {
+  font-weight: 700;
+}
+
+.notification-detail--faculty .notification-numbered-notes h2 {
+  margin-block: 0 .375rem;
+  font: inherit;
+  font-weight: 700;
+}
+
+.notification-numbered-notes ul {
+  margin-block: 0;
+  list-style-type: "+  ";
+}
+
+.notification-midterm-deadline {
+  color: var(--color-primary);
+}
+
+.notification-honors-groups > li {
+  margin-bottom: 1.25rem;
+}
+
+.notification-honors-groups > li::marker {
+  font-weight: 700;
+}
+
+.notification-honors-groups h3 {
+  margin: 0 0 .5rem;
+  font: inherit;
+  font-weight: 700;
+}
+
+.notification-detail__content .notification-honors-groups ul {
+  padding-inline-start: 1.15em;
+  list-style: disc;
+}
+
 .notification-figure { margin: var(--space-5) 0; }
 .notification-figure img { margin-inline: auto; border-radius: var(--radius-control); }
 .notification-figure > a { display: block; width: fit-content; max-width: 100%; margin-inline: auto; }
@@ -282,6 +416,11 @@
 
 .notification-table { margin: var(--space-5) 0; overflow-x: auto; overflow-wrap: normal; }
 .notification-table table { width: 100%; min-width: 32rem; border-collapse: collapse; }
+.notification-table--defense-panels table { min-width: 72rem; }
+.notification-table--defense-panels tbody th[scope="row"] { font-weight: 400; }
+.notification-table--defense-panels thead th:nth-child(4),
+.notification-table--defense-panels thead th:nth-child(5) { width: 19%; }
+.notification-table--defense-panels thead th:last-child { width: 16%; }
 .notification-table caption {
   padding-bottom: var(--space-2);
   color: var(--color-heading);

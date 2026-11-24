@@ -4,8 +4,9 @@ const path = require('node:path');
 const test = require('node:test');
 const vm = require('node:vm');
 
-function createTab(storage) {
+function createTab(storage, globals = {}) {
   const tab = vm.createContext({
+    ...globals,
     localStorage: {
       getItem: key => storage.get(key) ?? null,
       setItem: (key, value) => storage.set(key, value),
@@ -200,4 +201,92 @@ test('nhãn thời hạn dùng giờ gửi của từng bài và lần gửi g�
   assert.equal(requirements.get('legacy').submitted, true);
   assert.equal(requirements.get('legacy').late, null);
   assert.equal(requirements.get('legacy').latestSubmission, null);
+});
+
+
+test('shares a newly uploaded file and the lecturer feedback, and keeps the previous version on failed storage', async () => {
+  const storage = new Map();
+  const uploads = new Map();
+  let failWrite = false;
+  const key = parts => parts.join('/');
+  const indexedDB = {
+    open() {
+      const opening = {
+        result: {
+          close() {},
+          transaction() {
+            let aborted = false;
+            let pending;
+            const transaction = {
+              error: new Error('Storage write failed'),
+              abort() { aborted = true; this.onabort(); },
+              objectStore() {
+                return {
+                  get(parts) {
+                    const request = { result: uploads.get(key(parts)) };
+                    queueMicrotask(() => {
+                      request.onsuccess();
+                      queueMicrotask(() => {
+                        if (aborted) return;
+                        if (pending && failWrite) { transaction.abort(); return; }
+                        if (pending) uploads.set(key([pending.projectId, pending.requirementId]), pending);
+                        transaction.oncomplete();
+                      });
+                    });
+                    return request;
+                  },
+                  put(record) {
+                    const request = {};
+                    pending = record;
+                    queueMicrotask(() => request.onsuccess?.());
+                    return request;
+                  },
+                };
+              },
+            };
+            return transaction;
+          },
+        },
+      };
+      queueMicrotask(() => opening.onsuccess());
+      return opening;
+    },
+  };
+  const student = createTab(storage, { indexedDB, File });
+  const teacher = createTab(storage, { indexedDB });
+  const projectId = 'DA005';
+  const teaching = teacher.services.teaching;
+  const state = teaching.saveRequirement(projectId, null, {
+    title: 'Báo cáo thử', content: 'Nộp PDF', deadline: '2099-01-01T10:00',
+  }, teaching.getState(projectId).revision);
+  const requirement = state.requirements.at(-1);
+  const file = new File(['bao cao'], 'report.pdf');
+  const first = await student.services.studentSubmissions.saveUpload(projectId, requirement, [file], '', null);
+  const current = teaching.getState(projectId);
+  const studentSubmissions = student.services.studentSubmissions;
+  const lecturerSubmissions = teacher.services.studentSubmissions;
+  const local = uploads.get(key([projectId, requirement.id]));
+  const submission = lecturerSubmissions.visibleSubmissions(projectId, current.submissions, [local])[0];
+  assert.equal(submission.submittedAt, first.submittedAt);
+  assert.equal(await submission.files[0].text(), 'bao cao');
+
+  const legacy = { id: `SV-UP-${requirement.id}`, requirementId: requirement.id,
+    submittedAt: first.submittedAt, feedback: 'legacy feedback' };
+  const migrated = studentSubmissions.visibleSubmissions(projectId, [legacy], [local]);
+  assert.equal(migrated.length, 1);
+  assert.equal(migrated[0].feedback, 'legacy feedback');
+
+  await lecturerSubmissions.reviewUpload(projectId, submission, 'test feedback');
+  const reviewed = uploads.get(key([projectId, requirement.id]));
+  assert.equal(studentSubmissions.visibleSubmissions(projectId, current.submissions, [reviewed])[0].feedback, 'test feedback');
+
+  failWrite = true;
+  await assert.rejects(studentSubmissions.saveUpload(projectId, requirement, [new File(['ban moi'], 'new.pdf')], '', first.submittedAt), /Ch\u01b0a l\u01b0u/);
+  assert.equal(uploads.get(key([projectId, requirement.id])), reviewed);
+  const savedState = teaching.getState(projectId);
+  await assert.rejects(lecturerSubmissions.deleteUnsubmittedRequirement(projectId, requirement.id, savedState.revision), /\u0111\u00e3 c\u00f3 b\u00e0i n\u1ed9p/);
+  assert.equal(teaching.getState(projectId).requirements.find(item => item.id === requirement.id).deletedAt, undefined);
+  const locked = teaching.setLocked(projectId, requirement.id, true, savedState.revision);
+  assert.equal(locked.requirements.find(item => item.id === requirement.id).locked, true);
+  assert.equal(uploads.get(key([projectId, requirement.id])).files[0].name, 'report.pdf');
 });
