@@ -1,7 +1,9 @@
-import { getWebsiteSession } from "../website-session.js";
+import { getWebsiteSession, hasStoredWebsiteSession } from "../website-session.js";
 import "./logout.js";
 
 const login = document.querySelector(".site-header__inner > .site-header__login");
+const guestAction = document.querySelector("[data-public-login]");
+const overviewAction = document.querySelector("[data-public-overview]");
 const pages = new URL("../../../pages/", import.meta.url);
 const roles = {
   student: {
@@ -58,15 +60,35 @@ function createAccountMenu() {
 if (login) {
   let account;
   let currentRole;
+  let refreshNumber = 0;
 
   async function refreshAccount() {
+    const requestNumber = ++refreshNumber;
+    const focusedAction = document.activeElement;
     let session;
     try {
+      if (!account && hasStoredWebsiteSession()) {
+        login.hidden = true;
+        if (guestAction) guestAction.hidden = true;
+      }
       session = await getWebsiteSession();
     } catch {
       // Điều hướng công khai vẫn dùng được khi không tải được phiên.
     }
+    if (requestNumber !== refreshNumber) return;
+
     const role = roles[session?.role];
+    if (guestAction && overviewAction) {
+      if (role) overviewAction.href = new URL(role.overview, pages);
+      const previousAction = role ? guestAction : overviewAction;
+      const nextAction = role ? overviewAction : guestAction;
+      const restoreFocus = document.activeElement === previousAction
+        || (focusedAction === guestAction && document.activeElement === document.body);
+      previousAction.hidden = true;
+      nextAction.hidden = false;
+      if (restoreFocus) nextAction.focus();
+    }
+
     if (role) {
       account ??= createAccountMenu();
       if (currentRole !== role) {
@@ -77,15 +99,22 @@ if (login) {
         currentRole = role;
       }
       account.hidden = false;
-      const restoreFocus = document.activeElement === login;
+      const restoreFocus = document.activeElement === login
+        || (focusedAction === login && document.activeElement === document.body);
       login.hidden = true;
       if (restoreFocus) account.querySelector("summary").focus();
-    } else if (account) {
-      const restoreFocus = account.contains(document.activeElement);
-      account.querySelector("details").open = false;
-      account.hidden = true;
+    } else {
       login.hidden = false;
-      if (restoreFocus) login.focus();
+      if (account) {
+        const dialog = document.getElementById("logout-dialog");
+        const restoreFocus = account.contains(document.activeElement) || dialog.open;
+        if (dialog.open) dialog.close();
+        account.querySelector("details").open = false;
+        account.hidden = true;
+        if (restoreFocus) login.focus();
+      } else if (focusedAction === login && document.activeElement === document.body) {
+        login.focus();
+      }
     }
   }
 

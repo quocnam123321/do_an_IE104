@@ -589,6 +589,10 @@
   .site-header .site-navigation > .main-nav { height: 100%; }
   .site-header .main-nav__list > .main-nav__item > .main-nav__link,
   .site-header .main-nav__label { padding-inline: var(--space-4); }
+  .main-nav__sublist[aria-labelledby="common-navigation-label"] {
+    inset-inline: 0 auto;
+    min-inline-size: 0;
+  }
   .site-header .main-nav__list {
     width: 100%;
     justify-content: center;

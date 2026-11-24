@@ -16,6 +16,10 @@ export function clearWebsiteSession() {
   sessionStorage.removeItem(sessionKey);
 }
 
+export function hasStoredWebsiteSession() {
+  return sessionStorage.getItem(sessionKey) !== null;
+}
+
 export async function getWebsiteRole(user) {
   const { claims, signInProvider } = await user.getIdTokenResult();
   if (signInProvider === "google.com") {
