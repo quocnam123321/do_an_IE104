@@ -62,7 +62,7 @@
     try {
       state = service.getState(projectId, { preview });
       const permission = service.getPermission(state);
-      notice.textContent = permission.reason || 'Thao tác thử chỉ lưu trên trình duyệt này; chưa xác minh sinh viên hoặc gửi lời mời đến giảng viên.';
+      notice.textContent = permission.reason || 'Thay đổi của nhóm và lời mời chỉ lưu trong trình duyệt này.';
       const full = state.members.length >= state.maxMembers;
       addButton.disabled = !permission.allowed || full;
       inviteButton.disabled = !permission.allowed;
@@ -79,7 +79,7 @@
         item.querySelector('.team-member__role').textContent = member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
         return item;
       }));
-      renderPendingInvitations(state.invitations, permission.allowed);
+      renderInvitations(state.invitations, permission.allowed);
       return true;
     } catch (failure) {
       state = null;
@@ -95,17 +95,17 @@
 
   const { normalizeSearch, departmentLabel } = globalThis.IE104SupervisionEntry;
 
-  function renderPendingInvitations(invitations, canManage) {
+  function renderInvitations(invitations, canManage) {
     const section = document.querySelector('.pending-invitations');
     const list = section.querySelector('.pending-invitations__list');
-    const pending = invitations.filter(invitation => invitation.status === 'pending');
-    section.hidden = pending.length === 0;
+    const visible = invitations.filter(invitation => invitation.status !== 'cancelled');
+    section.hidden = visible.length === 0;
 
-    const directory = pending.some(invitation => invitation.lecturerId.startsWith('giang-vien-'))
+    const directory = visible.some(invitation => invitation.lecturerId.startsWith('giang-vien-'))
       ? globalThis.IE104SupervisionEntry?.getTeachers().catch(() => [])
       : null;
 
-    list.replaceChildren(...pending.map(invitation => {
+    list.replaceChildren(...visible.map(invitation => {
       const lecturer = globalThis.IE104.data.projectLecturers.find(item => item.id === invitation.lecturerId);
       const knownName = invitation.lecturerName || lecturer?.name;
       const lecturerName = knownName || 'Giảng viên không còn trong danh mục';
@@ -129,6 +129,35 @@
       date.className = 'pending-invitation__meta';
       date.textContent = 'Ngày lưu: ' + new Date(invitation.createdAt).toLocaleDateString('vi-VN');
       content.append(name, department, date);
+      if (invitation.status === 'accepted' || invitation.status === 'rejected') {
+        const status = document.createElement('p');
+        status.className = 'pending-invitation__status';
+        status.dataset.status = invitation.status;
+        status.textContent = invitation.status === 'accepted' ? 'Đã đồng ý đồng hướng dẫn' : 'Đã từ chối';
+        content.append(status);
+      }
+      const actions = document.createElement('div');
+      actions.className = 'pending-invitation__actions';
+      if (invitation.thread) {
+        const thread = document.createElement('a');
+        thread.className = 'pending-invitation__thread';
+        thread.href = `de-tai-cua-toi-sinh-vien.html?loi-moi=${encodeURIComponent(invitation.id)}#loi-moi-huong-dan`;
+        thread.textContent = 'Xem trao đổi';
+        actions.append(thread);
+      } else {
+        const legacy = document.createElement('p');
+        legacy.className = 'pending-invitation__meta';
+        legacy.textContent = 'Lời mời cũ lưu riêng trong đề tài.';
+        content.append(legacy);
+      }
+
+      item.append(avatar, content);
+      if (invitation.thread || invitation.status === 'pending') item.append(actions);
+      directory?.then(lecturers => {
+        const profile = lecturers.find(lecturer => lecturer.id === invitation.lecturerId);
+        if (profile) department.textContent = departmentLabel(profile.department);
+      });
+      if (invitation.status !== 'pending') return item;
 
       const cancel = document.createElement('button');
       cancel.type = 'button';
@@ -149,12 +178,7 @@
         cancelDialog.showModal();
       });
 
-      directory?.then(lecturers => {
-        const profile = lecturers.find(lecturer => lecturer.id === invitation.lecturerId);
-        if (profile) department.textContent = departmentLabel(profile.department);
-      });
-
-      item.append(avatar, content, cancel);
+      actions.append(cancel);
       return item;
     }));
   }
@@ -283,7 +307,7 @@
       inviteDialog.close();
       selectedLecturer = '';
       refresh();
-      setResult('Đã lưu lời mời thử trên trình duyệt. Chưa gửi đến giảng viên; giảng viên chưa được thêm vào đề tài.');
+      setResult('Lời mời đã xuất hiện trong mục Lời mời hướng dẫn trên trình duyệt này.');
     } catch (failure) {
       if (inviteDialog.open) showError(inviteError, failure);
     } finally {
@@ -291,12 +315,12 @@
       inviteSubmit.disabled = !state || !selectedLecturer || !service.getPermission(state).allowed;
     }
   });
-  cancelConfirm.addEventListener('click', () => {
+  cancelConfirm.addEventListener('click', async () => {
     if (saving || !cancelDialog.open || !pendingCancel) return;
     saving = true;
     cancelError.hidden = true;
     try {
-      service.cancelInvitation(projectId, pendingCancel.id, pendingCancel.revision);
+      await service.cancelInvitation(projectId, pendingCancel.id, pendingCancel.revision);
       cancelDialog.close();
       refresh();
       result.hidden = true;
@@ -309,6 +333,7 @@
   });
   cancelSuccess.addEventListener('close', () => inviteButton.focus({ preventScroll: true }));
   window.addEventListener('storage', event => { if (event.key === globalThis.IE104.storage.teamKey || event.key === null) refresh(); });
+  globalThis.IE104Supervision?.subscribe(refresh);
   window.addEventListener('pageshow', refresh);
   refresh();
   document.body.dataset.teamReady = 'true';

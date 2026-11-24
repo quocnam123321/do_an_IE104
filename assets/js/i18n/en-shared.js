@@ -1,4 +1,11 @@
 Object.assign(globalThis.ie104English ??= {}, {
+  "Lời mời đồng hướng dẫn": "Co-supervision invitation",
+  "Đã đồng ý đồng hướng dẫn": "Accepted co-supervision",
+  "Xem trao đổi": "View conversation",
+  "Thay đổi của nhóm và lời mời chỉ lưu trong trình duyệt này.": "Team changes and invitations are saved in this browser only.",
+  "Lời mời đã xuất hiện trong mục Lời mời hướng dẫn trên trình duyệt này.": "The invitation is now visible in Supervision Invitations in this browser.",
+  "Nhóm em trân trọng mời thầy/cô đồng hướng dẫn đề tài này.": "Our team would like to invite you to co-supervise this topic.",
+  "Lời mời cũ lưu riêng trong đề tài.": "This earlier invitation is stored only in the topic.",
   "Quản lý đồ án và khóa luận tốt nghiệp": "Project and Thesis Management",
   "QUẢN LÝ ĐỒ ÁN VÀ": "PROJECT AND THESIS",
   "KHÓA LUẬN TỐT NGHIỆP": "MANAGEMENT",

@@ -316,6 +316,8 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 ### Tổng quan chi tiết đề tài sinh viên — 21/11/2026
 
 - Tab Tổng quan của Đề tài của tôi dùng chung khung ảnh tóm tắt 16:9, bố cục thẻ, danh sách mục tiêu và kết quả, cách hiển thị thành viên và mốc thời gian với trang Đề tài hướng dẫn. Khối Yêu cầu thực hiện xuất hiện khi đề tài đăng ký có dữ liệu tương ứng. Khối Giảng viên hướng dẫn đặt sau Mốc thời gian chính. Các thao tác nhóm và lời mời hiển thị theo quyền hiện có của sinh viên.
+- Lời mời đồng hướng dẫn gửi từ đề tài xuất hiện trong mục Lời mời hướng dẫn của giảng viên và sinh viên. Hai bên trao đổi khi lời mời đang chờ và sau khi giảng viên đồng ý. Giảng viên đồng ý hoặc từ chối trong cuộc trao đổi. Chi tiết đề tài của sinh viên hiển thị trạng thái và liên kết Xem trao đổi. Bản thử dùng chung dữ liệu trong cùng trình duyệt và địa chỉ web.
+- Hộp thư giảng viên tự xác định người nhận theo email tài khoản và danh mục giảng viên. Thanh chọn tự hiển thị tên người nhận của lời mời được mở qua liên kết hoặc của lời mời mới nhất khi vào hộp thư. Khi có lời mời mới, hộp thư tự chọn người nhận và mở lời mời. Phiên demo cho phép chuyển giữa các giảng viên có lời mời đã lưu trong trình duyệt.
 - Thông báo giới hạn thành viên đặt ngay dưới tên nhóm với biểu tượng thông tin và cụm “tối đa X thành viên” in đậm. Dùng nền vàng nhạt, viền vàng mảnh, chữ và biểu tượng màu nâu ở mọi trạng thái sức chứa.
 
 ### Tổng quan chi tiết đề tài đang hướng dẫn — 23/11/2026

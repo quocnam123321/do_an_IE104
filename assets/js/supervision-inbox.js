@@ -15,16 +15,14 @@
 
   body.innerHTML = `
     <div class="supervision__topline">
-      <p class="supervision__hint">${isTeacher
-        ? 'Bản demo trình duyệt. Chọn giảng viên nhận lời mời để xem và phản hồi.'
-        : 'Lời mời được lưu trong trình duyệt này.'}</p>
+      <p class="supervision__hint" data-inbox-hint>Lời mời được lưu trong trình duyệt này.</p>
       ${isTeacher ? '' : '<a href="../chung/huong-nghien-cuu.html" class="supervision__button">Tìm giảng viên</a>'}
     </div>
     <p class="supervision__error supervision__feedback" data-inbox-error role="alert"></p>
     ${isTeacher ? `
       <div class="supervision__field supervision__selector supervision__feedback" data-teacher-picker hidden>
         <label class="supervision__label" for="supervision-teacher">Giảng viên nhận lời mời</label>
-        <select class="supervision__control" id="supervision-teacher"></select>
+        <select class="supervision__control" id="supervision-teacher" translate="no"></select>
       </div>` : `
       <div class="supervision__actions supervision__feedback" data-inbox-login hidden>
         <a class="supervision__button supervision__button--primary">Đăng nhập để xem lời mời đã gửi</a>
@@ -49,17 +47,10 @@
             <p class="supervision__error" id="supervision-reply-error" role="alert" hidden></p>
           </div>
           <div data-supervision-picker></div>
-          <div class="supervision__actions">
-            <button class="supervision__button supervision__button--primary" type="submit">Gửi phản hồi</button>
-          </div>
+          <button class="supervision__button supervision__button--primary supervision__reply-send" type="submit">Gửi phản hồi</button>
         </form>
         ${isTeacher ? `
-          <form class="supervision__form supervision__decision" id="supervision-decision" aria-labelledby="supervision-decision-title">
-            <h3 class="supervision__heading" id="supervision-decision-title">Phản hồi lời mời</h3>
-            <div class="supervision__field">
-              <label class="supervision__label" for="supervision-decision-note">Lời nhắn kèm theo <span class="supervision__hint">(không bắt buộc)</span></label>
-              <textarea class="supervision__control" id="supervision-decision-note" name="note" rows="3" maxlength="2000"></textarea>
-            </div>
+          <form class="supervision__decision supervision__decision-form" id="supervision-decision" aria-label="Phản hồi lời mời">
             <div class="supervision__actions">
               <button class="supervision__button supervision__button--danger" type="submit" name="status" value="rejected">Từ chối</button>
               <button class="supervision__button supervision__button--primary" type="submit" name="status" value="accepted">Đồng ý hướng dẫn</button>
@@ -85,6 +76,7 @@
   const workspace = find('[data-inbox-workspace]');
   const list = find('.supervision__list');
   const inboxError = find('[data-inbox-error]');
+  const inboxHint = find('[data-inbox-hint]');
   const empty = find('[data-inbox-empty]');
   const subject = find('#supervision-subject');
   const badge = find('[data-thread-status]');
@@ -92,7 +84,11 @@
   const messages = find('.supervision__messages');
   const replyForm = find('#supervision-reply');
   const replyField = replyForm.elements.message;
-  const replyAttachment = attachments.createPicker(replyForm.querySelector('[data-supervision-picker]'), 'supervision-reply-attachment');
+  const replyAttachment = attachments.createPicker(
+    replyForm.querySelector('[data-supervision-picker]'),
+    'supervision-reply-attachment',
+    replyForm.querySelector('.supervision__reply-send')
+  );
   const replyError = find('#supervision-reply-error');
   const decisionForm = find('#supervision-decision');
   const result = find('[data-thread-result]');
@@ -103,9 +99,11 @@
   let activeId = new URLSearchParams(location.search).get('loi-moi');
   let active;
   let currentStudent;
+  let teacherSession;
   let sessionError = '';
   let saving = false;
   let unreadById = new Map();
+  let seenTeacherInvitations;
   let readFrame = 0;
 
   function textElement(tag, value, className) {
@@ -116,6 +114,7 @@
   }
 
   function describeStatus(record) {
+    if (record.projectId && record.status === 'accepted') return 'Đã đồng ý đồng hướng dẫn';
     return statusLabels[record.status] ?? (record.messages.length > 1 ? 'Đang trao đổi' : 'Chờ phản hồi');
   }
 
@@ -146,16 +145,6 @@
     });
   }
 
-  function showTeacherChoices(records) {
-    const options = new Map(records.map(({ teacher }) => [teacher.id, teacher.name]));
-    const previous = teachers.value;
-    const choices = [...options].map(([id, name]) => new Option(name, id));
-    teachers.replaceChildren(...choices);
-    if (options.has(previous)) teachers.value = previous;
-    picker.hidden = !options.size;
-    return records.filter(({ teacher }) => teacher.id === teachers.value);
-  }
-
   function renderList(records) {
     const focusedId = document.activeElement?.dataset.invitationId;
     let focusedButton;
@@ -171,7 +160,9 @@
       const status = isTeacher && store.needsTeacherReply(record) ? 'Chờ bạn trả lời' : describeStatus(record);
       button.append(
         textElement('strong', record.subject),
+        ...(record.projectId ? [textElement('span', 'Lời mời đồng hướng dẫn', 'supervision__hint')] : []),
         textElement('span', isTeacher ? record.student.name : record.teacher.name, 'supervision__hint'),
+        ...(isTeacher ? [textElement('span', `Người nhận: ${record.teacher.name}`, 'supervision__hint')] : []),
         textElement('span', status, 'supervision__hint')
       );
       const unread = unreadById.get(record.id);
@@ -183,15 +174,42 @@
     focusedButton?.focus({ preventScroll: true });
   }
 
+  function showTeacherChoices(records, newInvitation) {
+    const options = new Map(records.map(({ teacher }) => [teacher.id, teacher.name]));
+    const current = teachers.value;
+    const linked = records.find(({ id }) => id === activeId);
+    const selected = newInvitation?.teacher.id ??
+      (options.has(current) ? current : linked?.teacher.id ?? records[0]?.teacher.id);
+    const choices = [...options];
+    if (choices.length !== teachers.options.length ||
+        choices.some(([id, name], index) => teachers.options[index].value !== id || teachers.options[index].textContent !== name)) {
+      teachers.replaceChildren(...choices.map(([id, name]) => new Option(name, id)));
+    }
+    if (selected) teachers.value = selected;
+    picker.hidden = !options.size;
+    return records.filter(({ teacher }) => teacher.id === selected);
+  }
+
   function renderThread(record) {
     const open = record.status === 'pending';
-    const moveFocus = !open && (replyForm.contains(document.activeElement) || decisionForm?.contains(document.activeElement));
+    const canReply = store.canReply(record);
+    const moveFocus = (!canReply && replyForm.contains(document.activeElement)) ||
+      (!open && decisionForm?.contains(document.activeElement));
     subject.textContent = record.subject;
     badge.dataset.status = record.status;
     badge.textContent = describeStatus(record);
     const studentCode = record.student.id === store.student.id ? ` · ${record.student.id}` : '';
     person.textContent = isTeacher
       ? `Sinh viên ${record.student.name}${studentCode}` : `Giảng viên ${record.teacher.name}`;
+    if (isTeacher) person.append(' · ', textElement('span', `Người nhận: ${record.teacher.name}`));
+    if (record.projectId) {
+      person.append(' · ', textElement('span', 'Lời mời đồng hướng dẫn'));
+      if (!isTeacher) {
+        const topic = textElement('a', 'Xem đề tài');
+        topic.href = `chi-tiet-de-tai-sinh-vien.html?project=${encodeURIComponent(record.projectId)}#tong-quan`;
+        person.append(' · ', topic);
+      }
+    }
     messages.replaceChildren(...record.messages.map((message) => {
       const item = document.createElement('li');
       item.className = 'supervision__message';
@@ -210,7 +228,7 @@
       return item;
     }));
 
-    replyForm.hidden = !open;
+    replyForm.hidden = !canReply;
     if (decisionForm) decisionForm.hidden = !open;
     result.hidden = open;
     if (!open) {
@@ -220,7 +238,7 @@
       note.hidden = !record.decision.note;
       const next = result.querySelector('[data-proposal-link]');
       if (next) {
-        next.hidden = record.status !== 'accepted';
+        next.hidden = record.status !== 'accepted' || Boolean(record.projectId);
         next.href = `tao-de-xuat.html?loi-moi=${encodeURIComponent(record.id)}`;
       }
       if (moveFocus) subject.focus({ preventScroll: true });
@@ -236,6 +254,17 @@
   function render() {
     inboxError.textContent = '';
     empty.textContent = '';
+    if (isTeacher) inboxHint.textContent = teacherSession?.demo
+      ? 'Bản demo hiển thị lời mời của các giảng viên trong trình duyệt này.'
+      : 'Lời mời được lưu trong trình duyệt này.';
+    if (isTeacher && !teacherSession) {
+      active = null;
+      picker.hidden = true;
+      workspace.hidden = true;
+      renderTabCount(0);
+      inboxError.textContent = sessionError;
+      return;
+    }
     if (login) {
       login.hidden = currentStudent !== null;
       if (!currentStudent) {
@@ -250,9 +279,17 @@
     let records;
     try {
       const all = store.getAll();
-      records = isTeacher ? showTeacherChoices(all) : all.filter(({ student }) => student.id === currentStudent.id);
+      records = isTeacher
+        ? (teacherSession.demo ? all : all.filter(({ teacher }) => teacherSession.teacherIds.includes(teacher.id)))
+        : all.filter(({ student }) => student.id === currentStudent.id);
       if (isTeacher) {
-        renderTabCount(all.filter(store.needsTeacherReply).length);
+        renderTabCount(records.filter(store.needsTeacherReply).length);
+        const newInvitation = seenTeacherInvitations && records
+          .filter(({ id }) => !seenTeacherInvitations.has(id))
+          .reduce((latest, record) => !latest || Date.parse(record.createdAt) > Date.parse(latest.createdAt) ? record : latest, null);
+        seenTeacherInvitations = new Set(records.map(({ id }) => id));
+        if (newInvitation) activeId = newInvitation.id;
+        records = showTeacherChoices(records, newInvitation);
       } else {
         unreadById = new Map(records.map((record) => [record.id, store.getUnreadResponses(record)]));
         renderTabCount([...unreadById.values()].reduce((sum, count) => sum + count, 0));
@@ -268,7 +305,9 @@
     workspace.hidden = !records.length;
     if (!records.length) {
       active = null;
-      empty.textContent = isTeacher ? 'Chưa có lời mời hướng dẫn.' : 'Bạn chưa gửi lời mời hướng dẫn nào.';
+      empty.textContent = isTeacher
+        ? (teacherSession.teacherIds?.length === 0 ? 'Email của tài khoản chưa khớp với danh mục giảng viên.' : 'Chưa có lời mời hướng dẫn.')
+        : 'Bạn chưa gửi lời mời hướng dẫn nào.';
       return;
     }
 
@@ -280,7 +319,7 @@
       threadError.textContent = '';
       feedback.textContent = '';
     } else if (!saving && (active.status !== next.status || active.messages.length !== next.messages.length)) {
-      feedback.textContent = next.status === 'pending' ? 'Cuộc trao đổi có phản hồi mới.' : describeStatus(next);
+      feedback.textContent = active.status === next.status ? 'Cuộc trao đổi có phản hồi mới.' : describeStatus(next);
     }
     activeId = next.id;
     active = next;
@@ -300,7 +339,7 @@
       if (activeId === record.id) {
         form.reset();
         feedback.textContent = success;
-        if (form === replyForm && record.status === 'pending') replyField.focus({ preventScroll: true });
+        if (form === replyForm && store.canReply(record)) replyField.focus({ preventScroll: true });
         else subject.focus({ preventScroll: true });
       }
     } catch (error) {
@@ -315,7 +354,7 @@
   replyField.addEventListener('input', clearReplyError);
   replyForm.addEventListener('submit', (event) => {
     event.preventDefault();
-    if (saving || active?.status !== 'pending') return;
+    if (saving || !store.canReply(active)) return;
     const value = replyField.value.trim();
     const attachmentValid = replyAttachment.validate();
     if (!value) {
@@ -330,7 +369,7 @@
       return;
     }
     const invitation = active;
-    const actor = { role, id: isTeacher ? teachers.value : currentStudent.id };
+    const actor = { role, id: isTeacher ? invitation.teacher.id : currentStudent.id };
     const file = replyAttachment.getFile();
     save(async () => {
       if (!isTeacher && (await entry.getStudent())?.id !== actor.id) {
@@ -343,13 +382,13 @@
     event.preventDefault();
     if (saving || active?.status !== 'pending' || !event.submitter) return;
     const status = event.submitter.value;
+    const invitation = active;
     save(
-      () => store.decide(active.id, teachers.value, status, decisionForm.elements.note.value),
+      () => store.decide(invitation.id, invitation.teacher.id, status),
       decisionForm,
       'Đã lưu quyết định trong bản demo.'
     );
   });
-  teachers?.addEventListener('change', render);
   list.addEventListener('click', (event) => {
     const button = event.target.closest('[data-invitation-id]');
     if (!button) return;
@@ -357,8 +396,26 @@
     render();
     subject.focus();
   });
+  teachers?.addEventListener('change', render);
   if (login) login.querySelector('a').href = entry.getInboxLoginUrl();
-  if (!isTeacher) {
+  if (isTeacher) {
+    const refreshTeacher = async () => {
+      teacherSession = undefined;
+      sessionError = '';
+      render();
+      try {
+        teacherSession = await entry.getTeacherInboxSession();
+        if (!teacherSession) sessionError = 'Đăng nhập bằng tài khoản giảng viên để xem lời mời đã nhận.';
+      } catch {
+        sessionError = 'Không kiểm tra được phiên đăng nhập. Hãy thử đăng nhập lại.';
+      }
+      render();
+    };
+    refreshTeacher();
+    window.addEventListener('pageshow', event => {
+      if (event.persisted) refreshTeacher();
+    });
+  } else {
     const refreshSession = async () => {
       currentStudent = undefined;
       sessionError = '';

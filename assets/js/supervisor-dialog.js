@@ -66,8 +66,8 @@
     try {
       const currentStudent = await entry.getStudent();
       if (!currentStudent) return;
-      accepted = store.getAll().find(({ id, status, student }) =>
-        id === invitationId && status === 'accepted' && student.id === currentStudent.id);
+      accepted = store.getAll().find(({ id, status, student, projectId }) =>
+        id === invitationId && status === 'accepted' && student.id === currentStudent.id && !projectId);
     } catch {
       showInvitationNote('Không đọc được lời mời đã lưu. Bạn có thể chọn giảng viên thủ công.');
     }

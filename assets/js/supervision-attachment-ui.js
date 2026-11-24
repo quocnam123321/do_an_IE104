@@ -10,7 +10,7 @@
     return `${number.format(bytes / (1024 * 1024))} MB`;
   }
 
-  function createPicker(host, id) {
+  function createPicker(host, id, submitButton) {
     const limitText = formatSize(store.attachmentLimit);
     host.classList.add('supervision__field');
     host.innerHTML = `
@@ -30,6 +30,7 @@
     const remove = host.querySelector('[data-remove-attachment]');
     const selected = host.querySelector('[data-selected-attachment]');
     const error = host.querySelector('[role="alert"]');
+    if (submitButton) remove.before(submitButton);
 
     function validate() {
       const file = input.files[0];
