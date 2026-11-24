@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const store = window.IE104Proposals;
-  const topics = window.IE104.services.lecturerTopics;
+  const { lecturerTopics: topics, approvedProjects } = window.IE104.services;
   const list = document.querySelector('[data-topic-results] .topic-list');
   const template = list?.querySelector('.topic-card')?.cloneNode(true);
   if (!store || !template) return;
@@ -54,10 +54,8 @@
       badge.textContent = record.supervisionRoleLabel || record.statusLabel || 'Đang thực hiện';
       badge.className = 'topic-card__status topic-card__status--' + card.dataset.role;
       const link = card.querySelector('.topic-card__detail-link');
-      link.href = record.projectId
-        ? `chi-tiet-de-tai-dang-huong-dan-giang-vien.html?project=${encodeURIComponent(record.projectId)}`
-        : `chi-tiet-de-xuat-giang-vien.html?ma=${encodeURIComponent(record.id)}`;
-      link.querySelector('span').textContent = record.projectId ? 'Xem chi tiết' : 'Xem đề xuất đã duyệt';
+      link.href = approvedProjects.lecturerUrl(record.projectId || record.topicId);
+      link.querySelector('span').textContent = 'Xem chi tiết';
       list.append(card);
     }
     document.dispatchEvent(new Event('ie104:topics-updated'));
