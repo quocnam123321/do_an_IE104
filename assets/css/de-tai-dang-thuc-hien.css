@@ -73,8 +73,8 @@
 .active-topic-page dialog::backdrop { background: rgb(15 23 42 / .4); }
 .active-topic-page dialog :is(header,.popover-header) { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding-bottom: var(--space-3); margin-bottom: var(--space-4); border-bottom: 1px solid var(--color-border); }
 .active-topic-page dialog :is(h2,h3) { font-size: 1.125rem; }
-.active-topic-page dialog form, .active-topic-page .form-group, .submission-form__field { display: grid; gap: var(--space-2); }
-.active-topic-page dialog form { gap: var(--space-4); }
+.active-topic-page dialog:where(:not(.logout-dialog)) form, .active-topic-page .form-group, .submission-form__field { display: grid; gap: var(--space-2); }
+.active-topic-page dialog:where(:not(.logout-dialog)) form { gap: var(--space-4); }
 .active-topic-page dialog label { display: block; font-size: var(--font-size-secondary); font-weight: 500; margin-bottom: var(--space-1); }
 .active-topic-page dialog :is(input,select,textarea) { width: 100%; min-width: 0; min-height: var(--control-min-height); padding: .625rem var(--space-3); border: 1px solid var(--color-control-border); border-radius: var(--radius-control); font: inherit; background: var(--color-surface); color: var(--color-foreground); }
 .active-topic-page dialog textarea { resize: vertical; }
