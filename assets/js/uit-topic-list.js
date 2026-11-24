@@ -9,6 +9,26 @@
   if (!status || !list || !pagination) return;
   const catalog = window.UITLecturerCatalog;
   const isSupervised = document.body.dataset.lecturerList === 'supervised';
+  const projectStatusCodes = { 'dang-thuc-hien': 'in-progress', 'hoan-thanh': 'completed', 'da-rut': 'withdrawn' };
+  const projectStatusLabels = { 'in-progress': 'Đang thực hiện', completed: 'Hoàn thành', withdrawn: 'Đã rút' };
+
+  function renderProjectStatus(card) {
+    const raw = card.dataset.status;
+    const status = projectStatusCodes[raw] || raw || 'unknown';
+    card.dataset.status = status;
+    const actions = card.querySelector('.topic-card__actions');
+    let badge = actions.querySelector('.topic-card__project-status');
+    if (!badge) {
+      badge = document.createElement('span');
+      badge.className = 'topic-card__project-status';
+      actions.prepend(badge);
+    }
+    if (badge.dataset.status !== status) {
+      badge.dataset.status = status;
+      badge.textContent = projectStatusLabels[status] || 'Chưa có thông tin';
+    }
+  }
+
   function refreshCodes() {
     for (const item of [...list.children]) {
       if (!item.matches('.topic-card') && !item.querySelector('.topic-card')) item.remove();
@@ -32,6 +52,7 @@
         if (record.supervisionRole || record.role) card.dataset.role = record.role || record.supervisionRole;
       }
       if (!['course', 'do-an-mon-hoc', 'do-an'].includes(type)) card.dataset.course = '';
+      if (isSupervised) renderProjectStatus(card);
       nodes.forEach(node => { node.textContent = node.textContent.trim().replace(/^(Mã đề tài|Môn học|Loại đề tài|Nhóm thực hiện|Tác giả|GVHD theo nguồn|Ngày tạo|Ngày gửi|Vai trò của tôi):\s*/, '').replace(/(Học kỳ[^•·]*)\s[-•]\s(?=20)/, '$1 · '); });
       if (nodes[0]) card.querySelector('.topic-card__meta')?.setAttribute('aria-label', `Thông tin đề tài ${nodes[0].textContent}`);
       if (isSupervised && nodes[3]) {

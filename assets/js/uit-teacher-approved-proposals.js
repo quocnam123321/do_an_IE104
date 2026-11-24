@@ -19,7 +19,7 @@
       semester: project.semester, academicYear: project.academicYear, groupName: project.groupName,
       supervisionRole: role === 'secondary' ? 'dong-huong-dan' : 'huong-dan-chinh',
       supervisionRoleLabel: role === 'secondary' ? 'Đồng hướng dẫn' : 'Hướng dẫn chính',
-      topicStatus: project.status === 'hoan-thanh' ? 'completed' : 'in-progress', statusLabel: project.statusLabel,
+      topicStatus: project.status, statusLabel: project.statusLabel,
     }]));
     for (const record of entries) if (!byId.has(record.topicId)) byId.set(record.topicId, record);
     for (const record of byId.values()) {
@@ -29,7 +29,7 @@
       card.dataset.approvedProposal = record.id;
       card.dataset.topicId = record.topicId;
       card.dataset.sortDate = record.sortDate || record.decidedAt || '';
-      card.dataset.status = record.topicStatus;
+      card.dataset.status = record.topicStatus || '';
       card.dataset.topicType = { 'do-an-mon-hoc': 'course', 'do-an-tot-nghiep': 'graduation', 'khoa-luan': 'thesis', 'luan-van-thac-si': 'master', 'do-an': 'course' }[record.topicType] || '';
       card.dataset.role = record.supervisionRole === 'dong-huong-dan' ? 'secondary' : 'primary';
       card.dataset.course = { 'internet-va-cong-nghe-web': 'web', 'co-so-du-lieu': 'database', 'cong-nghe-phan-mem': 'software' }[record.course] || (record.course === 'IE104' ? 'web' : record.course || '');

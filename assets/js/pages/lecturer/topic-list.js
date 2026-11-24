@@ -41,7 +41,10 @@
       }
       if (kind === 'supervised') {
         card.dataset.sortDate = topic.startsAt || topic.sourceRecord?.supervision?.milestones?.[0] || topic.createdAt || '';
+        card.dataset.status = topic.status || '';
         if (existing && topic.sourceRecord && !topic.sharedStudentProject && !topic.demo && !topic.revision) return;
+      } else {
+        card.dataset.status = topic.status;
       }
       card.dataset.topicId = topic.id;
       const link = card.querySelector('.topic-card__detail-link');
@@ -53,7 +56,6 @@
       card.dataset.topicType = topic.filterType || topic.topicType;
       card.dataset.course = topic.course;
       card.dataset.hocKy = `${topic.academicYear}-${topic.semester === 'summer' ? '3' : topic.semester}`;
-      card.dataset.status = kind === 'created' ? topic.status : topic.status === 'hoan-thanh' ? 'completed' : 'in-progress';
       if (topic.role) card.dataset.role = topic.role;
       const date = card.querySelector('time[datetime]');
       const createdAt = topic.createdAt || '';

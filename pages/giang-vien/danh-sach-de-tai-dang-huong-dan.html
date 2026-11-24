@@ -24,7 +24,7 @@
     />
     <link
       rel="stylesheet"
-      href="../../assets/css/teacher-supervised-topics.css?v=20261122-list-spacing"
+      href="../../assets/css/teacher-supervised-topics.css?v=20261124-project-status"
     />
     <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css?v=20261122-empty-state" />
     <script src="../../assets/js/nav-indicator.js" defer=""></script>
@@ -77,16 +77,16 @@
     ></script>
     <script src="../../assets/js/services/teaching-service.js?v=20261124-invitation-flow" defer></script>
     <script
-      src="../../assets/js/uit-teacher-approved-proposals.js?v=20261124-supervised-detail"
+      src="../../assets/js/uit-teacher-approved-proposals.js?v=20261124-project-status"
       defer
     ></script>
     <script
-      src="../../assets/js/pages/lecturer/topic-list.js?v=20261124-invitation-flow"
+      src="../../assets/js/pages/lecturer/topic-list.js?v=20261124-project-status"
       defer
     ></script>
     <script src="../../assets/js/shared/course-filters.js?v=20261122-course-options" defer></script>
     <script src="../../assets/js/shared/topic-list-empty.js?v=20261122-empty-state" defer></script>
-    <script src="../../assets/js/uit-topic-list.js?v=20261124-rebase" defer></script>
+    <script src="../../assets/js/uit-topic-list.js?v=20261124-project-status" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-sort.js?v=20261123-language" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js" defer></script>
@@ -451,8 +451,6 @@
                 </svg>
               </summary>
 
-              <!-- Chưa có xử lý lọc, tìm kiếm, sắp xếp hoặc phân trang.
-                   Xóa bộ lọc dùng reset của HTML; submit disabled tránh gửi biểu mẫu bằng Enter. -->
               <form
                 id="topic-filter-form"
                 class="topic-filters__form"
@@ -542,6 +540,30 @@
                           >Khóa luận</span
                         > </label
                       >
+                    </div>
+                  </div>
+                </fieldset>
+
+                <fieldset class="topic-filters__group">
+                  <legend>Trạng thái</legend>
+                  <div class="topic-filters__options">
+                    <div class="topic-filters__option">
+                      <label for="status-in-progress">
+                        <input type="checkbox" id="status-in-progress" name="status" value="in-progress" />
+                        <span class="topic-filters__option-text">Đang thực hiện</span>
+                      </label>
+                    </div>
+                    <div class="topic-filters__option">
+                      <label for="status-completed">
+                        <input type="checkbox" id="status-completed" name="status" value="completed" />
+                        <span class="topic-filters__option-text">Hoàn thành</span>
+                      </label>
+                    </div>
+                    <div class="topic-filters__option">
+                      <label for="status-withdrawn">
+                        <input type="checkbox" id="status-withdrawn" name="status" value="withdrawn" />
+                        <span class="topic-filters__option-text">Đã rút</span>
+                      </label>
                     </div>
                   </div>
                 </fieldset>

@@ -603,7 +603,12 @@
   border-left: 1px solid var(--color-border);
 }
 
-.topic-card__status {
+[data-lecturer-list="supervised"] .topic-card__actions {
+  gap: var(--space-2);
+}
+
+.topic-card__status,
+.topic-card__project-status {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -629,6 +634,42 @@
 .topic-card__status--secondary {
   background-color: var(--role-secondary-bg);
   color: var(--role-secondary-fg);
+}
+
+.topic-card__project-status {
+  background-color: var(--color-neutral-bg);
+  color: var(--color-muted-foreground);
+  font-weight: var(--weight-semibold);
+}
+
+.topic-card[data-status="in-progress"] .topic-card__project-status {
+  background-color: var(--color-info-bg);
+  color: var(--color-info-fg);
+}
+
+.topic-card[data-status="completed"] .topic-card__project-status {
+  background-color: var(--color-success-bg);
+  color: var(--color-success-fg);
+}
+
+[data-lecturer-list="supervised"] .topic-card[data-role="primary"] .topic-card__status {
+  background-color: #eaf3f2;
+  color: #315856;
+}
+
+[data-lecturer-list="supervised"] .topic-card[data-role="secondary"] .topic-card__status {
+  background-color: #f5f0e4;
+  color: #655537;
+}
+
+:root[data-theme="dark"] [data-lecturer-list="supervised"] .topic-card[data-role="primary"] .topic-card__status {
+  background-color: #1b3332;
+  color: #a8cdca;
+}
+
+:root[data-theme="dark"] [data-lecturer-list="supervised"] .topic-card[data-role="secondary"] .topic-card__status {
+  background-color: #342d20;
+  color: #e1d0a8;
 }
 
 .topic-card__detail-link {
@@ -871,7 +912,7 @@
     font-size: var(--text-sm);
   }
 
-  /* Thẻ 1 cột: ảnh 16:9 đầu thẻ, nhãn vai trò góc trên phải ảnh, nút cuối thẻ */
+  /* Thẻ 1 cột: ảnh 16:9 đầu thẻ, cụm thao tác cuối thẻ */
   .topic-card {
     grid-template-columns: minmax(0, 1fr);
     row-gap: var(--space-3);
@@ -884,7 +925,7 @@
     border-left: 0;
   }
 
-  .topic-card__status {
+  body:not([data-lecturer-list="supervised"]) .topic-card__status {
     position: absolute;
     top: calc(var(--space-4) + 0.625rem);
     right: calc(var(--space-4) + 0.625rem);
@@ -895,11 +936,11 @@
     padding: 0.25rem 0.75rem;
   }
 
-  .topic-card__status--primary {
+  body:not([data-lecturer-list="supervised"]) .topic-card__status--primary {
     border: 1px solid var(--role-primary-border);
   }
 
-  .topic-card__status--secondary {
+  body:not([data-lecturer-list="supervised"]) .topic-card__status--secondary {
     border: 1px solid var(--role-secondary-border);
   }
 
@@ -911,7 +952,7 @@
 
 /* Màn hình cực hẹp hoặc zoom lớn trên điện thoại nhỏ: đưa nhãn về luồng dọc để không che ảnh */
 @media (max-width: 21.87375rem) {
-  .topic-card__status {
+  body:not([data-lecturer-list="supervised"]) .topic-card__status {
     position: static;
     width: 100%;
     max-width: 100%;
