@@ -32,6 +32,17 @@ test('SV sends; only recipient decides; approval persists membership and lecture
  assert.equal(f.app.services.lecturerTopics.workspaceState(f.project.id).project.role,'secondary');
  await assert.rejects(f.service.respondInvitation(f.project.id,inv.id,'accepted','',accepted.revision),/đã được xử lý/);
 });
+test('a project can add multiple co-supervisors without inviting the same lecturer twice', async () => {
+ const f = setup();
+ const first = await invite(f);
+ const accepted = await f.service.respondInvitation(f.project.id, first.invitations[0].id, 'accepted', '', first.revision);
+ await assert.rejects(invite(f), /đã tham gia/);
+ const next = await f.service.inviteSupervisor(f.project.id, 'giang-vien-43', '', accepted.revision);
+ f.setActor({ id: 'giang-vien-43' });
+ const result = await f.service.respondInvitation(f.project.id, next.invitations[1].id, 'accepted', '', next.revision);
+ assert.ok(result.supervisorIds.includes(f.recipient.id));
+ assert.ok(result.supervisorIds.includes('giang-vien-43'));
+});
 test('rejection requires reason, persists result, adds no supervisor',async()=>{
  const f=setup(),state=await invite(f),inv=state.invitations[0];
  await assert.rejects(f.service.respondInvitation(f.project.id,inv.id,'rejected','  ngắn  ',state.revision),/10 đến 2000/);

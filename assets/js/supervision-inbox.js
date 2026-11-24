@@ -104,7 +104,6 @@
   let saving = false;
   let unreadById = new Map();
   let seenTeacherInvitations;
-  let projectInvitationCount = 0;
   let readFrame = 0;
 
   function textElement(tag, value, className) {
@@ -284,7 +283,7 @@
         ? (teacherSession.demo ? all : all.filter(({ teacher }) => teacherSession.teacherIds.includes(teacher.id)))
         : all.filter(({ student }) => student.id === currentStudent.id);
       if (isTeacher) {
-        renderTabCount(records.filter(store.needsTeacherReply).length + projectInvitationCount);
+        renderTabCount(records.filter(store.needsTeacherReply).length);
         const newInvitation = seenTeacherInvitations && records
           .filter(({ id }) => !seenTeacherInvitations.has(id))
           .reduce((latest, record) => !latest || Date.parse(record.createdAt) > Date.parse(latest.createdAt) ? record : latest, null);
@@ -398,10 +397,6 @@
     subject.focus();
   });
   teachers?.addEventListener('change', render);
-  section.addEventListener('ie104:project-invitation-count', event => {
-    projectInvitationCount = event.detail;
-    render();
-  });
   if (login) login.querySelector('a').href = entry.getInboxLoginUrl();
   if (isTeacher) {
     const refreshTeacher = async () => {

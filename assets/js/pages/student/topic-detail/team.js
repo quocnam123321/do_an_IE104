@@ -315,7 +315,7 @@
       selectedLecturer = '';
       refresh();
       result.hidden = true;
-      globalThis.IE104.ui.invitationSuccess('Đã gửi lời mời hướng dẫn', 'Giảng viên sẽ nhận được lời mời trong Yêu cầu chờ duyệt.');
+      globalThis.IE104.ui.invitationSuccess('Đã gửi lời mời hướng dẫn', 'Giảng viên sẽ nhận được lời mời. Bạn có thể mở mục Xem trao đổi trong chi tiết đề tài để xem phản hồi.');
     } catch (failure) {
       if (inviteDialog.open) showError(inviteError, failure);
     } finally {

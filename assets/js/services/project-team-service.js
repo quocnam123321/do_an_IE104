@@ -101,7 +101,6 @@
         if (!canInvite(lecturer, { ...state, supervisorIds: supervisorIds(team, state) })) {
           throw new Error('Giảng viên đã tham gia đề tài hoặc đã có lời mời đang chờ.');
         }
-        if (state.invitations.some(item => item.status === 'accepted')) throw new Error('Đề tài đã có giảng viên đồng hướng dẫn được mời.');
         const text = String(message || '').trim();
         if (text.length > 2000) throw new Error('Lời nhắn tối đa 2000 ký tự.');
         state.invitations.push({ id: `INV-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`}`, lecturerId, lecturerName: lecturer.name, lecturerEmail: lecturer.email || '', lecturerDepartment: lecturer.department || '', role: 'secondary', message: text, status: 'pending', createdAt: new Date().toISOString() });
@@ -112,7 +111,6 @@
     const state = getState(projectId);
     checkChange(state, revision);
     if (!canInvite(lecturer, state)) throw new Error('Giảng viên đã tham gia đề tài hoặc đã có lời mời đang chờ.');
-    if (state.invitations.some(item => item.status === 'accepted')) throw new Error('Đề tài đã có giảng viên đồng hướng dẫn được mời.');
     return store.create({
       student, teacher: lecturer, projectId, subject: state.project.title.slice(0, 120),
       message: String(message || '').trim() || 'Nhóm em trân trọng mời thầy/cô đồng hướng dẫn đề tài này.',
@@ -185,9 +183,8 @@
     if (invitation.status !== 'pending') throw new Error('Lời mời này đã được xử lý hoặc đã hủy.');
     const reason = String(note || '').trim();
     if (reason.length > 2000 || status === 'rejected' && reason.length < 10) throw new Error('Lý do từ chối cần từ 10 đến 2000 ký tự, không tính khoảng trắng ở hai đầu.');
-    if (status === 'accepted') {
-      if (supervisorIds(team, state).includes(invitation.lecturerId)) throw new Error('Giảng viên đã tham gia hướng dẫn đề tài này.');
-      if (state.invitations.some(item => item.status === 'accepted')) throw new Error('Đề tài đã có giảng viên đồng hướng dẫn được mời.');
+    if (status === 'accepted' && supervisorIds(team, state).includes(invitation.lecturerId)) {
+      throw new Error('Giảng viên đã tham gia hướng dẫn đề tài này.');
     }
     Object.assign(invitation, { status, decisionNote: reason, decidedAt: new Date().toISOString(), decidedBy: recipient.id, ...(recipient.demo ? { demoDecision: true } : {}) });
     state.revision++;
