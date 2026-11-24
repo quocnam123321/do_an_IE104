@@ -3,21 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="[KH&amp;KTTT] NỘP ĐỀ CƯƠNG KHÓA LUẬN TỐT NGHIỆP" />
-    <title>[KH&amp;KTTT] NỘP ĐỀ CƯƠNG KHÓA LUẬN TỐT NGHIỆP | Thông báo</title>
+    <meta name="description" content="" />
+    <title>Chi tiết thông báo</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
     <script defer src="../../assets/js/i18n/en-public.js"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
+    <script defer src="../../assets/js/data/notification-details.js"></script>
+    <script defer src="../../assets/js/notification-detail.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <script type="module" src="../../assets/js/shared/public-session.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
     <link rel="stylesheet" href="../../assets/css/components.css?v=20261112-notification-back" />
-    <link rel="stylesheet" href="../../assets/css/common.css?v=20261124-faculty-layout" />
+    <link rel="stylesheet" href="../../assets/css/common.css?v=20261124-notice-detail" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   </head>
-  <body id="page-top" tabindex="-1" id="tu-bo-loc" class="common-page">
+  <body id="page-top" tabindex="-1" class="common-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
 
     <header class="site-header">
@@ -50,7 +52,7 @@
     </header>
 
     <main id="main-content" class="notification-detail-page" tabindex="-1">
-      <div class="page-container">
+      <div class="page-container" id="tu-bo-loc">
         <nav class="breadcrumb" aria-label="Đường dẫn trang">
           <ol class="breadcrumb__list">
             <li class="breadcrumb__item"><a href="../../index.html">Chung</a></li>
@@ -58,83 +60,22 @@
             <li class="breadcrumb__item" aria-current="page">Chi tiết</li>
           </ol>
         </nav>
-        <p class="back-navigation notification-detail__back">
-          <a class="back-link back-link--list" href="thong-bao-trang-2.html#thong-bao-21">
+        <p class="back-navigation notification-detail__back" data-notice-back hidden>
+          <a class="back-link back-link--list" href="thong-bao.html">
             <svg class="back-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 5-7 7 7 7M5 12h14" /></svg>
             <span>Quay lại thông báo</span>
           </a>
-          <a class="back-link back-link--filtered" href="thong-bao-bao-cao-nop-bai.html#thong-bao-21">
+          <a class="back-link back-link--filtered" href="thong-bao.html">
             <svg class="back-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 5-7 7 7 7M5 12h14" /></svg>
             <span>Quay lại thông báo</span>
           </a>
         </p>
-        <div class="notification-detail-layout">
-          <article class="notification-detail notification-detail--faculty" aria-labelledby="notification-title">
-            <header class="notification-detail__header">
-              <h1 id="notification-title">[KH&amp;KTTT] NỘP ĐỀ CƯƠNG KHÓA LUẬN TỐT NGHIỆP</h1>
-              <p><time class="notification-card__date" datetime="2022-02-14T15:07:00+07:00">14/02/2022 - 15:07</time></p>
-            </header>
-            <div class="notification-detail__content">
-              <p>Chào các bạn sinh viên,</p>
-              <p>Thời hạn nộp đề cương khóa luận tốt nghiệp đã qua và một số nhóm vẫn chưa gửi đề cương. Khoa đề nghị các nhóm còn thiếu nộp gấp qua biểu mẫu theo lớp:</p>
-              <ul>
-                <li><a href="https://forms.gle/6SKYJ1FeHshXvPfM9">Nộp đề cương lớp CQUI</a></li>
-                <li><a href="https://forms.gle/1NWnjxqcoK6LjQx27">Nộp đề cương lớp CLC</a></li>
-              </ul>
-              <p>Hạn nộp của đợt này là <strong>09:00 ngày 15/02/2022</strong>.</p>
-              <p>Cảm ơn các bạn.</p>
-            </div>
-          </article>
-
-          <!-- Sau bài chính trong DOM; CSS sẽ đặt cạnh bài trên desktop. -->
+        <p data-notice-fallback>Không tìm thấy thông báo. <a href="thong-bao.html">Quay lại thông báo</a></p>
+        <div class="notification-detail-layout" data-notice-layout hidden>
+          <article class="notification-detail" aria-labelledby="notification-title" data-notice-article></article>
           <aside class="related-notifications" aria-labelledby="related-notifications-title">
             <h2 id="related-notifications-title">Bài viết liên quan</h2>
-            <ul class="related-notifications__list">
-              <li>
-                <article class="related-notification" aria-labelledby="related-06-title">
-                  <a class="related-notification__image" href="chi-tiet-thong-bao-06.html" aria-label="Đọc thông báo: [KH&amp;KTTT] THÔNG BÁO KẾT QUẢ BÁO CÁO TIẾN ĐỘ GIỮA KỲ KLTN_HKII_NH 22024 - 2025">
-                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
-                  </a>
-                  <div class="related-notification__content">
-                    <h3 id="related-06-title"><a href="chi-tiet-thong-bao-06.html">[KH&amp;KTTT] THÔNG BÁO KẾT QUẢ BÁO CÁO TIẾN ĐỘ GIỮA KỲ KLTN_HKII_NH 22024 - 2025</a></h3>
-                    <p><time datetime="2025-05-07">07-05-2025</time></p>
-                  </div>
-                </article>
-              </li>
-              <li>
-                <article class="related-notification" aria-labelledby="related-11-title">
-                  <a class="related-notification__image" href="chi-tiet-thong-bao-11.html" aria-label="Đọc thông báo: [KH&amp;KTTT] THÔNG BÁO HĐ BÁO CÁO GIỮA KỲ KLTN HKI NH 2024-2025">
-                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
-                  </a>
-                  <div class="related-notification__content">
-                    <h3 id="related-11-title"><a href="chi-tiet-thong-bao-11.html">[KH&amp;KTTT] THÔNG BÁO HĐ BÁO CÁO GIỮA KỲ KLTN HKI NH 2024-2025</a></h3>
-                    <p><time datetime="2024-11-07">07-11-2024</time></p>
-                  </div>
-                </article>
-              </li>
-              <li>
-                <article class="related-notification" aria-labelledby="related-16-title">
-                  <a class="related-notification__image" href="chi-tiet-thong-bao-16.html" aria-label="Đọc thông báo: [KH&amp;KTTT] THÔNG BÁO CUỐI KỲ KHÓA LUẬN TỐT NGHIỆP HK I NĂM HỌC 2022 - 2023">
-                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
-                  </a>
-                  <div class="related-notification__content">
-                    <h3 id="related-16-title"><a href="chi-tiet-thong-bao-16.html">[KH&amp;KTTT] THÔNG BÁO CUỐI KỲ KHÓA LUẬN TỐT NGHIỆP HK I NĂM HỌC 2022 - 2023</a></h3>
-                    <p><time datetime="2022-12-21">21-12-2022</time></p>
-                  </div>
-                </article>
-              </li>
-              <li>
-                <article class="related-notification" aria-labelledby="related-20-title">
-                  <a class="related-notification__image" href="chi-tiet-thong-bao-20.html" aria-label="Đọc thông báo: [KH&amp;KTTT] KẾT QUẢ XÉT DUYỆT ĐỀ CƯƠNG KLTN HK2 2021-2022">
-                    <img src="../../assets/images/notification-cover.png" alt="" width="1200" height="675" />
-                  </a>
-                  <div class="related-notification__content">
-                    <h3 id="related-20-title"><a href="chi-tiet-thong-bao-20.html">[KH&amp;KTTT] KẾT QUẢ XÉT DUYỆT ĐỀ CƯƠNG KLTN HK2 2021-2022</a></h3>
-                    <p><time datetime="2022-02-22">22-02-2022</time></p>
-                  </div>
-                </article>
-              </li>
-            </ul>
+            <ul class="related-notifications__list" data-notice-related></ul>
           </aside>
         </div>
       </div>

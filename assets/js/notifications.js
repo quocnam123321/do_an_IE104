@@ -70,7 +70,7 @@
     card.dataset.category = notification.category;
     card.setAttribute('aria-labelledby', headingId);
     link.setAttribute('aria-labelledby', headingId);
-    link.href = `chi-tiet-thong-bao-${notification.id}.html${filtered ? '#tu-bo-loc' : ''}`;
+    link.href = `chi-tiet-thong-bao.html?id=${notification.id}${filtered ? '#tu-bo-loc' : ''}`;
     heading.id = headingId;
     heading.textContent = notification.title;
     date.dateTime = notification.date;

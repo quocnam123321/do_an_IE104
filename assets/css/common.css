@@ -260,6 +260,7 @@
 #tu-bo-loc:target .notification-detail__back > .back-link--list { display: none; }
 #tu-bo-loc:target .notification-detail__back > .back-link--filtered { display: inline-flex; }
 .notification-detail-layout { display: grid; grid-template-columns: minmax(0, 1fr) 21rem; gap: 2rem; align-items: start; }
+.notification-detail-page [hidden] { display: none; }
 .notification-detail { min-width: 0; padding: clamp(1.5rem, 3vw, 2.5rem); border: 1px solid var(--color-border); border-radius: var(--radius-card); background: var(--color-surface); }
 .notification-detail__header { padding-bottom: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--color-border); }
 .notification-detail__header h1 { margin-bottom: 1rem; }
