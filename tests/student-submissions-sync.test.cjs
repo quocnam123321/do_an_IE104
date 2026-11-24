@@ -254,11 +254,16 @@ test('shares a newly uploaded file and the lecturer feedback, and keeps the prev
   };
   const student = createTab(storage, { indexedDB, File });
   const teacher = createTab(storage, { indexedDB });
-  const projectId = 'DA005';
+  const registration = await student.services.registrations.submit('DT001', {
+    members: [{ ...student.data.currentStudent, role: 'nhom-truong' }],
+  });
+  const projectId = student.services.approvedProjects.projectIdFor(registration.id);
   const teaching = teacher.services.teaching;
+  const initial = teaching.getState(projectId);
+  assert.equal(initial.project.status, 'dang-thuc-hien');
   const state = teaching.saveRequirement(projectId, null, {
     title: 'Báo cáo thử', content: 'Nộp PDF', deadline: '2099-01-01T10:00',
-  }, teaching.getState(projectId).revision);
+  }, initial.revision);
   const requirement = state.requirements.at(-1);
   const file = new File(['bao cao'], 'report.pdf');
   const first = await student.services.studentSubmissions.saveUpload(projectId, requirement, [file], '', null);
