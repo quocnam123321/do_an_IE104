@@ -1,19 +1,41 @@
 (() => {
   "use strict";
 
-  function bindLogout(dialog, buttons, introduction) {
+  function bindLogout(dialog, buttons, loginPage) {
     if (!dialog || typeof dialog.showModal !== "function") return;
 
     const confirm = dialog.querySelector("[data-logout-confirm]");
     const cancel = dialog.querySelector("[data-logout-cancel]");
     const status = dialog.querySelector("[data-logout-status]");
+    if (!confirm || !cancel || !status) return;
+
+    const description = dialog.querySelector("h2 + p");
+    if (description) {
+      description.id = "logout-description";
+      dialog.setAttribute("aria-describedby", description.id);
+    }
+
+    dialog.classList.replace("confirmation-dialog", "logout-dialog");
+    const actions = cancel.parentElement === dialog ? document.createElement("div") : cancel.parentElement;
+    actions.classList.add("logout-dialog__actions");
+    if (!actions.isConnected) cancel.before(actions);
+    actions.append(cancel, confirm);
+    actions.before(status);
+    confirm.textContent = "Đăng xuất";
     let signingOut = false;
 
     for (const button of buttons) {
       button.addEventListener("click", () => {
+        if (dialog.open) return;
         status.textContent = "";
+        const menu = button.closest(".account-menu__disclosure, .mobile-nav__disclosure");
+        if (menu) {
+          menu.open = false;
+          menu.querySelector("summary")?.focus({ preventScroll: true });
+        }
         dialog.showModal();
       });
+      button.setAttribute("aria-haspopup", "dialog");
       button.disabled = false;
     }
 
@@ -45,7 +67,7 @@
         }
 
         sessionStorage.removeItem("ie104-calendar-selection");
-        location.replace(introduction.href);
+        location.replace(loginPage.href);
       } catch {
         status.textContent = "Không thể đăng xuất lúc này. Vui lòng thử lại.";
         signingOut = false;
@@ -56,9 +78,9 @@
   }
 
   if (document.currentScript) {
-    const introduction = new URL("../../../pages/chung/gioi-thieu.html", document.currentScript.src);
+    const loginPage = new URL("../../../pages/chung/dang-nhap.html", document.currentScript.src);
     bindLogout(document.getElementById("logout-dialog"),
-      document.querySelectorAll('button[aria-controls="logout-dialog"]'), introduction);
+      document.querySelectorAll('button[aria-controls="logout-dialog"]'), loginPage);
   } else {
     // Trang chung thêm menu và hộp thoại sau khi xác nhận phiên đăng nhập.
     window.IE104BindLogout = bindLogout;

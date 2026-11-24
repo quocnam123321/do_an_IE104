@@ -250,7 +250,7 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
-.account-menu__list { right: 0; width: 16rem; padding-bottom: 4.5rem; }
+.account-menu__list { right: 0; width: 16rem; }
 .account-menu__profile,
 .account-menu__logout {
   display: block;
@@ -395,6 +395,86 @@
   background: var(--color-surface);
 }
 .confirmation-dialog button:disabled { color: var(--color-muted-foreground); background: var(--color-neutral-bg); }
+
+.logout-dialog {
+  box-sizing: border-box;
+  width: min(27rem, calc(100% - 2rem));
+  max-height: calc(100svh - 2rem);
+  margin: auto;
+  padding: clamp(1rem, 5vw, var(--space-6));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  background: var(--color-surface);
+  color: var(--color-foreground);
+  box-shadow: var(--shadow-floating);
+}
+
+.logout-dialog::backdrop { background: rgb(15 23 42 / .5); }
+
+.logout-dialog h2 {
+  margin: 0;
+  font-size: var(--font-size-section-title);
+}
+
+.logout-dialog #logout-description {
+  margin: var(--space-2) 0 0;
+  color: var(--color-muted-foreground);
+}
+
+.logout-dialog [data-logout-status] {
+  margin: var(--space-3) 0 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+}
+
+.logout-dialog [data-logout-status]:empty { margin: 0; }
+
+.logout-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.logout-dialog__actions button {
+  min-height: var(--control-min-height);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-foreground);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.logout-dialog__actions [data-logout-cancel]:hover:enabled { background: var(--color-neutral-bg); }
+
+.logout-dialog__actions [data-logout-confirm] {
+  border-color: var(--color-danger);
+  background: var(--color-danger);
+  color: var(--color-on-danger);
+}
+
+.logout-dialog__actions [data-logout-confirm]:hover:enabled {
+  border-color: var(--red-800);
+  background: var(--red-800);
+}
+
+.logout-dialog__actions button:disabled {
+  border-color: var(--color-border);
+  background: var(--color-neutral-bg);
+  color: var(--color-muted-foreground);
+  cursor: default;
+}
+
+@media (max-width: 27rem) {
+  .logout-dialog__actions button { flex: 1; }
+}
+
 .success-dialog {
   width: min(28rem, calc(100% - 2rem));
   margin: auto;

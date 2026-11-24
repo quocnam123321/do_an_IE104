@@ -51,7 +51,7 @@ function createAccountMenu() {
 
   login.after(account);
   login.closest("header").after(dialog);
-  window.IE104BindLogout(dialog, account.querySelectorAll(".account-menu__logout"), new URL("chung/gioi-thieu.html", pages));
+  window.IE104BindLogout(dialog, account.querySelectorAll(".account-menu__logout"), new URL("chung/dang-nhap.html", pages));
   return account;
 }
 
