@@ -116,7 +116,7 @@
       ...record,
       title: registration ? `${record.id} — ${record.title}` : record.title,
       typeLabel: record.topicTypeLabel,
-      courseLabel: !registration && record.courseLabel || window.UITLecturerCatalog.subjectLabel(record, true),
+      courseLabel: window.UITLecturerCatalog.subjectLabel(record, true),
     });
     const studentFields = content.querySelectorAll('.request-student__meta dd');
     studentFields[0].textContent = record.studentName;

@@ -76,7 +76,7 @@
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-list:focus-visible { outline-offset: 3px; }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card {
   display: grid;
-  grid-template-columns: 15rem minmax(0, 1fr) 14rem;
+  grid-template-columns: 15rem minmax(0, 1fr) minmax(13.5rem, 17.5rem);
   align-items: center;
   column-gap: var(--space-6);
   height: auto;
@@ -121,20 +121,27 @@
   position: static;
   width: 100%;
   max-width: none;
-  min-height: 1.875rem;
+  min-height: var(--role-badge-min-height);
   margin: 0;
+  padding: var(--role-badge-padding-y) var(--role-badge-padding-x);
   border: 0;
-  border-radius: var(--radius-control);
-  font-size: var(--font-size-secondary);
+  border-radius: var(--role-badge-radius);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
   line-height: 1.4;
 }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .main-content a.topic-card__link {
   width: 100%;
   min-height: var(--control-min-height);
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: var(--color-on-primary);
-  font-size: 1rem;
+  padding: 0.625rem var(--space-4);
+  border: 0;
+  border-radius: var(--control-radius);
+  background: var(--button-primary-bg);
+  color: var(--button-primary-fg);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  line-height: 1.35;
+  overflow-wrap: break-word;
 }
 .registration-page:is(.student-topic-registration-page, .student-my-topics-list-page) .main-content a.topic-card__link:hover {
   background: var(--color-primary-hover);
@@ -147,7 +154,7 @@
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel { padding: var(--space-4); }
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-search { grid-template-columns: minmax(0, 1fr) 13rem; }
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card {
-    grid-template-columns: 11.5rem minmax(0, 1fr) 11.75rem;
+    grid-template-columns: 11.5rem minmax(0, 1fr) minmax(11.75rem, 13.75rem);
     column-gap: var(--space-4);
     padding: var(--space-4);
   }

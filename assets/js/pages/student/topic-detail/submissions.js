@@ -514,7 +514,7 @@
   }
 
   function sharedRequirementRow(item, { canUpload, completed }) {
-    const badge = !item.submitted && !item.locked && item.overdue ? 'danger' : item.late ? 'late' : null;
+    const badge = !item.submitted && !item.locked && item.overdue ? 'danger' : null;
     const original = sharedRequirementRows.get(item.id);
     const seed = sharedRequirements.get(item.id);
     const submitted = sharedSubmissionsByRequirement.get(item.id);
@@ -623,7 +623,7 @@
       { label: 'Đã nộp', variant: 'info', items: requirementsWithUploads.filter(item => item.submitted) },
     ], item => {
       const overdue = !item.submitted && !item.locked && item.overdue;
-      const badge = overdue ? 'danger' : item.late ? 'late' : null;
+      const badge = overdue ? 'danger' : null;
       const status = item.submitted ? null :
         item.locked ? 'Đã khóa nhận bài' : state.completed ? 'Đề tài đã hoàn thành' : null;
       return requirementCard({

@@ -28,7 +28,10 @@
 
   function renderAttachment(section, file) {
     if (!file) {
-      section.remove();
+      section.querySelector('.evaluation-attachments__item').hidden = true;
+      const note = section.querySelector('.evaluation-attachment-note');
+      note.textContent = 'Chưa có tệp đánh giá đính kèm.';
+      note.hidden = false;
       return;
     }
     section.querySelector('.evaluation-attachments__name').textContent = file.name;
