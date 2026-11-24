@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "ie104-nhom-7-a9ab7"
-  }
+  },
+  "targets": {
+    "ie104-nhom-7-a9ab7": {
+      "hosting": {
+        "site-moi": [
+          "ie104-nhom7"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }

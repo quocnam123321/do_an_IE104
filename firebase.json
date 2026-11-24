@@ -31,7 +31,7 @@
     "singleProjectMode": true
   },
   "hosting": {
-    "site": "ie104-nhom-7-a9ab7",
+    "target": "site-moi",
     "public": "hosting-public",
     "ignore": [
       "firebase.json",
