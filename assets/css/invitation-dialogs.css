@@ -1,0 +1,34 @@
+dialog.invitation-dialog { width: min(42rem, calc(100% - 2rem)); max-height: calc(100dvh - 2rem); padding: 0; border: 1px solid var(--color-border); border-radius: var(--card-radius); color: var(--color-foreground); background: var(--color-surface); overflow: auto; }
+dialog.invitation-dialog::backdrop { background: rgb(15 23 42 / .4); }
+dialog.invitation-dialog .invitation-dialog__header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-5); border-bottom: 1px solid var(--color-border); }
+dialog.invitation-dialog .invitation-dialog__header h2 { margin: 0; font-size: var(--text-xl); }
+dialog.invitation-dialog--danger .invitation-dialog__header { background: var(--color-danger-bg); }
+dialog.invitation-dialog--danger .invitation-dialog__header h2 { color: var(--color-danger-fg); }
+dialog.invitation-dialog .invitation-dialog__close { display: grid; place-items: center; flex: 0 0 2.75rem; width: 2.75rem; height: 2.75rem; padding: 0; border: 0; color: var(--color-muted-foreground); background: transparent; cursor: pointer; }
+.invitation-dialog__body { display: grid; gap: var(--space-4); padding: var(--space-5); }
+dialog.invitation-dialog .invitation-dialog__body p { margin: 0; }
+.invitation-dialog__summary { padding: var(--space-3) var(--space-4); border: 1px solid var(--color-border); border-radius: var(--control-radius); background: var(--color-surface-subtle); overflow-wrap: anywhere; }
+.invitation-dialog__body label { font-weight: var(--weight-semibold); }
+.invitation-dialog__body textarea { width: 100%; min-height: 8rem; padding: var(--space-3); border: 1px solid var(--color-control-border); border-radius: var(--control-radius); font: inherit; color: inherit; background: var(--color-surface); resize: vertical; }
+.invitation-dialog__body textarea[aria-invalid="true"] { border-color: var(--color-danger-fg); }
+.invitation-dialog__body .invitation-dialog__help { font-size: var(--text-sm); font-style: italic; color: var(--color-muted-foreground); }
+.invitation-dialog__error { color: var(--color-danger-fg); }
+dialog.invitation-dialog .invitation-dialog__footer { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--space-3); padding: var(--space-5); padding-top: var(--space-3); }
+dialog.invitation-dialog .invitation-dialog__button { min-height: var(--control-min-height); padding: .625rem var(--space-4); border: 1px solid var(--button-secondary-border); border-radius: var(--control-radius); color: var(--color-foreground); background: var(--color-surface); font: inherit; font-weight: var(--weight-semibold); cursor: pointer; }
+dialog.invitation-dialog .invitation-dialog__button--primary { background: var(--button-primary-bg); border-color: var(--button-primary-bg); color: var(--button-primary-fg); }
+dialog.invitation-dialog .invitation-dialog__button--danger { background: var(--color-danger-fg); border-color: var(--color-danger-fg); color: var(--color-surface); }
+.invitation-dialog__button:disabled { opacity: .6; cursor: wait; }
+dialog.invitation-dialog :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+@media(max-width: 35rem) { .invitation-dialog__header, .invitation-dialog__body { padding: var(--space-4); } dialog.invitation-dialog .invitation-dialog__footer { padding: var(--space-4); } }
+
+dialog.invitation-dialog { margin: auto; }
+dialog.invitation-dialog form { display: block; margin: 0; padding: 0; }
+dialog.invitation-dialog .invitation-dialog__header { margin: 0; }
+dialog.invitation-dialog .invitation-dialog__header h2 { font-size: var(--text-xl); line-height: 1.4; }
+dialog.invitation-dialog .invitation-dialog__close { border: 0; border-radius: 0; padding: 0; background: transparent; box-shadow: none; }
+dialog.invitation-dialog .invitation-dialog__close:hover { color: var(--color-foreground); background: transparent; }
+dialog.invitation-dialog .invitation-dialog__footer { margin: 0; border-top: 0; }
+dialog.invitation-dialog--success { width: min(32rem, calc(100% - 2rem)); }
+dialog.invitation-dialog--success .invitation-dialog__header { padding: var(--space-4) var(--space-5) var(--space-2); border: 0; }
+dialog.invitation-dialog--success .invitation-dialog__body { padding: 0 var(--space-5) var(--space-5); gap: 0; }
+dialog.invitation-dialog--success .invitation-dialog__body p { font-size: var(--text-base); line-height: 1.6; }

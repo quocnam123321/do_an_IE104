@@ -28,14 +28,15 @@
     <script src="../../assets/js/data/proposal-actors.js" defer></script>
     <script src="../../assets/js/data/lecturer-topics.js" defer></script>
     <script src="../../assets/js/data/lecturer-merge-catalog.js?v=20261123-audit-names2" defer></script>
+<script src="../../assets/js/data/student-projects.js" defer></script>
 <script src="../../assets/js/data/student-uit-catalog.js?v=20261124-evaluation-pdf" defer></script>
-    <script src="../../assets/js/services/storage.js" defer></script>
+    <script src="../../assets/js/services/storage.js?v=20261124-demo-invitation-polish" defer></script>
     <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
     <script src="../../assets/js/shared/validation.js" defer></script>
     <script src="../../assets/js/services/proposal-service.js" defer></script>
     <script src="../../assets/js/services/registration-service.js" defer></script>
     <script src="../../assets/js/services/approved-project-service.js" defer></script>
-    <script src="../../assets/js/services/lecturer-topic-service.js?v=20261123-merged-8f1631f" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-service.js?v=20261124-invitation-flow" defer></script>
     <script src="../../assets/js/services/published-topic-service.js?v=20261123-merged-8f1631f" defer></script>
     <script src="../../assets/js/proposal-store.js" defer></script>
     <script src="../../assets/js/shared/course-filters.js?v=20261122-course-options" defer></script>
@@ -46,12 +47,15 @@
     <link rel="stylesheet" href="../../assets/css/supervision-invitations.css">
     <script src="../../assets/js/supervision-store.js?v=20261122-shared-login" defer></script>
     <script src="../../assets/js/detail-tabs.js" defer></script>
-    <script src="../../assets/js/supervision-attachment-ui.js" defer></script>
-    <script src="../../assets/js/supervision-inbox.js?v=20261122-shared-login" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js" defer></script>
-  <link rel="stylesheet" href="../../assets/css/lecturer-invitation-preview.css">
-  <script src="../../assets/js/pages/lecturer/invitation-preview.js?v=20261124-merged-50fdab7" defer></script>
+  <link rel="stylesheet" href="../../assets/css/lecturer-invitation-preview.css?v=20261124-demo-invitation-polish">
+  <script src="../../assets/js/supervision-entry.js" defer></script>
+  <script src="../../assets/js/services/project-team-service.js?v=20261124-demo-invitation-polish" defer></script>
+  <script src="../../assets/js/services/project-invitation-identity.js?v=20261124-demo-invitation-polish" defer></script>
+  <link rel="stylesheet" href="../../assets/css/invitation-dialogs.css?v=20261124-demo-invitation-polish">
+  <script src="../../assets/js/shared/invitation-dialogs.js?v=20261124-demo-invitation-polish" defer></script>
+  <script src="../../assets/js/pages/lecturer/project-invitations.js?v=20261124-demo-invitation-polish" defer></script>
 </head>
  <body id="page-top" tabindex="-1" class="teacher-workspace-page teacher-topic-list-page teacher-pending-proposals-page">
   <a class="skip-link" href="#main-content">
@@ -807,7 +811,12 @@
      </section>
     </div>
     <section id="loi-moi-huong-dan" class="supervision supervision-section" aria-labelledby="supervision-tab" data-detail-panel data-supervision-role="teacher">
-     <div class="supervision__body" data-supervision-inbox></div>
+     <div class="invitation-preview" data-project-invitations>
+       <h2>Lời mời hướng dẫn</h2>
+       <p role="status">Đang tải lời mời…</p>
+       <p data-invitation-login hidden><a class="supervision__button" href="../chung/dang-nhap.html">Đăng nhập</a></p>
+       <ul class="invitation-preview__list" aria-label="Lời mời tham gia đề tài"></ul>
+     </div>
      <noscript><p>Cần bật JavaScript để xem lời mời hướng dẫn.</p></noscript>
     </section>
     </div>

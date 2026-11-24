@@ -22,7 +22,7 @@
   function supervisedProjects() {
     const lecturerId = actor()?.id;
     const initial = [...app.data.myTopics, ...(app.data.lecturerProjects || [])].flatMap(project => {
-      const position = app.data.projectTeams.find(team => team.projectId === project.id)?.supervisorIds.indexOf(lecturerId);
+      const position = app.services.projectTeams.getState(project.id).supervisorIds.indexOf(lecturerId);
       return position >= 0 ? [{ project, role: position === 0 ? 'primary' : 'secondary' }] : [];
     });
     const dynamic = (app.services.approvedProjects?.list('lecturer') || []).map(project => ({ project, role: 'primary' }));

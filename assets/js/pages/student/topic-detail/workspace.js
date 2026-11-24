@@ -54,10 +54,7 @@
       }
       app.shared?.proposalOutline?.render(outlinePanel, project);
       text('.topic-team__group-name', project.groupName);
-      renderSupervisors(root.querySelector('.project-supervisors'), [
-        { role: 'primary', name: project.lecturer, id: project.lecturerId },
-        { role: 'secondary', name: project.coSupervisor, id: project.coSupervisorId },
-      ]);
+      app.shared.topicOverview.renderAcceptedSupervisors(root.querySelector('.project-supervisors'), project, app.services.projectTeams.getState(project.id, { preview: location.protocol === 'file:' }));
       const dates = root.querySelectorAll('.topic-milestones__list dd');
       const milestones = project.milestones || (!project.isArchivedSample && project.createdAt
         ? [new Date(project.createdAt).toLocaleDateString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })]
@@ -109,5 +106,6 @@
     document.body.dataset.projectState = 'ready';
   });
   window.addEventListener('storage', event => { if ([app.storage.proposalKey, app.storage.registrationKey, app.storage.teamKey, null].includes(event.key)) refresh(); });
+  document.addEventListener('ie104:project-team-updated', refresh);
   window.addEventListener('pageshow', refresh);
 })();

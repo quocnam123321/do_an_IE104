@@ -18,10 +18,14 @@
     return clone(saved || { projectId: team.projectId, revision: 0, members: team.members, invitations: team.invitations });
   }
 
+  function supervisorIds(team, state) {
+    return [...new Set([...team.supervisorIds, ...state.invitations.filter(item => item.status === 'accepted').map(item => item.lecturerId)])];
+  }
+
   function getState(projectId, { preview = false } = {}) {
     const { project, team } = getDefinition(projectId, preview);
     const state = stateFrom(team, preview ? [] : app.storage.readProjectTeams());
-    return { ...state, project: clone(project), maxMembers: team.maxMembers, supervisorIds: [...team.supervisorIds], ...(preview ? { preview } : {}) };
+    return { ...state, project: clone(project), maxMembers: team.maxMembers, supervisorIds: supervisorIds(team, state), ...(preview ? { preview } : {}) };
   }
 
   function getPermission(state) {
@@ -68,7 +72,8 @@
     state.updatedAt = new Date().toISOString();
     const next = records.filter(item => item.projectId !== projectId);
     app.storage.writeProjectTeams([...next, state]);
-    return { ...clone(state), project: clone(project), maxMembers: team.maxMembers, supervisorIds: [...team.supervisorIds] };
+    if (typeof document !== 'undefined') document.dispatchEvent(new Event('ie104:project-team-updated'));
+    return { ...clone(state), project: clone(project), maxMembers: team.maxMembers, supervisorIds: supervisorIds(team, state) };
   }
 
   function addMember(projectId, input, revision) {
@@ -85,12 +90,13 @@
     if (!lecturer) throw new Error('Chọn giảng viên từ danh sách kết quả.');
 
     return mutate(projectId, revision, (state, team) => {
-      if (!canInvite(lecturer, { ...state, supervisorIds: team.supervisorIds })) {
+      if (!canInvite(lecturer, { ...state, supervisorIds: supervisorIds(team, state) })) {
         throw new Error('Giảng viên đã tham gia đề tài hoặc đã có lời mời đang chờ.');
       }
+      if (state.invitations.filter(item => item.status === 'accepted').length >= 1) throw new Error('Đề tài đã có giảng viên đồng hướng dẫn được mời.');
       const text = String(message || '').trim();
       if (text.length > 2000) throw new Error('Lời nhắn tối đa 2000 ký tự.');
-      state.invitations.push({ id: `INV-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`}`, lecturerId, lecturerName: lecturer.name, message: text, status: 'pending', createdAt: new Date().toISOString() });
+      state.invitations.push({ id: `INV-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`}`, lecturerId, lecturerName: lecturer.name, lecturerEmail: lecturer.email || '', lecturerDepartment: lecturer.department || '', role: 'secondary', message: text, status: 'pending', createdAt: new Date().toISOString() });
     });
   }
 
@@ -103,5 +109,61 @@
     });
   }
 
-  app.services.projectTeams = { getState, getPermission, validateMember, getLecturers, addMember, inviteSupervisor, cancelInvitation };
+  function canReview(invitation, recipient) {
+    if (typeof recipient === 'string') return invitation.lecturerId === recipient;
+    return recipient && (recipient.demo === true && recipient.id === 'GV001' || invitation.lecturerId === recipient.id);
+  }
+
+  function listInvitations(lecturerId) {
+    const definitions = [...(app.data.myTopics || []), ...(app.data.lecturerProjects || []), ...(app.services.approvedProjects?.list('student') || [])];
+    const seen = new Set();
+    const result = [];
+    for (const project of definitions) {
+      if (seen.has(project.id)) continue;
+      seen.add(project.id);
+      const state = getState(project.id);
+      for (const invitation of state.invitations) {
+        if (canReview(invitation, lecturerId) && invitation.status === 'pending' && project.status === 'dang-thuc-hien') result.push({ project: clone(project), invitation: clone(invitation), revision: state.revision, members: state.members });
+      }
+    }
+    return result.sort((a, b) => Date.parse(b.invitation.createdAt) - Date.parse(a.invitation.createdAt));
+  }
+
+  async function invitationDetail(projectId, invitationId) {
+    const recipient = await app.services.invitationIdentity.resolve();
+    if (!recipient) throw new Error('Đăng nhập bằng tài khoản giảng viên để xem lời mời.');
+    const state = getState(projectId);
+    const invitation = state.invitations.find(item => item.id === invitationId && canReview(item, recipient));
+    if (!invitation || invitation.status !== 'pending') throw new Error('Lời mời đã được xử lý hoặc không gửi đến giảng viên hiện tại.');
+    if (state.project.status !== 'dang-thuc-hien') throw new Error('Đề tài không còn ở trạng thái đang thực hiện.');
+    return { ...state, invitation: clone(invitation), recipient };
+  }
+
+  async function respondInvitation(projectId, invitationId, status, note, revision) {
+    if (!['accepted', 'rejected'].includes(status)) throw new Error('Chọn phản hồi hợp lệ.');
+    const recipient = await app.services.invitationIdentity.resolve();
+    if (!recipient) throw new Error('Đăng nhập bằng tài khoản giảng viên để phản hồi lời mời.');
+    const { project, team } = getDefinition(projectId);
+    const records = app.storage.readProjectTeams();
+    const state = stateFrom(team, records);
+    if (state.revision !== revision) throw new Error('Lời mời đã thay đổi. Đóng hộp thoại và mở lại để xem thông tin mới.');
+    if (project.status !== 'dang-thuc-hien') throw new Error('Đề tài đã kết thúc nên không thể xử lý lời mời.');
+    const invitation = state.invitations.find(item => item.id === invitationId);
+    if (!invitation || !canReview(invitation, recipient)) throw new Error('Lời mời không gửi đến giảng viên hiện tại.');
+    if (invitation.status !== 'pending') throw new Error('Lời mời này đã được xử lý hoặc đã hủy.');
+    const reason = String(note || '').trim();
+    if (reason.length > 2000 || status === 'rejected' && reason.length < 10) throw new Error('Lý do từ chối cần từ 10 đến 2000 ký tự, không tính khoảng trắng ở hai đầu.');
+    if (status === 'accepted') {
+      if (supervisorIds(team, state).includes(invitation.lecturerId)) throw new Error('Giảng viên đã tham gia hướng dẫn đề tài này.');
+      if (state.invitations.some(item => item.status === 'accepted')) throw new Error('Đề tài đã có giảng viên đồng hướng dẫn được mời.');
+    }
+    Object.assign(invitation, { status, decisionNote: reason, decidedAt: new Date().toISOString(), decidedBy: recipient.id, ...(recipient.demo ? { demoDecision: true } : {}) });
+    state.revision++;
+    state.updatedAt = invitation.decidedAt;
+    app.storage.writeProjectTeams([...records.filter(item => item.projectId !== projectId), state]);
+    document.dispatchEvent(new Event('ie104:project-team-updated'));
+    return getState(projectId);
+  }
+
+  app.services.projectTeams = { listInvitations, invitationDetail, respondInvitation, getState, getPermission, validateMember, getLecturers, addMember, inviteSupervisor, cancelInvitation };
 })();

@@ -57,6 +57,18 @@
 
   function list(kind, { catalogOnly = false } = {}) {
     const available = catalogOnly ? decorate(app.data.lecturerTopics || []).filter(topic => topic.sourceRecord) : records(kind);
+    if (kind === 'supervised' && !catalogOnly && app.services.projectTeams) {
+      const projects = [...(app.data.myTopics || []), ...(app.services.approvedProjects?.list('student') || [])];
+      for (const project of projects) {
+        const team = app.services.projectTeams.getState(project.id);
+        if (!team.invitations.some(item => item.status === 'accepted' && item.lecturerId === actorId())) continue;
+        available.push({ ...project, id: project.topicId || project.id, workspaceId: project.id,
+          ownerId: actorId(), kind: 'supervised', sharedStudentProject: true, role: 'secondary', roleLabel: 'Đồng hướng dẫn',
+          topicType: ({ 'khoa-luan': 'thesis', 'do-an-tot-nghiep': 'graduation' })[project.type] || 'course',
+          displayId: project.displayId || project.topicCode || project.topicId, courseLabel: window.UITLecturerCatalog.subjectLabel(project),
+          course: project.courseId || project.course, semester: project.semester, academicYear: project.academicYear });
+      }
+    }
     const owned = available.filter(record => record.kind === kind && record.ownerId === actorId() && record.sourceRecord?.type !== 'Luận văn thạc sĩ' && record.topicType !== 'master');
     const registeredIds = kind === 'created' && !catalogOnly ? registeredTopicIds() : new Set();
     const visible = kind === 'created' ? owned.map(topic => ({ ...topic, ...createdStatus(topic, registeredIds) })) : owned;
@@ -118,15 +130,15 @@
     const staticIds = new Set([...(app.data.myTopics || []), ...(app.data.lecturerProjects || [])].map(item => item.id));
     const projects = app.services.teaching?.listSupervisedProjects().filter(entry => staticIds.has(entry.project.id)).map(entry => adapt(entry.project)) || [];
     const decorated = codes.decorateTopics([...initial, ...projects, adapt(project)]).at(-1);
-    const position = app.data.projectTeams?.find(team => team.projectId === project.id)?.supervisorIds.indexOf(actorId());
+    const position = app.services.projectTeams?.getState(project.id).supervisorIds.indexOf(actorId());
     const role = project.role || (position >= 0 ? position === 0 ? 'primary' : 'secondary' : undefined);
     return { ...project, role, roleLabel: project.roleLabel || ({ primary: 'Hướng dẫn chính', secondary: 'Đồng hướng dẫn' })[role], displayId: project.topicCode || decorated.displayId, courseLabel: decorated.courseLabel, groupName: codes.groupLabel(project) };
   }
 
   function workspaceState(projectId) {
-    const definition = records('supervised').find(record => record.kind === 'supervised' && record.workspaceId === projectId);
+    const definition = list('supervised').find(record => record.workspaceId === projectId);
     if (!definition) return app.services.teaching.getState(projectId);
-    const topic = get('supervised', definition.id);
+    const topic = definition;
     const project = { ...topic, id: projectId, topicId: topic.id };
     if (app.data.projectTeams.some(team => team.projectId === projectId)) {
       const state = app.services.teaching.getState(projectId);

@@ -21,3 +21,9 @@
   .invitation-preview__actions { justify-items: start; }
   .invitation-preview__actions > .supervision__badge { justify-self: start; }
 }
+
+
+.invitation-topic-page [data-invitation-topic] { display: block; }
+.invitation-topic-page [data-invitation-topic][hidden] { display: none; }
+.invitation-topic-page [data-invitation-detail-status]:empty { display: none; }
+.invitation-topic-page [data-invitation-detail-actions] { justify-content: flex-end; gap: var(--space-3); margin-top: var(--space-6); }
