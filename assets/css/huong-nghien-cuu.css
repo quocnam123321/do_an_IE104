@@ -18,9 +18,9 @@
       90deg,
       var(--color-surface) 0%,
       var(--color-surface) 38%,
-      rgb(255 255 255 / 0.92) 52%,
-      rgb(255 255 255 / 0.2) 76%,
-      rgb(255 255 255 / 0) 100%
+      rgb(var(--research-hero-overlay, 255 255 255) / 0.92) 52%,
+      rgb(var(--research-hero-overlay, 255 255 255) / 0.2) 76%,
+      rgb(var(--research-hero-overlay, 255 255 255) / 0) 100%
     ),
     url('../images/research-campus.webp') right center / cover no-repeat;
 }
@@ -154,7 +154,7 @@
   -webkit-appearance: none;
   width: 100%;
   min-height: 3rem;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-control);
   background: var(--color-surface);
   color: var(--color-foreground);
@@ -391,8 +391,8 @@
       linear-gradient(
         90deg,
         var(--color-surface) 0%,
-        rgb(255 255 255 / 0.94) 58%,
-        rgb(255 255 255 / 0.45) 100%
+        rgb(var(--research-hero-overlay, 255 255 255) / 0.94) 58%,
+        rgb(var(--research-hero-overlay, 255 255 255) / 0.45) 100%
       ),
       url('../images/research-campus.webp') right center / cover no-repeat;
   }
@@ -440,4 +440,8 @@
     min-height: 0;
     font-size: 1.125rem;
   }
+}
+
+:root[data-theme="dark"] .research-hero {
+  --research-hero-overlay: 12 20 34;
 }

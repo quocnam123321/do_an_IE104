@@ -23,7 +23,9 @@
 
     const blankField = requiredFields.find((field) => !field.value.trim());
     if (blankField) {
-      blankField.setCustomValidity("Vui lòng nhập nội dung cho trường này.");
+      const message = "Vui lòng nhập nội dung cho trường này.";
+      if (globalThis.IE104Language) globalThis.IE104Language.setCustomValidity(blankField, message);
+      else blankField.setCustomValidity(message);
       blankField.reportValidity();
       return;
     }

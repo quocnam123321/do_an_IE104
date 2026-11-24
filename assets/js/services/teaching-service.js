@@ -43,7 +43,10 @@
   }
 
   function stateFrom(projectId, records) {
-    const source = records.find(item => item.projectId === projectId) || app.data.teachingSeeds?.find(item => item.projectId === projectId) || { projectId, revision: 0, requirements: [], submissions: [], progressReviews: [], draft: null, publishedEvaluation: null, audit: [] };
+    const saved = records.find(item => item.projectId === projectId);
+    const source = app.data.studentWebSubmissions?.forProject(projectId, saved) || saved ||
+      app.data.teachingSeeds?.find(item => item.projectId === projectId) ||
+      { projectId, revision: 0, requirements: [], submissions: [], progressReviews: [], draft: null, publishedEvaluation: null, audit: [] };
     const record = clone(source);
     record.submissionsLocked = Boolean(record.submissionsLocked);
     record.submissions.forEach(item => { item.feedbackHistory ||= []; });
@@ -120,14 +123,13 @@
   }
 
   function deleteRequirement(projectId, id, revision) {
-    const remove = hasLocalUpload => mutate(projectId, revision, 'delete-requirement', id, (record, meta) => {
+    return mutate(projectId, revision, 'delete-requirement', id, (record, meta) => {
       active(meta);
       const requirement = record.requirements.find(item => item.id === id && !item.deletedAt);
       if (!requirement) throw new Error('Yêu cầu không còn tồn tại.');
-      if (hasLocalUpload || record.submissions.some(item => item.requirementId === id) || requirement.sourceStage !== 'pending') throw new Error('Yêu cầu đã có bài nộp. Hãy khóa nhận bài để giữ lịch sử.');
+      if (record.submissions.some(item => item.requirementId === id) || requirement.sourceStage !== 'pending') throw new Error('Yêu cầu đã có bài nộp. Hãy khóa nhận bài để giữ lịch sử.');
       requirement.deletedAt = new Date().toISOString();
     });
-    return app.services.studentSubmissions.withUploadCheck(projectId, id, remove);
   }
 
   function setLocked(projectId, id, locked, revision) {

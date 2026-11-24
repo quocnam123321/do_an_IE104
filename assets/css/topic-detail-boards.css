@@ -118,7 +118,7 @@
 
 .progress-overview__stats {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-4);
   margin: 0;
 }
@@ -147,6 +147,7 @@
 }
 
 .progress-stat:nth-child(2) .progress-stat__icon { color: var(--color-success-fg); }
+.progress-stat--overdue .progress-stat__icon { color: var(--color-danger-fg); }
 .progress-stat dt { font-size: var(--text-sm); color: var(--color-muted-foreground); overflow-wrap: anywhere; }
 .progress-stat dd {
   margin: 0;
@@ -333,6 +334,32 @@
   position: relative;
 }
 
+#progress-section .task-card--interactive .task-assignee {
+  position: relative;
+  z-index: 1;
+}
+
+#progress-section .task-card--interactive .task-assignees {
+  max-inline-size: 100%;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  row-gap: var(--space-1);
+}
+
+#progress-section .task-card--interactive:has(.task-card__open:hover) {
+  border-color: var(--color-primary);
+}
+
+#progress-section .task-column__empty {
+  color: var(--color-muted-foreground);
+  font-size: var(--text-sm);
+  padding: var(--space-2);
+}
+
+#progress-section .progress-member-popover__info {
+  overflow-wrap: anywhere;
+}
+
 .task-card__open {
   padding: 0;
   border: 0;
@@ -355,18 +382,10 @@
   outline-offset: -2px;
 }
 
-.task-card__completion,
-.progress-overview__note {
-  color: var(--color-muted-foreground);
-  font-size: var(--text-sm);
-}
-
-.task-card__completion {
-  margin: 0;
-}
-
 .progress-overview__note {
   margin-block-start: var(--space-3);
+  color: var(--color-muted-foreground);
+  font-size: var(--text-sm);
 }
 
 /* Popover HTML tự nhiên: không che tối trang; Escape/bấm ngoài để đóng.
@@ -420,13 +439,31 @@
   }
 }
 
+@media (max-width: 63.99875rem) {
+  .progress-overview__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+  }
+}
+
 @media (max-width: 47.99875rem) {
   .progress-overview,
   .progress-tasks { padding: var(--space-4); }
   .progress-overview__review { width: 100%; }
-  .progress-overview__stats { gap: var(--space-2); }
   .progress-stat { padding: var(--space-3) var(--space-2); justify-items: center; text-align: center; }
-  .progress-stat__icon { display: none; }
+  .progress-stat dt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+  }
+  .progress-stat__icon {
+    position: static;
+    flex: none;
+    width: 1.125rem;
+    height: 1.125rem;
+    transform: none;
+  }
   .task-board__columns { grid-template-columns: repeat(3, minmax(17.5rem, 1fr)); }
 }
 
@@ -471,19 +508,6 @@
   line-height: var(--leading-tight);
 }
 
-#submissions-section .requirements__badge--danger {
-  display: inline-flex;
-  align-items: center;
-  margin-left: var(--space-2);
-  padding: 0.125rem 0.625rem;
-  border-radius: var(--radius-full);
-  background-color: var(--color-danger-bg);
-  border: 1px solid var(--color-danger-border);
-  color: var(--color-danger);
-  font-size: var(--text-xs);
-  font-weight: var(--weight-medium);
-}
-
 #submissions-section .requirements__actions {
   display: flex;
   align-items: center;
@@ -514,25 +538,30 @@
 }
 
 /* Nút Xong trong chế độ xóa */
-#submissions-section .requirements__done-link {
+#submissions-section .requirements__done-link:not(:disabled) {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
   min-height: var(--control-min-height);
   padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--button-primary-bg);
+  border: 1px solid var(--button-secondary-border);
   border-radius: var(--control-radius);
-  background-color: var(--button-primary-bg);
-  color: var(--button-primary-fg);
-  font-size: var(--text-base);
-  font-weight: var(--weight-medium);
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-fg);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
   text-decoration: none;
   cursor: pointer;
   transition: background-color var(--duration-fast) var(--ease-standard);
 }
 
-#submissions-section .requirements__done-link:hover {
-  background-color: var(--button-primary-bg-hover);
+#submissions-section .requirements__done-link:not(:disabled):hover {
+  background-color: var(--button-secondary-bg-hover);
+}
+
+#submissions-section .requirements__done-link .requirements__btn-icon {
+  width: 1rem;
+  height: 1rem;
 }
 
 /* Nút + Tạo yêu cầu: nền xanh, chữ trắng */
@@ -728,6 +757,156 @@
 }
 #submissions-section .submission-board-card__feedback:hover { background: var(--button-primary-bg-hover); }
 #submissions-section :is(.submission-board-card__download, .submission-board-card__feedback):disabled { background: var(--color-disabled-bg); color: var(--color-disabled-fg); border-color: var(--color-disabled-border); cursor: not-allowed; }
+
+#submissions-section a.submission-board-card__download {
+  text-decoration: none;
+}
+
+#submissions-section .submission-board-card__download:not(:disabled):hover {
+  background-color: var(--button-secondary-bg-hover);
+}
+
+#submissions-section .submission-file-toggle {
+  display: inline-grid;
+  place-items: center;
+  align-self: center;
+  flex: 0 0 auto;
+  min-height: var(--control-min-height);
+  /* Keep the full hit area while contributing only one text line to the row. */
+  margin-block: min(0px, calc((1lh - var(--control-min-height)) / 2));
+  padding: 0;
+  border: 0;
+  color: var(--color-foreground);
+  background: transparent;
+}
+
+.submission-file-toggle__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: .125rem var(--space-2);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  font-weight: var(--weight-medium);
+  white-space: nowrap;
+}
+
+#submissions-section .submission-file-toggle:focus-visible {
+  outline: none;
+}
+
+.submission-file-toggle:focus-visible .submission-file-toggle__label {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.submission-file-toggle[aria-expanded="true"] .submission-file-toggle__label {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-info-bg);
+}
+
+.submission-file-toggle__chevron {
+  width: .42rem;
+  height: .42rem;
+  margin-block-start: -.2rem;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+
+.submission-file-toggle[aria-expanded="true"] .submission-file-toggle__chevron {
+  margin-block-start: .16rem;
+  transform: rotate(225deg);
+}
+
+.submission-file-popup {
+  position: fixed;
+  inset: auto;
+  width: min(17.5rem, calc(100% - 24px));
+  max-height: var(--submission-file-popup-height, none);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-floating);
+  color: var(--color-foreground);
+}
+
+.submission-file-popup:popover-open {
+  display: flex;
+  flex-direction: column;
+}
+
+#submissions-section .submission-file-popup > p {
+  flex-shrink: 0;
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.submission-file-names {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.submission-file-names li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  padding-inline: var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.submission-file-names .workflow-state-icon {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+}
+
+.submission-file-popup .submission-file-names {
+  --submission-file-row-height: 2.25rem;
+  min-height: 0;
+  max-height: calc(2 * var(--submission-file-row-height));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.submission-file-popup .submission-file-names::-webkit-scrollbar {
+  width: 6px;
+}
+
+.submission-file-popup .submission-file-names::-webkit-scrollbar-track {
+  background: var(--color-neutral-bg);
+}
+
+.submission-file-popup .submission-file-names::-webkit-scrollbar-thumb {
+  background: var(--color-control-border);
+  border-radius: var(--radius-control);
+}
+
+.submission-file-popup .submission-file-names:focus-visible {
+  outline-offset: -2px;
+}
+
+.submission-file-popup li {
+  height: var(--submission-file-row-height);
+}
+
+.submission-file-popup li > span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 #submissions-section .requirement-board-card--delete { display: flex; align-items: start; gap: var(--space-2); padding: var(--space-3); }
 #submissions-section .requirement-board-card__content { display: grid; gap: var(--space-2); min-width: 0; flex: 1; }
 #submissions-section .requirement-board-card__remove { display: inline-grid; place-items: center; width: 44px; height: 44px; flex: 0 0 44px; border: 1px solid var(--color-danger-fg); border-radius: var(--control-radius); background: var(--color-surface); color: var(--color-danger-fg); }

@@ -57,7 +57,10 @@
       detailUrl: `chi-tiet-de-tai-sinh-vien.html?project=${encodeURIComponent(projectId(id))}#tong-quan`,
     };
   });
-  data.myTopics = projects;
+  const query = new URLSearchParams(globalThis.location?.search || '');
+  const requestedProjectId = query.get('project');
+  const legacyProject = data.myTopics?.find(project => project.id === requestedProjectId);
+  data.myTopics = legacyProject ? [...projects, legacyProject] : projects;
   data.studentProjectOverviews ||= {};
   data.projectTeams ||= [];
   data.projectProgress ||= [];
@@ -100,8 +103,7 @@
     const existing = data.lecturerTopics.find(item => item.kind === 'supervised' && item.id === project.topicId);
     if (existing) Object.assign(existing, { workspaceId: project.id, sharedStudentProject: true, representativeName: project.representativeName, lecturer: project.lecturer, role: project.role, roleLabel: project.roleLabel, groupName: project.groupName, semester: project.semester, academicYear: project.academicYear, status: project.status, statusLabel: project.statusLabel });
   });
-  const query = new URLSearchParams(globalThis.location?.search || '');
-  const viewing = projects.find(project => project.id === query.get('project'));
+  const viewing = projects.find(project => project.id === requestedProjectId);
   if (viewing && data.currentStudent) data.currentStudent = { ...data.currentStudent, name: viewing.representativeName };
   const viewedRecord = rows.get(viewing?.topicId || query.get('topic'));
   if (viewedRecord?.demoSupervisor) Object.assign(lecturer, viewedRecord.demoSupervisor);

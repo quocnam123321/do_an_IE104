@@ -44,8 +44,8 @@
       const crumb = document.querySelector('.breadcrumb a[href="yeu-cau-cho-duyet.html"]');
       back.href = crumb.href = (fromTeaching ? teaching : pending) + target.search;
       if (fromTeaching) {
-        back.querySelector('span').textContent = 'Quay lại Đề tài đang hướng dẫn';
-        crumb.textContent = 'Đề tài đang hướng dẫn';
+        back.querySelector('span').textContent = 'Quay lại Đề tài hướng dẫn';
+        crumb.textContent = 'Đề tài hướng dẫn';
       }
     }
   } catch { /* URL không hợp lệ: giữ liên kết HTML về danh sách. */ }

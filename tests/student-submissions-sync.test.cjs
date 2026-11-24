@@ -13,7 +13,7 @@ function createTab(storage, globals = {}) {
     },
   });
   const modules = [
-    'data/mock-data.js', 'data/proposal-actors.js', 'data/student-projects.js', 'data/student-progress.js',
+    'data/mock-data.js', 'data/proposal-actors.js', 'data/student-projects.js', 'data/student-web-submissions.js', 'data/student-progress.js',
     'data/student-deadlines.js', 'services/storage.js', 'shared/validation.js', 'services/registration-service.js',
     'services/approved-project-service.js', 'services/project-team-service.js', 'services/project-progress-service.js',
     'data/student-evaluations.js', 'data/teaching-data.js', 'services/evaluation-service.js',
@@ -24,6 +24,27 @@ function createTab(storage, globals = {}) {
   }
   return tab.IE104;
 }
+
+test('DA005 exposes the same sample requests and submissions to both roles, without restoring deleted requests', () => {
+  const storage = new Map();
+  const teacher = createTab(storage);
+  const student = createTab(storage);
+  const projectId = 'DA005';
+  const teaching = teacher.services.teaching;
+  const forStudent = () => student.services.studentSubmissions.forStudent(projectId);
+  const initial = teaching.getState(projectId);
+  const ids = entries => Array.from(entries, entry => entry.id).sort();
+  assert.equal(initial.requirements.length, 27);
+  assert.equal(initial.submissions.length, 18);
+  assert.deepEqual(ids(forStudent().requirements), ids(initial.requirements));
+  assert.deepEqual(ids(forStudent().submissions), ids(initial.submissions));
+
+  const next = teaching.deleteRequirement(projectId, 'requirement-3', initial.revision);
+  assert.equal(forStudent().requirements.some(item => item.id === 'requirement-3'), false);
+  assert.equal(teaching.getState(projectId).requirements.filter(item => item.id === 'requirement-3').length, 1);
+  teaching.saveFeedback(projectId, 'submission-2', 'Đã nhận bài mẫu.', next.revision);
+  assert.equal(forStudent().submissions.find(item => item.id === 'submission-2').feedback, 'Đã nhận bài mẫu.');
+});
 
 test('publishes the current assessment directly and exposes the result to the student', () => {
   const storage = new Map();
@@ -79,8 +100,7 @@ test('yêu cầu lưu phía giảng viên cập nhật ở bài nộp và lịch
   assert.equal(calendar('2099-02')[0].id, id);
   assert.equal(calendar('2099-02')[0].locked, true);
 
-  teacher.services.studentSubmissions.withUploadCheck = async (_, __, remove) => remove(false);
-  await teaching.deleteRequirement(projectId, id, state.revision);
+  teaching.deleteRequirement(projectId, id, state.revision);
   assert.equal(studentSubmissions.forStudent(projectId).requirements.length, 0);
   assert.equal(calendar('2099-02').length, 0);
 
@@ -112,7 +132,8 @@ test('nhãn thời hạn dùng giờ gửi của từng bài và lần gửi g�
   }]);
 
   const state = student.services.studentSubmissions.forStudent(projectId, new Date('2026-11-22T00:00:00Z'));
-  assert.deepEqual(Array.from(state.submissions, item => item.late), [true, false, false, null]);
+  assert.deepEqual(['late', 'exact', 'early', 'unlinked'].map(id =>
+    state.submissions.find(item => item.id === id).late), [true, false, false, null]);
   const requirements = new Map(Array.from(state.requirements, item => [item.id, item]));
   assert.equal(requirements.get('req').late, true);
   assert.equal(requirements.get('req').submitted, true);
@@ -130,7 +151,7 @@ test('nhãn thời hạn dùng giờ gửi của từng bài và lần gửi g�
 test('shares a newly uploaded file and the lecturer feedback, and keeps the previous version on failed storage', async () => {
   const storage = new Map();
   const uploads = new Map();
-  const staged = new Map();
+  let failWrite = false;
   const key = parts => parts.join('/');
   const indexedDB = {
     open() {
@@ -141,6 +162,7 @@ test('shares a newly uploaded file and the lecturer feedback, and keeps the prev
             let aborted = false;
             let pending;
             const transaction = {
+              error: new Error('Storage write failed'),
               abort() { aborted = true; this.onabort(); },
               objectStore() {
                 return {
@@ -150,6 +172,7 @@ test('shares a newly uploaded file and the lecturer feedback, and keeps the prev
                       request.onsuccess();
                       queueMicrotask(() => {
                         if (aborted) return;
+                        if (pending && failWrite) { transaction.abort(); return; }
                         if (pending) uploads.set(key([pending.projectId, pending.requirementId]), pending);
                         transaction.oncomplete();
                       });
@@ -173,12 +196,8 @@ test('shares a newly uploaded file and the lecturer feedback, and keeps the prev
       return opening;
     },
   };
-  const student = createTab(storage, { indexedDB, File, crypto: require('node:crypto').webcrypto });
+  const student = createTab(storage, { indexedDB, File });
   const teacher = createTab(storage, { indexedDB });
-  student.services.submissionFiles = {
-    stage: async record => staged.set(record.submissionId, record),
-    discard: async (_, id) => staged.delete(id),
-  };
   const projectId = 'DA005';
   const teaching = teacher.services.teaching;
   const state = teaching.saveRequirement(projectId, null, {
@@ -188,24 +207,28 @@ test('shares a newly uploaded file and the lecturer feedback, and keeps the prev
   const file = new File(['bao cao'], 'report.pdf');
   const first = await student.services.studentSubmissions.saveUpload(projectId, requirement, [file], '', null);
   const current = teaching.getState(projectId);
-  const submission = current.submissions.find(item => item.id === `SV-UP-${requirement.id}`);
+  const studentSubmissions = student.services.studentSubmissions;
+  const lecturerSubmissions = teacher.services.studentSubmissions;
+  const local = uploads.get(key([projectId, requirement.id]));
+  const submission = lecturerSubmissions.visibleSubmissions(projectId, current.submissions, [local])[0];
   assert.equal(submission.submittedAt, first.submittedAt);
-  assert.equal(await staged.get(submission.fileKey).blob.text(), 'bao cao');
-  teaching.saveFeedback(projectId, submission.id, 'Đã xem', current.revision);
-  assert.equal(student.services.studentSubmissions.forStudent(projectId).submissions.find(item => item.id === submission.id).feedback, 'Đã xem');
+  assert.equal(await submission.files[0].text(), 'bao cao');
 
-  student.storage.writeTeachingRecords = () => { throw new Error('quota'); };
-  await assert.rejects(student.services.studentSubmissions.saveUpload(projectId, requirement, [new File(['ban moi'], 'new.pdf')], '', first.submittedAt), /Chưa đồng bộ/);
-  assert.equal(staged.size, 1);
-  assert.equal(uploads.get(key([projectId, requirement.id])).submittedAt, first.submittedAt);
-  assert.equal(teaching.getSubmission(projectId, submission.id).fileKey, submission.fileKey);
+  const legacy = { id: `SV-UP-${requirement.id}`, requirementId: requirement.id,
+    submittedAt: first.submittedAt, feedback: 'legacy feedback' };
+  const migrated = studentSubmissions.visibleSubmissions(projectId, [legacy], [local]);
+  assert.equal(migrated.length, 1);
+  assert.equal(migrated[0].feedback, 'legacy feedback');
+
+  await lecturerSubmissions.reviewUpload(projectId, submission, 'test feedback');
+  const reviewed = uploads.get(key([projectId, requirement.id]));
+  assert.equal(studentSubmissions.visibleSubmissions(projectId, current.submissions, [reviewed])[0].feedback, 'test feedback');
+
+  failWrite = true;
+  await assert.rejects(studentSubmissions.saveUpload(projectId, requirement, [new File(['ban moi'], 'new.pdf')], '', first.submittedAt), /Ch\u01b0a l\u01b0u/);
+  assert.equal(uploads.get(key([projectId, requirement.id])), reviewed);
   const savedState = teaching.getState(projectId);
-  const records = teacher.storage.readTeachingRecords();
-  const legacy = records.find(item => item.projectId === projectId);
-  assert.ok(legacy.submissions.some(item => item.id === submission.id));
-  legacy.submissions = legacy.submissions.filter(item => item.id !== submission.id);
-  teacher.storage.writeTeachingRecords(records);
-  await assert.rejects(teaching.deleteRequirement(projectId, requirement.id, savedState.revision), /đã có bài nộp/);
+  await assert.rejects(lecturerSubmissions.deleteUnsubmittedRequirement(projectId, requirement.id, savedState.revision), /\u0111\u00e3 c\u00f3 b\u00e0i n\u1ed9p/);
   assert.equal(teaching.getState(projectId).requirements.find(item => item.id === requirement.id).deletedAt, undefined);
   const locked = teaching.setLocked(projectId, requirement.id, true, savedState.revision);
   assert.equal(locked.requirements.find(item => item.id === requirement.id).locked, true);

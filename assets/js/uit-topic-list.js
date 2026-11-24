@@ -55,7 +55,7 @@
   }
   const viewport = list.closest('.topic-list-scroll') || list;
   const showEmpty = window.IE104.ui.createTopicListEmpty(viewport, form, search, {
-    emptyTitle: isSupervised ? 'Chưa có đề tài đang hướng dẫn' : 'Chưa có đề tài đã tạo',
+    emptyTitle: isSupervised ? 'Chưa có đề tài hướng dẫn' : 'Chưa có đề tài đã tạo',
     emptyDescription: isSupervised
       ? 'Đề tài được phân công hướng dẫn sẽ xuất hiện tại đây.'
       : 'Đề tài mới sẽ xuất hiện tại đây sau khi được tạo.',

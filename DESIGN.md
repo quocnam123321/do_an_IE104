@@ -91,6 +91,12 @@ Cặp chữ/nền dành cho trạng thái:
 
 Các cặp chữ/nền trạng thái trên đã được tính tương phản ở màu đặc và đạt tối thiểu 4.5:1. Chữ trắng trên primary đạt khoảng 6.70:1. Cần kiểm tra lại khi triển khai nếu đổi nền, opacity, font hoặc trạng thái; đây không phải chứng nhận accessibility cho toàn giao diện.
 
+### Chế độ tối
+
+- Giao diện sáng là mặc định. Nút “Chế độ tối” đặt ở thanh đầu trang hoặc thanh công cụ của trang xác thực. Nút thể hiện trạng thái bằng `aria-pressed` và có thể dùng bằng bàn phím. Lựa chọn được lưu trong trình duyệt theo cùng nguồn với khóa `ie104-theme`.
+- Chế độ tối dùng nền xanh đen `#0C1422`, bề mặt `#152234`, tiêu đề `#F8FAFC`, chữ chính `#E4EDF8` và chữ phụ `#AFC0D4`. Liên kết và focus dùng xanh sáng `#93C5FD`. Chữ trên nút nền xanh sáng dùng `#0C1B31`.
+- Dùng bộ token trong `assets/css/tokens.css` cho biểu mẫu, bảng, hộp thoại và các cặp nền/chữ trạng thái. Header giữ gạch xanh dưới mục đang chọn, còn logo giữ nền sáng để nhận diện. Các ảnh nội dung giữ màu gốc.
+
 ## 4. Typography và nội dung song ngữ — họ font đã chốt, cỡ chữ được phép dùng thử
 
 - Font chính đã chốt: `"Be Vietnam Pro", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif`, dùng chung cho tiêu đề, nội dung và control. Khi font chính chưa tải xong hoặc tải lỗi, dùng font dự phòng.
@@ -102,6 +108,13 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 - Tên đề tài và tên người được xuống dòng tự nhiên; mã/URL dài được wrap khi cần. Không dùng ellipsis khiến mất thông tin thiết yếu nếu không có cách xem đầy đủ.
 - Thông báo nêu rõ việc gì đã xảy ra và người dùng cần làm gì. Giữ thuật ngữ nhất quán như “đề tài”, “đăng ký”, “đề xuất”, “bài nộp”.
 - Màu và hình thức không được tự quyết định nghiệp vụ hoặc đổi nhãn trạng thái đang có.
+
+### Chuyển ngôn ngữ giao diện
+
+- Tiếng Việt là mặc định. Nút EN / VI nằm cạnh nút chế độ sáng/tối, có tên thao tác cho trình đọc màn hình. Khi chuyển, cập nhật thuộc tính `lang` trên trang và ghi nhớ lựa chọn trong trình duyệt.
+- Trang Đăng nhập áp dụng chế độ màu và ngôn ngữ đã lưu. Hai nút chuyển được ẩn trên trang này.
+- Dùng bản dịch chung cho header, footer, điều hướng và tên thao tác. Giữ nguyên tên riêng, mã hồ sơ, giá trị biểu mẫu và nội dung do người dùng nhập.
+- Kiểm tra chữ dài ở cả hai ngôn ngữ trên màn hình hẹp. Tên thao tác và liên kết có thể xuống dòng khi thiếu chỗ.
 
 ### 4.1. Thông số được phép áp dụng khi dựng thử
 
@@ -205,6 +218,7 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 
 ### Modal, menu và thông báo
 
+- Trên các trang chung, khi có phiên đăng nhập, header hiển thị menu tài khoản thay cho nút Đăng nhập. Menu có lối về Tổng quan, Hồ sơ cá nhân và Đăng xuất theo vai trò.
 - Modal ưu tiên `dialog` khi phù hợp; có tiêu đề, đường đóng, hành vi Escape phù hợp và quản lý focus khi triển khai JavaScript.
 - Không dùng popover như dialog modal nếu nó không thực hiện hành vi modal. Giữ các bản demo HTML hiện có cho tới khi được yêu cầu nâng cấp.
 - Nút xác nhận nêu rõ hành động như “Xóa công việc”, “Gửi đăng ký”; tránh “OK” khi không rõ hậu quả.
@@ -295,14 +309,20 @@ Theo xác nhận của người dùng, phần GV dùng giao diện 1ddf0d3 và c
 
 Ngày 21/11/2026, danh sách Đề tài đã tạo hiện tên tác giả, khóa hoặc đợt bảo vệ và giảng viên hướng dẫn theo 10 hồ sơ UIT trong Git. Các thẻ này dùng nhãn Hồ sơ UIT. Trang chi tiết dùng lại bản `75bca90`, gồm khung ảnh 16:9 và luồng đề tài lưu trên trình duyệt.
 
-Hai tab Quản lý đề tài của giảng viên dùng chung menu Sắp xếp với ba lựa chọn Mới nhất, Cũ nhất và Tên A–Z. Menu mở đè lên nội dung, mục đã chọn có nền xanh nhạt và chữ xanh. Tab Đề tài đang hướng dẫn ưu tiên ngày bắt đầu thực hiện, dùng ngày duyệt hoặc ngày ghi nhận nếu có và xếp hồ sơ thiếu ngày ở cuối khi sắp xếp theo thời gian.
+Hai tab Quản lý đề tài của giảng viên dùng chung menu Sắp xếp với ba lựa chọn Mới nhất, Cũ nhất và Tên A–Z. Menu mở đè lên nội dung, mục đã chọn có nền xanh nhạt và chữ xanh. Tab Đề tài hướng dẫn ưu tiên ngày bắt đầu thực hiện, dùng ngày duyệt hoặc ngày ghi nhận nếu có và xếp hồ sơ thiếu ngày ở cuối khi sắp xếp theo thời gian.
 
 Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề với khoảng cách 16px trên máy tính và 12px trên điện thoại. Dòng đếm kết quả được đọc bởi trình đọc màn hình. Trạng thái trống và cảnh báo dữ liệu hiển thị dưới tiêu đề.
 
 ### Tổng quan chi tiết đề tài sinh viên — 21/11/2026
 
-- Tab Tổng quan của Đề tài của tôi dùng chung khung ảnh tóm tắt 16:9, bố cục thẻ, danh sách mục tiêu và kết quả, cách hiển thị thành viên và mốc thời gian với trang Đề tài đang hướng dẫn. Khối Yêu cầu thực hiện xuất hiện khi đề tài đăng ký có dữ liệu tương ứng. Khối Giảng viên hướng dẫn đặt sau Mốc thời gian chính. Các thao tác nhóm và lời mời hiển thị theo quyền hiện có của sinh viên.
+- Tab Tổng quan của Đề tài của tôi dùng chung khung ảnh tóm tắt 16:9, bố cục thẻ, danh sách mục tiêu và kết quả, cách hiển thị thành viên và mốc thời gian với trang Đề tài hướng dẫn. Khối Yêu cầu thực hiện xuất hiện khi đề tài đăng ký có dữ liệu tương ứng. Khối Giảng viên hướng dẫn đặt sau Mốc thời gian chính. Các thao tác nhóm và lời mời hiển thị theo quyền hiện có của sinh viên.
 - Thông báo giới hạn thành viên đặt ngay dưới tên nhóm với biểu tượng thông tin và cụm “tối đa X thành viên” in đậm. Dùng nền vàng nhạt, viền vàng mảnh, chữ và biểu tượng màu nâu ở mọi trạng thái sức chứa.
+
+### Tổng quan chi tiết đề tài đang hướng dẫn — 23/11/2026
+
+- Dùng tab Tổng quan của Đề tài của tôi làm mẫu. Khối tóm tắt dùng ảnh 16:9 và nhãn vai trò cạnh tên đề tài. Hướng dẫn chính dùng nền xanh nhạt, Đồng hướng dẫn dùng nền xám nhạt như danh sách. Phần thông tin có ba hàng ngăn bằng khoảng cách: Mã đề tài và Loại đề tài, Môn học và Trạng thái, Học kỳ và Năm học. Trạng thái hiển thị bằng văn bản. Khi ảnh nằm bên trái, khung rộng tối đa 24rem và căn giữa theo chiều dọc. Trên điện thoại, ảnh rộng theo khung nội dung và phần thông tin xếp thành một cột khi màn hình hẹp. Cột trái hiển thị các thẻ nội dung. Cột phải lần lượt là Nhóm thực hiện, Mốc thời gian chính và Giảng viên hướng dẫn. Hai cột xếp dọc trên màn hình hẹp.
+- Dùng cùng giao diện cho đề tài từ danh mục, đề tài đăng ký và đề xuất đã duyệt. Chỉ hiện giới hạn thành viên, đề cương, phương pháp và kế hoạch khi có dữ liệu tương ứng. Thông tin nhóm ở Tổng quan phía giảng viên hiển thị dưới dạng chỉ đọc.
+- Khối Giảng viên hướng dẫn phía giảng viên là danh sách chỉ đọc. Mỗi dòng có avatar, họ tên, bộ môn và vai trò nếu có dữ liệu. Đề tài thiếu người đồng hướng dẫn dùng thêm một hồ sơ mẫu có ghi Minh họa. Hồ sơ minh họa chỉ phục vụ trình bày.
 
 ### Chi tiết đề xuất đề tài của sinh viên và giảng viên — 22/11/2026
 
@@ -327,25 +347,52 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 
 ### Tiến độ chi tiết đề tài sinh viên — 21/11/2026
 
-- Tab Tiến độ dùng chung bố cục tổng thể và bảng ba cột với giảng viên. Thẻ công việc hiển thị hạn hoàn thành, ảnh đại diện người phụ trách và nhãn “Quá hạn” chỉ có chữ khi phù hợp. Trên màn hình hẹp, cuộn ngang bảng để xem các cột. Khối Tiến độ tổng thể hiển thị thanh tiến độ và số liệu. Thêm công việc và Xóa nằm ở bảng công việc. Các thao tác và lịch sử theo từng công việc dùng quyền và dữ liệu hiện có của sinh viên.
-- Hộp Thêm công việc có ô mô tả và danh sách người phụ trách thả xuống với checkbox chọn nhiều thành viên. Dấu sao đỏ đánh dấu tên, người phụ trách và hạn hoàn thành. Trạng thái ban đầu chọn giữa Chưa bắt đầu và Đang thực hiện, nhận biết lựa chọn bằng nền và viền. Hộp Sửa công việc cho chỉnh danh sách người phụ trách cùng mô tả đã lưu.
+- Tab Tiến độ dùng chung bố cục tổng thể và bảng ba cột với giảng viên. Thẻ công việc hiển thị hạn hoàn thành, ảnh đại diện người phụ trách và nhãn “Quá hạn” chỉ có chữ khi phù hợp. Hiển thị avatar của từng thành viên được phân công với hai tông nền xanh nhạt luân phiên theo thứ tự thành viên trong nhóm. Khi thiếu chỗ, avatar xuống hàng và thẻ tự tăng chiều cao. Trên màn hình hẹp, cuộn ngang bảng để xem các cột. Khối Tiến độ tổng thể hiển thị thanh tiến độ và số liệu. Thêm công việc và Xóa nằm ở bảng công việc. Các thao tác và lịch sử theo từng công việc dùng quyền và dữ liệu hiện có của sinh viên.
+- Khối Tiến độ tổng thể của sinh viên và giảng viên đặt ô Quá hạn sau Còn lại. Bốn ô dùng cùng nền, viền và số đếm màu đen. Biểu tượng lịch của ô Quá hạn dùng màu đỏ. Trên màn hình hẹp, bốn ô xếp thành hai hàng. Số quá hạn đếm các công việc chưa hoàn thành có hạn trước ngày hiện tại theo giờ Việt Nam, cùng quy tắc với nhãn Quá hạn trên thẻ.
+- Hộp Thêm công việc có ô mô tả và danh sách người phụ trách thả xuống với checkbox chọn nhiều thành viên. Dấu sao đỏ đánh dấu tên, người phụ trách và hạn hoàn thành. Trạng thái ban đầu chọn giữa Chưa bắt đầu và Đang thực hiện, nhận biết lựa chọn bằng nền và viền. Hộp Sửa công việc điền sẵn dữ liệu và đặt ba lựa chọn Trạng thái ngay dưới Mô tả, trước Người phụ trách và Hạn hoàn thành. Chọn Hủy, dấu × hoặc Esc đưa về chi tiết của cùng công việc với dữ liệu đã lưu.
 - Khi đề tài đã hoàn thành, nút Xóa và Thêm công việc đều bị khóa. Ngay dưới tiêu đề Bảng công việc hiển thị thông báo nền xanh nhạt với biểu tượng thông tin: “Đề tài đã hoàn thành. Chức năng thêm và xóa công việc đã được khóa.”
-- Hộp chi tiết công việc bên sinh viên dùng tên công việc làm tiêu đề. Trạng thái có nhãn xám, xanh dương hoặc xanh lá theo ba cột của bảng. Hạn hoàn thành, tên người phụ trách và mô tả lấy theo dữ liệu công việc. Dấu × và phím Esc dùng để đóng hộp. Hàng thao tác hiển thị Cập nhật tiến độ và Sửa công việc theo quyền. Biểu mẫu cập nhật mở cho công việc đang xem, với trạng thái và mức hoàn thành đã điền sẵn.
+- Khi bật thao tác xóa, nút Xóa chuyển thành Xong với dấu tích, nền trắng, viền xám và chữ đậm. Dấu trừ đỏ xuất hiện trên các thẻ công việc để chọn công việc cần xóa. Bấm Xong đưa bảng về chế độ xem.
+- Hộp Xóa công việc dùng bố cục của hộp Hủy lời mời giảng viên với tên công việc in đậm ngay trong câu hỏi. Dấu × hoặc Esc đóng hộp. Cuối hộp có một nút đỏ Xác nhận xóa.
+- Hộp chi tiết công việc bên sinh viên dùng tên công việc làm tiêu đề. Trạng thái có nhãn xám, xanh dương hoặc xanh lá theo ba cột của bảng. Hạn hoàn thành, tên người phụ trách và mô tả lấy theo dữ liệu công việc. Dấu × và phím Esc dùng để đóng hộp. Cuối hộp thoại hiển thị nút Sửa công việc khi người xem có quyền sửa.
+- Khi đổi trạng thái trong hộp Sửa công việc, Lưu thay đổi chuyển thẻ sang cột tương ứng. Chưa bắt đầu dùng 0%, Đã hoàn thành dùng 100%. Khi chuyển sang Đang thực hiện, công việc chưa có phần trăm cụ thể. Nếu trạng thái giữ nguyên, mức đã ghi tiếp tục được dùng.
 - Sau khi lưu thành công trong hộp Sửa công việc, hộp Đã lưu thay đổi hiển thị dấu tích xanh, dòng “Công việc đã được cập nhật.” và nút Xong. Đóng hộp đưa tiêu điểm về thẻ vừa sửa.
+
+### Tiến độ chi tiết đề tài giảng viên — 23/11/2026
+
+- Dùng chung thẻ công việc với sinh viên, gồm tiêu đề, cảnh báo quá hạn, hạn hoàn thành và đầy đủ avatar của người phụ trách. Avatar dùng hai tông xanh nhạt và xuống hàng khi thiếu chỗ.
+- Chọn thẻ bằng chuột hoặc bàn phím để mở hộp thoại có tên công việc, trạng thái, hạn hoàn thành, người phụ trách và mô tả. Hộp chi tiết công việc của cả hai vai trò chỉ hiển thị nhãn trong mục Trạng thái. Đóng hộp thoại đưa tiêu điểm về thẻ vừa mở.
+
+### Bình luận trong chi tiết công việc — 23/11/2026
+
+- Sinh viên và giảng viên hướng dẫn dùng chung luồng Bình luận của mỗi công việc. Khối nằm ngay dưới Mô tả, với avatar, tên, thời gian gửi và nhãn Giảng viên bên cạnh tác giả là giảng viên. Hộp chi tiết dùng khối Bình luận ở vị trí này và bỏ dòng Lịch sử cập nhật.
+- Ô chính gợi ý “Viết bình luận”. Nút Gửi màu xám và bị vô hiệu hóa khi nội dung trống hoặc chỉ có khoảng trắng. Khi chưa có bình luận, vùng nội dung chỉ hiển thị khung soạn. Hiện ba bình luận mới nhất trước. Mỗi lần bấm Xem thêm bình luận, mở thêm tối đa mười bình luận cũ.
+- Phản hồi mở ô nhập ngay dưới bình luận gốc, có tên người được phản hồi, nút Hủy và Gửi. Phản hồi đã gửi thụt vào một cấp, bỏ đường nối. Khi gửi thành công, đóng ô nhập và mở danh sách đến phản hồi vừa gửi.
+- Mỗi bình luận có một nút chữ đen bên dưới để mở hoặc thu gọn phản hồi. Dạng thu gọn hiển thị số phản hồi và mũi tên xuống, mở tối đa năm phản hồi. Khi còn phản hồi, nút đổi thành “Xem thêm phản hồi” và mỗi lần bấm hiện thêm tối đa năm. Khi đã hiện hết, nút đổi thành “Ẩn phản hồi” với mũi tên lên. Thu gọn rồi mở lại bắt đầu từ năm phản hồi đầu.
+- Trong hộp chi tiết công việc của sinh viên và giảng viên, Phản hồi có chữ và viền xanh, nền chuyển xanh nhạt khi rê chuột. Hủy có nền trắng, chữ và viền đỏ như nút Xóa, nền chuyển đỏ nhạt khi rê chuột. Hủy và Gửi có cùng chiều cao.
+- Bản hiện tại lưu bình luận trong IndexedDB của cùng hồ sơ trình duyệt và địa chỉ web. Các công việc mẫu chỉ xem trong danh mục giảng viên hiển thị thông báo về luồng bình luận.
 
 ### Nhãn thời hạn bài nộp bên sinh viên — 21/11/2026
 
 - Ba nhãn chỉ hiển thị chữ và dùng chung kiểu chữ, khoảng đệm, bo góc với nhãn bên giảng viên. “Đúng hạn” dùng nền xanh lá nhạt, “Quá hạn” dùng nền đỏ nhạt và “Nộp sau hạn” dùng nền vàng nhạt, chữ nâu và viền vàng mảnh. Cột Chờ phản hồi dùng nền vàng nhạt, cột Đã phản hồi dùng nền xanh lá nhạt như bên giảng viên. Ở Yêu cầu bài nộp → Đã nộp, nhãn vàng theo lần nộp gần nhất. Ở Bài nộp của nhóm, nhãn theo thời điểm gửi của từng bài ở cả hai cột phản hồi.
-- Hộp thoại yêu cầu bài nộp dùng tên yêu cầu làm tiêu đề, giống hộp thoại chi tiết công việc. Ngày giờ nộp của lần gửi gần nhất nằm dưới hạn nộp. Tệp nằm dưới nội dung yêu cầu. Bài mẫu có tệp liên kết dùng nút Tải xuống cùng kiểu với Bài nộp của nhóm. Nút mở biểu mẫu mẫu có tên Nộp bài hoặc Cập nhật bài nộp theo trạng thái yêu cầu.
+- Hai cột Chưa nộp và Đã nộp phía giảng viên dùng bố cục thẻ của sinh viên. Các thẻ cách nhau 8px. Trong thẻ, tiêu đề và nhãn thời hạn cùng hàng khi đủ chỗ, với nhãn ở bên phải. Hạn nộp nằm ở hàng dưới, có biểu tượng lịch. Thẻ Quá hạn dùng chữ đỏ cho ngày giờ và nhãn.
+- Khi giảng viên bấm Xóa ở bảng Yêu cầu bài nộp, nút Xong có dấu tích, nền trắng, viền xám và chữ đậm. Nút dấu trừ chỉ xuất hiện trên các thẻ trong cột Chưa nộp. Yêu cầu đã có bài nộp có thể khóa nhận bài trong hộp thoại chi tiết.
+- Hộp thoại Xóa yêu cầu bài nộp in đậm tên yêu cầu trong câu hỏi. Cuối hộp có nút đỏ Xác nhận xóa. Dùng dấu × hoặc phím Esc để đóng.
+- Hộp thoại yêu cầu bài nộp ở cả hai vai trò dùng tên yêu cầu làm tiêu đề, giống hộp thoại chi tiết công việc. Nội dung yêu cầu hiển thị trực tiếp dưới mốc thời gian. Giảng viên có các thao tác khóa hoặc mở nhận bài và sửa yêu cầu ở cuối hộp thoại. Ngày giờ nộp của lần gửi gần nhất nằm dưới hạn nộp. Tệp nằm dưới nội dung yêu cầu. Bài mẫu có tệp liên kết dùng nút Tải xuống cùng kiểu với Bài nộp của nhóm. Nút mở biểu mẫu mẫu có tên Nộp bài hoặc Cập nhật bài nộp theo trạng thái yêu cầu.
 - Biểu mẫu nộp bài lấy tên yêu cầu làm tiêu đề. Cả hàng trắng mở trình chọn tệp khi danh sách trống. Nút Chọn tệp và Thêm tệp dùng viền xanh, biểu tượng mũi tên hướng lên và cùng một trình chọn nhiều tệp. Mỗi hàng có biểu tượng thùng rác đỏ để gỡ tệp. Bản nộp gồm các tệp và ghi chú được lưu trong IndexedDB trên trình duyệt hiện tại. Sau khi lưu, hộp xác nhận chỉ hiển thị dấu tích xanh, “Nộp bài thành công” và nút Xong.
-- Thẻ Bài nộp của nhóm hiện tên tệp đầu tiên. Với nhiều tệp, nút +N tệp mở danh sách các tệp còn lại trong khung nổi, căn mép phải theo nút, lật lên khi thiếu chỗ bên dưới và đóng khi cuộn bảng. Tiêu đề đứng yên, phần danh sách hiện tối đa hai hàng và cuộn riêng. Nút Tải xuống tải cả bộ ZIP khi có nhiều tệp, tải trực tiếp khi chỉ có một tệp.
-- Trong chi tiết yêu cầu đã nộp, khối Tệp đã nộp ghi tên và dung lượng nếu có dữ liệu. Danh sách hiện tối đa bốn hàng và cuộn riêng khi có thêm. Tải xuống nằm ở từng hàng có tệp và Tải tất cả ở cạnh tiêu đề khi có nhiều tệp.
+- Thẻ Bài nộp của nhóm hiện tên tệp đầu tiên trên một dòng. Khi thiếu chỗ, tên tệp kết thúc bằng dấu ba chấm và hiện đầy đủ khi rê chuột. Với nhiều tệp, nút +N tệp mở danh sách các tệp còn lại trong khung nổi, căn mép phải theo nút, lật lên khi thiếu chỗ bên dưới và đóng khi cuộn bảng. Tiêu đề đứng yên, phần danh sách hiện tối đa hai hàng và cuộn riêng. Nút Tải xuống tải cả bộ ZIP khi có nhiều tệp, tải trực tiếp khi chỉ có một tệp.
+- Thẻ Bài đã nộp phía giảng viên dùng cùng kiểu nút Tải xuống nền trắng viền xám có biểu tượng và dùng cùng nút +N tệp cạnh tên tệp đầu tiên. Thời gian nộp trên thẻ hiển thị theo dạng `DD/MM/YYYY · HH:mm`.
+- Hai cột Chờ phản hồi và Đã phản hồi dùng cùng khoảng cách 8px giữa các thẻ ở cả hai vai trò. Bài gửi sau hạn dùng nhãn Nộp sau hạn với nền vàng nhạt, viền vàng và chữ nâu.
+- Ở thẻ Bài đã nộp phía giảng viên, nút Phản hồi dùng nền xanh và biểu tượng bút trong khung màu trắng. Nút Xem phản hồi ở cả hai vai trò dùng nền trắng, viền xanh, chữ và biểu tượng con mắt màu xanh. Hai biểu tượng nằm trước nhãn.
+- Hộp thoại Phản hồi bài nộp phía giảng viên hiển thị tên yêu cầu và dòng “Đã nộp lúc HH:mm ngày DD/MM/YYYY” ngay trên ô Nội dung phản hồi. Tên tệp nằm trên thẻ bài nộp. Hộp soạn phản hồi có nút Lưu phản hồi ở cuối và dùng dấu × hoặc phím Esc để đóng. Phần đầu hộp thoại của giảng viên lấy khoảng cách và nút đóng theo hộp thoại Xem phản hồi của sinh viên. Đường phân cách nằm trong lề nội dung.
+- Khi giảng viên mở Xem phản hồi, tiêu đề dùng cùng cỡ chữ, độ đậm và chiều cao dòng với hộp thoại bên sinh viên. Nội dung hiển thị trực tiếp dưới tiêu đề Nội dung phản hồi. Bấm Sửa phản hồi để mở ô nhập có viền và chuyển tiêu điểm vào nội dung đã có. Nút Lưu thay đổi lưu bản sửa.
+- Trong chi tiết yêu cầu đã nộp ở cả hai vai trò, khối Tệp đã nộp hiển thị tên tệp và rút gọn bằng dấu ba chấm khi thiếu chỗ. Danh sách hiện tối đa bốn hàng và cuộn riêng khi có thêm. Tải xuống nằm ở từng hàng có tệp. Khi có nhiều tệp, nút Tải tất cả ở cạnh tiêu đề dùng chữ và biểu tượng tải xuống màu xanh trên nền trắng.
 - Khi cập nhật bài nộp, biểu mẫu điền tệp và ghi chú sẵn có. Thêm hoặc gỡ tệp chỉ thay đổi bản nháp cho đến khi bấm Lưu thay đổi và lưu thành công. Hộp xác nhận cập nhật hiển thị dấu tích xanh, “Đã lưu thay đổi” và nút Xong.
+- Đề tài DA005 dùng chung yêu cầu, bài nộp mẫu và phản hồi giữa sinh viên và giảng viên. Tệp sinh viên nộp và phản hồi của giảng viên cho lần nộp đó dùng chung dữ liệu lưu trên cùng trình duyệt và địa chỉ web.
 - Các hộp thoại Chi tiết yêu cầu, Phản hồi, Nộp bài và Cập nhật bài nộp dùng chung biểu tượng × nét bo đầu, khung biểu tượng 20px và vùng bấm 44px không viền.
 
 ### Tổng quan đề tài đang hướng dẫn
 
-- Đề tài giảng viên đã tạo vẫn nằm trong danh sách Đề tài đã tạo sau khi có nhóm đăng ký thành công hoặc được duyệt. Thẻ và trang chi tiết dùng nhãn Đã có nhóm đăng ký. Giảng viên chỉnh sửa hồ sơ gốc từ trang chi tiết và theo dõi nhóm trong danh sách Đề tài đang hướng dẫn.
+- Đề tài giảng viên đã tạo vẫn nằm trong danh sách Đề tài đã tạo sau khi có nhóm đăng ký thành công hoặc được duyệt. Thẻ và trang chi tiết dùng nhãn Đã có nhóm đăng ký. Giảng viên chỉnh sửa hồ sơ gốc từ trang chi tiết và theo dõi nhóm trong danh sách Đề tài hướng dẫn.
 
 - Đề tài trong danh mục và đề tài phát sinh từ đăng ký hoặc đề xuất dùng chung khung ảnh 16:9, thẻ thông tin, bố cục nội dung và cột nhóm thực hiện, mốc thời gian. Đề cương, phương pháp và kế hoạch xuất hiện khi đề tài có dữ liệu tương ứng.
 

@@ -30,19 +30,11 @@
 .project-overview-layout__main > section { min-height: 9rem; }
 .project-overview-layout__main { align-self: stretch; grid-template-rows: repeat(3,minmax(9rem,1fr)); }
 .active-topic-page .breadcrumb__separator { display: none; }
-.project-supervisors__header, .project-team__header, .section-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); margin-bottom: var(--space-3); }
-.supervisor-list, .pending-invitations__list, .task-list, .update-history, .required-submissions-list, .submission-history-list { padding: 0; margin: 0; list-style: none; }
-.supervisor-list { display: grid; gap: var(--space-3); }
-.supervisor-card { display: flex; align-items: center; gap: var(--space-3); min-width: 0; }
-.supervisor-card__avatar { flex: 0 0 auto; display: grid; place-items: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; background: var(--color-neutral-bg); color: var(--color-muted-foreground); font-size: .75rem; }
-.supervisor-card__content { flex: 1; min-width: 0; display: grid; grid-template-columns: minmax(0,1fr) auto; column-gap: var(--space-2); }
-.supervisor-card__name, .supervisor-card__department { grid-column: 1; }
-.supervisor-card__content .supervisor-card__role { grid-column: 2; grid-row: 1 / 3; align-self: center; margin: 0; }
-.supervisor-card__department, .supervisor-card__role, .pending-invitation__meta { font-size: .75rem; color: var(--color-muted-foreground); }
-.supervisor-card__role { display: inline-block; padding: var(--space-1) var(--space-2); margin-top: var(--space-1); border-radius: .25rem; background: var(--color-neutral-bg); }
+.section-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); margin-bottom: var(--space-3); }
+.pending-invitations__list, .task-list, .update-history, .required-submissions-list, .submission-history-list { padding: 0; margin: 0; list-style: none; }
 .pending-invitations { margin-top: var(--space-4); padding-top: var(--space-3); border-top: 1px solid var(--color-border); }
 .pending-invitation { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: var(--space-2); padding: var(--space-3); margin-top: var(--space-2); border: 1px dashed var(--color-border); border-radius: var(--radius-control); }
-.pending-invitation__meta { grid-row: 2; display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; }
+.pending-invitation__meta { font-size: .75rem; color: var(--color-muted-foreground); grid-row: 2; display: flex; flex-wrap: wrap; gap: var(--space-2); margin: 0; }
 .pending-invitation__meta dd { margin: 0; }
 .pending-invitation__cancel { grid-column: 2; grid-row: 1 / 3; align-self: center; }
 .overall-progress-bar { display: grid; gap: var(--space-2); font-size: var(--font-size-secondary); }
@@ -112,8 +104,6 @@
  .lecturer-feedback__metadata { grid-template-columns: minmax(0,1fr); }
  .active-project-name { align-items: start; }
  .active-topic-page dialog { padding: var(--space-4); }
- .supervisor-card__content { grid-template-columns: minmax(0,1fr); }
- .supervisor-card__content .supervisor-card__role { grid-column: 1; grid-row: auto; justify-self: start; }
 }
 @media(prefers-reduced-motion:reduce) { .active-topic-page * { scroll-behavior: auto; } }
 

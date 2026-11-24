@@ -98,7 +98,8 @@
       department,
       group,
       searchableText,
-      rawText
+      rawText,
+      localizedText: ''
     };
   });
 
@@ -199,11 +200,12 @@
     const visibleCards = [];
     let resultsChanged = false;
 
-    cardMetadata.forEach(({ card, department, group, searchableText, rawText }) => {
+    cardMetadata.forEach(({ card, department, group, searchableText, rawText, localizedText }) => {
       const matchesDepartment = !selectedDepartment || department === selectedDepartment;
       const matchesGroup = !selectedGroup || group === selectedGroup;
       const matchesSearch =
-        !queryNorm || searchableText.includes(queryNorm) || rawText.includes(queryRaw);
+        !queryNorm || searchableText.includes(queryNorm) || rawText.includes(queryRaw)
+        || localizedText.includes(queryNorm);
 
       const isVisible = matchesDepartment && matchesGroup && matchesSearch;
       const shouldHide = !isVisible;
@@ -223,6 +225,16 @@
       observeRows(visibleCards);
     }
   };
+
+  document.addEventListener('ie104:languagechange', () => {
+    const isEnglish = document.documentElement.lang === 'en';
+    for (const item of cardMetadata) {
+      const directionCount = item.card.querySelector('.research-area-count');
+      const cardText = (item.card.textContent || '').replace(directionCount?.textContent || '', '');
+      item.localizedText = isEnglish ? normalizeText(cardText) : '';
+    }
+    applyFilters();
+  });
 
   searchInput.addEventListener('input', applyFilters);
   departmentSelect.addEventListener('change', applyFilters);

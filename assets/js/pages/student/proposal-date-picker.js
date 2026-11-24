@@ -2,7 +2,7 @@
   const form = document.querySelector('#proposal-form, #create-topic-form');
   const app = globalThis.IE104;
   const pickers = app?.ui?.proposalPickers;
-  if (!form || !pickers) return;
+  if (!pickers) return;
 
   const fullDate = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'full', timeZone: 'UTC' });
   const dateAt = (year, month, day) => {
@@ -43,8 +43,8 @@
 
   const icon = path => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;
   const weekdays = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
-  const enhanced = new Set();
-  const dateTimeFields = new Map();
+  const enhanced = new WeakSet();
+  const dateTimeFields = new WeakMap();
 
   function fillEnhancedDate(input, value) {
     const [day, time = ''] = value.split('T');
@@ -110,7 +110,7 @@
     };
   }
 
-  function enhanceDate(input) {
+  function enhanceDate(input, { timeZone, timeLabel = 'Giờ hết hạn đăng ký', label = input.labels[0] } = {}) {
     const group = document.createElement('div');
     group.className = 'proposal-date-control';
     input.before(group);
@@ -127,12 +127,12 @@
       group.classList.add('proposal-date-control--with-time');
       group.insertAdjacentHTML('beforeend', `
         <span class="proposal-date-separator" aria-hidden="true">·</span>
-        <input class="proposal-date-time" type="text" placeholder="hh:mm" maxlength="5" autocomplete="off"
-          aria-label="Giờ hết hạn đăng ký">
+        <input class="proposal-date-time" type="text" placeholder="hh:mm" maxlength="5" autocomplete="off">
       `);
     }
     const timeInput = group.querySelector('.proposal-date-time');
     if (timeInput) {
+      timeInput.setAttribute('aria-label', timeLabel);
       timeInput.required = input.required;
       dateTimeFields.set(input, timeInput);
     }
@@ -140,7 +140,6 @@
     input.defaultValue = input.value;
     if (timeInput) timeInput.defaultValue = timeInput.value;
 
-    const label = input.labels[0];
     label.id ||= `${input.id}-label`;
     const panelId = `${input.id}-calendar`;
     const headingId = `${panelId}-heading`;
@@ -301,6 +300,12 @@
     function open() {
       const now = new Date();
       today = dateAt(now.getFullYear(), now.getMonth(), now.getDate());
+      if (timeZone) {
+        const local = new Intl.DateTimeFormat('vi-VN', {
+          timeZone, day: '2-digit', month: '2-digit', year: 'numeric',
+        }).format(now);
+        today = parseDate(local) || today;
+      }
       const date = parseDate(input.value);
       selected = date ? isoDate(date) : '';
       active = date || today;
@@ -379,8 +384,8 @@
       fillEnhancedDate(input, value);
       input.dispatchEvent(new Event('input', { bubbles: true }));
     });
-    panel.addEventListener('keydown', event => {
-      if (event.key === 'Escape') {
+    group.addEventListener('keydown', event => {
+      if (event.key === 'Escape' && popup.isOpen()) {
         event.preventDefault();
         close();
       }
@@ -436,11 +441,13 @@
       close();
     });
     panel.querySelector('[data-today]').addEventListener('click', () => choose(isoDate(today)));
-    form.addEventListener('reset', popup.close);
+    input.form?.addEventListener('reset', popup.close);
   }
 
-  form.querySelectorAll('input[data-proposal-picker]:is([type="date"], [type="datetime-local"])').forEach(enhanceDate);
+  form?.querySelectorAll('input[data-proposal-picker]:is([type="date"], [type="datetime-local"])')
+    .forEach(input => enhanceDate(input));
   app.ui.proposalDatePicker = {
+    enhanceDate,
     read(input) {
       const timeInput = dateTimeFields.get(input);
       if (timeInput) return parseDateTime(input.value, timeInput.value);

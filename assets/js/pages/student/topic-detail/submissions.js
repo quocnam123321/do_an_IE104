@@ -4,6 +4,8 @@
   const service = app?.services?.studentSubmissions;
   if (!host || !service) return;
   const isLivePage = host.dataset.studentSubmissions === 'live';
+  const sampleData = app.data.studentWebSubmissions;
+  const isSharedSample = !isLivePage && sampleData?.projectId === document.body.dataset.projectId;
   const requirementTemplate = document.getElementById('student-requirement-dialog-template');
   const fileTemplate = document.getElementById('student-submission-file-template');
   const uploadDialog = document.getElementById('student-upload-dialog');
@@ -12,10 +14,9 @@
   let lastSavedId;
   let readVersion = 0;
   const format = new Intl.DateTimeFormat('vi-VN', {
-    dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh',
+    day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit',
+    hourCycle: 'h23', timeZone: 'Asia/Ho_Chi_Minh',
   });
-  const sizeFormat = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 1 });
-  const samplePdfSize = 30564;
 
   const deadlineLabels = {
     danger: 'Quá hạn',
@@ -32,7 +33,7 @@
 
   function time(value) {
     const parts = Object.fromEntries(format.formatToParts(new Date(value)).map(part => [part.type, part.value]));
-    const node = element('time', `${parts.day.padStart(2, '0')}/${parts.month.padStart(2, '0')}/${parts.year.length === 2 ? '20' + parts.year : parts.year} · ${parts.hour.padStart(2, '0')}:${parts.minute}`);
+    const node = element('time', `${parts.day}/${parts.month}/${parts.year} · ${parts.hour}:${parts.minute}`);
     node.dateTime = value;
     return node;
   }
@@ -51,21 +52,24 @@
     if (!card?.dataset.extraFiles) return null;
     return {
       names: [firstName, ...card.dataset.extraFiles.split('|')],
-      sizes: [samplePdfSize, ...card.dataset.extraFileSizes.split('|').map(Number)],
       download: card.querySelector('.submission-board-card__download'),
     };
   }
 
-  function downloadRow(name, size) {
+  function sampleBundle(submission) {
+    if (!submission?.id) return null;
+    const attachment = app.data.studentWebSubmissions?.attachment(document.body.dataset.projectId, submission);
+    if (!attachment) return null;
+    const download = fileTemplate.content.querySelector('a').cloneNode(true);
+    download.href = '../../assets/files/' + attachment.path;
+    download.download = attachment.name;
+    return { ...attachment, download };
+  }
+
+  function downloadRow(name) {
     const row = fileTemplate.content.querySelector('.submission-dialog__file').cloneNode(true);
     const filename = row.querySelector('[data-submission-filename]');
     filename.textContent = filename.title = name;
-    if (size !== undefined) {
-      const label = row.querySelector('.submission-dialog__file-size');
-      label.textContent = size < 1024 ? size + ' B' : size < 1024 ** 2
-        ? sizeFormat.format(size / 1024) + ' KB' : sizeFormat.format(size / 1024 ** 2) + ' MB';
-      label.hidden = false;
-    }
     row.querySelector('a').setAttribute('aria-label', 'Tải xuống ' + name);
     return row;
   }
@@ -106,7 +110,7 @@
     if (bundle) {
       const folder = bundle.download.href.replace(/\.zip$/, '/');
       bundle.names.forEach((name, index) => {
-        const row = downloadRow(name, bundle.sizes[index]);
+        const row = downloadRow(name);
         const link = row.querySelector('a');
         if (index > 0) link.href = folder + encodeURIComponent(name);
         link.download = name;
@@ -120,7 +124,7 @@
       const names = files.length > 1 ? app.ui.submissionZipNames(files) : [files[0].name];
       files.forEach((file, index) => {
         const name = names[index];
-        const row = downloadRow(name, file.size);
+        const row = downloadRow(name);
         const link = row.querySelector('a');
         const button = downloadButton(link);
         bindUploadDownload(button, error, [file], name);
@@ -132,8 +136,10 @@
         bindUploadDownload(downloadAll, error, files, archiveName(requirementId));
       }
     } else if (fileName) {
-      const row = downloadRow(fileName, sample ? samplePdfSize : undefined);
-      if (!sample) row.querySelector('a').remove();
+      const row = downloadRow(fileName);
+      const link = row.querySelector('a');
+      if (sample) link.download = fileName;
+      else link.remove();
       list.append(row);
     } else {
       list.replaceWith(element('p', 'Chưa có thông tin tệp đã nộp.'));
@@ -165,16 +171,22 @@
     button.type = 'button';
     button.setAttribute('aria-haspopup', 'dialog');
     button.setAttribute('aria-controls', uploadDialog.id);
-    button.addEventListener('click', () => sharedUpload.open(item, {
-      expectedSavedAt: item.localUpload?.submittedAt,
-      trigger: button,
-    }));
+    button.addEventListener('click', () => {
+      const sample = sampleBundle(item.latestSubmission);
+      const sampleFiles = sample?.names.map((name, index) => ({
+        name,
+        url: index
+          ? sample.download.href.replace(/\.zip$/, '/') + encodeURIComponent(name)
+          : new URL('../../assets/files/bai-nop-minh-hoa.pdf', location.href).href,
+      }));
+      sharedUpload.open(item, { expectedSavedAt: item.localUpload?.submittedAt, sampleFiles, trigger: button });
+    });
     return button;
   }
 
   function requirementCard(item, badge, status) {
     const card = element('article', undefined, 'requirement-board-card');
-    if (item.id) card.dataset.recordId = item.id;
+    if (item.id) card.id = card.dataset.recordId = item.id;
     const open = element('button', undefined, 'requirement-board-card__open');
     open.type = 'button';
     open.setAttribute('aria-haspopup', 'dialog');
@@ -182,6 +194,7 @@
     heading.append(element('span', item.title, 'requirement-board-card__title'));
     if (badge) heading.append(deadlineBadge(badge));
     const due = element('span', undefined, 'requirement-board-card__deadline');
+    card.classList.toggle('requirement-board-card--overdue', badge === 'danger');
     due.append(boardIcon('calendar'), element('span', 'Hạn nộp:', 'visually-hidden'), item.deadline.cloneNode(true));
     open.append(heading, due);
     if (status) open.append(element('span', status, 'student-submission-status'));
@@ -193,8 +206,11 @@
     dialog.querySelector('.student-submission-content').textContent = item.content || 'Chưa có nội dung yêu cầu.';
     if (item.submitted) {
       const latest = item.latestSubmission;
+      const sample = sampleBundle(latest);
       appendSubmittedDetails(dialog.querySelector('.submission-dialog__body'),
-        latest?.submittedAt ? time(latest.submittedAt) : null, latest?.fileName, { record: latest });
+        latest?.submittedAt ? time(latest.submittedAt) : null, latest?.fileName, {
+          sample: Boolean(sample), bundle: sample?.names.length > 1 ? sample : null, record: latest,
+        });
     }
     if (item.canUpload) {
       const footer = element('footer');
@@ -256,12 +272,11 @@
     }
   }
 
-  function submissionCard(record, deadline) {
-    const { title, submittedAt } = record;
-    const files = record.files || [];
-    const names = files.length > 1 ? app.ui.submissionZipNames(files) : [files[0]?.name || record.fileName || 'Chưa có tên tệp.'];
+  function submissionFileCard(record, deadline, sample = null) {
+    const { files, title, submittedAt } = record;
+    const names = sample?.names ?? (files?.length > 1 ? app.ui.submissionZipNames(files) : [files?.[0]?.name ?? record.fileName]);
     const card = element('article', undefined, 'submission-board-card submission-board-sample-card');
-    card.dataset.recordId = files.length ? 'upload:' + record.requirementId : record.id;
+    card.dataset.recordId = record.id ?? 'upload:' + record.requirementId;
     const header = element('header', undefined, 'submission-board-card__header');
     header.append(element('h5', title, 'submission-board-card__title'));
     if (Number.isFinite(deadline)) header.append(deadlineBadge(Date.parse(submittedAt) > deadline ? 'late' : 'success'));
@@ -269,30 +284,33 @@
     const body = element('div', undefined, 'submission-board-card__body');
     const details = element('div', undefined, 'submission-board-card__details');
     const fileLine = element('p', undefined, 'submission-board-card__meta');
-    const name = element('span', names[0], 'submission-board-card__filename');
-    name.title = names[0];
+    const name = element('span', names[0] || 'Chưa có tên tệp.', 'submission-board-card__filename');
+    name.title = name.textContent;
     fileLine.append(boardIcon('file'), name);
     const dateLine = element('p', undefined, 'submission-board-card__meta');
     dateLine.append(boardIcon('calendar'), element('span', 'Ngày nộp:', 'visually-hidden'), time(submittedAt));
     details.append(fileLine, dateLine);
-    if (files.length) app.ui.submissionFileList.attach(fileLine, names);
+    if (names.length > 1) app.ui.submissionFileList.attach(fileLine, names);
 
     const actions = element('div', undefined, 'submission-board-card__actions');
-    const download = element('button', undefined, 'submission-board-card__download');
-    download.type = 'button';
-    download.setAttribute('aria-label', 'Tải xuống ' + names[0]);
-    download.append(fileTemplate.content.querySelector('a svg').cloneNode(true), element('span', 'Tải xuống'));
+    const link = sample?.download ?? fileTemplate.content.querySelector('a').cloneNode(true);
+    const download = sample ? link : downloadButton(link);
+    download.className = 'submission-board-card__download';
+    download.setAttribute('aria-label', 'Tải xuống ' + (names[0] || title));
     const error = element('p', undefined, 'submission-upload__error');
     error.setAttribute('role', 'alert');
     error.hidden = true;
-    if (files.length) bindUploadDownload(download, error, files, files.length === 1 ? files[0].name : archiveName(record.requirementId));
-    else {
+    if (!sample && files?.length) {
+      bindUploadDownload(download, error, files, files.length === 1 ? names[0] : archiveName(record.requirementId));
+    } else if (!sample) {
       download.disabled = true;
       download.title = 'Chưa có nội dung tệp của lần nộp này.';
     }
     actions.append(download);
+    const notes = record.notes ?? record.studentNote;
     const viewDetails = (label, fields) => {
-      const action = element('button', label, 'submission-board-card__feedback');
+      const action = label === 'Xem phản hồi' ? viewFeedbackTrigger('button') :
+        element('button', label, 'submission-board-card__feedback');
       action.type = 'button';
       action.setAttribute('aria-haspopup', 'dialog');
       action.setAttribute('aria-label', `${label}: ${title}`);
@@ -302,16 +320,66 @@
       }));
       actions.append(action);
     };
-    if (record.feedback) {
+    body.append(details, actions);
+    card.append(header, body, error);
+    if (record.feedback && isSharedSample) {
+      const { button, dialog } = submissionFeedback(record, names[0]);
+      actions.append(button);
+      card.append(dialog);
+    } else if (record.feedback) {
       const feedbackFields = [['Nội dung phản hồi', record.feedback, true]];
       if (record.feedbackAt) feedbackFields.push(['Thời gian phản hồi', time(record.feedbackAt).textContent]);
       if (record.feedbackHistory?.length) feedbackFields.push(['Phản hồi trước', record.feedbackHistory.slice().reverse().map(entry => [entry.at ? time(entry.at).textContent : '', entry.content].filter(Boolean).join(' · ')).join('\n\n'), true]);
-      if (record.notes) feedbackFields.push(['Ghi chú cho giảng viên', record.notes, true]);
+      if (notes) feedbackFields.push(['Ghi chú cho giảng viên', notes, true]);
       viewDetails('Xem phản hồi', feedbackFields);
-    } else if (record.notes) viewDetails('Xem ghi chú', [['Ghi chú cho giảng viên', record.notes, true]]);
-    body.append(details, actions);
-    card.append(header, body, error);
+    } else if (notes) viewDetails('Xem ghi chú', [['Ghi chú cho giảng viên', notes, true]]);
     return card;
+  }
+
+  function viewFeedbackTrigger(tag) {
+    const trigger = element(tag, undefined, 'submission-board-card__feedback');
+    const namespace = 'http://www.w3.org/2000/svg';
+    const icon = document.createElementNS(namespace, 'svg');
+    icon.setAttribute('class', 'submission-board__icon');
+    icon.setAttribute('aria-hidden', 'true');
+    icon.setAttribute('focusable', 'false');
+    icon.setAttribute('viewBox', '0 0 24 24');
+    const shape = document.createElementNS(namespace, 'use');
+    shape.setAttribute('href', '#student-submission-eye-icon');
+    icon.append(shape);
+    trigger.append(icon, element('span', 'Xem phản hồi'));
+    return trigger;
+  }
+
+  function submissionFeedback(record, fileName) {
+    const dialog = host.querySelector('#submission-feedback-1').cloneNode(true);
+    dialog.removeAttribute('open');
+    dialog.removeAttribute('id');
+    dialog.removeAttribute('aria-labelledby');
+    dialog.setAttribute('aria-label', 'Phản hồi bài nộp');
+    for (const node of dialog.querySelectorAll('[id]')) node.removeAttribute('id');
+    const body = dialog.querySelector('.submission-dialog__body');
+    body.querySelector('h3').textContent = record.title;
+    const [file, submittedTime] = body.querySelectorAll('dd');
+    file.textContent = fileName || 'Chưa có tên tệp.';
+    submittedTime.replaceChildren(time(record.submittedAt));
+    const section = body.querySelector('section');
+    section.removeAttribute('aria-labelledby');
+    section.querySelector('h3').textContent = 'Nội dung phản hồi';
+    section.querySelector('p').textContent = record.feedback;
+    section.querySelector('p').classList.add('student-submission-content');
+    body.querySelector('.student-board-note').remove();
+    for (const close of dialog.querySelectorAll('button[command="close"]')) {
+      close.removeAttribute('command');
+      close.removeAttribute('commandfor');
+      close.addEventListener('click', () => dialog.close());
+    }
+    const button = viewFeedbackTrigger('button');
+    button.type = 'button';
+    button.setAttribute('aria-haspopup', 'dialog');
+    button.setAttribute('aria-label', 'Xem phản hồi: ' + record.title);
+    button.addEventListener('click', () => dialog.showModal());
+    return { button, dialog };
   }
 
   function sampleCardDeadline(card) {
@@ -325,7 +393,7 @@
     const waitingColumn = host.querySelector('.submissions .submission-column--warning');
     const reviewedColumn = host.querySelector('.submissions .submission-column--success');
     const waiting = waitingColumn.querySelector('.submission-column__list');
-    for (const row of waiting.querySelectorAll('[data-local-upload]')) row.remove();
+    for (const row of host.querySelectorAll('[data-local-upload]')) row.remove();
     for (const [id, record] of uploads) {
       const card = document.getElementById(id);
       if (!card || !host.contains(card)) continue;
@@ -349,8 +417,8 @@
       }
       const row = element('li');
       row.dataset.localUpload = id;
-      row.append(submissionCard(record, deadline));
-      waiting.prepend(row);
+      row.append(submissionFileCard(record, deadline));
+      (record.feedback ? reviewedColumn.querySelector('.submission-column__list') : waiting).prepend(row);
     }
     for (const column of [pendingColumn, submittedColumn, waitingColumn, reviewedColumn]) {
       const size = [...column.querySelectorAll('.requirement-board-card, .submission-board-card')]
@@ -394,11 +462,7 @@
       viewport.setAttribute('aria-labelledby', labelId);
       const list = element('ul', undefined, 'task-column__list submission-column__list');
       if (items.length) {
-        items.forEach(item => {
-          const row = element('li');
-          row.append(view(item));
-          list.append(row);
-        });
+        items.forEach(item => list.append(newRow(view(item))));
       } else {
         list.append(element('li', 'Chưa có dữ liệu.'));
       }
@@ -409,6 +473,91 @@
     wrapper.append(grid);
     section.append(heading, wrapper);
     return section;
+  }
+
+  function sampleRows(selector) {
+    return new Map([...host.querySelectorAll(selector)].map(card => {
+      card.dataset.recordId = card.id;
+      return [card.id, card.closest('li')];
+    }));
+  }
+
+  function updateSampleColumn(selector, rows) {
+    const column = host.querySelector(selector);
+    const count = column.querySelector('.task-column__count');
+    const label = '(' + rows.length + ')';
+    if (count.textContent.trim() !== label) count.textContent = label;
+    const [first, overflow] = column.querySelectorAll('.submission-column__list');
+    const update = (list, items) => {
+      if (items.length !== list.children.length || items.some((item, index) => item !== list.children[index])) {
+        list.replaceChildren(...items);
+      }
+    };
+    update(first, overflow ? rows.slice(0, 5) : rows);
+    if (overflow) update(overflow, rows.slice(5));
+  }
+
+  function newRow(card) {
+    const row = element('li');
+    row.append(card);
+    return row;
+  }
+
+  function sharedRequirementRow(item, canUpload) {
+    const badge = !item.submitted && !item.locked && item.overdue ? 'danger' : item.late ? 'late' : null;
+    const original = sharedRequirementRows.get(item.id);
+    const seed = sharedRequirements.get(item.id);
+    const submitted = sharedSubmissionsByRequirement.get(item.id);
+    if (original && seed && canUpload && !item.locked && !item.localUpload &&
+        item.title === seed.title && item.content === seed.content && item.deadline === seed.deadline &&
+        item.latestSubmission?.id === submitted?.id &&
+        item.latestSubmission?.submittedAt === submitted?.submittedAt &&
+        item.latestSubmission?.fileName === submitted?.fileName) {
+      const card = original.firstElementChild;
+      const oldBadge = card.querySelector('.submission-board__badge');
+      if (oldBadge && !oldBadge.classList.contains('submission-board__badge--' + badge)) {
+        const trigger = card.querySelector('.requirement-board-card__open');
+        if (oldBadge.id && trigger.hasAttribute('aria-describedby')) {
+          trigger.setAttribute('aria-describedby', trigger.getAttribute('aria-describedby').split(' ')
+            .filter(id => id !== oldBadge.id).join(' '));
+        }
+        oldBadge.remove();
+      }
+      if (badge && !oldBadge?.parentNode) card.querySelector('.requirement-board-card__header').append(deadlineBadge(badge));
+      card.classList.toggle('requirement-board-card--overdue', badge === 'danger');
+      return original;
+    }
+    return newRow(requirementCard({ ...item, deadline: time(item.deadline), canUpload: canUpload && !item.locked },
+      badge, item.locked ? 'Đã khóa nhận bài' : null));
+  }
+
+  function renderSharedSample(state, requirements, submissions, deadlines) {
+    if (host.firstChild !== fallback[0]) host.replaceChildren(...fallback);
+    const pending = [];
+    const submitted = [];
+    const active = new Map(requirements.map(item => [item.id, item]));
+    // Duyệt theo thứ tự của giao diện sinh viên, rồi thêm các yêu cầu mới.
+    for (const id of new Set([...sharedRequirementRows.keys(), ...active.keys()])) {
+      const item = active.get(id);
+      if (item) (item.submitted ? submitted : pending).push(sharedRequirementRow(item, state.canUpload));
+    }
+    const waiting = [];
+    const reviewed = [];
+    for (const item of submissions) {
+      const sample = sampleBundle(item);
+      const seed = sharedSubmissions.get(item.id);
+      const deadline = deadlines.get(item.requirementId);
+      const originalRequirement = sharedRequirements.get(item.requirementId);
+      const originalDeadline = originalRequirement && Date.parse(originalRequirement.deadline);
+      const row = sample && seed?.title === item.title && seed.feedback === item.feedback && !item.notes &&
+        deadline === originalDeadline
+        ? sharedSubmissionRows.get(item.id) : null;
+      (item.feedback ? reviewed : waiting).push(row ?? newRow(submissionFileCard(item, deadline, sample)));
+    }
+    updateSampleColumn('.requirements .submission-column--neutral', pending);
+    updateSampleColumn('.requirements .submission-column--info', submitted);
+    updateSampleColumn('.submissions .submission-column--warning', waiting);
+    updateSampleColumn('.submissions .submission-column--success', reviewed);
   }
 
   function render() {
@@ -423,9 +572,6 @@
         renderSampleUploads();
         return;
       }
-      const notice = element('p', state.submissionsLocked
-        ? 'Giảng viên đã khóa nhận bài cho đề tài này.'
-        : 'Yêu cầu được cập nhật theo dữ liệu giảng viên lưu trên trình duyệt.', 'student-submission-notice');
       const deadlines = new Map(state.requirements.map(item => [item.id, Date.parse(item.deadline)]));
       const requirementsWithUploads = state.requirements.map(item => {
         const record = uploads.get(item.id);
@@ -434,34 +580,20 @@
         return { ...item, submitted: true, latestSubmission: record, localUpload: record,
           late: Date.parse(record.submittedAt) > deadlines.get(item.id) };
       });
-      const requirements = board('Yêu cầu bài nộp', 'requirements', [
-        { label: 'Chưa nộp', variant: 'neutral', items: requirementsWithUploads.filter(item => !item.submitted) },
-        { label: 'Đã nộp', variant: 'info', items: requirementsWithUploads.filter(item => item.submitted) },
-      ], item => {
-        const overdue = !item.submitted && !item.locked && item.overdue;
-        const badge = overdue ? 'danger' : null;
-        const status = item.locked ? 'Đã khóa nhận bài' : state.completed ? 'Đề tài đã hoàn thành' : null;
-        return requirementCard({ ...item, deadline: time(item.deadline), canUpload: !item.locked && state.canUpload }, badge, status);
-      });
-      const matchesUpload = (item, record) =>
-        item.id === `SV-UP-${record.requirementId}` && item.submittedAt === record.submittedAt;
-      const local = [...uploads.values()].filter(record => deadlines.has(record.requirementId)).map(record => ({
-        ...state.submissions.find(item => matchesUpload(item, record)),
-        ...record,
-      }));
-      const remote = state.submissions.filter(item => !local.some(record => matchesUpload(item, record)));
-      const submissions = board('Bài nộp của nhóm', 'submissions', [
-        { label: 'Chờ phản hồi', variant: 'warning', items: [...local.filter(item => !item.feedback), ...remote.filter(item => !item.feedback)] },
-        { label: 'Đã phản hồi', variant: 'success', items: [...local.filter(item => item.feedback), ...remote.filter(item => item.feedback)] },
-      ], item => submissionCard(item, deadlines.get(item.requirementId)));
-      notice.hidden = Boolean(app.data.studentUITCatalog?.myIds.some(id => app.data.studentUITCatalog.projectId(id) === document.body.dataset.projectId));
-      host.replaceChildren(notice, requirements, submissions);
+      const local = [...uploads.values()].filter(record => deadlines.has(record.requirementId));
+      const allSubmissions = service.visibleSubmissions(projectId, state.submissions, local);
+      if (isSharedSample) {
+        renderSharedSample(state, requirementsWithUploads, allSubmissions, deadlines);
+        lockNotice.hidden = !state.submissionsLocked;
+      } else {
+        renderLiveBoards(state, deadlines, requirementsWithUploads, allSubmissions);
+      }
       for (const card of host.querySelectorAll('[data-record-id]')) {
-        if (card.dataset.recordId === focused) {
-          card.querySelector('summary, .requirement-board-card__open, .submission-board-card__download')?.focus({ preventScroll: true });
+        if (card.dataset.recordId === focused && !host.contains(document.activeElement)) {
+          card.querySelector('.requirement-board-card__open, .submission-board-card__download:not(:disabled), .submission-board-card__feedback')?.focus({ preventScroll: true });
         }
       }
-      if (active && !host.contains(document.activeElement)) host.querySelector('.task-board').focus({ preventScroll: true });
+      if (active && !host.contains(document.activeElement)) host.querySelector('.task-board')?.focus({ preventScroll: true });
     } catch (failure) {
       const error = element('p', failure.message, 'student-submission-notice');
       error.setAttribute('role', 'alert');
@@ -469,8 +601,39 @@
     }
   }
 
+  function renderLiveBoards(state, deadlines, requirementsWithUploads, allSubmissions) {
+    const notice = element('p', state.submissionsLocked
+      ? 'Giảng viên đã khóa nhận bài cho đề tài này.'
+      : 'Yêu cầu được cập nhật theo dữ liệu giảng viên lưu trên trình duyệt.', 'student-submission-notice');
+    notice.hidden = !state.submissionsLocked && Boolean(app.data.studentUITCatalog?.myIds
+      .some(id => app.data.studentUITCatalog.projectId(id) === document.body.dataset.projectId));
+    const requirements = board('Yêu cầu bài nộp', 'requirements', [
+      { label: 'Chưa nộp', variant: 'neutral', items: requirementsWithUploads.filter(item => !item.submitted) },
+      { label: 'Đã nộp', variant: 'info', items: requirementsWithUploads.filter(item => item.submitted) },
+    ], item => {
+      const overdue = !item.submitted && !item.locked && item.overdue;
+      const badge = overdue ? 'danger' : item.late ? 'late' : null;
+      const status = overdue ? null : item.submitted ? 'Đã nộp' :
+        item.locked ? 'Đã khóa nhận bài' : state.completed ? 'Đề tài đã hoàn thành' : 'Chưa nộp';
+      return requirementCard({ ...item, deadline: time(item.deadline), canUpload: !item.locked && state.canUpload }, badge, status);
+    });
+    const submissions = board('Bài nộp của nhóm', 'submissions', [
+      { label: 'Chờ phản hồi', variant: 'warning', items: allSubmissions.filter(item => !item.feedback) },
+      { label: 'Đã phản hồi', variant: 'success', items: allSubmissions.filter(item => item.feedback) },
+    ], item => submissionFileCard(item, deadlines.get(item.requirementId), sampleBundle(item)));
+    host.replaceChildren(notice, requirements, submissions);
+  }
+
   if (!isLivePage) prepareSampleRequirements();
   if (!isLivePage && location.protocol === 'file:') return;
+  const sharedSeed = isSharedSample ? sampleData.forProject(sampleData.projectId) : null;
+  const sharedRequirements = new Map(sharedSeed?.requirements.map(item => [item.id, item]));
+  const sharedSubmissions = new Map(sharedSeed?.submissions.map(item => [item.id, item]));
+  const sharedSubmissionsByRequirement = new Map(sharedSeed?.submissions.map(item => [item.requirementId, item]));
+  const sharedRequirementRows = isSharedSample ? sampleRows('.requirements .requirement-board-card') : null;
+  const sharedSubmissionRows = isSharedSample ? sampleRows('.submissions .submission-board-card') : null;
+  const lockNotice = element('p', 'Giảng viên đã khóa nhận bài cho đề tài này.', 'student-submission-notice');
+  if (isSharedSample) host.prepend(lockNotice);
   const fallback = [...host.childNodes];
   async function refreshUploads() {
     const projectId = document.body.dataset.projectId;
@@ -478,7 +641,11 @@
     const version = ++readVersion;
     try {
       const records = await service.readUploads(projectId);
-      if (version !== readVersion || document.body.dataset.projectId !== projectId) return;
+      if (version !== readVersion || projectId !== document.body.dataset.projectId) return;
+      if (records.length === uploads.size && records.every(record => {
+        const previous = uploads.get(record.requirementId);
+        return previous?.submittedAt === record.submittedAt && previous.feedbackAt === record.feedbackAt;
+      })) return;
       uploads.clear();
       for (const record of records) uploads.set(record.requirementId, record);
       render();
@@ -486,11 +653,17 @@
       // Keep the board available even when browser file storage cannot be opened.
     }
   }
-  window.addEventListener('pageshow', () => { render(); refreshUploads(); });
+  window.addEventListener('pageshow', () => {
+    render();
+    void refreshUploads();
+  });
+  window.addEventListener('focus', refreshUploads);
+  service.onUploadsChanged(projectId => {
+    if (projectId === document.body.dataset.projectId) void refreshUploads();
+  });
   window.addEventListener('storage', event => {
     const { teachingKey, teamKey, proposalKey, registrationKey } = app.storage;
     if ([teachingKey, teamKey, proposalKey, registrationKey, null].includes(event.key)) render();
-    if (event.key === teachingKey || event.key === null) refreshUploads();
   });
   // The approved-project renderer sets the project ID before this deferred script.
   render();

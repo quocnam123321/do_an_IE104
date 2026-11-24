@@ -103,3 +103,98 @@ h1, h2, h3 { overflow-wrap: anywhere; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
 }
+
+/* Tùy chọn giao diện dùng chung cho header và các trang xác thực. */
+.theme-toolbar,
+.site-preferences {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.theme-toolbar {
+  justify-content: flex-end;
+  padding: var(--space-2) var(--page-gutter);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.site-preferences { flex: 0 0 auto; }
+
+.common-page button:is(.theme-toggle, .language-toggle),
+button:is(.theme-toggle, .language-toggle) {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  min-inline-size: var(--control-min-height);
+  min-block-size: var(--control-min-height);
+  padding: 0;
+  color: var(--color-primary);
+  background: transparent;
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+}
+
+button:is(.theme-toggle, .language-toggle):hover:not(:disabled) { background: var(--color-info-bg); }
+
+button.language-toggle {
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.site-header button:is(.theme-toggle, .language-toggle) {
+  color: var(--header-foreground);
+  border-color: var(--header-control-border);
+}
+
+.site-header button:is(.theme-toggle, .language-toggle):hover:not(:disabled) {
+  background: color-mix(in srgb, var(--header-foreground) 12%, transparent);
+}
+
+.site-header button:is(.theme-toggle, .language-toggle):focus-visible { outline-color: var(--header-focus); }
+
+.site-header .site-header__inner.site-header__inner--theme { column-gap: var(--space-3); }
+.site-header__inner--theme .site-preferences + .site-header__login { margin-inline-start: 0; }
+
+@media (68rem <= width <= 75rem) {
+  :root[lang="en"] .site-header .site-header__inner--theme .main-nav__list { gap: var(--space-1); }
+  :root[lang="en"] .site-header .site-header__inner--theme .main-nav__list > .main-nav__item > .main-nav__link,
+  :root[lang="en"] .site-header .site-header__inner--theme .main-nav__label { padding-inline: var(--space-2); }
+}
+
+@media (max-width: 67.99rem) {
+  .site-header__inner--theme .site-preferences { margin-inline-start: auto; }
+  .site-header__inner--theme .site-preferences + .mobile-nav { margin-inline-start: 0; }
+
+  .site-header .site-header__inner--theme:has(> .site-header__login) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  .site-header__inner--theme:has(> .site-header__login) > .site-brand { justify-self: start; }
+  .site-header__inner--theme:has(> .site-header__login) > .site-navigation { grid-column: 1 / -1; }
+}
+
+@media (max-width: 39.99rem) {
+  .site-header .site-header__inner.site-header__inner--theme { gap: var(--space-2); }
+  .site-header__inner--theme > .site-header__login {
+    gap: var(--space-1);
+    padding-inline: var(--space-2);
+  }
+  .site-header .site-header__inner--theme > .site-brand { flex: 0 1 auto; }
+  .site-header .site-header__inner--theme > .account-menu { order: 0; margin-inline-start: 0; }
+
+  .site-header .site-header__inner--theme:has(> .site-header__login) {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .site-header__inner--theme:has(> .site-header__login) > .site-navigation {
+    order: 1;
+    grid-column: 1;
+    align-self: start;
+  }
+  .site-header__inner--theme > .site-header__login {
+    order: 1;
+    align-self: start;
+    margin-block-start: var(--space-2);
+  }
+}

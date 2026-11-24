@@ -13,20 +13,22 @@
   const history = panel.querySelector('.update-history');
   const historyTemplate = history.firstElementChild.cloneNode(true);
   const addButton = panel.querySelector('.btn-add-task');
+  const mode = panel.querySelector('.student-task-mode');
+  const modeIcon = mode.querySelector('svg');
+  const modeText = mode.querySelector('span');
   panel.querySelector('.update-history-section').hidden = true;
   const notice = panel.querySelector('[data-progress-notice]');
   const completionNotice = panel.querySelector('#progress-completion-notice');
   const result = panel.querySelector('[data-progress-result]');
   const detailDialog = panel.querySelector('#task-detail-dialog');
+  const showComments = ui.mountTaskComments(detailDialog, 'student');
   const savedDialog = panel.querySelector('#task-saved-dialog');
   const detailActions = detailDialog.querySelector('footer');
   const editDetailButton = detailActions.querySelector('[data-task-detail-action="edit"]');
-  const updateDetailButton = detailActions.querySelector('[data-task-detail-action="update"]');
-  const dialogs = { add: document.getElementById('task-add-popover'), edit: document.getElementById('task-edit-cv-01'), remove: document.getElementById('task-delete-cv-01'), update: document.getElementById('progress-update-popover') };
-  const labels = { 'chua-thuc-hien': 'Chưa bắt đầu', 'dang-thuc-hien': 'Đang thực hiện', 'da-hoan-thanh': 'Đã hoàn thành' };
+  const dialogs = { add: document.getElementById('task-add-popover'), edit: document.getElementById('task-edit-cv-01'), remove: document.getElementById('task-delete-cv-01') };
+  const { labels, today, memberIndex, renderMemberPopover, renderCard, fillDetails, fillStats } = ui.progressTaskView;
   const columnClasses = { 'chua-thuc-hien': 'task-column--not-started', 'dang-thuc-hien': 'task-column--in-progress', 'da-hoan-thanh': 'task-column--done' };
   const columnIcons = { 'chua-thuc-hien': 'list', 'dang-thuc-hien': 'progress', 'da-hoan-thanh': 'done' };
-  const avatarColors = ['task-assignee__avatar--an', 'task-assignee__avatar--binh', 'task-assignee__avatar--cuong'];
   const popovers = document.createElement('div');
   list.parentElement.after(popovers);
   const previewNote = element('p', 'task-editor__preview-note');
@@ -45,52 +47,37 @@
   let committed = false;
   const errors = {};
   let deleteMode = false;
-  const mode = document.createElement('button'); mode.type = 'button'; mode.className = 'student-task-mode'; mode.textContent = 'Xóa';
-  const modeLabel = document.createElement('span'); modeLabel.className = 'student-delete-mode-label'; modeLabel.textContent = 'Chế độ xóa'; modeLabel.hidden = true;
-  dialogs.remove.classList.add('workflow-delete-confirm');
-  addButton.before(modeLabel, mode);
+  mode.hidden = false;
   function syncSelection() {
     mode.disabled = !state || !service.getPermissions(state).manage;
-    mode.textContent = deleteMode ? 'Xong' : 'Xóa'; mode.dataset.mode = deleteMode ? 'done' : 'delete';
-    mode.setAttribute('aria-pressed', String(deleteMode)); modeLabel.hidden = !deleteMode;
+    mode.dataset.mode = deleteMode ? 'done' : 'delete';
+    modeText.textContent = deleteMode ? 'Xong' : 'Xóa';
+    modeIcon.toggleAttribute('hidden', !deleteMode);
+    mode.setAttribute('aria-pressed', String(deleteMode));
   }
+  function renderDetail(task) {
+    const codes = new Set(task.assigneeCodes || [task.assigneeCode]);
+    const assignees = state.team.members.filter(member => codes.has(member.code));
+    fillDetails(detailDialog, task, assignees.map(member => member.name).join(', '));
+
+    editDetailButton.hidden = !service.getPermissions(state).manage;
+    detailActions.hidden = editDetailButton.hidden;
+  }
+
   function showDetail(taskId) {
     if (!refresh()) return;
     const task = state.tasks.find(item => item.id === taskId);
     if (!task) return;
-
-    const codes = new Set(task.assigneeCodes || [task.assigneeCode]);
-    const assignees = state.team.members.filter(member => codes.has(member.code));
-    const badge = detailDialog.querySelector('[data-task-detail-status]');
-    badge.dataset.status = task.status;
-    badge.textContent = labels[task.status];
-    detailDialog.querySelector('#task-detail-title').textContent = task.title;
-    detailDialog.querySelector('[data-task-detail-assignees]').textContent =
-      assignees.map(member => member.name).join(', ') || 'Chưa phân công';
-    detailDialog.querySelector('[data-task-detail-description]').textContent = task.description?.trim() || 'Chưa có mô tả.';
-
-    const deadline = detailDialog.querySelector('[data-task-detail-deadline]');
-    const date = element(task.deadline ? 'time' : 'span', '', dateText(task.deadline));
-    if (task.deadline) date.dateTime = task.deadline;
-    deadline.replaceChildren(icon('calendar', 'task-detail-dialog__calendar'), date);
-
-    editDetailButton.hidden = !service.getPermissions(state).manage;
-    updateDetailButton.hidden = !service.canUpdateTask(state, task);
-    updateDetailButton.classList.toggle('workflow-dialog__primary', editDetailButton.hidden);
-    detailActions.hidden = editDetailButton.hidden && updateDetailButton.hidden;
+    renderDetail(task);
     detailDialog.dataset.taskId = taskId;
+    showComments({ projectId, taskId });
     detailDialog.showModal();
     detailDialog.scrollTop = 0;
   }
 
-  detailActions.addEventListener('click', event => {
-    const button = event.target.closest('[data-task-detail-action]');
-    if (!button || button.hidden) return;
-    detailDialog.close();
-    open(button.dataset.taskDetailAction, detailDialog.dataset.taskId);
-  });
+  editDetailButton.addEventListener('click', () => open('edit', detailDialog.dataset.taskId));
   detailDialog.addEventListener('close', () => {
-    if (!dialogs.edit.open && !dialogs.update.open) focusTask(detailDialog.dataset.taskId);
+    if (!dialogs.edit.open && !savedDialog.open) focusTask(detailDialog.dataset.taskId);
   });
   savedDialog.addEventListener('close', () => focusTask(savedDialog.dataset.taskId));
 
@@ -110,7 +97,8 @@
     error.tabIndex = -1;
     error.hidden = true;
     const form = dialog.querySelector('form');
-    (form.querySelector('.task-editor__body') || form).prepend(error);
+    if (key === 'remove') dialog.querySelector('footer').before(error);
+    else (form.querySelector('.task-editor__body') || form).prepend(error);
     form.noValidate = true;
     form.querySelectorAll('input:not([type="hidden"]), select, textarea, [data-task-assignee-toggle]').forEach(field => {
       field.setAttribute('aria-describedby', `${field.getAttribute('aria-describedby') || ''} ${error.id}`.trim());
@@ -131,12 +119,19 @@
         picker.querySelector('summary').focus();
       });
     }
-    dialog.querySelector('[command="close"]').setAttribute('aria-label', `Đóng hộp ${key === 'remove' ? 'xóa công việc' : key === 'edit' ? 'sửa công việc' : key === 'add' ? 'thêm công việc' : 'cập nhật tiến độ'}`);
+    dialog.querySelector('[command="close"]').setAttribute('aria-label', `Đóng hộp ${key === 'remove' ? 'xóa công việc' : key === 'edit' ? 'sửa công việc' : 'thêm công việc'}`);
     dialog.addEventListener('close', () => {
       if (!committed && pending) {
         if (key === 'add') addButton.focus({ preventScroll: true });
         else if (key === 'remove') mode.focus({ preventScroll: true });
-        else focusTask(pending.taskId);
+        else if (key === 'edit' && detailDialog.open) {
+          const task = state?.tasks.find(item => item.id === pending.taskId);
+          if (task) {
+            renderDetail(task);
+            const target = editDetailButton.hidden ? detailDialog.querySelector('.workflow-dialog__close') : editDetailButton;
+            target.focus({ preventScroll: true });
+          } else detailDialog.close();
+        } else focusTask(pending.taskId);
       }
       pending = null;
     });
@@ -169,10 +164,6 @@
     updateAssigneeCount(picker);
   }
 
-  function dateText(value) {
-    return value ? value.split('-').reverse().join('/') : 'Chưa có hạn';
-  }
-
   function element(tag, className, text) {
     const node = document.createElement(tag);
     if (className) node.className = className;
@@ -202,97 +193,15 @@
     return { status, column, count, tasks };
   });
 
-  function memberAvatar(member, className) {
-    const initials = member.name.trim().split(/\s+/).slice(-2).map(part => part[0]).join('').toUpperCase();
-    return element('span', className, initials);
-  }
-
-  function renderMemberPopover(member, index) {
-    const popover = element('div', 'progress-member-popover');
-    popover.id = 'student-progress-member-' + index;
-    popover.setAttribute('popover', '');
-    popover.setAttribute('role', 'dialog');
-    const info = element('div', 'progress-member-popover__info');
-    const name = element('p', 'progress-member-popover__name', member.name);
-    name.id = popover.id + '-name';
-    popover.setAttribute('aria-labelledby', name.id);
-    const role = member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
-    info.append(name, element('p', 'progress-member-popover__id', 'MSSV: ' + member.code),
-      element('p', 'progress-member-popover__role', role));
-    const avatar = memberAvatar(member, 'progress-member-popover__avatar ' + avatarColors[index % avatarColors.length]);
-    avatar.setAttribute('aria-hidden', 'true');
-    const close = element('button', 'progress-member-popover__close', '×');
-    close.type = 'button';
-    close.setAttribute('aria-label', 'Đóng thông tin thành viên');
-    close.setAttribute('popovertarget', popover.id);
-    close.setAttribute('popovertargetaction', 'hide');
-    popover.append(avatar, info, close);
-    return popover;
-  }
-
-  function renderAssignees(task, members) {
-    const assignments = task.assigneeCodes || [task.assigneeCode];
-    const people = assignments.map(code => members.get(code)).filter(Boolean);
-    const group = element('div', 'task-assignees');
-    group.setAttribute('role', 'group');
-    group.setAttribute('aria-label', 'Người phụ trách: ' + (assignments.map(code => members.get(code)?.member.name || code).filter(Boolean).join(', ') || 'Chưa phân công'));
-    people.slice(0, 2).forEach(({ member, index }) => {
-      const button = element('button', 'task-assignee');
-      button.type = 'button';
-      button.title = member.name;
-      button.setAttribute('aria-label', 'Xem thông tin ' + member.name + ', mã số sinh viên ' + member.code);
-      button.setAttribute('aria-haspopup', 'dialog');
-      button.setAttribute('popovertarget', 'student-progress-member-' + index);
-      const avatar = memberAvatar(member, 'task-assignee__avatar ' + avatarColors[index % avatarColors.length]);
-      avatar.setAttribute('aria-hidden', 'true');
-      button.append(avatar);
-      group.append(button);
-    });
-    if (people.length > 2) {
-      const more = element('span', 'task-assignee__avatar task-assignee__avatar--more', '+' + (people.length - 2));
-      more.setAttribute('aria-hidden', 'true');
-      group.append(more);
-    }
-    return group;
-  }
-
-  function renderTask(task, members, today) {
-    const item = element('li');
-    const card = element('article', 'task-card task-card--interactive');
-    card.dataset.taskId = task.id;
-    const header = element('header', 'task-card__header');
-    const title = element('h5', 'task-card__title');
-    const open = element('button', 'task-card__open', task.title);
-    open.type = 'button';
-    open.dataset.progressAction = 'view';
-    open.setAttribute('aria-label', 'Chi tiết công việc: ' + task.title);
-    open.setAttribute('aria-haspopup', 'dialog');
-    open.setAttribute('aria-controls', detailDialog.id);
-    title.append(open);
-    header.append(title);
-
-    const isOverdue = task.status !== 'da-hoan-thanh' && task.deadline && task.deadline < today;
-    if (isOverdue) {
-      card.classList.add('task-card--overdue');
-      header.append(element('span', 'task-card__overdue', 'Quá hạn'));
-    }
-    if (deleteMode) {
-      const remove = element('button', 'student-task-remove', '−');
+  function renderTask(task, members, date) {
+    const people = (task.assigneeCodes || [task.assigneeCode]).map(code => members.get(code)).filter(Boolean);
+    const remove = deleteMode ? element('button', 'student-task-remove', '−') : null;
+    if (remove) {
       remove.type = 'button';
       remove.dataset.progressAction = 'remove';
       remove.setAttribute('aria-label', 'Xóa công việc: ' + task.title);
-      header.append(remove);
     }
-
-    const footer = element('div', 'task-card__footer');
-    const due = element('p', 'task-card__deadline');
-    const date = task.deadline ? element('time', '', dateText(task.deadline)) : element('span', '', 'Chưa có hạn');
-    if (task.deadline) date.dateTime = task.deadline;
-    due.append(icon('calendar', 'task-card__icon'), element('span', 'visually-hidden', 'Hạn hoàn thành: '), date);
-    footer.append(due, renderAssignees(task, members));
-    card.append(header, footer);
-    item.append(card);
-    return item;
+    return renderCard(task, people, date, detailDialog.id, remove);
   }
 
   list.replaceChildren(...columns.map(({ column }) => column));
@@ -313,21 +222,21 @@
       addButton.disabled = completed;
       previewNote.hidden = Boolean(permissions.manage);
       previewNote.textContent = preview ? 'Mở đề tài qua localhost để lưu công việc.' : 'Chỉ nhóm trưởng được lưu công việc mới.';
+      const date = today();
       const summary = service.summarize(state);
       panel.querySelector('#overall-progress').value = summary.percent;
       panel.querySelector('#overall-progress').textContent = `${summary.percent}%`;
       panel.querySelector('.progress-overview__percent').textContent = `${summary.percent}% hoàn thành`;
       summaryText.hidden = summary.method !== 'completed-ratio';
       summaryText.textContent = summaryText.hidden ? '' : 'Tính theo số công việc đã hoàn thành vì một số công việc chưa có phần trăm cụ thể.';
-      panel.querySelectorAll('.progress-stat dd').forEach((node, index) => { node.textContent = [summary.total, summary.completed, summary.remaining][index]; });
-      const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Ho_Chi_Minh' }).format();
-      const members = new Map(state.team.members.map((member, index) => [member.code, { member, index }]));
-      popovers.replaceChildren(...state.team.members.map(renderMemberPopover));
+      fillStats(overview, summary, state.tasks, date);
+      const members = memberIndex(state.team.members);
+      popovers.replaceChildren(...Array.from(members.values(), renderMemberPopover));
       columns.forEach(({ status, count, tasks }) => {
         const matching = state.tasks.filter(task => task.status === status);
         const scrollTop = tasks.scrollTop;
         count.replaceChildren(element('span', 'visually-hidden', 'Số công việc: '), '(' + matching.length + ')');
-        tasks.replaceChildren(...matching.map(task => renderTask(task, members, today)));
+        tasks.replaceChildren(...matching.map(task => renderTask(task, members, date)));
         if (!matching.length) tasks.append(element('li', 'task-column__empty', 'Chưa có công việc.'));
         tasks.scrollTop = scrollTop;
       });
@@ -345,7 +254,7 @@
         return item;
       }));
       if (!state.history.length) { const empty = document.createElement('li'); empty.textContent = 'Chưa có cập nhật tiến độ.'; history.append(empty); }
-      Object.entries(dialogs).forEach(([key, dialog]) => { dialog.querySelector('[type="submit"]').disabled = key === 'update' ? !permissions.update : !permissions.manage; });
+      Object.values(dialogs).forEach(dialog => { dialog.querySelector('[type="submit"]').disabled = !permissions.manage; });
       syncSelection();
       return true;
     } catch (failure) {
@@ -365,16 +274,20 @@
       description: values.get('mo-ta'),
       assigneeCodes: values.getAll('nguoi-phu-trach'),
       deadline: values.get('han-hoan-thanh'),
-      status: key === 'add' ? values.get('trang-thai') : undefined,
-    }, state.team);
+      status: values.get('trang-thai'),
+    }, state.team, { editing: key === 'edit' });
     const fields = {
       title: form.elements['ten-cong-viec'],
       description: form.elements['mo-ta'],
       assigneeCode: form.querySelector('[data-task-assignee-toggle]'),
       deadline: form.elements['han-hoan-thanh'],
     };
-    Object.values(fields).forEach(field => field.removeAttribute('aria-invalid'));
-    checked.errors.forEach(error => fields[error.field]?.setAttribute('aria-invalid', 'true'));
+    const statusInputs = [...form.querySelectorAll('[name="trang-thai"]')];
+    [...Object.values(fields), ...statusInputs].forEach(field => field.removeAttribute('aria-invalid'));
+    for (const error of checked.errors) {
+      if (error.field === 'status') statusInputs.forEach(input => input.setAttribute('aria-invalid', 'true'));
+      else fields[error.field]?.setAttribute('aria-invalid', 'true');
+    }
     return checked;
   }
 
@@ -389,16 +302,14 @@
     if (key === 'add' && addButton.disabled) return;
     const task = state.tasks.find(item => item.id === taskId);
     if (taskId && !task) return;
-    if (key === 'update' && (!task || !service.canUpdateTask(state, task))) return;
     if ((key === 'edit' || key === 'remove') && !service.getPermissions(state).manage) return;
     const dialog = dialogs[key];
     const form = dialog.querySelector('form');
     form.reset();
     errors[key].hidden = true;
     form.querySelectorAll('[aria-invalid]').forEach(field => field.removeAttribute('aria-invalid'));
-    const taskIds = key === 'remove' ? taskId ? [taskId] : [] : [];
-    if (key === 'remove' && !taskIds.length) return;
-    pending = { key, taskId, taskIds, revision: state.revision };
+    if (key === 'remove' && !task) return;
+    pending = { key, taskId, revision: state.revision };
     committed = false;
     if (key === 'add' || key === 'edit') {
       resetAssignees(form, task);
@@ -406,12 +317,10 @@
         form.elements['ten-cong-viec'].value = task.title;
         form.elements['han-hoan-thanh'].value = task.deadline;
         form.elements['mo-ta'].value = task.description || '';
+        form.elements['trang-thai'].value = task.status;
       }
-    } else if (key === 'remove') dialog.querySelector('.delete-task-target strong').textContent = state.tasks.filter(item => taskIds.includes(item.id)).map(item => item.title).join('; ');
-    else {
-      dialog.querySelector('#update-progress-task').textContent = task.title;
-      form.elements['trang-thai'].value = task.status;
-      form.elements['muc-hoan-thanh'].value = Number.isFinite(task.percent) ? task.percent : '';
+    } else if (key === 'remove') {
+      dialog.querySelector('[data-task-delete-name]').textContent = task.title;
     }
     dialog.showModal();
   }
@@ -433,20 +342,18 @@
       if (dialog.querySelector('[type="submit"]').disabled) return;
       const form = event.currentTarget;
       const values = new FormData(form);
-      let checked;
-      if (key === 'add' || key === 'edit') checked = validateTaskForm(form, key, values);
-      if (key === 'update') checked = service.validateUpdate({ taskId: pending.taskId, content: values.get('noi-dung-da-lam'), status: values.get('trang-thai'), percent: values.get('muc-hoan-thanh') });
+      const checked = key === 'remove' ? null : validateTaskForm(form, key, values);
       if (checked?.errors.length) { showError(key, new Error(checked.errors.map(error => error.message).join(' '))); return; }
-      const { taskId, taskIds, revision } = pending;
+      const { taskId, revision } = pending;
       saving = true;
       try {
-        if (key === 'remove') service.deleteTasks(projectId, taskIds, revision);
-        else if (key === 'update') service.updateProgress(projectId, checked.value, revision);
+        if (key === 'remove') service.deleteTask(projectId, taskId, revision);
         else service.saveTask(projectId, taskId, checked.value, revision);
         committed = true;
         dialog.close();
         refresh();
         if (key === 'edit') {
+          if (detailDialog.open) detailDialog.close();
           result.hidden = true;
           savedDialog.dataset.taskId = taskId;
           savedDialog.showModal();
