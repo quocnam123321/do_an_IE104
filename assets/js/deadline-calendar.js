@@ -14,17 +14,19 @@
   const scrollArea = calendar.closest('.calendar-scroll');
   const narrowScreen = window.matchMedia('(max-width: 40rem)');
   const submissionStatuses = {
-    pending: { label: 'Chưa nộp', action: 'Nộp bài' },
-    overdue: { label: 'Quá hạn', action: 'Nộp bài' },
-    submitted: { label: 'Đã nộp', action: 'Xem bài đã nộp' },
-    awaiting: { label: 'Chờ phản hồi', action: 'Xem bài đã nộp' },
-    responded: { label: 'Đã phản hồi', action: 'Xem phản hồi' },
+    pending: { label: 'Chưa nộp', action: 'Nộp bài', target: 'upload' },
+    overdue: { label: 'Quá hạn', action: 'Nộp bài', target: 'upload' },
+    locked: { label: 'Đã khóa nhận bài' },
+    submitted: { label: 'Đã nộp', action: 'Xem bài đã nộp', target: 'submitted' },
+    awaiting: { label: 'Chờ phản hồi', action: 'Xem bài đã nộp', target: 'submitted' },
+    responded: { label: 'Đã phản hồi', action: 'Xem phản hồi', target: 'feedback' },
   };
   const topicStatuses = {
     'in-progress': 'Đang thực hiện',
     completed: 'Hoàn thành',
   };
   const eventsPerCell = 2;
+  const maxAdditionalDeadlines = 4;
   const title = preview?.querySelector('h3');
   const closeButton = preview?.querySelector('.calendar-preview__close');
   const statusBadge = preview?.querySelector('.calendar-preview__status');
@@ -57,11 +59,14 @@
     };
   }).sort((first, second) => first.dueTime - second.dueTime);
   let events = sampleEvents;
+  let activeEvents = [];
+  let activeSnapshot;
   const eventsByDate = new Map();
 
   function indexEvents() {
     eventsByDate.clear();
-    for (const event of events) {
+    const merged = new Map([...events, ...activeEvents].map(event => [event.id, event]));
+    for (const event of [...merged.values()].sort((first, second) => first.due.localeCompare(second.due))) {
       if (!eventsByDate.has(event.date)) eventsByDate.set(event.date, []);
       eventsByDate.get(event.date).push(event);
     }
@@ -70,7 +75,8 @@
 
   function formatTime(dateTime) {
     const [year, monthNumber, day] = dateTime.slice(0, 10).split('-');
-    return `${dateTime.slice(11, 16)} · ${day}/${monthNumber}/${year}`;
+    const date = `${day}/${monthNumber}/${year}`;
+    return dateTime.length > 10 ? `${dateTime.slice(11, 16)} · ${date}` : date;
   }
 
   function matchesTopic(event) {
@@ -80,6 +86,14 @@
   function linkedPage(event, target) {
     const url = new URL(event.element.href);
     url.hash = target;
+    return url.href;
+  }
+
+  function requirementPage(event, action) {
+    const url = new URL(event.detailUrl, location.href);
+    url.searchParams.set('requirement', event.requirementId);
+    if (action) url.searchParams.set('submissionAction', action);
+    if (action === 'feedback' && event.submissionId) url.searchParams.set('submission', event.submissionId);
     return url.href;
   }
 
@@ -215,10 +229,12 @@
       submittedNote.textContent = `Đã nộp lúc ${formatTime(event.submitted)}${lateLabel}`;
     }
 
-    detailsAction.href = submission ? linkedPage(event, event.element.dataset.details) : event.element.href;
-    primaryAction.hidden = !submission;
-    if (submission) {
-      primaryAction.href = linkedPage(event, event.element.dataset.action);
+    detailsAction.href = event.requirementId ? requirementPage(event) :
+      event.detailUrl ?? (submission ? linkedPage(event, event.element.dataset.details) : event.element.href);
+    primaryAction.hidden = !submission?.action || (!event.requirementId && !event.element?.dataset.action);
+    if (!primaryAction.hidden) {
+      primaryAction.href = event.requirementId ? requirementPage(event, submission.target) :
+        linkedPage(event, event.element.dataset.action);
       primaryAction.textContent = submission.action;
     }
 
@@ -228,13 +244,24 @@
   }
 
   function eventNode(event) {
-    const clone = event.element.cloneNode(true);
+    const clone = event.element?.cloneNode(true) ?? document.createElement('a');
+    if (!event.element) {
+      clone.className = `calendar-event calendar-event--${event.kind}`;
+      clone.href = event.requirementId ? requirementPage(event) : event.detailUrl;
+      const projectTitle = topics.get(event.topicId)?.textContent;
+      clone.title = event.kind === 'submission' && projectTitle
+        ? `${event.name} · ${projectTitle}` : event.name;
+      const title = document.createElement('span');
+      title.className = 'calendar-event__title';
+      clone.append(title);
+    }
     clone.querySelector('.calendar-event__title').textContent = event.name;
     if (!canPreview || !event.due) return clone;
 
     const trigger = document.createElement('button');
     trigger.type = 'button';
     trigger.className = clone.className;
+    if (clone.title) trigger.title = clone.title;
     trigger.setAttribute('aria-haspopup', 'dialog');
     trigger.setAttribute('aria-controls', preview.id);
     trigger.setAttribute('aria-expanded', 'false');
@@ -247,12 +274,55 @@
     return trigger;
   }
 
+  function chooseAdditionalDeadlines(events) {
+    const candidates = events.filter(event => event.kind === 'submission' && event.detailUrl &&
+      topics.get(event.topicId)?.hasAttribute('data-active-deadline-topic'));
+    if (candidates.length <= maxAdditionalDeadlines) return candidates;
+
+    const byStatus = new Map();
+    for (const event of candidates) {
+      if (!byStatus.has(event.status)) byStatus.set(event.status, event);
+    }
+    const selected = new Set([...byStatus.values()].slice(0, maxAdditionalDeadlines));
+    const titles = new Set([...selected].map(event => event.name));
+    for (const event of candidates) {
+      if (selected.size === maxAdditionalDeadlines) break;
+      if (titles.has(event.name)) continue;
+      selected.add(event);
+      titles.add(event.name);
+    }
+    for (const event of candidates) {
+      if (selected.size === maxAdditionalDeadlines) break;
+      selected.add(event);
+    }
+    return candidates.filter(event => selected.has(event));
+  }
+
   function overflowNode(date, remaining) {
+    const createItems = () => remaining.map((event) => {
+      const item = document.createElement('li');
+      item.append(eventNode(event));
+      return item;
+    });
+    const label = `+${remaining.length} mốc khác`;
+    const description = `Xem ${remaining.length} mốc khác ngày ${date.split('-').reverse().join('/')}`;
+    if (!canPreview) {
+      const group = document.createElement('details');
+      const summary = document.createElement('summary');
+      summary.className = 'calendar-overflow-trigger';
+      summary.textContent = label;
+      summary.setAttribute('aria-label', description);
+      const list = document.createElement('ul');
+      list.className = 'calendar-overflow__list';
+      list.append(...createItems());
+      group.append(summary, list);
+      return group;
+    }
     const trigger = document.createElement('button');
     trigger.type = 'button';
     trigger.className = 'calendar-overflow-trigger';
-    trigger.textContent = `+${remaining.length} mốc khác`;
-    trigger.setAttribute('aria-label', `Xem ${remaining.length} mốc khác ngày ${date.split('-').reverse().join('/')}`);
+    trigger.textContent = label;
+    trigger.setAttribute('aria-label', description);
     trigger.setAttribute('aria-haspopup', 'dialog');
     trigger.setAttribute('aria-controls', overflow.id);
     trigger.setAttribute('aria-expanded', 'false');
@@ -267,11 +337,7 @@
       closeOverflow();
       overflowTrigger = trigger;
       trigger.setAttribute('aria-expanded', 'true');
-      overflowList.replaceChildren(...remaining.map((event) => {
-        const item = document.createElement('li');
-        item.append(eventNode(event));
-        return item;
-      }));
+      overflowList.replaceChildren(...createItems());
       overflow.showPopover({ source: trigger });
       overflowList.scrollTop = 0;
       placePopovers();
@@ -308,9 +374,9 @@
         cell.append(' · Hôm nay');
       }
       const dayEvents = (eventsByDate.get(date) ?? []).filter(matchesTopic);
-      const limit = canPreview ? eventsPerCell : dayEvents.length;
-      cell.append(...dayEvents.slice(0, limit).map(eventNode));
-      if (dayEvents.length > limit) cell.append(overflowNode(date, dayEvents.slice(limit)));
+      cell.append(...dayEvents.slice(0, eventsPerCell).map(eventNode));
+      const additional = chooseAdditionalDeadlines(dayEvents.slice(eventsPerCell));
+      if (additional.length >= 2) cell.append(overflowNode(date, additional));
     }
     calendar.caption.textContent = `Tháng ${number}/${year} · Giờ Việt Nam (UTC+7)`;
   }
@@ -321,6 +387,45 @@
     const date = new Date(year, number - 1 + offset, 1);
     month.value = `${String(date.getFullYear()).padStart(4, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}`;
     renderCalendar();
+  }
+
+  const deadlineService = globalThis.IE104?.services?.deadlines;
+  const activeNotice = document.getElementById('active-deadline-notice');
+  const defaultMonth = month.value;
+  let refreshVersion = 0;
+
+  async function refreshActiveDeadlines() {
+    const version = ++refreshVersion;
+    try {
+      const active = await deadlineService.getActiveDeadlines();
+      const snapshot = JSON.stringify(active);
+      if (version !== refreshVersion || snapshot === activeSnapshot) return;
+      if (activeSnapshot === undefined && active.length && month.value === defaultMonth) {
+        today = deadlineService.today();
+        month.value = today.slice(0, 7);
+      }
+      activeSnapshot = snapshot;
+      const selected = topic.value;
+      for (const option of topic.querySelectorAll('[data-active-deadline-topic]')) {
+        topics.delete(option.value);
+        option.remove();
+      }
+      for (const project of active) {
+        const option = new Option(project.title, project.id);
+        option.dataset.activeDeadlineTopic = '';
+        option.dataset.topicStatus = 'in-progress';
+        if (project.group) option.dataset.group = project.group;
+        topics.set(project.id, option);
+        topic.add(option);
+      }
+      topic.value = topics.has(selected) ? selected : '';
+      activeEvents = active.flatMap(project => project.events);
+      activeNotice.hidden = !activeEvents.length;
+      indexEvents();
+      renderCalendar();
+    } catch {
+      // Keep the last calendar available when browser data cannot be read.
+    }
   }
 
   function setupGoogleCalendarDialog() {
@@ -503,9 +608,9 @@
           }).sort((first, second) => first.dueTime - second.dueTime);
           indexEvents();
           renderCalendar();
-          document.getElementById('deadline-demo-notice').textContent = saved.length
-            ? 'Lịch hiển thị các mốc của đề tài bạn được cấp quyền. Form nộp bài chưa lưu hoặc gửi tệp.'
-            : 'Tài khoản của bạn chưa được cấp quyền xem lịch của đề tài.';
+          document.getElementById('calendar-export-notice').textContent = saved.length
+            ? 'Có thể thêm các mốc được cấp quyền vào Google Calendar.'
+            : 'Tài khoản của bạn chưa được cấp quyền thêm mốc vào Google Calendar.';
           if (dialog.open && !busy) showRows(selectedIds());
         }
       } catch {
@@ -601,5 +706,16 @@
   month.addEventListener('change', renderCalendar);
   topic?.addEventListener('change', renderCalendar);
   renderCalendar();
+  if (deadlineService && topic && activeNotice && globalThis.IE104.services.studentSubmissions) {
+    const { storage, services } = globalThis.IE104;
+    const dataKeys = [storage.teachingKey, storage.teamKey, storage.proposalKey, storage.registrationKey, null];
+    services.studentSubmissions.onUploadsChanged(refreshActiveDeadlines);
+    window.addEventListener('pageshow', refreshActiveDeadlines);
+    window.addEventListener('focus', refreshActiveDeadlines);
+    window.addEventListener('storage', event => {
+      if (dataKeys.includes(event.key)) void refreshActiveDeadlines();
+    });
+    void refreshActiveDeadlines();
+  }
   setupGoogleCalendarDialog();
 })();

@@ -4,7 +4,7 @@ const path = require('node:path');
 const test = require('node:test');
 const vm = require('node:vm');
 
-function createTab(storage, globals = {}) {
+function createTab(storage, globals = {}, withUITCatalog = false) {
   const tab = vm.createContext({
     ...globals,
     localStorage: {
@@ -19,11 +19,68 @@ function createTab(storage, globals = {}) {
     'data/student-evaluations.js', 'data/teaching-data.js', 'services/evaluation-service.js',
     'services/teaching-service.js', 'services/student-submissions-service.js', 'services/deadline-service.js',
   ];
+  if (withUITCatalog) {
+    tab.window = tab;
+    modules.push('uit-lecturer-catalog.js', 'data/lecturer-topics.js', 'data/lecturer-merge-catalog.js', 'data/student-uit-catalog.js');
+  }
   for (const module of modules) {
     vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js', module), 'utf8'), tab, { filename: module });
   }
   return tab.IE104;
 }
+
+test('lịch mẫu tháng 10 và 11 có đủ năm trạng thái từ cùng bộ yêu cầu của giảng viên', async () => {
+  const app = createTab(new Map(), { URLSearchParams }, true);
+  const { deadlines, studentSubmissions, teaching } = app.services;
+  const calendars = await deadlines.getActiveDeadlines();
+  assert.ok(calendars.length);
+  const expected = ['awaiting', 'overdue', 'pending', 'responded', 'submitted'];
+  for (const calendar of calendars) {
+    const lecturer = teaching.getState(calendar.id);
+    const student = studentSubmissions.forStudent(calendar.id, new Date('2099-01-01T00:00:00Z'));
+    const teacherRequirements = new Map(lecturer.requirements.map(item => [`${calendar.id}--${item.id}`, item]));
+    const studentRequirements = new Map(student.requirements.map(item => [item.id, item]));
+
+    for (const month of ['2026-10', '2026-11']) {
+      const events = calendar.events.filter(event => event.kind === 'submission' && event.date.startsWith(month));
+      assert.deepEqual([...new Set(events.map(event => event.status))].sort(), expected);
+      for (const event of events) {
+        const teacherRequirement = teacherRequirements.get(event.id);
+        const studentRequirement = studentRequirements.get(teacherRequirement.id);
+        assert.equal(Date.parse(event.due), Date.parse(teacherRequirement.deadline));
+        assert.equal(studentRequirement.deadline, teacherRequirement.deadline);
+        if (event.status === 'pending' || event.status === 'overdue') {
+          assert.equal(studentRequirement.overdue, event.status === 'overdue');
+          assert.equal(studentRequirement.submitted, false);
+        } else {
+          assert.equal(studentRequirement.submitted, true);
+          const submission = lecturer.submissions.find(item => item.requirementId === teacherRequirement.id);
+          assert.equal(Boolean(submission?.feedback), event.status === 'responded');
+          assert.equal(event.submissionId, submission.id);
+          assert.equal(Date.parse(event.submitted), Date.parse(submission.submittedAt));
+        }
+      }
+    }
+  }
+});
+
+test('bài nộp mẫu của đề tài đang thực hiện có thể tải tệp lẻ và toàn bộ, kể cả từ bản ghi cũ', () => {
+  const app = createTab(new Map(), { URLSearchParams }, true);
+  const project = app.data.myTopics.find(item => item.status === 'dang-thuc-hien');
+  const submissions = app.services.studentSubmissions.forStudent(project.id).submissions;
+  const { attachment } = app.data.studentWebSubmissions;
+  const withArchive = submissions.find(item => attachment(project.id, item)?.names.length > 1);
+  const singleFile = submissions.find(item => attachment(project.id, item)?.names.length === 1);
+  assert.ok(withArchive);
+  assert.ok(singleFile);
+  const archive = attachment(project.id, withArchive);
+  assert.match(archive.path, /\.zip$/);
+  assert.ok(fs.existsSync(path.join(__dirname, '../assets/files', archive.path)));
+  assert.equal(attachment(project.id, { ...withArchive, submittedAt: '2026-10-02T08:00:00Z' }).path, archive.path);
+  assert.equal(attachment(project.id, singleFile).path, 'bai-nop-minh-hoa.pdf');
+  assert.equal(attachment(project.id, { ...singleFile, id: 'upload:' + singleFile.requirementId }), null);
+  assert.equal(attachment(project.id, { ...singleFile, files: [{}] }), null);
+});
 
 test('DA005 shares submissions across roles and locks feedback writes after completion', async () => {
   const storage = new Map();
@@ -132,6 +189,8 @@ test('yêu cầu lưu phía giảng viên cập nhật ở bài nộp và lịch
   const projectId = student.services.approvedProjects.projectIdFor(registration.id);
   const { teaching } = teacher.services;
   const { studentSubmissions, deadlines } = student.services;
+  const activeCalendar = async () => (await deadlines.getActiveDeadlines()).find(item => item.id === projectId);
+  const activeReport = async () => (await activeCalendar())?.events.find(event => event.kind === 'submission');
   const calendar = (month = '2099-01') => deadlines.getState({ projectId, month }).events
     .filter(event => event.kind === 'submission');
 
@@ -144,6 +203,8 @@ test('yêu cầu lưu phía giảng viên cập nhật ở bài nộp và lịch
   assert.equal(calendar()[0].date, '2099-01-01');
   assert.equal(calendar()[0].detailUrl.split('#')[1], 'bai-nop');
   assert.equal(calendar('2098-12').length, 0);
+  assert.equal((await activeReport()).due, '2099-01-01T00:15:00+07:00');
+  assert.equal((await activeReport()).detailUrl.split('#')[1], 'bai-nop');
 
   state = teaching.saveRequirement(projectId, id, {
     title: 'Báo cáo đã chỉnh', content: 'Nộp bản mới', deadline: '2099-02-02T20:30',
@@ -154,13 +215,17 @@ test('yêu cầu lưu phía giảng viên cập nhật ở bài nộp và lịch
   assert.equal(calendar('2099-02')[0].title, 'Báo cáo đã chỉnh');
   assert.equal(calendar('2099-02')[0].id, id);
   assert.equal(calendar('2099-02')[0].locked, true);
+  assert.equal((await activeReport()).date, '2099-02-02');
+  assert.equal((await activeReport()).status, 'locked');
 
   teaching.deleteRequirement(projectId, id, state.revision);
   assert.equal(studentSubmissions.forStudent(projectId).requirements.length, 0);
   assert.equal(calendar('2099-02').length, 0);
+  assert.equal(await activeReport(), undefined);
 
   student.data.currentStudent = { code: '99999999', name: 'Sinh viên khác' };
   assert.throws(() => studentSubmissions.forStudent(projectId), /không thuộc nhóm/);
+  assert.equal(await activeCalendar(), undefined);
 });
 
 test('nhãn thời hạn dùng giờ gửi của từng bài và lần gửi gần nhất cho yêu cầu', () => {

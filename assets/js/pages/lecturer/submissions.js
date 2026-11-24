@@ -312,6 +312,7 @@
       }
     }
     const now = Date.now();
+    const demoReference = item => app.data.studentUITCatalog?.submissionReferenceTime(item);
     const stage = item => {
       return latestSubmissions.has(item.id) ? 'submitted' : item.sourceStage || 'pending';
     };
@@ -321,7 +322,7 @@
       const hasSubmissions = stage(item) !== 'pending';
       const deadline = Date.parse(item.deadline);
       const overdue = !hasSubmissions && state.project.status !== 'hoan-thanh' &&
-        !state.submissionsLocked && !item.locked && now > deadline;
+        !state.submissionsLocked && !item.locked && (demoReference(item) ?? now) > deadline;
       const latest = latestSubmissions.get(item.id);
       const late = latest && Date.parse(latest.submittedAt) > deadline;
       card.classList.toggle('requirement-board-card--overdue', overdue);
@@ -355,7 +356,9 @@
     header.append(toolbar);
     const notice = state.readOnly ? 'Chưa có dữ liệu yêu cầu và bài nộp cho nhóm này.'
       : state.submissionsLocked ? 'Toàn bộ đề tài đang khóa nhận bài.'
-      : state.canManageRequirements ? null : 'Đề tài đã hoàn thành. Không mở nhận bài mới.';
+      : !state.canManageRequirements ? 'Đề tài đã hoàn thành. Không mở nhận bài mới.'
+      : requirements.some(item => demoReference(item) !== undefined)
+        ? 'Trạng thái hạn mẫu tháng 10 và 11/2026 được tính theo ngày 30/10 và 24/11.' : null;
     if (notice) header.after(el('p', notice, 'submission-board-demo-note'));
     panel.append(requirementsBoard);
     if (restoreModeFocus) mode.focus({ preventScroll: true });

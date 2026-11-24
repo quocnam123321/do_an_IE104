@@ -145,8 +145,10 @@
       actions.hidden = edit.hidden && project.hidden && Array.from(buttons).every(button => button.hidden);
       if (article.hidden) return;
 
+      const participants = app.services.lecturerTopics.supervisedParticipants(record, record.outline?.members);
       app.shared.proposalDetailFields.render(article, {
         ...record,
+        participantGroup: participants.isGroup ? participants.label : '',
         courseLabel: app.ui.studentCourseLabel(record, true),
       });
       void renderRecipient(record);

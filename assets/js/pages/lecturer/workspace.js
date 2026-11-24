@@ -44,8 +44,8 @@
     day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Asia/Ho_Chi_Minh',
   });
 
-  function overviewView(state) {
-    app.shared.renderLecturerOverview(overview, state, overviewTemplate);
+  function overviewView(state, participants) {
+    app.shared.renderLecturerOverview(overview, state, overviewTemplate, participants);
   }
   function notify(message, failure = false) {
     notice.textContent = message;
@@ -54,9 +54,10 @@
   function refresh() {
     try {
       state = topics ? topics.workspaceState(projectId) : service.getState(projectId);
+      const participants = topics.supervisedParticipants(state.project, state.team.members);
       if (topics?.projectIdentity) state.project = topics.projectIdentity(state.project);
       document.querySelector('.page-header__topic-name').textContent = state.project.title;
-      overviewView(state);
+      overviewView(state, participants);
       subscribers.forEach(render => render(state));
       notify(state.warning || (app.ui.lecturerWorkspace.dirty ? 'Đánh giá đang có thay đổi chưa lưu. Dữ liệu mới ở tab khác sẽ không ghi đè phần đang nhập.' : ''));
       document.body.dataset.projectId = projectId;

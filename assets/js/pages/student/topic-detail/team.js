@@ -37,6 +37,8 @@
   const cancelConfirm = document.querySelector('[data-confirm-cancel-invitation]');
   const members = document.querySelector('.topic-team__members');
   const memberTemplate = members.firstElementChild.cloneNode(true);
+  const groupName = document.querySelector('.topic-team__group-name');
+  const teamTitle = document.getElementById('team-title');
   let state = null;
   let memberRevision = 0;
   let inviteRevision = 0;
@@ -61,6 +63,10 @@
   function refresh() {
     try {
       state = service.getState(projectId, { preview });
+      const participants = globalThis.IE104.services.lecturerTopics.supervisedParticipants(state.project, state.members);
+      groupName.textContent = participants.label;
+      groupName.hidden = !participants.isGroup;
+      teamTitle.textContent = participants.isGroup ? 'Nhóm thực hiện' : 'Sinh viên thực hiện';
       const permission = service.getPermission(state);
       notice.textContent = permission.reason;
       notice.hidden = !permission.reason;
@@ -76,8 +82,10 @@
         const initials = member.name.trim().split(/\s+/).slice(-2).map(part => part[0]).join('').toUpperCase();
         item.querySelector('.team-member__avatar').textContent = initials;
         item.querySelector('.team-member__name').textContent = member.name;
-        item.querySelector('.team-member__id').textContent = member.code;
-        item.querySelector('.team-member__role').textContent = member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
+        item.querySelector('.team-member__id').textContent = participants.isGroup ? member.code : participants.code || member.code;
+        const role = item.querySelector('.team-member__role');
+        role.hidden = !participants.isGroup;
+        role.textContent = member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
         return item;
       }));
       renderInvitations(state.invitations, permission.allowed);

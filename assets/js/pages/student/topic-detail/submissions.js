@@ -142,8 +142,17 @@
     } else if (fileName) {
       const row = downloadRow(fileName);
       const link = row.querySelector('a');
-      if (sample) link.download = fileName;
-      else link.remove();
+      if (sample) {
+        if (sample.download) link.href = sample.download.href;
+        link.download = fileName;
+      } else {
+        const button = downloadButton(link);
+        button.disabled = true;
+        button.title = 'Chưa có nội dung tệp của lần nộp này.';
+        link.replaceWith(button);
+        error.textContent = button.title;
+        error.hidden = false;
+      }
       list.append(row);
     } else {
       list.replaceWith(element('p', 'Chưa có thông tin tệp đã nộp.'));
@@ -216,7 +225,7 @@
       const sample = sampleBundle(latest);
       appendSubmittedDetails(details,
         latest?.submittedAt ? time(latest.submittedAt) : null, latest?.fileName, {
-          sample: Boolean(sample), bundle: sample?.names.length > 1 ? sample : null, record: latest,
+          sample, bundle: sample?.names.length > 1 ? sample : null, record: latest,
         });
     }
     if (item.canUpload || item.projectCompleted) {
@@ -287,6 +296,7 @@
     const names = sample?.names ?? (files?.length > 1 ? app.ui.submissionZipNames(files) : [files?.[0]?.name ?? record.fileName]);
     const card = element('article', undefined, 'submission-board-card submission-board-sample-card');
     card.dataset.recordId = record.id ?? 'upload:' + record.requirementId;
+    if (record.requirementId) card.dataset.requirementId = record.requirementId;
     const header = element('header', undefined, 'submission-board-card__header');
     header.append(element('h5', title, 'submission-board-card__title'));
     if (Number.isFinite(deadline)) header.append(deadlineBadge(Date.parse(submittedAt) > deadline ? 'late' : 'success'));
@@ -615,8 +625,9 @@
   function renderLiveBoards(state, deadlines, requirementsWithUploads, allSubmissions) {
     const notice = element('p', state.submissionsLocked
       ? 'Giảng viên đã khóa nhận bài cho đề tài này.'
-      : 'Yêu cầu được cập nhật theo dữ liệu giảng viên lưu trên trình duyệt.', 'student-submission-notice');
-    notice.hidden = !state.submissionsLocked && Boolean(app.data.studentUITCatalog?.myIds
+      : state.hasDemoDeadlines ? 'Trạng thái hạn mẫu tháng 10 và 11/2026 được tính theo ngày 30/10 và 24/11.'
+        : 'Yêu cầu được cập nhật theo dữ liệu giảng viên lưu trên trình duyệt.', 'student-submission-notice');
+    notice.hidden = !state.submissionsLocked && !state.hasDemoDeadlines && Boolean(app.data.studentUITCatalog?.myIds
       .some(id => app.data.studentUITCatalog.projectId(id) === document.body.dataset.projectId));
     const requirements = board('Yêu cầu bài nộp', 'requirements', [
       { label: 'Chưa nộp', variant: 'neutral', items: requirementsWithUploads.filter(item => !item.submitted) },
@@ -666,9 +677,49 @@
       // Keep the board available even when browser file storage cannot be opened.
     }
   }
-  window.addEventListener('pageshow', () => {
+  function openCalendarRequirement() {
+    if (!isLivePage || location.hash !== '#bai-nop') return;
+    const params = new URLSearchParams(location.search);
+    const requirementId = params.get('requirement');
+    const card = requirementId && document.getElementById(requirementId);
+    if (!card?.matches('.requirement-board-card') || !host.contains(card)) return;
+
+    const action = params.get('submissionAction');
+    const open = card.querySelector('.requirement-board-card__open');
+    card.scrollIntoView({ block: 'nearest' });
+    open.focus({ preventScroll: true });
+
+    if (action === 'feedback') {
+      const submission = params.get('submission');
+      const feedbackCard = [...host.querySelectorAll('.submission-board-card[data-requirement-id]')]
+        .find(node => node.dataset.requirementId === requirementId && node.dataset.recordId === submission);
+      const feedback = feedbackCard?.querySelector('[aria-controls="student-feedback-dialog"]');
+      if (feedback) {
+        feedback.click();
+        return;
+      }
+    }
+    if (action === 'upload') {
+      const upload = card.querySelector('.submission-dialog__submit:not(:disabled)');
+      if (upload) {
+        upload.click();
+        return;
+      }
+    }
+    open.click();
+    if (action === 'submitted') {
+      const attachment = card.querySelector('.submission-dialog__attachment');
+      if (attachment) {
+        attachment.tabIndex = -1;
+        attachment.focus();
+      }
+    }
+  }
+
+  window.addEventListener('pageshow', async event => {
     render();
-    void refreshUploads();
+    await refreshUploads();
+    if (!event.persisted) openCalendarRequirement();
   });
   window.addEventListener('focus', refreshUploads);
   service.onUploadsChanged(projectId => {

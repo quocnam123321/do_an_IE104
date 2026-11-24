@@ -435,6 +435,10 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Lịch": "Calendar",
   "Lịch hạn nộp | Quản lý đồ án": "Deadline Calendar | Project Management",
   "Lịch minh họa tháng 10/2026 dùng ngày 30/10/2026 làm mốc “Hôm nay”. Ngày giờ trên lịch dùng để thử giao diện. Form nộp bài chưa lưu hoặc gửi tệp. Đăng nhập để thêm mốc của đề tài được cấp quyền vào Google Calendar.": "The October 2026 demo calendar uses October 30 as “Today”. Calendar dates and times are for preview. The submission form does not save or send files. Sign in to add milestones from topics you can access to Google Calendar.",
+  "Lịch có dữ liệu minh họa. Đăng nhập để thêm mốc của đề tài được cấp quyền vào Google Calendar.": "The calendar includes sample data. Sign in to add milestones from topics you can access to Google Calendar.",
+  "Lịch hiển thị hạn bài nộp và hạn đề tài của các đề tài đang thực hiện.": "The calendar shows submission and project deadlines for projects in progress.",
+  "Có thể thêm các mốc được cấp quyền vào Google Calendar.": "You can add milestones you have access to in Google Calendar.",
+  "Tài khoản của bạn chưa được cấp quyền thêm mốc vào Google Calendar.": "Your account does not have access to add milestones to Google Calendar.",
   "Lịch sử cập nhật": "Update history",
   "Lịch sử thao tác": "Activity history",
   "Lịch sử thao tác thử": "Demo activity history",
@@ -801,6 +805,7 @@ Object.assign(globalThis.ie104English ??= {}, {
 
 globalThis.ie104EnglishPatterns ??= [];
 globalThis.ie104EnglishPatterns.push(
+  [/^Nhóm (\d+) - (.+)$/u, "Team $1 - $2"],
   [/^Học kỳ (\d+)(?:\s*[•·]\s*(\d{4}[–-]\d{4}))?$/, (_, semester, year) => 'Semester ' + semester + (year ? ' · ' + year : '')],
   [/^Học kỳ chưa xác định • (\d{4}[–-]\d{4})$/, 'Semester not set · $1'],
   [/^(\d+(?:[.,]\d+)?)% hoàn thành$/, (_, percent) => percent.replace(',', '.') + '% complete'],

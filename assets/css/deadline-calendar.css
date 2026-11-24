@@ -785,7 +785,7 @@
   --calendar-list-gap: 0.375rem;
   display: grid;
   gap: var(--calendar-list-gap);
-  max-height: min(calc(3 * var(--calendar-event-height) + 4 * var(--calendar-list-gap)), 40dvh);
+  max-height: min(calc(4 * var(--calendar-event-height) + 5 * var(--calendar-list-gap)), 40dvh);
   overflow-y: auto;
   overscroll-behavior-y: contain;
   scrollbar-width: thin;

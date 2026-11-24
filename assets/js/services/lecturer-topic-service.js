@@ -3,6 +3,44 @@
   app.services ||= {};
   const clone = value => JSON.parse(JSON.stringify(value));
   const actorId = () => app.data.currentLecturer?.id;
+  // Tên và MSSV hiển thị bổ sung cho các hồ sơ mẫu còn thiếu dữ liệu.
+  const sampleGroupNames = {
+    'ISE-005': 'Quản lý công việc',
+    'ISE-015': 'Gợi ý phim',
+    'ISE-016': 'Truy xuất thực phẩm',
+    'ISEDATN-001': 'Thiết bị phòng thí nghiệm',
+    'ISEDATN-002': 'Kết nối thực tập',
+    'ISEDATN-003': 'Số hóa văn bản',
+    'ISEDATN-004': 'Khuôn viên xanh',
+    'ISEDATN-005': 'Kết nối tình nguyện',
+    'ISEDAMH-002': 'Kho vật tư',
+    'ISEDAMH-004': 'Trao đổi sách UIT',
+    'ISEDAMH-005': 'Quản lý thi ngoại ngữ',
+    'ISEDAMH-007': 'Kỹ năng số',
+    'ISEDAMH-008': 'Suất ăn căn tin',
+    'ISEDAMH-009': 'Hạ tầng đào tạo',
+    'ISEDAMH-010': 'Hạ tầng thư viện',
+    'ISEDAMH-011': 'Hồ sơ câu lạc bộ',
+    'ISEDAMH-012': 'Kết nối học bổng',
+    'ISEDAMH-013': 'Phân quyền tài liệu',
+    'ISEDAMH-014': 'An toàn mạng nội bộ',
+    'ISEDAMH-015': 'Lịch tư vấn học tập',
+  };
+  const sampleStudentCodes = {
+    'ISE-001': '22528341',
+    'ISE-002': '23527358',
+    'ISE-003': '24526493',
+    'ISE-005': '25528127',
+    'ISE-015': '22526704',
+    'ISE-016': '23528269',
+    'ISEDAMH-009': '24527219',
+    'ISEDAMH-010': '25526354',
+    'ISEDAMH-011': '22527931',
+    'ISEDAMH-012': '23526835',
+    'ISEDAMH-013': '24528346',
+    'ISEDAMH-014': '25527762',
+    'ISEDAMH-015': '24527219',
+  };
   const excludedCreatedTopicIds = new Set([
     'DA001', 'DA002', 'DA004', 'DA005',
     'ISE-004', 'ISE-006', 'ISE-007',
@@ -117,6 +155,31 @@
     return choices;
   }
 
+  function supervisedParticipants(topic, members = []) {
+    const source = topic.sourceRecord || (topic.authors ? topic : null);
+    const leader = members.find(member => member.role === 'nhom-truong') || members[0];
+    const name = topic.representativeName || source?.authors?.[0] || leader?.name || topic.studentName;
+    const code = [topic.representativeCode, source?.studentIds?.[0], source?.studentId,
+      sampleStudentCodes[source?.id], leader?.code, topic.studentId]
+      .find(value => value && value !== 'xxxxxxxx');
+    const studentLabel = [name, code].filter(Boolean).join(' · ');
+    const memberCount = members.length || source?.authors?.length || 0;
+    const numberedGroup = /^Nhóm\s+(\d+)\b/iu;
+    const catalogGroup = source?.supervision?.group || '';
+    const saved = (topic.groupName || topic.group || catalogGroup).trim();
+    if (memberCount < 2 && (memberCount === 1 || !numberedGroup.test(saved))) {
+      return { isGroup: false, label: studentLabel || 'Chưa có thông tin', studentLabel, code };
+    }
+
+    const prefix = numberedGroup.exec(saved);
+    const number = prefix?.[1] || numberedGroup.exec(catalogGroup)?.[1] || '01';
+    const savedName = (prefix ? saved.slice(prefix[0].length).replace(/^\s*[-–—]?\s*/u, '') : saved);
+    const placeholder = !savedName || ['Nhóm chưa đặt tên', 'Chưa có nhóm thực hiện', 'Chưa xác nhận'].includes(savedName)
+      || (topic.source === 'approved-proposal' && savedName === `Nhóm của ${name}`);
+    const groupName = placeholder ? sampleGroupNames[source?.id] || name || topic.title : savedName;
+    return { isGroup: true, label: `Nhóm ${number.padStart(2, '0')} - ${groupName}`, studentLabel };
+  }
+
   function projectIdentity(project) {
     const codes = window.UITLecturerCatalog;
     if (!codes) return project;
@@ -154,5 +217,5 @@
     };
   }
 
-  app.services.lecturerTopics = { list, get, isListedInCreatedTab, isListedInSupervisedTab, createdStatus, detailUrl, returnUrl, workspaceChoices, workspaceState, projectIdentity, allCreated: () => clone(records('created').filter(topic => topic.kind === 'created')) };
+  app.services.lecturerTopics = { list, get, isListedInCreatedTab, isListedInSupervisedTab, createdStatus, detailUrl, returnUrl, workspaceChoices, workspaceState, projectIdentity, supervisedParticipants, allCreated: () => clone(records('created').filter(topic => topic.kind === 'created')) };
 })();

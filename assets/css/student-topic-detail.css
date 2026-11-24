@@ -639,10 +639,21 @@
 #bai-nop .student-feedback-dialog > header {
   padding-bottom: var(--space-2);
   margin-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+#bai-nop .student-feedback-dialog > header .submission-dialog__close {
+  margin-block: calc(-1 * var(--space-2));
+  margin-inline-end: calc(-1 * var(--space-2));
+  color: var(--color-muted-foreground);
 }
 
 #bai-nop .student-feedback-dialog h2 {
   font-size: var(--text-xl);
+}
+
+#bai-nop .student-feedback-dialog h2[autofocus]:focus {
+  outline: none;
 }
 
 #bai-nop .student-feedback-dialog h3 {
@@ -686,23 +697,6 @@
 
 .student-feedback-dialog__details > div + div {
   margin-top: var(--space-2);
-}
-
-#bai-nop .student-feedback-dialog > footer {
-  margin-top: var(--space-6);
-  padding-top: var(--space-4);
-}
-
-#bai-nop .student-feedback-dialog > footer button {
-  padding-inline: var(--space-4);
-  border-color: var(--button-primary-bg);
-  background: var(--button-primary-bg);
-  color: var(--button-primary-fg);
-}
-
-#bai-nop .student-feedback-dialog > footer button:hover {
-  border-color: var(--button-primary-bg-hover);
-  background: var(--button-primary-bg-hover);
 }
 
 .submission-dialog__attachment {

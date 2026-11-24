@@ -41,5 +41,64 @@
     return { topics: topics.map(topic => ({ id: topic.id, title: topic.title })), events: events.filter(event => !month || event.date.startsWith(`${month}-`)), warning: [...new Set(warnings)].join(' ') };
   }
 
-  app.services.deadlines = { today, getState };
+  const vietnamTime = new Intl.DateTimeFormat('sv-SE', {
+    timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+  });
+
+  function dateTime(value) {
+    if (!Number.isFinite(Date.parse(value))) return '';
+    return vietnamTime.format(new Date(value)).replace(' ', 'T') + '+07:00';
+  }
+
+  async function getActiveDeadlines() {
+    let approved = [];
+    try { approved = app.services.approvedProjects?.list('student') ?? []; }
+    catch { /* The bundled projects remain available if saved projects cannot be read. */ }
+    const projects = new Map([...app.data.myTopics, ...approved]
+      .filter(project => project.status === 'dang-thuc-hien')
+      .map(project => [project.id, project]));
+    const service = app.services.studentSubmissions;
+    const calendars = await Promise.all([...projects.values()].map(async project => {
+      let state;
+      try { state = service.forStudent(project.id); }
+      catch { return null; }
+      const base = project.detailUrl?.split('#')[0];
+      if (!state.canUpload || !base) return null;
+      const uploads = state.requirements.length ? await service.readUploads(project.id).catch(() => []) : [];
+      const byRequirement = new Map(uploads.map(upload => [upload.requirementId, upload]));
+      const events = [];
+      const finalDate = project.outline?.finalReportDate || project.outline?.endDate || project.finalReportDate ||
+        project.completesAt || app.data.projectMilestones?.find(item => item.projectId === project.id)
+          ?.dates.find(item => item.id === 'final-report')?.date;
+      const finalDue = /^\d{4}-\d{2}-\d{2}$/.test(finalDate ?? '') ? finalDate : dateTime(finalDate);
+      if (finalDue) events.push({
+        id: `${project.id}--deadline`, topicId: project.id, date: finalDue.slice(0, 10),
+        due: finalDue, name: project.title, kind: 'topic', detailUrl: `${base}#tong-quan`,
+      });
+
+      for (const requirement of state.requirements) {
+        const due = dateTime(requirement.deadline);
+        if (!due) continue;
+        const upload = byRequirement.get(requirement.id);
+        const saved = requirement.latestSubmission;
+        const useUpload = upload && (!saved || Date.parse(upload.submittedAt) >= Date.parse(saved.submittedAt));
+        const latest = useUpload ? upload : saved;
+        const feedback = latest?.feedback || (latest?.submittedAt === saved?.submittedAt && saved?.feedback);
+        const status = feedback ? 'responded' : latest && latest.calendarStatus !== 'submitted' ? 'awaiting' :
+          latest || requirement.submitted ? 'submitted' :
+          requirement.locked ? 'locked' : requirement.overdue ? 'overdue' : 'pending';
+        events.push({
+          id: `${project.id}--${requirement.id}`, topicId: project.id, date: due.slice(0, 10),
+          due, name: requirement.title, kind: 'submission', status, submitted: dateTime(latest?.submittedAt),
+          requirementId: requirement.id, submissionId: latest?.id ?? (useUpload ? `upload:${requirement.id}` : undefined),
+          detailUrl: `${base}#bai-nop`,
+        });
+      }
+      return { id: project.id, title: project.title, group: project.groupName, events };
+    }));
+    return calendars.filter(calendar => calendar?.events.length);
+  }
+
+  app.services.deadlines = { today, getState, getActiveDeadlines };
 })();

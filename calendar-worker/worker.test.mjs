@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { test } from "node:test";
+import { firebaseConfig } from "../assets/js/firebase-config.js";
 import { createCalendarWorker } from "./index.mjs";
 
 const site = "https://web.example/ie104/";
@@ -64,7 +65,8 @@ function fixture(t) {
   const emailFor = (id) => `${id}@${accounts[id].domain ?? "example.edu"}`;
   const tokens = new Map();
   for (const [sub, { role, provider }] of Object.entries(accounts)) {
-    const claims = { sub, ie104Role: role, aud: "ie104-nhom-7", iss: "https://securetoken.google.com/ie104-nhom-7",
+    const claims = { sub, ie104Role: role, aud: firebaseConfig.projectId,
+      iss: `https://securetoken.google.com/${firebaseConfig.projectId}`,
       exp: now + 3600, auth_time: now - 5, iat: now, email: emailFor(sub), email_verified: true,
       firebase: { sign_in_provider: provider } };
     tokens.set(sub, "e30." + Buffer.from(JSON.stringify(claims)).toString("base64url") + ".verified-in-fixture");

@@ -30,7 +30,6 @@
     let requirement;
     let savedAt;
     let editing = false;
-    let backButton;
     let saving = false;
     let loading;
     let loadFailed = false;
@@ -94,11 +93,6 @@
       loading?.abort();
       loading = null;
       files = [];
-      if (backButton?.isConnected) {
-        backButton.closest('dialog').showModal();
-        backButton.focus({ preventScroll: true });
-      }
-      backButton = null;
     });
     form.addEventListener('submit', async event => {
       event.preventDefault();
@@ -116,10 +110,7 @@
         updateControls();
       }
       if (!record) return;
-      const details = [...document.querySelectorAll('dialog.submission-requirement-dialog[open]')];
-      backButton = null;
       dialog.close();
-      details.forEach(detail => detail.close());
       onSaved(record, editing);
     });
 
@@ -147,8 +138,7 @@
         scope.textContent = scopeText;
       }
       renderFiles();
-      backButton = editing ? trigger : null;
-      backButton?.closest('dialog').close();
+      trigger?.closest('dialog')?.close();
       dialog.showModal();
       if (!loading) return;
 

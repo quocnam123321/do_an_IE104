@@ -14,9 +14,10 @@
     try { projects = teaching.listSupervisedProjects(); } catch { /* Keep the available proposal records. */ }
     const byId = new Map(projects.map(({ project, role }) => [project.id, {
       id: project.id, topicId: project.topicId || project.id, projectId: project.id,
-      title: project.title, representativeName: project.representativeName, topicType: project.type || ({ 'Đồ án môn học': 'do-an-mon-hoc', 'Đồ án tốt nghiệp': 'do-an-tot-nghiep', 'Khóa luận tốt nghiệp': 'khoa-luan' })[project.typeLabel], course: project.courseId, courseLabel: project.courseLabel,
+      title: project.title,
+      topicType: project.type || ({ 'Đồ án môn học': 'do-an-mon-hoc', 'Đồ án tốt nghiệp': 'do-an-tot-nghiep', 'Khóa luận tốt nghiệp': 'khoa-luan' })[project.typeLabel], course: project.courseId, courseLabel: project.courseLabel,
       sortDate: project.startsAt || project.createdAt,
-      semester: project.semester, academicYear: project.academicYear, groupName: project.groupName,
+      semester: project.semester, academicYear: project.academicYear,
       supervisionRole: role === 'secondary' ? 'dong-huong-dan' : 'huong-dan-chinh',
       supervisionRoleLabel: role === 'secondary' ? 'Đồng hướng dẫn' : 'Hướng dẫn chính',
       topicStatus: project.status, statusLabel: project.statusLabel,
@@ -42,13 +43,21 @@
       card.querySelector('.topic-card__image-placeholder').setAttribute('aria-label', `Chưa có ảnh đại diện cho đề tài ${record.title}`);
       const meta = card.querySelector('.topic-card__meta');
       const project = projects.find(entry => entry.project.id === record.projectId)?.project;
+      let members = record.members || record.outline?.members || [];
+      if (project) {
+        try {
+          members = window.IE104.services.projectTeams.getState(project.id).members;
+        } catch { /* Dùng dữ liệu danh mục khi chưa đọc được thành viên đã lưu. */ }
+      }
+      const participants = topics.supervisedParticipants(project || record, members);
+      card.dataset.participantSearch = participants.studentLabel;
       const code = project ? topics.projectIdentity(project).displayId
         : record.topicCode || window.UITLecturerCatalog.formatCode(card.dataset.topicType, record.topicId);
       meta.setAttribute('aria-label', `Thông tin đề tài ${code}`);
       const courseLabel = card.dataset.topicType === 'graduation' ? 'Đồ án tốt nghiệp' : card.dataset.topicType === 'thesis' ? 'Khóa luận tốt nghiệp' : record.courseLabel || 'Không áp dụng';
       [code, courseLabel,
         record.semester ? `Học kỳ ${record.semester} • ${record.academicYear.replace('-', '–')}` : 'Chưa có học kỳ và năm học',
-        record.representativeName || record.studentName ? `${record.representativeName || record.studentName} · xxxxxxxx` : record.groupName || 'Chưa có nhóm thực hiện']
+        participants.label]
         .forEach((value, index) => { meta.querySelectorAll('.topic-card__meta-text')[index].textContent = value; });
       const badge = card.querySelector('.topic-card__status');
       badge.textContent = record.supervisionRoleLabel || record.statusLabel || 'Đang thực hiện';
@@ -61,5 +70,8 @@
     document.dispatchEvent(new Event('ie104:topics-updated'));
   }
   store.subscribe(render);
+  window.addEventListener('storage', event => {
+    if (event.key === window.IE104.storage.teamKey) render();
+  });
   render();
 })();

@@ -19,7 +19,10 @@
         ['Môn học', app.ui.studentCourseLabel(record.topic, true)],
         ['Hình thức', solo ? 'Cá nhân' : 'Theo nhóm'],
       ];
-      if (record.groupName.trim()) fields.push(['Tên nhóm', record.groupName]);
+      if (!solo) {
+        const participants = app.services.lecturerTopics.supervisedParticipants({ ...record.topic, groupName: record.groupName }, record.members);
+        fields.push(['Tên nhóm', participants.label]);
+      }
       fields.push(['Trạng thái đăng ký', service.labels[record.status]]);
       if (projectUrl) fields.push(['Trạng thái đề tài', 'Đang thực hiện']);
       fields.push(['Ngày đăng ký', new Date(record.createdAt).toLocaleString('vi-VN')]);

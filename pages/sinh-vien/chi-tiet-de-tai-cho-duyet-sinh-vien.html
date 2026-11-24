@@ -7,7 +7,7 @@
     <meta name="description" content="Xem nội dung đề xuất và theo dõi kết quả xét duyệt." />
     <title>Chi tiết đề xuất đề tài | Đề tài của tôi</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-student.js"></script>
+    <script defer src="../../assets/js/i18n/en-student.js?v=20261125-topic-participants"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
@@ -32,7 +32,8 @@
     <script src="../../assets/js/shared/proposal-cover.js" defer></script>
     <script src="../../assets/js/shared/download-file.js" defer></script>
     <script src="../../assets/js/shared/proposal-detail-fields.js" defer></script>
-    <script src="../../assets/js/pages/student/pending-request.js?v=20261122-course-label" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-service.js?v=20261125-topic-participants" defer></script>
+    <script src="../../assets/js/pages/student/pending-request.js?v=20261125-topic-participants" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script src="../../assets/js/shared/logout.js" defer></script>
   </head>
@@ -154,6 +155,7 @@
                 <div><dt>Môn học</dt><dd data-proposal-field="courseLabel"></dd></div>
                 <div><dt>Học kỳ</dt><dd data-proposal-field="semester"></dd></div>
                 <div><dt>Năm học</dt><dd data-proposal-field="academicYear"></dd></div>
+                <div data-optional-section="participantGroup" hidden><dt>Nhóm thực hiện</dt><dd data-proposal-field="participantGroup"></dd></div>
                 <div><dt>Mã đề tài</dt><dd data-proposal-field="topicCode"></dd></div>
                 <div><dt data-proposal-field="startDateLabel">Ngày bắt đầu thực hiện</dt><dd data-proposal-field="startDate"></dd></div>
                 <div><dt>Ngày nộp báo cáo tiến độ</dt><dd data-proposal-field="progressReportDate"></dd></div>

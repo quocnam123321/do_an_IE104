@@ -55,9 +55,10 @@
       if (isSupervised) renderProjectStatus(card);
       nodes.forEach(node => { node.textContent = node.textContent.trim().replace(/^(Mã đề tài|Môn học|Loại đề tài|Nhóm thực hiện|Tác giả|GVHD theo nguồn|Ngày tạo|Ngày gửi|Vai trò của tôi):\s*/, '').replace(/(Học kỳ[^•·]*)\s[-•]\s(?=20)/, '$1 · '); });
       if (nodes[0]) card.querySelector('.topic-card__meta')?.setAttribute('aria-label', `Thông tin đề tài ${nodes[0].textContent}`);
-      if (isSupervised && nodes[3]) {
-        const name = record?.representativeName || record?.sourceRecord?.authors?.[0] || record?.authors?.[0];
-        nodes[3].textContent = name ? `${name} · xxxxxxxx` : catalog.groupLabel(record || { id: card.dataset.topicId, groupName: nodes[3].textContent });
+      if (isSupervised && nodes[3] && record && !card.hasAttribute('data-approved-proposal')) {
+        const participants = window.IE104.services.lecturerTopics.supervisedParticipants(record);
+        nodes[3].textContent = participants.label;
+        card.dataset.participantSearch = participants.studentLabel;
       }
       if (document.body.classList.contains('teacher-created-topics-page')) {
         const createdAt = record ? record.createdAt || '' : card.dataset.createdAt || '';
@@ -169,7 +170,10 @@
       if (!originalOrder.has(item)) originalOrder.set(item, nextOrder++);
       const card = item.matches('.topic-card') ? item : item.querySelector('.topic-card');
       const date = isSupervised ? Date.parse(card.dataset.sortDate) : card.dataset.createdAt || card.querySelector('time[datetime]')?.dateTime || '';
-      return { item, card, title: card.querySelector('.topic-card__title').textContent.trim(), date, terms: normalize([card.querySelector('.topic-card__title').textContent, card.dataset.topicId, ...Array.from(card.querySelectorAll('[data-topic-search-term], .topic-card__meta-text'), node => node.textContent)].join(' ')) };
+      const title = card.querySelector('.topic-card__title').textContent.trim();
+      const fields = Array.from(card.querySelectorAll('[data-topic-search-term], .topic-card__meta-text'), node => node.textContent);
+      const terms = normalize([title, card.dataset.topicId, card.dataset.participantSearch, ...fields].join(' '));
+      return { item, card, title, date, terms };
     });
     topics.sort((a, b) => originalOrder.get(a.item) - originalOrder.get(b.item));
     const unique = window.IE104?.topicIdentity?.uniqueTitles(topics) || topics;

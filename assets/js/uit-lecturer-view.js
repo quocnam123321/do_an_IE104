@@ -96,14 +96,22 @@
   if (work) window.IE104.ui.renderSupervisedDemo(record);
   const team = document.querySelector('.topic-team__members');
   if (team) {
+    const participants = window.IE104.services.lecturerTopics.supervisedParticipants(record);
     const template = team.firstElementChild.cloneNode(true);
     team.replaceChildren(...record.authors.map((name, index) => {
       const member = template.cloneNode(true); member.querySelector('.team-member__name').textContent = name;
-      member.querySelector('.team-member__id').textContent = record.studentIds?.[index] || record.studentId;
+      const code = member.querySelector('.team-member__id');
+      code.textContent = (participants.isGroup ? record.studentIds?.[index] || record.studentId : participants.code) || '';
+      code.previousElementSibling.hidden = !code.textContent;
       const avatar = member.querySelector('.team-member__avatar'); avatar.textContent = name.split(/\s+/).slice(-2).map(part => part[0]).join(''); avatar.setAttribute('aria-label', name);
-      member.querySelector('.team-member__role').textContent = index === 0 ? 'Nhóm trưởng' : 'Thành viên'; return member;
+      const role = member.querySelector('.team-member__role');
+      role.hidden = !participants.isGroup;
+      role.textContent = index === 0 ? 'Nhóm trưởng' : 'Thành viên'; return member;
     }));
-    set('.topic-team__group-name', work?.group || `Nhóm ${String(data.records.indexOf(record) + 1).padStart(2, '0')}`);
+    const groupName = document.querySelector('.topic-team__group-name');
+    groupName.textContent = participants.label;
+    groupName.hidden = !participants.isGroup;
+    if (!participants.isGroup) set('#team-title', 'Sinh viên thực hiện');
   }
   const popovers = Array.from(document.querySelectorAll('.progress-member-popover'));
   if (popovers.length) {

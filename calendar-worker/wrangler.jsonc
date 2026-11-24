@@ -10,8 +10,8 @@
     "logs": { "enabled": true, "invocation_logs": false }
   },
   "vars": {
-    "CALENDAR_SITE_URL": "https://ie104-calendar-demo.pages.dev/",
-    "GOOGLE_CALENDAR_CLIENT_ID": "703213546600-dk69cvgjtcglncsmqkqqqn7neae6dlks.apps.googleusercontent.com",
+    "CALENDAR_SITE_URL": "https://ie104-nhom7.web.app/",
+    "GOOGLE_CALENDAR_CLIENT_ID": "605878406317-miltplu9e8t99qr7qsalt5tlo8n3ooq2.apps.googleusercontent.com",
     "GOOGLE_CALENDAR_REDIRECT_URI": "https://ie104-calendar.ntranphu230606.workers.dev/oauth/callback"
   },
   "d1_databases": [{

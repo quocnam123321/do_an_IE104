@@ -386,7 +386,7 @@
     },
   ];
   const archives = {
-    "submission-2": {
+    "dac-ta-yeu-cau-mau": {
       "path": "dac-ta-yeu-cau-mau.zip",
       "name": "dac-ta-yeu-cau-mau.zip",
       "names": [
@@ -410,7 +410,7 @@
         88
       ]
     },
-    "submission-1": {
+    "de-cuong-mau": {
       "path": "de-cuong-mau.zip",
       "name": "de-cuong-mau.zip",
       "names": [
@@ -442,19 +442,25 @@
       submissions: merge(submissions, current.submissions) };
   }
 
+  function samplePdf(fileName) {
+    return { path: 'bai-nop-minh-hoa.pdf', name: fileName, names: [fileName], sizes: [30564] };
+  }
+
   function attachment(id, submission) {
+    if (!submission || submission.files?.length) return null;
     if (id !== projectId) {
+      const catalogSample = app.data.studentUITCatalog?.submissionSample?.(id, submission);
+      if (catalogSample) return archives[catalogSample.archive] ?? samplePdf(catalogSample.fileName);
       const seed = app.data.teachingSeeds?.find(item => item.projectId === id)?.submissions
         ?.find(item => item.id === submission.id && item.fileName === submission.fileName &&
           Date.parse(item.submittedAt) === Date.parse(submission.submittedAt));
-      if (!seed || submission.files?.length || !seed.fileName) return null;
-      return { path: 'bai-nop-minh-hoa.pdf', name: seed.fileName, names: [seed.fileName], sizes: [30564] };
+      return seed?.fileName ? samplePdf(seed.fileName) : null;
     }
     const sample = submissions.find(item => item.id === submission.id && item.fileName === submission.fileName &&
       Date.parse(item.submittedAt) === Date.parse(submission.submittedAt));
     if (!sample) return null;
-    return archives[sample.id] ?? { path: 'bai-nop-minh-hoa.pdf', name: sample.fileName,
-      names: [sample.fileName], sizes: [30564] };
+    const archive = { 'submission-1': 'de-cuong-mau', 'submission-2': 'dac-ta-yeu-cau-mau' }[sample.id];
+    return archives[archive] ?? samplePdf(sample.fileName);
   }
 
   app.data.studentWebSubmissions = { projectId, forProject, attachment };

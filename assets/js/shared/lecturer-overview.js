@@ -4,7 +4,8 @@
   const { renderList, renderLecturerSupervisors, renderSupervisedSummary } = app.shared.topicOverview;
   const overviewDate = new Intl.DateTimeFormat('vi-VN', {day:'2-digit',month:'2-digit',year:'numeric',timeZone:'Asia/Ho_Chi_Minh'});
   const el = (tag, value, className) => {const node=document.createElement(tag);if(value)node.textContent=value;if(className)node.className=className;return node;};
-  function render(overview, { projectId, project, team, readOnly }, overviewTemplate) {
+  function render(overview, { projectId, project, team, readOnly }, overviewTemplate, participants) {
+    const isGroup = participants?.isGroup ?? true;
     const originalSample = projectId === 'GV-DT001-N01';
     overview.replaceChildren(...overviewTemplate.cloneNode(true).children);
     const text = (selector, value) => { overview.querySelector(selector).textContent = value; };
@@ -55,9 +56,12 @@
     const supervisors = overview.querySelector('.project-supervisors');
     renderLecturerSupervisors(supervisors, project, readOnly ? null : team);
 
-    text('.topic-team__group-name', project.groupName || 'Chưa có nhóm thực hiện');
+    const groupName = overview.querySelector('.topic-team__group-name');
+    groupName.textContent = participants?.label || project.groupName || 'Chưa có nhóm thực hiện';
+    groupName.hidden = !isGroup;
+    if (!isGroup) text('#team-title', 'Sinh viên thực hiện');
     const capacity = overview.querySelector('.project-team__note');
-    capacity.hidden = !Number.isInteger(team.maxMembers) || team.maxMembers <= 0;
+    capacity.hidden = !isGroup || !Number.isInteger(team.maxMembers) || team.maxMembers <= 0;
     if (!capacity.hidden) text('[data-team-capacity]', `tối đa ${team.maxMembers} thành viên`);
     const members = overview.querySelector('.topic-team__members');
     const memberTemplate = members.firstElementChild;
@@ -70,9 +74,11 @@
       avatar.textContent = member.name.trim().split(/\s+/).slice(-2).map(part => part[0]).join('').toUpperCase();
       item.querySelector('.team-member__name').textContent = member.name;
       const code = item.querySelector('.team-member__id');
-      code.textContent = member.code || '';
-      code.previousElementSibling.hidden = !member.code;
-      item.querySelector('.team-member__role').textContent = member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
+      code.textContent = (isGroup ? member.code : participants.code) || '';
+      code.previousElementSibling.hidden = !code.textContent;
+      const role = item.querySelector('.team-member__role');
+      role.hidden = !isGroup;
+      role.textContent = member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
       return item;
     }) : [el('li', 'Chưa có thông tin thành viên nhóm.')]));
   }

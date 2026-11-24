@@ -315,6 +315,10 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 
 ### Tổng quan chi tiết đề tài sinh viên — 21/11/2026
 
+- Mỗi thẻ trong Đề tài của tôi có một dòng về người thực hiện. Đề tài nhóm dùng Nhóm X - Tên nhóm, đề tài cá nhân dùng họ tên và MSSV. Thẻ và trang chi tiết dùng chung cách xác định tên với danh sách Đề tài đang hướng dẫn.
+- Hai danh sách Đề tài của tôi và Đề tài mở đăng ký dùng mẫu thẻ Quản lý đề tài của giảng viên cho khung ảnh 16:9, khoảng đệm, cỡ chữ và cột thao tác. Nút Xem chi tiết cao tối thiểu 44px, dùng chữ 16px và cùng biểu tượng mũi tên. Trên điện thoại, nút rộng bằng khung ảnh và nhãn trạng thái nằm ở góc trên bên phải ảnh khi đủ chỗ. Mỗi trang giữ nội dung và màu trạng thái theo nghiệp vụ.
+- Hai trang dùng khoảng cách quanh tiêu đề theo mẫu Quản lý đề tài. Từ đường dẫn đến khối tiêu đề là 12px, từ hàng tìm kiếm đến tiêu đề danh sách là 8px. Thẻ đầu cách tiêu đề danh sách 16px trên máy tính và 12px trên điện thoại.
+
 - Tab Tổng quan của Đề tài của tôi dùng chung khung ảnh tóm tắt 16:9, bố cục thẻ, danh sách mục tiêu và kết quả, cách hiển thị thành viên và mốc thời gian với trang Đề tài hướng dẫn. Khối Yêu cầu thực hiện xuất hiện khi đề tài đăng ký có dữ liệu tương ứng. Khối Giảng viên hướng dẫn đặt sau Mốc thời gian chính. Các thao tác nhóm và lời mời hiển thị theo quyền hiện có của sinh viên.
 - Lời mời đồng hướng dẫn gửi từ đề tài xuất hiện trong mục Lời mời hướng dẫn của giảng viên và sinh viên. Hai bên trao đổi khi lời mời đang chờ và sau khi giảng viên đồng ý. Giảng viên đồng ý hoặc từ chối trong cuộc trao đổi. Chi tiết đề tài của sinh viên hiển thị trạng thái và liên kết Xem trao đổi. Bản thử dùng chung dữ liệu trong cùng trình duyệt và địa chỉ web.
 - Hộp thư giảng viên tự xác định người nhận theo email tài khoản và danh mục giảng viên. Thanh chọn tự hiển thị tên người nhận của lời mời được mở qua liên kết hoặc của lời mời mới nhất khi vào hộp thư. Khi có lời mời mới, hộp thư tự chọn người nhận và mở lời mời. Phiên demo cho phép chuyển giữa các giảng viên có lời mời đã lưu trong trình duyệt.
@@ -399,7 +403,7 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 - Hai cột Chờ phản hồi và Đã phản hồi dùng cùng khoảng cách 8px giữa các thẻ ở cả hai vai trò. Bài gửi sau hạn dùng nhãn Nộp sau hạn với nền vàng nhạt, viền vàng và chữ nâu.
 - Ở thẻ Bài đã nộp phía giảng viên, nút Phản hồi dùng nền xanh và biểu tượng bút trong khung màu trắng. Nút Xem phản hồi ở cả hai vai trò dùng nền trắng, viền xanh, chữ và biểu tượng con mắt màu xanh. Hai biểu tượng nằm trước nhãn.
 - Hộp thoại Phản hồi bài nộp phía giảng viên hiển thị tên yêu cầu và dòng “Đã nộp lúc HH:mm ngày DD/MM/YYYY” ngay trên ô Nội dung phản hồi. Tên tệp nằm trên thẻ bài nộp. Hộp soạn phản hồi có nút Lưu phản hồi ở cuối và dùng dấu × hoặc phím Esc để đóng. Đường phân cách nằm trong lề nội dung.
-- Trong tab Bài nộp của sinh viên, hộp thoại Xem phản hồi hiển thị tên bài, giờ nộp và nội dung phản hồi theo cùng bố cục cho mọi bài nộp. Phản hồi trước, ghi chú cho giảng viên hoặc tên giảng viên xuất hiện bên dưới nếu có. Hộp thoại đóng bằng nút Đóng màu xanh ở chân hoặc phím Esc.
+- Trong tab Bài nộp của sinh viên, hộp thoại Xem phản hồi hiển thị tên bài, giờ nộp và nội dung phản hồi theo cùng bố cục cho mọi bài nộp. Đường kẻ mảnh ngăn hàng tiêu đề với nội dung. Phản hồi trước, ghi chú cho giảng viên hoặc tên giảng viên xuất hiện bên dưới nếu có. Hộp thoại đóng bằng dấu × ở góc trên bên phải hoặc phím Esc.
 - Khi giảng viên mở Xem phản hồi, tiêu đề dùng cùng cỡ chữ, độ đậm và chiều cao dòng với hộp thoại bên sinh viên. Nội dung hiển thị trực tiếp dưới tiêu đề Nội dung phản hồi. Bấm Sửa phản hồi để mở ô nhập có viền và chuyển tiêu điểm vào nội dung đã có. Nút Lưu thay đổi lưu bản sửa.
 - Khi đề tài đã hoàn thành, các nút Phản hồi và Sửa phản hồi phía giảng viên giữ vị trí và dùng cùng nền xám nhạt, chữ xám đậm và viền xám của nút vô hiệu hóa bên sinh viên. Giảng viên vẫn dùng Xem phản hồi và Tải xuống để tra cứu bài đã nộp.
 - Trong chi tiết yêu cầu đã nộp ở cả hai vai trò, khối Tệp đã nộp hiển thị tên tệp và rút gọn bằng dấu ba chấm khi thiếu chỗ. Danh sách hiện tối đa bốn hàng và cuộn riêng khi có thêm. Tải xuống nằm ở từng hàng có tệp. Khi có nhiều tệp, nút Tải tất cả ở cạnh tiêu đề dùng chữ và biểu tượng tải xuống màu xanh trên nền trắng.
@@ -410,6 +414,8 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 - Nút × trong các hộp thoại dùng nét bo đầu, khung biểu tượng 20px và vùng bấm 44px không viền.
 
 ### Tổng quan đề tài đang hướng dẫn
+
+- Thẻ đề tài hiển thị Nhóm X - Tên nhóm khi có từ hai thành viên và họ tên kèm MSSV khi thực hiện cá nhân. Trang chi tiết dùng cùng tên nhóm với thẻ. Nhóm chưa có tên hiển thị tên mẫu theo đề tài hoặc tên người đại diện.
 
 - Đề tài giảng viên đã tạo vẫn nằm trong danh sách Đề tài đã tạo sau khi có nhóm đăng ký thành công hoặc được duyệt. Thẻ và trang chi tiết dùng nhãn Đã có nhóm đăng ký. Giảng viên chỉnh sửa hồ sơ gốc từ trang chi tiết và theo dõi nhóm trong danh sách Đề tài hướng dẫn.
 

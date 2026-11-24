@@ -15,7 +15,18 @@
   const rows = new Map(catalog.records.map(record => [record.id, record]));
   const defaultRequirements = ['Có kiến thức nền tảng phù hợp với lĩnh vực đề tài.', 'Thực hiện khảo sát, xây dựng giải pháp và đánh giá kết quả trong phạm vi đã thống nhất.', 'Bàn giao báo cáo, tài liệu và sản phẩm theo yêu cầu của giảng viên.'];
   const projectId = id => `UIT-SV-${id}`;
-  data.studentUITCatalog = { openIds, myIds, completedIds, projectId };
+  const demoDeadlines = new Map();
+  const submissionSamples = new Map();
+  function submissionReferenceTime(requirement) {
+    const sample = demoDeadlines.get(requirement.id);
+    return sample && sample.deadline === requirement.deadline ? sample.referenceTime : undefined;
+  }
+  function submissionSample(projectId, submission) {
+    const sample = submissionSamples.get(submission.id);
+    if (sample?.projectId === projectId && sample.fileName === submission.fileName) return sample;
+    return null;
+  }
+  data.studentUITCatalog = { openIds, myIds, completedIds, projectId, submissionReferenceTime, submissionSample };
   data.openTopics = [];
   data.projectLecturers ||= [];
   if (!data.projectLecturers.some(item => item.id === 'GV001')) data.projectLecturers.push({ id: 'GV001', name: 'Nguyễn Văn A', email: 'giangvien@example.com' });
@@ -83,12 +94,35 @@
     ],
   });
   const dayAt = (start, offset) => new Date(Date.parse(start + 'T00:00:00Z') + offset * 86400000).toISOString().slice(0, 10);
+  const hour = 3_600_000;
+  const submissionStages = ['pending', 'overdue', 'submitted', 'awaiting', 'responded'];
+  const submissionMonths = {
+    '10': { referenceDay: 30, pastDays: [5, 8, 12, 15, 19, 21, 25, 28], upcomingDays: [30, 31] },
+    '11': { referenceDay: 24, pastDays: [4, 6, 9, 12, 14, 17, 20, 22], upcomingDays: [25, 27, 29, 30] },
+  };
+
+  function submissionSchedule(index, projectIndex, start, done) {
+    if (done) return { stage: 'responded', deadline: `${dayAt(start, 20 + index * 2)}T16:59:00.000Z` };
+    if (index < 10) {
+      return { stage: 'pending', deadline: new Date(Date.UTC(2026, 11, index + 1, 16, 59)).toISOString() };
+    }
+
+    const month = index < 20 ? '11' : '10';
+    const { referenceDay, pastDays, upcomingDays } = submissionMonths[month];
+    const stage = submissionStages[(index + projectIndex) % submissionStages.length];
+    const days = stage === 'pending' ? upcomingDays : pastDays;
+    const day = String(days[(index + projectIndex * 3) % days.length]).padStart(2, '0');
+    const deadline = new Date(`2026-${month}-${day}T23:59:00+07:00`).toISOString();
+    const referenceTime = Date.parse(`2026-${month}-${referenceDay}T12:00:00+07:00`);
+    return { stage, deadline, referenceTime };
+  }
+
   data.studentProjectOverviews ||= {};
   data.projectTeams ||= [];
   data.projectProgress ||= [];
   data.teachingSeeds ||= [];
   data.teachingCriteria ||= [{ id: 'TC001', title: 'Nội dung', weight: 40 }, { id: 'TC002', title: 'Sản phẩm', weight: 40 }, { id: 'TC003', title: 'Báo cáo', weight: 20 }];
-  projects.forEach(project => {
+  projects.forEach((project, projectIndex) => {
     const record = rows.get(project.topicId);
     const done = completed.has(project.topicId);
     const start = project.startsAt;
@@ -124,15 +158,36 @@
     });
     data.projectProgress = data.projectProgress.filter(item => item.projectId !== project.id);
     data.projectProgress.push({ projectId: project.id, revision: 0, tasks, history: [] });
-    const deliverables = work.deliverables;
-    const dueFor = index => done ? `${dayAt(start, 20 + index * 2)}T16:59:00.000Z` : new Date(Date.UTC(2026, index < 10 ? 11 : index < 20 ? 10 : 9, index % 10 + 1, 16, 59)).toISOString();
-    const requirements = deliverables.map((item, index) => ({ id: `${project.id}-request-${index}`, title: item.title, content: item.description || `Trình bày kết quả thực hiện và minh chứng cho nội dung ${item.title}.`, deadline: dueFor(index), locked: done, sourceStage: done ? 'reviewed' : index < 10 ? 'pending' : index < 20 ? 'submitted' : 'reviewed' }));
-    const submissions = deliverables.flatMap((item, index) => !done && index < 10 ? [] : [{
-      id: `${project.id}-submission-${index}`, requirementId: requirements[index].id, title: item.title,
-      fileName: item.file || `bao-cao-${index + 1}.pdf`, submittedAt: new Date(Date.parse(dueFor(index)) + (index % 3 === 0 ? 3600000 : -3600000)).toISOString(),
-      feedback: done || index >= 20 ? item.feedback || 'Đã xem báo cáo. Bổ sung minh chứng và đối chiếu với mục tiêu đã thống nhất.' : '',
-      feedbackHistory: [], ...(done || index >= 20 ? { feedbackAt: done ? `${evaluatedAt}T09:00:00+07:00` : '2026-11-20T09:00:00+07:00', feedbackBy: 'GV001' } : {}),
-    }]);
+    const requirements = [];
+    const submissions = [];
+    work.deliverables.forEach((item, index) => {
+      const { stage, deadline, referenceTime } = submissionSchedule(index, projectIndex, start, done);
+      const id = `${project.id}-request-${index}`;
+      const submissionId = `${project.id}-submission-${index}`;
+      const fileName = item.file || `bao-cao-${index + 1}.pdf`;
+      const reviewed = stage === 'responded';
+      const submitted = stage === 'submitted';
+      const sourceStage = reviewed ? 'reviewed' : submitted || stage === 'awaiting' ? 'submitted' : 'pending';
+      const archive = submitted && index % 10 < 5
+        ? (index < 20 ? 'de-cuong-mau' : 'dac-ta-yeu-cau-mau') : undefined;
+      // Preserve the file source when a browser record still uses an older sample schedule.
+      submissionSamples.set(submissionId, { projectId: project.id, fileName, archive });
+      if (referenceTime !== undefined) demoDeadlines.set(id, { deadline, referenceTime });
+      requirements.push({
+        id, title: item.title, deadline, locked: done, sourceStage,
+        content: item.description || `Trình bày kết quả thực hiện và minh chứng cho nội dung ${item.title}.`,
+      });
+      if (sourceStage === 'pending') return;
+      const submittedAt = Date.parse(deadline) + (index % 3 === 0 ? hour : -hour);
+      const feedbackAt = done ? `${evaluatedAt}T09:00:00+07:00` : new Date(submittedAt + 3 * hour).toISOString();
+      submissions.push({
+        id: submissionId, requirementId: id, title: item.title,
+        fileName, submittedAt: new Date(submittedAt).toISOString(),
+        feedback: reviewed ? item.feedback || 'Đã xem báo cáo. Bổ sung minh chứng và đối chiếu với mục tiêu đã thống nhất.' : '',
+        feedbackHistory: [], ...(reviewed && { feedbackAt, feedbackBy: 'GV001' }),
+        ...(submitted && { calendarStatus: 'submitted' }),
+      });
+    });
     data.teachingSeeds = data.teachingSeeds.filter(item => item.projectId !== project.id);
     data.teachingSeeds.push({ projectId: project.id, revision: 0, submissionsLocked: done, requirements, submissions, progressReviews: [], draft: null, publishedEvaluation: evaluation, audit: [] });
     const existing = data.lecturerTopics.find(item => item.kind === 'supervised' && item.id === project.topicId);

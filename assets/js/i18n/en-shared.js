@@ -91,6 +91,7 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Trang trước": "Previous Page",
   "Trang sau": "Next Page",
   "Trang tiếp theo": "Next Page",
+  "Trạng thái hạn mẫu tháng 10 và 11/2026 được tính theo ngày 30/10 và 24/11.": "Sample deadlines use October 30 and November 24, 2026, as the reference dates for their status.",
   "Đồ án môn học": "Course Project",
   "Đồ án tốt nghiệp": "Graduation Project",
   "Khóa luận": "Thesis",

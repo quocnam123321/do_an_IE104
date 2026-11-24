@@ -23,6 +23,7 @@
     const canUpload = team.project.status === 'dang-thuc-hien';
     const submissionsLocked = Boolean(record?.submissionsLocked);
     const activeRequirements = (record?.requirements || []).filter(item => !item.deletedAt);
+    const demoReference = item => app.data.studentUITCatalog?.submissionReferenceTime(item);
     const deadlines = new Map(activeRequirements.map(item => [item.id, Date.parse(item.deadline)]));
     const latest = new Map();
     const submissions = (record?.submissions || []).map(submission => {
@@ -45,10 +46,11 @@
       late: latest.get(item.id)?.late ?? null,
       latestSubmission: latest.get(item.id) ?? null,
       locked: submissionsLocked || item.locked,
-      overdue: !completed && Date.parse(item.deadline) < now.getTime(),
+      overdue: !completed && Date.parse(item.deadline) < (demoReference(item) ?? now.getTime()),
     }));
     requirements.sort((first, second) => Date.parse(first.deadline) - Date.parse(second.deadline));
-    return { hasRecord: Boolean(record), completed, canUpload, submissionsLocked, requirements, submissions };
+    return { hasRecord: Boolean(record), completed, canUpload, submissionsLocked, requirements, submissions,
+      hasDemoDeadlines: activeRequirements.some(item => demoReference(item) !== undefined) };
   }
 
   function localUploads(mode, request) {

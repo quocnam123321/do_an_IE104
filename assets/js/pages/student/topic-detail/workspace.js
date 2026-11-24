@@ -53,7 +53,7 @@
         requirements.after(outlinePanel);
       }
       app.shared?.proposalOutline?.render(outlinePanel, project);
-      text('.topic-team__group-name', project.groupName);
+      if (project.isArchivedSample) text('.topic-team__group-name', app.services.lecturerTopics.supervisedParticipants(project).label);
       app.shared.topicOverview.renderAcceptedSupervisors(root.querySelector('.project-supervisors'), project, app.services.projectTeams.getState(project.id, { preview: location.protocol === 'file:' }));
       const dates = root.querySelectorAll('.topic-milestones__list dd');
       const milestones = project.milestones || (!project.isArchivedSample && project.createdAt

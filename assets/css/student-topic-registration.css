@@ -1,5 +1,8 @@
 /* Danh sách sinh viên: Đăng ký đề tài và Đề tài của tôi dùng chung bố cục/thẻ.
    Hai trang danh sách nạp file; không thay form tạo đề xuất hay trang chi tiết. */
+:is(.student-topic-registration-page, .student-my-topics-list-page) .breadcrumb + .page-header {
+  margin-block-start: var(--space-3);
+}
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-results-summary { margin: 0; color: var(--color-muted-foreground); font-size: var(--font-size-secondary); }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .registration-heading {
   display: flex;
@@ -38,7 +41,7 @@
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topics {
   grid-column: 2;
   grid-row: 1;
-  gap: var(--space-4);
+  row-gap: 0;
 }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-search {
   grid-column: auto;
@@ -46,6 +49,7 @@
   grid-template-columns: minmax(0, 1fr) 15.5rem;
   align-items: start;
   gap: var(--space-4);
+  margin-block-end: var(--space-2);
 }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-search__query { position: relative; }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-search__icon {
@@ -57,6 +61,9 @@
 }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .main-content #topic-search { padding-inline-start: 2.5rem; }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .main-content #lecturer-filter { color: var(--color-foreground); }
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topics__header {
+  margin-block-end: var(--space-1);
+}
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topics__header h2 {
   margin: 0;
   font-size: var(--font-size-section-title);
@@ -72,32 +79,56 @@
   overscroll-behavior-y: contain;
   scroll-padding-block: var(--space-3);
   scrollbar-gutter: stable;
+  scrollbar-width: auto;
+  scrollbar-color: auto;
 }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-list:focus-visible { outline-offset: 3px; }
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-list::-webkit-scrollbar { width: 12px; }
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-list::-webkit-scrollbar-track {
+  border-radius: var(--radius-full);
+  background-color: var(--color-info-bg);
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-list::-webkit-scrollbar-thumb {
+  border: 3px solid var(--color-info-bg);
+  border-radius: var(--radius-full);
+  background-color: var(--color-control-border);
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-list::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-muted-foreground);
+}
+@supports not selector(::-webkit-scrollbar) {
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-list {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-control-border) var(--color-info-bg);
+  }
+}
+
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card {
   display: grid;
   grid-template-columns: 15rem minmax(0, 1fr) minmax(13.5rem, 17.5rem);
   align-items: center;
-  column-gap: var(--space-6);
+  gap: normal var(--space-6);
   height: auto;
   padding: 1.125rem;
-  transition: border-color 150ms ease-out;
+  border-radius: var(--card-radius);
+  transition: border-color var(--duration-fast) var(--ease-standard);
 }
-:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card:hover { border-color: var(--color-border-strong); }
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card:hover { border-color: var(--color-primary-tint-border); }
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card:focus-within { border-color: var(--color-primary); }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card__image {
   border: 1px solid var(--color-primary-tint-border);
 }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card__title {
   margin: 0 0 var(--space-2);
-  font-size: 1.125rem;
-  font-weight: 700;
-  line-height: 1.35;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
   overflow-wrap: anywhere;
 }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card__meta {
   gap: .375rem;
   color: var(--color-muted-foreground);
-  font-size: var(--font-size-secondary);
+  font-size: var(--text-sm);
   line-height: 1.45;
   font-variant-numeric: tabular-nums;
 }
@@ -129,8 +160,9 @@
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);
   line-height: 1.4;
+  overflow-wrap: break-word;
 }
-:is(.student-topic-registration-page, .student-my-topics-list-page) .main-content a.topic-card__link {
+:is(.student-topic-registration-page, .student-my-topics-list-page) .main-content :is(a, button).topic-card__link {
   width: 100%;
   min-height: var(--control-min-height);
   padding: 0.625rem var(--space-4);
@@ -142,14 +174,33 @@
   font-weight: var(--weight-medium);
   line-height: 1.35;
   overflow-wrap: break-word;
+  transition: background-color var(--duration-fast) var(--ease-standard);
 }
 .registration-page:is(.student-topic-registration-page, .student-my-topics-list-page) .main-content a.topic-card__link:hover {
-  background: var(--color-primary-hover);
-  border-color: var(--color-primary-hover);
-  color: var(--color-on-primary);
+  background: var(--button-primary-bg-hover);
+  color: var(--button-primary-fg);
 }
-:is(.student-topic-registration-page, .student-my-topics-list-page) .pagination { justify-self: end; }
-@media (max-width: 77.49rem) {
+.registration-page:is(.student-topic-registration-page, .student-my-topics-list-page) .main-content a.topic-card__link:active {
+  background: var(--button-primary-bg-active);
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card__link svg {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex-shrink: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card__link svg {
+    transition: transform var(--duration-fast) var(--ease-standard);
+  }
+  :is(.student-topic-registration-page, .student-my-topics-list-page) a.topic-card__link:is(:hover, :focus-visible) svg {
+    transform: translateX(2px);
+  }
+}
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topics > .pagination {
+  justify-self: end;
+  margin-block-start: var(--space-4);
+}
+@media (width < 77.5rem) {
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topics-layout { grid-template-columns: 15rem minmax(0, 1fr); gap: var(--space-4); }
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel { padding: var(--space-4); }
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-search { grid-template-columns: minmax(0, 1fr) 13rem; }
@@ -169,27 +220,42 @@
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__semester { border-top: 0; padding-top: 0; }
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__actions { grid-column: 1 / -1; }
 }
-@media (max-width: 47.99rem) {
+@media (48rem <= width < 64rem) {
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card {
+    grid-template-columns: 12.5rem minmax(0, 1fr) 13.75rem;
+  }
+}
+@media (width < 48rem) {
   :is(.student-topic-registration-page, .student-my-topics-list-page) .registration-heading { align-items: flex-start; flex-direction: column; gap: var(--space-4); }
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-search { grid-template-columns: minmax(0, 1fr); }
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters { grid-template-columns: minmax(0, 1fr); }
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__group + .topic-filters__group,
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__semester { border-top: 1px solid var(--color-border); padding-top: var(--space-4); }
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-list { max-block-size: 40rem; padding: var(--space-2) var(--space-2) var(--space-2) 0; }
-  :is(.student-topic-registration-page, .student-my-topics-list-page) .pagination { justify-self: center; }
-}
-/* Reflow by available content width as well as viewport (zoom/large text). */
-@container topic-results (max-width: 42rem) {
-  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card { display: flex; flex-direction: column; gap: var(--space-4); }
-  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card__image { align-self: stretch; }
-  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card__content { align-self: stretch; }
-  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card__summary { align-self: stretch; padding: 0; border: 0; margin: 0; }
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .topics > .pagination { justify-self: center; }
+
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3) var(--space-6);
+  }
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card__summary {
+    padding: var(--space-1) 0 0;
+    border: 0;
+    margin: 0;
+  }
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card__status {
     position: absolute;
-    top: var(--space-6);
-    inset-inline-end: var(--space-6);
+    inset-block-start: calc(var(--space-4) + 0.625rem);
+    inset-inline-end: calc(var(--space-4) + 0.625rem);
+    z-index: 1;
     width: auto;
-    max-width: calc(100% - 3rem);
+    max-width: calc(100% - (var(--space-4) * 2) - 1.25rem);
+    min-height: 1.75rem;
+    padding: var(--space-1) var(--space-3);
+    border: 1px solid var(--topic-status-border, var(--color-border-strong));
+  }
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card__image {
+    --topic-cover-start-padding: 2.5rem;
   }
 }
 @media (max-width: 21.87375rem) {
@@ -198,6 +264,9 @@
     width: 100%;
     max-width: 100%;
   }
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card__image {
+    --topic-cover-start-padding: var(--topic-cover-padding);
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card,
@@ -205,11 +274,13 @@
 }
 
 /* Trạng thái thuộc nghiệp vụ sinh viên; không đổi thành vai trò giảng viên. */
-.student-my-topics-list-page .topic-card__status--pending { background: var(--color-warning-bg); color: var(--color-warning-fg); }
-.student-my-topics-list-page .topic-card__status--progress { background: var(--color-info-bg); color: var(--color-info-fg); }
-.student-my-topics-list-page .topic-card__status--completed { background: var(--color-success-bg); color: var(--color-success-fg); }
+.student-topic-registration-page .topic-card__status { --topic-status-border: var(--color-success-border); }
+.student-my-topics-list-page .topic-card__status--pending { --topic-status-border: var(--color-warning-border); background: var(--color-warning-bg); color: var(--color-warning-fg); }
+.student-my-topics-list-page .topic-card__status--progress { --topic-status-border: var(--role-primary-border); background: var(--color-info-bg); color: var(--color-info-fg); }
+.student-my-topics-list-page .topic-card__status--completed { --topic-status-border: var(--color-success-border); background: var(--color-success-bg); color: var(--color-success-fg); }
+.student-my-topics-list-page .topic-card__status--rejected { --topic-status-border: var(--color-danger-border); }
 .student-my-topics-list-page .main-content button.topic-card__link:disabled {
-  width: 100%;
-  min-height: var(--control-min-height);
-  font-size: var(--font-size-body);
+  background: var(--color-neutral-bg);
+  color: var(--color-muted-foreground);
+  border: 1px solid var(--color-border);
 }
