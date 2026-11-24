@@ -228,6 +228,12 @@
 .supervision__decision-note { margin-block-start: var(--space-2); white-space: pre-wrap; }
 .supervision__feedback:not(:empty) { margin-block-start: var(--space-3); }
 
+.supervision__decision-form .supervision__actions { justify-content: flex-end; }
+
+@media (max-width: 32rem) {
+  .supervision__decision-form .supervision__actions > button { flex: 1 1 auto; }
+}
+
 @media (min-width: 50rem) {
   .supervision__workspace { grid-template-columns: minmax(12rem, 1fr) minmax(0, 2.4fr); }
 }

@@ -41,11 +41,12 @@
   function isRecord(record, id) {
     if (!record || id !== record.id || !isTeacher(record.teacher) ||
         !isStudent(record.student) ||
+        (record.projectId !== undefined && !isText(record.projectId, 120)) ||
         !isText(record.subject, subjectLimit) || !isDate(record.createdAt) || !isDate(record.updatedAt) ||
         !Array.isArray(record.messages) || record.messages[0]?.role !== 'student') {
       return false;
     }
-    const hasValidDecision = record.status === 'pending'
+    const hasValidDecision = record.status === 'pending' || (record.projectId && record.status === 'cancelled')
       ? record.decision === null
       : finalStatuses.includes(record.status) && isDate(record.decision?.at) &&
         isText(record.decision.note, messageLimit, true);
@@ -83,7 +84,8 @@
     } catch {
       throw new Error('Không đọc được lời mời. Hãy kiểm tra quyền lưu trữ của trình duyệt.');
     }
-    return ids.map(read).filter(Boolean).sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
+    return ids.map(read).filter(record => record && record.status !== 'cancelled')
+      .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
   }
 
   function write(record) {
@@ -200,16 +202,28 @@
     return changed;
   }
 
-  function needsTeacherReply(record) {
-    return record.status === 'pending' && record.messages.at(-1)?.role === 'student';
+  function canReply(record) {
+    return record?.status === 'pending' || Boolean(record?.projectId && record.status === 'accepted');
   }
 
-  async function create({ student: sender = student, teacher, subject, message, attachment }) {
+  function needsTeacherReply(record) {
+    const last = record.messages.at(-1);
+    return canReply(record) && last?.role === 'student' &&
+      (!record.decision || record.messages.length > (record.decision.messageCount ?? 0) &&
+        (record.decision.messageCount !== undefined || Date.parse(last.sentAt) > Date.parse(record.decision.at)));
+  }
+
+  async function create({ student: sender = student, teacher, subject, message, attachment, projectId }) {
     if (!isStudent(sender)) throw new Error('Tài khoản sinh viên gửi lời mời không hợp lệ.');
     if (!isTeacher(teacher)) throw new Error('Giảng viên nhận lời mời không hợp lệ.');
     const title = validateText(subject, 'Tiêu đề', subjectLimit);
     const text = validateText(message, 'Lời nhắn', messageLimit);
-    return withAttachment(attachment, (metadata) => {
+    if (projectId !== undefined && !isText(projectId, 120)) throw new Error('Không tìm thấy thông tin nhóm của đề tài.');
+    const save = () => withAttachment(attachment, (metadata) => {
+      if (projectId && getAll().some(record => record.projectId === projectId && record.teacher.id === teacher.id &&
+        (record.status === 'pending' || record.status === 'accepted'))) {
+        throw new Error('Giảng viên đã tham gia đề tài hoặc đã có lời mời đang chờ.');
+      }
       const now = new Date().toISOString();
       const initial = { role: 'student', text, sentAt: now };
       if (metadata) initial.attachment = metadata;
@@ -218,6 +232,7 @@
         teacher: { id: teacher.id, name: teacher.name.trim() },
         student: { id: sender.id, name: sender.name.trim() },
         subject: title,
+        ...(projectId ? { projectId } : {}),
         status: 'pending',
         messages: [initial],
         createdAt: now,
@@ -228,13 +243,15 @@
       notify();
       return record;
     });
+    const key = `${prefix}project.${projectId}.${teacher.id}`;
+    return projectId && navigator.locks?.request ? navigator.locks.request(key, save) : save();
   }
 
-  async function update(id, change) {
+  async function update(id, change, allowed = record => record.status === 'pending') {
     const save = () => {
       const record = read(id);
       if (!record) throw new Error('Không tìm thấy lời mời.');
-      if (record.status !== 'pending') throw new Error('Giảng viên đã phản hồi lời mời này.');
+      if (!allowed(record)) throw new Error('Giảng viên đã phản hồi lời mời này.');
       const now = new Date().toISOString();
       change(record, now);
       record.updatedAt = now;
@@ -256,7 +273,7 @@
       const response = { role: actor.role, text, sentAt: now };
       if (metadata) response.attachment = metadata;
       record.messages.push(response);
-    }));
+    }, canReply));
   }
 
   async function decide(id, teacherId, status, note = '') {
@@ -265,7 +282,16 @@
     return update(id, (record, now) => {
       if (record.teacher.id !== teacherId) throw new Error('Chỉ giảng viên nhận lời mời mới có thể quyết định.');
       record.status = status;
-      record.decision = { at: now, note: text };
+      record.decision = { at: now, note: text, ...(record.projectId ? { messageCount: record.messages.length } : {}) };
+    });
+  }
+
+  function cancelProjectInvitation(id, studentId, projectId) {
+    return update(id, (record) => {
+      if (!projectId || record.projectId !== projectId || record.student.id !== studentId) {
+        throw new Error('Vui lòng mở lời mời bằng đúng vai trò đã tham gia.');
+      }
+      record.status = 'cancelled';
     });
   }
 
@@ -274,7 +300,7 @@
   });
   window.addEventListener('pageshow', notify);
   window.IE104Supervision = Object.freeze({
-    student, getAll, create, reply, decide, getUnreadResponses, markResponsesRead, needsTeacherReply,
+    student, getAll, create, reply, decide, cancelProjectInvitation, getUnreadResponses, markResponsesRead, needsTeacherReply, canReply,
     attachmentLimit, getAttachment,
     subscribe(listener) {
       changes.addEventListener('change', listener);

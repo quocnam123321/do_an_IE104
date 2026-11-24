@@ -92,6 +92,16 @@
     return teachers;
   }
 
+  async function getTeacherInboxSession() {
+    const { getWebsiteSession } = await import('./website-session.js');
+    const session = await getWebsiteSession();
+    if (session?.role !== 'lecturer') return null;
+    if (!session.user) return { demo: true };
+    const email = session.user.email?.trim().toLowerCase();
+    const teachers = email ? await getTeachers() : [];
+    return { teacherIds: teachers.filter(teacher => teacher.email.toLowerCase() === email).map(teacher => teacher.id) };
+  }
+
   async function getTeacher(id) {
     validateTeacherId(id);
     const source = await getDirectory();
@@ -105,6 +115,6 @@
 
   window.IE104SupervisionEntry = Object.freeze({
     getComposeUrl, getLoginUrl, getInboxLoginUrl, getStudent, getTeacher, getTeachers,
-    normalizeSearch, departmentLabel,
+    normalizeSearch, departmentLabel, getTeacherInboxSession,
   });
 })();

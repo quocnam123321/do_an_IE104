@@ -80,7 +80,7 @@
         item.querySelector('.team-member__role').textContent = member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
         return item;
       }));
-      renderPendingInvitations(state.invitations, permission.allowed);
+      renderInvitations(state.invitations, permission.allowed);
       return true;
     } catch (failure) {
       state = null;
@@ -96,17 +96,17 @@
 
   const { normalizeSearch, departmentLabel } = globalThis.IE104SupervisionEntry;
 
-  function renderPendingInvitations(invitations, canManage) {
+  function renderInvitations(invitations, canManage) {
     const section = document.querySelector('.pending-invitations');
     const list = section.querySelector('.pending-invitations__list');
-    const pending = invitations.filter(invitation => invitation.status !== 'cancelled');
-    section.hidden = pending.length === 0;
+    const visible = invitations.filter(invitation => invitation.status !== 'cancelled');
+    section.hidden = visible.length === 0;
 
-    const directory = pending.some(invitation => invitation.lecturerId.startsWith('giang-vien-'))
+    const directory = visible.some(invitation => invitation.lecturerId.startsWith('giang-vien-'))
       ? globalThis.IE104SupervisionEntry?.getTeachers().catch(() => [])
       : null;
 
-    list.replaceChildren(...pending.map(invitation => {
+    list.replaceChildren(...visible.map(invitation => {
       const lecturer = globalThis.IE104.data.projectLecturers.find(item => item.id === invitation.lecturerId);
       const knownName = invitation.lecturerName || lecturer?.name;
       const lecturerName = knownName || 'Giảng viên không còn trong danh mục';
@@ -130,6 +130,41 @@
       date.className = 'pending-invitation__meta';
       date.textContent = 'Ngày gửi: ' + new Date(invitation.createdAt).toLocaleDateString('vi-VN');
       content.append(name, department, date);
+      if (invitation.status === 'accepted' || invitation.status === 'rejected') {
+        const status = document.createElement('p');
+        status.className = 'pending-invitation__status';
+        status.dataset.status = invitation.status;
+        status.textContent = invitation.status === 'accepted' ? 'Đã đồng ý đồng hướng dẫn' : 'Đã từ chối';
+        content.append(status);
+      }
+      if (invitation.decidedAt) {
+        const decisionDate = document.createElement('p');
+        decisionDate.className = 'pending-invitation__meta';
+        decisionDate.textContent = new Date(invitation.decidedAt).toLocaleString('vi-VN');
+        content.append(decisionDate);
+      }
+      if (invitation.decisionNote) {
+        const reason = document.createElement('p');
+        reason.textContent = invitation.decisionNote;
+        content.append(reason);
+      }
+      const actions = document.createElement('div');
+      actions.className = 'pending-invitation__actions';
+      if (invitation.thread) {
+        const thread = document.createElement('a');
+        thread.className = 'pending-invitation__thread';
+        thread.href = `de-tai-cua-toi-sinh-vien.html?loi-moi=${encodeURIComponent(invitation.id)}#loi-moi-huong-dan`;
+        thread.textContent = 'Xem trao đổi';
+        actions.append(thread);
+      }
+
+      item.append(avatar, content);
+      if (invitation.thread || invitation.status === 'pending') item.append(actions);
+      directory?.then(lecturers => {
+        const profile = lecturers.find(lecturer => lecturer.id === invitation.lecturerId);
+        if (profile) department.textContent = departmentLabel(profile.department);
+      });
+      if (invitation.status !== 'pending') return item;
 
       const cancel = document.createElement('button');
       cancel.type = 'button';
@@ -150,19 +185,7 @@
         cancelDialog.showModal();
       });
 
-      directory?.then(lecturers => {
-        const profile = lecturers.find(lecturer => lecturer.id === invitation.lecturerId);
-        if (profile) department.textContent = departmentLabel(profile.department);
-      });
-
-      const decision = document.createElement('p');
-      decision.className = 'pending-invitation__meta';
-      decision.textContent = ({ pending: 'Chờ phản hồi', accepted: 'Đã đồng ý hướng dẫn', rejected: 'Đã từ chối' })[invitation.status];
-      if (invitation.decidedAt) decision.textContent += ' · ' + new Date(invitation.decidedAt).toLocaleString('vi-VN');
-      content.append(decision);
-      if (invitation.decisionNote) { const reason = document.createElement('p'); reason.textContent = invitation.decisionNote; content.append(reason); }
-      item.append(avatar, content);
-      if (invitation.status === 'pending') item.append(cancel);
+      actions.append(cancel);
       return item;
     }));
   }
@@ -300,12 +323,12 @@
       inviteSubmit.disabled = !state || !selectedLecturer || !service.getPermission(state).allowed;
     }
   });
-  cancelConfirm.addEventListener('click', () => {
+  cancelConfirm.addEventListener('click', async () => {
     if (saving || !cancelDialog.open || !pendingCancel) return;
     saving = true;
     cancelError.hidden = true;
     try {
-      service.cancelInvitation(projectId, pendingCancel.id, pendingCancel.revision);
+      await service.cancelInvitation(projectId, pendingCancel.id, pendingCancel.revision);
       cancelDialog.close();
       refresh();
       result.hidden = true;
@@ -319,6 +342,7 @@
   cancelSuccess.addEventListener('close', () => inviteButton.focus({ preventScroll: true }));
   window.addEventListener('storage', event => { if (event.key === globalThis.IE104.storage.teamKey || event.key === null) refresh(); });
   document.addEventListener('ie104:project-team-updated', refresh);
+  globalThis.IE104Supervision?.subscribe(refresh);
   window.addEventListener('pageshow', refresh);
   refresh();
   document.body.dataset.teamReady = 'true';

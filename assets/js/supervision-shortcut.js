@@ -10,6 +10,7 @@
   const entry = window.IE104SupervisionEntry;
   const dateFormat = new Intl.DateTimeFormat('vi-VN', { dateStyle: 'short', timeStyle: 'short' });
   let currentStudent;
+  let teacherSession;
 
   function latestResponse(records) {
     let latest;
@@ -32,6 +33,13 @@
       return;
     }
 
+    if (isTeacher && !teacherSession) {
+      summary.textContent = teacherSession === null
+        ? 'Đăng nhập bằng tài khoản giảng viên để xem lời mời đã nhận.'
+        : 'Đang kiểm tra phiên đăng nhập…';
+      return;
+    }
+
     let records;
     try {
       records = store.getAll();
@@ -41,8 +49,9 @@
     }
 
     if (isTeacher) {
-      const waiting = records.filter(store.needsTeacherReply).length;
-      summary.textContent = waiting ? `${waiting} lời mời đang chờ giảng viên phản hồi trong bản demo.`
+      const waiting = records.filter(record => (teacherSession.demo || teacherSession.teacherIds.includes(record.teacher.id)) &&
+        store.needsTeacherReply(record)).length;
+      summary.textContent = waiting ? `${waiting} lời mời đang chờ trả lời`
         : 'Hiện chưa có lời mời nào cần giảng viên phản hồi.';
       return;
     }
@@ -65,16 +74,20 @@
 
   store.subscribe(render);
   render();
-  if (!isTeacher) {
-    const refreshSession = async () => {
+  const refreshSession = async () => {
+    if (isTeacher) {
+      teacherSession = undefined;
+      render();
+      teacherSession = await entry.getTeacherInboxSession().catch(() => null);
+    } else {
       currentStudent = undefined;
       render();
       currentStudent = await entry.getStudent().catch(() => null);
-      render();
-    };
-    refreshSession();
-    window.addEventListener('pageshow', (event) => {
-      if (event.persisted) refreshSession();
-    });
-  }
+    }
+    render();
+  };
+  refreshSession();
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted) refreshSession();
+  });
 })();

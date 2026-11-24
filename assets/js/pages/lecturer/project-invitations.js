@@ -8,6 +8,7 @@
   const status = host.querySelector('[role="status"]');
   const login = host.querySelector('[data-invitation-login]');
   let generation = 0;
+  const reportCount = count => host.dispatchEvent(new CustomEvent('ie104:project-invitation-count', {bubbles:true, detail:count}));
   const text = (tag, value, className) => { const node = document.createElement(tag); node.textContent = value; if (className) node.className = className; return node; };
   const format = new Intl.DateTimeFormat('vi-VN', {day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit',hourCycle:'h23',timeZone:'Asia/Ho_Chi_Minh'});
   async function refresh() {
@@ -16,7 +17,7 @@
       const recipient = await identity.resolve();
       if (current !== generation) return;
       login.hidden = Boolean(recipient);
-      if (!recipient) { list.replaceChildren(); status.textContent = 'Đăng nhập bằng tài khoản giảng viên để xem lời mời.'; return; }
+      if (!recipient) { list.replaceChildren(); reportCount(0); status.textContent = 'Đăng nhập bằng tài khoản giảng viên để xem lời mời.'; return; }
       const entries = service.listInvitations(recipient);
       status.textContent = entries.length ? '' : 'Không có lời mời hướng dẫn đang chờ.';
       list.replaceChildren(...entries.map(entry => {
@@ -38,9 +39,8 @@
         }
         actions.append(decisions); card.append(content,actions); return card;
       }));
-      const badge = document.querySelector('#supervision-tab [data-supervision-count]');
-      if (badge) { badge.hidden = !entries.length; badge.textContent = entries.length || ''; }
-    } catch (failure) { if(current===generation) { list.replaceChildren(); status.textContent=failure.message; } }
+      reportCount(entries.length);
+    } catch (failure) { if(current===generation) { list.replaceChildren(); reportCount(0); status.textContent=failure.message; } }
   }
   window.addEventListener('storage', event=> {if([app.storage.teamKey,null].includes(event.key)) refresh();});
   document.addEventListener('ie104:project-team-updated',refresh);

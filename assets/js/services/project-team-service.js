@@ -25,6 +25,14 @@
   function getState(projectId, { preview = false } = {}) {
     const { project, team } = getDefinition(projectId, preview);
     const state = stateFrom(team, preview ? [] : app.storage.readProjectTeams());
+    if (!preview && globalThis.IE104Supervision) {
+      const threads = globalThis.IE104Supervision.getAll().filter(record => record.projectId === projectId);
+      state.invitations.push(...threads.map(record => ({
+        id: record.id, lecturerId: record.teacher.id, lecturerName: record.teacher.name,
+        status: record.status, createdAt: record.createdAt, thread: true,
+        decidedAt: record.decision?.at, decisionNote: record.decision?.note,
+      })));
+    }
     return { ...state, project: clone(project), maxMembers: team.maxMembers, supervisorIds: supervisorIds(team, state), ...(preview ? { preview } : {}) };
   }
 
@@ -47,7 +55,7 @@
   }
 
   function canInvite(lecturer, state) {
-    const pending = state.invitations.filter(invitation => invitation.status === 'pending');
+    const pending = state.invitations.filter(invitation => ['pending', 'accepted'].includes(invitation.status));
     const excluded = [...state.supervisorIds, ...pending.map(invitation => invitation.lecturerId)];
     if (excluded.includes(lecturer.id)) return false;
     return !lecturer.email || !app.data.projectLecturers.some(existing =>
@@ -64,9 +72,7 @@
     const { project, team } = getDefinition(projectId);
     const records = app.storage.readProjectTeams();
     const state = stateFrom(team, records);
-    const permission = getPermission({ ...state, project });
-    if (!permission.allowed) throw new Error(permission.reason);
-    if (!Number.isInteger(revision) || revision !== state.revision) throw new Error('Thông tin nhóm đã thay đổi ở tab khác. Hãy đóng hộp thoại và mở lại để xem bản mới.');
+    checkChange({ ...state, project }, revision);
     change(state, team);
     state.revision += 1;
     state.updatedAt = new Date().toISOString();
@@ -85,22 +91,48 @@
   }
 
   async function inviteSupervisor(projectId, lecturerId, message, revision) {
-    const lecturers = await globalThis.IE104SupervisionEntry.getTeachers();
+    const entry = globalThis.IE104SupervisionEntry;
+    const store = globalThis.IE104Supervision;
+    const [lecturers, student] = await Promise.all([entry.getTeachers(), store ? entry.getStudent() : null]);
     const lecturer = lecturers.find(item => item.id === lecturerId);
     if (!lecturer) throw new Error('Chọn giảng viên từ danh sách kết quả.');
+    if (!store) {
+      return mutate(projectId, revision, (state, team) => {
+        if (!canInvite(lecturer, { ...state, supervisorIds: supervisorIds(team, state) })) {
+          throw new Error('Giảng viên đã tham gia đề tài hoặc đã có lời mời đang chờ.');
+        }
+        if (state.invitations.some(item => item.status === 'accepted')) throw new Error('Đề tài đã có giảng viên đồng hướng dẫn được mời.');
+        const text = String(message || '').trim();
+        if (text.length > 2000) throw new Error('Lời nhắn tối đa 2000 ký tự.');
+        state.invitations.push({ id: `INV-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`}`, lecturerId, lecturerName: lecturer.name, lecturerEmail: lecturer.email || '', lecturerDepartment: lecturer.department || '', role: 'secondary', message: text, status: 'pending', createdAt: new Date().toISOString() });
+      });
+    }
+    if (!student) throw new Error('Đăng nhập bằng tài khoản sinh viên để tiếp tục gửi lời mời hướng dẫn.');
 
-    return mutate(projectId, revision, (state, team) => {
-      if (!canInvite(lecturer, { ...state, supervisorIds: supervisorIds(team, state) })) {
-        throw new Error('Giảng viên đã tham gia đề tài hoặc đã có lời mời đang chờ.');
-      }
-      if (state.invitations.filter(item => item.status === 'accepted').length >= 1) throw new Error('Đề tài đã có giảng viên đồng hướng dẫn được mời.');
-      const text = String(message || '').trim();
-      if (text.length > 2000) throw new Error('Lời nhắn tối đa 2000 ký tự.');
-      state.invitations.push({ id: `INV-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`}`, lecturerId, lecturerName: lecturer.name, lecturerEmail: lecturer.email || '', lecturerDepartment: lecturer.department || '', role: 'secondary', message: text, status: 'pending', createdAt: new Date().toISOString() });
+    const state = getState(projectId);
+    checkChange(state, revision);
+    if (!canInvite(lecturer, state)) throw new Error('Giảng viên đã tham gia đề tài hoặc đã có lời mời đang chờ.');
+    if (state.invitations.some(item => item.status === 'accepted')) throw new Error('Đề tài đã có giảng viên đồng hướng dẫn được mời.');
+    return store.create({
+      student, teacher: lecturer, projectId, subject: state.project.title.slice(0, 120),
+      message: String(message || '').trim() || 'Nhóm em trân trọng mời thầy/cô đồng hướng dẫn đề tài này.',
     });
   }
 
+  function checkChange(state, revision) {
+    const permission = getPermission(state);
+    if (!permission.allowed) throw new Error(permission.reason);
+    if (!Number.isInteger(revision) || revision !== state.revision) throw new Error('Thông tin nhóm đã thay đổi ở tab khác. Hãy đóng hộp thoại và mở lại để xem bản mới.');
+  }
+
   function cancelInvitation(projectId, invitationId, revision) {
+    const state = getState(projectId);
+    checkChange(state, revision);
+    const invitation = state.invitations.find(item => item.id === invitationId);
+    if (invitation?.thread) {
+      return globalThis.IE104SupervisionEntry.getStudent().then(student =>
+        globalThis.IE104Supervision.cancelProjectInvitation(invitationId, student?.id, projectId));
+    }
     return mutate(projectId, revision, state => {
       const invitation = state.invitations.find(item => item.id === invitationId);
       if (!invitation || invitation.status !== 'pending') throw new Error('Lời mời này không còn ở trạng thái đang chờ.');
@@ -123,7 +155,7 @@
       seen.add(project.id);
       const state = getState(project.id);
       for (const invitation of state.invitations) {
-        if (canReview(invitation, lecturerId) && invitation.status === 'pending' && project.status === 'dang-thuc-hien') result.push({ project: clone(project), invitation: clone(invitation), revision: state.revision, members: state.members });
+        if (!invitation.thread && canReview(invitation, lecturerId) && invitation.status === 'pending' && project.status === 'dang-thuc-hien') result.push({ project: clone(project), invitation: clone(invitation), revision: state.revision, members: state.members });
       }
     }
     return result.sort((a, b) => Date.parse(b.invitation.createdAt) - Date.parse(a.invitation.createdAt));
