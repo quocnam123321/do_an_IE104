@@ -23,8 +23,8 @@
       objectives:[...topic.objectives], outcomes:[...topic.outcomes], requirements:[...topic.requirements], supervisor:{...topic.supervisor},
       methodAndScope:topic.methodAndScope || '', plan:topic.plan || '',
       registrationRules:{minMembers:1,maxMembers:topic.registration.maxMembers}, registration:{...topic.registration},
-      startsAt:topic.startsAt, progressReportDate:topic.progressReportDate, finalReportDate:topic.finalReportDate,
-      availability:availability(topic,now), imageRef:topic.imageRef || null, attachmentRef:topic.attachmentRef || null, attachmentName:topic.attachmentName || '',
+      startsAt:topic.startsAt, progressReportDate:topic.progressReportDate, finalReportDate:topic.finalReportDate, completesAt:topic.completesAt,
+      availability:availability(topic,now), imageRef:topic.imageRef || null, attachmentRef:topic.attachmentRef, attachmentName:topic.attachmentName || '',
       detailUrl:`chi-tiet-de-tai-gv-mo-dang-ky.html?topic=${encodeURIComponent(publicId(topic))}`,
     };
   }

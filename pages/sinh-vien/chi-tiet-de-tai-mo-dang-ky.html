@@ -10,13 +10,13 @@
     />
     <title>Chi tiết đề tài mở đăng ký | Quản lý đồ án</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-student.js"></script>
+    <script defer src="../../assets/js/i18n/en-student.js?v=20261124-topic-attachment"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
-    <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css" />
+    <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css?v=20261124-topic-notes" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
   <script src="../../assets/js/data/mock-data.js" defer></script>
 <script src="../../assets/js/teacher-topic-store.js" defer></script>
@@ -28,7 +28,8 @@
 <script src="../../assets/js/data/lecturer-merge-catalog.js?v=20261123-audit-names2" defer></script>
 <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
 <script src="../../assets/js/services/lecturer-topic-service.js?v=20261123-merged-8f1631f" defer></script>
-<script src="../../assets/js/services/published-topic-service.js?v=20261123-merged-8f1631f" defer></script>
+<script src="../../assets/js/services/published-topic-service.js?v=20261124-topic-attachment" defer></script>
+<script src="../../assets/js/services/lecturer-topic-file-service.js" defer></script>
 <script src="../../assets/js/services/registration-service.js" defer></script>
 <script src="../../assets/js/data/student-profile.js" defer></script>
 <script src="../../assets/js/services/profile-service.js" defer></script>
@@ -36,16 +37,20 @@
 <script src="../../assets/js/data/student-uit-catalog.js?v=20261123-audit-names2" defer></script>
 <script src="../../assets/js/services/student-topic-codes.js?v=20261123-sv-uit-2" defer></script>
 <script src="../../assets/js/shared/student-course-label.js?v=20261122-course-label" defer></script>
-<script src="../../assets/js/pages/student/open-topic.js?v=20261122-topic-code" defer></script>
-<script src="../../assets/js/pages/student/topic-enrollment.js?v=20261123-members-match-2" defer></script>
+<script src="../../assets/js/shared/registration-supervisor.js" defer></script>
+<script src="../../assets/js/shared/download-file.js" defer></script>
+<script src="../../assets/js/shared/topic-attachment.js" defer></script>
+<script src="../../assets/js/pages/student/open-topic.js?v=20261124-topic-attachment" defer></script>
+<script src="../../assets/js/pages/student/topic-enrollment.js?v=20261124-group-name" defer></script>
 <link rel="stylesheet" href="../../assets/css/topic-enrollment.css">
+<link rel="stylesheet" href="../../assets/css/proposal-request-detail.css?v=20261124-topic-attachment">
 <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css" />
 <link rel="stylesheet" href="../../assets/css/student-topic-overview.css" />
 <script src="../../assets/js/dialog-commands.js" defer></script>
 <link rel="stylesheet" href="../../assets/css/topic-media-shared.css">
   <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script src="../../assets/js/shared/logout.js" defer></script>
-    <link rel="stylesheet" href="../../assets/css/registration-detail.css?v=20261123-members-match-2" />
+    <link rel="stylesheet" href="../../assets/css/registration-detail.css?v=20261124-group-name" />
   </head>
   <body id="page-top" tabindex="-1" class="registration-page registration-detail-page">
     <a class="skip-link" href="#main-content">
@@ -168,40 +173,40 @@
         <p data-open-topic-notice role="status" hidden></p>
         <article data-open-topic aria-labelledby="open-topic-title" hidden>
           <div class="detail-layout">
-          <div class="overview">
-            <div class="topic-image topic-image--uit">
-              <img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" />
-            </div>
-            <div class="summary">
-              <h2 id="open-topic-title" data-topic-field="title"></h2>
-              <dl class="summary__meta">
-                <div><dt>Mã đề tài</dt><dd data-topic-field="code"></dd></div>
-                <div><dt>Loại đề tài</dt><dd data-topic-field="type"></dd></div>
-                <div><dt>Môn học</dt><dd data-topic-field="course"></dd></div>
-                <div><dt>Hình thức</dt><dd data-topic-field="mode"></dd></div>
-                <div><dt>Học kỳ</dt><dd data-topic-field="semester"></dd></div>
-                <div><dt>Năm học</dt><dd data-topic-field="academicYear"></dd></div>
-              </dl>
-            </div>
-          </div>
             <div class="detail-body">
+              <div class="overview">
+                <div class="topic-image topic-image--uit">
+                  <img src="../../assets/images/uit-logo.png" alt="Logo Trường Đại học Công nghệ Thông tin - UIT" width="697" height="833" />
+                </div>
+                <div class="summary">
+                  <h2 id="open-topic-title" data-topic-field="title"></h2>
+                  <dl class="summary__meta">
+                    <div><dt>Mã đề tài</dt><dd data-topic-field="code"></dd></div>
+                    <div><dt>Loại đề tài</dt><dd data-topic-field="type"></dd></div>
+                    <div><dt>Môn học</dt><dd data-topic-field="course"></dd></div>
+                    <div><dt>Hình thức</dt><dd data-topic-field="mode"></dd></div>
+                    <div><dt>Học kỳ</dt><dd data-topic-field="semester"></dd></div>
+                    <div><dt>Năm học</dt><dd data-topic-field="academicYear"></dd></div>
+                  </dl>
+                </div>
+              </div>
               <section class="panel supervisor" aria-labelledby="supervisor-title">
-                <h3 id="supervisor-title">Giảng viên hướng dẫn</h3>
+                <h3 id="supervisor-title">Giảng viên hướng dẫn chính</h3>
                 <div class="supervisor__profile">
-                  <img src="../../assets/images/student-avatar.svg" alt="Ảnh đại diện giảng viên giữ chỗ" width="40" height="40" />
-                  <div>
-                    <h4 data-topic-field="lecturer"></h4>
-                    <p data-sample-degree hidden>Học vị: Thạc sĩ</p>
+                  <span class="supervisor__avatar" data-supervisor-avatar aria-hidden="true" hidden></span>
+                  <div class="supervisor__details">
+                    <p class="supervisor__name" data-supervisor-name></p>
+                    <p data-supervisor-department></p>
+                    <p>
+                      <a data-supervisor-email hidden></a>
+                      <span data-supervisor-no-email>Chưa cập nhật email</span>
+                    </p>
                   </div>
                 </div>
-                <dl>
-                  <div class="supervisor__info-row supervisor__info-row--stacked"><dt>Lĩnh vực chuyên môn</dt><dd data-topic-field="research"></dd></div>
-                  <div class="supervisor__info-row supervisor__info-row--stacked"><dt>Email</dt><dd data-topic-field="email"></dd></div>
-                </dl>
               </section>
               <section class="panel">
                 <h3>
-                  Mô tả đề tài
+                  Tổng quan đề tài
                 </h3>
                 <div class="content-box" data-topic-field="description"></div>
               </section>
@@ -223,25 +228,46 @@
                 </h3>
                 <div class="content-box" data-topic-field="requirements"></div>
               </section>
-              <section class="panel" aria-labelledby="topic-attachments-title">
-                <h3 id="topic-attachments-title">Tài liệu đính kèm</h3>
-                <ul class="topic-attachments">
-                  <li>
-                    <span class="topic-attachments__file"><svg class="topic-attachments__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg><span>Đề cương đề tài.pdf</span></span>
-                    <button type="button" disabled>Tải xuống</button>
-                  </li>
-                </ul>
+              <section class="panel request-attachments" aria-labelledby="attachments-title">
+                <h3 id="attachments-title">Tài liệu đính kèm</h3>
+                <div class="request-attachments__row" data-topic-attachment hidden>
+                  <div class="request-attachments__file">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8M8 17h6" />
+                    </svg>
+                    <span data-topic-attachment-name></span>
+                  </div>
+                  <button class="request-attachments__download" type="button" data-topic-attachment-download disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5" />
+                    </svg>
+                    <span>Tải xuống</span>
+                  </button>
+                </div>
+                <p data-topic-attachment-empty>Chưa có tài liệu đính kèm</p>
+                <p data-topic-attachment-status role="status"></p>
               </section>
             </div>
             <div class="detail-sidebar">
-
               <aside class="registration-notes" aria-labelledby="registration-notes-title">
                 <h3 id="registration-notes-title">Lưu ý khi đăng ký</h3>
-                <ol>
-                  <li><span>Đọc kỹ yêu cầu trước khi đăng ký.</span></li>
-                  <li><span>Kiểm tra thông tin và thành viên nhóm.</span></li>
-                  <li><span>Đăng ký sẽ được gửi đến giảng viên để xem xét.</span></li>
-                  <li><span>Mở đề tài đang thực hiện trong “Đề tài của tôi”.</span></li>
+                <ol class="registration-notes__list" role="list">
+                  <li>
+                    <h4>Đọc yêu cầu đề tài</h4>
+                    <p>Xem kỹ nội dung và điều kiện trước khi đăng ký.</p>
+                  </li>
+                  <li>
+                    <h4>Kiểm tra thông tin nhóm</h4>
+                    <p>Rà soát thông tin cá nhân và danh sách thành viên.</p>
+                  </li>
+                  <li>
+                    <h4>Xác nhận đăng ký</h4>
+                    <p>Kiểm tra lại thông tin trước khi xác nhận.</p>
+                  </li>
+                  <li>
+                    <h4>Mở đề tài sau khi đăng ký</h4>
+                    <p>Vào “Đề tài của tôi” để mở đề tài đang thực hiện.</p>
+                  </li>
                 </ol>
               </aside>
               <section id="topic-registration" class="panel" aria-labelledby="registration-title">

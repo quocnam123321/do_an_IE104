@@ -5,7 +5,23 @@
   if (!root || !notice || !app?.services?.publishedTopics) return;
   const id = new URLSearchParams(location.search).get('topic');
   const form = root.querySelector('.registration-form');
+  const renderAttachment = app.ui.createTopicAttachment(root.querySelector('.request-attachments'));
   const text = (selector,value) => { const node = root.querySelector(selector); if (node) node.textContent = value || 'Chưa có thông tin'; };
+  const timeZone = 'Asia/Ho_Chi_Minh';
+  const dateFormat = new Intl.DateTimeFormat('vi-VN', {
+    day: '2-digit', month: '2-digit', year: 'numeric', timeZone,
+  });
+  const timeFormat = new Intl.DateTimeFormat('vi-VN', {
+    hour: '2-digit', minute: '2-digit', hourCycle: 'h23', timeZone,
+  });
+  function formatDate(value, includeTime = false) {
+    if (!value) return '';
+    const date = new Date(value);
+    if (!Number.isFinite(date.getTime())) return '';
+    const day = dateFormat.format(date);
+    return includeTime ? `${day} · ${timeFormat.format(date)}` : day;
+  }
+
   let ready = false;
   function refresh() {
     try {
@@ -15,26 +31,34 @@
       document.body.dataset.publishedTopic = topic.id;
       root.setAttribute('aria-label',topic.title);
       document.title = `${topic.title} | Đăng ký đề tài`;
-      text('.summary h2',topic.title);
-      const { maxMembers } = topic.registrationRules;
-      const mode = maxMembers === 1 ? 'Cá nhân' : 'Cá nhân hoặc theo nhóm';
-      const code = app.services.studentTopicCodes.get(topic) || 'Chưa có mã đề tài';
-      const values = [code,topic.typeLabel,app.ui.studentCourseLabel(topic, true),mode,topic.semester === 'he' ? 'Hè' : topic.semester,topic.academicYear];
-      root.querySelectorAll('.summary__meta dd').forEach((node,index) => { node.textContent = values[index]; });
-      text('.supervisor__profile h4',topic.lecturer);
-      text('.supervisor__profile p',topic.supervisor.faculty);
-      root.querySelectorAll('.supervisor__info-row dd').forEach((node,index) => { node.textContent = (index ? topic.supervisor.email : topic.supervisor.research) || 'Chưa có thông tin'; });
+      text('#published-topic-title', topic.title);
+      const badge = root.querySelector('[data-published-status]');
+      badge.textContent = topic.availability.allowed ? 'Đang mở đăng ký' : topic.availability.label;
+      badge.dataset.open = String(topic.availability.allowed);
+      const final = formatDate(topic.finalReportDate);
+      const completion = !final && formatDate(topic.completesAt);
+      const deadline = formatDate(topic.registration.deadline, true);
+      const fields = {
+        type: topic.typeLabel,
+        course: app.ui.studentCourseLabel(topic, true),
+        semester: topic.semester === 'he' ? 'Học kỳ hè' : `Học kỳ ${topic.semester}`,
+        year: topic.academicYear.replace(/\s*[-–]\s*/, ' – '),
+        code: app.services.studentTopicCodes.get(topic) || 'Chưa có mã đề tài',
+        start: formatDate(topic.startsAt),
+        progress: formatDate(topic.progressReportDate),
+        final,
+        completion,
+        deadline,
+      };
+      for (const [field, value] of Object.entries(fields)) text(`[data-topic-field="${field}"]`, value);
+      root.querySelector('[data-topic-completion]').hidden = !completion;
+      app.ui.renderRegistrationSupervisor(root, topic.lecturer, topic.supervisor);
       const content = root.querySelectorAll('.detail-body > section.panel .content-box');
       [topic.description,topic.objectives,topic.outcomes,topic.requirements].forEach((value,index) => {
         if (Array.isArray(value)) { const list = document.createElement('ul'); for (const line of value) { const item = document.createElement('li'); item.textContent = line; list.append(item); } content[index].replaceChildren(list); }
         else content[index].textContent = value;
       });
-      const file = root.querySelector('.topic-attachments__file');
-      const icon = file.querySelector('svg')?.cloneNode(true);
-      file.replaceChildren(); if (icon) file.append(icon); file.append(document.createTextNode(topic.attachmentName || 'Chưa có tài liệu đính kèm'));
-      const status = root.querySelector('[data-published-availability]');
-      status.textContent = `${topic.availability.label}. Hạn đăng ký: ${new Intl.DateTimeFormat('vi-VN',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',timeZone:'Asia/Ho_Chi_Minh'}).format(new Date(topic.registration.deadline))}.`;
-      status.dataset.closed = String(!topic.availability.allowed);
+      renderAttachment(topic, () => app.services.lecturerTopicFiles.readPublished(topic.id, 'attachment'));
       if (!ready) {
         const student = app.data.currentStudent;
         root.querySelector('#student-code').value = student?.code || '';

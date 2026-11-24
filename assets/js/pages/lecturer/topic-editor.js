@@ -5,45 +5,44 @@
   const service = app.services.lecturerTopicEditor;
   const fileService = app.services.lecturerTopicFiles;
   const editing = form.id === 'topic-edit-form';
-  const names = editing
-    ? ['ma-de-tai','ten-de-tai','loai-de-tai','mon-hoc','hoc-ky','nam-hoc','mo-ta','muc-tieu','ket-qua-du-kien','yeu-cau-thuc-hien','so-thanh-vien-toi-thieu','so-thanh-vien-toi-da','linh-vuc','cong-nghe-goi-y','mo-dang-ky-luc','dong-dang-ky-luc','ngay-bat-dau-thuc-hien','han-hoan-thanh-de-tai']
-    : ['topic-code','topic-name','topic-type','course','semester','academic-year','topic-description','topic-objectives','topic-outcomes','topic-requirements','minimum-members','maximum-members'];
-  const keys = ['id','title','topicType','course','semester','academicYear','description','objectives','outcomes','requirements','minMembers','maxMembers','domain','technologies','opensAt','deadline','startsAt','completesAt'];
-  const fields = Object.fromEntries(names.map((name, index) => [keys[index], document.getElementById(name)]));
-  fields.methodAndScope = document.getElementById('topic-method-and-scope');
-  fields.plan = document.getElementById('topic-plan');
-  if (!editing) {
-    fields.deadline = document.getElementById('registration-closes');
-    fields.startsAt = document.getElementById('topic-start-date');
-    fields.progressReportDate = document.getElementById('topic-progress-report-date');
-    fields.finalReportDate = document.getElementById('topic-final-report-date');
-  }
+  const fieldIds = {
+    id: 'topic-code', title: 'topic-name', topicType: 'topic-type', course: 'course',
+    semester: 'semester', academicYear: 'academic-year', deadline: 'registration-closes',
+    startsAt: 'topic-start-date', progressReportDate: 'topic-progress-report-date',
+    finalReportDate: 'topic-final-report-date', description: 'topic-description',
+    objectives: 'topic-objectives', outcomes: 'topic-outcomes', requirements: 'topic-requirements',
+    methodAndScope: 'topic-method-and-scope', plan: 'topic-plan',
+    minMembers: 'minimum-members', maxMembers: 'maximum-members',
+  };
+  const fields = Object.fromEntries(Object.entries(fieldIds).map(([key, id]) => [key, document.getElementById(id)]));
   const datePicker = app.ui?.proposalDatePicker;
   const pickers = app.ui?.proposalPickers;
-  const courseOptions = editing ? service.catalog.courses : Object.fromEntries(
+  const courseOptions = Object.fromEntries(
     Object.keys(service.catalog.courses).map(course => [course, window.UITLecturerCatalog.subjectLabel({ topicType: 'course', course }, true)])
   );
   const fixedCourseTypes = { graduation: 'do-an-tot-nghiep', thesis: 'khoa-luan' };
   const submit = form.querySelector('button[type="submit"]');
   const submitLabel = submit.textContent.trim();
-  const successDialog = document.getElementById('topic-created-dialog');
-  const viewCreatedTopic = document.getElementById('view-created-topic');
+  const successDialog = document.getElementById(editing ? 'topic-updated-dialog' : 'topic-created-dialog');
+  const viewSavedTopic = document.getElementById(editing ? 'view-updated-topic' : 'view-created-topic');
   successDialog?.querySelector('.success-dialog__close').addEventListener('click', () => successDialog.close());
-  successDialog?.addEventListener('close', () => viewCreatedTopic.focus());
+  successDialog?.addEventListener('close', () => viewSavedTopic.focus());
   const listUrl = app.services.lecturerTopics.returnUrl('created', new URLSearchParams(location.search).get('return'), location.href);
   document.querySelectorAll('[data-topic-editor-return]').forEach(link => { link.href = listUrl; });
   const status = document.createElement('p'); status.className = 'topic-editor-status'; status.setAttribute('role', 'status'); status.tabIndex = -1;
   const error = document.createElement('div'); error.className = 'topic-editor-error'; error.setAttribute('role', 'alert'); error.tabIndex = -1; error.hidden = true;
   form.prepend(status);
-  if (editing) form.prepend(error);
-  else form.querySelector('.topic-form__actions').before(error);
+  form.querySelector('.topic-form__actions').before(error);
   let original = null; let saving = false; let dirty = false; let committed = false;
   const files = {};
   const removed = {};
   const pendingFiles = new Map();
   const inlineErrors = new Map();
   const owner = app.data.currentLecturer.id;
-  const localDate = value => value ? new Date(Date.parse(value) + 7 * 3600000).toISOString().slice(0,16) : '';
+  const localDate = value => {
+    const timestamp = Date.parse(value);
+    return Number.isFinite(timestamp) ? new Date(timestamp + 7 * 3600000).toISOString().slice(0, 16) : '';
+  };
   function select(field, options, value, placeholder = field.querySelector('option[value=""]')?.textContent || 'Chọn giá trị') {
     const placeholderOption = new Option(placeholder, '');
     placeholderOption.disabled = field.hasAttribute('data-proposal-picker');
@@ -63,21 +62,6 @@
     return code;
   }
   function showErrors(errors) {
-    if (!editing) {
-      showCreateErrors(errors);
-      return;
-    }
-    form.querySelectorAll('[aria-invalid]:not([type="file"])').forEach(node => node.removeAttribute('aria-invalid'));
-    const list = document.createElement('ul');
-    for (const item of errors) {
-      const li = document.createElement('li'); const field = errorField(item.field);
-      if (field) { field.setAttribute('aria-invalid','true'); const link = document.createElement('a'); link.href = `#${field.id}`; link.textContent = `${form.querySelector(`label[for="${field.id}"]`)?.textContent.trim() || item.field}: ${item.message}`; link.addEventListener('click', event => { event.preventDefault(); field.focus(); }); li.append(link); }
-      else li.textContent = item.message;
-      list.append(li);
-    }
-    error.replaceChildren(list); error.hidden = false; (errorField(errors[0]?.field) || error).focus();
-  }
-  function showCreateErrors(errors) {
     for (const field of inlineErrors.keys()) clearFieldError(field);
     const fieldMessages = new Map();
     const generalMessages = [];
@@ -108,19 +92,14 @@
   }
   function clearFieldError(field) {
     field.removeAttribute('aria-invalid');
-    if (!editing) {
-      const note = inlineErrors.get(field);
-      if (note) {
-        const descriptions = (field.getAttribute('aria-describedby') || '').split(/\s+/).filter(id => id && id !== note.id);
-        if (descriptions.length) field.setAttribute('aria-describedby', descriptions.join(' '));
-        else field.removeAttribute('aria-describedby');
-        note.remove();
-        inlineErrors.delete(field);
-      }
-      return;
+    const note = inlineErrors.get(field);
+    if (note) {
+      const descriptions = (field.getAttribute('aria-describedby') || '').split(/\s+/).filter(id => id && id !== note.id);
+      if (descriptions.length) field.setAttribute('aria-describedby', descriptions.join(' '));
+      else field.removeAttribute('aria-describedby');
+      note.remove();
+      inlineErrors.delete(field);
     }
-    error.querySelector(`a[href="#${field.id}"]`)?.closest('li').remove();
-    error.hidden = !error.querySelector('li');
   }
   try {
     if (editing) original = app.services.lecturerTopics.get('created', new URLSearchParams(location.search).get('topic') ?? app.data.lecturerRealDefaultTopicId ?? 'DA001');
@@ -132,34 +111,36 @@
     select(fields.course, courseOptions, original?.course);
     select(fields.semester, service.catalog.semesters, original?.semester);
     select(fields.academicYear, Object.fromEntries(service.catalog.years.map(year => [year, year.replace('-', ' – ')])), original?.academicYear);
-    if (fields.domain?.tagName === 'SELECT') {
-      const domains = [...app.services.lecturerTopics.list('created').map(topic => topic.domain),
-        ...(window.UITLecturerCatalog?.records || []).map(record => record.field)];
-      for (const value of new Set(domains.filter(Boolean))) {
-        if (![...fields.domain.options].some(option => option.value === value)) fields.domain.add(new Option(value, value));
-      }
-    }
     if (original) {
-      const heading = document.querySelector('.topic-status'); if (heading) heading.textContent = `Trạng thái đề tài: ${original.statusLabel}`;
-      const note = document.querySelector('.demo-notice'); if (note) note.hidden = true;
       const crumb = document.querySelector('.breadcrumb__item:nth-last-child(2) span'); if (crumb) crumb.textContent = original.title;
-      const values = { ...original, objectives: original.objectives?.join('\n'), outcomes: original.outcomes?.join('\n'), requirements: original.requirements?.join('\n'), minMembers: original.registration?.minMembers, maxMembers: original.registration?.maxMembers, deadline: localDate(original.registration?.deadline), opensAt: localDate(original.registration?.opensAt), startsAt: localDate(original.startsAt).slice(0,10), completesAt: localDate(original.completesAt) };
-      for (const [key,field] of Object.entries(fields)) if (field) field.value = values[key] ?? '';
-      if (original.progressReportDate) {
-        for (const field of [fields.opensAt, fields.completesAt]) {
+      const values = {
+        ...original,
+        id: original.displayId || original.id,
+        objectives: original.objectives?.join('\n'),
+        outcomes: original.outcomes?.join('\n'),
+        requirements: original.requirements?.join('\n'),
+        minMembers: original.registration?.minMembers,
+        maxMembers: original.registration?.maxMembers,
+        deadline: localDate(original.registration?.deadline),
+        startsAt: localDate(original.startsAt).slice(0, 10),
+        progressReportDate: localDate(original.progressReportDate).slice(0, 10),
+        finalReportDate: localDate(original.finalReportDate).slice(0, 10),
+      };
+      for (const [key, field] of Object.entries(fields)) {
+        const value = values[key] ?? '';
+        if (datePicker && field.matches('input[data-proposal-picker]')) datePicker.fill(field, value);
+        else field.value = value;
+      }
+      if (!values.progressReportDate && !values.finalReportDate) {
+        for (const field of [fields.startsAt, fields.progressReportDate, fields.finalReportDate]) {
           field.required = false;
-          form.querySelector(`label[for="${field.id}"] span`).hidden = true;
+          field.labels[0].querySelector('.topic-required').hidden = true;
         }
       }
       if (original.semester === '3' || original.semester === 3) fields.semester.value = 'summer';
-      fields.id.readOnly = true;
-      fields.id.value = original.displayId || original.id;
-      for (const [id, key] of [['ho-ten-giang-vien', 'name'], ['khoa-bo-mon', 'faculty'], ['email-lien-he', 'email']]) {
-        const field = document.getElementById(id);
-        if (field) field.value = original.supervisor?.[key] || '';
-      }
-      const back = form.querySelector('.topic-edit-form__cancel');
-      if (back) back.href = app.services.lecturerTopics.detailUrl(original);
+      const detail = new URL(app.services.lecturerTopics.detailUrl(original), location.href);
+      detail.searchParams.set('return', listUrl);
+      document.querySelectorAll('[data-topic-editor-detail]').forEach(link => { link.href = detail.href; });
     }
     form.querySelectorAll('[data-topic-file]').forEach(panel => {
       const purpose = panel.dataset.topicFile;
@@ -233,7 +214,7 @@
       fields.course.disabled = type !== 'course';
       if (fields.course.disabled) {
         const fixedCourses = app.services.proposals?.catalog.types[fixedCourseTypes[type]]?.courses;
-        const [code, label] = !editing && fixedCourses ? Object.entries(fixedCourses)[0] : ['', ''];
+        const [code, label] = fixedCourses ? Object.entries(fixedCourses)[0] : ['', ''];
         fields.course.replaceChildren(new Option(label || service.catalog.types[type] || 'Chọn loại đề tài trước', code));
       } else {
         select(fields.course, courseOptions, Object.hasOwn(courseOptions, selectedCourse) ? selectedCourse : '', 'Chọn môn học');
@@ -242,16 +223,14 @@
       if (!editing) refreshCode();
     };
     fields.topicType.addEventListener('change', courseState); courseState();
-    if (!editing) {
-      fields.course.addEventListener('change', refreshCode);
-      form.addEventListener('change', () => {
-        if (!inlineErrors.size) return;
-        const invalidFields = new Set(service.validate(read()).errors.map(item => errorField(item.field)));
-        for (const field of inlineErrors.keys()) {
-          if (!invalidFields.has(field)) clearFieldError(field);
-        }
-      });
-    }
+    if (!editing) fields.course.addEventListener('change', refreshCode);
+    form.addEventListener('change', () => {
+      if (!inlineErrors.size) return;
+      const invalidFields = new Set(service.validate(read(), original).errors.map(item => errorField(item.field)));
+      for (const field of inlineErrors.keys()) {
+        if (!invalidFields.has(field)) clearFieldError(field);
+      }
+    });
     form.noValidate = true; submit.disabled = false; submit.removeAttribute('title');
     status.textContent = '';
     form.dataset.topicEditorReady = 'true';
@@ -279,7 +258,7 @@
       }
       const commit = () => editing ? service.update(original.id,input,original.revision || 0,updates,owner) : service.create(input,updates,owner);
       topic = navigator.locks?.request ? await navigator.locks.request(app.services.lecturerTopicRepository.key,commit) : commit();
-      committed = true; dirty = false; status.textContent = 'Đã lưu đề tài trên trình duyệt này.';
+      committed = true; dirty = false; status.textContent = editing ? '' : 'Đã lưu đề tài trên trình duyệt này.';
       const old = Object.keys(updates).map(purpose => original?.[`${purpose}Ref`]).filter(Boolean);
       fileService.discard(old).catch(() => {});
     } catch (failure) { status.textContent = 'Chưa lưu thay đổi.'; showErrors([{ message: failure.message }]); }
@@ -298,9 +277,10 @@
     url.searchParams.set('return', listUrl);
     if (successDialog?.showModal) {
       successDialog.querySelector('.success-dialog__link').href = url.href;
-      viewCreatedTopic.href = url.href;
-      viewCreatedTopic.hidden = false;
+      viewSavedTopic.href = url.href;
+      viewSavedTopic.hidden = false;
       submit.hidden = true;
+      if (editing) form.querySelector('.topic-form__cancel').hidden = true;
       successDialog.showModal();
     } else {
       location.assign(url);
