@@ -66,7 +66,7 @@
   display: none;
 }
 
-.teacher-created-detail-page .topic-attachments .topic-editor-status:not(:empty) {
+.teacher-created-detail-page .request-attachments .topic-editor-status:not(:empty) {
   margin-block-start: var(--space-2);
 }
 
@@ -129,9 +129,23 @@
   background-color: color-mix(in srgb, var(--color-danger-fg) 88%, black);
 }
 
+.success-dialog.registration-success-dialog {
+  padding-block: var(--space-10);
+}
+
+.registration-success-dialog h2 {
+  margin: 0;
+  font-size: var(--text-2xl);
+  text-wrap: balance;
+}
+
 @media (max-width: 47.99rem) {
   .topic-dialog.registration-confirmation-dialog {
     padding: var(--space-4);
+  }
+
+  .registration-success-dialog h2 {
+    font-size: var(--text-xl);
   }
 }
 

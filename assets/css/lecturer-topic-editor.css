@@ -1,7 +1,7 @@
 .topic-editor-error { margin-block: var(--space-4); color: var(--color-danger-fg); }
 .topic-editor-error a { color: inherit; }
 .topic-editor-status { margin-block: var(--space-3); overflow-wrap: anywhere; }
-#create-topic-form > .topic-editor-status:empty { position: absolute; margin: 0; }
+.teacher-topic-form > .topic-editor-status:empty { position: absolute; margin: 0; }
 .topic-editor-page [aria-invalid="true"] { border-color: var(--color-danger-fg); }
 [data-topic-image] img { display: block; width: 100%; height: 100%; object-fit: contain; }
 .topic-editor-page form[aria-busy="true"] { cursor: progress; }

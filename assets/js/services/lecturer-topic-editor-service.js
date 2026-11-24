@@ -42,6 +42,8 @@
 
   function validate(input, previous = null, now = new Date()) {
     const value = Object.fromEntries(['id', 'title', 'topicType', 'course', 'semester', 'academicYear', 'description', 'objectives', 'outcomes', 'requirements', 'domain', 'technologies', 'opensAt', 'deadline', 'startsAt', 'completesAt'].map(field => [field, text(input[field])]));
+    value.domain = text(input.domain ?? previous?.domain);
+    value.technologies = text(input.technologies ?? previous?.technologies);
     value.id = value.id.toUpperCase();
     value.minMembers = text(input.minMembers) ? Number(input.minMembers) : NaN;
     value.maxMembers = text(input.maxMembers) ? Number(input.maxMembers) : NaN;
@@ -63,8 +65,15 @@
     if (!Number.isInteger(value.minMembers) || value.minMembers < 1 || value.minMembers > 100) error('minMembers', 'Nhập số nguyên từ 1 đến 100.');
     if (!Number.isInteger(value.maxMembers) || value.maxMembers < value.minMembers || value.maxMembers > 100) error('maxMembers', 'Số tối đa phải là số nguyên, không nhỏ hơn tối thiểu và không vượt quá 100.');
     for (const [field, limit] of [['domain', 100], ['technologies', 300]]) if (value[field].length > limit) error(field, `Nội dung tối đa ${limit} ký tự.`);
-    const hasReportDates = !previous || Boolean(previous.progressReportDate);
+    const reportFields = ['progressReportDate', 'finalReportDate'];
+    const reportDates = Object.fromEntries(reportFields.map(field => [field, text(input[field] ?? previous?.[field])]));
+    const hasReportDates = !previous || reportFields.some(field => reportDates[field] || previous[field]);
+    const legacySchedule = { opensAt: previous?.registration?.opensAt, completesAt: previous?.completesAt };
     for (const field of ['opensAt', 'deadline', 'startsAt', 'completesAt']) {
+      if (previous && Object.hasOwn(legacySchedule, field) && !Object.hasOwn(input, field)) {
+        value[field] = legacySchedule[field] || '';
+        continue;
+      }
       const converted = date(value[field]);
       if (field === 'startsAt' && hasReportDates) {
         if (!converted || !/^\d{4}-\d{2}-\d{2}$/.test(value[field])) error(field, 'Chọn ngày bắt đầu thực hiện hợp lệ.');
@@ -73,9 +82,9 @@
       }
       value[field] = converted;
     }
-    if (!previous) {
-      for (const field of ['progressReportDate', 'finalReportDate']) {
-        const day = text(input[field]);
+    if (hasReportDates) {
+      for (const field of reportFields) {
+        const day = reportDates[field];
         value[field] = /^\d{4}-\d{2}-\d{2}$/.test(day) && date(day) ? day : '';
         if (!value[field]) error(field, 'Chọn ngày nộp báo cáo hợp lệ.');
       }
@@ -85,12 +94,14 @@
       if (value.finalReportDate && value.progressReportDate && value.finalReportDate <= value.progressReportDate) {
         error('finalReportDate', 'Ngày nộp báo cáo cuối cùng phải sau ngày nộp báo cáo tiến độ.');
       }
-    } else if (previous.progressReportDate && value.startsAt && value.startsAt >= date(previous.progressReportDate)) {
-      error('startsAt', 'Ngày bắt đầu thực hiện phải trước ngày nộp báo cáo tiến độ.');
     }
     if (value.deadline && Date.parse(value.deadline) <= now.getTime() && value.deadline !== (previous?.registration?.deadline ? new Date(previous.registration.deadline).toISOString() : null)) error('deadline', 'Hạn đăng ký mới phải sau thời điểm hiện tại.');
-    if (value.opensAt && value.deadline && value.opensAt >= value.deadline) error('opensAt', 'Thời điểm mở phải trước hạn đăng ký.');
-    if (value.startsAt && value.completesAt && value.startsAt >= value.completesAt) error('completesAt', 'Hạn hoàn thành phải sau ngày bắt đầu.');
+    if (Date.parse(value.opensAt) >= Date.parse(value.deadline)) {
+      error(Object.hasOwn(input, 'opensAt') ? 'opensAt' : 'deadline', 'Thời điểm mở phải trước hạn đăng ký.');
+    }
+    if ((!hasReportDates || Object.hasOwn(input, 'completesAt')) && Date.parse(value.startsAt) >= Date.parse(value.completesAt)) {
+      error(Object.hasOwn(input, 'completesAt') ? 'completesAt' : 'startsAt', 'Hạn hoàn thành phải sau ngày bắt đầu.');
+    }
     return { value, errors };
   }
   function save(id, input, revision, files = {}, expectedOwner) {
@@ -125,7 +136,7 @@
       domain: value.domain, technologies: value.technologies,
       registration: { ...previous?.registration, minMembers: value.minMembers, maxMembers: value.maxMembers, deadline: value.deadline, opensAt: value.opensAt || '' },
       startsAt: value.startsAt || '', completesAt: value.completesAt || '',
-      ...(!previous && { progressReportDate: value.progressReportDate, finalReportDate: value.finalReportDate }),
+      ...(value.progressReportDate && { progressReportDate: value.progressReportDate, finalReportDate: value.finalReportDate }),
       supervisor: previous?.supervisor || getSupervisor(),
       status: previous?.status || 'open', statusLabel: previous?.statusLabel || 'Đang mở đăng ký', createdAt: previous?.createdAt || createdAt,
       revision: (previous?.revision || 0) + 1, updatedAt: now.toISOString(),

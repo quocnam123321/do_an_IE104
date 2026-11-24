@@ -443,7 +443,13 @@
   }
 
   function attachment(id, submission) {
-    if (id !== projectId) return null;
+    if (id !== projectId) {
+      const seed = app.data.teachingSeeds?.find(item => item.projectId === id)?.submissions
+        ?.find(item => item.id === submission.id && item.fileName === submission.fileName &&
+          Date.parse(item.submittedAt) === Date.parse(submission.submittedAt));
+      if (!seed || submission.files?.length || !seed.fileName) return null;
+      return { path: 'bai-nop-minh-hoa.pdf', name: seed.fileName, names: [seed.fileName], sizes: [30564] };
+    }
     const sample = submissions.find(item => item.id === submission.id && item.fileName === submission.fileName &&
       Date.parse(item.submittedAt) === Date.parse(submission.submittedAt));
     if (!sample) return null;

@@ -80,12 +80,41 @@
 .proposal-form__footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); }
 .proposal-form__actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-left: auto; }
 .proposal-notes, .registration-notes { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-surface); padding: var(--space-6); }
-.proposal-notes h2 { margin-bottom: var(--space-4); font-size: 1.125rem; font-weight: 600; }
-.proposal-notes__list { margin: 0; padding-left: var(--space-6); }
-.proposal-notes__list li + li { margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--color-border); }
-.proposal-notes__list li::marker { font-weight: 600; color: var(--color-muted-foreground); }
-.proposal-notes__list h3 { margin-bottom: var(--space-2); font-size: var(--font-size-secondary); font-weight: 600; }
-.proposal-notes__list p { font-size: var(--font-size-secondary); color: var(--color-muted-foreground); line-height: 1.7; }
+.proposal-notes > h2, .registration-notes > h3 {
+  margin: 0 0 var(--space-4);
+  font-size: var(--font-size-section-title);
+  font-weight: var(--weight-semibold);
+}
+:is(.proposal-notes__list, .registration-notes__list) { margin: 0; padding: 0; list-style: none; counter-reset: topic-note; }
+:is(.proposal-notes__list, .registration-notes__list) > li {
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  column-gap: var(--space-3);
+  row-gap: var(--space-2);
+  counter-increment: topic-note;
+}
+:is(.proposal-notes__list, .registration-notes__list) > li + li {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+:is(.proposal-notes__list, .registration-notes__list) > li::before {
+  content: counter(topic-note);
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-full);
+  background: var(--color-info-bg);
+  color: var(--color-info-fg);
+  font-weight: var(--weight-medium);
+  font-variant-numeric: tabular-nums;
+}
+:is(.proposal-notes__list, .registration-notes__list) :is(h3, h4, p) { grid-column: 2; margin: 0; font-size: var(--font-size-secondary); }
+:is(.proposal-notes__list, .registration-notes__list) :is(h3, h4) { color: var(--color-heading); font-weight: var(--weight-semibold); line-height: 1.5; }
+:is(.proposal-notes__list, .registration-notes__list) p { color: var(--color-muted-foreground); line-height: 1.6; }
 
 /* Chi tiết và form đăng ký ở cột phải. */
 .page-back { margin-bottom: var(--space-3); }
@@ -101,7 +130,7 @@
 .summary__meta > div { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: var(--space-3); }
 .summary__meta dt { color: var(--color-muted-foreground); }
 .summary__meta dd { margin: 0; min-width: 0; }
-.panel > h3, .registration-notes > h3 { font-size: 1.125rem; margin-bottom: var(--space-4); font-weight: 600; }
+.panel > h3 { font-size: 1.125rem; margin-bottom: var(--space-4); font-weight: 600; }
 .content-box { line-height: 1.75; }
 .content-box ul { margin: 0; padding-left: var(--space-6); }
 .content-box li + li { margin-top: var(--space-2); }
@@ -119,9 +148,6 @@
 .topic-attachments li { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-3); }
 .topic-attachments__file { display: inline-flex; align-items: center; gap: var(--space-2); min-width: 0; overflow-wrap: anywhere; }
 .topic-attachments__icon { flex: 0 0 auto; color: var(--color-primary); }
-.registration-notes ol { display: grid; gap: var(--space-3); margin: 0; padding: 0; list-style: none; counter-reset: registration-note; font-size: var(--font-size-secondary); color: var(--color-muted-foreground); }
-.registration-notes li { display: grid; grid-template-columns: 1.5rem minmax(0, 1fr); align-items: start; gap: var(--space-2); counter-increment: registration-note; }
-.registration-notes li::before { content: counter(registration-note); display: grid; place-items: center; width: 1.5rem; height: 1.5rem; border-radius: 50%; background: var(--color-neutral-bg); color: var(--color-foreground); font-size: .75rem; font-weight: 600; }
 .registration-form { display: grid; gap: var(--space-4); }
 .registration-form > div, .registration-form .member-card > div:not(.member-heading), .member-fields > div { display: grid; gap: var(--space-2); min-width: 0; }
 .registration-form__group-size { padding: var(--space-3); color: var(--color-foreground); background: var(--color-neutral-bg); border: 1px solid var(--color-border); border-radius: var(--radius-control); font-size: var(--font-size-secondary); }

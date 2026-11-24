@@ -5,12 +5,17 @@
   const data = app.data;
   const copy = value => JSON.parse(JSON.stringify(value));
   const openIds = ['ISE-001', 'ISE-002', 'ISE-003', 'ISE-004', 'ISE-005', 'ISEDATN-001', 'ISEDATN-002', 'ISEDATN-003', 'ISEDATN-004', 'ISEDATN-005', 'ISEDAMH-004', 'ISEDAMH-002', 'ISEDAMH-009', 'ISEDAMH-011', 'ISEDAMH-013', 'ISEDAMH-015'];
-  const myIds = ['ISEDAMH-004', 'ISEDAMH-009', 'ISEDAMH-011', 'ISEDATN-001', 'ISEDATN-002', 'ISEDATN-003', 'ISE-001', 'ISE-002', 'ISE-003', 'ISE-011'];
+  const excludedSupervised = new Set(['DA005', 'ISE-011', 'ISE-004', 'ISE-006', 'ISE-007', 'DT001']);
+  const supervised = (data.lecturerTopics || []).filter(topic => topic.kind === 'supervised' && topic.ownerId === 'GV001' && !excludedSupervised.has(topic.id) && topic.topicType !== 'master');
+  const definitions = new Map(supervised.map(topic => [topic.id, topic]));
+  const myIds = [...definitions.keys()];
+  const completedIds = ['ISE-005', 'ISE-015', 'ISEDATN-004', 'ISEDAMH-002', 'ISEDAMH-005'];
+  const completed = new Set(completedIds);
   const type = { course: 'do-an-mon-hoc', graduation: 'do-an-tot-nghiep', thesis: 'khoa-luan' };
   const rows = new Map(catalog.records.map(record => [record.id, record]));
   const defaultRequirements = ['Có kiến thức nền tảng phù hợp với lĩnh vực đề tài.', 'Thực hiện khảo sát, xây dựng giải pháp và đánh giá kết quả trong phạm vi đã thống nhất.', 'Bàn giao báo cáo, tài liệu và sản phẩm theo yêu cầu của giảng viên.'];
   const projectId = id => `UIT-SV-${id}`;
-  data.studentUITCatalog = { openIds, myIds, projectId };
+  data.studentUITCatalog = { openIds, myIds, completedIds, projectId };
   data.openTopics = [];
   data.projectLecturers ||= [];
   if (!data.projectLecturers.some(item => item.id === 'GV001')) data.projectLecturers.push({ id: 'GV001', name: 'Nguyễn Văn A', email: 'giangvien@example.com' });
@@ -40,28 +45,44 @@
   const join = value => Array.isArray(value) ? value.join('\n') : value || '';
   const projects = myIds.map((id, index) => {
     const record = rows.get(id);
+    const definition = definitions.get(id);
+    const done = completed.has(id);
+    const completedIndex = completedIds.indexOf(id);
+    const semester = done ? String(completedIndex % 2 + 1) : '1';
+    const academicYear = done ? '2024-2025' : '2026-2027';
+    const startsAt = done ? semester === '1' ? '2024-09-09' : '2025-02-10' : '2026-09-21';
+    const finalReportDate = done ? semester === '1' ? '2025-01-10' : '2025-06-10' : '2027-01-03';
+    const progressReportDate = done ? semester === '1' ? '2024-11-15' : '2025-04-15' : '2026-11-15';
     const subject = catalog.courseCatalog[catalog.courseKey(record.course)];
     const displayId = catalog.formatCode(record.topicType, record.code, catalog.facultyFor(record));
     return {
       id: projectId(id), topicId: id, displayId, topicCode: displayId,
       title: record.title, type: type[record.topicType], topicType: record.topicType, typeLabel: record.type,
       courseId: record.course || '', courseCode: subject?.code || '', courseLabel: catalog.subjectLabel(record, true),
-      semester: '1', academicYear: '2026-2027', lecturerLabel: 'Sinh viên đại diện', lecturer: record.demoSupervisor.name, lecturerId: lecturer.id,
+      semester, academicYear, startsAt, progressReportDate, finalReportDate, lecturerLabel: 'Sinh viên đại diện', lecturer: record.demoSupervisor.name, lecturerId: lecturer.id,
       representativeName: record.authors?.[0] || 'Chưa có thông tin', representativeCode: 'xxxxxxxx',
       groupName: record.supervision?.group || `Nhóm ${String(index + 30).padStart(2, '0')}`,
-      role: 'primary', roleLabel: 'Hướng dẫn chính', status: 'dang-thuc-hien', statusLabel: 'Đang thực hiện',
-      createdAt: `2026-11-${String(22 - index).padStart(2, '0')}T09:00:00+07:00`,
+      role: definition.role || 'primary', roleLabel: definition.roleLabel || 'Hướng dẫn chính',
+      status: done ? 'hoan-thanh' : 'dang-thuc-hien', statusLabel: done ? 'Hoàn thành' : 'Đang thực hiện',
+      createdAt: `${startsAt}T09:00:00+07:00`,
       description: record.description, objectives: join(record.objectives), outcomes: join(record.outcomes),
       requirements: join(record.requirements?.length ? record.requirements : defaultRequirements),
-      milestones: ['21/09/2026', '15/11/2026', '03/01/2027'], sourceRecord: copy(record),
+      milestones: [startsAt, progressReportDate, finalReportDate].map(value => value.split('-').reverse().join('/')), sourceRecord: { ...copy(record), semester, academicYear },
       detailUrl: `chi-tiet-de-tai-sinh-vien.html?project=${encodeURIComponent(projectId(id))}#tong-quan`,
     };
   });
   const query = new URLSearchParams(globalThis.location?.search || '');
   const requestedProjectId = query.get('project');
-  const retainedProjects = (data.myTopics || []).filter(project =>
-    project.id === 'DA005' || project.id === requestedProjectId);
-  data.myTopics = [...projects, ...retainedProjects];
+  data.myTopics = projects;
+  data.projectEvaluations ||= [];
+  const evaluationTemplate = copy(data.projectEvaluations.find(item => item.projectId === 'DA005') || {
+    criteria: [
+      { id: 'TC001', title: 'Chức năng và sản phẩm', weight: 50, score: 8.5, comment: 'Đáp ứng yêu cầu đã thống nhất.' },
+      { id: 'TC002', title: 'Báo cáo và tài liệu', weight: 30, score: 8, comment: 'Đã bàn giao tài liệu và báo cáo.' },
+      { id: 'TC003', title: 'Trình bày và phối hợp', weight: 20, score: 8.8, comment: 'Trình bày rõ kết quả và phối hợp tốt.' },
+    ],
+  });
+  const dayAt = (start, offset) => new Date(Date.parse(start + 'T00:00:00Z') + offset * 86400000).toISOString().slice(0, 10);
   data.studentProjectOverviews ||= {};
   data.projectTeams ||= [];
   data.projectProgress ||= [];
@@ -69,10 +90,23 @@
   data.teachingCriteria ||= [{ id: 'TC001', title: 'Nội dung', weight: 40 }, { id: 'TC002', title: 'Sản phẩm', weight: 40 }, { id: 'TC003', title: 'Báo cáo', weight: 20 }];
   projects.forEach(project => {
     const record = rows.get(project.topicId);
+    const done = completed.has(project.topicId);
+    const start = project.startsAt;
+    const evaluatedAt = done ? project.semester === '1' ? '2025-01-15' : '2025-06-15' : null;
+    let evaluation = null;
+    if (done) {
+      const score = [8.4, 8.8, 9.0, 8.6, 8.2][completedIds.indexOf(project.topicId)];
+      evaluation = { ...copy(evaluationTemplate), projectId: project.id, published: true, score,
+        resultLabel: 'Đạt yêu cầu', lecturerName: project.lecturer, evaluatedAt,
+        criteria: evaluationTemplate.criteria.map(criterion => ({ ...criterion, score })),
+        feedback: `Nhóm đã hoàn thành đề tài “${project.title}”, bàn giao kết quả và báo cáo theo phạm vi đã thống nhất.`, attachment: { name: 'Phieu_danh_gia.pdf' } };
+      data.projectEvaluations = data.projectEvaluations.filter(item => item.projectId !== project.id);
+      data.projectEvaluations.push(evaluation);
+    }
     data.studentProjectOverviews[project.id] = copy(project);
     data.projectTeams = data.projectTeams.filter(item => item.projectId !== project.id);
     const projectPeople = (record.authors?.length ? record.authors : people.map(person => person.name)).map((name, index) => ({ code: people[index]?.code || `SV-DEMO-${index + 1}`, name, role: index === 0 ? 'nhom-truong' : 'thanh-vien' }));
-    data.projectTeams.push({ projectId: project.id, maxMembers: Math.max(3, projectPeople.length), members: projectPeople, supervisorIds: ['GV001'], invitations: [] });
+    data.projectTeams.push({ projectId: project.id, maxMembers: Math.max(3, projectPeople.length), members: projectPeople, supervisorIds: project.role === 'secondary' ? ['GV002', 'GV001'] : ['GV001'], invitations: [] });
     const tasks = [];
     const fallbackTasks = ['Khảo sát bài toán và phạm vi', 'Tổng hợp tài liệu liên quan', 'Xác định yêu cầu', 'Phân tích dữ liệu đầu vào', 'Thiết kế giải pháp', 'Xây dựng bản thử nghiệm', 'Kiểm thử chức năng', 'Đánh giá kết quả', 'Hoàn thiện báo cáo', 'Chuẩn bị trình bày'];
     const fallback = { tasks: Object.fromEntries(['notStarted', 'inProgress', 'completed'].map((stage, column) => [stage, fallbackTasks.map((title, index) => [`${title}: ${record.title}`, `2026-${column === 0 ? '12' : '11'}-${String(index + 1).padStart(2, '0')}`])])),
@@ -82,27 +116,27 @@
       const entries = work.tasks[stage];
       entries.forEach(([title, deadline], index) => {
         const member = projectPeople[index % projectPeople.length];
-        const due = new Date(Date.UTC(2026, column === 0 ? 11 : column === 1 ? 10 : 9, (column === 1 ? 24 : 1) + index)).toISOString().slice(0, 10);
+        const due = done ? dayAt(start, 7 + column * 20 + index) : new Date(Date.UTC(2026, column === 0 ? 11 : column === 1 ? 10 : 9, (column === 1 ? 24 : 1) + index)).toISOString().slice(0, 10);
         tasks.push({ id: `${project.id}-task-${column}-${index}`, title, deadline: due,
           assigneeCode: member.code, assigneeCodes: [member.code],
-          status: ['chua-thuc-hien', 'dang-thuc-hien', 'da-hoan-thanh'][column], percent: [0, 50, 100][column] });
+          status: done ? 'da-hoan-thanh' : ['chua-thuc-hien', 'dang-thuc-hien', 'da-hoan-thanh'][column], percent: done ? 100 : [0, 50, 100][column] });
       });
     });
     data.projectProgress = data.projectProgress.filter(item => item.projectId !== project.id);
     data.projectProgress.push({ projectId: project.id, revision: 0, tasks, history: [] });
     const deliverables = work.deliverables;
-    const dueFor = index => new Date(Date.UTC(2026, index < 10 ? 11 : index < 20 ? 10 : 9, index % 10 + 1, 16, 59)).toISOString();
-    const requirements = deliverables.map((item, index) => ({ id: `${project.id}-request-${index}`, title: item.title, content: item.description || `Trình bày kết quả thực hiện và minh chứng cho nội dung ${item.title}.`, deadline: dueFor(index), locked: false, sourceStage: index < 10 ? 'pending' : index < 20 ? 'submitted' : 'reviewed' }));
-    const submissions = deliverables.flatMap((item, index) => index < 10 ? [] : [{
+    const dueFor = index => done ? `${dayAt(start, 20 + index * 2)}T16:59:00.000Z` : new Date(Date.UTC(2026, index < 10 ? 11 : index < 20 ? 10 : 9, index % 10 + 1, 16, 59)).toISOString();
+    const requirements = deliverables.map((item, index) => ({ id: `${project.id}-request-${index}`, title: item.title, content: item.description || `Trình bày kết quả thực hiện và minh chứng cho nội dung ${item.title}.`, deadline: dueFor(index), locked: done, sourceStage: done ? 'reviewed' : index < 10 ? 'pending' : index < 20 ? 'submitted' : 'reviewed' }));
+    const submissions = deliverables.flatMap((item, index) => !done && index < 10 ? [] : [{
       id: `${project.id}-submission-${index}`, requirementId: requirements[index].id, title: item.title,
       fileName: item.file || `bao-cao-${index + 1}.pdf`, submittedAt: new Date(Date.parse(dueFor(index)) + (index % 3 === 0 ? 3600000 : -3600000)).toISOString(),
-      feedback: index >= 20 ? item.feedback || 'Đã xem báo cáo. Bổ sung minh chứng và đối chiếu với mục tiêu đã thống nhất.' : '',
-      feedbackHistory: [], ...(index >= 20 ? { feedbackAt: '2026-11-20T09:00:00+07:00', feedbackBy: 'GV001' } : {}),
+      feedback: done || index >= 20 ? item.feedback || 'Đã xem báo cáo. Bổ sung minh chứng và đối chiếu với mục tiêu đã thống nhất.' : '',
+      feedbackHistory: [], ...(done || index >= 20 ? { feedbackAt: done ? `${evaluatedAt}T09:00:00+07:00` : '2026-11-20T09:00:00+07:00', feedbackBy: 'GV001' } : {}),
     }]);
     data.teachingSeeds = data.teachingSeeds.filter(item => item.projectId !== project.id);
-    data.teachingSeeds.push({ projectId: project.id, revision: 0, submissionsLocked: false, requirements, submissions, progressReviews: [], draft: null, publishedEvaluation: null, audit: [] });
+    data.teachingSeeds.push({ projectId: project.id, revision: 0, submissionsLocked: done, requirements, submissions, progressReviews: [], draft: null, publishedEvaluation: evaluation, audit: [] });
     const existing = data.lecturerTopics.find(item => item.kind === 'supervised' && item.id === project.topicId);
-    if (existing) Object.assign(existing, { workspaceId: project.id, sharedStudentProject: true, representativeName: project.representativeName, lecturer: project.lecturer, role: project.role, roleLabel: project.roleLabel, groupName: project.groupName, semester: project.semester, academicYear: project.academicYear, status: project.status, statusLabel: project.statusLabel });
+    if (existing) Object.assign(existing, { workspaceId: project.id, sharedStudentProject: true, representativeName: project.representativeName, lecturer: project.lecturer, role: project.role, roleLabel: project.roleLabel, groupName: project.groupName, semester: project.semester, academicYear: project.academicYear, startsAt: project.startsAt, completesAt: project.finalReportDate, milestones: project.milestones, status: project.status, statusLabel: project.statusLabel });
   });
   const viewing = projects.find(project => project.id === requestedProjectId);
   if (viewing && data.currentStudent) data.currentStudent = { ...data.currentStudent, name: viewing.representativeName };

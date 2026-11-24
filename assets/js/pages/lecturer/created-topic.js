@@ -3,6 +3,8 @@
   const mode = document.body.dataset.lecturerTopicView;
   if (!service || !mode) return;
   const missing = 'Chưa có thông tin';
+  const attachmentSection = document.querySelector('.request-attachments');
+  const renderAttachment = attachmentSection && globalThis.IE104.ui?.createTopicAttachment?.(attachmentSection);
   const params = new URLSearchParams(location.search);
   const id = params.has('topic') ? params.get('topic') : (globalThis.IE104.data.lecturerRealDefaultTopicId || 'DA001');
   const setText = (selector, value) => document.querySelectorAll(selector).forEach(node => { node.textContent = value || missing; });
@@ -120,10 +122,7 @@
         if (!list) return;
         list.replaceChildren(...(items?.length ? items : [missing]).map(text => { const item = document.createElement('li'); item.textContent = text; return item; }));
       });
-      const attachmentName = topic.attachmentName || topic.attachmentRef?.name;
-      document.querySelector('[data-topic-attachment]').hidden = !attachmentName;
-      document.querySelector('[data-topic-attachment-empty]').hidden = Boolean(attachmentName);
-      if (attachmentName) setText('.topic-attachments__file span', attachmentName);
+      renderAttachment?.(topic, () => globalThis.IE104.services.lecturerTopicFiles.read(topic.id, 'attachment'));
       const badge = document.querySelector('[data-topic-status]');
       const status = readOnly ? topic : service.createdStatus(topic);
       if (badge) { badge.textContent = status.statusLabel; badge.className = `status-badge status-badge--${status.status}`; }

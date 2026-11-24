@@ -4,7 +4,7 @@
   let generation = 0; const urls = new Set(); const placeholders = new WeakMap();
   const release = () => { for (const url of urls) URL.revokeObjectURL(url); urls.clear(); };
   const notice = document.createElement('p'); notice.className = 'topic-editor-status'; notice.setAttribute('role','status');
-  document.querySelector('.topic-attachments')?.append(notice);
+  document.querySelector('.request-attachments')?.append(notice);
   async function render() {
     const current = ++generation; release();
     const targets = [];
@@ -24,22 +24,7 @@
         node.replaceChildren(image); node.dataset.topicImage = 'true';
       } catch (failure) { if (current === generation && targets.length === 1) notice.textContent = failure.message; }
     }
-    const download = document.querySelector('.topic-attachments__download');
-    if (!download) return;
-    download.disabled = true;
-    try {
-      const value = await app.services.lecturerTopicFiles.read(document.body.dataset.topicId,'attachment');
-      if (current !== generation) return;
-      download.disabled = !value;
-      if (value) download.removeAttribute('title');
-    } catch (failure) { if (current === generation) notice.textContent = failure.message; }
   }
-  document.querySelector('.topic-attachments__download')?.addEventListener('click', async event => {
-    const button = event.currentTarget; button.disabled = true;
-    try { const value = await app.services.lecturerTopicFiles.read(document.body.dataset.topicId,'attachment'); if (!value) throw new Error('Chưa có nội dung tệp thật để tải.'); app.ui.downloadFile(value); notice.textContent = 'Đã bắt đầu tải tài liệu.'; }
-    catch (failure) { notice.textContent = failure.message; }
-    finally { render(); }
-  });
   document.addEventListener('ie104:lecturer-topics-rendered',render);
   document.addEventListener('ie104:lecturer-topic-rendered',render);
   window.addEventListener('pageshow',render);

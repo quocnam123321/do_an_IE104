@@ -197,7 +197,8 @@
   flex-shrink: 0;
 }
 
-.request-attachments__download {
+.request-attachments__download,
+.registration-detail-page .request-attachments button.request-attachments__download {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -212,14 +213,22 @@
   font-weight: var(--weight-medium);
 }
 
-.request-attachments__download:enabled:hover {
+.request-attachments__download:enabled:hover,
+.registration-detail-page .request-attachments button.request-attachments__download:enabled:hover {
   background: var(--button-secondary-bg-hover);
 }
 
-.request-attachments__download:disabled {
+.request-attachments__download:disabled,
+.registration-detail-page .request-attachments button.request-attachments__download:disabled {
   border-color: var(--color-disabled-border);
   background: var(--color-disabled-bg);
   color: var(--color-disabled-fg);
+}
+
+:is([data-topic-attachment-status], [data-topic-image-status]):not(:empty) {
+  margin-block-start: var(--space-2);
+  color: var(--color-muted-foreground);
+  font-size: var(--text-sm);
 }
 
 .request-attachments__row:not([hidden]) + .proposal-attachments__note {

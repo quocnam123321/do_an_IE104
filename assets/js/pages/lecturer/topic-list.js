@@ -28,7 +28,7 @@
     topics.forEach(topic => {
       let card = [...container.querySelectorAll('.topic-card:not([data-approved-proposal])')].find(node => node.dataset.topicId === topic.id);
       const catalogCard = catalogCards.get(topic.id);
-      if (catalogCard && !topic.registration && topic.status !== 'registered') {
+      if (catalogCard && !topic.sharedStudentProject && !topic.registration && topic.status !== 'registered') {
         if (!card) container.append(catalogCard.cloneNode(true));
         else if (card.dataset.status !== 'catalog') listItemFor(card).replaceWith(catalogCard.cloneNode(true));
         return;
@@ -41,7 +41,7 @@
       }
       if (kind === 'supervised') {
         card.dataset.sortDate = topic.startsAt || topic.sourceRecord?.supervision?.milestones?.[0] || topic.createdAt || '';
-        if (existing && topic.sourceRecord && !topic.demo && !topic.revision) return;
+        if (existing && topic.sourceRecord && !topic.sharedStudentProject && !topic.demo && !topic.revision) return;
       }
       card.dataset.topicId = topic.id;
       const link = card.querySelector('.topic-card__detail-link');
@@ -118,7 +118,7 @@
   document.addEventListener('ie104:lecturer-topics-updated', () => { render(); document.dispatchEvent(new Event('ie104:topics-updated')); });
   window.addEventListener('storage', event => {
     const app = globalThis.IE104;
-    if ([app.services.lecturerTopicRepository?.key, app.storage?.registrationKey, null].includes(event.key)) {
+    if ([app.services.lecturerTopicRepository?.key, app.storage?.registrationKey, app.storage?.teamKey, null].includes(event.key)) {
       refreshTopics();
     }
   });
@@ -126,6 +126,8 @@
   document.addEventListener('visibilitychange', () => {
     if (!document.hidden) refreshTopics();
   });
+  document.addEventListener('DOMContentLoaded', () => globalThis.IE104.services.invitationIdentity?.ready.then(refreshTopics));
+  document.addEventListener('ie104:project-team-updated', refreshTopics);
   render();
   document.body.dataset.lecturerTopicsReady = 'true';
 })();

@@ -35,8 +35,8 @@ window.UITLecturerCatalog = {
   },
   subjectLabel(topic, detail = false) {
     const type = topic.filterType || topic.topicType || topic.type;
-    if (['thesis', 'khoa-luan'].includes(type) || topic.typeLabel === 'Khóa luận tốt nghiệp') return 'Khóa luận tốt nghiệp';
-    if (['graduation', 'do-an-tot-nghiep'].includes(type) || topic.typeLabel === 'Đồ án tốt nghiệp') return 'Đồ án tốt nghiệp';
+    if (['thesis', 'khoa-luan'].includes(type) || topic.typeLabel === 'Khóa luận tốt nghiệp') return detail ? 'IE505 - Khóa luận tốt nghiệp' : 'Khóa luận tốt nghiệp';
+    if (['graduation', 'do-an-tot-nghiep'].includes(type) || topic.typeLabel === 'Đồ án tốt nghiệp') return detail ? 'IE501 - Đồ án tốt nghiệp' : 'Đồ án tốt nghiệp';
     const key = this.courseKey(topic.course || topic.courseId);
     const subject = this.courseCatalog[key] || Object.values(this.courseCatalog).find(item => item.code === key);
     const name = subject?.label || String(topic.courseLabel || '').replace(/^[A-Z]{2,}\d{3}\s*[-–·:]\s*/, '') || 'Chưa có thông tin';

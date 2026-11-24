@@ -25,9 +25,6 @@
       mode: topic.registrationRules?.maxMembers === 1 ? 'Cá nhân' : 'Cá nhân hoặc theo nhóm',
       semester: content.semester === 'he' ? 'Hè' : content.semester,
       academicYear: content.academicYear?.replace(/^(\d{4})[-–](\d{4})$/, '$1 - $2'),
-      lecturer: content.lecturer,
-      research: supervisor?.research,
-      email: supervisor?.email,
       description: content.description,
       outcomes: content.outcomes,
       objectives: toLines(content.objectives),
@@ -37,8 +34,9 @@
     article.querySelectorAll('[data-topic-field]').forEach(field => {
       renderValue(field, values[field.dataset.topicField]);
     });
-    const degree = article.querySelector('[data-sample-degree]');
-    degree.hidden = !sample || content.lecturer !== sample.lecturer || Boolean(topic.ownerId);
+    app.ui.renderRegistrationSupervisor(article, content.lecturer, supervisor);
+    const renderAttachment = app.ui.createTopicAttachment(article.querySelector('.request-attachments'));
+    renderAttachment(topic, () => app.services.lecturerTopicFiles.readPublished(topic.id, 'attachment'));
     if (preview) {
       notice.textContent = 'Đang xem đề tài mẫu. Mở website qua localhost để đăng ký.';
       notice.hidden = false;

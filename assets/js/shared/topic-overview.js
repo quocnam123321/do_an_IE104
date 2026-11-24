@@ -57,7 +57,17 @@
     }
   }
 
+  function renderAcceptedSupervisors(section, project, team) {
+    const profiles = (team?.supervisorIds || []).map((id, index) => {
+      const invitation = team.invitations.find(item => item.lecturerId === id && item.status === 'accepted');
+      const profile = app.data.projectLecturers.find(item => item.id === id);
+      return { id, name: invitation?.lecturerName || (id === project.lecturerId && project.lecturer) || profile?.name, role: index === 0 ? 'primary' : 'secondary' };
+    });
+    renderSupervisors(section, profiles);
+  }
+
   function renderLecturerSupervisors(section, project, team) {
+    if (team?.invitations) { renderAcceptedSupervisors(section, project, team); return; }
     const profiles = app.data.projectLecturers;
     const known = (team?.supervisorIds || []).map((id, index) => {
       const profile = profiles.find(person => person.id === id);
@@ -113,5 +123,5 @@
     });
   }
 
-  app.shared.topicOverview = { renderList, renderSupervisors, renderLecturerSupervisors, renderSupervisedSummary };
+  app.shared.topicOverview = { renderList, renderSupervisors, renderAcceptedSupervisors, renderLecturerSupervisors, renderSupervisedSummary };
 })();

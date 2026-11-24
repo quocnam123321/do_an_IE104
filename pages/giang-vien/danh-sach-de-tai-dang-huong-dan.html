@@ -30,14 +30,14 @@
     <script src="../../assets/js/nav-indicator.js" defer=""></script>
 
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css" />
-    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261123-audit-names2" defer></script>
+    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261124-merged-50fdab7" defer></script>
     <script src="../../assets/js/shared/topic-identity.js" defer></script>
     <script src="../../assets/js/teacher-topic-store.js" defer></script>
     <script src="../../assets/js/data/mock-data.js" defer></script>
     <script src="../../assets/js/data/proposal-actors.js" defer></script>
     <script src="../../assets/js/data/lecturer-topics.js" defer></script>
     <script src="../../assets/js/data/lecturer-merge-catalog.js?v=20261123-audit-names2" defer></script>
-    <script src="../../assets/js/services/storage.js" defer></script>
+    <script src="../../assets/js/services/storage.js?v=20261124-demo-invitation-polish" defer></script>
     <script
       src="../../assets/js/services/lecturer-topic-repository.js"
       defer
@@ -53,7 +53,7 @@
       defer
     ></script>
     <script
-      src="../../assets/js/services/lecturer-topic-service.js?v=20261124-topic-tab-selection-v3"
+      src="../../assets/js/services/lecturer-topic-service.js?v=20261124-invitation-flow"
       defer
     ></script>
     <script
@@ -65,22 +65,23 @@
     <script src="../../assets/js/data/student-progress.js" defer></script>
     <script src="../../assets/js/data/student-evaluations.js" defer></script>
     <script src="../../assets/js/data/teaching-data.js" defer></script>
-<script src="../../assets/js/data/student-uit-catalog.js?v=20261123-audit-names2" defer></script>
+<script src="../../assets/js/data/student-uit-catalog.js?v=20261124-evaluation-pdf" defer></script>
+    <script src="../../assets/js/supervision-store.js?v=20261124-conversation" defer></script>
     <script
-      src="../../assets/js/services/project-team-service.js"
+      src="../../assets/js/services/project-team-service.js?v=20261124-merged-invitations"
       defer
     ></script>
     <script
       src="../../assets/js/services/project-progress-service.js?v=20261123-audit-names2"
       defer
     ></script>
-    <script src="../../assets/js/services/teaching-service.js" defer></script>
+    <script src="../../assets/js/services/teaching-service.js?v=20261124-invitation-flow" defer></script>
     <script
-      src="../../assets/js/uit-teacher-approved-proposals.js?v=20261124-supervised-selection"
+      src="../../assets/js/uit-teacher-approved-proposals.js?v=20261124-supervised-detail"
       defer
     ></script>
     <script
-      src="../../assets/js/pages/lecturer/topic-list.js?v=20261124-topic-tab-selection"
+      src="../../assets/js/pages/lecturer/topic-list.js?v=20261124-invitation-flow"
       defer
     ></script>
     <script src="../../assets/js/shared/course-filters.js?v=20261122-course-options" defer></script>
@@ -89,6 +90,8 @@
     <script src="../../assets/js/pages/lecturer/topic-sort.js?v=20261123-language" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js" defer></script>
+  <script src="../../assets/js/supervision-entry.js" defer></script>
+  <script src="../../assets/js/services/project-invitation-identity.js?v=20261124-demo-invitation-polish" defer></script>
 </head>
 
   <body id="page-top" tabindex="-1" data-lecturer-list="supervised" class="teacher-workspace-page teacher-topic-list-page">
@@ -641,6 +644,8 @@
                             >
                           </label>
                         </div>
+<div class="topic-filters__option"><label><input type="checkbox" name="hoc-ky" value="2024-2025-1" /><span class="topic-filters__option-text">Học kỳ 1 • 2024–2025</span></label></div>
+<div class="topic-filters__option"><label><input type="checkbox" name="hoc-ky" value="2024-2025-2" /><span class="topic-filters__option-text">Học kỳ 2 • 2024–2025</span></label></div>
                       </div>
                     </details>
                   </div>

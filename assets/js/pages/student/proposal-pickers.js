@@ -1,5 +1,5 @@
 (() => {
-  const form = document.querySelector('#proposal-form, #create-topic-form');
+  const form = document.querySelector('#proposal-form, .teacher-topic-form');
   const app = globalThis.IE104;
   if (!app || typeof HTMLElement.prototype.showPopover !== 'function') return;
 

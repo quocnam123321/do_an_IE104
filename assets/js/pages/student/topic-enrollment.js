@@ -25,7 +25,6 @@
   const confirm = dialog.querySelector('[data-confirm-registration]');
   const errorBox = document.getElementById('registration-error');
   const resultBox = document.getElementById('registration-result');
-  const availability = document.querySelector('[data-published-availability]');
   const memberDialog = document.getElementById('registration-member-dialog');
   const memberForm = document.getElementById('registration-member-form');
   const memberName = document.getElementById('registration-member-name');
@@ -140,7 +139,6 @@
     form.hidden = true;
     add.hidden = true;
     if (memberDialog.open) memberDialog.close();
-    if (availability) availability.hidden = true;
     resultBox.hidden = false;
     errorBox.hidden = true;
     if (!service.owns(record)) {
@@ -172,7 +170,6 @@
       } else {
         form.hidden = false;
         add.hidden = false;
-        if (availability) availability.hidden = false;
         resultBox.hidden = true;
         const topic = service.getTopic(topicId);
         rules = service.getRules(topicId);

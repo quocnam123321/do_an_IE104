@@ -1,0 +1,80 @@
+(() => {
+  const app = globalThis.IE104;
+  app.shared ||= {};
+  const { renderList, renderLecturerSupervisors, renderSupervisedSummary } = app.shared.topicOverview;
+  const overviewDate = new Intl.DateTimeFormat('vi-VN', {day:'2-digit',month:'2-digit',year:'numeric',timeZone:'Asia/Ho_Chi_Minh'});
+  const el = (tag, value, className) => {const node=document.createElement(tag);if(value)node.textContent=value;if(className)node.className=className;return node;};
+  function render(overview, { projectId, project, team, readOnly }, overviewTemplate) {
+    const originalSample = projectId === 'GV-DT001-N01';
+    overview.replaceChildren(...overviewTemplate.cloneNode(true).children);
+    const text = (selector, value) => { overview.querySelector(selector).textContent = value; };
+    text('#topic-summary-title', project.title);
+    const cover = overview.querySelector('.topic-summary__image');
+    cover.setAttribute('aria-label', `Ảnh đại diện đề tài ${project.title}`);
+    if (!originalSample) {
+      const image = el('img', null, 'gv-default-image');
+      image.src = '../../assets/images/uit-logo.png';
+      image.alt = '';
+      cover.replaceChildren(image);
+    }
+    void app.shared.renderProposalCover(cover, project.coverImage);
+
+    renderSupervisedSummary(overview.querySelector('.topic-summary--supervised'), {
+      ...project,
+      displayId: project.displayId || project.topicId || project.id,
+      courseLabel: window.UITLecturerCatalog?.subjectLabel(project, true) || project.courseLabel,
+    });
+
+    const sample = app.data.studentProjectOverviews?.[projectId];
+    if (!originalSample) {
+      text('.topic-description > p', project.description || sample?.description || 'Chưa có thông tin');
+      for (const key of ['objectives', 'outcomes']) {
+        renderList(overview.querySelector(`.topic-${key} .topic-bullet-list`), project[key] || sample?.[key]);
+      }
+      const dates = [
+        project.outline?.startDate || project.startsAt || project.createdAt,
+        project.outline?.progressReportDate || project.progressReportDate,
+        project.outline?.finalReportDate || project.finalReportDate,
+      ];
+      const milestones = project.milestones || project.sourceRecord?.supervision?.milestones || sample?.milestones;
+      overview.querySelectorAll('.topic-milestones__list dd').forEach((node, index) => {
+        const dateValue = milestones?.[index] || dates[index];
+        node.textContent = dateValue && Number.isFinite(Date.parse(dateValue)) && !dateValue.includes('/')
+          ? overviewDate.format(new Date(dateValue))
+          : dateValue || 'Chưa có mốc thời gian';
+      });
+    }
+
+    app.shared.proposalOutline.render(overview.querySelector('[data-proposal-outline-view]'), project);
+    overview.querySelectorAll('[data-project-method-plan]').forEach(section => {
+      const content = project[section.dataset.projectMethodPlan]?.trim() || '';
+      section.hidden = !content;
+      section.querySelector('p').textContent = content;
+    });
+
+    const supervisors = overview.querySelector('.project-supervisors');
+    renderLecturerSupervisors(supervisors, project, readOnly ? null : team);
+
+    text('.topic-team__group-name', project.groupName || 'Chưa có nhóm thực hiện');
+    const capacity = overview.querySelector('.project-team__note');
+    capacity.hidden = !Number.isInteger(team.maxMembers) || team.maxMembers <= 0;
+    if (!capacity.hidden) text('[data-team-capacity]', `tối đa ${team.maxMembers} thành viên`);
+    const members = overview.querySelector('.topic-team__members');
+    const memberTemplate = members.firstElementChild;
+    members.replaceChildren(...(team.members.length ? team.members.map(member => {
+      const item = memberTemplate.cloneNode(true);
+      const avatar = item.querySelector('.team-member__avatar');
+      avatar.removeAttribute('role');
+      avatar.removeAttribute('aria-label');
+      avatar.setAttribute('aria-hidden', 'true');
+      avatar.textContent = member.name.trim().split(/\s+/).slice(-2).map(part => part[0]).join('').toUpperCase();
+      item.querySelector('.team-member__name').textContent = member.name;
+      const code = item.querySelector('.team-member__id');
+      code.textContent = member.code || '';
+      code.previousElementSibling.hidden = !member.code;
+      item.querySelector('.team-member__role').textContent = member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
+      return item;
+    }) : [el('li', 'Chưa có thông tin thành viên nhóm.')]));
+  }
+  app.shared.renderLecturerOverview = render;
+})();

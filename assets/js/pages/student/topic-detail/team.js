@@ -62,7 +62,8 @@
     try {
       state = service.getState(projectId, { preview });
       const permission = service.getPermission(state);
-      notice.textContent = permission.reason || 'Thay đổi của nhóm và lời mời chỉ lưu trong trình duyệt này.';
+      notice.textContent = permission.reason;
+      notice.hidden = !permission.reason;
       const full = state.members.length >= state.maxMembers;
       addButton.disabled = !permission.allowed || full;
       inviteButton.disabled = !permission.allowed;
@@ -127,7 +128,7 @@
       department.textContent = departmentLabel(lecturer?.department);
       const date = document.createElement('p');
       date.className = 'pending-invitation__meta';
-      date.textContent = 'Ngày lưu: ' + new Date(invitation.createdAt).toLocaleDateString('vi-VN');
+      date.textContent = 'Ngày gửi: ' + new Date(invitation.createdAt).toLocaleDateString('vi-VN');
       content.append(name, department, date);
       if (invitation.status === 'accepted' || invitation.status === 'rejected') {
         const status = document.createElement('p');
@@ -135,6 +136,17 @@
         status.dataset.status = invitation.status;
         status.textContent = invitation.status === 'accepted' ? 'Đã đồng ý đồng hướng dẫn' : 'Đã từ chối';
         content.append(status);
+      }
+      if (invitation.decidedAt) {
+        const decisionDate = document.createElement('p');
+        decisionDate.className = 'pending-invitation__meta';
+        decisionDate.textContent = new Date(invitation.decidedAt).toLocaleString('vi-VN');
+        content.append(decisionDate);
+      }
+      if (invitation.decisionNote) {
+        const reason = document.createElement('p');
+        reason.textContent = invitation.decisionNote;
+        content.append(reason);
       }
       const actions = document.createElement('div');
       actions.className = 'pending-invitation__actions';
@@ -144,11 +156,6 @@
         thread.href = `de-tai-cua-toi-sinh-vien.html?loi-moi=${encodeURIComponent(invitation.id)}#loi-moi-huong-dan`;
         thread.textContent = 'Xem trao đổi';
         actions.append(thread);
-      } else {
-        const legacy = document.createElement('p');
-        legacy.className = 'pending-invitation__meta';
-        legacy.textContent = 'Lời mời cũ lưu riêng trong đề tài.';
-        content.append(legacy);
       }
 
       item.append(avatar, content);
@@ -307,7 +314,8 @@
       inviteDialog.close();
       selectedLecturer = '';
       refresh();
-      setResult('Lời mời đã xuất hiện trong mục Lời mời hướng dẫn trên trình duyệt này.');
+      result.hidden = true;
+      globalThis.IE104.ui.invitationSuccess('Đã gửi lời mời hướng dẫn', 'Giảng viên sẽ nhận được lời mời trong Yêu cầu chờ duyệt.');
     } catch (failure) {
       if (inviteDialog.open) showError(inviteError, failure);
     } finally {
@@ -333,6 +341,7 @@
   });
   cancelSuccess.addEventListener('close', () => inviteButton.focus({ preventScroll: true }));
   window.addEventListener('storage', event => { if (event.key === globalThis.IE104.storage.teamKey || event.key === null) refresh(); });
+  document.addEventListener('ie104:project-team-updated', refresh);
   globalThis.IE104Supervision?.subscribe(refresh);
   window.addEventListener('pageshow', refresh);
   refresh();

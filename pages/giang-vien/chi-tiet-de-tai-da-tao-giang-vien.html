@@ -7,7 +7,7 @@
       Chi tiết đề tài đã tạo | Quản lý đồ án và khóa luận tốt nghiệp
     </title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261124-reopen-registration-dialog"></script>
+    <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261124-registration-success"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme">
@@ -15,39 +15,40 @@
     <link rel="stylesheet" href="../../assets/css/components.css">
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
     <link rel="stylesheet" href="../../assets/css/teacher-dialogs.css">
-    <link rel="stylesheet" href="../../assets/css/proposal-request-detail.css">
-    <link rel="stylesheet" href="../../assets/css/teacher-created-detail.css?v=20261124-reopen-registration-dialog">
+    <link rel="stylesheet" href="../../assets/css/proposal-request-detail.css?v=20261124-topic-attachment">
+    <link rel="stylesheet" href="../../assets/css/teacher-created-detail.css?v=20261124-registration-success">
     <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261124-requirement-datetime">
     <script src="../../assets/js/nav-indicator.js" defer=""></script>
     <script src="../../assets/js/dialog-commands.js" defer=""></script>
 
     <link rel="stylesheet" href="../../assets/css/lecturer-topic-editor.css" />
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css?v=20261121-matching-topic-covers" />
-    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261123-audit-names2" defer></script>
+    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261124-merged-50fdab7" defer></script>
     <script src="../../assets/js/shared/topic-identity.js" defer></script>
     <script src="../../assets/js/teacher-topic-store.js" defer></script>
     <script src="../../assets/js/data/mock-data.js" defer></script>
     <script src="../../assets/js/data/proposal-actors.js" defer></script>
     <script src="../../assets/js/data/lecturer-topics.js" defer></script>
     <script src="../../assets/js/data/lecturer-merge-catalog.js?v=20261123-audit-names2" defer></script>
-<script src="../../assets/js/data/student-uit-catalog.js?v=20261123-audit-names2" defer></script>
-    <script src="../../assets/js/services/storage.js" defer></script>
+<script src="../../assets/js/data/student-uit-catalog.js?v=20261124-evaluation-pdf" defer></script>
+    <script src="../../assets/js/services/storage.js?v=20261124-demo-invitation-polish" defer></script>
     <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
     <script src="../../assets/js/shared/validation.js" defer></script>
     <script src="../../assets/js/services/proposal-service.js" defer></script>
     <script src="../../assets/js/services/registration-service.js" defer></script>
     <script src="../../assets/js/services/approved-project-service.js" defer></script>
-    <script src="../../assets/js/services/lecturer-topic-service.js?v=20261123-merged-8f1631f" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-service.js?v=20261124-invitation-flow" defer></script>
     <script src="../../assets/js/services/published-topic-service.js?v=20261123-merged-8f1631f" defer></script>
     <script src="../../assets/js/proposal-store.js" defer></script>
     <script src="../../assets/js/services/lecturer-topic-file-service.js" defer></script>
     <script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
-    <script src="../../assets/js/pages/lecturer/created-topic.js?v=20261123-merged-8f1631f" defer></script>
+    <script src="../../assets/js/shared/topic-attachment.js" defer></script>
+    <script src="../../assets/js/pages/lecturer/created-topic.js?v=20261124-topic-attachment" defer></script>
     <script src="../../assets/js/shared/download-file.js" defer></script>
-    <script src="../../assets/js/pages/lecturer/topic-media.js" defer></script>
+    <script src="../../assets/js/pages/lecturer/topic-media.js?v=20261124-topic-attachment" defer></script>
     <script src="../../assets/js/pages/student/proposal-pickers.js?v=20261124-reopen-registration-dialog" defer></script>
     <script src="../../assets/js/pages/student/proposal-date-picker.js?v=20261124-reopen-registration-dialog" defer></script>
-    <script src="../../assets/js/pages/lecturer/topic-registration-state.js?v=20261124-reopen-registration-dialog" defer></script>
+    <script src="../../assets/js/pages/lecturer/topic-registration-state.js?v=20261124-registration-actions" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js" defer></script>
 </head>
@@ -276,16 +277,16 @@
             <h2 id="topic-members-title">Số thành viên</h2>
             <p class="topic-member-range" data-topic-member-range>Chưa có thông tin</p>
           </section>
-          <section class="request-attachments topic-attachments" aria-labelledby="attachments-title">
+          <section class="request-attachments" aria-labelledby="attachments-title">
             <h2 id="attachments-title">Tài liệu đính kèm</h2>
             <div class="request-attachments__row" data-topic-attachment hidden>
-              <div class="request-attachments__file topic-attachments__file">
+              <div class="request-attachments__file">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm0 0v6h6M8 13h8M8 17h6" />
                 </svg>
-                <span></span>
+                <span data-topic-attachment-name></span>
               </div>
-              <button class="request-attachments__download topic-attachments__download" type="button" disabled title="Chưa có tệp tài liệu thực để tải xuống">
+              <button class="request-attachments__download" type="button" data-topic-attachment-download disabled>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M12 3v12m-5-5 5 5 5-5" />
                 </svg>
@@ -293,6 +294,7 @@
               </button>
             </div>
             <p data-topic-attachment-empty>Chưa có tài liệu đính kèm</p>
+            <p data-topic-attachment-status role="status"></p>
           </section>
           <div class="request-detail__actions" role="group" aria-label="Thao tác với đề tài">
             <button class="request-action request-action--danger registration-close-button" type="button" commandfor="close-registration" command="show-modal" aria-haspopup="dialog" aria-controls="close-registration">
@@ -358,6 +360,21 @@
           <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" data-registration-confirm disabled title="Chức năng thay đổi trạng thái đăng ký chưa được kết nối">Xác nhận mở lại đăng ký</button>
         </div>
       </form>
+    </dialog>
+    <dialog id="registration-success" class="confirmation-dialog success-dialog registration-success-dialog" aria-labelledby="registration-success-title">
+      <button class="success-dialog__close" type="button" command="close" commandfor="registration-success" aria-label="Đóng thông báo" autofocus>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+          <path d="m6 6 12 12M18 6 6 18" />
+        </svg>
+      </button>
+      <div class="success-dialog__content">
+        <span class="success-dialog__icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m5 12 4 4L19 6" />
+          </svg>
+        </span>
+        <h2 id="registration-success-title">Đóng đăng ký thành công</h2>
+      </div>
     </dialog>
     <footer class="project-footer">
       <div class="project-footer__columns">

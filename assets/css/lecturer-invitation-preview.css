@@ -1,0 +1,29 @@
+.invitation-preview { padding: var(--space-6); }
+.invitation-preview > h2 { margin: 0 0 var(--space-5); font-size: var(--text-xl); }
+.invitation-preview__list { display: grid; gap: var(--space-4); padding: 0; margin: 0; list-style: none; }
+.invitation-preview__card { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-6); align-items: center; padding: var(--space-5); border: 1px solid var(--color-border); border-radius: var(--card-radius); }
+.invitation-preview__content { min-width: 0; }
+.invitation-preview__content h3 { margin: var(--space-2) 0; font-size: var(--text-lg); }
+.invitation-preview__content p { margin: 0 0 var(--space-2); }
+.invitation-preview__actions { display: grid; gap: var(--space-3); justify-items: stretch; }
+.invitation-preview__actions > .supervision__badge { justify-self: end; }
+.invitation-preview__actions .supervision__actions { gap: var(--space-2); }
+.invitation-preview__dialog { width: min(38rem, calc(100% - 2rem)); max-height: calc(100dvh - 2rem); padding: 0; border: 1px solid var(--color-border); border-radius: var(--card-radius); background: var(--color-surface); color: var(--color-foreground); }
+.invitation-preview__dialog::backdrop { background: rgb(15 23 42 / .4); }
+.invitation-preview__dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-5); border-bottom: 1px solid var(--color-border); }
+.invitation-preview__dialog-heading h2 { margin: 0; font-size: var(--text-xl); }
+.invitation-preview__dialog-body { display: grid; gap: var(--space-3); padding: var(--space-5); }
+.invitation-preview__dialog-body p { margin: 0; }
+.invitation-preview__dialog > footer { padding: var(--space-5); justify-content: end; border-top: 1px solid var(--color-border); }
+@media(max-width: 47.99rem) {
+  .invitation-preview { padding: var(--space-4); }
+  .invitation-preview__card { grid-template-columns: minmax(0, 1fr); gap: var(--space-4); padding: var(--space-4); }
+  .invitation-preview__actions { justify-items: start; }
+  .invitation-preview__actions > .supervision__badge { justify-self: start; }
+}
+
+
+.invitation-topic-page [data-invitation-topic] { display: block; }
+.invitation-topic-page [data-invitation-topic][hidden] { display: none; }
+.invitation-topic-page [data-invitation-detail-status]:empty { display: none; }
+.invitation-topic-page [data-invitation-detail-actions] { justify-content: flex-end; gap: var(--space-3); margin-top: var(--space-6); }
