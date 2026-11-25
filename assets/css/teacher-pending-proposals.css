@@ -1,15 +1,28 @@
-/* Yêu cầu chờ duyệt dùng chung kích thước, spacing và responsive với
-   Đề tài đang hướng dẫn. Chỉ giữ kiểu tiêu đề theo ID riêng, màu trạng thái
-   Chờ duyệt và ghi chú nội dung của trang (cập nhật 30/10/2026). */
+/* Dùng bố cục thẻ chung; nhãn vai trò khớp danh sách đang hướng dẫn. */
 .teacher-pending-proposals-page #pending-proposals-title {
   font-size: var(--text-xl);
   font-weight: var(--weight-bold);
   color: var(--color-heading);
 }
 
-.teacher-pending-proposals-page .topic-card__status {
-  background-color: var(--color-warning-bg);
-  color: var(--color-warning-fg);
+.teacher-pending-proposals-page .topic-card .topic-card__status {
+  background-color: #eaf3f2;
+  color: #315856;
+  position: static;
+  width: 100%;
+  max-width: 100%;
+  min-height: var(--role-badge-min-height);
+  padding: var(--role-badge-padding-y) var(--role-badge-padding-x);
+  border: 0;
+}
+
+.teacher-pending-proposals-page .topic-card__actions {
+  gap: var(--space-2);
+}
+
+:root[data-theme="dark"] .teacher-pending-proposals-page .topic-card__status {
+  background-color: #1b3332;
+  color: #a8cdca;
 }
 
 .teacher-pending-proposals-page .proposal-preview-note {
@@ -19,8 +32,3 @@
   color: var(--color-muted-foreground);
 }
 
-@media (max-width: 47.99875rem) {
-  .teacher-pending-proposals-page .topic-card__status {
-    border: 1px solid var(--color-warning-border);
-  }
-}

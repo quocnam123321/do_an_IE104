@@ -23,7 +23,7 @@
    <script src="../../assets/js/dialog-commands.js" defer=""></script>
 
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css" />
-    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261124-merged-50fdab7" defer></script>
+    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261125-pending-topics" defer></script>
     <script src="../../assets/js/shared/topic-identity.js" defer></script>
     <script src="../../assets/js/teacher-topic-store.js" defer></script>
     <script src="../../assets/js/data/mock-data.js" defer></script>
@@ -39,7 +39,7 @@
     <script src="../../assets/js/services/approved-project-service.js" defer></script>
     <script src="../../assets/js/services/lecturer-topic-service.js?v=20261124-invitation-flow" defer></script>
     <script src="../../assets/js/services/published-topic-service.js?v=20261123-merged-8f1631f" defer></script>
-    <script src="../../assets/js/proposal-store.js" defer></script>
+    <script src="../../assets/js/proposal-store.js?v=20261125-primary-only" defer></script>
     <script src="../../assets/js/services/proposal-file-service.js" defer></script>
     <script src="../../assets/js/shared/proposal-cover.js" defer></script>
     <script src="../../assets/js/shared/download-file.js" defer></script>
@@ -290,7 +290,6 @@
       </p>
      </div>
     </header>
-    <p class="proposal-demo-note">Dữ liệu minh họa. Quyết định chỉ lưu trên trình duyệt này khi cho phép lưu trữ; chưa gửi tới máy chủ.</p>
     <p class="proposal-feedback" id="proposal-decision-feedback" role="status" tabindex="-1"></p>
     <p class="proposal-feedback" id="proposal-not-found" hidden="">Không tìm thấy đề xuất theo mã đã chọn. Hãy quay lại danh sách yêu cầu chờ duyệt.</p>
     <div class="page-content request-detail">
@@ -467,7 +466,7 @@
      Vui lòng nhập lý do từ chối từ 10 ký tự.
     </p>
     <p class="topic-dialog__notice" id="rejection-reason-hint">
-     Ít nhất 10 ký tự, không tính khoảng trắng ở hai đầu. Lý do chỉ lưu trong bản demo trên trình duyệt.
+     Ít nhất 10 ký tự, không tính khoảng trắng ở hai đầu.
     </p>
     <p class="proposal-form-error" data-decision-error="" role="alert" hidden=""></p>
     <div class="topic-dialog__actions">
@@ -509,7 +508,7 @@
     <p class="topic-dialog__desc" id="approve-proposal-description">
      Sau khi duyệt, đề tài sẽ chuyển sang trạng thái
      <strong>
-      Đang thực hiện trong bản demo.
+      Đang thực hiện.
      </strong>
     </p>
     <p class="proposal-form-error" data-decision-error="" role="alert" hidden=""></p>

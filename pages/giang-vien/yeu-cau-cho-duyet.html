@@ -17,12 +17,12 @@
   <link href="../../assets/css/breadcrumb.css" rel="stylesheet">
   <link href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1" rel="stylesheet">
   <link href="../../assets/css/teacher-supervised-topics.css?v=20261030-tabs-2" rel="stylesheet">
-  <link href="../../assets/css/teacher-pending-proposals.css?v=20261122-empty-state" rel="stylesheet">
+  <link href="../../assets/css/teacher-pending-proposals.css?v=20261125-primary-only" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css?v=20261122-empty-state">
    <script src="../../assets/js/nav-indicator.js" defer=""></script>
 
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css" />
-    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261124-merged-50fdab7" defer></script>
+    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261125-pending-topics" defer></script>
     <script src="../../assets/js/shared/topic-identity.js" defer></script>
     <script src="../../assets/js/teacher-topic-store.js" defer></script>
     <script src="../../assets/js/data/mock-data.js" defer></script>
@@ -39,12 +39,12 @@
     <script src="../../assets/js/services/approved-project-service.js" defer></script>
     <script src="../../assets/js/services/lecturer-topic-service.js?v=20261124-invitation-flow" defer></script>
     <script src="../../assets/js/services/published-topic-service.js?v=20261123-merged-8f1631f" defer></script>
-    <script src="../../assets/js/proposal-store.js" defer></script>
+    <script src="../../assets/js/proposal-store.js?v=20261125-primary-only" defer></script>
     <script src="../../assets/js/shared/course-filters.js?v=20261122-course-options" defer></script>
     <script src="../../assets/js/shared/topic-list-empty.js?v=20261122-empty-state" defer></script>
     <script src="../../assets/js/services/proposal-file-service.js" defer></script>
     <script src="../../assets/js/shared/proposal-cover.js" defer></script>
-    <script src="../../assets/js/pending-proposals.js?v=20261123-audit-names2" defer></script>
+    <script src="../../assets/js/pending-proposals.js?v=20261125-no-role-filter" defer></script>
     <link rel="stylesheet" href="../../assets/css/supervision-invitations.css?v=20261124-adjacent-reply">
     <script src="../../assets/js/supervision-store.js?v=20261124-conversation" defer></script>
     <script src="../../assets/js/supervision-entry.js?v=20261124-inbox-recipient" defer></script>
@@ -311,29 +311,6 @@
         </button>
         <fieldset class="proposal-filters__group topic-filters__group">
          <legend>
-          Vai trò trong đề tài
-         </legend>
-         <div class="topic-filters__options">
-          <div class="proposal-filters__option topic-filters__option">
-           <label for="role-primary">
-            <input id="role-primary" name="supervision_role" type="checkbox" value="huong-dan-chinh">
-            <span class="topic-filters__option-text">
-             Hướng dẫn chính
-            </span>
-           </label>
-          </div>
-          <div class="proposal-filters__option topic-filters__option">
-           <label for="role-secondary">
-            <input id="role-secondary" name="supervision_role" type="checkbox" value="dong-huong-dan">
-            <span class="topic-filters__option-text">
-             Đồng hướng dẫn
-            </span>
-           </label>
-          </div>
-         </div>
-        </fieldset>
-        <fieldset class="proposal-filters__group topic-filters__group">
-         <legend>
           Loại đề tài
          </legend>
          <div class="topic-filters__options">
@@ -387,13 +364,13 @@
         <label class="visually-hidden" for="proposal-search">
          Tìm theo mã yêu cầu, tên đề tài, họ tên hoặc MSSV
         </label>
-        <input aria-describedby="proposal-preview-note" form="proposal-filter-form" id="proposal-search" name="proposal_search" placeholder="Tìm theo mã, tên đề tài, họ tên hoặc MSSV…" type="search">
+        <input form="proposal-filter-form" id="proposal-search" name="proposal_search" placeholder="Tìm theo mã, tên đề tài, họ tên hoặc MSSV…" type="search">
        </div>
        <div class="proposal-toolbar__sort topic-toolbar__sort">
         <label class="visually-hidden" for="proposal-sort">
          Sắp xếp
         </label>
-        <select aria-describedby="proposal-preview-note" form="proposal-filter-form" id="proposal-sort" name="proposal_sort">
+        <select form="proposal-filter-form" id="proposal-sort" name="proposal_sort">
          <option value="newest">
           Sắp xếp: Mới nhất
          </option>
@@ -424,7 +401,7 @@
       </p>
       <div aria-describedby="proposal-scroll-help" aria-labelledby="pending-proposals-title" class="topic-list-scroll proposal-list-scroll" role="region" tabindex="0">
        <div class="proposal-list topic-list">
-        <article aria-labelledby="proposal-library-title" class="proposal-card topic-card" data-proposal-id="DX-GV001">
+        <article aria-labelledby="proposal-library-title" class="proposal-card topic-card" data-role="primary" data-proposal-id="DX-GV001">
          <div class="proposal-card__media topic-card__media">
           <div aria-hidden="true" class="proposal-card__image-placeholder topic-card__image-placeholder">
            <svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
@@ -471,20 +448,11 @@
             </svg>
             <span class="topic-card__meta-text">Nguyễn Văn A · 22520001</span>
            </p>
-           <p class="proposal-card__role topic-card__meta-item">
-            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-             <circle cx="9" cy="7" r="4">
-             </circle>
-             <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 11l2 2 4-4">
-             </path>
-            </svg>
-            <span class="topic-card__meta-text">Hướng dẫn chính</span>
-           </p>
           </div>
          </div>
          <div class="proposal-card__actions topic-card__actions">
-          <p class="proposal-card__status topic-card__status">
-           Chờ duyệt
+          <p class="proposal-card__status topic-card__status topic-card__status--primary">
+           Hướng dẫn chính
           </p>
           <a aria-label="Xem đề xuất Website quản lý thư viện" class="proposal-card__detail-link topic-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html?ma=DX-GV001">
            Xem đề xuất
@@ -495,7 +463,7 @@
           </a>
          </div>
         </article>
-        <article aria-labelledby="proposal-expenses-title" class="proposal-card topic-card" data-proposal-id="DX-GV002">
+        <article aria-labelledby="proposal-expenses-title" class="proposal-card topic-card" data-role="primary" data-proposal-id="DX-GV002">
          <div class="proposal-card__media topic-card__media">
           <div aria-hidden="true" class="proposal-card__image-placeholder topic-card__image-placeholder">
            <svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
@@ -542,20 +510,11 @@
             </svg>
             <span class="topic-card__meta-text">Trần Thị B · 22520002</span>
            </p>
-           <p class="proposal-card__role topic-card__meta-item">
-            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-             <circle cx="9" cy="7" r="4">
-             </circle>
-             <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 11l2 2 4-4">
-             </path>
-            </svg>
-            <span class="topic-card__meta-text">Đồng hướng dẫn</span>
-           </p>
           </div>
          </div>
          <div class="proposal-card__actions topic-card__actions">
-          <p class="proposal-card__status topic-card__status">
-           Chờ duyệt
+          <p class="proposal-card__status topic-card__status topic-card__status--primary">
+           Hướng dẫn chính
           </p>
           <a aria-label="Xem đề xuất Ứng dụng quản lý chi tiêu" class="proposal-card__detail-link topic-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html?ma=DX-GV002">
            Xem đề xuất
@@ -566,7 +525,7 @@
           </a>
          </div>
         </article>
-        <article aria-labelledby="proposal-movies-title" class="proposal-card topic-card" data-proposal-id="DX-GV003">
+        <article aria-labelledby="proposal-movies-title" class="proposal-card topic-card" data-role="primary" data-proposal-id="DX-GV003">
          <div class="proposal-card__media topic-card__media">
           <div aria-hidden="true" class="proposal-card__image-placeholder topic-card__image-placeholder">
            <svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
@@ -613,20 +572,11 @@
             </svg>
             <span class="topic-card__meta-text">Lê Văn C · 22520003</span>
            </p>
-           <p class="proposal-card__role topic-card__meta-item">
-            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-             <circle cx="9" cy="7" r="4">
-             </circle>
-             <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 11l2 2 4-4">
-             </path>
-            </svg>
-            <span class="topic-card__meta-text">Hướng dẫn chính</span>
-           </p>
           </div>
          </div>
          <div class="proposal-card__actions topic-card__actions">
-          <p class="proposal-card__status topic-card__status">
-           Chờ duyệt
+          <p class="proposal-card__status topic-card__status topic-card__status--primary">
+           Hướng dẫn chính
           </p>
           <a aria-label="Xem đề xuất Hệ thống gợi ý phim" class="proposal-card__detail-link topic-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html?ma=DX-GV003">
            Xem đề xuất
@@ -637,7 +587,7 @@
           </a>
          </div>
         </article>
-        <article aria-labelledby="proposal-club-title" class="proposal-card topic-card" data-proposal-id="DX-GV004">
+        <article aria-labelledby="proposal-club-title" class="proposal-card topic-card" data-role="primary" data-proposal-id="DX-GV004">
          <div class="proposal-card__media topic-card__media">
           <div aria-hidden="true" class="proposal-card__image-placeholder topic-card__image-placeholder">
            <svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
@@ -684,20 +634,11 @@
             </svg>
             <span class="topic-card__meta-text">Phạm Thị D · 22520004</span>
            </p>
-           <p class="proposal-card__role topic-card__meta-item">
-            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-             <circle cx="9" cy="7" r="4">
-             </circle>
-             <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 11l2 2 4-4">
-             </path>
-            </svg>
-            <span class="topic-card__meta-text">Hướng dẫn chính</span>
-           </p>
           </div>
          </div>
          <div class="proposal-card__actions topic-card__actions">
-          <p class="proposal-card__status topic-card__status">
-           Chờ duyệt
+          <p class="proposal-card__status topic-card__status topic-card__status--primary">
+           Hướng dẫn chính
           </p>
           <a aria-label="Xem đề xuất Website quản lý câu lạc bộ" class="proposal-card__detail-link topic-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html?ma=DX-GV004">
            Xem đề xuất
@@ -708,7 +649,7 @@
           </a>
          </div>
         </article>
-        <article aria-labelledby="proposal-enrollment-title" class="proposal-card topic-card" data-proposal-id="DX-GV005">
+        <article aria-labelledby="proposal-enrollment-title" class="proposal-card topic-card" data-role="primary" data-proposal-id="DX-GV005">
          <div class="proposal-card__media topic-card__media">
           <div aria-hidden="true" class="proposal-card__image-placeholder topic-card__image-placeholder">
            <svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
@@ -755,20 +696,11 @@
             </svg>
             <span class="topic-card__meta-text">Hoàng Văn E · 22520005</span>
            </p>
-           <p class="proposal-card__role topic-card__meta-item">
-            <svg aria-hidden="true" class="topic-card__meta-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-             <circle cx="9" cy="7" r="4">
-             </circle>
-             <path d="M2 21v-2a7 7 0 0 1 14 0v2M16 11l2 2 4-4">
-             </path>
-            </svg>
-            <span class="topic-card__meta-text">Đồng hướng dẫn</span>
-           </p>
           </div>
          </div>
          <div class="proposal-card__actions topic-card__actions">
-          <p class="proposal-card__status topic-card__status">
-           Chờ duyệt
+          <p class="proposal-card__status topic-card__status topic-card__status--primary">
+           Hướng dẫn chính
           </p>
           <a aria-label="Xem đề xuất Hệ thống hỗ trợ đăng ký học phần" class="proposal-card__detail-link topic-card__detail-link" href="chi-tiet-de-xuat-giang-vien.html?ma=DX-GV005">
            Xem đề xuất
@@ -783,7 +715,7 @@
       </div>
       <!-- Số trang và số đếm được tính từ tập hồ sơ chờ duyệt. -->
       <div class="topic-results__footer">
-       <nav aria-describedby="proposal-preview-note" aria-label="Phân trang đề xuất" class="pagination">
+       <nav aria-label="Phân trang đề xuất" class="pagination">
         <ul class="pagination__list">
          <li class="pagination__item">
           <button aria-label="Trang trước" class="pagination__button" disabled="" type="button">
@@ -803,9 +735,6 @@
         </ul>
        </nav>
       </div>
-      <p class="proposal-preview-note" id="proposal-preview-note">
-       Dữ liệu minh họa trên trình duyệt · 5 đề xuất mỗi trang. Hồ sơ thiếu ngày gửi giữ thứ tự mẫu và xếp cuối khi sắp xếp theo ngày.
-      </p>
      </section>
     </div>
     <section id="loi-moi-huong-dan" class="supervision supervision-section" aria-labelledby="supervision-tab" data-detail-panel data-supervision-role="teacher">

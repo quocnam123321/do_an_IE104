@@ -5,7 +5,6 @@
   const prefix = 'ie104.proposal-decision.v1.';
   const courseProject = { topicType: 'do-an-mon-hoc', topicTypeLabel: 'Đồ án môn học' };
   const primary = { supervisionRole: 'huong-dan-chinh', supervisionRoleLabel: 'Hướng dẫn chính' };
-  const secondary = { supervisionRole: 'dong-huong-dan', supervisionRoleLabel: 'Đồng hướng dẫn' };
   const legacySeeds = [
     {
       ...courseProject, ...primary, id: 'DX-GV001', topicId: 'DT-GV001',
@@ -18,7 +17,7 @@
       attachment: 'De_cuong_de_tai.pdf',
     },
     {
-      ...courseProject, ...secondary, id: 'DX-GV002', topicId: 'DT-GV002',
+      ...courseProject, ...primary, id: 'DX-GV002', topicId: 'DT-GV002',
       title: 'Ứng dụng quản lý chi tiêu', studentName: 'Trần Thị B', studentId: '22520002',
       course: 'co-so-du-lieu', courseLabel: 'Cơ sở dữ liệu',
     },
@@ -33,7 +32,7 @@
       course: 'internet-va-cong-nghe-web', courseLabel: 'Internet và công nghệ Web',
     },
     {
-      ...courseProject, ...secondary, id: 'DX-GV005', topicId: 'DT-GV005',
+      ...courseProject, ...primary, id: 'DX-GV005', topicId: 'DT-GV005',
       title: 'Hệ thống hỗ trợ đăng ký học phần', studentName: 'Hoàng Văn E', studentId: '22520005',
       course: 'co-so-du-lieu', courseLabel: 'Cơ sở dữ liệu',
     },

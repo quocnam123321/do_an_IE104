@@ -20,14 +20,11 @@
   });
 
   const pageSize = 5;
-  const note = document.getElementById('proposal-preview-note');
-  const demoNote = note?.textContent.trim() || '';
   const filterFields = {
-    supervision_role: 'supervisionRole',
     topic_type: 'topicType',
     course: 'course',
   };
-  const queryNames = [...Object.keys(filterFields), 'proposal_search', 'proposal_sort', 'page'];
+  const queryNames = ['supervision_role', ...Object.keys(filterFields), 'proposal_search', 'proposal_sort', 'page'];
   const validOrders = Array.from(sort.options, (option) => option.value);
   const collator = new Intl.Collator('vi', { numeric: true });
   const normalize = (value) => String(value || '').toLocaleLowerCase('vi').normalize('NFD')
@@ -86,6 +83,12 @@
     const card = cardTemplate.cloneNode(true);
     card.querySelectorAll('.proposal-card__date').forEach(node => node.remove());
     card.dataset.proposalId = proposal.id;
+    const secondary = proposal.supervisionRole === 'dong-huong-dan';
+    card.dataset.role = secondary ? 'secondary' : 'primary';
+    const roleBadge = card.querySelector('.proposal-card__status');
+    roleBadge.textContent = secondary ? 'Đồng hướng dẫn' : 'Hướng dẫn chính';
+    roleBadge.classList.remove('topic-card__status--primary', 'topic-card__status--secondary');
+    roleBadge.classList.add(`topic-card__status--${card.dataset.role}`);
     void window.IE104.shared?.renderProposalCover?.(card.querySelector('.topic-card__media'), proposal.coverImage);
     const title = card.querySelector('.proposal-card__title');
     title.id = `proposal-${proposal.id.toLowerCase()}-title`;
@@ -95,7 +98,6 @@
       ['code', proposal.id],
       ['course', `${window.UITLecturerCatalog.subjectLabel(proposal)}`],
       ['student', `${proposal.studentName} · xxxxxxxx`],
-      ['role', [proposal.supervisionRoleLabel, proposal.supervisorName].filter(Boolean).join(' · ')],
     ];
     for (const [name, value] of fields) {
       card.querySelector(`.proposal-card__${name} .topic-card__meta-text`).textContent = value;
@@ -161,7 +163,6 @@
       label: catalog.subjectLabel(proposal),
     })));
     if (restoreUrl) readUrl();
-    if (note) note.hidden = true;
     const terms = normalize(search.value).split(/\s+/).filter(Boolean);
     const data = new FormData(form);
     const selected = Object.entries(filterFields).map(([name, field]) => [field, data.getAll(name)]);
