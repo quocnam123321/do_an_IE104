@@ -1,10 +1,17 @@
 (() => {
   const app = globalThis.IE104;
   const ui = app?.ui?.lecturerWorkspace;
-  if (!ui) return;
+  const stepper = app?.ui?.numberStepper;
+  if (!ui) {
+    document.querySelectorAll('#evaluation-section input[type="number"]').forEach(input => stepper?.enhance(input));
+    return;
+  }
   const { el, button, field, modal, service } = ui;
   const template = document.getElementById('ket-qua-danh-gia').cloneNode(true);
   const panel = ui.region('evaluation-section', 'ket-qua-danh-gia');
+  const successDialog = document.getElementById('evaluation-published-dialog');
+  successDialog.querySelector('button').addEventListener('click', () => successDialog.close());
+  successDialog.addEventListener('close', () => panel.querySelector('.evaluation-form__publish')?.focus({ preventScroll: true }));
   let loadedProject;
   let editingPublished = false;
 
@@ -111,6 +118,7 @@
       row.append(title, el('td', description || 'Chưa có mô tả'), el('td', `${criterion.weight}%`), fields);
       body.append(row);
     });
+    body.querySelectorAll('input[type="number"]').forEach(input => stepper?.enhance(input));
     const total = form.querySelector('#total-score');
     total.removeAttribute('for');
     if (!readOnly) total.setAttribute('for', criteria.map(criterion => `teaching-score-${criterion.id}`).join(' '));
@@ -216,6 +224,7 @@
       const confirmation = modal(publishLabel, revising ? 'Xác nhận công bố lại' : 'Xác nhận công bố', body => {
         body.append(el('p', `${state.project.title} · ${state.project.groupName}`));
         body.append(el('p', `Điểm tổng kết: ${checked.value.score.toFixed(1)} / 10`));
+        if (!completed) body.append(el('p', 'Sau khi công bố, đề tài sẽ chuyển sang trạng thái Hoàn thành.'));
         if (attachment) {
           const fileName = el('p', attachment.name);
           fileName.translate = false;
@@ -232,7 +241,7 @@
             if (!confirmation.open) throw new Error('Đã hủy công bố đánh giá.');
           }
           if (changed) values.attachment = staged ?? null;
-          service.publish(snapshot.projectId, values, state.revision);
+          service.publish(snapshot.projectId, values, snapshot.revision);
         } catch (failure) {
           if (staged) await files.discard(staged.fileKey).catch(() => {});
           throw failure;
@@ -242,7 +251,7 @@
         }
         editingPublished = false;
         ui.dirty = false;
-      }, 'Đã công bố đánh giá trên trình duyệt này.');
+      }, 'Đã công bố đánh giá trên trình duyệt này.', { onSuccess: () => successDialog.showModal() });
     });
     preview();
   }

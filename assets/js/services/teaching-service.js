@@ -11,6 +11,7 @@
     if (!project) throw new Error('Không tìm thấy đề tài cần quản lý.');
     if (project.id === 'DA005') project = { ...project, semester: 1 };
     const team = app.services.projectTeams.getState(projectId);
+    project = { ...project, status: team.project.status, statusLabel: team.project.statusLabel };
     const canSupervise = app.services.approvedProjects?.canSupervise(project, team.supervisorIds) ??
       team.supervisorIds.includes(actor()?.id);
     if (checkActor && !canSupervise) throw new Error('Giảng viên hiện tại không hướng dẫn đề tài này.');
@@ -39,7 +40,7 @@
   }
 
   function listSupervisedProjects() {
-    return supervisedProjects().map(clone);
+    return supervisedProjects().map(entry => clone({ ...entry, project: app.storage.withPublishedStatus(entry.project) }));
   }
 
   function stateFrom(projectId, records) {
@@ -64,13 +65,14 @@
   }
 
   function decorate(record, meta) {
+    const project = app.storage.withPublishedStatus(meta.project, [record]);
     let progress = null;
     let warning = '';
     try { progress = app.services.projectProgress.getState(record.projectId); }
     catch (failure) { warning = failure.message; }
-    return { ...clone(record), ...clone(meta), criteria: clone(evaluationCriteria(record, meta)),
+    return { ...clone(record), ...clone(meta), project: clone(project), criteria: clone(evaluationCriteria(record, meta)),
       progress, warning, publication: clone(record.publishedEvaluation || meta.initialEvaluation || null),
-      canManageRequirements: meta.project.status === 'dang-thuc-hien' };
+      canManageRequirements: project.status === 'dang-thuc-hien' };
   }
 
   function getState(projectId) {

@@ -256,7 +256,7 @@
 
   proposals.subscribe(render);
   window.addEventListener('storage', event => {
-    if ([topics.key, app.storage.registrationKey, app.storage.progressKey, app.storage.teamKey, app.services.lecturerTopicRepository?.key, null].includes(event.key)) render();
+    if ([topics.key, app.storage.registrationKey, app.storage.progressKey, app.storage.teamKey, app.storage.teachingKey, app.services.lecturerTopicRepository?.key, null].includes(event.key)) render();
   });
   window.addEventListener('ie104:lecturer-topics-updated', render);
   window.addEventListener('ie104:registrations-updated', render);

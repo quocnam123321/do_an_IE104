@@ -236,6 +236,9 @@
     applyFilters();
   });
 
+  const pickers = globalThis.IE104?.ui?.proposalPickers;
+  pickers?.enhanceSelect(departmentSelect);
+  pickers?.enhanceSelect(groupSelect);
   searchInput.addEventListener('input', applyFilters);
   departmentSelect.addEventListener('change', applyFilters);
   groupSelect.addEventListener('change', applyFilters);

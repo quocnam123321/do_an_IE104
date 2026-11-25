@@ -59,6 +59,7 @@
   }
 
   const icon = path => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${path}"/></svg>`;
+  const calendarIcon = icon('M20 7v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2ZM8 3v4m8-4v4M4 10h16');
   const weekdays = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
   const enhanced = new WeakSet();
   const dateTimeFields = new WeakMap();
@@ -127,18 +128,24 @@
     };
   }
 
-  function enhanceDate(input, { timeZone, timeLabel = 'Giờ hết hạn đăng ký', label = input.labels[0], preferAbove = false } = {}) {
+  function enhanceDate(input, { timeZone, timeLabel = 'Giờ hết hạn đăng ký', label = input.labels[0], preferAbove = false, todayValue } = {}) {
+    if (enhanced.has(input)) return;
     const group = document.createElement('div');
     group.className = 'proposal-date-control';
     input.before(group);
     group.append(input);
     const initial = input.value;
     const withTime = input.type === 'datetime-local';
-    input.type = 'text';
-    input.inputMode = 'numeric';
-    input.placeholder = 'dd/mm/yyyy';
-    input.maxLength = 10;
-    input.autocomplete = 'off';
+    const onlyMonth = input.type === 'month' || input.getAttribute('type') === 'month';
+    if (onlyMonth) {
+      input.hidden = true;
+    } else {
+      input.type = 'text';
+      input.inputMode = 'numeric';
+      input.placeholder = 'dd/mm/yyyy';
+      input.maxLength = 10;
+      input.autocomplete = 'off';
+    }
     enhanced.add(input);
     if (withTime) {
       group.classList.add('proposal-date-control--with-time');
@@ -153,25 +160,33 @@
       timeInput.required = input.required;
       dateTimeFields.set(input, timeInput);
     }
-    fillEnhancedDate(input, initial);
-    input.defaultValue = input.value;
-    if (timeInput) timeInput.defaultValue = timeInput.value;
+    if (!onlyMonth) {
+      fillEnhancedDate(input, initial);
+      input.defaultValue = input.value;
+      if (timeInput) timeInput.defaultValue = timeInput.value;
+    }
 
     label.id ||= `${input.id}-label`;
     const panelId = `${input.id}-calendar`;
     const headingId = `${panelId}-heading`;
     group.insertAdjacentHTML('beforeend', `
-      <button type="button" class="proposal-date-trigger" aria-haspopup="dialog"
-        aria-label="Mở lịch: ${label.firstChild.textContent.trim()}">
-        ${icon('M20 7v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2ZM8 3v4m8-4v4M4 10h16')}
-      </button>
+      ${onlyMonth ? `
+      <button type="button" id="${input.id}-picker" class="proposal-month-trigger" aria-haspopup="dialog"
+        aria-labelledby="${label.id} ${input.id}-display">
+        <span id="${input.id}-display"></span>
+        ${calendarIcon}
+      </button>` : `
+      <button type="button" class="proposal-date-trigger" aria-haspopup="dialog">
+        ${calendarIcon}
+      </button>`}
       <div id="${panelId}" class="proposal-picker-popup proposal-calendar${withTime ? ' proposal-calendar--with-time' : ''}" role="dialog"
         aria-labelledby="${label.id}">
         <div class="proposal-calendar__header">
+          ${onlyMonth ? `<div class="proposal-calendar__heading"><span aria-live="polite"></span></div>` : `
           <button type="button" id="${headingId}" class="proposal-calendar__heading"
             aria-expanded="false" aria-controls="${panelId}-months">
             <span aria-live="polite"></span>${icon('m7 10 5 5 5-5')}
-          </button>
+          </button>`}
           <div class="proposal-calendar__navigation">
             <button type="button" data-step="-1" aria-label="Tháng trước">${icon('m14 6-6 6 6 6')}</button>
             <button type="button" data-step="1" aria-label="Tháng sau">${icon('m10 6 6 6-6 6')}</button>
@@ -182,10 +197,10 @@
             <label>Năm <input type="number" inputmode="numeric" min="1" max="9999" step="1"></label>
             <div class="proposal-calendar__month-grid"></div>
           </div>
-          <table class="proposal-calendar__grid" role="grid" aria-labelledby="${headingId}">
+          ${onlyMonth ? '' : `<table class="proposal-calendar__grid" role="grid" aria-labelledby="${headingId}">
             <thead><tr>${weekdays.map(day => `<th scope="col">${day}</th>`).join('')}</tr></thead>
             <tbody></tbody>
-          </table>
+          </table>`}
         </div>
         ${withTime ? `
           <div class="proposal-calendar__time">
@@ -202,12 +217,18 @@
           </div>
         ` : ''}
         <div class="proposal-calendar__footer">
-          <button type="button" data-clear-date>Xóa</button>
+          ${onlyMonth ? '' : '<button type="button" data-clear-date>Xóa</button>'}
           <button type="button" data-today>Hôm nay</button>
         </div>
       </div>
     `);
-    const trigger = group.querySelector('.proposal-date-trigger');
+    const trigger = group.querySelector('.proposal-date-trigger, .proposal-month-trigger');
+    if (onlyMonth) label.htmlFor = trigger.id;
+    else {
+      const text = globalThis.IE104Language?.sourceText(label.firstChild) ?? label.firstChild.textContent;
+      trigger.setAttribute('aria-label', `Mở lịch: ${text.trim()}`);
+    }
+    const monthLabel = onlyMonth ? trigger.querySelector('span') : null;
     const panel = group.querySelector('.proposal-calendar');
     const body = panel.querySelector('.proposal-calendar__body');
     const popup = pickers.setupPopup(group, trigger, panel, { scrollArea: body, preferAbove });
@@ -218,7 +239,7 @@
     const yearField = jump.querySelector('input');
     const monthGrid = jump.querySelector('.proposal-calendar__month-grid');
     const grid = panel.querySelector('table');
-    const gridBody = grid.tBodies[0];
+    const gridBody = grid?.tBodies[0];
     const clear = panel.querySelector('[data-clear-date]');
     const hours = withTime && createTimeColumn(panel.querySelector(`#${panelId}-hours`), 24, updateDateTime);
     const minutes = withTime && createTimeColumn(panel.querySelector(`#${panelId}-minutes`), 60, updateDateTime);
@@ -233,8 +254,11 @@
       month.addEventListener('click', () => {
         setYear();
         active = dateAt(active.getUTCFullYear(), index, 1);
-        showMonths(false);
-        focusDay();
+        if (onlyMonth) choose(isoDate(active));
+        else {
+          showMonths(false);
+          focusDay();
+        }
       });
       return month;
     });
@@ -243,13 +267,15 @@
     function render() {
       const year = active.getUTCFullYear();
       const month = active.getUTCMonth();
-      title.textContent = `Tháng ${month + 1} năm ${year}`;
+      title.textContent = onlyMonth ? `Năm ${year}` : `Tháng ${month + 1} năm ${year}`;
       navigation[0].disabled = year === 1 && (!jump.hidden || month === 0);
       navigation[1].disabled = year === 9999 && (!jump.hidden || month === 11);
       updateActions();
       if (!jump.hidden) {
         yearField.value = year;
-        months.forEach((button, index) => button.setAttribute('aria-pressed', String(index === month)));
+        months.forEach((button, index) => button.setAttribute('aria-pressed', String(onlyMonth
+          ? input.value === isoDate(dateAt(year, index, 1)).slice(0, 7)
+          : index === month)));
         popup.place();
         return;
       }
@@ -294,8 +320,10 @@
     function showMonths(show) {
       body.scrollTop = 0;
       jump.hidden = !show;
-      grid.hidden = show;
-      heading.setAttribute('aria-expanded', String(show));
+      if (grid) {
+        grid.hidden = show;
+        heading.setAttribute('aria-expanded', String(show));
+      }
       navigation[0].setAttribute('aria-label', show ? 'Năm trước' : 'Tháng trước');
       navigation[1].setAttribute('aria-label', show ? 'Năm sau' : 'Tháng sau');
       render();
@@ -323,10 +351,11 @@
         }).format(now);
         today = parseDate(local) || today;
       }
-      const date = parseDate(input.value);
+      today = parseDate(todayValue?.() || '') || today;
+      const date = parseDate(onlyMonth ? `${input.value}-01` : input.value);
       selected = date ? isoDate(date) : '';
       active = date || today;
-      showMonths(false);
+      showMonths(onlyMonth);
       popup.open();
       if (withTime) {
         const [hour = '', minute = ''] = parseTime(timeInput.value).split(':');
@@ -334,17 +363,29 @@
         minutes.value = minute;
         updateActions();
       }
-      focusDay();
+      if (onlyMonth) months[active.getUTCMonth()].focus({ preventScroll: true });
+      else focusDay();
     }
 
     function commit(value) {
-      fillEnhancedDate(input, value);
+      if (onlyMonth) {
+        input.value = value.slice(0, 7);
+        syncMonthLabel();
+      } else {
+        fillEnhancedDate(input, value);
+      }
       input.dispatchEvent(new Event('input', { bubbles: true }));
       input.dispatchEvent(new Event('change', { bubbles: true }));
     }
 
     function updateActions() {
-      clear.disabled = !(input.value || timeInput?.value || (withTime && (selected || hours.value || minutes.value)));
+      if (clear) clear.disabled = !(input.value || timeInput?.value || (withTime && (selected || hours.value || minutes.value)));
+    }
+
+    function syncMonthLabel() {
+      const date = parseDate(`${input.value}-01`);
+      const text = date ? `Tháng ${date.getUTCMonth() + 1} năm ${date.getUTCFullYear()}` : 'Chọn tháng';
+      if ((globalThis.IE104Language?.sourceText(monthLabel) ?? monthLabel.textContent) !== text) monthLabel.textContent = text;
     }
 
     function updateDateTime() {
@@ -410,7 +451,7 @@
     group.addEventListener('focusout', event => {
       if (event.relatedTarget && !group.contains(event.relatedTarget)) popup.close();
     });
-    heading.addEventListener('click', () => {
+    if (grid) heading.addEventListener('click', () => {
       showMonths(jump.hidden);
       if (!jump.hidden) yearField.focus();
     });
@@ -425,13 +466,13 @@
       const step = Number(button.dataset.step);
       active = addMonths(active, jump.hidden ? step : step * 12);
       render();
-      if (button.disabled) heading.focus({ preventScroll: true });
+      if (button.disabled) (onlyMonth ? yearField : heading).focus({ preventScroll: true });
     }));
-    gridBody.addEventListener('click', event => {
+    gridBody?.addEventListener('click', event => {
       const day = event.target.closest('button[data-date]');
       if (day) choose(day.dataset.date);
     });
-    gridBody.addEventListener('keydown', event => {
+    gridBody?.addEventListener('keydown', event => {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         choose(event.target.dataset.date);
@@ -453,12 +494,17 @@
       render();
       focusDay();
     });
-    clear.addEventListener('click', () => {
+    clear?.addEventListener('click', () => {
       commit('');
       close();
     });
     panel.querySelector('[data-today]').addEventListener('click', () => choose(isoDate(today)));
     input.form?.addEventListener('reset', popup.close);
+    input.closest('dialog')?.addEventListener('close', popup.close);
+    if (onlyMonth) {
+      syncMonthLabel();
+      return { sync: syncMonthLabel };
+    }
   }
 
   form?.querySelectorAll('input[data-proposal-picker]:is([type="date"], [type="datetime-local"])')

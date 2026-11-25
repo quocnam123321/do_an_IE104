@@ -1,0 +1,81 @@
+.number-stepper {
+  display: grid;
+  grid-template-columns: var(--control-min-height) minmax(0, 1fr) var(--control-min-height);
+  overflow: clip;
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+}
+
+.number-stepper:focus-within {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.number-stepper:has(> :is(input:user-invalid, input[aria-invalid="true"])) {
+  border-color: var(--color-danger-fg);
+}
+
+.number-stepper > input[type="number"] {
+  appearance: textfield;
+  width: 100%;
+  min-inline-size: 0;
+  min-block-size: var(--control-min-height);
+  padding: var(--space-1);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.number-stepper > input[type="number"]:focus { outline: none; }
+
+.number-stepper > input::-webkit-inner-spin-button,
+.number-stepper > input::-webkit-outer-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.number-stepper > .number-stepper__button {
+  display: grid;
+  place-items: center;
+  min-block-size: var(--control-min-height);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: var(--color-info-bg);
+  color: var(--color-primary);
+}
+
+.number-stepper > .number-stepper__button--decrease { border-inline-end: 1px solid var(--color-control-border); }
+.number-stepper > .number-stepper__button--increase { border-inline-start: 1px solid var(--color-control-border); }
+
+.number-stepper__button::before,
+.number-stepper__button--increase::after {
+  content: "";
+  grid-area: 1 / 1;
+  inline-size: 0.875rem;
+  block-size: 2px;
+  border-radius: var(--radius-full);
+  background: currentColor;
+}
+
+.number-stepper__button--increase::after { rotate: 90deg; }
+.number-stepper > .number-stepper__button:hover:enabled { background: var(--color-primary-tint-border); }
+.number-stepper > .number-stepper__button:focus-visible { outline-offset: -3px; }
+.number-stepper > .number-stepper__button:disabled {
+  background: var(--color-neutral-bg);
+  color: var(--color-muted-foreground);
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .number-stepper__button::before,
+  .number-stepper__button--increase::after {
+    forced-color-adjust: none;
+    background: ButtonText;
+  }
+  .number-stepper__button:disabled::before,
+  .number-stepper__button--increase:disabled::after { background: GrayText; }
+}

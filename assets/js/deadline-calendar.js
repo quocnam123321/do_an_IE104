@@ -5,6 +5,9 @@
   if (!calendar || !month) return;
 
   let today = calendar.querySelector('time[aria-current="date"]').dateTime;
+  const pickers = globalThis.IE104?.ui;
+  const topicPicker = pickers?.proposalPickers?.enhanceSelect(topic);
+  const monthPicker = pickers?.proposalDatePicker?.enhanceDate(month, { todayValue: () => today });
   const demoNow = Date.parse(`${today}T12:00:00+07:00`);
   const preview = document.getElementById('calendar-preview');
   const overflow = document.getElementById('calendar-overflow');
@@ -42,6 +45,7 @@
   let positionFrame = 0;
   let displayedMonth = month.value;
   let displayedTopic = topic?.value;
+  let refreshExport;
 
   const sampleEvents = Array.from(calendar.querySelectorAll('.calendar-event'), (element) => {
     const { topic: topicId, status, submitted, deadline: due } = element.dataset;
@@ -66,10 +70,18 @@
   function indexEvents() {
     eventsByDate.clear();
     const merged = new Map([...events, ...activeEvents].map(event => [event.id, event]));
+    const topicsWithSubmissions = new Set();
     for (const event of [...merged.values()].sort((first, second) => first.due.localeCompare(second.due))) {
       if (!eventsByDate.has(event.date)) eventsByDate.set(event.date, []);
       eventsByDate.get(event.date).push(event);
+      if (event.kind === 'submission' || event.element?.classList.contains('calendar-event--submission')) {
+        topicsWithSubmissions.add(event.topicId);
+      }
     }
+    for (const [id, option] of topics) {
+      option.hidden = id !== '' && !topicsWithSubmissions.has(id);
+    }
+    topicPicker?.close();
   }
   indexEvents();
 
@@ -281,7 +293,8 @@
   }
 
   function chooseAdditionalDeadlines(events) {
-    const reports = events.filter(event => event.kind === 'topic').slice(0, maxAdditionalDeadlines);
+    const reports = events.filter(event => event.kind === 'topic' || event.element?.classList.contains('calendar-event--topic'))
+      .slice(0, maxAdditionalDeadlines);
     const submissionLimit = maxAdditionalDeadlines - reports.length;
     const candidates = events.filter(event => event.kind === 'submission' && event.detailUrl &&
       topics.get(event.topicId)?.hasAttribute('data-active-deadline-topic'));
@@ -356,13 +369,16 @@
 
   function renderCalendar() {
     if (!/^\d{4}-\d{2}$/.test(month.value)) return;
+    if (topic && (!topic.selectedOptions.length || topic.selectedOptions[0].hidden)) topic.value = '';
+    topicPicker?.sync();
+    monthPicker?.sync();
     closePreview();
     closeOverflow();
     displayedMonth = month.value;
     displayedTopic = topic?.value;
     const [year, number] = month.value.split('-').map(Number);
-    const start = (new Date(year, number - 1, 1).getDay() + 6) % 7;
-    const days = new Date(year, number, 0).getDate();
+    const start = (calendarDate(year, number - 1).getDay() + 6) % 7;
+    const days = calendarDate(year, number, 0).getDate();
     const body = calendar.tBodies[0];
     body.replaceChildren();
     let row;
@@ -387,12 +403,20 @@
       if (additional.length) cell.append(overflowNode(date, additional));
     }
     calendar.caption.textContent = `Tháng ${number}/${year} · Giờ Việt Nam (UTC+7)`;
+    refreshExport?.();
+  }
+
+  function calendarDate(year, monthIndex, day = 1) {
+    const date = new Date(0);
+    date.setFullYear(year, monthIndex, day);
+    return date;
   }
 
   function shiftMonth(offset) {
     if (!month.value) month.value = today.slice(0, 7);
     const [year, number] = month.value.split('-').map(Number);
-    const date = new Date(year, number - 1 + offset, 1);
+    const date = calendarDate(year, number - 1 + offset);
+    if (date.getFullYear() < 1 || date.getFullYear() > 9999) return;
     month.value = `${String(date.getFullYear()).padStart(4, '0')}-${String(date.getMonth() + 1).padStart(2, '0')}`;
     renderCalendar();
   }
@@ -470,24 +494,32 @@
       const input = element.querySelector('input');
       const time = element.querySelector('time');
       const kind = element.querySelector('.calendar-export__kind');
-      const isTopic = event.element.classList.contains('calendar-event--topic');
+      const isTopic = event.kind === 'topic' || Boolean(event.element?.classList.contains('calendar-event--topic'));
       element.querySelector('strong').textContent = event.name;
       time.dateTime = event.due;
       time.textContent = formatTime(event.due);
       kind.textContent = isTopic ? 'Hạn đề tài' : 'Bài nộp';
       kind.classList.toggle('calendar-export__kind--topic', isTopic);
       const projectName = topics.get(event.topicId)?.textContent ?? '';
-      return { element, input, id: event.id, terms: normalize(`${event.name} ${projectName}`) };
+      const project = element.querySelector('.calendar-export__project');
+      project.textContent = projectName;
+      project.hidden = !projectName;
+      return { element, input, event, projectName, terms: normalize(`${event.name} ${projectName}`) };
     }
 
     function updateSelection() {
-      const selected = rows.filter(({ input }) => input.checked).length;
+      const selected = selectedRows();
       const selectedResults = results.filter(({ input }) => input.checked).length;
       selectAll.disabled = busy || results.length === 0;
       selectAll.checked = results.length > 0 && selectedResults === results.length;
       selectAll.indeterminate = selectedResults > 0 && !selectAll.checked;
-      add.disabled = busy || selected === 0;
-      const countLabel = `Đã chọn ${selected} mốc`;
+      add.disabled = busy || selected.length === 0;
+      const action = canSync(selected.length ? selected : rows) ? 'Thêm lịch' : 'Tải tệp .ics';
+      if (add.dataset.action !== action) {
+        add.dataset.action = action;
+        add.textContent = action;
+      }
+      const countLabel = `Đã chọn ${selected.length} mốc`;
       if (count.textContent !== countLabel) count.textContent = countLabel;
       feedback.textContent = '';
     }
@@ -510,9 +542,10 @@
     function showRows(selectedIds = []) {
       const [year, number] = displayedMonth.split('-');
       monthLabel.textContent = `Tháng ${Number(number)}/${year}`;
-      rows = events.filter((event) => event.date.startsWith(`${displayedMonth}-`)
-        && matchesTopic(event) && Number.isFinite(event.dueTime)).map(createRow);
-      for (const row of rows) row.input.checked = selectedIds.includes(row.id);
+      rows = [...eventsByDate].flatMap(([date, day]) => date.startsWith(`${displayedMonth}-`)
+        ? day.filter(event => matchesTopic(event) && Number.isFinite(Date.parse(event.due))) : []).map(createRow);
+      const checkedIds = new Set(selectedIds);
+      for (const row of rows) row.input.checked = checkedIds.has(row.event.id);
       list.replaceChildren(...rows.map(({ element }) => element));
       filterRows();
     }
@@ -525,8 +558,16 @@
       dialog.showModal();
     }
 
+    function selectedRows() {
+      return rows.filter(({ input }) => input.checked);
+    }
+
     function selectedIds() {
-      return rows.filter(({ input }) => input.checked).map(({ id }) => id);
+      return selectedRows().map(({ event }) => event.id);
+    }
+
+    function canSync(selected) {
+      return selected.every(({ event }) => event.canSync);
     }
 
     function feedbackMessage(message) {
@@ -535,12 +576,22 @@
     }
 
     async function submit(allowConnect = true) {
-      const ids = selectedIds();
-      if (busy || !ids.length) return;
-      if (!request) {
-        feedbackMessage('Mở website qua HTTP hoặc HTTPS để sử dụng Google Calendar.');
+      const selected = selectedRows();
+      if (busy || !selected.length) return;
+      if (!canSync(selected)) {
+        if (!allowConnect) {
+          feedbackMessage('Tải tệp .ics để nhập các mốc đã chọn vào Google Calendar.');
+          return;
+        }
+        try {
+          pickers.downloadFile(pickers.createCalendarFile(selected, displayedMonth));
+          feedbackMessage('Trên máy tính, mở Google Calendar → Cài đặt → Nhập và xuất để nhập tệp .ics vừa tải.');
+        } catch {
+          feedbackMessage('Không tải được tệp lịch. Vui lòng thử lại.');
+        }
         return;
       }
+      const ids = selected.map(({ event }) => event.id);
       function setBusy(value) {
         busy = value;
         for (const control of [search, ...closeButtons, ...rows.map(({ input }) => input)]) control.disabled = value;
@@ -574,7 +625,7 @@
         message = counts.map((number, index) => number ? `${labels[index]} ${number} mốc` : '').filter(Boolean).join(' · ');
         if (counts[3]) {
           const retryIds = response.results.filter(({ status }) => status === 'failed').map(({ id }) => id);
-          for (const row of rows) row.input.checked = retryIds.includes(row.id);
+          for (const row of rows) row.input.checked = retryIds.includes(row.event.id);
         }
       } catch (error) {
         message = api?.calendarMessage(error) ?? 'Không kết nối được dịch vụ lịch. Vui lòng thử lại.';
@@ -608,13 +659,12 @@
             }
             const dueTime = Date.parse(due);
             const status = element.dataset.status ?? 'pending';
-            return { id, element, name, topicId, due, dueTime, date: due.slice(0, 10),
+            return { id, element, name, topicId, due, dueTime, date: due.slice(0, 10), canSync: true,
               submitted: sample?.submitted,
               status: status === 'pending' && dueTime < now ? 'overdue' : status };
           }).sort((first, second) => first.dueTime - second.dueTime);
           indexEvents();
           renderCalendar();
-          if (dialog.open && !busy) showRows(selectedIds());
         }
       } catch {
         // Dữ liệu HTML mẫu vẫn xem được khi chưa triển khai dịch vụ.
@@ -666,6 +716,9 @@
     });
     dialog.addEventListener('close', () => trigger.focus({ preventScroll: true }));
     add.addEventListener('click', () => submit());
+    refreshExport = () => {
+      if (dialog.open && !busy) showRows(selectedIds());
+    };
     trigger.disabled = false;
     const calendarLoaded = loadSavedCalendar();
     void resumeAuthorization();

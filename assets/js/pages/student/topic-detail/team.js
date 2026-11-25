@@ -348,7 +348,7 @@
     if (!cancelDialog.open) pendingCancel = null;
   });
   cancelSuccess.addEventListener('close', () => inviteButton.focus({ preventScroll: true }));
-  window.addEventListener('storage', event => { if (event.key === globalThis.IE104.storage.teamKey || event.key === null) refresh(); });
+  window.addEventListener('storage', event => { if ([globalThis.IE104.storage.teamKey, globalThis.IE104.storage.teachingKey, null].includes(event.key)) refresh(); });
   document.addEventListener('ie104:project-team-updated', refresh);
   globalThis.IE104Supervision?.subscribe(refresh);
   window.addEventListener('pageshow', refresh);

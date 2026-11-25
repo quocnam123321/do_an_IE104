@@ -26,6 +26,10 @@
   const detailActions = detailDialog.querySelector('footer');
   const editDetailButton = detailActions.querySelector('[data-task-detail-action="edit"]');
   const dialogs = { add: document.getElementById('task-add-popover'), edit: document.getElementById('task-edit-cv-01'), remove: document.getElementById('task-delete-cv-01') };
+  const datePicker = ui.proposalDatePicker;
+  for (const dialog of [dialogs.add, dialogs.edit]) {
+    datePicker?.enhanceDate(dialog.querySelector('[name="han-hoan-thanh"]'), { timeZone: 'Asia/Ho_Chi_Minh' });
+  }
   const { labels, today, memberIndex, renderMemberPopover, renderCard, fillDetails, fillStats } = ui.progressTaskView;
   const columnClasses = { 'chua-thuc-hien': 'task-column--not-started', 'dang-thuc-hien': 'task-column--in-progress', 'da-hoan-thanh': 'task-column--done' };
   const columnIcons = { 'chua-thuc-hien': 'list', 'dang-thuc-hien': 'progress', 'da-hoan-thanh': 'done' };
@@ -271,18 +275,19 @@
   }
 
   function validateTaskForm(form, key, values = new FormData(form)) {
+    const deadline = form.elements['han-hoan-thanh'];
     const checked = service.validateTask({
       title: values.get('ten-cong-viec'),
       description: values.get('mo-ta'),
       assigneeCodes: values.getAll('nguoi-phu-trach'),
-      deadline: values.get('han-hoan-thanh'),
+      deadline: datePicker ? datePicker.read(deadline) : values.get('han-hoan-thanh'),
       status: values.get('trang-thai'),
     }, state.team, { editing: key === 'edit' });
     const fields = {
       title: form.elements['ten-cong-viec'],
       description: form.elements['mo-ta'],
       assigneeCode: form.querySelector('[data-task-assignee-toggle]'),
-      deadline: form.elements['han-hoan-thanh'],
+      deadline,
     };
     const statusInputs = [...form.querySelectorAll('[name="trang-thai"]')];
     [...Object.values(fields), ...statusInputs].forEach(field => field.removeAttribute('aria-invalid'));
@@ -317,7 +322,9 @@
       resetAssignees(form, task);
       if (task) {
         form.elements['ten-cong-viec'].value = task.title;
-        form.elements['han-hoan-thanh'].value = task.deadline;
+        const deadline = form.elements['han-hoan-thanh'];
+        if (datePicker) datePicker.fill(deadline, task.deadline);
+        else deadline.value = task.deadline;
         form.elements['mo-ta'].value = task.description || '';
         form.elements['trang-thai'].value = task.status;
       }
@@ -369,7 +376,7 @@
     });
   });
   window.addEventListener('pageshow', refresh);
-  window.addEventListener('storage', event => { if ([globalThis.IE104.storage.progressKey, globalThis.IE104.storage.teamKey, null].includes(event.key)) refresh(); });
+  window.addEventListener('storage', event => { if ([globalThis.IE104.storage.progressKey, globalThis.IE104.storage.teamKey, globalThis.IE104.storage.teachingKey, null].includes(event.key)) refresh(); });
   refresh();
   panel.dataset.progressReady = 'true';
 })();

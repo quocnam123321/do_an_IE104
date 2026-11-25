@@ -273,5 +273,13 @@
     catch { throw new Error('Chưa lưu được dữ liệu giảng viên. Trình duyệt có thể đang chặn lưu trữ hoặc đã hết dung lượng.'); }
   }
 
-  app.storage = { registrationKey, readRegistrations, writeRegistrations, proposalKey, readProposals, writeProposals, teamKey, readProjectTeams, writeProjectTeams, progressKey, readProjectProgress, writeProjectProgress, profileKey, readProfile, writeProfile, requestKey, readRequests, writeRequests, teachingKey, readTeachingRecords, writeTeachingRecords };
+  function withPublishedStatus(project, records) {
+    if (project.status !== 'dang-thuc-hien' || globalThis.location?.protocol === 'file:') return project;
+    const saved = records ?? readTeachingRecords();
+    return saved.some(record => record.projectId === project.id && record.publishedEvaluation?.published === true)
+      ? { ...project, status: 'hoan-thanh', statusLabel: 'Hoàn thành' }
+      : project;
+  }
+
+  app.storage = { registrationKey, readRegistrations, writeRegistrations, proposalKey, readProposals, writeProposals, teamKey, readProjectTeams, writeProjectTeams, progressKey, readProjectProgress, writeProjectProgress, profileKey, readProfile, writeProfile, requestKey, readRequests, writeRequests, teachingKey, readTeachingRecords, writeTeachingRecords, withPublishedStatus };
 })();

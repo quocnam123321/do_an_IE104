@@ -16,9 +16,10 @@
 
   function refresh() {
     try {
-      const project = overview || sample?.isArchivedSample
+      const definition = overview || sample?.isArchivedSample
         ? { ...sample, ...overview }
         : app.services.approvedProjects.forStudent(projectId).project;
+      const project = app.storage.withPublishedStatus(definition);
       document.body.dataset.projectId = project.id;
       document.body.toggleAttribute('data-archived-sample', Boolean(project.isArchivedSample));
       document.title = `${project.title} | Đề tài của tôi`;
@@ -103,7 +104,7 @@
     root.hidden = false;
     document.body.dataset.projectState = 'ready';
   });
-  window.addEventListener('storage', event => { if ([app.storage.proposalKey, app.storage.registrationKey, app.storage.teamKey, null].includes(event.key)) refresh(); });
+  window.addEventListener('storage', event => { if ([app.storage.proposalKey, app.storage.registrationKey, app.storage.teamKey, app.storage.teachingKey, null].includes(event.key)) refresh(); });
   document.addEventListener('ie104:project-team-updated', refresh);
   window.addEventListener('pageshow', refresh);
 })();

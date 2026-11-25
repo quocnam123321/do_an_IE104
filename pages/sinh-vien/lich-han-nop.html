@@ -11,13 +11,14 @@
     />
     <title>Lịch hạn nộp | Quản lý đồ án</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-student.js?v=20261125-calendar-legend"></script>
+    <script defer src="../../assets/js/i18n/en-student.js?v=20261126-calendar-export"></script>
     <script defer src="../../assets/js/i18n/en-shared.js?v=20261124-demo-deadlines"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
     <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-pagination" />
-    <link rel="stylesheet" href="../../assets/css/deadline-calendar.css?v=20261125-report-deadlines" />
+    <link rel="stylesheet" href="../../assets/css/deadline-calendar.css?v=20261126-calendar-export" />
+    <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261126-calendar-year" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <script src="../../assets/js/data/mock-data.js?v=20261124-completed-actions" defer></script>
     <script src="../../assets/js/data/student-projects.js" defer></script>
@@ -33,7 +34,11 @@
     <script src="../../assets/js/services/project-team-service.js?v=20261124-demo-invitation-polish" defer></script>
     <script src="../../assets/js/services/student-submissions-service.js?v=20261125-approved-overview" defer></script>
     <script src="../../assets/js/services/deadline-service.js?v=20261125-report-deadlines" defer></script>
-    <script src="../../assets/js/deadline-calendar.js?v=20261125-calendar-legend" defer></script>
+    <script src="../../assets/js/pages/student/proposal-pickers.js?v=20261126-picker-parity" defer></script>
+    <script src="../../assets/js/pages/student/proposal-date-picker.js?v=20261126-calendar-year" defer></script>
+    <script src="../../assets/js/shared/download-file.js" defer></script>
+    <script src="../../assets/js/shared/calendar-file.js" defer></script>
+    <script src="../../assets/js/deadline-calendar.js?v=20261126-calendar-labels" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
   </head>
@@ -196,17 +201,17 @@
               aria-label="Điều khiển lịch hạn nộp"
             >
               <div class="deadline-calendar__field">
-                <label for="deadline-topic">Đề tài</label>
+                <label for="deadline-topic" class="visually-hidden">Đề tài</label>
                 <select id="deadline-topic" name="de-tai">
                   <option value="">Tất cả đề tài</option>
                   <option value="thu-vien" data-topic-status="in-progress" data-group="Nhóm 01">Website quản lý thư viện</option>
                   <option value="ban-sach" data-topic-status="completed" data-group="Nhóm 3 — BookHub">Website bán sách trực tuyến</option>
-                  <option value="he-thong-thu-vien" data-topic-status="completed" data-group="Nhóm 5 — Library UIT">Hệ thống quản lý thư viện</option>
-                  <option value="cau-lac-bo" data-topic-status="completed" data-group="Nhóm 2 — Campus Club">Website quản lý câu lạc bộ sinh viên</option>
+                  <option value="he-thong-thu-vien" data-topic-status="completed" data-group="Nhóm 5 — Library UIT" hidden>Hệ thống quản lý thư viện</option>
+                  <option value="cau-lac-bo" data-topic-status="completed" data-group="Nhóm 2 — Campus Club" hidden>Website quản lý câu lạc bộ sinh viên</option>
                 </select>
               </div>
               <div class="deadline-calendar__field">
-                <label for="deadline-month">Tháng</label>
+                <label for="deadline-month" class="visually-hidden">Tháng</label>
                 <div class="deadline-calendar__month-controls">
                   <button class="deadline-calendar__previous" type="button" aria-label="Tháng trước">‹</button>
                   <input type="month" id="deadline-month" name="thang" value="2026-10" />
@@ -611,6 +616,7 @@
                   <input type="checkbox" />
                   <span class="calendar-export__event">
                     <strong></strong>
+                    <span class="calendar-export__project"></span>
                     <time></time>
                   </span>
                   <span class="calendar-export__kind"></span>
