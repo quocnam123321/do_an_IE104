@@ -369,7 +369,7 @@
     });
   });
   window.addEventListener('pageshow', refresh);
-  window.addEventListener('storage', event => { if ([globalThis.IE104.storage.progressKey, globalThis.IE104.storage.teamKey, null].includes(event.key)) refresh(); });
+  window.addEventListener('storage', event => { if ([globalThis.IE104.storage.progressKey, globalThis.IE104.storage.teamKey, globalThis.IE104.storage.teachingKey, null].includes(event.key)) refresh(); });
   refresh();
   panel.dataset.progressReady = 'true';
 })();

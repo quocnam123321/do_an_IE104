@@ -120,7 +120,13 @@
     let initial = app.data?.myTopics || [];
     try { if (app.services.requests) initial = app.services.requests.applyToTopics(initial); }
     catch (error) { warnings.push(error.message); }
-    const all = [...saved, ...initial];
+    let all = [...saved, ...initial];
+    try {
+      if (location.protocol !== 'file:') {
+        const records = app.storage.readTeachingRecords();
+        all = all.map(topic => app.storage.withPublishedStatus(topic, records));
+      }
+    } catch (error) { warnings.push(error.message); }
     const topics = (app.topicIdentity?.uniqueTitles(all) || all).map(normalizeMyTopic);
     return { ...listTopics(topics, filters, pagination), warning: warnings.join(' ') };
   }

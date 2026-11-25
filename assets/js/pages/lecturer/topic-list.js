@@ -120,7 +120,7 @@
   document.addEventListener('ie104:lecturer-topics-updated', () => { render(); document.dispatchEvent(new Event('ie104:topics-updated')); });
   window.addEventListener('storage', event => {
     const app = globalThis.IE104;
-    if ([app.services.lecturerTopicRepository?.key, app.storage?.registrationKey, app.storage?.teamKey, null].includes(event.key)) {
+    if ([app.services.lecturerTopicRepository?.key, app.storage?.registrationKey, app.storage?.teamKey, app.storage?.teachingKey, null].includes(event.key)) {
       refreshTopics();
     }
   });

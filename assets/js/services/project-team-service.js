@@ -10,7 +10,7 @@
     const project = existingProject || approved?.project;
     const team = existingTeam || approved?.team;
     if (!project || !team) throw new Error('Không tìm thấy thông tin nhóm của đề tài.');
-    return { project, team };
+    return { project: preview ? project : app.storage.withPublishedStatus(project), team };
   }
 
   function stateFrom(team, records) {

@@ -189,8 +189,8 @@
 
   window.addEventListener('pageshow', event => { if (event.persisted) render(); });
   window.addEventListener('storage', event => {
-    const { teamKey, progressKey, registrationKey, requestKey, proposalKey } = app.storage;
-    if ([null, teamKey, progressKey, registrationKey, requestKey, proposalKey].includes(event.key)) render();
+    const { teamKey, progressKey, registrationKey, requestKey, proposalKey, teachingKey } = app.storage;
+    if ([null, teamKey, progressKey, registrationKey, requestKey, proposalKey, teachingKey].includes(event.key)) render();
   });
   window.addEventListener('ie104:registrations-updated', render);
   window.addEventListener('ie104:proposals-updated', render);

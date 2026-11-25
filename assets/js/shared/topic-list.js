@@ -118,7 +118,7 @@
       render({ focusPagination: true });
     });
     window.addEventListener('pageshow', applyFilters);
-    window.addEventListener('storage', event => { if ([globalThis.IE104?.storage?.registrationKey, globalThis.IE104?.storage?.proposalKey, globalThis.IE104?.storage?.requestKey, config.storageKey, globalThis.IE104?.services?.lecturerTopicRepository?.key, null].includes(event.key) || event.key?.startsWith('ie104.proposal-decision.v1.')) applyFilters(); });
+    window.addEventListener('storage', event => { if ([globalThis.IE104?.storage?.registrationKey, globalThis.IE104?.storage?.proposalKey, globalThis.IE104?.storage?.requestKey, config.storageKey, globalThis.IE104?.storage?.teachingKey, globalThis.IE104?.services?.lecturerTopicRepository?.key, null].includes(event.key) || event.key?.startsWith('ie104.proposal-decision.v1.')) applyFilters(); });
     window.addEventListener('ie104:published-topics-updated', applyFilters);
     form.dataset.topicsInitialized = 'true';
     applyFilters();

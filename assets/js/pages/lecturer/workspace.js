@@ -72,17 +72,18 @@
       notify(failure.message, true);
     }
   }
-  async function commit(snapshot, operation, dialog, message) {
+  async function commit(snapshot, operation, dialog, message, onSuccess) {
     if (saving) return;
     try {
       if (!state || snapshot.projectId !== projectId) throw new Error('Đề tài đã thay đổi. Hãy mở lại hộp thoại.');
       if (state.readOnly) throw new Error('Đề tài này chưa có dữ liệu xử lý. Hiện chỉ được xem thông tin trong danh mục.');
       saving = true;
-      await operation(snapshot);
+      const result = await operation(snapshot);
       dialog?.close();
       refresh();
       notify(message || 'Đã lưu thay đổi trên trình duyệt này.');
-      if (dialog) requestAnimationFrame(() => notice.focus({ preventScroll: true }));
+      if (onSuccess) onSuccess(result);
+      else if (dialog) requestAnimationFrame(() => notice.focus({ preventScroll: true }));
     } catch (failure) {
       const error = dialog?.querySelector('[data-teaching-error]');
       if (error) { error.textContent = failure.message; error.focus(); }
@@ -90,7 +91,7 @@
     } finally { saving = false; }
   }
   function modal(title, submitText, build, submit, message, {
-    showCancel = true, className, closeIcon, beforeSubmit, submitVariant = 'primary', descriptionId, submitDisabled = false,
+    showCancel = true, className, closeIcon, beforeSubmit, submitVariant = 'primary', descriptionId, submitDisabled = false, onSuccess,
   } = {}) {
     if (!state || document.querySelector('.teaching-dialog[open]')) return;
     const snapshot = { projectId, revision: state.revision, progressRevision: state.progress?.revision };
@@ -118,7 +119,7 @@
       event.preventDefault();
       if (save.disabled) return;
       if (beforeSubmit?.({ form, submitButton: save, heading }) === false) return;
-      commit(snapshot, captured => submit(new FormData(form), captured), dialog, message);
+      commit(snapshot, captured => submit(new FormData(form), captured), dialog, message, onSuccess);
     });
     const dialogHeader = el('header');
     const dialogClose = button('×', () => dialog.close());
