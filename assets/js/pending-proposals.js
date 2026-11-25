@@ -94,8 +94,9 @@
     title.id = `proposal-${proposal.id.toLowerCase()}-title`;
     title.textContent = proposal.title;
     card.setAttribute('aria-labelledby', title.id);
+    const displayCode = proposal.topicCode || proposal.id;
     const fields = [
-      ['code', proposal.id],
+      ['code', displayCode],
       ['course', `${window.UITLecturerCatalog.subjectLabel(proposal)}`],
       ['student', `${proposal.studentName} · ${proposal.studentId || 'Chưa có thông tin'}`],
     ];
@@ -121,7 +122,7 @@
     const returnUrl = pageUrl(page);
     detailUrl.searchParams.set('return', `yeu-cau-cho-duyet.html${returnUrl.search}`);
     link.href = detailUrl.href;
-    link.setAttribute('aria-label', `Xem đề xuất ${proposal.title} (${proposal.id})`);
+    link.setAttribute('aria-label', `Xem đề xuất ${proposal.title} (${displayCode})`);
     return card;
   }
 

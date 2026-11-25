@@ -87,3 +87,10 @@ Kiểm tra cuối sau bổ sung quyền đọc hồ sơ mẫu: 37/37 đạt, g�
 - Thẻ Chờ duyệt ở Đề tài của tôi SV dùng tên giảng viên nhận hồ sơ, biểu tượng cá nhân và nhãn trợ năng tương ứng; không dùng tên/MSSV sinh viên. Các trạng thái khác giữ cách hiển thị cũ.
 - 18/18 kiểm tra liên quan đề xuất/dữ liệu/môn học và cú pháp script đạt; thay đổi UI chưa được kiểm tra trực quan do thiếu kết nối trình duyệt.
 - Các thay đổi bổ sung này chưa có trong gói 24 file goi-sua-sau-duyet-main-609e394-2026-11-25 đã gửi trước đó; khi đóng gói tiếp cần đối chiếu main hiện tại.
+
+
+## Mã đề tài trong danh sách chờ duyệt — 25/11/2026
+
+- Danh sách GV dùng topicCode thay request id cho dòng mã và nhãn trợ năng của nút chi tiết: ví dụ ISEKTLN-101 thay DX-ISEKTLN-101. Giữ nguyên request id ở URL, kho quyết định và data-proposal-id; không đổi khóa đã lưu.
+- Đối chiếu hai hồ sơ liên kết SV: displayId đã lấy topicCode; chi tiết SV/GV và hộp xác nhận GV cũng đã dùng topicCode. Không thay danh mục hoặc cấp mã lại.
+- Bản đóng gói ghép trên main 620735c8a6db71d31883c3e7536e6afc774bc10a, không sửa checkout GitHub.
