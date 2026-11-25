@@ -4,9 +4,7 @@
   let selected = null;
   async function resolve() {
     selected = null;
-    const marker = sessionStorage.getItem('ie104.website.session.v1');
-    if (!marker) return null;
-    const session = await (await import('../website-session.js')).getWebsiteSession();
+    const session = await (await import('../website-session.js')).getWebsiteSession('lecturer');
     if (session?.role !== 'lecturer') return null;
     if (!session.user) {
       selected = { ...app.data.currentLecturer, id: 'GV001', demo: true };

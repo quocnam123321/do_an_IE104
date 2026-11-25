@@ -1,4 +1,5 @@
 import { getFirebaseAuth, useRecoveryEmulator } from "./firebase-client.js?v=20261119-otp";
+import { getWebsiteSession } from "./website-session.js";
 
 const endpoint = useRecoveryEmulator
   ? "http://127.0.0.1:5001/demo-ie104-recovery/asia-southeast1/calendarBridge"
@@ -30,6 +31,8 @@ export function calendarMessage(error) {
 
 export async function calendarSession() {
   if (location.protocol === "file:") return null;
+  const session = await getWebsiteSession();
+  if (session?.user) return session.user;
   const { auth } = await getFirebaseAuth(useRecoveryEmulator);
   await auth.authStateReady();
   return auth.currentUser;

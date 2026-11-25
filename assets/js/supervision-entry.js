@@ -67,7 +67,7 @@
 
   async function getStudent() {
     const { getWebsiteSession } = await import('./website-session.js');
-    const session = await getWebsiteSession();
+    const session = await getWebsiteSession('student');
     if (session?.role !== 'student') return null;
     if (!session.user) return window.IE104Supervision.student;
     const { uid, displayName, email } = session.user;
@@ -119,7 +119,7 @@
 
   async function getTeacherInboxSession() {
     const { getWebsiteSession } = await import('./website-session.js');
-    const session = await getWebsiteSession();
+    const session = await getWebsiteSession('lecturer');
     if (session?.role !== 'lecturer') return null;
     if (!session.user) return { demo: true };
     const email = session.user.email?.trim().toLowerCase();
