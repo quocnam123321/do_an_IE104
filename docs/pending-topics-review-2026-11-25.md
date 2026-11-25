@@ -94,3 +94,11 @@ Kiểm tra cuối sau bổ sung quyền đọc hồ sơ mẫu: 37/37 đạt, g�
 - Danh sách GV dùng topicCode thay request id cho dòng mã và nhãn trợ năng của nút chi tiết: ví dụ ISEKTLN-101 thay DX-ISEKTLN-101. Giữ nguyên request id ở URL, kho quyết định và data-proposal-id; không đổi khóa đã lưu.
 - Đối chiếu hai hồ sơ liên kết SV: displayId đã lấy topicCode; chi tiết SV/GV và hộp xác nhận GV cũng đã dùng topicCode. Không thay danh mục hoặc cấp mã lại.
 - Bản đóng gói ghép trên main 620735c8a6db71d31883c3e7536e6afc774bc10a, không sửa checkout GitHub.
+
+
+## Dropdown vai trò trong modal thành viên đăng ký
+
+- Cả hai trang chi tiết mở đăng ký dùng lại proposal-pickers cho select vai trò trong registration-member-dialog. Popup position:fixed trên top layer, giữ nguyên chiều rộng ô, tự lật hướng theo viewport; không tham gia grid layout của dialog.
+- Đồng bộ giá trị khi thêm/sửa, chuyển trạng thái lỗi và focus sang combobox, đóng popup khi dialog đóng. Giá trị select gốc và logic lưu đăng ký giữ nguyên. Nếu không hỗ trợ Popover API thì dùng select native.
+- Kiểm tra cú pháp hai script và 6/6 kiểm tra dịch vụ đăng ký đạt. Kiểm tra nguồn xác nhận dependency/script order và tài nguyên đủ ở hai trang. Chưa kiểm tra được ảnh render hoặc vị trí thực tế: browser connector unavailable; thử native Chrome cũng không đọc được vì cửa sổ bị thu nhỏ.
+- Chưa đóng gói hoặc chép thay đổi dropdown này vào repo GitHub.

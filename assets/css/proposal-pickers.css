@@ -1,4 +1,4 @@
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .registration-member-dialog) .proposal-picker-trigger {
   width: 100%;
   min-width: 0;
   justify-content: space-between;
@@ -8,37 +8,37 @@
   text-align: start;
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger span {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .registration-member-dialog) .proposal-picker-trigger span {
   min-width: 0;
   overflow-wrap: anywhere;
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger.is-placeholder {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .registration-member-dialog) .proposal-picker-trigger.is-placeholder {
   color: var(--color-muted-foreground);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger:disabled {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .registration-member-dialog) .proposal-picker-trigger:disabled {
   background: var(--color-neutral-bg);
   color: var(--color-muted-foreground);
   cursor: not-allowed;
   opacity: 1;
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger:disabled svg {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .registration-member-dialog) .proposal-picker-trigger:disabled svg {
   visibility: hidden;
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger[aria-invalid="true"] {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .registration-member-dialog) .proposal-picker-trigger[aria-invalid="true"] {
   border-color: var(--color-danger-fg);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger:not(:disabled):hover,
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger[aria-expanded="true"] {
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .registration-member-dialog) .proposal-picker-trigger:not(:disabled):hover,
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .registration-member-dialog) .proposal-picker-trigger[aria-expanded="true"] {
   border-color: var(--color-primary);
   background: var(--color-surface);
 }
 
-:is(.student-proposal-page .proposal-form, .teacher-topic-form) .proposal-picker-trigger[aria-expanded="true"],
+:is(.student-proposal-page .proposal-form, .teacher-topic-form, .registration-member-dialog) .proposal-picker-trigger[aria-expanded="true"],
 :is(.student-proposal-page .proposal-form, .teacher-topic-form, .requirement-deadline) .proposal-date-control:not(.proposal-date-control--with-time):has(.proposal-date-trigger[aria-expanded="true"]) > input {
   border-color: var(--color-primary);
   outline: 2px solid var(--color-focus);

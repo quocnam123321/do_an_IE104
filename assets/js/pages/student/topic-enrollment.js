@@ -30,6 +30,7 @@
   const memberName = document.getElementById('registration-member-name');
   const memberCode = document.getElementById('registration-member-code');
   const memberRole = document.getElementById('registration-member-role');
+  const rolePicker = app.ui?.proposalPickers?.enhanceSelect(memberRole);
   const memberError = document.getElementById('registration-member-error');
   let editingCard = null;
   let memberOpener = add;
@@ -277,6 +278,8 @@
     memberName.removeAttribute('aria-invalid');
     memberCode.removeAttribute('aria-invalid');
     memberRole.removeAttribute('aria-invalid');
+    memberRole.removeAttribute('aria-describedby');
+    rolePicker?.sync();
     document.getElementById('registration-member-title').textContent = card ? 'Sửa thành viên' : 'Thêm thành viên';
     memberForm.querySelector('[type="submit"]').textContent = card ? 'Lưu thay đổi' : 'Thêm thành viên';
     if (card) {
@@ -310,7 +313,8 @@
         field.setAttribute('aria-invalid', 'true');
         field.setAttribute('aria-describedby', memberError.id);
       }
-      (errors[0].field.endsWith('.name') ? memberName : errors[0].field.endsWith('.role') ? memberRole : memberCode).focus();
+      rolePicker?.sync();
+      (errors[0].field.endsWith('.name') ? memberName : errors[0].field.endsWith('.role') ? rolePicker?.trigger || memberRole : memberCode).focus();
       return;
     }
     if (!editingCard) {
@@ -334,6 +338,7 @@
   });
   memberDialog.querySelector('.registration-member-close').addEventListener('click', () => memberDialog.close());
   memberDialog.addEventListener('close', () => {
+    rolePicker?.close();
     (memberOpener?.isConnected && !memberOpener.disabled ? memberOpener : form.querySelector('.registration-member-edit')).focus();
   });
   extra.addEventListener('click', event => {

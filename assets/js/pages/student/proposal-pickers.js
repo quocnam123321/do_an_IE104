@@ -53,12 +53,15 @@
   }
 
   const triggers = new Map();
+  const selectPickers = new Map();
   const syncSelects = [];
   const chevron = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5"/></svg>';
   const normalize = text => text.toLocaleLowerCase('vi').normalize('NFD').replace(/\p{M}/gu, '').replace(/đ/g, 'd');
 
   function enhanceSelect(select) {
+    if (!select || selectPickers.has(select)) return selectPickers.get(select);
     const label = select.labels[0];
+    if (!label) return;
     const trigger = document.createElement('button');
     trigger.type = 'button';
     trigger.id = `${select.id}-picker`;
@@ -99,6 +102,11 @@
       selectedText.textContent = labelOf(selected);
       trigger.classList.toggle('is-placeholder', !select.value);
       trigger.disabled = select.disabled;
+      for (const name of ['aria-invalid', 'aria-describedby']) {
+        const value = select.getAttribute(name);
+        if (value) trigger.setAttribute(name, value);
+        else trigger.removeAttribute(name);
+      }
       if (trigger.disabled) popup.close();
     }
 
@@ -196,13 +204,17 @@
     });
     select.addEventListener('change', sync);
     syncSelects.push(sync);
+    const picker = { sync, close: popup.close, trigger };
+    selectPickers.set(select, picker);
     sync();
+    return picker;
   }
 
   form?.querySelectorAll('select[data-proposal-picker]').forEach(enhanceSelect);
   app.ui ||= {};
   app.ui.proposalPickers = {
     setupPopup,
+    enhanceSelect,
     fieldFor: field => triggers.get(field) || field,
     syncSelects: () => syncSelects.forEach(sync => sync()),
   };

@@ -453,3 +453,9 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 - Phần chi tiết chỉ hiển thị tên đề tài tiếng Việt, bỏ dòng tên tiếng Anh đi kèm và không lặp tên tiếng Anh trong khung thông tin bổ sung. Giữ dữ liệu đề cương đã lưu để không làm hỏng hồ sơ cũ.
 - Ngoại lệ của dòng người thực hiện trên thẻ Đề tài của tôi: khi trạng thái Chờ duyệt, dùng biểu tượng cá nhân và tên giảng viên nhận hồ sơ (khớp người nhận trong chi tiết), không hiển thị tên/MSSV sinh viên ở dòng này. Đang thực hiện/Hoàn thành tiếp tục dùng thông tin người thực hiện như đã chốt.
 - Bộ lọc loại đề tài ở hai danh sách quản lý GV ghi đầy đủ Khóa luận tốt nghiệp; không đổi giá trị lọc nội bộ.
+
+
+## Dropdown vai trò trong hộp thoại đăng ký — 25/11/2026
+
+- Tái sử dụng picker chọn có sẵn: cùng token, mũi tên, trạng thái chọn và focus. Danh sách vai trò mở bằng popover top layer với vị trí fixed, cùng chiều rộng ô chọn; tự lật lên nếu thiếu chỗ phía dưới, không làm thay đổi kích thước dialog.
+- Duy trì chọn bằng bàn phím, Escape/Tab đóng danh sách, click ngoài đóng; đóng dialog cũng đóng danh sách. Giá trị select gốc giữ nguyên cho kiểm tra và lưu đăng ký. Khi trình duyệt không hỗ trợ Popover API, giữ select native.
