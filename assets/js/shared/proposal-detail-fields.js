@@ -4,6 +4,7 @@
 
   const outlineDate = value => value ? value.split('-').reverse().join('/') : '';
   const sampleName = 'de-cuong-de-tai-mau.txt';
+  const samplePdfName = 'de-cuong-de-xuat-mau.pdf';
 
   function render(container, record) {
     const outline = record.outline;
@@ -51,7 +52,9 @@
       name: attachment,
       size: attachmentSize,
       fileKey: record.attachmentFileKey ?? record.attachment?.fileKey,
-      sample: record.id === 'DX001' && attachment === sampleName,
+      sample: record.id === 'DX001' && attachment === sampleName ? sampleName :
+        globalThis.UITLecturerCatalog?.pending?.some(seed => seed.id === record.id &&
+          seed.attachmentSample === 'proposal-outline' && seed.attachment === attachment) ? samplePdfName : null,
       canEdit: record.permissions?.edit,
     });
   }
@@ -66,7 +69,7 @@
     button.disabled = !canDownload;
     let status = '';
     if (!ref.name) status = 'Chưa có tài liệu đính kèm.';
-    else if (useSample) status = 'Tệp mẫu của đề xuất DX001.';
+    else if (useSample) status = ref.sample === sampleName ? 'Tệp mẫu của đề xuất DX001.' : '';
     else if (!canDownload) {
       const help = ref.canEdit ? 'Mở Chỉnh sửa đề xuất, chọn lại tệp gốc rồi lưu.' : 'Sinh viên cần đính kèm lại tệp gốc.';
       status = `Tệp này chưa có nội dung để tải xuống. ${help}`;
@@ -77,7 +80,7 @@
     async function download() {
       button.disabled = true;
       try {
-        const file = useSample ? await readSample() : await app.services.proposalFiles.read(ref);
+        const file = useSample ? await readSample(ref.sample, ref.name) : await app.services.proposalFiles.read(ref);
         if (button.onclick !== download || container.hidden) return;
         app.ui.downloadFile(file);
         note.textContent = status;
@@ -94,11 +97,11 @@
     button.onclick = canDownload ? download : null;
   }
 
-  async function readSample() {
+  async function readSample(path, fileName) {
     try {
-      const response = await fetch(`../../assets/documents/${sampleName}`);
+      const response = await fetch(`../../assets/documents/${path}`);
       if (!response.ok) throw new Error();
-      return { blob: await response.blob(), fileName: sampleName };
+      return { blob: await response.blob(), fileName };
     } catch {
       throw new Error('Chưa tải được tệp mẫu. Hãy thử lại.');
     }

@@ -7,7 +7,7 @@ Bản nền: `main`, commit `a7b43e9c13da501495d0f7e7223e4883e567f801`. Chỉnh 
 - Thay toàn bộ danh sách mẫu cũ bằng 10 hồ sơ mới: 3 KLTN, 3 ĐATN, 4 ĐAMH. Tổng 10 hồ sơ ban đầu nếu trình duyệt chưa lưu quyết định; số đang chờ giảm khi duyệt hoặc từ chối.
 - ĐAMH thuộc IE104, IE101, IE103 và IE105. Danh sách giữ 5 hồ sơ mỗi trang.
 - Đối chiếu toàn bộ hồ sơ chờ với danh mục hướng dẫn: không trùng tên; mã hồ sơ mới không trùng mã đề tài đang hướng dẫn.
-- Nhãn vai trò thay nhãn trạng thái vàng. Nhãn Hướng dẫn chính theo đúng màu, kích thước và khoảng cách của trang quản lý đề tài hiện tại. Theo chốt mới nhất: toàn bộ hồ sơ chờ duyệt đều Hướng dẫn chính, bao gồm 2 hồ sơ mẫu cũ; bỏ lựa chọn Đồng hướng dẫn khỏi bộ lọc. Bỏ dòng vai trò trùng ở metadata bên trái.
+- Nhãn vai trò thay nhãn trạng thái vàng. Nhãn Hướng dẫn chính theo đúng màu, kích thước và khoảng cách của trang quản lý đề tài hiện tại. Theo chốt mới nhất: toàn bộ hồ sơ chờ duyệt đều Hướng dẫn chính, bỏ lựa chọn Đồng hướng dẫn khỏi bộ lọc. Bỏ dòng vai trò trùng ở metadata bên trái.
 - Không chỉnh CSS, HTML hoặc dữ liệu hiện có của danh sách quản lý đề tài; mảng records/created/supervised được kiểm tra giữ nguyên.
 - Bỏ ghi chú demo ở danh sách và phần giải thích demo trong trang chi tiết đề xuất. Bộ xử lý lưu trên trình duyệt hiện có được giữ nguyên.
 
@@ -18,7 +18,7 @@ Xem `pending-topic-sources-2026-11-25.json` để đối chiếu từng hồ sơ
 - KLTN: giữ tên đề tài, tác giả đại diện và liên kết tóm tắt từ bảng KLTN của khoa. Mô tả/mục tiêu/kết quả trong 3 hồ sơ mới là diễn giải từ tên đề tài, chưa xác thực nội dung trong các tệp tóm tắt.
 - Theo xác nhận trực tiếp của người dùng: ĐAMH/ĐATN được biên soạn theo đề cương, không coi là các đồ án đã thực hiện thật. IE104 dựa nội dung xây dựng website; IE101 dựa thiết kế và vận hành hạ tầng; IE103 dựa tổ chức và tích hợp thông tin; IE105 dựa kiểm soát truy cập, bảo vệ mạng và an ninh mạng không dây.
 - ĐATN là các bài toán tích hợp kỹ năng từ các đề cương này, không khẳng định đã kiểm chứng đề cương IE501 riêng.
-- Mã đề tài, MSSV, trạng thái chờ, ngày gửi, học kỳ và năm học dùng để minh họa luồng. MSSV chưa xác thực để `xxxxxxxx`. Không tạo tên tệp đính kèm giả; hồ sơ không có tệp hiển thị trạng thái trống.
+- Mã đề tài, MSSV, trạng thái chờ, ngày gửi, học kỳ và năm học dùng để minh họa luồng. MSSV được sinh cố định theo các tiền tố 2252/2352/2452/2552, không phải MSSV đã xác thực của tác giả. Mỗi hồ sơ có PDF đề cương minh họa tải được, phân biệt với tài liệu gốc.
 
 ## Kiểm tra
 
@@ -48,3 +48,20 @@ Chốt số lượng cuối: 10 hồ sơ mới thay cho tất cả hồ sơ mẫ
 Gói chỉnh số lượng ghép lại trên main fec7a477ff4cc4c1e246e65679646e6d9ea165ef sau khi người dùng push bản trước. Nhãn bộ lọc chờ duyệt đổi đầy đủ thành Khóa luận tốt nghiệp.
 
 Đã kiểm tra trực tiếp bộ lọc môn học chỉ còn bốn môn của danh sách mới: IE101, IE104, IE105, IE103; lọc Quản lý thông tin ra đúng 1 hồ sơ.
+
+
+## Đồng bộ đề cương SV–GV và tài liệu — cập nhật cuối 25/11/2026
+
+- Cả 10 hồ sơ có MSSV 8 chữ số duy nhất, khớp tên và danh sách thành viên trong chi tiết. Đây là số minh họa theo yêu cầu, không khẳng định MSSV thực tế của tác giả.
+- Bổ sung mô tả, mục tiêu, kết quả dự kiến, phương pháp/phạm vi, kế hoạch/phân công; mỗi đoạn dài khoảng 2–3 dòng hoặc hơn tùy chiều rộng màn hình. Nội dung mở rộng do biên soạn, không trích nguyên văn đề cương tác giả.
+- Ba ngày bắt đầu, báo cáo tiến độ, báo cáo cuối cùng là ngày giả định theo học kỳ và đúng thứ tự thời gian.
+- Hai hồ sơ dùng chung trên Đề tài của tôi SV: DX-ISEKTLN-101 (Nguyễn Hữu Hưng, 22520155) và DX-ISEDATN-101 (Trần Hoàng Nam, 25529187). Trạng thái ban đầu Chờ duyệt; đọc cùng kho quyết định với GV.
+- Thêm assets/documents/de-cuong-de-xuat-mau.pdf, một trang A4 dùng font Be Vietnam Pro. Tên tải xuống De_cuong_de_xuat_mau.pdf. SHA256: E7924D2F92E2FA61069AB54CD1B7D10F023DCBC3E48A4021D3BA098097372918.
+- Mở PDF mẫu từ cả SV và GV đã thành công trên trình duyệt; đối chiếu hai bản tải về có cùng SHA256 với tệp nguồn. Đã kiểm tra PDF bằng trích xuất chữ và ảnh render.
+- Sửa thứ tự nạp catalog trước proposal-store trong các trang liên quan; tránh SV đọc danh mục seed cũ. Mã đề tài tạo mới tính cả 10 mã hồ sơ này để tránh trùng.
+- 15/15 kiểm tra liên quan đạt, gồm hai kiểm tra mới: hai hồ sơ mẫu SV–GV và phản hồi quyết định; tạo đề xuất với đề cương phiên bản 3, lưu và đọc lại các trường/tham chiếu tệp ở GV. Các kiểm tra này không thay thế thao tác chọn tệp và tải từ IndexedDB trên trình duyệt.
+- Bộ kiểm tra chung vẫn có 9 lỗi có sẵn ở nhóm tổng quan/quy ước mã cũ, không mở rộng sửa trong nhiệm vụ này.
+- Kiểm tra cú pháp JavaScript sửa, thứ tự nạp script và tài nguyên nội bộ của bốn trang liên quan đều đạt.
+- Lượt thử UI gửi đề xuất mới kèm PDF trên origin riêng 8783 đã bắt đầu nhưng chưa gửi xong: quyền điều khiển trình duyệt không còn khả dụng sau gián đoạn. Vì vậy chưa xác nhận end-to-end thao tác chọn tệp mới → gửi → GV tải đúng byte trên UI. Đường lưu tệp có sẵn dùng proposalFiles.stage (IndexedDB), lưu fileKey/name/size vào hồ sơ; phía GV nhận các trường này và dùng proposalFiles.read để tải. Phần này đã đọc mã và kiểm tra trao đổi metadata, chưa chứng minh thao tác UI cuối.
+- Phạm vi đồng bộ là cùng trình duyệt và cùng origin (host + port). Chưa có backend để chia sẻ tệp sang máy hoặc trình duyệt khác.
+- Chỉ chỉnh bản GPT, chưa chép/commit/push checkout GitHub. Gói copy cần đối chiếu lại main mới nhất khi người dùng yêu cầu.

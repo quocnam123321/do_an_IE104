@@ -1,5 +1,5 @@
 import { getWebsiteSession, hasStoredWebsiteSession } from "../website-session.js";
-import "./logout.js";
+import "./logout.js?v=20261125-direct-logout";
 
 const login = document.querySelector(".site-header__inner > .site-header__login");
 const guestAction = document.querySelector("[data-public-login]");

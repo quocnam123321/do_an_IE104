@@ -97,7 +97,7 @@
     const fields = [
       ['code', proposal.id],
       ['course', `${window.UITLecturerCatalog.subjectLabel(proposal)}`],
-      ['student', `${proposal.studentName} · xxxxxxxx`],
+      ['student', `${proposal.studentName} · ${proposal.studentId || 'Chưa có thông tin'}`],
     ];
     for (const [name, value] of fields) {
       card.querySelector(`.proposal-card__${name} .topic-card__meta-text`).textContent = value;

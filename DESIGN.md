@@ -436,6 +436,11 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 - Nhận xét của giảng viên là văn bản trải rộng trực tiếp trên thẻ. Hàng tệp đánh giá dùng nền nhạt không viền, biểu tượng tệp và nút Tải xuống. Khi chỉ có tên tệp, nút bị khóa và hiện giải thích. Hai bản đánh giá mẫu có PDF minh họa để thử tải.
 - Thẻ Điểm tổng kết bên sinh viên chỉ hiển thị dòng Điểm tổng kết của nhóm. Điểm dùng số đen in đậm trực tiếp trên nền trắng.
 
+## Menu tài khoản và đăng xuất — chốt ngày 25/11/2026
+
+- Khung menu avatar tự ôm nội dung, không giữ chiều rộng cố định 16rem; đệm 8px, khoảng cách hai mục 4px. Giữ vùng bấm tối thiểu 44px và màu/font dùng chung; áp dụng cả SV, GV và menu tài khoản ở trang công khai.
+- Bấm Đăng xuất thực hiện ngay, không mở hộp thoại xác nhận. Trong khi xử lý, các nút đăng xuất bị khóa và hiện “Đang đăng xuất…”. Chỉ chuyển về đăng nhập sau khi xử lý đăng xuất hoàn tất; lỗi được thông báo để thử lại, không báo thành công giả.
+
 ## Footer dùng chung
 
 - Dùng nền xanh đậm #122E59 theo mẫu UIT áp dụng cho dự án, chữ phụ #DBEAFE và đường phân chia #50688A. Logo ngang màu trắng lấy từ footer của website UIT và lưu trong dự án.

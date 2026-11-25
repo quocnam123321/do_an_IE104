@@ -13,7 +13,7 @@
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme">
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language">
-    <link rel="stylesheet" href="../../assets/css/components.css">
+    <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-menu-2">
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
     <link rel="stylesheet" href="../../assets/css/teacher-dialogs.css?v=20261124-requirement-filenames">
     <link rel="stylesheet" href="../../assets/css/topic-detail-boards.css?v=20261124-requirements-done">
@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
     <link rel="stylesheet" href="../../assets/css/lecturer-topic-routing.css">
     <link rel="stylesheet" href="../../assets/css/proposal-outline.css">
-    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261124-merged-50fdab7" defer=""></script><script src="../../assets/js/nav-indicator.js" defer=""></script>
+    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261125-proposal-outline" defer=""></script><script src="../../assets/js/nav-indicator.js" defer=""></script>
     <script src="../../assets/js/detail-tabs.js" defer=""></script>
     <script src="../../assets/js/dialog-commands.js" defer=""></script>
     <script src="../../assets/js/shared/topic-overview.js?v=20261124-invitation-flow" defer></script>
@@ -42,12 +42,12 @@
     <script src="../../assets/js/services/storage.js?v=20261124-demo-invitation-polish" defer></script>
     <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
     <script src="../../assets/js/shared/validation.js" defer></script>
-    <script src="../../assets/js/services/proposal-service.js" defer></script>
+    <script src="../../assets/js/services/proposal-service.js?v=20261125-proposal-outline" defer></script>
     <script src="../../assets/js/services/registration-service.js" defer></script>
     <script src="../../assets/js/services/approved-project-service.js" defer></script>
     <script src="../../assets/js/services/lecturer-topic-service.js?v=20261125-topic-participants" defer></script>
     <script src="../../assets/js/services/published-topic-service.js?v=20261123-merged-8f1631f" defer></script>
-    <script src="../../assets/js/proposal-store.js" defer></script>
+    <script src="../../assets/js/proposal-store.js?v=20261125-proposal-outline" defer></script>
     <script src="../../assets/js/data/student-projects.js" defer></script>
     <script src="../../assets/js/data/student-progress.js" defer></script>
     <script src="../../assets/js/data/student-evaluations.js?v=20261124-da005-evaluation" defer></script>
@@ -76,11 +76,11 @@
     <script src="../../assets/js/pages/student/proposal-date-picker.js?v=20261124-requirement-datetime" defer></script>
     <script src="../../assets/js/pages/lecturer/submissions.js?v=20261124-demo-deadlines" defer></script>
     <script src="../../assets/js/shared/task-comments.js?v=20261123-comment-composer" defer></script>
-    <script src="../../assets/js/pages/lecturer/progress.js?v=20261123-progress-parity" defer></script>
+    <script src="../../assets/js/pages/lecturer/progress.js?v=20261125-no-general-review" defer></script>
     <script src="../../assets/js/shared/evaluation-attachment.js" defer></script>
     <script src="../../assets/js/pages/lecturer/evaluation.js?v=20261124-evaluation-attachment-card" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
-  <script src="../../assets/js/shared/logout.js" defer></script>
+  <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
   <script src="../../assets/js/supervision-entry.js" defer></script>
   <script src="../../assets/js/services/project-invitation-identity.js?v=20261124-demo-invitation-polish" defer></script>
 </head>
@@ -483,10 +483,6 @@
               <section class="progress-overview" aria-labelledby="progress-title">
                 <header class="progress-overview__header">
                   <h3 id="progress-title" class="progress-overview__title">Tiến độ tổng thể</h3>
-                  <button class="progress-overview__review" type="button" command="show-modal" commandfor="progress-review" aria-controls="progress-review" aria-haspopup="dialog">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><path d="M8 9h8M8 13h5"></path></svg>
-                    <span>Gửi nhận xét về tiến độ</span>
-                  </button>
                 </header>
                 <div class="progress-overview__meter">
                   <progress id="topic-progress" class="progress-overview__bar" max="13" value="3">23%</progress>
@@ -3809,17 +3805,6 @@
     </div>
   </form>
 </dialog>
-<dialog class="topic-dialog progress-review-dialog" id="progress-review" aria-labelledby="progress-review-title" aria-describedby="progress-review-note">
-      <header class="topic-dialog__header">
-        <h2 id="progress-review-title">Nhận xét về tiến độ</h2>
-        <button class="progress-review-dialog__close" type="button" command="close" commandfor="progress-review" aria-label="Đóng hộp thoại nhận xét về tiến độ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
-      </header>
-      <form id="progress-review-form" method="dialog" class="topic-dialog__form">
-        <p class="progress-review-dialog__field"><label for="progress-review-content">Nội dung nhận xét</label><textarea id="progress-review-content" name="progress-review-content" rows="6" placeholder="Nhập nhận xét về tiến độ của nhóm sinh viên" required="" autofocus=""></textarea></p>
-        <p class="progress-review-dialog__note" id="progress-review-note">Chức năng gửi nhận xét chưa được kết nối, nội dung chưa được lưu.</p>
-        <div class="topic-dialog__actions"><button class="progress-review-dialog__cancel" type="button" command="close" commandfor="progress-review">Hủy</button> <button class="progress-review-dialog__submit" type="submit" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Gửi nhận xét</button></div>
-      </form>
-    </dialog>
         <dialog class="topic-dialog" id="create-requirement" aria-labelledby="create-requirement-title">
       <header class="topic-dialog__header">
         <h2 id="create-requirement-title">Tạo yêu cầu bài nộp</h2>

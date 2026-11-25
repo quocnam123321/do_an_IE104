@@ -1,6 +1,6 @@
 {
   "baseline": "a7b43e9c13da501495d0f7e7223e4883e567f801",
-  "note": "KLTN: tên và tác giả từ bảng khoa, mô tả diễn giải theo tên chưa xác thực tóm tắt; ĐAMH/ĐATN biên soạn theo đề cương theo xác nhận của người dùng. Mã, MSSV, ngày gửi, học kỳ và trạng thái là dữ liệu mô phỏng. Không phải hồ sơ đang chờ duyệt thật.",
+  "note": "Tên KLTN và tác giả đại diện có nguồn từ khoa; nội dung chi tiết là đề xuất minh họa do biên soạn. ĐAMH/ĐATN theo đề cương. MSSV được sinh ngẫu nhiên ổn định với tiền tố 2252/2352/2452/2552, không phải MSSV đã xác thực của tác giả; lịch thực hiện, trạng thái và PDF là dữ liệu minh họa theo yêu cầu.",
   "graduationBasis": "ĐATN là bài toán tích hợp tổ chức dữ liệu, phát triển website và kiểm soát truy cập; không khẳng định đề tài đã thực hiện hay có đề cương IE501 được xác thực.",
   "sources": {
     "thesis": "https://ise.uit.edu.vn/vi/bai-viet/ten-d-tai-kltn-c-a-sinh-vien",
@@ -18,22 +18,50 @@
       "topicType": "khoa-luan",
       "topicTypeLabel": "Khóa luận tốt nghiệp",
       "studentName": "Nguyễn Hữu Hưng",
-      "studentId": "xxxxxxxx",
+      "studentId": "22520155",
       "course": "",
       "supervisionRole": "huong-dan-chinh",
       "supervisionRoleLabel": "Hướng dẫn chính",
       "semester": "1",
       "academicYear": "2026–2027",
       "submittedAt": "2026-11-21T09:00:00+07:00",
-      "description": "Xây dựng website đọc truyện kết hợp khuyến nghị truyện dựa trên nội dung.",
-      "objectives": "Tổ chức thông tin truyện và nghiên cứu cách gợi ý các nội dung liên quan.",
-      "outcomes": "Website đọc truyện, chức năng khuyến nghị theo nội dung và báo cáo đánh giá.",
-      "attachment": "",
+      "description": "Xây dựng website đọc truyện kết hợp khuyến nghị truyện dựa trên nội dung. Người đọc có thể tra cứu theo thể loại, theo dõi truyện quan tâm và nhận gợi ý phù hợp với nội dung đã xem. Người quản trị cập nhật thông tin truyện, chương truyện và kiểm tra chất lượng dữ liệu đầu vào.",
+      "objectives": "Khảo sát nhu cầu đọc truyện, xây dựng mô hình dữ liệu và xác định tiêu chí đánh giá gợi ý. So sánh kết quả gợi ý theo nội dung với cách chọn truyện phổ biến trên cùng một tập dữ liệu thử nghiệm.",
+      "outcomes": "Sản phẩm gồm website đọc truyện, thành phần gợi ý theo nội dung và bộ dữ liệu đã xử lý. Báo cáo trình bày cách triển khai, kết quả kiểm thử chức năng và đánh giá chất lượng khuyến nghị.",
+      "attachment": "De_cuong_de_xuat_mau.pdf",
       "provenance": "uit-thesis-title",
       "sourceUrl": "https://ise.uit.edu.vn/vi/bai-viet/ten-d-tai-kltn-c-a-sinh-vien",
       "summaryUrl": "https://bit.ly/2G0XQ27",
       "workflowSource": "illustrative",
-      "descriptionSource": "editorial"
+      "descriptionSource": "editorial",
+      "courseLabel": "Khóa luận tốt nghiệp",
+      "outline": {
+        "version": 3,
+        "englishTitle": "Content-based recommendation for an online story platform",
+        "startDate": "2026-12-01",
+        "progressReportDate": "2027-01-12",
+        "finalReportDate": "2027-02-02",
+        "methodAndScope": "Thu thập dữ liệu truyện được phép sử dụng, chuẩn hóa mô tả và biểu diễn nội dung bằng đặc trưng văn bản. Thử nghiệm độ tương đồng để gợi ý truyện liên quan; phạm vi gồm tra cứu, đọc truyện và đánh giá danh sách gợi ý, chưa mở rộng sang thanh toán.",
+        "plan": "Giai đoạn 1 (2026-12-01): Nguyễn Hữu Hưng khảo sát yêu cầu, tổng hợp tài liệu và chuẩn bị dữ liệu đầu vào.\nGiai đoạn 2 (đến 2027-01-12): Nguyễn Hữu Hưng thiết kế, xây dựng bản thử nghiệm và trình bày báo cáo tiến độ.\nGiai đoạn 3 (đến 2027-02-02): Nguyễn Hữu Hưng kiểm thử, đối chiếu mục tiêu và hoàn thiện sản phẩm, báo cáo cuối cùng.",
+        "members": [
+          {
+            "name": "Nguyễn Hữu Hưng",
+            "code": "22520155",
+            "role": "nhom-truong"
+          }
+        ],
+        "supervisor": {
+          "name": "Nguyễn Văn A",
+          "degree": "ThS.",
+          "workplace": "Khoa Khoa học và Kỹ thuật Thông tin"
+        }
+      },
+      "attachmentSample": "proposal-outline",
+      "source": "uit-demo",
+      "lecturerId": "GV001",
+      "lecturerName": "Nguyễn Văn A",
+      "supervisorName": "Nguyễn Văn A",
+      "studentVisible": true
     },
     {
       "id": "DX-ISEKTLN-102",
@@ -43,22 +71,49 @@
       "topicType": "khoa-luan",
       "topicTypeLabel": "Khóa luận tốt nghiệp",
       "studentName": "Lương Minh Duy",
-      "studentId": "xxxxxxxx",
+      "studentId": "23525161",
       "course": "",
       "supervisionRole": "huong-dan-chinh",
       "supervisionRoleLabel": "Hướng dẫn chính",
       "semester": "2",
       "academicYear": "2026–2027",
       "submittedAt": "2026-11-22T09:00:00+07:00",
-      "description": "Xây dựng website hỗ trợ học tiếng Anh qua môi trường trực tuyến.",
-      "objectives": "Tổ chức nội dung học tiếng Anh và xây dựng các chức năng học tập trên website.",
-      "outcomes": "Website học tiếng Anh trực tuyến và tài liệu mô tả chức năng.",
-      "attachment": "",
+      "description": "Xây dựng website hỗ trợ học tiếng Anh qua môi trường trực tuyến. Người học lựa chọn bài học theo chủ đề, làm bài luyện tập và xem kết quả sau mỗi lần thực hiện. Quản trị viên tổ chức nội dung từ vựng, ngữ pháp và câu hỏi để phục vụ việc học theo từng mức độ.",
+      "objectives": "Khảo sát cách tổ chức bài học và thiết kế luồng học, luyện tập, xem kết quả. Xây dựng các chức năng quản lý nội dung, lưu tiến độ học tập và kiểm tra tính hợp lệ của dữ liệu người dùng nhập.",
+      "outcomes": "Bàn giao website học tiếng Anh với bài học, bài luyện tập và trang theo dõi kết quả. Kèm dữ liệu nội dung thử nghiệm, tài liệu sử dụng và báo cáo kiểm thử các luồng học tập chính.",
+      "attachment": "De_cuong_de_xuat_mau.pdf",
       "provenance": "uit-thesis-title",
       "sourceUrl": "https://ise.uit.edu.vn/vi/bai-viet/ten-d-tai-kltn-c-a-sinh-vien",
       "summaryUrl": "https://bit.ly/3lxfLxf",
       "workflowSource": "illustrative",
-      "descriptionSource": "editorial"
+      "descriptionSource": "editorial",
+      "courseLabel": "Khóa luận tốt nghiệp",
+      "outline": {
+        "version": 3,
+        "englishTitle": "An online English learning website",
+        "startDate": "2027-02-15",
+        "progressReportDate": "2027-04-12",
+        "finalReportDate": "2027-06-14",
+        "methodAndScope": "Phân tích nhu cầu người học rồi thiết kế dữ liệu bài học, câu hỏi và kết quả luyện tập. Xây dựng bản thử nghiệm và kiểm thử theo tình huống; giới hạn ở nội dung từ vựng, ngữ pháp và bài trắc nghiệm, chưa triển khai chấm phát âm tự động.",
+        "plan": "Giai đoạn 1 (2027-02-15): Lương Minh Duy khảo sát yêu cầu, tổng hợp tài liệu và chuẩn bị dữ liệu đầu vào.\nGiai đoạn 2 (đến 2027-04-12): Lương Minh Duy thiết kế, xây dựng bản thử nghiệm và trình bày báo cáo tiến độ.\nGiai đoạn 3 (đến 2027-06-14): Lương Minh Duy kiểm thử, đối chiếu mục tiêu và hoàn thiện sản phẩm, báo cáo cuối cùng.",
+        "members": [
+          {
+            "name": "Lương Minh Duy",
+            "code": "23525161",
+            "role": "nhom-truong"
+          }
+        ],
+        "supervisor": {
+          "name": "Nguyễn Văn A",
+          "degree": "ThS.",
+          "workplace": "Khoa Khoa học và Kỹ thuật Thông tin"
+        }
+      },
+      "attachmentSample": "proposal-outline",
+      "source": "uit-demo",
+      "lecturerId": "GV001",
+      "lecturerName": "Nguyễn Văn A",
+      "supervisorName": "Nguyễn Văn A"
     },
     {
       "id": "DX-ISEKTLN-103",
@@ -68,22 +123,49 @@
       "topicType": "khoa-luan",
       "topicTypeLabel": "Khóa luận tốt nghiệp",
       "studentName": "Bùi Nguyên Mão",
-      "studentId": "xxxxxxxx",
+      "studentId": "24527416",
       "course": "",
       "supervisionRole": "huong-dan-chinh",
       "supervisionRoleLabel": "Hướng dẫn chính",
       "semester": "3",
       "academicYear": "2026–2027",
       "submittedAt": "2026-11-23T09:00:00+07:00",
-      "description": "Nghiên cứu bài toán đọc hiểu tin tức tiếng Việt thông qua tương tác hội thoại.",
-      "objectives": "Khảo sát cách biểu diễn nội dung tin tức và trả lời câu hỏi trong ngữ cảnh hội thoại.",
-      "outcomes": "Mô hình thử nghiệm đọc hiểu qua hội thoại và báo cáo phân tích kết quả.",
-      "attachment": "",
+      "description": "Nghiên cứu bài toán đọc hiểu tin tức tiếng Việt thông qua tương tác hội thoại. Hệ thống tiếp nhận một bản tin và chuỗi câu hỏi có liên hệ với nhau để đưa ra câu trả lời dựa trên nội dung đã cung cấp. Đề tài tập trung phân tích khả năng sử dụng ngữ cảnh hội thoại và các trường hợp trả lời chưa chính xác.",
+      "objectives": "Khảo sát phương pháp đọc hiểu và cách biểu diễn lịch sử hội thoại trong bài toán hỏi đáp. Chuẩn bị dữ liệu thử nghiệm, xây dựng phương án cơ sở và đối chiếu kết quả trên cùng bộ câu hỏi đánh giá.",
+      "outcomes": "Kết quả gồm dữ liệu đã chuẩn hóa, mô hình thử nghiệm và giao diện hỏi đáp theo bản tin. Báo cáo nêu tiêu chí đánh giá, so sánh kết quả và phân tích giới hạn ở các câu hỏi cần nhiều ngữ cảnh.",
+      "attachment": "De_cuong_de_xuat_mau.pdf",
       "provenance": "uit-thesis-title",
       "sourceUrl": "https://ise.uit.edu.vn/vi/bai-viet/ten-d-tai-kltn-c-a-sinh-vien",
       "summaryUrl": "https://bit.ly/2TtFavi",
       "workflowSource": "illustrative",
-      "descriptionSource": "editorial"
+      "descriptionSource": "editorial",
+      "courseLabel": "Khóa luận tốt nghiệp",
+      "outline": {
+        "version": 3,
+        "englishTitle": "Conversational reading comprehension for Vietnamese news",
+        "startDate": "2027-06-21",
+        "progressReportDate": "2027-07-19",
+        "finalReportDate": "2027-08-16",
+        "methodAndScope": "Chuẩn hóa bản tin tiếng Việt và tổ chức các cặp hỏi đáp theo từng lượt hội thoại. Thử nghiệm mô hình đọc hiểu với lịch sử câu hỏi, đối chiếu câu trả lời với minh chứng trong bản tin; phạm vi là tin tức văn bản, chưa xử lý ảnh, âm thanh hoặc dữ liệu thời gian thực.",
+        "plan": "Giai đoạn 1 (2027-06-21): Bùi Nguyên Mão khảo sát yêu cầu, tổng hợp tài liệu và chuẩn bị dữ liệu đầu vào.\nGiai đoạn 2 (đến 2027-07-19): Bùi Nguyên Mão thiết kế, xây dựng bản thử nghiệm và trình bày báo cáo tiến độ.\nGiai đoạn 3 (đến 2027-08-16): Bùi Nguyên Mão kiểm thử, đối chiếu mục tiêu và hoàn thiện sản phẩm, báo cáo cuối cùng.",
+        "members": [
+          {
+            "name": "Bùi Nguyên Mão",
+            "code": "24527416",
+            "role": "nhom-truong"
+          }
+        ],
+        "supervisor": {
+          "name": "Nguyễn Văn A",
+          "degree": "ThS.",
+          "workplace": "Khoa Khoa học và Kỹ thuật Thông tin"
+        }
+      },
+      "attachmentSample": "proposal-outline",
+      "source": "uit-demo",
+      "lecturerId": "GV001",
+      "lecturerName": "Nguyễn Văn A",
+      "supervisorName": "Nguyễn Văn A"
     },
     {
       "id": "DX-ISEDATN-101",
@@ -93,21 +175,49 @@
       "topicType": "do-an-tot-nghiep",
       "topicTypeLabel": "Đồ án tốt nghiệp",
       "studentName": "Trần Hoàng Nam",
-      "studentId": "xxxxxxxx",
+      "studentId": "25529187",
       "course": "",
       "supervisionRole": "huong-dan-chinh",
       "supervisionRoleLabel": "Hướng dẫn chính",
       "semester": "1",
       "academicYear": "2026–2027",
       "submittedAt": "2026-11-24T09:00:00+07:00",
-      "description": "Xây dựng hệ thống tiếp nhận yêu cầu sửa chữa, phân công kỹ thuật viên và theo dõi tình trạng xử lý tại cơ sở đào tạo.",
-      "objectives": "Phân tích quy trình tiếp nhận; tổ chức dữ liệu tài sản, yêu cầu và lịch sử xử lý; phân quyền cho người gửi và bộ phận kỹ thuật.",
-      "outcomes": "Ứng dụng quản lý yêu cầu sửa chữa, cơ sở dữ liệu, báo cáo thống kê, bộ kiểm thử và hướng dẫn sử dụng.",
-      "attachment": "",
+      "description": "Xây dựng hệ thống tiếp nhận yêu cầu sửa chữa, phân công kỹ thuật viên và theo dõi tình trạng xử lý tại cơ sở đào tạo. Người sử dụng gửi thông tin sự cố của phòng học hoặc thiết bị và theo dõi tiến trình xử lý. Bộ phận kỹ thuật tiếp nhận, phân công người phụ trách và ghi nhận kết quả để tránh bỏ sót yêu cầu sửa chữa.",
+      "objectives": "Chuẩn hóa quy trình từ gửi yêu cầu đến nghiệm thu kết quả và xây dựng mô hình dữ liệu liên quan. Thiết kế phân quyền, theo dõi lịch sử xử lý và thống kê yêu cầu theo khu vực, mức độ ưu tiên hoặc trạng thái.",
+      "outcomes": "Bàn giao ứng dụng tiếp nhận sự cố, phân công xử lý và tra cứu lịch sử sửa chữa. Kèm cơ sở dữ liệu, báo cáo thống kê, bộ kiểm thử tình huống và tài liệu hướng dẫn cho người gửi lẫn bộ phận kỹ thuật.",
+      "attachment": "De_cuong_de_xuat_mau.pdf",
       "provenance": "syllabus-generated",
       "sourceUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE103%20-%20Quan%20ly%20Thong%20tin.pdf",
       "workflowSource": "illustrative",
-      "descriptionSource": "editorial"
+      "descriptionSource": "editorial",
+      "courseLabel": "Đồ án tốt nghiệp",
+      "outline": {
+        "version": 3,
+        "englishTitle": "A facility maintenance request tracking system",
+        "startDate": "2026-12-01",
+        "progressReportDate": "2027-01-12",
+        "finalReportDate": "2027-02-02",
+        "methodAndScope": "Khảo sát quy trình bảo trì tại một cơ sở đào tạo giả định, mô hình hóa tác nhân và trạng thái xử lý. Thiết kế ứng dụng theo từng chức năng và kiểm thử phân quyền; phạm vi gồm quản lý yêu cầu, phân công và nghiệm thu, chưa tích hợp hệ thống kế toán.",
+        "plan": "Giai đoạn 1 (2026-12-01): Trần Hoàng Nam khảo sát yêu cầu, tổng hợp tài liệu và chuẩn bị dữ liệu đầu vào.\nGiai đoạn 2 (đến 2027-01-12): Trần Hoàng Nam thiết kế, xây dựng bản thử nghiệm và trình bày báo cáo tiến độ.\nGiai đoạn 3 (đến 2027-02-02): Trần Hoàng Nam kiểm thử, đối chiếu mục tiêu và hoàn thiện sản phẩm, báo cáo cuối cùng.",
+        "members": [
+          {
+            "name": "Trần Hoàng Nam",
+            "code": "25529187",
+            "role": "nhom-truong"
+          }
+        ],
+        "supervisor": {
+          "name": "Nguyễn Văn A",
+          "degree": "ThS.",
+          "workplace": "Khoa Khoa học và Kỹ thuật Thông tin"
+        }
+      },
+      "attachmentSample": "proposal-outline",
+      "source": "uit-demo",
+      "lecturerId": "GV001",
+      "lecturerName": "Nguyễn Văn A",
+      "supervisorName": "Nguyễn Văn A",
+      "studentVisible": true
     },
     {
       "id": "DX-ISEDATN-102",
@@ -117,21 +227,48 @@
       "topicType": "do-an-tot-nghiep",
       "topicTypeLabel": "Đồ án tốt nghiệp",
       "studentName": "Lê Khánh Linh",
-      "studentId": "xxxxxxxx",
+      "studentId": "22524013",
       "course": "",
       "supervisionRole": "huong-dan-chinh",
       "supervisionRoleLabel": "Hướng dẫn chính",
       "semester": "2",
       "academicYear": "2026–2027",
       "submittedAt": "2026-11-21T09:00:00+07:00",
-      "description": "Xây dựng nền tảng quản lý tài nguyên phòng học và thiết bị, hỗ trợ đặt lịch và kiểm tra xung đột thời gian.",
-      "objectives": "Thiết kế mô hình dữ liệu tài nguyên và lịch đặt; xây dựng quy trình duyệt, kiểm tra lịch trùng và phân quyền người dùng.",
-      "outcomes": "Nền tảng đặt lịch phòng học và thiết bị, chức năng kiểm tra trùng lịch, báo cáo kiểm thử và tài liệu triển khai.",
-      "attachment": "",
+      "description": "Xây dựng nền tảng quản lý tài nguyên phòng học và thiết bị, hỗ trợ đặt lịch và kiểm tra xung đột thời gian. Sinh viên hoặc cán bộ tra cứu lịch trống và gửi yêu cầu sử dụng phòng học, máy chiếu hoặc thiết bị dùng chung. Người quản lý duyệt lịch, xử lý thay đổi và theo dõi tình trạng sử dụng trên một nguồn dữ liệu thống nhất.",
+      "objectives": "Xác định quy tắc đặt lịch, kiểm tra thời gian giao nhau và xây dựng dữ liệu tài nguyên dùng chung. Phát triển luồng gửi, duyệt, hủy lịch cùng chức năng phân quyền và thông báo kết quả cho người đăng ký.",
+      "outcomes": "Sản phẩm gồm nền tảng đặt lịch với lịch sử duyệt, kiểm tra trùng giờ và thống kê sử dụng. Kèm cơ sở dữ liệu thử nghiệm, tài liệu triển khai và các tình huống kiểm thử thay đổi, hủy hoặc đặt lịch trùng.",
+      "attachment": "De_cuong_de_xuat_mau.pdf",
       "provenance": "syllabus-generated",
       "sourceUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE103%20-%20Quan%20ly%20Thong%20tin.pdf",
       "workflowSource": "illustrative",
-      "descriptionSource": "editorial"
+      "descriptionSource": "editorial",
+      "courseLabel": "Đồ án tốt nghiệp",
+      "outline": {
+        "version": 3,
+        "englishTitle": "A classroom and equipment reservation platform",
+        "startDate": "2027-02-15",
+        "progressReportDate": "2027-04-12",
+        "finalReportDate": "2027-06-14",
+        "methodAndScope": "Khảo sát nhu cầu sử dụng phòng và thiết bị trong phạm vi một cơ sở đào tạo. Mô hình hóa quy tắc kiểm tra khoảng thời gian giao nhau, xây dựng bản thử nghiệm và kiểm thử theo vai trò; chưa mở rộng sang thu phí hoặc kết nối thiết bị điều khiển cửa.",
+        "plan": "Giai đoạn 1 (2027-02-15): Lê Khánh Linh khảo sát yêu cầu, tổng hợp tài liệu và chuẩn bị dữ liệu đầu vào.\nGiai đoạn 2 (đến 2027-04-12): Lê Khánh Linh thiết kế, xây dựng bản thử nghiệm và trình bày báo cáo tiến độ.\nGiai đoạn 3 (đến 2027-06-14): Lê Khánh Linh kiểm thử, đối chiếu mục tiêu và hoàn thiện sản phẩm, báo cáo cuối cùng.",
+        "members": [
+          {
+            "name": "Lê Khánh Linh",
+            "code": "22524013",
+            "role": "nhom-truong"
+          }
+        ],
+        "supervisor": {
+          "name": "Nguyễn Văn A",
+          "degree": "ThS.",
+          "workplace": "Khoa Khoa học và Kỹ thuật Thông tin"
+        }
+      },
+      "attachmentSample": "proposal-outline",
+      "source": "uit-demo",
+      "lecturerId": "GV001",
+      "lecturerName": "Nguyễn Văn A",
+      "supervisorName": "Nguyễn Văn A"
     },
     {
       "id": "DX-ISEDATN-103",
@@ -141,21 +278,48 @@
       "topicType": "do-an-tot-nghiep",
       "topicTypeLabel": "Đồ án tốt nghiệp",
       "studentName": "Phạm Gia Hân",
-      "studentId": "xxxxxxxx",
+      "studentId": "23520605",
       "course": "",
       "supervisionRole": "huong-dan-chinh",
       "supervisionRoleLabel": "Hướng dẫn chính",
       "semester": "3",
       "academicYear": "2026–2027",
       "submittedAt": "2026-11-22T09:00:00+07:00",
-      "description": "Xây dựng hệ thống tập trung hồ sơ ứng viên và lịch phỏng vấn cho đơn vị tuyển dụng.",
-      "objectives": "Tổ chức dữ liệu ứng viên, vị trí và vòng phỏng vấn; xây dựng công cụ tra cứu, cập nhật kết quả và kiểm soát quyền truy cập hồ sơ.",
-      "outcomes": "Ứng dụng quản lý tuyển dụng, cơ sở dữ liệu hồ sơ, bộ kiểm thử phân quyền và hướng dẫn sử dụng.",
-      "attachment": "",
+      "description": "Xây dựng hệ thống tập trung hồ sơ ứng viên và lịch phỏng vấn cho đơn vị tuyển dụng. Bộ phận nhân sự tạo vị trí tuyển dụng, tiếp nhận hồ sơ và sắp lịch phỏng vấn cho từng ứng viên. Người phỏng vấn cập nhật kết quả theo vòng để các bên liên quan theo dõi và phối hợp xử lý hồ sơ.",
+      "objectives": "Chuẩn hóa dữ liệu ứng viên, vị trí tuyển dụng và từng vòng phỏng vấn. Xây dựng chức năng tra cứu, phân công người phỏng vấn, kiểm tra lịch trùng và giới hạn quyền xem thông tin cá nhân theo vai trò.",
+      "outcomes": "Bàn giao ứng dụng quản lý hồ sơ, lịch phỏng vấn và kết quả xét tuyển theo vòng. Kèm dữ liệu thử nghiệm, bảng kiểm tra phân quyền, báo cáo kiểm thử và hướng dẫn vận hành dành cho bộ phận nhân sự.",
+      "attachment": "De_cuong_de_xuat_mau.pdf",
       "provenance": "syllabus-generated",
       "sourceUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE103%20-%20Quan%20ly%20Thong%20tin.pdf",
       "workflowSource": "illustrative",
-      "descriptionSource": "editorial"
+      "descriptionSource": "editorial",
+      "courseLabel": "Đồ án tốt nghiệp",
+      "outline": {
+        "version": 3,
+        "englishTitle": "A recruitment profile and interview scheduling system",
+        "startDate": "2027-06-21",
+        "progressReportDate": "2027-07-19",
+        "finalReportDate": "2027-08-16",
+        "methodAndScope": "Phân tích quy trình tuyển dụng của một đơn vị giả định và thiết kế dữ liệu hồ sơ cùng lịch phỏng vấn. Xây dựng từng luồng nghiệp vụ và kiểm thử quyền truy cập; phạm vi không bao gồm tự động xếp hạng ứng viên bằng AI hoặc xử lý bảng lương.",
+        "plan": "Giai đoạn 1 (2027-06-21): Phạm Gia Hân khảo sát yêu cầu, tổng hợp tài liệu và chuẩn bị dữ liệu đầu vào.\nGiai đoạn 2 (đến 2027-07-19): Phạm Gia Hân thiết kế, xây dựng bản thử nghiệm và trình bày báo cáo tiến độ.\nGiai đoạn 3 (đến 2027-08-16): Phạm Gia Hân kiểm thử, đối chiếu mục tiêu và hoàn thiện sản phẩm, báo cáo cuối cùng.",
+        "members": [
+          {
+            "name": "Phạm Gia Hân",
+            "code": "23520605",
+            "role": "nhom-truong"
+          }
+        ],
+        "supervisor": {
+          "name": "Nguyễn Văn A",
+          "degree": "ThS.",
+          "workplace": "Khoa Khoa học và Kỹ thuật Thông tin"
+        }
+      },
+      "attachmentSample": "proposal-outline",
+      "source": "uit-demo",
+      "lecturerId": "GV001",
+      "lecturerName": "Nguyễn Văn A",
+      "supervisorName": "Nguyễn Văn A"
     },
     {
       "id": "DX-ISEDAMH-101",
@@ -165,21 +329,48 @@
       "topicType": "do-an-mon-hoc",
       "topicTypeLabel": "Đồ án môn học",
       "studentName": "Võ Minh Châu",
-      "studentId": "xxxxxxxx",
+      "studentId": "24528538",
       "course": "web",
       "supervisionRole": "huong-dan-chinh",
       "supervisionRoleLabel": "Hướng dẫn chính",
       "semester": "1",
       "academicYear": "2026–2027",
       "submittedAt": "2026-11-23T09:00:00+07:00",
-      "description": "Thiết kế website giới thiệu bộ sưu tập, lịch tham quan và biểu mẫu đăng ký tham quan bảo tàng.",
-      "objectives": "Tổ chức nội dung và điều hướng; xây dựng giao diện HTML/CSS thích ứng nhiều màn hình; kiểm tra biểu mẫu bằng JavaScript.",
-      "outcomes": "Website HTML/CSS/JavaScript, dữ liệu nội dung JSON, báo cáo phân công và slide thuyết trình.",
-      "attachment": "",
+      "description": "Thiết kế website giới thiệu bộ sưu tập, lịch tham quan và biểu mẫu đăng ký tham quan bảo tàng. Khách tham quan tìm hiểu thông tin bộ sưu tập, giờ mở cửa và các chương trình đang diễn ra trước khi gửi đăng ký. Website ưu tiên nội dung dễ đọc trên điện thoại và kiểm tra biểu mẫu rõ ràng trước khi ghi nhận thông tin.",
+      "objectives": "Thiết kế cấu trúc trang, điều hướng và cách trình bày thông tin tham quan. Áp dụng HTML, CSS, JavaScript để xây dựng giao diện thích ứng nhiều màn hình và kiểm tra các trường thông tin trong biểu mẫu đăng ký.",
+      "outcomes": "Bàn giao website giới thiệu bảo tàng với dữ liệu nội dung JSON và biểu mẫu đăng ký tham quan. Kèm mã nguồn, hướng dẫn chạy, bảng phân công công việc và báo cáo kiểm thử giao diện trên các kích thước màn hình.",
+      "attachment": "De_cuong_de_xuat_mau.pdf",
       "provenance": "syllabus-generated",
       "sourceUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE104%20-%20Internet%20va%20Cong%20nghe%20Web.pdf",
       "workflowSource": "illustrative",
-      "descriptionSource": "editorial"
+      "descriptionSource": "editorial",
+      "courseLabel": "Internet và công nghệ web",
+      "outline": {
+        "version": 3,
+        "englishTitle": "A museum introduction and visit registration website",
+        "startDate": "2026-12-01",
+        "progressReportDate": "2027-01-12",
+        "finalReportDate": "2027-02-02",
+        "methodAndScope": "Khảo sát các nhóm thông tin cần cho khách tham quan rồi phác thảo cấu trúc và bố cục trang. Hiện thực bằng HTML/CSS/JavaScript và kiểm thử biểu mẫu; chỉ mô phỏng đăng ký tham quan, chưa tích hợp thanh toán hoặc cơ sở dữ liệu phía máy chủ.",
+        "plan": "Giai đoạn 1 (2026-12-01): Võ Minh Châu khảo sát yêu cầu, tổng hợp tài liệu và chuẩn bị dữ liệu đầu vào.\nGiai đoạn 2 (đến 2027-01-12): Võ Minh Châu thiết kế, xây dựng bản thử nghiệm và trình bày báo cáo tiến độ.\nGiai đoạn 3 (đến 2027-02-02): Võ Minh Châu kiểm thử, đối chiếu mục tiêu và hoàn thiện sản phẩm, báo cáo cuối cùng.",
+        "members": [
+          {
+            "name": "Võ Minh Châu",
+            "code": "24528538",
+            "role": "nhom-truong"
+          }
+        ],
+        "supervisor": {
+          "name": "Nguyễn Văn A",
+          "degree": "ThS.",
+          "workplace": "Khoa Khoa học và Kỹ thuật Thông tin"
+        }
+      },
+      "attachmentSample": "proposal-outline",
+      "source": "uit-demo",
+      "lecturerId": "GV001",
+      "lecturerName": "Nguyễn Văn A",
+      "supervisorName": "Nguyễn Văn A"
     },
     {
       "id": "DX-ISEDAMH-102",
@@ -189,21 +380,48 @@
       "topicType": "do-an-mon-hoc",
       "topicTypeLabel": "Đồ án môn học",
       "studentName": "Đặng Hải Đăng",
-      "studentId": "xxxxxxxx",
+      "studentId": "25526499",
       "course": "IE101",
       "supervisionRole": "huong-dan-chinh",
       "supervisionRoleLabel": "Hướng dẫn chính",
       "semester": "2",
       "academicYear": "2026–2027",
       "submittedAt": "2026-11-24T09:00:00+07:00",
-      "description": "Khảo sát nhu cầu kết nối, thiết bị và lưu trữ của chuỗi cửa hàng bán lẻ để đề xuất cấu hình hạ tầng phù hợp.",
-      "objectives": "Phân tích các thành phần mạng, máy chủ và thiết bị đầu cuối; so sánh phương án kết nối và xây dựng kế hoạch vận hành.",
-      "outcomes": "Sơ đồ hạ tầng, danh mục thiết bị, bảng so sánh phương án, dự toán và kế hoạch quản lý vận hành.",
-      "attachment": "",
+      "description": "Khảo sát nhu cầu kết nối, thiết bị và lưu trữ của chuỗi cửa hàng bán lẻ để đề xuất cấu hình hạ tầng phù hợp. Phương án cần đáp ứng kết nối giữa các chi nhánh, sử dụng phần mềm bán hàng và chia sẻ dữ liệu trong hoạt động hằng ngày. Nhóm thực hiện so sánh cấu hình thiết bị, cách tổ chức mạng và phương án duy trì dịch vụ khi có sự cố.",
+      "objectives": "Xác định nhu cầu sử dụng, số lượng thiết bị và yêu cầu kết nối tại từng chi nhánh. Đề xuất sơ đồ hạ tầng, phương án lưu trữ, sao lưu và kế hoạch vận hành phù hợp với quy mô cửa hàng giả định.",
+      "outcomes": "Kết quả gồm sơ đồ hạ tầng, danh mục thiết bị và bảng so sánh các phương án triển khai. Báo cáo kèm dự toán, kế hoạch sao lưu và hướng dẫn xử lý các tình huống mất kết nối hoặc hỏng thiết bị.",
+      "attachment": "De_cuong_de_xuat_mau.pdf",
       "provenance": "syllabus-generated",
       "sourceUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE101%20-%20Co%20so%20ha%20tang%20cong%20nghe%20thong%20tin.pdf",
       "workflowSource": "illustrative",
-      "descriptionSource": "editorial"
+      "descriptionSource": "editorial",
+      "courseLabel": "Cơ sở hạ tầng công nghệ thông tin",
+      "outline": {
+        "version": 3,
+        "englishTitle": "IT infrastructure design for a multi-branch retail store",
+        "startDate": "2027-02-15",
+        "progressReportDate": "2027-04-12",
+        "finalReportDate": "2027-06-14",
+        "methodAndScope": "Lập bộ yêu cầu cho chuỗi ba cửa hàng giả định, phân tích thành phần mạng, máy chủ và thiết bị đầu cuối. So sánh phương án theo chi phí, khả năng mở rộng và tính sẵn sàng; phạm vi là thiết kế và mô phỏng, chưa mua sắm hoặc triển khai hạ tầng thật.",
+        "plan": "Giai đoạn 1 (2027-02-15): Đặng Hải Đăng khảo sát yêu cầu, tổng hợp tài liệu và chuẩn bị dữ liệu đầu vào.\nGiai đoạn 2 (đến 2027-04-12): Đặng Hải Đăng thiết kế, xây dựng bản thử nghiệm và trình bày báo cáo tiến độ.\nGiai đoạn 3 (đến 2027-06-14): Đặng Hải Đăng kiểm thử, đối chiếu mục tiêu và hoàn thiện sản phẩm, báo cáo cuối cùng.",
+        "members": [
+          {
+            "name": "Đặng Hải Đăng",
+            "code": "25526499",
+            "role": "nhom-truong"
+          }
+        ],
+        "supervisor": {
+          "name": "Nguyễn Văn A",
+          "degree": "ThS.",
+          "workplace": "Khoa Khoa học và Kỹ thuật Thông tin"
+        }
+      },
+      "attachmentSample": "proposal-outline",
+      "source": "uit-demo",
+      "lecturerId": "GV001",
+      "lecturerName": "Nguyễn Văn A",
+      "supervisorName": "Nguyễn Văn A"
     },
     {
       "id": "DX-ISEDAMH-103",
@@ -213,21 +431,48 @@
       "topicType": "do-an-mon-hoc",
       "topicTypeLabel": "Đồ án môn học",
       "studentName": "Nguyễn Bảo Ngọc",
-      "studentId": "xxxxxxxx",
+      "studentId": "22522974",
       "course": "IE103",
       "supervisionRole": "huong-dan-chinh",
       "supervisionRoleLabel": "Hướng dẫn chính",
       "semester": "3",
       "academicYear": "2026–2027",
       "submittedAt": "2026-11-21T09:00:00+07:00",
-      "description": "Tổ chức thông tin chương trình trao đổi sinh viên từ nhiều nguồn để hỗ trợ tra cứu điều kiện và thời hạn ứng tuyển.",
-      "objectives": "Xác định cấu trúc dữ liệu chung; chuẩn hóa thông tin, phát hiện bản ghi trùng và thiết kế truy vấn theo nhu cầu tra cứu.",
-      "outcomes": "Mô hình dữ liệu, quy trình chuẩn hóa và tích hợp, bộ truy vấn và báo cáo chất lượng thông tin.",
-      "attachment": "",
+      "description": "Tổ chức thông tin chương trình trao đổi sinh viên từ nhiều nguồn để hỗ trợ tra cứu điều kiện và thời hạn ứng tuyển. Người dùng tra cứu điều kiện ứng tuyển, trường tiếp nhận và các mốc thời gian từ một danh mục thống nhất. Đề tài tập trung giải quyết thông tin trùng lặp, khác định dạng và khó theo dõi khi tổng hợp từ nhiều nguồn.",
+      "objectives": "Xây dựng cấu trúc thông tin chung cho chương trình trao đổi và quy tắc chuẩn hóa dữ liệu. Thiết kế cách phát hiện bản ghi trùng, theo dõi nguồn cập nhật và truy vấn theo điều kiện, thời hạn hoặc địa điểm học tập.",
+      "outcomes": "Bàn giao mô hình dữ liệu, bộ dữ liệu thử nghiệm đã chuẩn hóa và các truy vấn tra cứu điển hình. Báo cáo trình bày quy trình tích hợp, bảng đối chiếu chất lượng dữ liệu và đề xuất cách duy trì thông tin sau cập nhật.",
+      "attachment": "De_cuong_de_xuat_mau.pdf",
       "provenance": "syllabus-generated",
       "sourceUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE103%20-%20Quan%20ly%20Thong%20tin.pdf",
       "workflowSource": "illustrative",
-      "descriptionSource": "editorial"
+      "descriptionSource": "editorial",
+      "courseLabel": "Quản lý thông tin",
+      "outline": {
+        "version": 3,
+        "englishTitle": "Organizing and integrating student exchange program information",
+        "startDate": "2027-06-21",
+        "progressReportDate": "2027-07-19",
+        "finalReportDate": "2027-08-16",
+        "methodAndScope": "Chọn các nguồn thông tin chương trình được phép sử dụng, đối chiếu cấu trúc và xây dựng quy tắc chuyển đổi. Tích hợp theo mã chương trình, đơn vị tổ chức và thời gian; phạm vi là tổ chức, truy vấn và đánh giá chất lượng dữ liệu, chưa xử lý hồ sơ ứng tuyển trực tuyến.",
+        "plan": "Giai đoạn 1 (2027-06-21): Nguyễn Bảo Ngọc khảo sát yêu cầu, tổng hợp tài liệu và chuẩn bị dữ liệu đầu vào.\nGiai đoạn 2 (đến 2027-07-19): Nguyễn Bảo Ngọc thiết kế, xây dựng bản thử nghiệm và trình bày báo cáo tiến độ.\nGiai đoạn 3 (đến 2027-08-16): Nguyễn Bảo Ngọc kiểm thử, đối chiếu mục tiêu và hoàn thiện sản phẩm, báo cáo cuối cùng.",
+        "members": [
+          {
+            "name": "Nguyễn Bảo Ngọc",
+            "code": "22522974",
+            "role": "nhom-truong"
+          }
+        ],
+        "supervisor": {
+          "name": "Nguyễn Văn A",
+          "degree": "ThS.",
+          "workplace": "Khoa Khoa học và Kỹ thuật Thông tin"
+        }
+      },
+      "attachmentSample": "proposal-outline",
+      "source": "uit-demo",
+      "lecturerId": "GV001",
+      "lecturerName": "Nguyễn Văn A",
+      "supervisorName": "Nguyễn Văn A"
     },
     {
       "id": "DX-ISEDAMH-104",
@@ -237,21 +482,48 @@
       "topicType": "do-an-mon-hoc",
       "topicTypeLabel": "Đồ án môn học",
       "studentName": "Trần Đức Anh",
-      "studentId": "xxxxxxxx",
+      "studentId": "23527860",
       "course": "IE105",
       "supervisionRole": "huong-dan-chinh",
       "supervisionRoleLabel": "Hướng dẫn chính",
       "semester": "1",
       "academicYear": "2026–2027",
       "submittedAt": "2026-11-22T09:00:00+07:00",
-      "description": "Khảo sát mô hình mạng Wi-Fi ký túc xá và phân tích nguy cơ truy cập trái phép trong môi trường thử nghiệm được cho phép.",
-      "objectives": "Phân tích quyền truy cập và cấu hình mạng không dây; nhận diện rủi ro và đề xuất biện pháp bảo vệ, giám sát phù hợp.",
-      "outcomes": "Mô hình mạng thử nghiệm, bảng đánh giá rủi ro, phương án kiểm soát truy cập và báo cáo kiểm chứng cấu hình.",
-      "attachment": "",
+      "description": "Khảo sát mô hình mạng Wi-Fi ký túc xá và phân tích nguy cơ truy cập trái phép trong môi trường thử nghiệm được cho phép. Mô hình cần phân tách nhóm người dùng và hạn chế việc truy cập trái phép vào tài nguyên nội bộ. Nhóm thực hiện đối chiếu cấu hình trước và sau khi áp dụng phương án bảo vệ để ghi nhận mức độ đáp ứng yêu cầu an toàn.",
+      "objectives": "Xác định thành phần mạng không dây, nhóm người dùng và các rủi ro phổ biến trong bối cảnh ký túc xá. Đề xuất cơ chế xác thực, phân quyền truy cập, bảo vệ cấu hình và quy trình theo dõi sự cố phù hợp với quy mô mô hình.",
+      "outcomes": "Kết quả gồm mô hình mạng thử nghiệm, bảng đánh giá rủi ro và danh sách cấu hình bảo vệ đề xuất. Báo cáo kèm các bước kiểm chứng quyền truy cập, nhật ký thử nghiệm và hướng dẫn vận hành an toàn.",
+      "attachment": "De_cuong_de_xuat_mau.pdf",
       "provenance": "syllabus-generated",
       "sourceUrl": "https://fit.uit.edu.vn/attachments/article/4872/IE105_Nhap%20Mon%20Bao%20Dam%20va%20An%20Ninh%20Thong%20Tin-CDIO_v1-05122016.pdf",
       "workflowSource": "illustrative",
-      "descriptionSource": "editorial"
+      "descriptionSource": "editorial",
+      "courseLabel": "Nhập môn bảo đảm và an ninh thông tin",
+      "outline": {
+        "version": 3,
+        "englishTitle": "Assessment and protection planning for a dormitory Wi-Fi network",
+        "startDate": "2026-12-01",
+        "progressReportDate": "2027-01-12",
+        "finalReportDate": "2027-02-02",
+        "methodAndScope": "Phân tích sơ đồ mạng giả định rồi dựng mô hình cô lập để kiểm tra cấu hình xác thực và kiểm soát truy cập. Đánh giá theo các tình huống được cho phép và so sánh cấu hình; không thử nghiệm trên mạng ký túc xá đang vận hành hoặc thu thập dữ liệu người dùng thật.",
+        "plan": "Giai đoạn 1 (2026-12-01): Trần Đức Anh khảo sát yêu cầu, tổng hợp tài liệu và chuẩn bị dữ liệu đầu vào.\nGiai đoạn 2 (đến 2027-01-12): Trần Đức Anh thiết kế, xây dựng bản thử nghiệm và trình bày báo cáo tiến độ.\nGiai đoạn 3 (đến 2027-02-02): Trần Đức Anh kiểm thử, đối chiếu mục tiêu và hoàn thiện sản phẩm, báo cáo cuối cùng.",
+        "members": [
+          {
+            "name": "Trần Đức Anh",
+            "code": "23527860",
+            "role": "nhom-truong"
+          }
+        ],
+        "supervisor": {
+          "name": "Nguyễn Văn A",
+          "degree": "ThS.",
+          "workplace": "Khoa Khoa học và Kỹ thuật Thông tin"
+        }
+      },
+      "attachmentSample": "proposal-outline",
+      "source": "uit-demo",
+      "lecturerId": "GV001",
+      "lecturerName": "Nguyễn Văn A",
+      "supervisorName": "Nguyễn Văn A"
     }
   ]
 }

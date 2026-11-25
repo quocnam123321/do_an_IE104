@@ -76,6 +76,7 @@
     const lecturerTopics = app.services.lecturerTopics;
     const topics = [
       ...(uit?.records || []),
+      ...(uit?.pending || []),
       ...(app.services.lecturerTopicRepository?.read() || []),
       ...(lecturerTopics?.allCreated() || []),
       ...(lecturerTopics?.list('supervised') || []),
@@ -83,7 +84,7 @@
     ];
     const used = proposals.map(record => record.topicCode || record.id);
     for (const topic of topics) {
-      const code = topic.code || topic.id;
+      const code = topic.topicCode || topic.code || topic.id;
       used.push(topic.id, code, topic.displayId || uit?.formatCode(topic.topicType, code));
     }
     let highest = 0;
@@ -171,7 +172,23 @@
       status: record.status === 'da-duyet' ? 'dang-thuc-hien' : record.status, statusLabel: record.status === 'da-duyet' ? 'Đang thực hiện' : labels[record.status], requestStatusLabel: labels[record.status], feedback: record.decision?.reason || '', createdAt: record.createdAt,
       detailUrl: detailUrl(record.id),
     }));
-    return [...pending, ...(approved?.list('student') || []).filter(project => project.source === 'approved-proposal').map(project => ({ ...project, requestStatusLabel: 'Đã duyệt', feedback: '' }))];
+    const sharedSamples = (globalThis.UITLecturerCatalog?.pending || [])
+      .filter(seed => seed.studentVisible)
+      .map(seed => globalThis.IE104Proposals?.get(seed.id)).filter(Boolean).map(record => ({
+        id: record.id, requestId: record.id, displayId: record.topicCode, title: record.title,
+        type: record.topicType, typeLabel: record.topicTypeLabel,
+        courseId: record.course || (record.topicType === 'khoa-luan' ? 'IE505' : 'IE501'),
+        courseLabel: record.courseLabel, semester: record.semester, academicYear: record.academicYear.replace('–', '-'),
+        lecturer: record.supervisorName, lecturerId: record.lecturerId, lecturerLabel: 'Giảng viên nhận đề xuất',
+        representativeName: record.studentName, representativeCode: record.studentId, outline: clone(record.outline),
+        groupName: '', source: 'uit-demo',
+        status: ({ pending: 'cho-duyet', approved: 'dang-thuc-hien', rejected: 'tu-choi' })[record.status],
+        statusLabel: ({ pending: 'Chờ duyệt', approved: 'Đang thực hiện', rejected: 'Từ chối' })[record.status],
+        requestStatusLabel: ({ pending: 'Chờ duyệt', approved: 'Đã duyệt', rejected: 'Từ chối' })[record.status],
+        createdAt: record.submittedAt, feedback: record.reason || '',
+        detailUrl: `chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=${encodeURIComponent(record.id)}`,
+      }));
+    return [...sharedSamples, ...pending, ...(approved?.list('student') || []).filter(project => project.source === 'approved-proposal').map(project => ({ ...project, requestStatusLabel: 'Đã duyệt', feedback: '' }))];
   }
 
   function canReview(lecturerId) {

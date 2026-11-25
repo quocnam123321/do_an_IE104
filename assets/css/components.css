@@ -250,7 +250,7 @@
   clip-path: inset(50%);
   white-space: nowrap;
 }
-.account-menu__list { right: 0; width: 16rem; }
+.account-menu__list { right: 0; width: max-content; min-width: 0; }
 .account-menu__profile,
 .account-menu__logout {
   display: block;
@@ -386,6 +386,57 @@
 }
 .account-menu__panel .account-menu__list { position: static; width: 100%; min-width: 0; padding: 0; box-shadow: none; }
 .account-menu__panel #logout-notice { position: static; width: auto; padding: var(--space-3); }
+
+/* Menu tài khoản ôm nội dung, dùng chung cho SV, GV và trang công khai. */
+.site-header .account-menu :is(.account-menu__list, .account-menu__panel) {
+  inline-size: max-content;
+  min-inline-size: 0;
+  max-inline-size: calc(100vw - 2rem);
+  padding: var(--space-2);
+}
+.site-header .account-menu .account-menu__list {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+}
+.site-header .account-menu .account-menu__panel .account-menu__list {
+  position: static;
+  inline-size: auto;
+  padding: 0;
+  border: 0;
+  box-shadow: none;
+}
+.site-header .account-menu .account-menu__list > li { margin: 0; padding: 0; }
+.site-header .account-menu :is(.account-menu__profile, .account-menu__logout) {
+  white-space: nowrap;
+  border-radius: var(--radius-control);
+}
+.site-header .account-menu :is(.account-menu__profile, .account-menu__logout):hover:enabled {
+  background: var(--color-neutral-bg);
+}
+.site-header .account-menu .account-menu__profile:hover { background: var(--color-neutral-bg); }
+
+@media (max-width: 39.99rem) {
+  .site-header .account-menu :is(.account-menu__list, .account-menu__panel) {
+    inset-inline-start: 0;
+    inset-inline-end: auto;
+  }
+}
+
+.logout-feedback {
+  position: fixed;
+  z-index: var(--z-modal, 1000);
+  inset-block-start: calc(5rem + var(--space-3));
+  inset-inline-end: var(--space-4);
+  max-inline-size: min(28rem, calc(100vw - 2rem));
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-danger-border);
+  border-radius: var(--radius-control);
+  background: var(--color-danger-bg);
+  color: var(--color-danger-fg);
+  box-shadow: var(--shadow-floating);
+}
 .confirmation-dialog form { display: inline-flex; margin-right: var(--space-2); }
 .confirmation-dialog button {
   min-height: var(--control-min-height);

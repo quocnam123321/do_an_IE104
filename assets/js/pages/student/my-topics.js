@@ -19,7 +19,7 @@
         const id = topic.requestId || topic.id;
         if (id.startsWith('DK')) members = registrations.findById(id)?.members;
         if (id.startsWith('DX')) {
-          const proposal = proposals.findById(id) || app.services.requests.findStudentProposal(id);
+          const proposal = proposals.findById(id) || app.services.requests.findStudentProposal(id) || globalThis.IE104Proposals?.getSeed(id);
           members = proposal?.outline?.members || [proposal?.student || app.data.currentStudent];
         }
       }

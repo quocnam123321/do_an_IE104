@@ -78,44 +78,24 @@
     renderCatalogCards();
     return;
   }
-  const { el, field, modal, service } = ui;
+  const { el } = ui;
   panel.querySelectorAll('.progress-member-popover').forEach(node => node.remove());
   const title = panel.querySelector('h2');
   const work = panel.querySelector('.progress-tasks');
   const meter = overview.querySelector('progress');
   const percentLabel = overview.querySelector('.progress-overview__percent');
-  const review = overview.querySelector('.progress-overview__review');
   const message = el('p');
   const summaryNote = el('p', 'Tính theo số công việc đã hoàn thành vì một số công việc chưa có phần trăm cụ thể.', 'progress-overview__note');
-  const history = el('section', '', 'progress-overview progress-reviews');
-  const reviews = el('div');
-  review.removeAttribute('command');
-  review.removeAttribute('commandfor');
-  review.removeAttribute('aria-controls');
-  review.querySelector('span').textContent = 'Nhận xét tiến độ';
-  review.addEventListener('click', () => {
-    modal('Nhận xét tiến độ', 'Lưu nhận xét', (body, state) => {
-      const select = field(body, 'taskId', 'Công việc', 'select');
-      select.add(new Option('Tiến độ tổng thể', ''));
-      state.progress.tasks.forEach(task => select.add(new Option(task.title, task.id)));
-      field(body, 'content', 'Nội dung nhận xét', 'textarea', '', { required: true, maxLength: 2000, rows: 6 });
-    }, (values, snapshot) => service.addProgressReview(snapshot.projectId, {
-      content: values.get('content'),
-      taskId: values.get('taskId') || null,
-      progressRevision: snapshot.progressRevision,
-    }, snapshot.revision));
-  });
 
   work.querySelector('#task-board-help').textContent =
     'Các công việc được nhóm theo trạng thái. Cuộn dọc trong từng cột và cuộn ngang để xem các cột khác trên màn hình hẹp. Chọn thẻ để xem chi tiết.';
   overview.append(summaryNote);
-  history.append(el('h3', 'Nhận xét của giảng viên', 'progress-overview__title'), reviews);
-  panel.append(history, message);
+  panel.append(message);
 
   ui.subscribe(state => {
     tasksById.clear();
     const hasProgress = Boolean(state?.progress);
-    title.hidden = overview.hidden = work.hidden = history.hidden = !hasProgress;
+    title.hidden = overview.hidden = work.hidden = !hasProgress;
     message.hidden = hasProgress || !state;
     message.textContent = state?.warning || 'Chưa có dữ liệu tiến độ.';
     if (!hasProgress) return;
@@ -149,13 +129,6 @@
       }));
       if (!tasks.length) list.append(el('li', 'Chưa có công việc.', 'task-column__empty'));
       list.scrollTop = scrollTop;
-    });
-    reviews.replaceChildren();
-    if (!state.progressReviews.length) reviews.append(el('p', 'Chưa có nhận xét.'));
-    state.progressReviews.forEach(review => {
-      const article = el('article', '', 'teaching-board-card');
-      article.append(el('h4', review.taskTitle), el('p', `${review.authorName} - ${ui.date(review.createdAt)}`), el('p', review.content, 'teaching-prewrap'));
-      reviews.append(article);
     });
   });
 })();
