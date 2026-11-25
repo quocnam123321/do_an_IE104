@@ -148,18 +148,18 @@
     }
     const projectUrl = service.projectUrl(record);
     resultBox.textContent = record.status === 'da-dang-ky'
-      ? 'Đã đăng ký thành công. Đề tài đã chuyển sang Đang thực hiện trong bản demo. '
-      : `Đăng ký đã lưu trên trình duyệt này (${service.labels[record.status]}). `;
+      ? 'Đã đăng ký thành công. Đề tài đã chuyển sang Đang thực hiện trong bản demo.'
+      : `Đăng ký đã lưu trên trình duyệt này (${service.labels[record.status]}).`;
     if (projectUrl) {
       const project = document.createElement('a');
       project.href = projectUrl;
       project.textContent = 'Xem chi tiết đề tài';
-      resultBox.append(project, ' · ');
+      resultBox.append(' ', project);
+    } else if (record.decision?.reason) {
+      const reason = document.createElement('span');
+      reason.textContent = `Lý do từ chối: ${record.decision.reason}`;
+      resultBox.append(' ', reason);
     }
-    const receipt = document.createElement('a');
-    receipt.href = service.receiptUrl(record.id);
-    receipt.textContent = 'Xem thông tin đăng ký';
-    resultBox.append(receipt);
   }
 
   function checkExisting() {

@@ -224,7 +224,6 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Từ chối": "Reject",
   "Duyệt đề xuất": "Approve Proposal",
   "Kết quả xử lý": "Decision",
-  "Xem kết quả ở giao diện sinh viên (demo)": "View the result in the student interface (demo)",
   "Từ chối đề xuất": "Reject Proposal",
   "Bạn muốn từ chối đề xuất này?": "Do you want to reject this proposal?",
   "Bạn muốn từ chối đề xuất": "Do you want to reject the proposal",

@@ -5,7 +5,6 @@
   const labels = { 'cho-duyet': 'Chờ duyệt', 'da-dang-ky': 'Đã đăng ký', 'da-duyet': 'Đã duyệt', 'tu-choi': 'Từ chối' };
   const owns = record => record.members.some(member => member.code === app.data.currentStudent?.code);
   const isActive = record => record.status === 'da-dang-ky' || record.status === 'da-duyet';
-  const receiptUrl = id => `chi-tiet-dang-ky-da-luu.html?registration=${encodeURIComponent(id)}`;
   const projectUrl = record => isActive(record) && owns(record)
     ? `chi-tiet-de-tai-sinh-vien.html?project=${encodeURIComponent(`DT-${record.id}`)}`
     : null;
@@ -146,12 +145,11 @@
         status: active ? 'dang-thuc-hien' : record.status,
         statusLabel: active ? 'Đang thực hiện' : labels[record.status], requestStatusLabel: labels[record.status], feedback: record.decision?.reason || '',
         createdAt: record.createdAt,
-        detailUrl: projectUrl(record) || receiptUrl(record.id),
-        requestDetailUrl: receiptUrl(record.id),
+        detailUrl: projectUrl(record) || `chi-tiet-de-tai-mo-dang-ky.html?topic=${encodeURIComponent(topic.id)}`,
       };
     });
     return [...otherTopics, ...(app.services.approvedProjects?.list('student') || []).filter(project => project.source === 'approved-registration')];
   }
 
-  app.services.registrations = { getTopic, getRules, findByTopic, findById, validateEnrollment, create, submit, listMyTopics, listForLecturer, decide, labels, owns, receiptUrl, projectUrl };
+  app.services.registrations = { getTopic, getRules, findByTopic, findById, validateEnrollment, create, submit, listMyTopics, listForLecturer, decide, labels, owns, projectUrl };
 })();

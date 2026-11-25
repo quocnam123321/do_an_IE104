@@ -68,7 +68,6 @@
     text('.request-objectives p', record.objectives);
     text('.request-outcomes p', record.outcomes);
     text('.request-attachments__file span', record.attachment);
-    document.getElementById('proposal-student-preview').href = `../sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=${encodeURIComponent(record.id)}`;
     for (const form of forms) {
       form.querySelector('strong').textContent = `${record.id} — ${record.title}`;
       form.querySelector('button[type="submit"]').disabled = busy || record.status !== 'pending';

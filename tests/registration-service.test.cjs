@@ -79,7 +79,10 @@ test('đăng ký thành công mở đề tài đang thực hiện và không t�
   assert.equal(project.requestStatusLabel, 'Đã đăng ký');
   assert.equal(team.members.length, 2);
   assert.equal(fresh.approvedProjects.list('lecturer').find(item => item.id === projectId)?.lecturerId, 'GV001');
-  assert.equal(fresh.registrations.listMyTopics().filter(item => item.requestId === record.id).length, 1);
+  const listed = fresh.registrations.listMyTopics().filter(item => item.requestId === record.id);
+  assert.equal(listed.length, 1);
+  assert.equal(listed[0].detailUrl, fresh.registrations.projectUrl(record));
+  assert.equal(listed[0].requestDetailUrl, undefined);
   assert.equal(fresh.registrations.listForLecturer().length, 0);
   assert.equal(fresh.topics.listOpenTopics().items.some(topic => topic.id === 'DT001'), false);
   await assert.rejects(fresh.registrations.decide(record.id, 'approved', '', 0), /đã được xử lý/);
@@ -97,6 +100,7 @@ test('đăng ký chờ duyệt đã lưu vẫn đọc và xử lý được cạ
   assert.equal(registrations.findById(old.id).status, 'cho-duyet');
   assert.equal(registrations.listForLecturer().find(item => item.id === old.id)?.status, 'pending');
   assert.equal(registrations.projectUrl(registrations.findById(old.id)), null);
+  assert.equal(registrations.listMyTopics().find(item => item.requestId === old.id)?.detailUrl, 'chi-tiet-de-tai-mo-dang-ky.html?topic=DT004');
   await registrations.decide(old.id, 'approved', '', 0);
   const { project } = approvedProjects.forStudent(approvedProjects.projectIdFor(old.id));
   assert.equal(project.status, 'dang-thuc-hien');

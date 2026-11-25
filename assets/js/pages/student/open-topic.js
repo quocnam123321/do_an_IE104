@@ -11,7 +11,11 @@
   try {
     const preview = location.protocol === 'file:';
     const sample = app.data.openTopics.find(item => item.id === topicId);
-    const topic = preview ? sample : service.getTopic(topicId);
+    let topic = preview ? sample : service.getTopic(topicId);
+    if (!topic && !preview) {
+      const saved = service.findByTopic(topicId);
+      if (saved && service.owns(saved)) topic = saved.topic;
+    }
     if (!topic) throw new Error('Không tìm thấy đề tài để đăng ký.');
 
     // The original DT001 page used the sample description and semester before local edits.

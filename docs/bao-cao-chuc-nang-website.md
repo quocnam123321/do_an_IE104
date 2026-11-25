@@ -65,7 +65,6 @@ Phạm vi nghiệm thu là một tài khoản sinh viên, thử cả hai vai tr�
 | `loi-moi-huong-dan.html` | Soạn lời mời hướng dẫn, kèm tài liệu và lưu trạng thái lời mời. | Lời mời và tệp dùng bộ nhớ cục bộ. Chưa xác nhận gửi thông báo thật. | Thông báo kết quả, nhắc phản hồi và quản lý lời mời trùng. |
 | `de-tai-cua-toi-sinh-vien.html` | Xem, tìm, lọc và phân trang đề tài. Xem yêu cầu và lời mời liên quan. | Trạng thái giữa các tài khoản và thiết bị chưa được xác minh. | Lọc theo học kỳ và hiển thị lịch sử trạng thái. |
 | `chi-tiet-dang-ky-va-de-xuat-sinh-vien.html` | Hiển thị đăng ký và đề xuất của sinh viên, mở nội dung và trạng thái tương ứng. | Danh sách đọc từ các kho mẫu/cục bộ. | Thêm bộ lọc theo trạng thái và thời điểm gửi. |
-| `chi-tiet-dang-ky-da-luu.html` | Đọc phiếu đăng ký đã lưu và hiển thị lại dữ liệu. | Phiếu phụ thuộc bản ghi ở trình duyệt. | Thêm mã biên nhận và lịch sử thay đổi. |
 | `chi-tiet-de-tai-cho-duyet-sinh-vien.html` | Hiển thị yêu cầu đang chờ và trạng thái xử lý theo dữ liệu hiện có. | Trạng thái được đọc từ dữ liệu cục bộ. | Hiển thị mốc xử lý và lý do khi yêu cầu cần bổ sung. |
 | `chi-tiet-de-xuat-nhom.html` | Hiển thị thông tin đề xuất nhóm qua bộ hiển thị phiếu đề xuất. | Dữ liệu nhóm và phiếu chưa có đồng bộ qua tài khoản. | Hiển thị ai đã xác nhận và phiên bản đề cương đã gửi. |
 | `chi-tiet-de-xuat-da-luu.html` | Mở lại nội dung đề xuất đã lưu, gồm thông tin và trạng thái có sẵn. | Bản lưu phụ thuộc thiết bị. | Thêm phiên bản và thao tác tiếp tục chỉnh sửa bản nháp. |

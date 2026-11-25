@@ -35,7 +35,7 @@
 
 1. [Trình biên tập đề tài](../../assets/js/pages/lecturer/topic-editor.js) đọc biểu mẫu, hiển thị lỗi theo trường rồi gọi [dịch vụ biên tập](../../assets/js/services/lecturer-topic-editor-service.js). Kho đề tài chứa bản ghi có mã và trạng thái. Dịch vụ tệp lưu dữ liệu ảnh/tài liệu theo tham chiếu.
 2. [published-topic-service.js](../../assets/js/services/published-topic-service.js) tạo dữ liệu đọc cho sinh viên. `availability` kiểm tra dữ liệu cần thiết, trạng thái, giờ mở và hạn. Trang chi tiết dùng kết quả này để quyết định có cho đăng ký hay hiển thị lý do.
-3. [registration-service.js](../../assets/js/services/registration-service.js) đọc lại đề tài ở thời điểm xác nhận và kiểm tra nhóm. Phiếu đăng ký lưu mã nghiệp vụ. [approved-project-service.js](../../assets/js/services/approved-project-service.js) cung cấp dữ liệu đề tài có thể mở từ phiếu đủ điều kiện. Khi đổi danh mục, kiểm tra cả mã trên URL và mã lưu ở các bản ghi.
+3. [registration-service.js](../../assets/js/services/registration-service.js) đọc lại đề tài ở thời điểm xác nhận, kiểm tra nhóm và lưu đăng ký. Sau khi đăng ký thành công, liên kết trong thông báo mở thẳng đề tài đang thực hiện do [approved-project-service.js](../../assets/js/services/approved-project-service.js) cung cấp. Khi đổi danh mục, kiểm tra cả mã trên URL và mã lưu ở các bản ghi.
 
 ### Lời mời và đề xuất
 
@@ -265,7 +265,7 @@ Xem nội dung khai báo hoặc cấu hình tại liên kết tệp.
 
 #### [en-student.js](../../assets/js/i18n/en-student.js)
 
-Nạp từ [chi-tiet-dang-ky-da-luu.html](../../pages/sinh-vien/chi-tiet-dang-ky-da-luu.html), [chi-tiet-dang-ky-va-de-xuat-sinh-vien.html](../../pages/sinh-vien/chi-tiet-dang-ky-va-de-xuat-sinh-vien.html), [chi-tiet-de-tai-cho-duyet-sinh-vien.html](../../pages/sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html), [chi-tiet-de-tai-gv-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-gv-mo-dang-ky.html) và 11 trang khác.
+Nạp từ [chi-tiet-dang-ky-va-de-xuat-sinh-vien.html](../../pages/sinh-vien/chi-tiet-dang-ky-va-de-xuat-sinh-vien.html), [chi-tiet-de-tai-cho-duyet-sinh-vien.html](../../pages/sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html), [chi-tiet-de-tai-gv-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-gv-mo-dang-ky.html) và 11 trang khác.
 
 Xem nội dung khai báo hoặc cấu hình tại liên kết tệp.
 
@@ -556,14 +556,6 @@ Nạp từ [chi-tiet-de-tai-gv-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-d
 **Sự kiện** `DOMContentLoaded`, `ie104:published-topics-updated`, `keydown`, `pageshow`, `storage`.
 
 **Hàm** [formatDate](../../assets/js/pages/student/published-topic.js#L17), [refresh](../../assets/js/pages/student/published-topic.js#L26).
-
-#### [registration-receipt.js](../../assets/js/pages/student/registration-receipt.js)
-
-Nạp từ [chi-tiet-dang-ky-da-luu.html](../../pages/sinh-vien/chi-tiet-dang-ky-da-luu.html).
-
-**Sự kiện** `ie104:registrations-updated`, `pageshow`, `storage`.
-
-**Hàm** [render](../../assets/js/pages/student/registration-receipt.js#L6) (dựng lại phần hiển thị).
 
 #### [requests.js](../../assets/js/pages/student/requests.js)
 
@@ -879,7 +871,7 @@ Nạp từ [chi-tiet-de-tai-dang-huong-dan-giang-vien.html](../../pages/giang-vi
 
 #### [student-topic-codes.js](../../assets/js/services/student-topic-codes.js)
 
-Nạp từ [tao-de-tai-giang-vien.html](../../pages/giang-vien/tao-de-tai-giang-vien.html), [chi-tiet-dang-ky-da-luu.html](../../pages/sinh-vien/chi-tiet-dang-ky-da-luu.html), [chi-tiet-de-tai-gv-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-gv-mo-dang-ky.html), [chi-tiet-de-tai-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-mo-dang-ky.html) và 4 trang khác.
+Nạp từ [tao-de-tai-giang-vien.html](../../pages/giang-vien/tao-de-tai-giang-vien.html), [chi-tiet-de-tai-gv-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-gv-mo-dang-ky.html), [chi-tiet-de-tai-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-mo-dang-ky.html) và 4 trang khác.
 
 **Hàm** [typeOf](../../assets/js/services/student-topic-codes.js#L19), [titleKey](../../assets/js/services/student-topic-codes.js#L24), [candidate](../../assets/js/services/student-topic-codes.js#L28), [buildCodes](../../assets/js/services/student-topic-codes.js#L34) (dựng cấu trúc đầu ra), [get](../../assets/js/services/student-topic-codes.js#L52) (tra cứu dữ liệu hoặc trạng thái).
 
@@ -995,7 +987,7 @@ Không thấy thẻ script HTML nạp trực tiếp.
 
 #### [nav-indicator.js](../../assets/js/shared/nav-indicator.js)
 
-Nạp từ [chi-tiet-dang-ky-da-luu.html](../../pages/sinh-vien/chi-tiet-dang-ky-da-luu.html), [chi-tiet-de-tai-gv-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-gv-mo-dang-ky.html), [chi-tiet-de-tai-sinh-vien.html](../../pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html), [dang-ky-de-tai.html](../../pages/sinh-vien/dang-ky-de-tai.html) và 1 trang khác.
+Nạp từ [chi-tiet-de-tai-gv-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-gv-mo-dang-ky.html), [chi-tiet-de-tai-sinh-vien.html](../../pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html), [dang-ky-de-tai.html](../../pages/sinh-vien/dang-ky-de-tai.html) và 1 trang khác.
 
 **Sự kiện** `change`, `focusin`, `focusout`, `loadingdone`, `pointerdown`, `pointerenter`, `pointerleave`, `resize`, `scroll`, `toggle`.
 
@@ -1039,7 +1031,7 @@ Xem nội dung khai báo hoặc cấu hình tại liên kết tệp.
 
 #### [student-course-label.js](../../assets/js/shared/student-course-label.js)
 
-Nạp từ [chi-tiet-loi-moi-huong-dan.html](../../pages/giang-vien/chi-tiet-loi-moi-huong-dan.html), [chi-tiet-dang-ky-da-luu.html](../../pages/sinh-vien/chi-tiet-dang-ky-da-luu.html), [chi-tiet-de-tai-cho-duyet-sinh-vien.html](../../pages/sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html), [chi-tiet-de-tai-gv-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-gv-mo-dang-ky.html) và 4 trang khác.
+Nạp từ [chi-tiet-loi-moi-huong-dan.html](../../pages/giang-vien/chi-tiet-loi-moi-huong-dan.html), [chi-tiet-de-tai-cho-duyet-sinh-vien.html](../../pages/sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html), [chi-tiet-de-tai-gv-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-gv-mo-dang-ky.html) và 4 trang khác.
 
 Xem nội dung khai báo hoặc cấu hình tại liên kết tệp.
 
@@ -1624,7 +1616,7 @@ Không thấy thẻ script HTML nạp trực tiếp.
 | [breadcrumb.css](../../assets/css/breadcrumb.css) | [chi-tiet-de-xuat-giang-vien.html](../../pages/giang-vien/chi-tiet-de-xuat-giang-vien.html), [yeu-cau-cho-duyet.html](../../pages/giang-vien/yeu-cau-cho-duyet.html), [chi-tiet-dang-ky-va-de-xuat-sinh-vien.html](../../pages/sinh-vien/chi-tiet-dang-ky-va-de-xuat-sinh-vien.html) |
 | [common.css](../../assets/css/common.css) | [index.html](../../index.html), [chi-tiet-thong-bao.html](../../pages/chung/chi-tiet-thong-bao.html), [dang-nhap.html](../../pages/chung/dang-nhap.html) và 11 trang khác |
 | [components.css](../../assets/css/components.css) | [index.html](../../index.html), [chi-tiet-thong-bao.html](../../pages/chung/chi-tiet-thong-bao.html), [dang-nhap.html](../../pages/chung/dang-nhap.html) và 36 trang khác |
-| [dang-ky-de-tai.css](../../assets/css/dang-ky-de-tai.css) | [chi-tiet-dang-ky-da-luu.html](../../pages/sinh-vien/chi-tiet-dang-ky-da-luu.html), [chi-tiet-dang-ky-va-de-xuat-sinh-vien.html](../../pages/sinh-vien/chi-tiet-dang-ky-va-de-xuat-sinh-vien.html), [chi-tiet-de-tai-gv-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-gv-mo-dang-ky.html) và 8 trang khác |
+| [dang-ky-de-tai.css](../../assets/css/dang-ky-de-tai.css) | [chi-tiet-dang-ky-va-de-xuat-sinh-vien.html](../../pages/sinh-vien/chi-tiet-dang-ky-va-de-xuat-sinh-vien.html), [chi-tiet-de-tai-gv-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-gv-mo-dang-ky.html) và 8 trang khác |
 | [de-tai-cua-toi.css](../../assets/css/de-tai-cua-toi.css) | [chi-tiet-de-tai-cho-duyet-sinh-vien.html](../../pages/sinh-vien/chi-tiet-de-tai-cho-duyet-sinh-vien.html), [de-tai-cua-toi-sinh-vien.html](../../pages/sinh-vien/de-tai-cua-toi-sinh-vien.html) |
 | [de-tai-dang-thuc-hien.css](../../assets/css/de-tai-dang-thuc-hien.css) | [chi-tiet-de-tai-sinh-vien.html](../../pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html) |
 | [deadline-calendar.css](../../assets/css/deadline-calendar.css) | [lich-han-nop.html](../../pages/sinh-vien/lich-han-nop.html) |
@@ -1675,7 +1667,7 @@ Không thấy thẻ script HTML nạp trực tiếp.
 | [tong-quan-sinh-vien.css](../../assets/css/tong-quan-sinh-vien.css) | [tong-quan-sinh-vien.html](../../pages/sinh-vien/tong-quan-sinh-vien.html) |
 | [topic-detail-boards.css](../../assets/css/topic-detail-boards.css) | [chi-tiet-de-tai-dang-huong-dan-giang-vien.html](../../pages/giang-vien/chi-tiet-de-tai-dang-huong-dan-giang-vien.html), [chi-tiet-loi-moi-huong-dan.html](../../pages/giang-vien/chi-tiet-loi-moi-huong-dan.html), [chi-tiet-de-tai-sinh-vien.html](../../pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html) |
 | [topic-detail-overview-evaluation.css](../../assets/css/topic-detail-overview-evaluation.css) | [chi-tiet-de-tai-dang-huong-dan-giang-vien.html](../../pages/giang-vien/chi-tiet-de-tai-dang-huong-dan-giang-vien.html), [chi-tiet-loi-moi-huong-dan.html](../../pages/giang-vien/chi-tiet-loi-moi-huong-dan.html), [chi-tiet-de-tai-gv-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-gv-mo-dang-ky.html) và 2 trang khác |
-| [topic-enrollment.css](../../assets/css/topic-enrollment.css) | [chi-tiet-dang-ky-da-luu.html](../../pages/sinh-vien/chi-tiet-dang-ky-da-luu.html), [chi-tiet-de-tai-gv-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-gv-mo-dang-ky.html), [chi-tiet-de-tai-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-mo-dang-ky.html) |
+| [topic-enrollment.css](../../assets/css/topic-enrollment.css) | [chi-tiet-de-tai-gv-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-gv-mo-dang-ky.html), [chi-tiet-de-tai-mo-dang-ky.html](../../pages/sinh-vien/chi-tiet-de-tai-mo-dang-ky.html) |
 | [topic-filter-panel.css](../../assets/css/topic-filter-panel.css) | [danh-sach-de-tai-da-tao.html](../../pages/giang-vien/danh-sach-de-tai-da-tao.html), [danh-sach-de-tai-dang-huong-dan.html](../../pages/giang-vien/danh-sach-de-tai-dang-huong-dan.html), [yeu-cau-cho-duyet.html](../../pages/giang-vien/yeu-cau-cho-duyet.html) và 2 trang khác |
 | [topic-media-shared.css](../../assets/css/topic-media-shared.css) | [chi-tiet-de-tai-da-tao-giang-vien.html](../../pages/giang-vien/chi-tiet-de-tai-da-tao-giang-vien.html), [chi-tiet-de-tai-dang-huong-dan-giang-vien.html](../../pages/giang-vien/chi-tiet-de-tai-dang-huong-dan-giang-vien.html), [chi-tiet-de-xuat-giang-vien.html](../../pages/giang-vien/chi-tiet-de-xuat-giang-vien.html) và 10 trang khác |
 | [uit-notice.css](../../assets/css/uit-notice.css) | [thong-bao-uit.html](../../pages/chung/thong-bao-uit.html) |

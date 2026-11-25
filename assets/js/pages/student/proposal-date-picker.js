@@ -30,6 +30,23 @@
     return Number.isFinite(date.getTime()) && inRange(date) && isoDate(date) === iso ? date : null;
   }
 
+  function formatDateInput(event) {
+    const input = event.currentTarget;
+    const value = input.value;
+    // Keep native deletions and edits within an existing date.
+    if (!event.inputType?.startsWith('insert') || event.isComposing || input.selectionStart !== value.length) return;
+    if (!/^(?:\d{2}[ /]*){0,2}\d{0,4}$/.test(value)) return;
+
+    const digits = value.replace(/[ /]/g, '');
+    const day = digits.slice(0, 2);
+    const month = digits.slice(2, 4);
+    const year = digits.slice(4);
+    let formatted = day;
+    if (day.length === 2) formatted += `/${month}`;
+    if (month.length === 2) formatted += `/${year}`;
+    if (formatted !== value) input.value = formatted;
+  }
+
   function parseTime(value) {
     const parts = /^(\d{1,2}):([0-5]\d)$/.exec(value.trim());
     return parts && Number(parts[1]) <= 23 ? `${parts[1].padStart(2, '0')}:${parts[2]}` : '';
@@ -445,7 +462,10 @@
   }
 
   form?.querySelectorAll('input[data-proposal-picker]:is([type="date"], [type="datetime-local"])')
-    .forEach(input => enhanceDate(input));
+    .forEach(input => {
+      enhanceDate(input);
+      if (form.matches('#proposal-form, #create-topic-form')) input.addEventListener('input', formatDateInput);
+    });
   app.ui.proposalDatePicker = {
     enhanceDate,
     read(input) {

@@ -62,7 +62,7 @@
           description: describe(topic.description), objectives: describe(topic.objectives), outcomes: describe(topic.outcomes),
           requirements: describe(topic.requirements),
           methodAndScope: describe(topic.methodAndScope), plan: describe(topic.plan),
-          detailUrl: studentUrl(id), requestDetailUrl: `chi-tiet-dang-ky-da-luu.html?registration=${encodeURIComponent(record.id)}`,
+          detailUrl: studentUrl(id),
         },
         team: { projectId: id, maxMembers: topic.registrationRules?.maxMembers || 3, members: clone(record.members), supervisorIds: lecturerId ? [lecturerId] : [], invitations: [] },
         progress: { projectId: id, revision: 0, tasks: [], history: [] },
