@@ -1,7 +1,6 @@
 (() => {
-  const form = document.querySelector('#proposal-form, .teacher-topic-form');
-  const app = globalThis.IE104;
-  if (!app || typeof HTMLElement.prototype.showPopover !== 'function') return;
+  if (typeof HTMLElement.prototype.showPopover !== 'function') return;
+  const app = globalThis.IE104 ||= {};
 
   let placeOpenPopup;
   window.addEventListener('resize', () => placeOpenPopup?.());
@@ -72,6 +71,7 @@
     trigger.setAttribute('aria-required', String(select.required));
     const selectedText = document.createElement('span');
     selectedText.id = `${select.id}-picker-value`;
+    if (!select.translate) selectedText.translate = false;
     trigger.append(selectedText);
     trigger.insertAdjacentHTML('beforeend', chevron);
     label.id ||= `${select.id}-label`;
@@ -82,6 +82,7 @@
     const panel = document.createElement('div');
     panel.id = `${select.id}-choices`;
     panel.className = 'proposal-picker-popup proposal-select-popup';
+    if (!select.translate) panel.translate = false;
     panel.setAttribute('role', 'listbox');
     panel.setAttribute('aria-labelledby', label.id);
     const popup = setupPopup(trigger, trigger, panel, { matchWidth: true });
@@ -210,7 +211,7 @@
     return picker;
   }
 
-  form?.querySelectorAll('select[data-proposal-picker]').forEach(enhanceSelect);
+  document.querySelectorAll('select[data-proposal-picker]').forEach(enhanceSelect);
   app.ui ||= {};
   app.ui.proposalPickers = {
     setupPopup,

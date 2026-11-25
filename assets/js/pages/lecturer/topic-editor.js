@@ -75,7 +75,7 @@
       note.id = `${field.id}-error`;
       note.className = 'topic-form__field-error';
       note.textContent = message;
-      const control = field.closest('.proposal-date-control') || field;
+      const control = field.closest('.proposal-date-control, .number-stepper') || field;
       control.after(note);
       field.setAttribute('aria-invalid', 'true');
       field.setAttribute('aria-describedby', `${field.getAttribute('aria-describedby') || ''} ${note.id}`.trim());
@@ -142,6 +142,7 @@
       detail.searchParams.set('return', listUrl);
       document.querySelectorAll('[data-topic-editor-detail]').forEach(link => { link.href = detail.href; });
     }
+    for (const input of [fields.minMembers, fields.maxMembers]) app.ui?.numberStepper?.enhance(input);
     form.querySelectorAll('[data-topic-file]').forEach(panel => {
       const purpose = panel.dataset.topicFile;
       const trigger = panel.querySelector('.topic-file-picker__trigger');

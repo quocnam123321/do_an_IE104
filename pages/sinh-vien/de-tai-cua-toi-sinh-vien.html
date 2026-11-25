@@ -12,7 +12,7 @@
     />
     <title>Đề tài của tôi | Quản lý đồ án</title>
       <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-      <script defer src="../../assets/js/i18n/en-student.js?v=20261125-filter-selection"></script>
+      <script defer src="../../assets/js/i18n/en-student.js?v=20261126-invitation-count"></script>
       <script defer src="../../assets/js/i18n/en-shared.js"></script>
       <script defer src="../../assets/js/shared/language.js"></script>
       <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
@@ -20,15 +20,15 @@
     <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-pagination" />
     <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css?v=20261125-topic-pagination" />
     <link rel="stylesheet" href="../../assets/css/de-tai-cua-toi.css?v=20261125-card-parity" />
-    <link rel="stylesheet" href="../../assets/css/student-topic-registration.css?v=20261125-topic-pagination" />
-    <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css?v=20261125-filter-selection" />
+    <link rel="stylesheet" href="../../assets/css/student-topic-registration.css?v=20261126-list-heading" />
+    <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css?v=20261126-filter-toggle" />
     <link rel="stylesheet" href="../../assets/css/supervision-invitations.css?v=20261124-adjacent-reply" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <script src="../../assets/js/supervision-entry.js?v=20261123-language" defer></script>
     <script src="../../assets/js/supervision-store.js?v=20261125-student-demo-invitations" defer></script>
     <script src="../../assets/js/detail-tabs.js" defer></script>
     <script src="../../assets/js/supervision-attachment-ui.js?v=20261124-adjacent-reply" defer></script>
-    <script src="../../assets/js/supervision-inbox.js?v=20261125-student-dashboard" defer></script>
+    <script src="../../assets/js/supervision-inbox.js?v=20261126-invitation-count" defer></script>
     <script src="../../assets/js/data/mock-data.js?v=20261124-da005" defer></script>
     <script src="../../assets/js/services/storage.js?v=20261124-demo-invitation-polish" defer></script>
 <script src="../../assets/js/services/approved-project-service.js?v=20261125-approved-overview" defer></script>
@@ -49,7 +49,9 @@
     <script src="../../assets/js/services/topic-service.js?v=20261125-student-dashboard" defer></script>
     <script src="../../assets/js/shared/course-filters.js?v=20261122-course-options" defer></script>
     <script src="../../assets/js/shared/topic-list-empty.js?v=20261122-empty-state" defer></script>
-    <script src="../../assets/js/shared/topic-list.js?v=20261123-audit-names2" defer></script>
+    <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261126-picker-parity" />
+    <script src="../../assets/js/pages/student/proposal-pickers.js?v=20261126-picker-parity" defer></script>
+    <script src="../../assets/js/shared/topic-list.js?v=20261126-picker-parity" defer></script>
     <script src="../../assets/js/data/student-projects.js" defer></script>
 <script src="../../assets/js/data/student-uit-catalog.js?v=20261124-evaluation-pdf" defer></script>
     <script src="../../assets/js/services/student-topic-codes.js?v=20261123-sv-uit-2" defer></script>
@@ -155,7 +157,6 @@
         </nav>
         <header class="page-header">
           <h1 class="page-header__title">Đề tài của tôi</h1>
-          <p class="page-header__description">Theo dõi đồ án môn học và khóa luận tốt nghiệp của bạn.</p>
         </header>
 
         <nav class="supervision-tabs" aria-label="Nội dung đề tài của tôi" data-detail-tabs>
@@ -170,7 +171,7 @@
         <div class="page-content" id="danh-sach-de-tai" data-detail-panel>
           <div class="topics-layout" id="dang-ky-va-de-xuat">
             <details class="topic-filter-panel" open>
-              <summary id="filter-title">
+              <summary>
                 <svg class="topic-filter-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
                   <path d="M3 4h18l-7 9v7l-4-2v-5L3 4Z" />
                   <g class="topic-filter-icon__selected">
@@ -178,9 +179,10 @@
                     <path d="m17.6 4 1.6 1.6 3.3-3.3" />
                   </g>
                 </svg>
-                <span class="topic-filter-panel__title">Bộ lọc</span>
+                <span id="filter-title" class="topic-filter-panel__title">Bộ lọc</span>
                 <span class="visually-hidden topic-filter-selection-label">Đã chọn tiêu chí lọc</span>
-                <svg class="topic-filter-panel__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                <span class="visually-hidden"><span class="topic-filters__hide">Ẩn</span><span class="topic-filters__show">Hiện</span></span>
+                <svg class="topic-filter-panel__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
               </summary>
               <form id="topic-filter-form" class="topic-filters" aria-labelledby="filter-title">
                 <fieldset class="topic-filters__group">

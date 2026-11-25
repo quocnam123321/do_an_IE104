@@ -1,10 +1,12 @@
 (() => {
-  const select = document.getElementById('topic-sort');
   const trigger = document.getElementById('topic-sort-trigger');
   const menu = document.getElementById('topic-sort-options');
-  if (!select || !trigger || !menu || !select.options.length) return;
+  if (!trigger || !menu) return;
 
   const sortControl = trigger.parentElement;
+  const select = sortControl.querySelector('select');
+  if (!select?.options.length) return;
+
   const currentLabel = trigger.querySelector('[data-topic-sort-value]');
   const labelOf = option => option ? globalThis.IE104Language?.optionLabel(option) ?? option.label : '';
   const items = Array.from(select.options, (option, index) => {
@@ -101,6 +103,7 @@
   window.addEventListener('scroll', positionMenu, { passive: true });
   select.addEventListener('change', syncSelection);
   select.form?.addEventListener('reset', () => setTimeout(syncSelection, 0));
+  window.addEventListener('popstate', syncSelection);
   window.addEventListener('pageshow', syncSelection);
 
   menu.append(...items);

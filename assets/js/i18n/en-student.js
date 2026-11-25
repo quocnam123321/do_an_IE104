@@ -1,7 +1,6 @@
 // English translations for student pages and workflows.
 Object.assign(globalThis.ie104English ??= {}, {
   "Tổng số đề tài": "Total topics",
-  "Phân bố trạng thái các đề tài của bạn.": "Breakdown of your topics by status.",
   "Chưa có đề tài để thống kê.": "There are no topics to show.",
   "Chưa có công việc để tính tiến độ.": "There are no tasks to calculate progress.",
   "Không đọc được tiến độ của đề tài.": "Could not load topic progress.",
@@ -93,6 +92,8 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Bỏ tệp đính kèm": "Remove attachment",
   "Bộ lọc": "Filters",
   "Đã chọn tiêu chí lọc": "Filter criteria selected",
+  "Ẩn": "Hide",
+  "Hiện": "Show",
   "Bổ sung kế hoạch thực hiện và các mốc báo cáo.": "Add a project plan and reporting milestones.",
   "Bộ tệp quá lớn để tải chung thành ZIP. Hãy tải từng tệp trong chi tiết yêu cầu.": "The files are too large to download together as a ZIP. Download them individually from the requirement details.",
   "Cá nhân": "Individual",
@@ -145,6 +146,7 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Chọn tất cả kết quả": "Select all results",
   "Chọn tệp": "Choose file",
   "Chọn tháng hợp lệ từ năm 0001 đến 9999.": "Select a valid month between years 0001 and 9999.",
+  "Chọn tháng": "Select month",
   "Chọn thành viên": "Select members",
   "Chọn trạng thái": "Select a status",
   "Chọn yêu cầu để xem thông tin đã gửi và phản hồi của giảng viên.": "Select a request to view what was submitted and the lecturer's feedback.",
@@ -379,6 +381,7 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Hạn đề tài": "Project deadline",
   "Hạn đề tài:": "Project deadline:",
   "Hạn hoàn thành": "Due date",
+  "Mở lịch: Hạn hoàn thành": "Open calendar: Due date",
   "Hạn hoàn thành dự kiến: 15/11/2026": "Expected due date: 15/11/2026",
   "Hạn hoàn thành:": "Due date:",
   "Hạn nộp": "Due date",
@@ -728,7 +731,6 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Tìm kiếm theo tên hoặc mã đề tài": "Search by topic name or code",
   "Tìm kiếm và chọn giảng viên cho đề tài của tôi": "Find and select a lecturer for My Topics",
   "Tìm kiếm và chọn giảng viên cho đề tài mở đăng ký": "Find and select a lecturer for open topics",
-  "Tìm kiếm và xem các đề tài đang mở đăng ký.": "Find and view topics open for registration.",
   "Tìm theo tên hoặc bộ môn...": "Search by name or department...",
   "Tìm theo tên hoặc mã đề tài": "Search by topic name or code",
   "Tìm theo tên mốc hoặc đề tài": "Search by milestone or topic name",
@@ -889,6 +891,7 @@ globalThis.ie104EnglishPatterns.push(
     return (months[Number(month) - 1] ?? month) + ' ' + year + (source.includes('UTC+7') ? ' - Vietnam time (UTC+7)' : '');
   }],
   [/^Tháng (\d+)$/, (_, month) => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][Number(month) - 1] ?? 'Month ' + month],
+  [/^Năm (\d{1,4})$/, 'Year $1'],
   [/^(\d+) mốc trong tháng\.(?: (.*))?$/, (_, count, trailing) => count + (count === '1' ? ' milestone this month.' : ' milestones this month.') + (trailing ? ' ' + (globalThis.ie104English[trailing] ?? trailing) : '')]
 );
 
@@ -1081,7 +1084,7 @@ globalThis.ie104EnglishPatterns.push(
   [/^Trang (\d+)$/, 'Page $1'],
   [/^(\d+) lời mời đang chờ giảng viên phản hồi trong bản demo\.$/, '$1 invitations are awaiting a lecturer’s reply in the demo.'],
   [/^(\d+) lời mời đang chờ trả lời$/, '$1 invitations awaiting reply'],
-  [/^(\d+) phản hồi chưa đọc$/, '$1 unread replies'],
+  [/^(\d+) lời mời đang chờ quyết định$/, (_, count) => `${count} invitation${count === '1' ? '' : 's'} awaiting a decision`],
   [/^(\d+) chưa đọc$/, '$1 unread'],
   [/^Sinh viên (\p{Lu}[\p{L}\p{M} .]+(?: \(\w+\))?)$/u, 'Student: $1'],
   [/^Giảng viên (\p{Lu}[\p{L}\p{M} .]+)$/u, 'Lecturer: $1'],
@@ -1120,6 +1123,10 @@ Object.assign(globalThis.ie104English, {
   "Tải xuống": "Download",
   "Xem bài đã nộp": "View submission",
   "Không có mốc nào cho tháng và đề tài đang chọn.": "No milestones for the selected month and topic.",
+  "Tải tệp .ics": "Download .ics file",
+  "Tải tệp .ics để nhập các mốc đã chọn vào Google Calendar.": "Download the .ics file to import the selected milestones into Google Calendar.",
+  "Trên máy tính, mở Google Calendar → Cài đặt → Nhập và xuất để nhập tệp .ics vừa tải.": "On a computer, open Google Calendar → Settings → Import & export to import the downloaded .ics file.",
+  "Không tải được tệp lịch. Vui lòng thử lại.": "Could not download the calendar file. Try again.",
   "Mở website qua HTTP hoặc HTTPS để sử dụng Google Calendar.": "Open the website over HTTP or HTTPS to use Google Calendar.",
   "Đang gửi các mốc đã chọn đến Google Calendar…": "Sending selected milestones to Google Calendar…",
   "Đang mở trang xác nhận quyền của Google…": "Opening the Google permissions page…",

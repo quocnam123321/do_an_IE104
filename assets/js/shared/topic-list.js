@@ -12,6 +12,7 @@
     if (!form || !search || !lecturer || !list?.firstElementChild || !pagination || typeof config.query !== 'function') return;
     if (form.dataset.topicsInitialized === 'true') return;
 
+    const lecturerPicker = app.ui.proposalPickers?.enhanceSelect(lecturer);
     const cardTemplate = list.firstElementChild.cloneNode(true);
     const pager = pagination.querySelector('.pagination__list');
     const summary = document.createElement('p');
@@ -79,6 +80,7 @@
 
     function render(options = {}) {
       refreshLecturers();
+      lecturerPicker?.sync();
       const result = config.query(readFilters(), { page, pageSize: 5 });
       app.ui.renderCourseFilters(form, result.courseOptions);
       page = result.page;

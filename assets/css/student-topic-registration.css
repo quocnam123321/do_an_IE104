@@ -1,7 +1,7 @@
 /* Danh sách sinh viên: Đăng ký đề tài và Đề tài của tôi dùng chung bố cục/thẻ.
    Hai trang danh sách nạp file; không thay form tạo đề xuất hay trang chi tiết. */
 :is(.student-topic-registration-page, .student-my-topics-list-page) .breadcrumb + .page-header {
-  margin-block-start: var(--space-3);
+  margin-block: var(--space-3) var(--space-4);
 }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-results-summary { margin: 0; color: var(--color-muted-foreground); font-size: var(--font-size-secondary); }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .registration-heading {
@@ -10,7 +10,7 @@
   justify-content: space-between;
   gap: var(--space-6);
 }
-:is(.student-topic-registration-page, .student-my-topics-list-page) .registration-heading__copy { min-width: 0; }
+:is(.student-topic-registration-page, .student-my-topics-list-page) .registration-heading > h1 { min-width: 0; }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .main-content a.topics__create-proposal {
   flex-shrink: 0;
   min-height: var(--control-min-height);
@@ -302,7 +302,8 @@
   }
 }
 @media (width < 48rem) {
-  :is(.student-topic-registration-page, .student-my-topics-list-page) .registration-heading { align-items: flex-start; flex-direction: column; gap: var(--space-4); }
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .breadcrumb + .page-header { margin-block-end: var(--space-3); }
+  :is(.student-topic-registration-page, .student-my-topics-list-page) .registration-heading { align-items: flex-start; flex-direction: column; gap: var(--space-3); }
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-search { grid-template-columns: minmax(0, 1fr); }
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters { grid-template-columns: minmax(0, 1fr); }
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__group + .topic-filters__group,

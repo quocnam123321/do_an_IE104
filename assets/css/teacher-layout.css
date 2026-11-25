@@ -1,7 +1,7 @@
 /* Khôi phục khung hai trang giảng viên từ stash sau khi pull.
    Nạp sau components.css và trước CSS riêng của trang.
-   Tất cả quy tắc giới hạn trong .teacher-workspace-page; CSS chung mới
-   và các trang của nhóm tiếp tục hoạt động với cấu trúc hiện tại. */
+   Các quy tắc khung áp dụng cho .teacher-workspace-page, với khoảng cách
+   và tiêu đề dùng chung cho trang Tổng quan giảng viên. */
 
 /* Xóa các thuộc tính dành cho cấu trúc header/footer khác của nhóm
    trước khi áp lại khung giảng viên đã duyệt ở bên dưới. */
@@ -30,8 +30,6 @@
 :where(.teacher-workspace-page) .main-nav__sublist { right: auto; }
 :where(.teacher-workspace-page) .account-menu { margin-inline-start: 0; }
 :where(.teacher-workspace-page) .account-menu__list { width: auto; }
-:where(.teacher-workspace-page) .breadcrumb__item + .breadcrumb__item::before { margin-right: 0; }
-:where(.teacher-workspace-page) .page-header { margin-top: 0; }
 /* ==========================================================================
    BASE — Thiết lập nền tảng, typography gốc, trợ năng và bề mặt trình duyệt
    ========================================================================== */
@@ -198,9 +196,13 @@ body:where(.teacher-workspace-page) {
 /* --------------------------------------------------------------------------
    1. CONTAINER CHUNG
    -------------------------------------------------------------------------- */
+:where(.teacher-workspace-page, .lecturer-overview-page) .main-content {
+  padding-block-start: var(--space-6);
+}
+
 :where(.teacher-workspace-page) .main-content {
   flex: 1 0 auto;
-  padding-block: var(--space-6) var(--space-12);
+  padding-block-end: var(--space-12);
 }
 
 :where(.teacher-workspace-page) .main-content:focus {
@@ -221,8 +223,12 @@ body:where(.teacher-workspace-page) {
 }
 
 @media (max-width: 47.99875rem) {
+  :where(.teacher-workspace-page, .lecturer-overview-page) .main-content {
+    padding-block-start: var(--space-4);
+  }
+
   :where(.teacher-workspace-page) .main-content {
-    padding-block: var(--space-4) var(--space-8);
+    padding-block-end: var(--space-8);
   }
 
   :where(.teacher-workspace-page) .site-header__inner {
@@ -749,11 +755,11 @@ body:where(.teacher-workspace-page) {
 /* --------------------------------------------------------------------------
    4. BREADCRUMB & PAGE HEADER
    -------------------------------------------------------------------------- */
-:where(.teacher-workspace-page) .breadcrumb {
+:where(.teacher-workspace-page, .lecturer-overview-page) .breadcrumb {
   margin-bottom: var(--space-3);
 }
 
-:where(.teacher-workspace-page) .breadcrumb__list {
+:where(.teacher-workspace-page, .lecturer-overview-page) .breadcrumb__list {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -764,14 +770,15 @@ body:where(.teacher-workspace-page) {
   color: var(--color-muted-foreground);
 }
 
-:where(.teacher-workspace-page) .breadcrumb__item {
+:where(.teacher-workspace-page, .lecturer-overview-page) .breadcrumb__item {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
 }
 
-:where(.teacher-workspace-page) .breadcrumb__item + .breadcrumb__item::before {
+:where(.teacher-workspace-page, .lecturer-overview-page) .breadcrumb__item + .breadcrumb__item::before {
   content: "/";
+  margin-right: 0;
   color: var(--color-muted-foreground);
 }
 
@@ -786,13 +793,13 @@ body:where(.teacher-workspace-page) {
   text-decoration: underline;
 }
 
-:where(.teacher-workspace-page) .breadcrumb__item [aria-current="page"] {
+:where(.teacher-workspace-page, .lecturer-overview-page) .breadcrumb__item [aria-current="page"] {
   color: var(--color-muted-foreground);
   font-weight: var(--weight-medium);
 }
 
 /* Đầu trang nội dung: Tiêu đề bên trái, nút hành động bên phải */
-:where(.teacher-workspace-page) .page-header {
+:where(.teacher-workspace-page, .lecturer-overview-page) .page-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas:
@@ -800,13 +807,14 @@ body:where(.teacher-workspace-page) {
   align-items: center;
   column-gap: var(--space-6);
   row-gap: var(--space-2);
-  margin-bottom: var(--page-heading-gap);
+  margin-block: 0 var(--page-heading-gap);
 }
 
-:where(.teacher-workspace-page) .page-header__title {
+:where(.teacher-workspace-page, .lecturer-overview-page) .page-header__title {
   grid-area: title;
   font-size: var(--text-3xl); /* 28px trên máy tính */
   font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
   letter-spacing: var(--tracking-tight);
   color: var(--color-heading);
 }
@@ -849,8 +857,18 @@ body:where(.teacher-workspace-page) {
   color: var(--color-primary-active);
 }
 
+@media (min-width: 48rem) {
+  :where(.teacher-topic-list-page, .lecturer-overview-page) .page-header {
+    min-block-size: var(--control-min-height);
+  }
+
+  :where(.teacher-topic-list-page) .page-header__action {
+    padding-block: var(--space-2);
+  }
+}
+
 @media (max-width: 47.99875rem) {
-  :where(.teacher-workspace-page) .page-header {
+  :where(.teacher-workspace-page, .lecturer-overview-page) .page-header {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas: "title";
     row-gap: var(--space-2);
@@ -861,7 +879,7 @@ body:where(.teacher-workspace-page) {
     grid-template-areas: "title" "action";
   }
 
-  :where(.teacher-workspace-page) .page-header__title {
+  :where(.teacher-workspace-page, .lecturer-overview-page) .page-header__title {
     font-size: var(--text-2xl); /* 24px trên điện thoại */
   }
 
@@ -877,6 +895,10 @@ body:where(.teacher-workspace-page) {
 :where(.teacher-workspace-page) .topic-tabs {
   margin-bottom: var(--space-6);
   border-bottom: 1px solid var(--color-border);
+}
+
+.teacher-topic-list-page .main-content :is(.topic-tabs, .supervision-tabs) .topic-tabs__link {
+  min-block-size: 3.25rem;
 }
 
 :where(.teacher-workspace-page) .topic-tabs__list {

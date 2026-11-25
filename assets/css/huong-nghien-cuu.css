@@ -167,8 +167,7 @@
   padding: 0.6875rem 1rem 0.6875rem 2.75rem;
 }
 
-.common-page .research-toolbar .research-search input[type="search"]:hover,
-.common-page .research-toolbar .research-select-wrap select:not([multiple]):hover {
+.common-page .research-toolbar .research-search input[type="search"]:hover {
   border-color: var(--color-primary);
 }
 

@@ -1,7 +1,11 @@
 (() => {
   const app = globalThis.IE104;
   const ui = app?.ui?.lecturerWorkspace;
-  if (!ui) return;
+  const stepper = app?.ui?.numberStepper;
+  if (!ui) {
+    document.querySelectorAll('#evaluation-section input[type="number"]').forEach(input => stepper?.enhance(input));
+    return;
+  }
   const { el, button, field, modal, service } = ui;
   const template = document.getElementById('ket-qua-danh-gia').cloneNode(true);
   const panel = ui.region('evaluation-section', 'ket-qua-danh-gia');
@@ -114,6 +118,7 @@
       row.append(title, el('td', description || 'Chưa có mô tả'), el('td', `${criterion.weight}%`), fields);
       body.append(row);
     });
+    body.querySelectorAll('input[type="number"]').forEach(input => stepper?.enhance(input));
     const total = form.querySelector('#total-score');
     total.removeAttribute('for');
     if (!readOnly) total.setAttribute('for', criteria.map(criterion => `teaching-score-${criterion.id}`).join(' '));
