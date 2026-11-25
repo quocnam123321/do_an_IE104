@@ -9,26 +9,27 @@ export const recoveryEndpoint = useRecoveryEmulator
 
 const clients = new Map();
 
-export function getFirebaseAuth(emulator = false) {
-  if (!clients.has(emulator)) {
+export function getFirebaseAuth(emulator = false, role) {
+  const appName = (emulator ? localProject : "ie104") + (role ? "-website-" + role : "");
+  if (!clients.has(appName)) {
     const client = Promise.all([
       import("https://www.gstatic.com/firebasejs/13.3.0/firebase-app.js"),
       import("https://www.gstatic.com/firebasejs/13.3.0/firebase-auth.js"),
     ]).then(([appSdk, sdk]) => {
       const config = emulator ? { apiKey: "demo-key", projectId: localProject } : firebaseConfig;
-      const app = appSdk.initializeApp(config, emulator ? localProject : "[DEFAULT]");
+      const app = appSdk.initializeApp(config, role || emulator ? appName : "[DEFAULT]");
       const auth = sdk.initializeAuth(app, {
-        persistence: sdk.browserSessionPersistence,
+        persistence: role ? sdk.browserLocalPersistence : sdk.browserSessionPersistence,
         popupRedirectResolver: sdk.browserPopupRedirectResolver,
       });
       if (emulator) sdk.connectAuthEmulator(auth, "http://127.0.0.1:9099", { disableWarnings: true });
       auth.languageCode = "vi";
       return { auth, sdk };
     }).catch((error) => {
-      clients.delete(emulator);
+      clients.delete(appName);
       throw error;
     });
-    clients.set(emulator, client);
+    clients.set(appName, client);
   }
-  return clients.get(emulator);
+  return clients.get(appName);
 }

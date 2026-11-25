@@ -1,4 +1,4 @@
-import { getWebsiteSession, hasStoredWebsiteSession } from "../website-session.js";
+import { getWebsiteSession, hasStoredWebsiteSession, roleSessionPrefix } from "../website-session.js";
 import "./logout.js?v=20261125-direct-logout";
 
 const login = document.querySelector(".site-header__inner > .site-header__login");
@@ -107,8 +107,8 @@ if (login) {
       login.hidden = false;
       if (account) {
         const dialog = document.getElementById("logout-dialog");
-        const restoreFocus = account.contains(document.activeElement) || dialog.open;
-        if (dialog.open) dialog.close();
+        const restoreFocus = account.contains(document.activeElement) || dialog?.open;
+        if (dialog?.open) dialog.close();
         account.querySelector("details").open = false;
         account.hidden = true;
         if (restoreFocus) login.focus();
@@ -121,5 +121,10 @@ if (login) {
   void refreshAccount();
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) void refreshAccount();
+  });
+  window.addEventListener("storage", (event) => {
+    if (event.storageArea === localStorage && (event.key === null || event.key.startsWith(roleSessionPrefix))) {
+      void refreshAccount();
+    }
   });
 }

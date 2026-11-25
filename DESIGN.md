@@ -474,6 +474,7 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 
 - Khung menu avatar tự ôm nội dung, không giữ chiều rộng cố định 16rem; đệm 8px, khoảng cách hai mục 4px. Giữ vùng bấm tối thiểu 44px và màu/font dùng chung; áp dụng cả SV, GV và menu tài khoản ở trang công khai.
 - Bấm Đăng xuất thực hiện ngay, không mở hộp thoại xác nhận. Trong khi xử lý, các nút đăng xuất bị khóa và hiện “Đang đăng xuất…”. Chỉ chuyển về đăng nhập sau khi xử lý đăng xuất hoàn tất; lỗi được thông báo để thử lại, không báo thành công giả.
+- Khi mở liên kết nội bộ ở tab khác cùng địa chỉ web, trang dùng phiên của vai trò tương ứng. Đăng xuất kết thúc phiên của vai trò đang dùng trên các tab.
 
 ## Footer dùng chung
 

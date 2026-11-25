@@ -46,7 +46,7 @@
       const role = await getWebsiteRole(user);
       const destination = roleDestinations.get(role);
       if (!destination) throw new Error("Tài khoản chưa được cấp quyền truy cập website.");
-      setFirebaseSession(useRecoveryEmulator);
+      await setFirebaseSession(role, user, useRecoveryEmulator);
       return { role, destination };
     } catch (failure) {
       await sdk.signOut(auth);

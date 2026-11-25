@@ -1,23 +1,33 @@
 import { getFirebaseAuth, useRecoveryEmulator } from "./firebase-client.js?v=20261119-otp";
 
-const sessionKey = "ie104.website.session.v1";
+const tabRoleKey = "ie104.website.role.v2";
+export const roleSessionPrefix = "ie104.website.session.v2.";
 const roles = ["student", "lecturer"];
 const uitRoles = new Map([["gm.uit.edu.vn", "student"], ["uit.edu.vn", "lecturer"]]);
 
+export function websitePageRole() {
+  if (/\/pages\/sinh-vien\//.test(location.pathname)) return "student";
+  if (/\/pages\/giang-vien\//.test(location.pathname)) return "lecturer";
+  return undefined;
+}
+
+function remember(role, mode) {
+  localStorage.setItem(roleSessionPrefix + role, mode);
+  sessionStorage.setItem(tabRoleKey, role);
+}
+
 export function setDemoRole(role) {
-  if (roles.includes(role)) sessionStorage.setItem(sessionKey, role);
+  if (roles.includes(role)) remember(role, "demo");
 }
 
-export function setFirebaseSession(emulator = false) {
-  sessionStorage.setItem(sessionKey, emulator ? "emulator" : "firebase");
-}
-
-export function clearWebsiteSession() {
-  sessionStorage.removeItem(sessionKey);
+export async function setFirebaseSession(role, user, emulator = false) {
+  const { auth, sdk } = await getFirebaseAuth(emulator, role);
+  await sdk.updateCurrentUser(auth, user);
+  remember(role, emulator ? "emulator" : "firebase");
 }
 
 export function hasStoredWebsiteSession() {
-  return sessionStorage.getItem(sessionKey) !== null;
+  return roles.some(role => localStorage.getItem(roleSessionPrefix + role) !== null);
 }
 
 export async function getWebsiteRole(user) {
@@ -30,26 +40,46 @@ export async function getWebsiteRole(user) {
   return roles.includes(claims.ie104Role) ? claims.ie104Role : undefined;
 }
 
-async function readFirebaseSession(emulator) {
-  const { auth } = await getFirebaseAuth(emulator);
+async function readRole(role) {
+  const mode = localStorage.getItem(roleSessionPrefix + role);
+  if (mode === "demo") return { role, user: null };
+  if (mode !== "firebase" && mode !== "emulator") return null;
+  const { auth } = await getFirebaseAuth(mode === "emulator", role);
   await auth.authStateReady();
   const user = auth.currentUser;
-  const role = user && await getWebsiteRole(user);
-  return role ? { role, user } : null;
+  if (!user || await getWebsiteRole(user) !== role) return null;
+  return localStorage.getItem(roleSessionPrefix + role) === mode ? { role, user } : null;
 }
 
-export async function getWebsiteSession() {
-  const signedInWith = sessionStorage.getItem(sessionKey);
-  if (roles.includes(signedInWith)) return { role: signedInWith, user: null };
+export async function getWebsiteSession(role = websitePageRole()) {
   if (location.protocol === "file:") return null;
-  if (!useRecoveryEmulator || signedInWith === "firebase") return readFirebaseSession(false);
-  if (signedInWith === "emulator") return readFirebaseSession(true);
-
-  // Tab mở trước khi dùng chung luồng đăng nhập có thể đã có phiên ở một trong hai Firebase client.
-  const sessions = await Promise.allSettled([readFirebaseSession(true), readFirebaseSession(false)]);
-  const session = sessions.find((result) => result.status === "fulfilled" && result.value);
-  if (session) return session.value;
-  const failure = sessions.find((result) => result.status === "rejected");
-  if (failure) throw failure.reason;
+  if (roles.includes(role)) {
+    const session = await readRole(role);
+    if (session) sessionStorage.setItem(tabRoleKey, role);
+    return session;
+  }
+  const preferred = sessionStorage.getItem(tabRoleKey);
+  const ordered = roles.includes(preferred) ? [preferred, ...roles.filter(role => role !== preferred)] : roles;
+  for (const candidate of ordered) {
+    const session = await readRole(candidate);
+    if (session) return session;
+  }
   return null;
+}
+
+export async function signOutWebsite() {
+  const role = websitePageRole() ?? (await getWebsiteSession())?.role;
+  const mode = role && localStorage.getItem(roleSessionPrefix + role);
+  if (mode === "firebase" || mode === "emulator") {
+    const { auth, sdk } = await getFirebaseAuth(mode === "emulator", role);
+    await sdk.signOut(auth);
+  }
+  if (role) localStorage.removeItem(roleSessionPrefix + role);
+  sessionStorage.removeItem(tabRoleKey);
+  // Dọn phiên Firebase phụ dùng cho lịch và các phiên cũ trong tab.
+  const clients = useRecoveryEmulator ? [false, true] : [false];
+  await Promise.allSettled(clients.map(async emulator => {
+    const { auth, sdk } = await getFirebaseAuth(emulator);
+    await sdk.signOut(auth);
+  }));
 }

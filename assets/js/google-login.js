@@ -50,7 +50,7 @@
           return;
         }
 
-        setFirebaseSession();
+        await setFirebaseSession(role, user);
         const invitation = window.IE104SupervisionLogin;
         const next = invitation ? invitation.destinationFor(role) : destination;
         if (next) window.location.assign(next);

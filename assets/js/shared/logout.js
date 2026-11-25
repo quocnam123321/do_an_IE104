@@ -2,6 +2,7 @@
   "use strict";
 
   const boundButtons = new WeakSet();
+  const roleSessionPrefix = "ie104.website.session.v2.";
 
   function guardRolePage(loginPage) {
     const role = /\/pages\/(sinh-vien|giang-vien)\//.exec(location.pathname)?.[1];
@@ -17,12 +18,11 @@
       let session;
       try {
         // Phiên đã được ghi nhận khi đăng nhập có thể giữ giao diện trong lúc xác minh.
-        const storedSession = sessionStorage.getItem("ie104.website.session.v1");
-        if (storedSession !== expectedRole && storedSession !== "firebase" && storedSession !== "emulator") {
+        if (!localStorage.getItem(roleSessionPrefix + expectedRole)) {
           page.style.visibility = "hidden";
         }
         const { getWebsiteSession } = await import("../website-session.js");
-        session = await getWebsiteSession();
+        session = await getWebsiteSession(expectedRole);
       } catch {
         // Khi phiên không xác minh được, yêu cầu đăng nhập lại.
       }
@@ -37,6 +37,11 @@
     window.addEventListener("pagehide", () => { checkVersion += 1; });
     window.addEventListener("pageshow", (event) => {
       if (event.persisted) checkSession();
+    });
+    window.addEventListener("storage", (event) => {
+      if (event.storageArea === localStorage && (event.key === roleSessionPrefix + expectedRole || event.key === null)) {
+        checkSession();
+      }
     });
     checkSession();
   }
@@ -82,15 +87,8 @@
 
         try {
           if (location.protocol !== "file:") {
-            const { getFirebaseAuth, useRecoveryEmulator } = await import("../firebase-client.js?v=20261119-otp");
-            const { clearWebsiteSession } = await import("../website-session.js");
-            // Giữ xử lý đăng xuất Firebase cho cả client mặc định và emulator.
-            const clients = useRecoveryEmulator ? [false, true] : [false];
-            await Promise.all(clients.map(async (emulator) => {
-              const { auth, sdk } = await getFirebaseAuth(emulator);
-              await sdk.signOut(auth);
-            }));
-            clearWebsiteSession();
+            const { signOutWebsite } = await import("../website-session.js");
+            await signOutWebsite();
           }
           sessionStorage.removeItem("ie104-calendar-selection");
           location.replace(loginPage.href);

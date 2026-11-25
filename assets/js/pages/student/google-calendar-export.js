@@ -1,4 +1,5 @@
 import { getFirebaseAuth } from "../../firebase-client.js?v=20261119-otp";
+import { getWebsiteSession } from "../../website-session.js";
 import { addCalendarEvents, calendarMessage, calendarRequest } from "../../calendar-client.js";
 
 const dialog = document.getElementById("calendar-export");
@@ -111,7 +112,7 @@ async function loadPicker(selected) {
     }
     client = await getFirebaseAuth();
     await client.auth.authStateReady();
-    user = client.auth.currentUser;
+    user = (await getWebsiteSession("student"))?.user || client.auth.currentUser;
     login.hidden = isUitStudent(user);
     if (login.hidden) await loadEvents(selected);
     else feedback.textContent = "Đăng nhập bằng email sinh viên @gm.uit.edu.vn để chọn mốc.";
