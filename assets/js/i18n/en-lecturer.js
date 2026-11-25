@@ -414,7 +414,6 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Đang hướng dẫn": "Under Supervision",
   "Yêu cầu chờ xử lý": "Open Requests",
   "Trạng thái đề tài": "Topic Status",
-  "Phân bố trạng thái các đề tài bạn quản lý và hướng dẫn.": "Status breakdown for the topics you manage and supervise.",
   "Hoàn thành": "Completed",
   "Tiến độ đề tài đang hướng dẫn": "Supervised Topic Progress",
   "Xem tất cả": "View All",

@@ -604,6 +604,10 @@
   border-spacing: 0;
 }
 
+#evaluation-section .evaluation-criteria__table:has(.number-stepper) {
+  min-width: 58rem;
+}
+
 #evaluation-section .evaluation-criteria__table :is(th, td) {
   padding: var(--space-4);
   overflow-wrap: anywhere;
@@ -636,11 +640,23 @@
   font-variant-numeric: tabular-nums;
 }
 
+#evaluation-section .evaluation-criteria__table:has(.number-stepper) thead th:nth-child(2) {
+  width: auto;
+}
+
+#evaluation-section .evaluation-criteria__table:has(.number-stepper) thead th:last-child {
+  width: max(12.5rem, 17%);
+}
+
+#evaluation-section .evaluation-criteria__table td:has(.number-stepper) {
+  padding-inline: var(--space-2);
+}
+
 #evaluation-section .evaluation-criteria__table tbody tr:last-child > * {
   border-bottom: 0;
 }
 
-#evaluation-section :is(input[type="number"], textarea) {
+#evaluation-section :is(input[type="number"], textarea):not(:where(.number-stepper > input)) {
   width: 100%;
   min-width: 0;
   min-height: var(--control-min-height);
@@ -652,19 +668,21 @@
   font: inherit;
 }
 
-#evaluation-section input[type="number"] {
+#evaluation-section :is(input[type="number"], .number-stepper) {
   max-width: 11rem;
   text-align: center;
 }
+#evaluation-section .number-stepper { margin-inline: auto; }
 #evaluation-section input[type="number"]::placeholder { font-size: var(--text-sm); }
+#evaluation-section .number-stepper > input::placeholder { font-size: var(--text-xs); }
 
-#evaluation-section :is(input[type="number"], textarea):focus-visible {
+#evaluation-section :is(input[type="number"], textarea):focus-visible:not(:where(.number-stepper > input)) {
   border-color: var(--color-primary);
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
-#evaluation-section input[type="number"]:user-invalid {
+#evaluation-section input[type="number"]:user-invalid:not(:where(.number-stepper > input)) {
   border-color: var(--color-danger-fg);
   border-style: dashed;
 }

@@ -15,8 +15,8 @@
   <link href="../../assets/css/base.css?v=20261123-language" rel="stylesheet">
   <link href="../../assets/css/components.css?v=20261125-account-pagination" rel="stylesheet">
   <link href="../../assets/css/breadcrumb.css" rel="stylesheet">
-  <link href="../../assets/css/teacher-layout.css?v=20261125-topic-pagination" rel="stylesheet">
-  <link href="../../assets/css/teacher-supervised-topics.css?v=20261030-tabs-2" rel="stylesheet">
+  <link href="../../assets/css/teacher-layout.css?v=20261126-lecturer-heading" rel="stylesheet">
+  <link href="../../assets/css/teacher-supervised-topics.css?v=20261126-lecturer-heading" rel="stylesheet">
   <link href="../../assets/css/teacher-pending-proposals.css?v=20261125-pending-only" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css?v=20261125-filter-selection">
    <script src="../../assets/js/nav-indicator.js" defer=""></script>
@@ -45,12 +45,15 @@
     <script src="../../assets/js/services/proposal-file-service.js" defer></script>
     <script src="../../assets/js/shared/proposal-cover.js" defer></script>
     <script src="../../assets/js/pending-proposals.js?v=20261125-pending-topic-codes" defer></script>
+    <script src="../../assets/js/pages/lecturer/topic-sort.js?v=20261126-pending-sort" defer></script>
     <link rel="stylesheet" href="../../assets/css/supervision-invitations.css?v=20261124-adjacent-reply">
+    <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261126-picker-parity">
     <script src="../../assets/js/supervision-store.js?v=20261125-student-demo-invitations" defer></script>
     <script src="../../assets/js/supervision-entry.js?v=20261124-inbox-recipient" defer></script>
     <script src="../../assets/js/detail-tabs.js" defer></script>
     <script src="../../assets/js/supervision-attachment-ui.js?v=20261124-adjacent-reply" defer></script>
-    <script src="../../assets/js/supervision-inbox.js?v=20261125-demo-invitations" defer></script>
+    <script src="../../assets/js/pages/student/proposal-pickers.js?v=20261126-picker-parity" defer></script>
+    <script src="../../assets/js/supervision-inbox.js?v=20261126-picker-parity" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
   <script src="../../assets/js/services/project-team-service.js?v=20261124-multiple-supervisors" defer></script>
@@ -289,7 +292,7 @@
     </nav>
     <div data-detail-panels>
     <div class="page-content pending-proposals-layout topic-list-layout" id="de-xuat-cho-duyet" data-detail-panel>
-     <aside aria-labelledby="proposal-filters-title" class="proposal-filters topic-filters">
+     <aside aria-labelledby="proposal-filters-title" class="proposal-filters topic-filters topic-filters--toggleable">
       <!-- Các nhóm lọc kết hợp với tìm kiếm, sắp xếp và phân trang. -->
       <details class="topic-filters__disclosure" open="">
        <summary class="topic-filters__summary">
@@ -304,6 +307,7 @@
          Bộ lọc
         </h2>
         <span class="visually-hidden topic-filter-selection-label">Đã chọn tiêu chí lọc</span>
+        <span class="visually-hidden"><span class="topic-filters__hide">Ẩn</span><span class="topic-filters__show">Hiện</span></span>
         <svg aria-hidden="true" class="topic-filters__chevron" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
          <path d="m6 9 6 6 6-6">
          </path>
@@ -375,20 +379,19 @@
          Sắp xếp
         </label>
         <select form="proposal-filter-form" id="proposal-sort" name="proposal_sort">
-         <option value="newest">
-          Sắp xếp: Mới nhất
-         </option>
-         <option selected="" value="oldest">
-          Sắp xếp: Cũ nhất
-         </option>
-         <option value="name-asc">
-          Sắp xếp: Tên A–Z
-         </option>
+         <option value="newest">Mới nhất</option>
+         <option selected value="oldest">Cũ nhất</option>
+         <option value="name-asc">Tên A–Z</option>
         </select>
+        <button class="topic-sort-trigger" type="button" id="topic-sort-trigger"
+                aria-haspopup="menu" aria-expanded="false" aria-controls="topic-sort-options" hidden>
+         Sắp xếp: <span data-topic-sort-value></span>
+        </button>
         <svg aria-hidden="true" class="topic-toolbar__sort-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
          <path d="m6 9 6 6 6-6">
          </path>
         </svg>
+        <div class="topic-sort-options" id="topic-sort-options" role="menu" aria-labelledby="topic-sort-trigger" hidden></div>
        </div>
       </div>
       <div class="topic-results__header">

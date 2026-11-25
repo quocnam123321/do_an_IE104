@@ -189,9 +189,14 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 
 ### Trạng thái bộ lọc
 
+- Bộ lọc trên các trang danh sách của sinh viên và giảng viên mặc định mở. Mũi tên xanh ở mép phải hướng lên khi mở và hướng xuống khi thu gọn, trên cả máy tính và điện thoại. Có thể bấm hoặc dùng bàn phím trên cả hàng tiêu đề cao tối thiểu 44px.
 - Các danh sách của sinh viên và giảng viên dùng cùng biểu tượng phễu cạnh tiêu đề “Bộ lọc”. Khi có ít nhất một ô tiêu chí được tích, hiện dấu tick ở góc trên bên phải phễu. Vòng tròn dùng màu chính, dấu tick dùng màu chữ trên nền chính và viền mảnh lấy màu nền trang.
 - Dấu tick vẫn hiển thị khi thu gọn. Bỏ tích tiêu chí cuối cùng hoặc xóa bộ lọc sẽ ẩn dấu tick. Tiêu đề giữ nguyên khi đổi cách sắp xếp. Trình đọc màn hình có nhãn “Đã chọn tiêu chí lọc” khi dấu tick xuất hiện.
 - Bộ lọc Trạng thái ở Đề tài đã tạo tập trung vào tình trạng nhận đăng ký, với hai lựa chọn “Đang mở đăng ký” và “Đã đóng đăng ký”. Giảng viên theo dõi các nhóm trong tab Đề tài hướng dẫn.
+- Thanh Lịch hạn nộp hiển thị trực tiếp bộ chọn đề tài và tháng. Hai nhãn “Đề tài” và “Tháng” vẫn được đọc bởi trình đọc màn hình. Các ô và nút cùng hàng cao tối thiểu 44px, xếp lại theo chiều rộng khả dụng.
+- Danh sách lọc đề tài trên Lịch hạn nộp chỉ liệt kê đề tài có ít nhất một hạn bài nộp ở bất kỳ tháng nào. Lựa chọn “Tất cả đề tài” vẫn hiển thị hạn đề tài của các nhóm chỉ có mốc chung.
+- Bộ chọn ngày của công việc, bộ chọn tháng của Lịch hạn nộp và các danh sách lọc dùng màu, viền, trạng thái chọn và vòng focus chung. Giữ ô chọn gốc làm phương án dự phòng khi trình duyệt thiếu hỗ trợ cần thiết.
+- Menu lọc thả xuống giữ viền trung tính khi dùng chuột. Mục đang rê chuột đổi màu nền và chữ. Khi dùng bàn phím, vòng focus cho biết ô hoặc mục đang thao tác.
 
 ### Bảng và phân trang
 
@@ -316,9 +321,11 @@ Theo xác nhận của người dùng, phần GV dùng giao diện 1ddf0d3 và c
 
 Ngày 21/11/2026, danh sách Đề tài đã tạo hiện tên tác giả, khóa hoặc đợt bảo vệ và giảng viên hướng dẫn theo 10 hồ sơ UIT trong Git. Các thẻ này dùng nhãn Hồ sơ UIT. Trang chi tiết dùng lại bản `75bca90`, gồm khung ảnh 16:9 và luồng đề tài lưu trên trình duyệt.
 
-Hai tab Quản lý đề tài của giảng viên dùng chung menu Sắp xếp với ba lựa chọn Mới nhất, Cũ nhất và Tên A–Z. Menu mở đè lên nội dung, mục đã chọn có nền xanh nhạt và chữ xanh. Tab Đề tài hướng dẫn ưu tiên ngày bắt đầu thực hiện, dùng ngày duyệt hoặc ngày ghi nhận nếu có và xếp hồ sơ thiếu ngày ở cuối khi sắp xếp theo thời gian.
+Hai tab Quản lý đề tài và trang Yêu cầu chờ duyệt của giảng viên dùng chung menu Sắp xếp với ba lựa chọn Mới nhất, Cũ nhất và Tên A–Z. Menu mở đè lên nội dung, mục đã chọn có nền xanh nhạt và chữ xanh. Tab Đề tài hướng dẫn ưu tiên ngày bắt đầu thực hiện, dùng ngày duyệt hoặc ngày ghi nhận nếu có và xếp hồ sơ thiếu ngày ở cuối khi sắp xếp theo thời gian.
 
 Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề với khoảng cách 16px trên máy tính và 12px trên điện thoại. Dòng đếm kết quả được đọc bởi trình đọc màn hình. Trạng thái trống và cảnh báo dữ liệu hiển thị dưới tiêu đề.
+
+Tổng quan, Quản lý đề tài và Yêu cầu chờ duyệt dùng cùng khoảng cách ở đầu trang giảng viên. Đường dẫn cách thanh điều hướng 24px trên máy tính và 16px trên điện thoại. Hàng tiêu đề cách đường dẫn 12px, cách khối tiếp theo 24px trên máy tính và 16px trên điện thoại.
 
 ### Tổng quan chi tiết đề tài sinh viên — 21/11/2026
 
@@ -326,9 +333,11 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 - Sinh viên thực hiện một mình mặc định là Nhóm trưởng. Mục Sinh viên thực hiện trên trang chi tiết hiển thị nhãn Nhóm trưởng sau họ tên và MSSV. Nhãn dùng cùng kiểu ở hai vai trò và xuống dòng khi thiếu chỗ.
 - Hai danh sách Đề tài của tôi và Đề tài mở đăng ký dùng mẫu thẻ Quản lý đề tài của giảng viên cho khung ảnh 16:9, khoảng đệm, cỡ chữ và cột thao tác. Nút Xem chi tiết cao tối thiểu 44px, dùng chữ 16px và cùng biểu tượng mũi tên. Trên điện thoại, nút rộng bằng khung ảnh và nhãn trạng thái nằm ở góc trên bên phải ảnh khi đủ chỗ. Mỗi trang giữ nội dung và màu trạng thái theo nghiệp vụ.
 - Hai trang dùng khoảng cách quanh tiêu đề theo mẫu Quản lý đề tài. Từ đường dẫn đến khối tiêu đề là 12px, từ hàng tìm kiếm đến tiêu đề danh sách là 8px. Thẻ đầu cách tiêu đề danh sách 16px trên máy tính và 12px trên điện thoại.
+- Khối tiêu đề trang Đề tài mở đăng ký và Đề tài của tôi gồm tên trang và thao tác Tạo đề xuất khi có. Khoảng cách từ khối tiêu đề đến bộ lọc hoặc hàng tab là 16px trên máy tính và 12px trên điện thoại.
 
 - Tab Tổng quan của Đề tài của tôi dùng chung khung ảnh tóm tắt 16:9, bố cục thẻ, danh sách mục tiêu và kết quả, cách hiển thị thành viên và mốc thời gian với trang Đề tài hướng dẫn. Khối Yêu cầu thực hiện xuất hiện khi đề tài đăng ký có dữ liệu tương ứng. Khối Giảng viên hướng dẫn đặt sau Mốc thời gian chính. Các thao tác nhóm và lời mời hiển thị theo quyền hiện có của sinh viên.
 - Lời mời đồng hướng dẫn gửi từ đề tài xuất hiện trong mục Lời mời hướng dẫn của giảng viên và sinh viên. Hai bên trao đổi khi lời mời đang chờ và sau khi giảng viên đồng ý. Giảng viên đồng ý hoặc từ chối trong cuộc trao đổi. Chi tiết đề tài của sinh viên hiển thị trạng thái và liên kết Xem trao đổi. Bản thử dùng chung dữ liệu trong cùng trình duyệt và địa chỉ web.
+- Tab Lời mời hướng dẫn của sinh viên dùng huy hiệu số giống giảng viên. Số đếm các lời mời sinh viên đã gửi đang chờ quyết định và ẩn khi bằng 0. Các cuộc trao đổi có phản hồi chưa đọc hiện số riêng trong danh sách lời mời.
 - Hộp thư giảng viên tự xác định người nhận theo email tài khoản và danh mục giảng viên. Thanh chọn tự hiển thị tên người nhận của lời mời được mở qua liên kết hoặc của lời mời mới nhất khi vào hộp thư. Khi có lời mời mới, hộp thư tự chọn người nhận và mở lời mời. Phiên demo cho phép chuyển giữa các giảng viên có lời mời đã lưu trong trình duyệt.
 - Thông báo giới hạn thành viên đặt ngay dưới tên nhóm với biểu tượng thông tin và cụm “tối đa X thành viên” in đậm. Dùng nền vàng nhạt, viền vàng mảnh, chữ và biểu tượng màu nâu ở mọi trạng thái sức chứa.
 
@@ -344,9 +353,10 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 - Mục Ảnh đại diện đề tài nằm sau Tài liệu đính kèm trong biểu mẫu sinh viên. Khi chưa chọn ảnh, hiện nút Chọn ảnh và ghi chú dùng ảnh mặc định. Khi đã chọn, hiện biểu tượng ảnh, tên tệp và nút bỏ ảnh trên một hàng nền trắng. Ảnh PNG hoặc JPG tối đa 5 MB được lưu trong IndexedDB khi gửi hoặc lưu chỉnh sửa.
 - Biểu mẫu tạo đề xuất hiện mã dự kiến dưới dạng văn bản sau khi chọn loại đề tài. Mã chính thức có tiền tố ISEKLTN, ISEDAMH hoặc ISEDATN và ba chữ số, được cấp khi lưu. Mã đã cấp xuất hiện trong biểu mẫu chỉnh sửa và trang chi tiết ở cả hai vai trò.
 - Biểu mẫu đề xuất của sinh viên có tên tiếng Việt và bốn hàng hai cột gồm Loại đề tài và Môn học, Mã đề tài và Học kỳ, Năm học và Ngày bắt đầu thực hiện, rồi hai ngày nộp báo cáo. Trên điện thoại, các trường xếp thành một cột. Cả ba ngày bắt buộc và mỗi ngày phải sau ngày liền trước.
-- Khi mở phần chọn tháng và năm trong các ô lịch của hai biểu mẫu, nhãn Năm nằm trên ô nhập rộng hết phần chọn tháng. Khi nhập, ô giữ viền tối mảnh sẵn có.
+- Khi mở phần chọn tháng và năm, nhãn Năm nằm trên ô nhập rộng hết phần chọn tháng. Có thể nhập năm trực tiếp hoặc dùng hai nút Năm trước và Năm sau ở đầu bộ chọn.
 - Biểu mẫu Tạo đề tài của giảng viên dùng một khung nền trắng liền mạch như biểu mẫu tạo đề xuất của sinh viên. Đường kẻ ngang mảnh đặt ngay trên tiêu đề của mỗi phần sau Thông tin đề tài. Hàng thao tác nằm bên dưới khung.
 - Biểu mẫu Chỉnh sửa đề tài dùng cùng thứ tự trường, nhóm nội dung và bộ chọn ngày giờ với Tạo đề tài. Cả hai dùng nhãn Tên đề tài và hiển thị mã trong khung xám nhạt có viền mảnh. Khi chỉnh sửa, dữ liệu hiện có được điền sẵn và mã đã cấp ở dạng chỉ đọc. Các hồ sơ cũ chưa có ngày báo cáo có thể để trống các mốc mới.
+- Ô số thành viên và ô điểm đánh giá dùng nút giảm bên trái, giá trị căn giữa và nút tăng bên phải. Hai nút dùng nền xanh nhạt, vùng bấm tối thiểu 44px và vô hiệu hóa ở giới hạn tương ứng. Người dùng có thể nhập số trực tiếp hoặc dùng phím mũi tên trong ô.
 - Sau khi giảng viên lưu chỉnh sửa thành công, hộp thoại Đã lưu thay đổi hiển thị dấu tích xanh trên nền tròn xanh nhạt và nút xanh Xem chi tiết đề tài ở giữa. Nút × ở góc trên bên phải hoặc phím Esc đóng hộp thoại và đưa tiêu điểm về liên kết xem đề tài ở cuối biểu mẫu.
 - Trang Chi tiết đề tài đã tạo dùng bố cục Chi tiết đề xuất của sinh viên. Khối đầu đặt ảnh bên trái và nhãn đăng ký cạnh tên đề tài. Học kỳ, năm học, mã đề tài và ba mốc thực hiện xếp theo cùng thứ tự. Hạn đăng ký nằm ở hàng cuối, bên phải Hạn hoàn thành đề tài khi có mốc này. Thẻ Tổng quan đề tài đặt ngay sau khối đầu vì giảng viên đang xem đề tài của mình. Mục tiêu, Kết quả dự kiến, Yêu cầu đối với sinh viên, Số thành viên và Tài liệu đính kèm nằm trong các thẻ riêng. Hai thẻ phương pháp và kế hoạch chỉ hiện khi có dữ liệu. Các thao tác chỉnh sửa, mở và đóng đăng ký nằm cuối trang. Với đề tài cũ, hạn hoàn thành vẫn hiển thị với nhãn riêng và ba mốc mới chỉ ghi ngày khi có dữ liệu tương ứng.
 - Nút Đóng đăng ký có nền trắng, viền và chữ đỏ, với biểu tượng ổ khóa nét mảnh trước nhãn. Nút nằm ngay trước Chỉnh sửa đề tài ở cuối trang chi tiết.

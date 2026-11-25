@@ -72,6 +72,7 @@
   const find = (selector) => body.querySelector(selector);
   const picker = find('[data-teacher-picker]');
   const teachers = find('#supervision-teacher');
+  const teacherSelect = globalThis.IE104?.ui?.proposalPickers?.enhanceSelect(teachers);
   const login = find('[data-inbox-login]');
   const workspace = find('[data-inbox-workspace]');
   const list = find('.supervision__list');
@@ -127,7 +128,7 @@
     tabCount.hidden = count === 0;
     tabCount.textContent = count ? String(count) : '';
     tabCountLabel.textContent = count
-      ? (isTeacher ? `${count} lời mời đang chờ trả lời` : `${count} phản hồi chưa đọc`)
+      ? (isTeacher ? `${count} lời mời đang chờ trả lời` : `${count} lời mời đang chờ quyết định`)
       : '';
   }
 
@@ -186,6 +187,7 @@
       teachers.replaceChildren(...choices.map(([id, name]) => new Option(name, id)));
     }
     if (selected) teachers.value = selected;
+    teacherSelect?.sync();
     picker.hidden = !options.size;
     return records.filter(({ teacher }) => teacher.id === selected);
   }
@@ -289,7 +291,7 @@
         records = showTeacherChoices(records, newInvitation);
       } else {
         unreadById = new Map(records.map((record) => [record.id, store.getUnreadResponses(record)]));
-        renderTabCount([...unreadById.values()].reduce((sum, count) => sum + count, 0));
+        renderTabCount(records.filter(({ status }) => status === 'pending').length);
       }
     } catch (error) {
       renderTabCount(0);

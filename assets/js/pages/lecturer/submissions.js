@@ -5,7 +5,32 @@
   const previewDeadline = document.getElementById('create-deadline');
   if (previewDeadline) datePicker?.enhanceDate(previewDeadline, calendarOptions);
   const ui = app?.ui?.lecturerWorkspace;
-  if (!ui) return;
+  if (!ui) {
+    if (datePicker) {
+      const pending = new Map();
+      const observer = new MutationObserver(entries => {
+        for (const { target: dialog } of entries) {
+          const input = pending.get(dialog);
+          if (!dialog.open || !input) continue;
+          pending.delete(dialog);
+          const field = input.closest('.topic-dialog__field');
+          const wrapper = document.createElement('div');
+          wrapper.className = 'topic-dialog__field requirement-deadline';
+          wrapper.append(...field.childNodes);
+          field.replaceWith(wrapper);
+          datePicker.enhanceDate(input, calendarOptions);
+        }
+        if (!pending.size) observer.disconnect();
+      });
+      for (const input of document.querySelectorAll('input[name="edit-deadline"]')) {
+        const dialog = input.closest('dialog');
+        if (!dialog) continue;
+        pending.set(dialog, input);
+        observer.observe(dialog, { attributeFilter: ['open'] });
+      }
+    }
+    return;
+  }
   const { el, button, field, modal, service } = ui;
   const uploadsService = app.services.studentSubmissions;
   const panel = ui.region('submissions-section', 'bai-nop');
