@@ -78,3 +78,12 @@ Gói chỉnh số lượng ghép lại trên main fec7a477ff4cc4c1e246e65679646e
 - Bản GitHub main đã lên 609e3941d3234d790f5b50326d703922a1bb9a47 và sạch; chỉ đọc để đối chiếu. Không sửa checkout GitHub.
 
 Kiểm tra cuối sau bổ sung quyền đọc hồ sơ mẫu: 37/37 đạt, gồm kiểm tra đồng bộ bài nộp/tải tệp/đánh giá đã có. Kiểm tra cú pháp các script sửa đạt. Không có bằng chứng kiểm thử UI mới.
+
+
+## Chốt bổ sung tên đề tài/bộ lọc/thẻ chờ duyệt
+
+- Không hiển thị tên đề tài tiếng Anh dưới tiêu đề chi tiết hoặc trong khung thông tin bổ sung; không xóa dữ liệu gốc để bảo toàn đề cương cũ.
+- Hai bộ lọc quản lý đề tài GV (Đã tạo/Đang hướng dẫn) dùng nhãn Khóa luận tốt nghiệp, giữ nguyên giá trị lọc.
+- Thẻ Chờ duyệt ở Đề tài của tôi SV dùng tên giảng viên nhận hồ sơ, biểu tượng cá nhân và nhãn trợ năng tương ứng; không dùng tên/MSSV sinh viên. Các trạng thái khác giữ cách hiển thị cũ.
+- 18/18 kiểm tra liên quan đề xuất/dữ liệu/môn học và cú pháp script đạt; thay đổi UI chưa được kiểm tra trực quan do thiếu kết nối trình duyệt.
+- Các thay đổi bổ sung này chưa có trong gói 24 file goi-sua-sau-duyet-main-609e394-2026-11-25 đã gửi trước đó; khi đóng gói tiếp cần đối chiếu main hiện tại.

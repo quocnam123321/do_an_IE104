@@ -21,7 +21,6 @@
     // Ngày, nhóm, GVHD, phương pháp và kế hoạch có khung riêng trong Tổng quan.
     const secondary = outline.secondarySupervisor;
     return [
-      ['Tên đề tài tiếng Anh', outline.englishTitle],
       ['Người hướng dẫn phụ trong đề cương', secondary?.name ? [secondary.name, secondary.degree, secondary.workplace].filter(Boolean).join(' - ') : ''],
     ].filter(([, value]) => Boolean(value?.trim()));
   }

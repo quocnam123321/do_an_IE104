@@ -446,3 +446,10 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 - Dùng nền xanh đậm #122E59 theo mẫu UIT áp dụng cho dự án, chữ phụ #DBEAFE và đường phân chia #50688A. Logo ngang màu trắng lấy từ footer của website UIT và lưu trong dự án.
 - Bố cục có bốn cột trên màn hình rộng, hai cột dưới 64rem và một cột đến 36rem. Hai liên kết điều khoản và bảo mật mở từng trang trong cùng một PDF.
 - Cột Truy cập nhanh chứa liên kết Liên hệ. Cột Tài nguyên UIT liên kết đến website của khoa và Cổng thông tin UIT. Khoảng đệm dọc của phần cột là 24px.
+
+
+## Chốt hiển thị tên đề tài và thẻ chờ duyệt — 25/11/2026
+
+- Phần chi tiết chỉ hiển thị tên đề tài tiếng Việt, bỏ dòng tên tiếng Anh đi kèm và không lặp tên tiếng Anh trong khung thông tin bổ sung. Giữ dữ liệu đề cương đã lưu để không làm hỏng hồ sơ cũ.
+- Ngoại lệ của dòng người thực hiện trên thẻ Đề tài của tôi: khi trạng thái Chờ duyệt, dùng biểu tượng cá nhân và tên giảng viên nhận hồ sơ (khớp người nhận trong chi tiết), không hiển thị tên/MSSV sinh viên ở dòng này. Đang thực hiện/Hoàn thành tiếp tục dùng thông tin người thực hiện như đã chốt.
+- Bộ lọc loại đề tài ở hai danh sách quản lý GV ghi đầy đủ Khóa luận tốt nghiệp; không đổi giá trị lọc nội bộ.

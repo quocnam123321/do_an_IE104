@@ -18,7 +18,7 @@
     const academicYear = record.academicYear?.replace(/\s*[-–]\s*/, ' – ');
     const fields = {
       ...record,
-      englishTitle: outline?.englishTitle,
+      englishTitle: '',
       topicCode: record.topicCode || record.id,
       semester,
       academicYear,

@@ -32,12 +32,15 @@
     const article = item.querySelector('.topic-card');
     const title = item.querySelector('.topic-card__title');
     const [code, course, lecturer, group, period] = item.querySelectorAll('.topic-card__meta-row dd');
-    const participants = participantsFor(topic);
+    const waitingForApproval = topic.status === 'cho-duyet';
+    const participants = waitingForApproval
+      ? { isGroup: false, label: topic.lecturer || 'Chưa có thông tin' }
+      : participantsFor(topic);
     const participant = participants.isGroup ? group : lecturer;
     const redundant = participants.isGroup ? lecturer : group;
     redundant.closest('.topic-card__meta-row').remove();
     participant.closest('.topic-card__meta-row').dataset.topicParticipants = '';
-    participant.previousElementSibling.querySelector('.visually-hidden').textContent = participants.isGroup ? 'Nhóm thực hiện' : 'Sinh viên thực hiện';
+    participant.previousElementSibling.querySelector('.visually-hidden').textContent = waitingForApproval ? 'Giảng viên nhận đề xuất' : participants.isGroup ? 'Nhóm thực hiện' : 'Sinh viên thực hiện';
     participant.textContent = participants.label;
     const status = item.querySelector('.topic-card__status');
     const originalLink = item.querySelector('.topic-card__link');

@@ -218,5 +218,5 @@ test('không dùng ngày duyệt làm ngày bắt đầu, giữ ba ngày riêng 
     ['01/10/2026', '15/11/2026', '20/12/2026']);
   const legacy = { outline: { version: 1, startDate: '2026-05-13', endDate: '2026-11-27', englishTitle: 'Legacy title' } };
   assert.deepEqual(plain(view.milestones(legacy)), ['13/05/2026', 'Chưa có mốc thời gian', '27/11/2026']);
-  assert.deepEqual(plain(view.fields(legacy)), [['Tên đề tài tiếng Anh', 'Legacy title']]);
+  assert.deepEqual(plain(view.fields(legacy)), []);
 });
