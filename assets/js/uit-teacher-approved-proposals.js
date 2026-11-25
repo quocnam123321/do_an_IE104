@@ -8,23 +8,10 @@
 
   function render() {
     for (const card of list.querySelectorAll('[data-approved-proposal]')) card.remove();
-    const entries = store.getAll().filter(proposal => proposal.status === 'approved');
     const teaching = window.IE104.services.teaching;
     let projects = [];
     try { projects = teaching.listSupervisedProjects(); } catch { /* Keep the available proposal records. */ }
-    const byId = new Map(projects.map(({ project, role }) => [project.id, {
-      id: project.id, topicId: project.topicId || project.id, projectId: project.id,
-      title: project.title,
-      topicType: project.type || ({ 'Đồ án môn học': 'do-an-mon-hoc', 'Đồ án tốt nghiệp': 'do-an-tot-nghiep', 'Khóa luận tốt nghiệp': 'khoa-luan' })[project.typeLabel], course: project.courseId, courseLabel: project.courseLabel,
-      sortDate: project.startsAt || project.createdAt,
-      semester: project.semester, academicYear: project.academicYear,
-      supervisionRole: role === 'secondary' ? 'dong-huong-dan' : 'huong-dan-chinh',
-      supervisionRoleLabel: role === 'secondary' ? 'Đồng hướng dẫn' : 'Hướng dẫn chính',
-      topicStatus: project.status, statusLabel: project.statusLabel,
-    }]));
-    for (const record of entries) if (!byId.has(record.topicId)) byId.set(record.topicId, record);
-    for (const record of byId.values()) {
-      if (!topics.isListedInSupervisedTab(record)) continue;
+    for (const { record, project } of topics.additionalSupervisedTopics(projects, store.getAll())) {
       const card = template.cloneNode(true);
       card.hidden = false;
       card.dataset.approvedProposal = record.id;
@@ -42,7 +29,6 @@
       card.setAttribute('aria-labelledby', title.id);
       card.querySelector('.topic-card__image-placeholder').setAttribute('aria-label', `Chưa có ảnh đại diện cho đề tài ${record.title}`);
       const meta = card.querySelector('.topic-card__meta');
-      const project = projects.find(entry => entry.project.id === record.projectId)?.project;
       let members = record.members || record.outline?.members || [];
       if (project) {
         try {

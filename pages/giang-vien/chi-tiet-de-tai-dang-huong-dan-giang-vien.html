@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="vi"><head>
-  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png?v=2" />
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Thông tin, tiến độ, bài nộp và đánh giá đề tài đang hướng dẫn." name="description">
@@ -8,18 +8,18 @@
       Chi tiết đề tài đang hướng dẫn | Quản lý đồ án
     </title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261125-topic-participants"></script>
+    <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261125-deadline-sync"></script>
     <script defer src="../../assets/js/i18n/en-shared.js?v=20261124-demo-deadlines"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme">
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language">
-    <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-menu-2">
+    <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-student-team-leader">
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
     <link rel="stylesheet" href="../../assets/css/teacher-dialogs.css?v=20261124-requirement-filenames">
     <link rel="stylesheet" href="../../assets/css/topic-detail-boards.css?v=20261124-requirements-done">
     <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css?v=20261124-centered-scores">
     <link rel="stylesheet" href="../../assets/css/project-evaluation.css?v=20261124-evaluation-attachment">
-    <link rel="stylesheet" href="../../assets/css/teacher-topic-detail.css?v=20261124-evaluation-attachment-card">
+    <link rel="stylesheet" href="../../assets/css/teacher-topic-detail.css?v=20261125-student-team-leader">
     <link rel="stylesheet" href="../../assets/css/teaching-workspace.css">
     <link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
     <link rel="stylesheet" href="../../assets/css/lecturer-topic-routing.css">
@@ -28,7 +28,7 @@
     <script src="../../assets/js/detail-tabs.js" defer=""></script>
     <script src="../../assets/js/dialog-commands.js" defer=""></script>
     <script src="../../assets/js/shared/topic-overview.js?v=20261124-invitation-flow" defer></script>
-    <script src="../../assets/js/uit-supervised-demo.js?v=20261124-delete-pending-requirements" defer></script>
+    <script src="../../assets/js/uit-supervised-demo.js?v=20261125-sample-progress" defer></script>
     <link rel="stylesheet" href="../../assets/css/uit-restored-submissions.css">
     <link rel="stylesheet" href="../../assets/css/workflow-detail-shared.css?v=20261124-requirement-calendar" />
     <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261125-registration-role">
@@ -52,11 +52,11 @@
     <script src="../../assets/js/data/student-progress.js" defer></script>
     <script src="../../assets/js/data/student-evaluations.js?v=20261124-da005-evaluation" defer></script>
     <script src="../../assets/js/data/teaching-data.js" defer></script>
-    <script src="../../assets/js/data/student-uit-catalog.js?v=20261125-main-rebase" defer></script>
+    <script src="../../assets/js/data/student-uit-catalog.js?v=20261125-sample-progress" defer></script>
     <script src="../../assets/js/data/student-web-submissions.js?v=20261125-main-rebase" defer></script>
     <script src="../../assets/js/supervision-store.js?v=20261124-conversation" defer></script>
-    <script src="../../assets/js/services/project-team-service.js?v=20261124-multiple-supervisors" defer></script>
-    <script src="../../assets/js/services/project-progress-service.js?v=20261124-rebase" defer></script>
+    <script src="../../assets/js/services/project-team-service.js?v=20261125-solo-team-leader" defer></script>
+    <script src="../../assets/js/services/project-progress-service.js?v=20261125-sample-progress" defer></script>
     <script src="../../assets/js/services/task-comments-service.js" defer></script>
     <script src="../../assets/js/services/teaching-service.js?v=20261124-invitation-flow" defer></script>
     <script src="../../assets/js/services/student-submissions-service.js?v=20261125-approved-overview" defer></script>
@@ -69,14 +69,14 @@
     <script src="../../assets/js/shared/submission-file-list.js" defer></script>
     <script src="../../assets/js/pages/student/topic-detail/submission-zip.js" defer></script>
     <script src="../../assets/js/services/submission-file-service.js" defer></script>
-    <script src="../../assets/js/uit-lecturer-view.js?v=20261125-topic-participants" defer></script>
-    <script src="../../assets/js/shared/lecturer-overview.js?v=20261125-approved-overview" defer></script>
+    <script src="../../assets/js/uit-lecturer-view.js?v=20261125-solo-team-leader" defer></script>
+    <script src="../../assets/js/shared/lecturer-overview.js?v=20261125-solo-team-leader" defer></script>
 <script src="../../assets/js/pages/lecturer/workspace.js?v=20261125-topic-participants" defer></script>
     <script src="../../assets/js/pages/student/proposal-pickers.js?v=20261125-registration-role" defer></script>
     <script src="../../assets/js/pages/student/proposal-date-picker.js?v=20261124-requirement-datetime" defer></script>
-    <script src="../../assets/js/pages/lecturer/submissions.js?v=20261124-demo-deadlines" defer></script>
+    <script src="../../assets/js/pages/lecturer/submissions.js?v=20261125-deadline-sync" defer></script>
     <script src="../../assets/js/shared/task-comments.js?v=20261123-comment-composer" defer></script>
-    <script src="../../assets/js/pages/lecturer/progress.js?v=20261125-no-general-review" defer></script>
+    <script src="../../assets/js/pages/lecturer/progress.js?v=20261125-shared-progress" defer></script>
     <script src="../../assets/js/shared/evaluation-attachment.js" defer></script>
     <script src="../../assets/js/pages/lecturer/evaluation.js?v=20261124-evaluation-attachment-card" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
@@ -149,13 +149,13 @@
                     </a>
                   </li>
                   <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="../chung/huong-nghien-cuu.html">
-                      Hướng nghiên cứu
+                    <a class="main-nav__link" href="../chung/thong-bao.html">
+                      Thông báo
                     </a>
                   </li>
                   <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="../chung/thong-bao.html">
-                      Thông báo
+                    <a class="main-nav__link" href="../chung/huong-nghien-cuu.html">
+                      Hướng nghiên cứu
                     </a>
                   </li>
                   <li class="main-nav__subitem">
@@ -229,10 +229,10 @@
                     <a class="mobile-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a>
                   </li>
                   <li>
-                    <a class="mobile-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a>
+                    <a class="mobile-nav__link" href="../chung/thong-bao.html">Thông báo</a>
                   </li>
                   <li>
-                    <a class="mobile-nav__link" href="../chung/thong-bao.html">Thông báo</a>
+                    <a class="mobile-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a>
                   </li>
                   <li>
                     <a class="mobile-nav__link" href="../chung/lien-he.html">Liên hệ</a>
@@ -320,7 +320,7 @@
                 <div class="topic-summary__content">
                   <div class="topic-summary__heading">
                     <h2 id="topic-summary-title" class="topic-summary__title">Website quản lý thư viện</h2>
-                    <span class="topic-summary__role" data-supervised-role="primary"><span class="visually-hidden">Vai trò hướng dẫn: </span><span data-supervised-role-label>Hướng dẫn chính</span></span>
+                    <span class="topic-summary__role topic-summary__role--managed" data-supervised-role="primary"><span class="visually-hidden">Vai trò hướng dẫn: </span><span data-supervised-role-label>Hướng dẫn chính</span></span>
                   </div>
                   <dl class="topic-summary__details">
                     <div class="topic-summary__field">

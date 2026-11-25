@@ -160,7 +160,7 @@
       const status = isTeacher && store.needsTeacherReply(record) ? 'Chờ bạn trả lời' : describeStatus(record);
       button.append(
         textElement('strong', record.subject),
-        ...(record.projectId ? [textElement('span', 'Lời mời đồng hướng dẫn', 'supervision__hint')] : []),
+        ...(!isTeacher && record.projectId ? [textElement('span', 'Lời mời đồng hướng dẫn', 'supervision__hint')] : []),
         textElement('span', isTeacher ? record.student.name : record.teacher.name, 'supervision__hint'),
         ...(isTeacher ? [textElement('span', `Người nhận: ${record.teacher.name}`, 'supervision__hint')] : []),
         textElement('span', status, 'supervision__hint')
@@ -198,17 +198,15 @@
     subject.textContent = record.subject;
     badge.dataset.status = record.status;
     badge.textContent = describeStatus(record);
-    const studentCode = record.student.id === store.student.id ? ` · ${record.student.id}` : '';
+    const studentCode = isTeacher ? store.studentCode(record) : '';
     person.textContent = isTeacher
-      ? `Sinh viên ${record.student.name}${studentCode}` : `Giảng viên ${record.teacher.name}`;
+      ? `Sinh viên ${record.student.name}${studentCode ? ` · ${studentCode}` : ''}` : `Giảng viên ${record.teacher.name}`;
     if (isTeacher) person.append(' · ', textElement('span', `Người nhận: ${record.teacher.name}`));
-    if (record.projectId) {
+    if (!isTeacher && record.projectId) {
       person.append(' · ', textElement('span', 'Lời mời đồng hướng dẫn'));
-      if (!isTeacher) {
-        const topic = textElement('a', 'Xem đề tài');
-        topic.href = `chi-tiet-de-tai-sinh-vien.html?project=${encodeURIComponent(record.projectId)}#tong-quan`;
-        person.append(' · ', topic);
-      }
+      const topic = textElement('a', 'Xem đề tài');
+      topic.href = `chi-tiet-de-tai-sinh-vien.html?project=${encodeURIComponent(record.projectId)}#tong-quan`;
+      person.append(' · ', topic);
     }
     messages.replaceChildren(...record.messages.map((message) => {
       const item = document.createElement('li');
@@ -255,7 +253,7 @@
     inboxError.textContent = '';
     empty.textContent = '';
     if (isTeacher) inboxHint.textContent = teacherSession?.demo
-      ? 'Bản demo hiển thị lời mời của các giảng viên trong trình duyệt này.'
+      ? 'Bản demo có lời mời mẫu. Phản hồi và quyết định được lưu trên trình duyệt này.'
       : 'Lời mời được lưu trong trình duyệt này.';
     if (isTeacher && !teacherSession) {
       active = null;
@@ -278,10 +276,9 @@
 
     let records;
     try {
-      const all = store.getAll();
       records = isTeacher
-        ? (teacherSession.demo ? all : all.filter(({ teacher }) => teacherSession.teacherIds.includes(teacher.id)))
-        : all.filter(({ student }) => student.id === currentStudent.id);
+        ? store.listForTeacher(teacherSession)
+        : store.listForStudent(currentStudent);
       if (isTeacher) {
         renderTabCount(records.filter(store.needsTeacherReply).length);
         const newInvitation = seenTeacherInvitations && records

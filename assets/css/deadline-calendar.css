@@ -652,6 +652,14 @@
   overflow: hidden;
 }
 
+.student-deadline-page .calendar-event__project {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--text-xs);
+}
+
 .student-deadline-page .calendar-preview__status {
   padding: 0.125rem var(--space-2);
   border-radius: var(--radius-small);

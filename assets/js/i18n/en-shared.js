@@ -1,4 +1,5 @@
 Object.assign(globalThis.ie104English ??= {}, {
+  "Tệp đề cương minh họa.": "Sample proposal outline.",
   "Giảng viên sẽ nhận được lời mời. Bạn có thể mở mục Xem trao đổi trong chi tiết đề tài để xem phản hồi.": "The lecturer will receive the invitation. Select View conversation in the topic details to see their response.",
   "Lời mời đồng hướng dẫn": "Co-supervision invitation",
   "Đã đồng ý đồng hướng dẫn": "Accepted co-supervision",

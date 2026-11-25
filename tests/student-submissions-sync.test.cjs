@@ -64,6 +64,89 @@ test('lịch mẫu tháng 10 và 11 có đủ năm trạng thái từ cùng bộ
   }
 });
 
+test('hạn báo cáo của đề tài đang thực hiện khớp giữa lịch, sinh viên và giảng viên', async () => {
+  const { data, services } = createTab(new Map(), { URLSearchParams }, true);
+  const projects = data.myTopics.filter(project => project.status === 'dang-thuc-hien');
+  const calendars = new Map((await services.deadlines.getActiveDeadlines()).map(calendar => [calendar.id, calendar]));
+  assert.ok(projects.length);
+  assert.equal(calendars.size, projects.length);
+  const progressDates = new Set();
+  const finalDates = new Set();
+  for (const project of projects) {
+    const { id, startsAt, progressReportDate, finalReportDate } = project;
+    assert.match(progressReportDate, /^2026-11-\d{2}$/);
+    assert.match(finalReportDate, /^2026-12-\d{2}$/);
+    assert.ok(startsAt < progressReportDate && progressReportDate < finalReportDate);
+    progressDates.add(progressReportDate);
+    finalDates.add(finalReportDate);
+    const lecturer = data.lecturerTopics.find(topic => topic.kind === 'supervised' && topic.workspaceId === id);
+    assert.ok(lecturer?.sharedStudentProject);
+    assert.equal(lecturer.progressReportDate, progressReportDate);
+    assert.equal(lecturer.finalReportDate, finalReportDate);
+    assert.deepEqual(lecturer.milestones, data.studentProjectOverviews[id].milestones);
+
+    const events = calendars.get(id).events.filter(event => event.kind === 'topic');
+    assert.equal(events.length, 2);
+    for (const [index, name, date] of [
+      [0, 'Hạn nộp báo cáo tiến độ', progressReportDate],
+      [1, 'Hạn nộp báo cáo cuối cùng', finalReportDate],
+    ]) {
+      assert.equal(events[index].name, name);
+      assert.equal(events[index].date, date);
+      assert.equal(events[index].due, date);
+      assert.equal(events[index].detailUrl, project.detailUrl);
+    }
+  }
+  assert.equal(progressDates.size, projects.length);
+  assert.equal(finalDates.size, projects.length);
+});
+
+test('công việc mẫu làm đa dạng tiến độ đang thực hiện và dùng chung giữa giảng viên và sinh viên', () => {
+  const { data, services } = createTab(new Map(), { URLSearchParams }, true);
+  const percentages = new Set();
+  for (const project of data.myTopics) {
+    const student = services.projectProgress.getState(project.id);
+    const lecturer = services.teaching.getState(project.id).progress;
+    assert.deepEqual(student.tasks, lecturer.tasks);
+    const additions = student.tasks.filter(task => task.id.startsWith(project.id + '-sample-task-'));
+    const summary = services.projectProgress.summarize(student);
+    if (project.status === 'hoan-thanh') {
+      assert.equal(additions.length, 0);
+      assert.equal(summary.percent, 100);
+      continue;
+    }
+    assert.equal(additions.length, 3);
+    assert.ok(additions.every(task => task.deadline < project.finalReportDate &&
+      student.team.members.some(member => member.code === task.assigneeCode)));
+    assert.equal(summary.method, 'task-average');
+    percentages.add(summary.percent);
+  }
+  assert.ok(percentages.size >= 5);
+});
+
+test('công việc mẫu được thêm vào bản đã lưu mà vẫn giữ chỉnh sửa và công việc đã xóa', () => {
+  const storage = new Map();
+  const { data, services, storage: projectStorage } = createTab(storage, { URLSearchParams }, true);
+  const { projectProgress } = services;
+  const projectId = data.studentUITCatalog.projectId('ISE-003');
+  const { tasks } = projectProgress.getState(projectId);
+  const sampleTasks = tasks.filter(task => task.id.startsWith(projectId + '-sample-task-'));
+  const [removed, edited, ...rest] = tasks.filter(task => !sampleTasks.includes(task));
+  const customTask = { ...edited, id: 'CV-custom', title: 'Công việc riêng đã tạo' };
+  const existing = [{ ...edited, title: 'Công việc đã sửa' }, ...rest, customTask];
+  projectStorage.writeProjectProgress([{ projectId, revision: 2, tasks: existing, history: [] }]);
+
+  const state = projectProgress.getState(projectId);
+  assert.equal(state.revision, 2);
+  assert.deepEqual(structuredClone(state.tasks), structuredClone([...existing, ...sampleTasks]));
+  assert.ok(!state.tasks.some(task => task.id === removed.id));
+  const saved = projectProgress.deleteTask(projectId, sampleTasks[0].id, state.revision);
+  const reloaded = createTab(storage, { URLSearchParams }, true).services.projectProgress.getState(projectId);
+  assert.equal(reloaded.revision, 3);
+  assert.deepEqual(structuredClone(reloaded.tasks), structuredClone(saved.tasks));
+  assert.ok(!reloaded.tasks.some(task => task.id === sampleTasks[0].id));
+});
+
 test('bài nộp mẫu của đề tài đang thực hiện có thể tải tệp lẻ và toàn bộ, kể cả từ bản ghi cũ', () => {
   const app = createTab(new Map(), { URLSearchParams }, true);
   const project = app.data.myTopics.find(item => item.status === 'dang-thuc-hien');

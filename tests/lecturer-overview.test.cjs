@@ -52,7 +52,7 @@ class Element {
   }
 }
 
-function setup(protocol) {
+function setup(protocol = 'http:') {
   const data = new Map();
   const events = new Map();
   const labels = ['Đang thực hiện', 'Đang mở đăng ký', 'Hoàn thành', 'Đã đóng đăng ký'];
@@ -86,7 +86,7 @@ function setup(protocol) {
   for (const [key, node] of Object.entries(counts)) nodes[`[aria-labelledby="${key}-count-title"] strong`] = node;
 
   const context = vm.createContext({
-    location: protocol && { protocol },
+    URL, URLSearchParams, location: { protocol },
     navigator: {},
     document: {
       querySelector: selector => nodes[selector],
@@ -101,20 +101,11 @@ function setup(protocol) {
     },
   });
   context.window = context;
-  const files = [
-    'shared/topic-identity', 'teacher-topic-store', 'proposal-store', 'data/mock-data', 'data/student-projects',
-    'data/student-progress', 'data/teaching-data', 'services/storage', 'services/project-team-service',
-    'services/project-progress-service', 'services/teaching-service',
-  ];
-  if (protocol === 'file:') {
-    files.unshift('uit-lecturer-catalog');
-    files.push('data/lecturer-topics', 'data/lecturer-merge-catalog', 'services/lecturer-topic-repository',
-      'services/proposal-service', 'services/registration-service', 'services/approved-project-service',
-      'services/lecturer-topic-service');
-  }
-  files.push('pages/lecturer/overview');
+  const page = fs.readFileSync(path.join(__dirname, '../pages/giang-vien/tong-quan-giang-vien.html'), 'utf8');
+  const files = Array.from(page.matchAll(/<script\s+src="\.\.\/\.\.\/assets\/js\/([^?"]+\.js)(?:\?[^"]*)?"/g), match => match[1])
+    .filter(file => /^(uit-lecturer-catalog|shared\/(topic-identity|validation)|teacher-topic-store|data\/|services\/|proposal-store|pages\/lecturer\/overview)/.test(file));
   for (const file of files) {
-    vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js', file + '.js'), 'utf8'), context);
+    vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js', file), 'utf8'), context, { filename: file });
   }
   return {
     data, context, counts, chartContent, chartLabels, segments, legend, progress, pending, empty, warning,
@@ -122,51 +113,115 @@ function setup(protocol) {
   };
 }
 
-test('demo counts, chart slices and on-chart percentages agree', () => {
+test('chart slices match the counts and only larger slices show percentage labels', () => {
   const { context, counts, legend, segments, chartLabels } = setup();
+  const { lecturerTopics } = context.IE104.services;
+  const created = lecturerTopics.list('created').filter(lecturerTopics.isListedInCreatedTab);
   const pending = context.IE104Proposals.getAll().filter(record => record.status === 'pending').length;
-  assert.deepEqual(Object.values(counts).map(node => node.textContent), [7, 5, 1, pending]);
-  assert.deepEqual(legend.map(row => row.querySelector('dd').textContent), [1, 2, 2, 2]);
-  assert.deepEqual(chartLabels.querySelectorAll('.topic-status__percent')
-    .map(label => parseFloat(label.textContent.replace(',', '.'))), [14.3, 28.6, 28.6, 28.6]);
+  const categories = legend.map(row => row.querySelector('dd').textContent);
+  const total = categories.reduce((sum, count) => sum + count, 0);
+  assert.deepEqual(Object.values(counts).map(node => node.textContent), [total, created.length, categories[0], pending]);
+  assert.equal(categories[1], created.filter(topic => topic.status === 'open').length);
+  assert.equal(categories[3], created.filter(topic => topic.status === 'closed').length);
+  assert.ok(categories.every(count => count > 0));
+  const labels = chartLabels.querySelectorAll('.topic-status__percent');
+  assert.deepEqual(labels.map(label => parseFloat(label.textContent.replace(',', '.'))),
+    categories.filter(count => count / total >= 0.08).map(count => Math.round(1000 * count / total) / 10));
   const circumference = segments.reduce((sum, segment) => sum + parseFloat(segment.attributes['stroke-dasharray']), 0);
   assert.ok(Math.abs(circumference - 100) < 1e-8);
 });
 
-test('progress and pending cards open the correct project and proposal IDs', () => {
+test('progress cards and the four newest pending cards open the correct records', () => {
   const { context, progress, pending } = setup();
-  const project = progress.children.find(card => card.querySelector('a').href.includes('project=GV-DT001-N01'));
-  assert.match(project.querySelector('a').href, /\?project=GV-DT001-N01#tien-do$/);
-  const service = context.IE104.services.projectProgress;
-  const meter = project.querySelectorAll('p').flatMap(node => node.querySelectorAll('progress'))[0];
-  assert.equal(meter.value, service.summarize(service.getState('GV-DT001-N01')).percent);
+  const { projectProgress, lecturerTopics } = context.IE104.services;
+  const projectIds = progress.children.map(card => {
+    const url = new URL(card.querySelector('a').href, 'https://example.test/');
+    const projectId = url.searchParams.get('project');
+    assert.equal(url.hash, '#tien-do');
+    const meter = card.querySelector('.topic-progress-card__progress').querySelector('progress');
+    assert.equal(meter.value, projectProgress.summarize(projectProgress.getState(projectId)).percent);
+    const { project, team } = lecturerTopics.workspaceState(projectId);
+    const participants = lecturerTopics.supervisedParticipants(project, team.members);
+    const metadata = card.querySelector('.topic-progress-card__summary').querySelector('.topic-progress-card__meta');
+    const participantLabel = metadata.children[1].children.at(-1).textContent;
+    if (participants.isGroup) {
+      assert.equal(participantLabel, participants.label);
+    } else {
+      assert.match(participants.code, /^\d{8}$/);
+      assert.equal(participantLabel, `${participants.name} · ${participants.code}`);
+    }
+    return projectId;
+  });
+  assert.deepEqual(projectIds, ['ISE-001', 'ISE-002', 'ISE-003', 'ISE-016', 'ISEDATN-001'].map(id => 'UIT-SV-' + id));
   const ids = pending.children.map(card => new URL(card.querySelector('a').href, 'https://example.test/').searchParams.get('ma'));
-  assert.equal(new Set(ids).size, pending.children.length);
-  assert.deepEqual(ids.sort(), Array.from(context.IE104Proposals.getAll(), record => record.id).sort());
+  const records = Array.from(context.IE104Proposals.getAll()).filter(record => record.status === 'pending');
+  assert.ok(records.length > 4);
+  assert.equal(ids.length, 4);
+  assert.deepEqual(ids, records.sort((a, b) => Date.parse(b.submittedAt) - Date.parse(a.submittedAt))
+    .slice(0, 4).map(record => record.id));
+});
+
+test('pending cards show the saved student and submission time and omit unavailable requests', () => {
+  const { context, counts, pending, emit } = setup();
+  const seedCount = counts.pending.textContent;
+  const saved = {
+    id: 'DX-QA', status: 'pending', title: 'Đề xuất kiểm thử',
+    studentName: 'Nguyễn Văn A', studentId: '22520001', submittedAt: '2026-12-01T17:00:00Z',
+  };
+  context.IE104.services.proposals.listForLecturer = () => [
+    saved,
+    { ...saved, id: 'DX-LEGACY', studentId: '', submittedAt: '' },
+    { ...saved, id: 'DX-MASTER', topicTypeLabel: 'Luận văn thạc sĩ' },
+    { ...saved, id: 'DX-UNAVAILABLE', topicType: 'do-an-mon-hoc', courseId: 'SE104' },
+  ];
+  emit('ie104:proposals-updated');
+  assert.equal(counts.pending.textContent, seedCount + 2);
+  const first = pending.children[0];
+  assert.match(first.querySelector('a').href, /\?ma=DX-QA$/);
+  const [student, date] = first.querySelector('.request-card__meta').children;
+  assert.equal(student.children.at(-1).textContent, 'Nguyễn Văn A · 22520001');
+  assert.equal(date.querySelector('time').textContent, '02/12/2026 · 00:00');
+  assert.equal(date.querySelector('time').dateTime, saved.submittedAt);
+  context.IE104.data.currentLecturer = { id: 'GV002' };
+  emit('ie104:proposals-updated');
+  assert.equal(counts.pending.textContent, 2);
+  assert.equal(pending.children.length, 2);
+  const legacy = pending.children[1];
+  assert.match(legacy.querySelector('a').href, /\?ma=DX-LEGACY$/);
+  const [legacyStudent, legacyDate] = legacy.querySelector('.request-card__meta').children;
+  assert.equal(legacyStudent.children.at(-1).textContent, 'Nguyễn Văn A');
+  assert.equal(legacyDate.children.at(-1).textContent, 'Chưa có thông tin');
 });
 
 test('approval refreshes counts and chart without duplicating labels', async () => {
-  const { context, counts, pending, progress, chartLabels } = setup();
-  const record = context.IE104Proposals.get('DX-GV002');
-  const initialPending = pending.children.length;
+  const { context, counts, pending, progress, chartLabels, legend } = setup();
+  const record = context.IE104Proposals.getAll().find(item => item.status === 'pending' && item.studentVisible);
+  assert.ok(record);
+  const before = Object.fromEntries(Object.entries(counts).map(([key, node]) => [key, node.textContent]));
   await context.IE104Proposals.decide(record.id, 'approved');
-  assert.equal(counts.pending.textContent, initialPending - 1);
-  assert.equal(counts.supervised.textContent, 2);
-  assert.equal(counts.total.textContent, 8);
-  assert.equal(pending.children.length, initialPending - 1);
-  const approvedCard = progress.children.find(card => card.querySelector('a').href.includes('ma=' + record.id));
-  assert.match(approvedCard.querySelector('a').href, new RegExp('ma=' + record.id + '&'));
-  assert.ok(approvedCard.querySelectorAll('p').some(node => node.textContent === 'Chưa có dữ liệu tiến độ.'));
+  assert.equal(counts.pending.textContent, before.pending - 1);
+  assert.equal(counts.supervised.textContent, before.supervised + 1);
+  assert.equal(counts.total.textContent, before.total + 1);
+  assert.equal(pending.children.length, Math.min(4, before.pending - 1));
+  const approvedCards = progress.children.filter(card => {
+    const url = new URL(card.querySelector('a').href, 'https://example.test/');
+    return url.searchParams.get('project') === record.topicId && url.hash === '#tien-do';
+  });
+  assert.equal(approvedCards.length, 1);
+  assert.equal(approvedCards[0].querySelector('.topic-progress-card__progress').textContent, 'Chưa có dữ liệu tiến độ.');
   const labels = chartLabels.querySelectorAll('.topic-status__percent');
-  assert.equal(labels.length, 4);
-  assert.equal(parseFloat(labels[0].textContent.replace(',', '.')), 25);
+  const visibleSlices = legend.filter(row => row.querySelector('dd').textContent / counts.total.textContent >= 0.08);
+  assert.equal(labels.length, visibleSlices.length);
+  assert.equal(legend[0].querySelector('dd').textContent, counts.supervised.textContent);
+  assert.equal(parseFloat(labels[0].textContent.replace(',', '.')),
+    Math.round(1000 * counts.supervised.textContent / counts.total.textContent) / 10);
 });
 
 test('empty data hides the chart and shows separate empty messages', async () => {
   const { context, counts, pending, progress, chartContent, empty } = setup();
-  context.localStorage.setItem(context.TeacherTopicStore.key, '[]');
-  context.IE104.data.projectTeams.length = 0;
-  for (const record of context.IE104Proposals.getAll()) {
+  const { lecturerTopics, myTopics, lecturerProjects } = context.IE104.data;
+  lecturerTopics.length = myTopics.length = lecturerProjects.length = 0;
+  for (const record of context.IE104Proposals.filterPending(context.IE104Proposals.getAll())) {
     await context.IE104Proposals.decide(record.id, 'rejected', 'Lý do từ chối phù hợp.');
   }
   assert.deepEqual(Object.values(counts).map(node => node.textContent), [0, 0, 0, 0]);
@@ -177,14 +232,23 @@ test('empty data hides the chart and shows separate empty messages', async () =>
   assert.equal(pending.children[0].textContent, 'Không có yêu cầu chờ duyệt.');
 });
 
-test('a storage change refreshes the overview and corrupt data is reported', () => {
-  const { context, data, emit, counts, warning, chartContent } = setup();
-  const store = context.TeacherTopicStore;
-  data.set(store.key, JSON.stringify(store.read().slice(0, 1)));
-  emit('storage', { key: store.key });
-  assert.equal(counts.created.textContent, 1);
-  data.set(store.key, 'invalid JSON');
-  emit('storage', { key: store.key });
+test('reopening a topic refreshes the overview and corrupt data is reported', () => {
+  const { context, data, emit, counts, legend, warning, chartContent } = setup();
+  const { lecturerTopicRepository, lecturerTopics } = context.IE104.services;
+  const { id, ownerId, registration, status } = lecturerTopics.get('created', 'ISEDAMH-001');
+  assert.equal(status, 'closed');
+  const open = legend[1].querySelector('dd');
+  const closed = legend[3].querySelector('dd');
+  const previousOpen = open.textContent;
+  const previousClosed = closed.textContent;
+  lecturerTopicRepository.write([{ id, ownerId, kind: 'created', status: 'open', patchOnly: true,
+    registration: { ...registration, deadline: '2099-01-01T23:59:00+07:00' },
+    revision: 1, updatedAt: '2026-11-25T08:00:00+07:00' }]);
+  emit('storage', { key: lecturerTopicRepository.key });
+  assert.equal(open.textContent, previousOpen + 1);
+  assert.equal(closed.textContent, previousClosed - 1);
+  data.set(lecturerTopicRepository.key, 'invalid JSON');
+  emit('storage', { key: lecturerTopicRepository.key });
   assert.equal(counts.created.textContent, '—');
   assert.equal(counts.total.textContent, '—');
   assert.equal(warning.hidden, false);
@@ -193,15 +257,18 @@ test('a storage change refreshes the overview and corrupt data is reported', () 
 
 test('opening the overview as a file shows the bundled catalog while saved data is unavailable', () => {
   const { context, counts, chartContent, chartLabels, legend, warning, progress, pending } = setup('file:');
-  const catalog = context.UITLecturerCatalog;
-  assert.equal(counts.created.textContent, catalog.created.length);
-  assert.equal(counts.supervised.textContent, catalog.supervised.length);
-  assert.equal(counts.pending.textContent, pending.children.length);
+  const { lecturerTopics, projectProgress } = context.IE104.services;
+  assert.equal(counts.created.textContent, lecturerTopics.list('created', { catalogOnly: true }).filter(lecturerTopics.isListedInCreatedTab).length);
+  assert.equal(counts.supervised.textContent, legend[0].querySelector('dd').textContent);
+  assert.equal(counts.pending.textContent, context.IE104Proposals.filterPending(context.IE104Proposals.getAll()).length);
+  assert.equal(pending.children.length, Math.min(4, counts.pending.textContent));
   assert.equal(chartContent.hidden, false);
   const total = legend.reduce((sum, row) => sum + row.querySelector('dd').textContent, 0);
   assert.equal(counts.total.textContent, total);
   assert.equal(chartLabels.querySelector('text:nth-of-type(2)').textContent, total);
   assert.match(warning.textContent, /localhost/);
-  assert.match(progress.children.find(card => card.querySelector('a').href.includes('ISEDATN-001')).querySelector('a').href,
-    /\?topic=ISEDATN-001#tien-do$/);
+  const first = progress.children[0];
+  assert.match(first.querySelector('a').href, /\?topic=ISE-001#tien-do$/);
+  assert.equal(first.querySelector('.topic-progress-card__progress').querySelector('progress').value,
+    projectProgress.summarize(projectProgress.getState('UIT-SV-ISE-001', { preview: true })).percent);
 });

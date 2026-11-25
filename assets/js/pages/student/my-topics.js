@@ -8,39 +8,21 @@
     'tu-choi': 'rejected',
     'da-rut': 'withdrawn',
   };
-  const { projectTeams, registrations, proposals, lecturerTopics } = app.services;
-
-  function participantsFor(topic) {
-    let members = app.data.projectTeams?.find(team => team.projectId === topic.id)?.members;
-    try {
-      if (members || topic.source?.startsWith('approved-')) {
-        members = projectTeams.getState(topic.id, { preview: location.protocol === 'file:' }).members;
-      } else {
-        const id = topic.requestId || topic.id;
-        if (id.startsWith('DK')) members = registrations.findById(id)?.members;
-        if (id.startsWith('DX')) {
-          const proposal = proposals.findById(id) || app.services.requests.findStudentProposal(id) || globalThis.IE104Proposals?.getSeed(id);
-          members = proposal?.outline?.members || [proposal?.student || app.data.currentStudent];
-        }
-      }
-    } catch { /* Giữ thông tin của hồ sơ khi không đọc được dữ liệu thành viên đã lưu. */ }
-    return lecturerTopics.supervisedParticipants(topic, members?.filter(Boolean));
-  }
-
   function createCard(topic, index, template) {
     const item = template.cloneNode(true);
     const article = item.querySelector('.topic-card');
     const title = item.querySelector('.topic-card__title');
     const [code, course, lecturer, group, period] = item.querySelectorAll('.topic-card__meta-row dd');
-    const waitingForApproval = topic.status === 'cho-duyet';
-    const participants = waitingForApproval
+    const proposalId = [topic.requestId, topic.id].find(id => /^DX(?:-\w|\d)/i.test(id || ''));
+    const showRecipient = topic.status === 'cho-duyet' || (proposalId && ['tu-choi', 'da-rut'].includes(topic.status));
+    const participants = showRecipient
       ? { isGroup: false, label: topic.lecturer || 'Chưa có thông tin' }
-      : participantsFor(topic);
+      : app.services.topics.myTopicParticipants(topic, { preview: location.protocol === 'file:' });
     const participant = participants.isGroup ? group : lecturer;
     const redundant = participants.isGroup ? lecturer : group;
     redundant.closest('.topic-card__meta-row').remove();
     participant.closest('.topic-card__meta-row').dataset.topicParticipants = '';
-    participant.previousElementSibling.querySelector('.visually-hidden').textContent = waitingForApproval ? 'Giảng viên nhận đề xuất' : participants.isGroup ? 'Nhóm thực hiện' : 'Sinh viên thực hiện';
+    participant.previousElementSibling.querySelector('.visually-hidden').textContent = showRecipient ? 'Giảng viên nhận đề xuất' : participants.isGroup ? 'Nhóm thực hiện' : 'Sinh viên thực hiện';
     participant.textContent = participants.label;
     const status = item.querySelector('.topic-card__status');
     const originalLink = item.querySelector('.topic-card__link');
@@ -52,8 +34,7 @@
     article.dataset.status = statusStyles[topic.status];
     void app.shared?.renderProposalCover?.(article.querySelector('.topic-card__image'), topic.coverImage);
     const displayId = app.services.studentTopicCodes.get(topic);
-    const proposalId = !displayId && [topic.requestId, topic.id].find(id => /^DX(?:-\w|\d)/i.test(id || ''));
-    if (proposalId) code.previousElementSibling.querySelector('.visually-hidden').textContent = 'Mã đề xuất';
+    if (!displayId && proposalId) code.previousElementSibling.querySelector('.visually-hidden').textContent = 'Mã đề xuất';
     code.textContent = displayId || proposalId || 'Chưa có mã đề tài';
     course.textContent = app.ui.studentCourseLabel(topic);
     const semester = topic.semester ? `Học kỳ ${topic.semester}` : 'Học kỳ chưa xác định';

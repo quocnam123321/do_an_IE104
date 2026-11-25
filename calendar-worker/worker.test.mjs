@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { test } from "node:test";
+import { runInNewContext } from "node:vm";
 import { firebaseConfig } from "../assets/js/firebase-config.js";
 import { createCalendarWorker } from "./index.mjs";
 
@@ -206,4 +207,52 @@ test("links Google events once and retries propagation after a lecturer saves", 
   assert.match(remote.get(submission.id).description, /Nộp bản cập nhật/);
   assert.deepEqual((await add([key])).results, [{ id: key, status: "existing" }]);
   assert.equal(remote.size, 2);
+});
+
+test("the lecturer editor updates the original Google event through the calendar client", async (t) => {
+  const { env, remote, worker, call, consent } = fixture(t);
+  assert.equal(await consent("student", "student"), "connected");
+  assert.deepEqual((await (await call("/add", "student", { ids: [key] })).json()).results,
+    [{ id: key, status: "added" }]);
+  const [[eventId, before]] = remote;
+  const requests = [];
+  const source = readFileSync(new URL("../assets/js/calendar-client.js", import.meta.url), "utf8")
+    .replace(/^import .+;\n/, "").replace(/^export /gm, "");
+  const loadRequirement = runInNewContext(source + "\nloadCalendarRequirement", {
+    location: new URL("https://ie104-nhom7.web.app/"),
+    useRecoveryEmulator: false,
+    getFirebaseAuth: async () => ({
+      auth: { authStateReady: async () => {}, currentUser: { getIdToken: async () => "lecturer-session" } },
+    }),
+    AbortSignal,
+    fetch: (url, options) => {
+      assert.equal(options.headers.Authorization, "Bearer lecturer-session");
+      const route = new URL(url).pathname;
+      const payload = JSON.parse(options.body);
+      requests.push({ route, payload });
+      return call(route, "lecturer", payload);
+    },
+  });
+
+  assert.equal(await loadRequirement("DA005", "requirement-8"), null);
+  assert.equal(await loadRequirement("GV-DT001-N01", "REQ-local"), null);
+  assert.deepEqual(requests, []);
+
+  const editor = await loadRequirement("GV-DT001-N01", "requirement-8");
+  assert.equal(editor.due, null);
+  await editor.save("2026-11-26T09:15");
+  assert.deepEqual(requests.map(({ route }) => route), ["/events", "/save"]);
+  assert.equal(requests[1].payload.id, key);
+  assert.equal(requests[1].payload.revision, 0);
+  assert.equal(requests[1].payload.due, "2026-11-26T09:15+07:00");
+  assert.equal(remote.get(eventId).start.dateTime, before.start.dateTime);
+  await assert.rejects(editor.save("2026-11-27T09:15"), /đã được sửa ở nơi khác/);
+
+  const reopened = await loadRequirement("GV-DT001-N01", "requirement-8");
+  assert.equal(reopened.due, "2026-11-26T09:15+07:00");
+  await worker.scheduled({}, env);
+  assert.deepEqual([...remote.keys()], [eventId]);
+  assert.equal(remote.get(eventId).start.dateTime, "2026-11-26T02:15:00.000Z");
+  assert.equal(remote.get(eventId).summary, before.summary);
+  assert.equal(remote.get(eventId).extendedProperties.private.ie104Key, key);
 });

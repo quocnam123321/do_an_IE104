@@ -60,7 +60,84 @@
   pointer-events: none;
 }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .main-content #topic-search { padding-inline-start: 2.5rem; }
-:is(.student-topic-registration-page, .student-my-topics-list-page) .main-content #lecturer-filter { color: var(--color-foreground); }
+.topic-search__lecturer #lecturer-filter {
+  padding-inline: 0.875rem;
+  color: var(--color-foreground);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+}
+.topic-search__lecturer #lecturer-filter:hover {
+  border-color: var(--color-foreground);
+}
+.topic-search__lecturer #lecturer-filter:focus-visible {
+  border-color: var(--color-primary);
+}
+
+@supports (appearance: base-select) and selector(::picker(select)) {
+  .topic-search__lecturer #lecturer-filter,
+  .topic-search__lecturer #lecturer-filter::picker(select) {
+    appearance: base-select;
+  }
+  .topic-search__lecturer #lecturer-filter {
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .topic-search__lecturer #lecturer-filter:open {
+    border-color: var(--color-primary);
+  }
+  .topic-search__lecturer #lecturer-filter::picker-icon {
+    content: "";
+    flex: 0 0 1.125rem;
+    block-size: 1.125rem;
+    margin-inline-start: auto;
+    background: currentColor;
+    color: var(--color-foreground);
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m6 9 6 6 6-6' fill='none' stroke='black' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+  .topic-search__lecturer #lecturer-filter:open::picker-icon {
+    color: var(--color-primary);
+    rotate: 180deg;
+  }
+  .topic-search__lecturer #lecturer-filter::picker(select) {
+    inline-size: anchor-size(width);
+    max-block-size: min(18rem, 60dvh);
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    margin-block: var(--space-2);
+    padding: var(--space-1);
+    border: 1px solid light-dark(var(--color-border-strong), var(--color-border));
+    border-radius: var(--control-radius);
+    background: var(--color-surface);
+    color: var(--color-foreground);
+    box-shadow: var(--shadow-overlay);
+  }
+  .topic-search__lecturer #lecturer-filter option {
+    align-items: center;
+    min-block-size: var(--control-min-height);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-small);
+    color: var(--color-neutral-fg);
+    font-weight: var(--font-weight-regular);
+    overflow-wrap: anywhere;
+  }
+  .topic-search__lecturer #lecturer-filter option:hover {
+    background: light-dark(var(--color-surface-subtle), var(--color-neutral-bg));
+  }
+  .topic-search__lecturer #lecturer-filter option:checked {
+    background: light-dark(var(--color-primary-tint), var(--color-info-bg));
+    color: var(--color-primary);
+    font-weight: var(--weight-semibold);
+  }
+  .topic-search__lecturer #lecturer-filter option:focus-visible {
+    outline: none;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+  .topic-search__lecturer #lecturer-filter option::checkmark {
+    content: none;
+  }
+}
+
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topics__header {
   margin-block-end: var(--space-1);
 }
@@ -196,9 +273,8 @@
     transform: translateX(2px);
   }
 }
-:is(.student-topic-registration-page, .student-my-topics-list-page) .topics > .pagination {
-  justify-self: end;
-  margin-block-start: var(--space-4);
+.topics > .topic-pagination {
+  margin-block-start: calc(var(--space-6) + var(--space-2));
 }
 @media (width < 77.5rem) {
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topics-layout { grid-template-columns: 15rem minmax(0, 1fr); gap: var(--space-4); }
@@ -232,7 +308,6 @@
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__group + .topic-filters__group,
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filters__semester { border-top: 1px solid var(--color-border); padding-top: var(--space-4); }
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-list { max-block-size: 40rem; padding: var(--space-2) var(--space-2) var(--space-2) 0; }
-  :is(.student-topic-registration-page, .student-my-topics-list-page) .topics > .pagination { justify-self: center; }
 
   :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-card {
     grid-template-columns: minmax(0, 1fr);

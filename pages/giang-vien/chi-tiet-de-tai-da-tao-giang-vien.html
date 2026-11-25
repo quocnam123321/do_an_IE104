@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="vi"><head>
-  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png?v=2" />
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Xem thông tin, mô tả, mục tiêu, kết quả dự kiến và các mốc thời gian của đề tài do giảng viên tạo." name="description">
@@ -15,9 +15,9 @@
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language">
     <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-menu-2">
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
-    <link rel="stylesheet" href="../../assets/css/teacher-dialogs.css">
+    <link rel="stylesheet" href="../../assets/css/teacher-dialogs.css?v=20261125-confirmation-dialog">
     <link rel="stylesheet" href="../../assets/css/proposal-request-detail.css?v=20261124-topic-attachment">
-    <link rel="stylesheet" href="../../assets/css/teacher-created-detail.css?v=20261124-registration-success">
+    <link rel="stylesheet" href="../../assets/css/teacher-created-detail.css?v=20261125-confirmation-dialog">
     <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261125-registration-role">
     <script src="../../assets/js/nav-indicator.js" defer=""></script>
     <script src="../../assets/js/dialog-commands.js" defer=""></script>
@@ -89,10 +89,10 @@
                     <a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a>
                   </li>
                   <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a>
+                    <a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a>
                   </li>
                   <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a>
+                    <a class="main-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a>
                   </li>
                   <li class="main-nav__subitem">
                     <a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a>
@@ -160,10 +160,10 @@
                       <a class="mobile-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a>
                     </li>
                     <li>
-                      <a class="mobile-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a>
+                      <a class="mobile-nav__link" href="../chung/thong-bao.html">Thông báo</a>
                     </li>
                     <li>
-                      <a class="mobile-nav__link" href="../chung/thong-bao.html">Thông báo</a>
+                      <a class="mobile-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a>
                     </li>
                     <li>
                       <a class="mobile-nav__link" href="../chung/lien-he.html">Liên hệ</a>
@@ -324,7 +324,7 @@
     </main>
     <!-- Hộp thoại HTML gốc mở bằng command/commandfor và đóng bằng form method="dialog".
          Các nút xác nhận disabled vì chưa có xử lý thay đổi trạng thái đề tài. -->
-    <dialog class="topic-dialog registration-confirmation-dialog" id="close-registration" aria-labelledby="close-registration-title" aria-describedby="close-registration-description">
+    <dialog class="topic-dialog topic-dialog--confirmation" id="close-registration" aria-labelledby="close-registration-title" aria-describedby="close-registration-description">
       <header class="topic-dialog__header">
         <h2 id="close-registration-title">Đóng đăng ký đề tài</h2>
         <button class="topic-dialog__close" type="button" command="close" commandfor="close-registration" aria-label="Đóng hộp thoại" autofocus>
@@ -341,7 +341,7 @@
         </div>
       </form>
     </dialog>
-    <dialog class="topic-dialog registration-confirmation-dialog" id="reopen-registration" aria-labelledby="reopen-registration-title" aria-describedby="reopen-registration-description">
+    <dialog class="topic-dialog topic-dialog--confirmation" id="reopen-registration" aria-labelledby="reopen-registration-title" aria-describedby="reopen-registration-description">
       <header class="topic-dialog__header">
         <h2 id="reopen-registration-title">Mở lại đăng ký đề tài</h2>
         <button class="topic-dialog__close" type="button" command="close" commandfor="reopen-registration" aria-label="Đóng hộp thoại" autofocus>

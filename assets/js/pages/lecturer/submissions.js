@@ -10,6 +10,7 @@
   const uploadsService = app.services.studentSubmissions;
   const panel = ui.region('submissions-section', 'bai-nop');
   let deleteMode = false;
+  let loadingRequirement = false;
   let requestVersion = 0;
   let renderedState;
   let renderedUploads;
@@ -41,7 +42,26 @@
     return editor;
   }
 
-  function editRequirement(item) {
+  async function editRequirement(item) {
+    if (loadingRequirement || !ui.state?.canManageRequirements) return;
+    const { projectId, revision } = ui.state;
+    let calendarRequirement;
+    if (item && location.protocol !== 'file:') {
+      loadingRequirement = true;
+      try {
+        const { loadCalendarRequirement } = await import('../../calendar-client.js?v=20261125-deadline-sync');
+        calendarRequirement = await loadCalendarRequirement(projectId, item.id);
+      } catch (error) {
+        ui.notify(error.message, true);
+        return;
+      } finally {
+        loadingRequirement = false;
+      }
+      if (ui.state?.projectId !== projectId || ui.state.revision !== revision) {
+        ui.notify('Dữ liệu đã thay đổi ở tab khác. Hãy đóng hộp thoại và mở lại để xem bản mới.', true);
+        return;
+      }
+    }
     let deadline;
     const readDeadline = () => datePicker ? datePicker.read(deadline) : deadline.value;
     modal(item ? 'Sửa yêu cầu bài nộp' : 'Tạo yêu cầu bài nộp', 'Lưu yêu cầu', body => {
@@ -49,14 +69,28 @@
       field(body, 'content', 'Nội dung yêu cầu', 'textarea', item?.content || '', { required: true, maxLength: 5000, rows: 3 });
       const deadlineField = el('div', '', 'topic-dialog__field requirement-deadline');
       deadline = field(deadlineField, 'deadline', 'Hạn nộp (giờ Việt Nam)', 'datetime-local',
-        item ? localDate(item.deadline) : '', { required: true });
+        item ? localDate(calendarRequirement?.due || item.deadline) : '', { required: true });
       datePicker?.enhanceDate(deadline, { ...calendarOptions, label: deadline.previousElementSibling });
       deadlineField.addEventListener('input', () => deadline.setCustomValidity(''));
       body.append(deadlineField);
-    }, (values, snapshot) => {
+    }, async (values, snapshot) => {
       values.set('deadline', readDeadline());
-      return service.saveRequirement(snapshot.projectId, item?.id || null, Object.fromEntries(values), snapshot.revision);
-    }, undefined, {
+      const input = Object.fromEntries(values);
+      const saveLocal = () => service.saveRequirement(snapshot.projectId, item?.id || null, input, snapshot.revision);
+      if (!calendarRequirement) return saveLocal();
+
+      const checked = service.validateRequirement(input);
+      if (checked.errors.length) throw new Error(checked.errors.join(' '));
+      const current = service.getState(snapshot.projectId);
+      if (current.revision !== snapshot.revision) throw new Error('Dữ liệu đã thay đổi ở tab khác. Hãy đóng hộp thoại và mở lại để xem bản mới.');
+      if (!current.canManageRequirements) throw new Error('Đề tài đã thay đổi. Hãy mở lại hộp thoại.');
+      await calendarRequirement.save(input.deadline);
+      try {
+        return saveLocal();
+      } catch {
+        throw new Error('Đã lưu hạn nộp trên dịch vụ lịch. Chưa lưu yêu cầu trên trình duyệt này. Hãy mở lại để thử lưu yêu cầu.');
+      }
+    }, calendarRequirement ? 'Đã lưu. Sự kiện đã thêm sẽ tự cập nhật trên Google Calendar.' : undefined, {
       className: 'requirement-form-dialog',
       closeIcon: createSymbolIcon('submission-feedback-close-icon'),
       beforeSubmit() {

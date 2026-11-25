@@ -1318,7 +1318,7 @@ window.UITLecturerCatalog = {
       features: ['danh mục hoạt động tình nguyện', 'tìm hoạt động theo kỹ năng', 'lịch ca tham gia', 'đăng ký và hủy tham gia', 'kiểm tra số chỗ còn lại', 'phát hiện ca trùng lịch', 'xét duyệt danh sách tham gia', 'điểm danh theo ca', 'ghi nhận số giờ đóng góp', 'báo cáo hoạt động theo tháng'],
     },
     {
-      id: 'ISEDAMH-001', title: 'Website đặt chỗ phòng tự học theo khung giờ', createdOnly: true,
+      id: 'ISEDAMH-001', title: 'Website đặt chỗ phòng tự học theo khung giờ', createdOnly: true, status: 'closed',
       semester: '1', academicYear: '2026–2027', course: 'web', start: '2026-09-07', group: 'Nhóm 16',
       authors: ['Nguyễn Gia Huy', 'Đỗ Khánh Linh'], studentIds: ['23525005', '23525006'],
       description: 'Xây dựng giao diện website tra cứu phòng tự học và đặt chỗ theo khung giờ bằng HTML, CSS và JavaScript. Website hỗ trợ xem lịch phòng, đăng ký chỗ và hủy lịch đặt.',
@@ -1410,6 +1410,7 @@ window.UITLecturerCatalog = {
   {
     "id": "ISEDAMH-010",
     "title": "Khảo sát và đề xuất phương án nâng cấp hạ tầng CNTT cho thư viện trường học",
+    "status": "closed",
     "course": "IE101",
     "semester": "1",
     "academicYear": "2026–2027",
@@ -1538,6 +1539,7 @@ window.UITLecturerCatalog = {
   {
     "id": "ISEDAMH-014",
     "title": "Thiết kế phương án bảo vệ mạng nội bộ cho văn phòng nhỏ",
+    "status": "closed",
     "course": "IE105",
     "semester": "1",
     "academicYear": "2026–2027",
@@ -1615,7 +1617,8 @@ window.UITLecturerCatalog = {
       courseLabel: courses[sample.course] || 'Không áp dụng', faculty: 'Khoa Khoa học và Kỹ thuật Thông tin',
       field: sample.course === 'database' ? 'Cơ sở dữ liệu' : 'Hệ thống thông tin',
       technology: sample.course === 'database' ? 'Mô hình quan hệ, SQL và dữ liệu giả lập' : 'HTML, CSS và JavaScript',
-      createdAt: dateAt(sample.start, -21), status: sample.start < '2026-09-01' ? 'closed' : 'open',
+      createdAt: dateAt(sample.start, -21),
+      status: sample.status ?? (sample.start < '2026-09-01' ? 'closed' : 'open'),
       startsAt: sample.start, completesAt: `${dateAt(sample.start, 90)}T23:59:00+07:00`,
       supervisionRole: sample.secondary ? 'secondary' : 'primary',
       supervisionRoleLabel: sample.secondary ? 'Đồng hướng dẫn' : 'Hướng dẫn chính',
@@ -1938,7 +1941,7 @@ window.UITLecturerCatalog = {
         }
       ],
       "supervisor": {
-        "name": "Nguyễn Văn A",
+        "name": "Võ Tấn Khoa",
         "degree": "ThS.",
         "workplace": "Khoa Khoa học và Kỹ thuật Thông tin"
       }
@@ -1946,8 +1949,9 @@ window.UITLecturerCatalog = {
     "attachmentSample": "proposal-outline",
     "source": "uit-demo",
     "lecturerId": "GV001",
-    "lecturerName": "Nguyễn Văn A",
-    "supervisorName": "Nguyễn Văn A",
+    "lecturerName": "ThS. Võ Tấn Khoa",
+    "supervisorId": "giang-vien-12",
+    "supervisorName": "ThS. Võ Tấn Khoa",
     "studentVisible": true
   },
   {
@@ -2094,16 +2098,17 @@ window.UITLecturerCatalog = {
         }
       ],
       "supervisor": {
-        "name": "Nguyễn Văn A",
-        "degree": "ThS.",
+        "name": "Nguyễn Gia Tuấn Anh",
+        "degree": "TS.",
         "workplace": "Khoa Khoa học và Kỹ thuật Thông tin"
       }
     },
     "attachmentSample": "proposal-outline",
     "source": "uit-demo",
     "lecturerId": "GV001",
-    "lecturerName": "Nguyễn Văn A",
-    "supervisorName": "Nguyễn Văn A",
+    "lecturerName": "TS. Nguyễn Gia Tuấn Anh",
+    "supervisorId": "giang-vien-36",
+    "supervisorName": "TS. Nguyễn Gia Tuấn Anh",
     "studentVisible": true
   },
   {
@@ -2416,4 +2421,63 @@ window.UITLecturerCatalog = {
   additions.forEach(record => { record.courseLabel = catalog.subjectLabel(record); });
   catalog.archivedPending = catalog.pending;
   catalog.pending = additions;
+  catalog.rejected = [
+    {
+      topicCode: 'ISEDAMH-091', title: 'Website theo dõi việc mượn thiết bị học tập', course: 'IE104',
+      submittedAt: '2026-10-30T09:00:00+07:00', decidedAt: '2026-11-02T14:30:00+07:00',
+      supervisorId: 'giang-vien-12', supervisorName: 'ThS. Võ Tấn Khoa',
+      description: 'Xây dựng website để sinh viên gửi yêu cầu mượn và theo dõi thời hạn trả thiết bị.',
+      objectives: 'Thiết kế luồng xác nhận bàn giao và ghi nhận tình trạng thiết bị khi trả.',
+      outcomes: 'Bản thử nghiệm cho phép quản lý danh mục thiết bị và lịch sử mượn trả.',
+      reason: 'Đề cương cần làm rõ cách xử lý khi thiết bị được trả trễ, bị hư hỏng hoặc thất lạc.\nCần nêu rõ ai xác nhận tình trạng thiết bị và bổ sung kịch bản kiểm thử cho từng trường hợp.',
+      outline: {
+        startDate: '2026-11-09', progressReportDate: '2026-12-07', finalReportDate: '2027-01-11',
+        methodAndScope: 'Khảo sát quy trình mượn thiết bị tại một phòng thực hành, mô hình hóa dữ liệu và dựng bản thử nghiệm cho danh mục, phiếu mượn, hạn trả và xác nhận bàn giao.',
+        plan: 'Nguyễn Minh Anh khảo sát nghiệp vụ, thiết kế dữ liệu và hoàn thành bản thử nghiệm mượn trả trước báo cáo tiến độ. Giai đoạn cuối kiểm thử các luồng chính và viết hướng dẫn sử dụng.',
+      },
+    },
+    {
+      topicCode: 'ISEDAMH-092', title: 'Hệ thống lập lịch sinh hoạt câu lạc bộ', course: 'IE108',
+      submittedAt: '2026-11-03T10:15:00+07:00', decidedAt: '2026-11-06T15:45:00+07:00',
+      supervisorId: 'giang-vien-9', supervisorName: 'TS. Võ Phương Bình',
+      description: 'Phân tích cách các câu lạc bộ lập lịch sinh hoạt và xử lý các buổi trùng giờ.',
+      objectives: 'Mô hình hóa quy trình đăng ký tham gia và cập nhật thay đổi lịch.',
+      outcomes: 'Bộ mô hình nghiệp vụ và bản mẫu giao diện lịch sinh hoạt.',
+      reason: 'Phạm vi hiện còn rộng. Cần chọn một nhóm người dùng và xác định các tình huống kiểm thử.',
+      outline: {
+        startDate: '2026-11-10', progressReportDate: '2026-12-08', finalReportDate: '2027-01-12',
+        methodAndScope: 'Quan sát cách ban điều hành và thành viên lên lịch, sau đó dựng sơ đồ luồng cho việc tạo buổi sinh hoạt, đăng ký, báo trùng giờ và đổi lịch.',
+        plan: 'Nguyễn Minh Anh thu thập yêu cầu và thiết kế sơ đồ nghiệp vụ trong giai đoạn đầu. Trước mốc tiến độ, dựng bản mẫu lịch theo tuần. Giai đoạn cuối thu phản hồi và hoàn thiện đặc tả.',
+      },
+    },
+    {
+      topicCode: 'ISEDAMH-093', title: 'Danh mục tài nguyên cho tuần sinh hoạt đầu khóa', course: 'IE103',
+      submittedAt: '2026-11-07T08:45:00+07:00', decidedAt: '2026-11-10T09:30:00+07:00',
+      supervisorId: 'giang-vien-13', supervisorName: 'ThS. Nguyễn Thị Anh Thư',
+      description: 'Tổ chức các tài liệu và liên kết hỗ trợ sinh viên tìm thông tin trong tuần sinh hoạt đầu khóa.',
+      objectives: 'Xây dựng cấu trúc phân loại thông tin theo chủ đề và nhu cầu tra cứu.',
+      outcomes: 'Danh mục tài nguyên mẫu và phương án cập nhật nội dung theo từng đợt.',
+      reason: 'Đề xuất chưa xác định nguồn tài liệu được phép sử dụng và người chịu trách nhiệm cập nhật.',
+      outline: {
+        startDate: '2026-11-16', progressReportDate: '2026-12-14', finalReportDate: '2027-01-18',
+        methodAndScope: 'Phân tích nhu cầu tra cứu của sinh viên năm nhất, xây dựng bộ trường mô tả tài nguyên và thử nghiệm tìm theo chủ đề, từ khóa và mốc thời gian trên dữ liệu minh họa.',
+        plan: 'Nguyễn Minh Anh xác định nhu cầu tra cứu và xây dựng bộ phân loại. Trước báo cáo tiến độ, nhập dữ liệu minh họa và dựng danh mục. Giai đoạn cuối đánh giá kết quả tìm kiếm và lập hướng dẫn cập nhật.',
+      },
+    },
+  ].map(({ decidedAt, reason, outline, ...sample }) => {
+    const { topicCode } = sample;
+    const record = {
+      ...sample, id: `DX-${topicCode}`, topicId: topicCode,
+      topicType: 'do-an-mon-hoc', topicTypeLabel: 'Đồ án môn học', semester: '1', academicYear: '2026–2027',
+      studentName: 'Nguyễn Minh Anh', studentId: '24520001', studentVisible: true,
+      lecturerId: 'GV001', lecturerName: sample.supervisorName,
+      supervisionRole: 'huong-dan-chinh', supervisionRoleLabel: 'Hướng dẫn chính',
+      source: 'uit-demo', outline: { version: 3, ...outline },
+      attachment: `De-cuong-${topicCode}.txt`, attachmentSample: 'proposal-summary',
+      decision: { status: 'rejected', reason, decidedAt },
+      history: [{ action: 'reject', at: decidedAt }],
+    };
+    record.courseLabel = catalog.subjectLabel(record);
+    return record;
+  });
 })();

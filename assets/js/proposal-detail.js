@@ -11,6 +11,7 @@
   const badge = pageHeading.querySelector('.status-badge');
   const studentNameLabel = content.querySelector('.request-student__meta dt');
   const feedback = document.getElementById('proposal-decision-feedback');
+  const back = document.querySelector('.back-link');
   const actions = content.querySelector('.request-detail__actions');
   const proposalOnly = content.querySelectorAll('[data-proposal-only]');
   const registrationOnly = content.querySelectorAll('[data-registration-only]');
@@ -19,6 +20,7 @@
   const result = document.getElementById('proposal-result');
   const forms = ['approve', 'reject'].map((action) => document.getElementById(`${action}-proposal-form`));
   const dialogs = forms.map((form) => form.closest('dialog'));
+  const rejectionSuccess = document.getElementById('reject-proposal-success');
   const labels = { pending: 'Chờ duyệt', approved: 'Đã duyệt', rejected: 'Từ chối', withdrawn: 'Đã rút' };
   const dateFormat = new Intl.DateTimeFormat('vi-VN', {
     year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
@@ -40,7 +42,6 @@
       target.pathname === new URL(path, location.href).pathname;
     const fromTeaching = matches(teaching) && store.get(id)?.status === 'approved';
     if (matches(pending) || fromTeaching) {
-      const back = document.querySelector('.back-link');
       const crumb = document.querySelector('.breadcrumb a[href="yeu-cau-cho-duyet.html"]');
       back.href = crumb.href = (fromTeaching ? teaching : pending) + target.search;
       if (fromTeaching) {
@@ -49,6 +50,8 @@
       }
     }
   } catch { /* URL không hợp lệ: giữ liên kết HTML về danh sách. */ }
+
+  rejectionSuccess.addEventListener('close', () => window.location.assign(back.href));
 
   function text(selector, value) {
     const node = content.querySelector(selector);
@@ -76,10 +79,16 @@
     actions.querySelector('.request-action--approve span').textContent = registration ? 'Duyệt đăng ký' : 'Duyệt đề xuất';
     for (const [index, action] of ['Duyệt', 'Từ chối'].entries()) {
       dialogs[index].querySelector('h2').textContent = `${action} ${registration ? 'đăng ký' : 'đề xuất'}`;
-      dialogs[index].querySelector('.topic-dialog__desc').textContent = `Bạn có chắc muốn ${action.toLocaleLowerCase('vi')} ${registration ? 'đăng ký' : 'đề xuất'} này?`;
       dialogs[index].querySelector('.topic-dialog__close').setAttribute('aria-label', `Đóng hộp thoại ${action.toLocaleLowerCase('vi')} ${registration ? 'đăng ký' : 'đề xuất'}`);
-      const label = dialogs[index].querySelector('.topic-dialog__info-row span').firstChild;
-      label.textContent = registration ? 'Đăng ký: ' : 'Đề xuất: ';
+      const rejectQuestion = dialogs[index].querySelector('[data-reject-question]');
+      if (rejectQuestion) {
+        rejectQuestion.textContent = registration ? 'Bạn muốn từ chối đăng ký' : 'Bạn muốn từ chối đề xuất';
+      } else {
+        dialogs[index].querySelector('.topic-dialog__desc').textContent = registration
+          ? 'Bạn có chắc muốn duyệt đăng ký này?' : 'Bạn có chắc muốn duyệt đề xuất này?';
+        const label = dialogs[index].querySelector('.topic-dialog__info-row span').firstChild;
+        label.textContent = registration ? 'Đăng ký: ' : 'Đề xuất: ';
+      }
     }
     let group = content.querySelector('[data-registration-group]');
     if (!group) {
@@ -181,8 +190,12 @@
       try {
         await store.decide(id, reject ? 'rejected' : 'approved', reason.value, pendingRevision ?? displayedRevision);
         form.closest('dialog').close();
-        feedback.textContent = `Đã lưu quyết định ${reject ? 'từ chối' : 'duyệt'} ${id}.`;
-        feedback.focus();
+        if (reject) {
+          rejectionSuccess.showModal();
+        } else {
+          feedback.textContent = `Đã lưu quyết định duyệt ${id}.`;
+          feedback.focus();
+        }
       } catch (failure) {
         error.textContent = failure.name === 'SecurityError' || failure.name === 'QuotaExceededError'
           ? 'Không lưu được quyết định. Hãy cho phép lưu trữ trên trình duyệt và thử lại. Chưa cập nhật kết quả.'

@@ -2,29 +2,52 @@
   const app = globalThis.IE104 = globalThis.IE104 || {};
   app.services = app.services || {};
 
-  function getState() {
-    const result = app.services.topics.listMyTopics({}, { page: 1, pageSize: Number.MAX_SAFE_INTEGER });
-    const topics = result.items;
-    const counts = { total: topics.length, active: 0, approved: 0, pending: 0, rejected: 0, withdrawn: 0 };
-    topics.forEach(topic => {
-      if (topic.status === 'dang-thuc-hien') counts.active += 1;
-      if (['dang-thuc-hien', 'hoan-thanh'].includes(topic.status)) counts.approved += 1;
-      if (topic.status === 'cho-duyet') counts.pending += 1;
-      if (topic.status === 'tu-choi') counts.rejected += 1;
-      if (topic.status === 'da-rut') counts.withdrawn += 1;
-    });
+  const statuses = Object.freeze({
+    'dang-thuc-hien': 'Đang thực hiện',
+    'cho-duyet': 'Chờ duyệt',
+    'hoan-thanh': 'Hoàn thành',
+    'tu-choi': 'Đã từ chối',
+    'da-rut': 'Đã rút',
+    'yeu-cau-chinh-sua': 'Yêu cầu chỉnh sửa',
+    'da-duyet': 'Đã duyệt',
+  });
+
+  function getState({ preview = false } = {}) {
+    const { topics, projectProgress, requests } = app.services;
+    const result = topics.listMyTopics({}, { pageSize: Number.MAX_SAFE_INTEGER });
     const warnings = result.warning ? [result.warning] : [];
-    const active = topics.filter(topic => topic.status === 'dang-thuc-hien').map(topic => {
-      let percent = null;
-      try { percent = app.services.projectProgress.summarize(app.services.projectProgress.getState(topic.id)).percent; }
+    const counts = Object.fromEntries(Object.keys(statuses).map(status => [status, 0]));
+    for (const topic of result.items) {
+      if (Object.hasOwn(counts, topic.status)) counts[topic.status] += 1;
+    }
+
+    const active = result.items.filter(topic => topic.status === 'dang-thuc-hien').slice(0, 5).map(topic => {
+      let progress = null;
+      try {
+        const projectId = new URL(topic.detailUrl || '', location.href).searchParams.get('project') || topic.id;
+        progress = projectProgress.summarize(projectProgress.getState(projectId, { preview }));
+      }
       catch (failure) { warnings.push(`${topic.id}: ${failure.message}`); }
-      return { ...topic, percent };
+      const participants = topics.myTopicParticipants(topic, { preview });
+      return { ...topic, progress, participants };
     });
-    let recent = topics.filter(topic => topic.requestId || ['cho-duyet', 'tu-choi'].includes(topic.status)).slice(0, 5).map(topic => ({ ...topic, requestType: topic.requestId?.startsWith('DK-') ? 'Đăng ký đề tài' : 'Đề xuất đề tài' }));
-    try { if (app.services.requests) recent = app.services.requests.recent(topics).slice(0, 5); }
-    catch (error) { warnings.push(error.message); }
-    return { counts, active, recent, warning: [...new Set(warnings)].join(' ') };
+
+    let requestDates = new Map();
+    try {
+      requestDates = new Map(requests.recent(result.items).map(record => [record.requestId, record.createdAt]));
+    } catch (error) {
+      warnings.push(error.message);
+    }
+    const pending = result.items.filter(topic => topic.status === 'cho-duyet')
+      .map(topic => {
+        const requestId = topic.requestId || topic.id;
+        return { ...topic, requestId, submittedAt: requestDates.get(requestId) || topic.createdAt };
+      })
+      .sort((first, second) => (Date.parse(second.submittedAt) || 0) - (Date.parse(first.submittedAt) || 0))
+      .slice(0, 4);
+
+    return { total: result.total, counts, active, pending, warning: [...new Set(warnings)].join(' ') };
   }
 
-  app.services.overview = { getState };
+  app.services.overview = { statuses, getState };
 })();

@@ -105,7 +105,6 @@
       code.previousElementSibling.hidden = !code.textContent;
       const avatar = member.querySelector('.team-member__avatar'); avatar.textContent = name.split(/\s+/).slice(-2).map(part => part[0]).join(''); avatar.setAttribute('aria-label', name);
       const role = member.querySelector('.team-member__role');
-      role.hidden = !participants.isGroup;
       role.textContent = index === 0 ? 'Nhóm trưởng' : 'Thành viên'; return member;
     }));
     const groupName = document.querySelector('.topic-team__group-name');

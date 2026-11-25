@@ -11,6 +11,37 @@
   const attachmentDatabase = 'ie104.supervision-attachments.v1';
   const finalStatuses = ['accepted', 'rejected'];
   const changes = new EventTarget();
+  const demoTeacher = { id: 'giang-vien-0', name: 'ThS. Nguyễn Hoàng An' };
+  const demoInvitations = new Map([
+    ['inv-demo-01', 'Nguyễn Minh Anh', '24520001', '2026-11-25T14:20:00+07:00',
+      'Mời đồng hướng dẫn đề tài Website quản lý hoạt động học tập',
+      'Em muốn trao đổi về cách thiết kế phần theo dõi tiến độ học tập và kiểm thử với dữ liệu mẫu. Thầy có thể góp ý cho nhóm em được không ạ?'],
+    ['inv-demo-02', 'Trần Quốc Bảo', '23520148', '2026-11-25T09:45:00+07:00',
+      'Xin hướng dẫn khóa luận về tìm kiếm ngữ nghĩa cho học liệu số',
+      'Em dự kiến xây dựng công cụ tìm kiếm theo ngữ nghĩa cho học liệu tiếng Việt. Em mong được trao đổi với thầy về phạm vi và cách đánh giá.'],
+    ['inv-demo-03', 'Lê Hoàng Gia Huy', '24520312', '2026-11-24T16:10:00+07:00',
+      'Xin hướng dẫn đồ án IE104 về hệ thống đặt lịch phòng lab',
+      'Nhóm em muốn làm website đặt lịch phòng lab theo khung giờ. Nhóm mong thầy góp ý về quy trình đăng ký và điều kiện hủy lịch.'],
+    ['inv-demo-04', 'Phạm Ngọc Hà', '24520256', '2026-11-24T10:30:00+07:00',
+      'Xin hướng dẫn đề tài hệ thống góp ý cho thư viện số',
+      'Em muốn dùng đề tài này để tìm hiểu cách thu thập và phân loại góp ý của người dùng thư viện. Em xin hẹn thầy trao đổi về đề cương.'],
+    ['inv-demo-05', student.name, student.id, '2026-11-24T09:00:00+07:00',
+      'Xin hướng dẫn đề tài tìm kiếm tài liệu học tập tiếng Việt',
+      'Em muốn xây dựng công cụ tìm tài liệu theo nội dung câu hỏi. Em mong thầy góp ý về cách chọn dữ liệu và đánh giá kết quả tìm kiếm.',
+      { id: 'giang-vien-1', name: 'TS. Nguyễn Văn Kiệt' }],
+    ['inv-demo-06', student.name, student.id, '2026-11-23T16:00:00+07:00',
+      'Xin hướng dẫn đề tài nhận diện email giả mạo',
+      'Em dự định làm công cụ đánh dấu email có dấu hiệu giả mạo. Em mong thầy góp ý để xác định phạm vi phù hợp với đồ án môn học.',
+      { id: 'giang-vien-3', name: 'PGS.TS. Nguyễn Tấn Cầm' }],
+    ['inv-demo-07', student.name, student.id, '2026-11-22T10:00:00+07:00',
+      'Xin hướng dẫn đề tài phân loại phản hồi sinh viên',
+      'Em muốn phân loại phản hồi khảo sát theo chủ đề. Em xin cô góp ý về cách xây dựng bộ nhãn và đánh giá mô hình.',
+      { id: 'giang-vien-37', name: 'ThS. Tạ Thu Thủy' }],
+  ].map(([id, name, code, createdAt, subject, message, teacher = demoTeacher]) => [id, {
+    id, teacher, student: { id: `demo:${code}`, name, code }, subject,
+    status: 'pending', createdAt, updatedAt: createdAt, decision: null,
+    messages: [{ role: 'student', text: message, sentAt: createdAt }],
+  }]));
 
   function isText(value, limit, optional = false) {
     return typeof value === 'string' && value.length <= limit && (optional || value.trim().length > 0);
@@ -39,8 +70,13 @@
   }
 
   function isRecord(record, id) {
+    const sample = demoInvitations.get(id);
+    const sender = record?.student;
+    const validSender = sample
+      ? sender?.id === sample.student.id && sender.name === sample.student.name && sender.code === sample.student.code
+      : isStudent(sender);
     if (!record || id !== record.id || !isTeacher(record.teacher) ||
-        !isStudent(record.student) ||
+        !validSender ||
         (record.projectId !== undefined && !isText(record.projectId, 120)) ||
         !isText(record.subject, subjectLimit) || !isDate(record.createdAt) || !isDate(record.updatedAt) ||
         !Array.isArray(record.messages) || record.messages[0]?.role !== 'student') {
@@ -63,7 +99,10 @@
     } catch {
       throw new Error('Không đọc được lời mời. Hãy kiểm tra quyền lưu trữ của trình duyệt.');
     }
-    if (raw === null) return null;
+    if (raw === null) {
+      const sample = demoInvitations.get(id);
+      return sample ? structuredClone(sample) : null;
+    }
     try {
       const record = JSON.parse(raw);
       if (isRecord(record, id)) return record;
@@ -73,19 +112,40 @@
     throw new Error('Dữ liệu lời mời đã lưu không hợp lệ.');
   }
 
-  function getAll() {
-    const ids = [];
+  function readAll(includeDemo = false) {
+    const ids = new Set(includeDemo ? demoInvitations.keys() : []);
     try {
       const storage = window.localStorage;
       for (let index = 0; index < storage.length; index++) {
         const key = storage.key(index);
-        if (key?.startsWith(prefix)) ids.push(key.slice(prefix.length));
+        if (!key?.startsWith(prefix)) continue;
+        const id = key.slice(prefix.length);
+        if (includeDemo || !demoInvitations.has(id)) ids.add(id);
       }
     } catch {
       throw new Error('Không đọc được lời mời. Hãy kiểm tra quyền lưu trữ của trình duyệt.');
     }
-    return ids.map(read).filter(record => record && record.status !== 'cancelled')
+    return Array.from(ids, read).filter(record => record && record.status !== 'cancelled')
       .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
+  }
+
+  const getAll = () => readAll();
+
+  function listForTeacher(session) {
+    if (session.demo) return readAll(true);
+    return getAll().filter(({ teacher }) => session.teacherIds.includes(teacher.id));
+  }
+
+  function isInvitationStudent(record, id) {
+    return record.student.id === id || (id === student.id && demoInvitations.get(record.id)?.student.code === id);
+  }
+
+  function listForStudent(sender) {
+    return readAll(sender.id === student.id).filter(record => isInvitationStudent(record, sender.id));
+  }
+
+  function studentCode(record) {
+    return record.student.code || (record.student.id === student.id ? student.id : '');
   }
 
   function write(record) {
@@ -267,7 +327,7 @@
   async function reply(id, actor, message, attachment) {
     const text = validateText(message, 'Phản hồi', messageLimit);
     return withAttachment(attachment, (metadata) => update(id, (record, now) => {
-      const fromStudent = actor?.role === 'student' && actor.id === record.student.id;
+      const fromStudent = actor?.role === 'student' && isInvitationStudent(record, actor.id);
       const fromTeacher = actor?.role === 'teacher' && actor.id === record.teacher.id;
       if (!fromStudent && !fromTeacher) throw new Error('Vui lòng mở lời mời bằng đúng vai trò đã tham gia.');
       const response = { role: actor.role, text, sentAt: now };
@@ -300,7 +360,7 @@
   });
   window.addEventListener('pageshow', notify);
   window.IE104Supervision = Object.freeze({
-    student, getAll, create, reply, decide, cancelProjectInvitation, getUnreadResponses, markResponsesRead, needsTeacherReply, canReply,
+    student, getAll, listForTeacher, listForStudent, studentCode, create, reply, decide, cancelProjectInvitation, getUnreadResponses, markResponsesRead, needsTeacherReply, canReply,
     attachmentLimit, getAttachment,
     subscribe(listener) {
       changes.addEventListener('change', listener);

@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="vi">
   <head>
-    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png?v=2" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Danh sách đề tài hướng dẫn." />
     <title>Quản lý đề tài | Quản lý đồ án</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261125-topic-participants"></script>
+    <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261125-filter-selection"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link
@@ -18,16 +18,16 @@
       rel="stylesheet"
       href="../../assets/css/base.css?v=20261123-language"
     />
-    <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-menu-2" />
+    <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-pagination" />
     <link
       rel="stylesheet"
-      href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1"
+      href="../../assets/css/teacher-layout.css?v=20261125-topic-pagination"
     />
     <link
       rel="stylesheet"
-      href="../../assets/css/teacher-supervised-topics.css?v=20261124-project-status"
+      href="../../assets/css/teacher-supervised-topics.css?v=20261125-lead-supervisor-badge"
     />
-    <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css?v=20261122-empty-state" />
+    <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css?v=20261125-filter-selection" />
     <script src="../../assets/js/nav-indicator.js" defer=""></script>
 
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css" />
@@ -54,7 +54,7 @@
       defer
     ></script>
     <script
-      src="../../assets/js/services/lecturer-topic-service.js?v=20261125-topic-participants"
+      src="../../assets/js/services/lecturer-topic-service.js?v=20261125-progress-preview"
       defer
     ></script>
     <script
@@ -78,7 +78,7 @@
     ></script>
     <script src="../../assets/js/services/teaching-service.js?v=20261124-invitation-flow" defer></script>
     <script
-      src="../../assets/js/uit-teacher-approved-proposals.js?v=20261125-main-rebase"
+      src="../../assets/js/uit-teacher-approved-proposals.js?v=20261125-progress-preview"
       defer
     ></script>
     <script
@@ -87,7 +87,7 @@
     ></script>
     <script src="../../assets/js/shared/course-filters.js?v=20261122-course-options" defer></script>
     <script src="../../assets/js/shared/topic-list-empty.js?v=20261122-empty-state" defer></script>
-    <script src="../../assets/js/uit-topic-list.js?v=20261125-main-rebase" defer></script>
+    <script src="../../assets/js/uit-topic-list.js?v=20261125-filter-selection" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-sort.js?v=20261123-language" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
@@ -166,15 +166,15 @@
                     >
                   </li>
                   <li class="main-nav__subitem">
+                    <a class="main-nav__link" href="../chung/thong-bao.html"
+                      >Thông báo</a
+                    >
+                  </li>
+                  <li class="main-nav__subitem">
                     <a
                       class="main-nav__link"
                       href="../chung/huong-nghien-cuu.html"
                       >Hướng nghiên cứu</a
-                    >
-                  </li>
-                  <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="../chung/thong-bao.html"
-                      >Thông báo</a
                     >
                   </li>
                   <li class="main-nav__subitem">
@@ -293,15 +293,15 @@
                       >
                     </li>
                     <li>
+                      <a class="mobile-nav__link" href="../chung/thong-bao.html"
+                        >Thông báo</a
+                      >
+                    </li>
+                    <li>
                       <a
                         class="mobile-nav__link"
                         href="../chung/huong-nghien-cuu.html"
                         >Hướng nghiên cứu</a
-                      >
-                    </li>
-                    <li>
-                      <a class="mobile-nav__link" href="../chung/thong-bao.html"
-                        >Thông báo</a
                       >
                     </li>
                     <li>
@@ -417,23 +417,17 @@
           >
             <details class="topic-filters__disclosure" open="">
               <summary class="topic-filters__summary">
-                <svg
-                  class="topic-filters__icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <polygon
-                    points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"
-                  ></polygon>
+                <svg class="topic-filter-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <path d="M3 4h18l-7 9v7l-4-2v-5L3 4Z" />
+                  <g class="topic-filter-icon__selected">
+                    <circle cx="20" cy="4" r="5.5" />
+                    <path d="m17.6 4 1.6 1.6 3.3-3.3" />
+                  </g>
                 </svg>
                 <h2 id="topic-filters-title" class="topic-filters__title">
                   Bộ lọc
                 </h2>
+                <span class="visually-hidden topic-filter-selection-label">Đã chọn tiêu chí lọc</span>
                 <span class="visually-hidden"
                   ><span class="topic-filters__hide">Ẩn</span
                   ><span class="topic-filters__show">Hiện</span></span
@@ -4276,7 +4270,7 @@
 
             <div class="topic-results__footer">
               <!-- Phân trang nhất quán với 5/5 kết quả trên trang 1; chưa có xử lý chuyển trang. -->
-              <nav class="pagination" aria-label="Phân trang đề tài">
+              <nav class="pagination topic-pagination" aria-label="Phân trang đề tài">
                 <ul class="pagination__list">
                   <li>
                     <button

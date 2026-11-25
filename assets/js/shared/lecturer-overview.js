@@ -68,7 +68,6 @@
       code.textContent = (isGroup ? member.code : participants.code) || '';
       code.previousElementSibling.hidden = !code.textContent;
       const role = item.querySelector('.team-member__role');
-      role.hidden = !isGroup;
       role.textContent = member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
       return item;
     }) : [el('li', 'Chưa có thông tin thành viên nhóm.')]));

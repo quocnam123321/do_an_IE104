@@ -125,5 +125,23 @@
     return { ...listTopics(topics, filters, pagination), warning: warnings.join(' ') };
   }
 
-  app.services.topics = { listOpenTopics, listMyTopics, normalizeText };
+  function myTopicParticipants(topic, { preview = false } = {}) {
+    const { projectTeams, registrations, proposals, requests, lecturerTopics } = app.services;
+    let members = app.data.projectTeams?.find(team => team.projectId === topic.id)?.members;
+    try {
+      if (members || topic.source?.startsWith('approved-')) {
+        members = projectTeams.getState(topic.id, { preview }).members;
+      } else {
+        const id = topic.requestId || topic.id;
+        if (id.startsWith('DK')) members = registrations.findById(id)?.members;
+        if (id.startsWith('DX')) {
+          const proposal = proposals.findById(id) || requests.findStudentProposal(id) || globalThis.IE104Proposals?.getSeed(id);
+          members = proposal?.outline?.members || [proposal?.student || app.data.currentStudent];
+        }
+      }
+    } catch { /* Giữ thông tin của hồ sơ khi không đọc được dữ liệu thành viên đã lưu. */ }
+    return lecturerTopics.supervisedParticipants(topic, members?.filter(Boolean));
+  }
+
+  app.services.topics = { listOpenTopics, listMyTopics, myTopicParticipants, normalizeText };
 })();

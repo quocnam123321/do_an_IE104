@@ -163,13 +163,6 @@
   display: none;
 }
 
-.topic-filters__icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  color: var(--color-primary);
-  flex-shrink: 0;
-}
-
 .topic-filters__title {
   font-size: var(--text-lg);
   font-weight: var(--weight-bold);
@@ -652,19 +645,9 @@
   color: var(--color-success-fg);
 }
 
-[data-lecturer-list="supervised"] .topic-card[data-role="primary"] .topic-card__status {
-  background-color: #eaf3f2;
-  color: #315856;
-}
-
 [data-lecturer-list="supervised"] .topic-card[data-role="secondary"] .topic-card__status {
   background-color: #f5f0e4;
   color: #655537;
-}
-
-:root[data-theme="dark"] [data-lecturer-list="supervised"] .topic-card[data-role="primary"] .topic-card__status {
-  background-color: #1b3332;
-  color: #a8cdca;
 }
 
 :root[data-theme="dark"] [data-lecturer-list="supervised"] .topic-card[data-role="secondary"] .topic-card__status {
@@ -973,12 +956,6 @@
 
 .teacher-topic-list-page:not(.teacher-pending-proposals-page) .topic-card__detail-link:focus-visible svg {
   transform: translateX(2px);
-}
-
-.teacher-topic-list-page:not(.teacher-pending-proposals-page) .topic-filters__count {
-  color: var(--color-primary);
-  font-weight: var(--weight-semibold);
-  font-variant-numeric: tabular-nums;
 }
 
 .teacher-topic-list-page:not(.teacher-pending-proposals-page) .topic-filters__more-icon {

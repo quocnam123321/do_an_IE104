@@ -24,9 +24,39 @@ function setup({ records = new Map(), locks, blocked = false } = {}) {
     },
     addEventListener(type, callback) { events.set(type, callback); },
   };
-  vm.runInNewContext(source, { window, navigator: { locks }, crypto: webcrypto, Event, EventTarget, File, Blob });
+  vm.runInNewContext(source, { window, navigator: { locks }, crypto: webcrypto, Event, EventTarget, File, Blob, structuredClone });
   return { store: window.IE104Supervision, events, records };
 }
+
+test('bốn lời mời mẫu của sinh viên có bốn người nhận và lưu phản hồi giữa hai vai trò demo', async () => {
+  const { store, records } = setup();
+  const demo = { demo: true };
+  const invitations = store.listForTeacher(demo);
+  assert.equal(invitations.length, 7);
+  assert.equal(records.size, 0);
+  assert.equal(store.getAll().length, 0);
+  assert.equal(store.listForTeacher({ teacherIds: [invitations[0].teacher.id] }).length, 0);
+  assert.equal(store.listForStudent({ id: 'firebase:other-student' }).length, 0);
+
+  const studentInvitations = store.listForStudent(store.student);
+  assert.deepEqual(Array.from(studentInvitations, item => item.id), ['inv-demo-01', 'inv-demo-05', 'inv-demo-06', 'inv-demo-07']);
+  assert.equal(new Set(studentInvitations.map(item => item.teacher.id)).size, 4);
+  assert.deepEqual(studentInvitations, invitations.filter(item => store.studentCode(item) === store.student.id));
+
+  const first = invitations[0];
+  assert.equal(first.id, 'inv-demo-01');
+  assert.equal(store.studentCode(first), '24520001');
+  assert.equal(store.needsTeacherReply(first), true);
+  await store.reply(first.id, { role: 'teacher', id: first.teacher.id }, 'Thầy có thể xem đề cương trước buổi trao đổi.');
+
+  const { store: reloaded } = setup({ records });
+  const saved = reloaded.listForTeacher(demo);
+  assert.equal(saved.length, 7);
+  assert.equal(saved.find(item => item.id === first.id).messages.length, 2);
+  assert.equal(reloaded.listForStudent(reloaded.student).find(item => item.id === first.id).messages.length, 2);
+  assert.deepEqual(Array.from(saved.filter(reloaded.needsTeacherReply), item => item.id), ['inv-demo-02', 'inv-demo-03', 'inv-demo-04', 'inv-demo-05', 'inv-demo-06', 'inv-demo-07']);
+  assert.equal(reloaded.getAll().length, 0);
+});
 
 test('các lượt trả lời đồng thời được lưu trước quyết định và chỉ chốt một lần', async () => {
   const records = new Map();

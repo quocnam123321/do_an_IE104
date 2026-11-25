@@ -51,6 +51,31 @@
   const excludedSupervisedTopicIds = new Set(['DA005', 'ISE-011', 'ISE-004', 'ISE-006', 'ISE-007', 'DT001']);
   const isListedInSupervisedTab = ({ id, topicId }) =>
     !excludedSupervisedTopicIds.has(id) && !excludedSupervisedTopicIds.has(topicId);
+
+  function additionalSupervisedTopics(projects, proposals) {
+    const byId = new Map(projects.map(({ project, role }) => [project.id, {
+      project,
+      record: {
+        id: project.id, topicId: project.topicId || project.id, projectId: project.id,
+        title: project.title,
+        topicType: project.type || ({ 'Đồ án môn học': 'do-an-mon-hoc', 'Đồ án tốt nghiệp': 'do-an-tot-nghiep', 'Khóa luận tốt nghiệp': 'khoa-luan' })[project.typeLabel],
+        course: project.courseId, courseLabel: project.courseLabel,
+        sortDate: project.startsAt || project.createdAt,
+        semester: project.semester, academicYear: project.academicYear,
+        supervisionRole: role === 'secondary' ? 'dong-huong-dan' : 'huong-dan-chinh',
+        supervisionRoleLabel: role === 'secondary' ? 'Đồng hướng dẫn' : 'Hướng dẫn chính',
+        topicStatus: project.status, statusLabel: project.statusLabel,
+      },
+    }]));
+    for (const record of proposals) {
+      if (record.status === 'approved' && !byId.has(record.topicId)) {
+        byId.set(record.topicId, { record });
+      }
+    }
+    return [...byId.values()].filter(({ record }) => isListedInSupervisedTab(record) &&
+      !['master', 'luan-van-thac-si'].includes(record.topicType));
+  }
+
   const decorate = topics => window.UITLecturerCatalog?.decorateTopics(topics.filter(topic => window.UITLecturerCatalog.isAvailableTopic(topic))) || topics;
   const records = kind => {
     const initial = app.data.lecturerTopics || [];
@@ -168,7 +193,7 @@
     const catalogGroup = source?.supervision?.group || '';
     const saved = (topic.groupName || topic.group || catalogGroup).trim();
     if (memberCount < 2 && (memberCount === 1 || !numberedGroup.test(saved))) {
-      return { isGroup: false, label: studentLabel || 'Chưa có thông tin', studentLabel, code };
+      return { isGroup: false, label: studentLabel || 'Chưa có thông tin', studentLabel, name, code };
     }
 
     const prefix = numberedGroup.exec(saved);
@@ -217,5 +242,5 @@
     };
   }
 
-  app.services.lecturerTopics = { list, get, isListedInCreatedTab, isListedInSupervisedTab, createdStatus, detailUrl, returnUrl, workspaceChoices, workspaceState, projectIdentity, supervisedParticipants, allCreated: () => clone(records('created').filter(topic => topic.kind === 'created')) };
+  app.services.lecturerTopics = { list, get, isListedInCreatedTab, isListedInSupervisedTab, additionalSupervisedTopics, createdStatus, detailUrl, returnUrl, workspaceChoices, workspaceState, projectIdentity, supervisedParticipants, allCreated: () => clone(records('created').filter(topic => topic.kind === 'created')) };
 })();

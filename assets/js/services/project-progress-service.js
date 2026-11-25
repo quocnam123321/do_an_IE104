@@ -10,16 +10,29 @@
     'da-hoan-thanh': 100,
   };
 
-  function stateFrom(projectId, records, preview = false) {
+  function stateFrom(projectId, records, team, preview = false) {
     const initial = app.data.projectProgress.find(item => item.projectId === projectId)
       || (!preview && app.services.approvedProjects?.get(projectId)?.progress);
     if (!initial) throw new Error('Không tìm thấy dữ liệu tiến độ của đề tài.');
-    return clone(records.find(item => item.projectId === projectId) || initial);
+    const saved = records.find(item => item.projectId === projectId);
+    const state = clone(saved || initial);
+    if (saved && (saved.sampleTaskVersion ?? 0) < initial.sampleTaskVersion) {
+      const ids = new Set(state.tasks.map(task => task.id));
+      const leaderCode = team.members.find(member => member.role === 'nhom-truong')?.code;
+      // Apply just the extra sample tasks. Keep saved work and honor deletions after the next write.
+      for (const task of initial.tasks) {
+        if (!task.id.startsWith(`${projectId}-sample-task-`) || ids.has(task.id)) continue;
+        const assigneeCode = team.members.some(member => member.code === task.assigneeCode) ? task.assigneeCode : leaderCode || task.assigneeCode;
+        state.tasks.push({ ...task, assigneeCode, assigneeCodes: [assigneeCode] });
+      }
+      state.sampleTaskVersion = initial.sampleTaskVersion;
+    }
+    return state;
   }
 
   function getState(projectId, { preview = false } = {}) {
     const team = app.services.projectTeams.getState(projectId, { preview });
-    return { ...stateFrom(projectId, preview ? [] : app.storage.readProjectProgress(), preview), team };
+    return { ...stateFrom(projectId, preview ? [] : app.storage.readProjectProgress(), team, preview), team };
   }
 
   function getPermissions(state) {
@@ -83,7 +96,7 @@
   function mutate(projectId, revision, change) {
     const team = app.services.projectTeams.getState(projectId);
     const records = app.storage.readProjectProgress();
-    const state = stateFrom(projectId, records);
+    const state = stateFrom(projectId, records, team);
     const permission = getPermissions({ ...state, team });
     if (!permission.update) throw new Error(permission.reason);
     if (!Number.isInteger(revision) || revision !== state.revision) throw new Error('Tiến độ đã thay đổi ở tab khác. Hãy đóng hộp thoại và mở lại để xem bản mới.');

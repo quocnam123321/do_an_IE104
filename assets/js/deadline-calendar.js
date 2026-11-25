@@ -218,10 +218,9 @@
     deadlineLabel.textContent = submission ? 'Hạn nộp' : 'Hạn đề tài';
     deadline.dateTime = event.due;
     deadline.textContent = formatTime(event.due);
-    const topicText = submission
-      ? [project?.textContent.trim(), project?.dataset.group].filter(Boolean).join(' · ')
-      : project?.dataset.group;
-    topicName.textContent = topicText ?? '';
+    const projectTitle = submission || event.kind === 'topic' ? project?.textContent.trim() : '';
+    const topicText = [projectTitle, project?.dataset.group].filter(Boolean).join(' · ');
+    topicName.textContent = topicText;
     topicName.parentElement.hidden = !topicText;
     submittedNote.hidden = !event.submitted;
     if (event.submitted) {
@@ -254,8 +253,15 @@
       const title = document.createElement('span');
       title.className = 'calendar-event__title';
       clone.append(title);
+      if (event.kind === 'topic' && projectTitle) {
+        const project = document.createElement('span');
+        project.className = 'calendar-event__project';
+        project.textContent = projectTitle;
+        clone.title = projectTitle;
+        clone.append(project);
+      }
     }
-    clone.querySelector('.calendar-event__title').textContent = event.name;
+    clone.querySelector('.calendar-event__title').textContent = event.label ?? event.name;
     if (!canPreview || !event.due) return clone;
 
     const trigger = document.createElement('button');
@@ -275,27 +281,29 @@
   }
 
   function chooseAdditionalDeadlines(events) {
+    const reports = events.filter(event => event.kind === 'topic').slice(0, maxAdditionalDeadlines);
+    const submissionLimit = maxAdditionalDeadlines - reports.length;
     const candidates = events.filter(event => event.kind === 'submission' && event.detailUrl &&
       topics.get(event.topicId)?.hasAttribute('data-active-deadline-topic'));
-    if (candidates.length <= maxAdditionalDeadlines) return candidates;
+    if (candidates.length <= submissionLimit) return [...reports, ...candidates];
 
     const byStatus = new Map();
     for (const event of candidates) {
       if (!byStatus.has(event.status)) byStatus.set(event.status, event);
     }
-    const selected = new Set([...byStatus.values()].slice(0, maxAdditionalDeadlines));
+    const selected = new Set([...byStatus.values()].slice(0, submissionLimit));
     const titles = new Set([...selected].map(event => event.name));
     for (const event of candidates) {
-      if (selected.size === maxAdditionalDeadlines) break;
+      if (selected.size === submissionLimit) break;
       if (titles.has(event.name)) continue;
       selected.add(event);
       titles.add(event.name);
     }
     for (const event of candidates) {
-      if (selected.size === maxAdditionalDeadlines) break;
+      if (selected.size === submissionLimit) break;
       selected.add(event);
     }
-    return candidates.filter(event => selected.has(event));
+    return [...reports, ...candidates.filter(event => selected.has(event))];
   }
 
   function overflowNode(date, remaining) {
@@ -376,7 +384,7 @@
       const dayEvents = (eventsByDate.get(date) ?? []).filter(matchesTopic);
       cell.append(...dayEvents.slice(0, eventsPerCell).map(eventNode));
       const additional = chooseAdditionalDeadlines(dayEvents.slice(eventsPerCell));
-      if (additional.length >= 2) cell.append(overflowNode(date, additional));
+      if (additional.length) cell.append(overflowNode(date, additional));
     }
     calendar.caption.textContent = `Tháng ${number}/${year} · Giờ Việt Nam (UTC+7)`;
   }
@@ -390,7 +398,6 @@
   }
 
   const deadlineService = globalThis.IE104?.services?.deadlines;
-  const activeNotice = document.getElementById('active-deadline-notice');
   const defaultMonth = month.value;
   let refreshVersion = 0;
 
@@ -420,7 +427,6 @@
       }
       topic.value = topics.has(selected) ? selected : '';
       activeEvents = active.flatMap(project => project.events);
-      activeNotice.hidden = !activeEvents.length;
       indexEvents();
       renderCalendar();
     } catch {
@@ -608,9 +614,6 @@
           }).sort((first, second) => first.dueTime - second.dueTime);
           indexEvents();
           renderCalendar();
-          document.getElementById('calendar-export-notice').textContent = saved.length
-            ? 'Có thể thêm các mốc được cấp quyền vào Google Calendar.'
-            : 'Tài khoản của bạn chưa được cấp quyền thêm mốc vào Google Calendar.';
           if (dialog.open && !busy) showRows(selectedIds());
         }
       } catch {
@@ -706,7 +709,7 @@
   month.addEventListener('change', renderCalendar);
   topic?.addEventListener('change', renderCalendar);
   renderCalendar();
-  if (deadlineService && topic && activeNotice && globalThis.IE104.services.studentSubmissions) {
+  if (deadlineService && topic && globalThis.IE104.services.studentSubmissions) {
     const { storage, services } = globalThis.IE104;
     const dataKeys = [storage.teachingKey, storage.teamKey, storage.proposalKey, storage.registrationKey, null];
     services.studentSubmissions.onUploadsChanged(refreshActiveDeadlines);

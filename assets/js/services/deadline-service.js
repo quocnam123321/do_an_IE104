@@ -68,14 +68,23 @@
       const uploads = state.requirements.length ? await service.readUploads(project.id).catch(() => []) : [];
       const byRequirement = new Map(uploads.map(upload => [upload.requirementId, upload]));
       const events = [];
+      const milestones = app.data.projectMilestones?.find(item => item.projectId === project.id)?.dates ?? [];
+      const progressDate = project.outline?.progressReportDate || project.progressReportDate ||
+        milestones.find(item => item.id === 'progress-report')?.date;
       const finalDate = project.outline?.finalReportDate || project.outline?.endDate || project.finalReportDate ||
-        project.completesAt || app.data.projectMilestones?.find(item => item.projectId === project.id)
-          ?.dates.find(item => item.id === 'final-report')?.date;
-      const finalDue = /^\d{4}-\d{2}-\d{2}$/.test(finalDate ?? '') ? finalDate : dateTime(finalDate);
-      if (finalDue) events.push({
-        id: `${project.id}--deadline`, topicId: project.id, date: finalDue.slice(0, 10),
-        due: finalDue, name: project.title, kind: 'topic', detailUrl: `${base}#tong-quan`,
-      });
+        project.completesAt || milestones.find(item => item.id === 'final-report')?.date;
+      const reportDates = [
+        ['progress-report', 'Hạn nộp báo cáo tiến độ', 'Báo cáo tiến độ', progressDate],
+        ['deadline', 'Hạn nộp báo cáo cuối cùng', 'Báo cáo cuối cùng', finalDate],
+      ];
+      for (const [id, name, label, value] of reportDates) {
+        const due = /^\d{4}-\d{2}-\d{2}$/.test(value ?? '') ? value : dateTime(value);
+        if (!due) continue;
+        events.push({
+          id: `${project.id}--${id}`, topicId: project.id, date: due.slice(0, 10),
+          due, name, label, kind: 'topic', detailUrl: `${base}#tong-quan`,
+        });
+      }
 
       for (const requirement of state.requirements) {
         const due = dateTime(requirement.deadline);

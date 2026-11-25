@@ -1,21 +1,21 @@
 <!doctype html>
 <html lang="vi"><head>
-  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png?v=2" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Danh sách đề tài đã tạo.">
     <title>Đề tài đã tạo | Quản lý đồ án</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-lecturer.js"></script>
+    <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261125-filter-selection"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme">
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language">
-    <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-menu-2">
-    <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
+    <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-pagination">
+    <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261125-topic-pagination">
     <link rel="stylesheet" href="../../assets/css/teacher-supervised-topics.css?v=20261122-list-spacing">
     <link rel="stylesheet" href="../../assets/css/teacher-created-topics.css?v=20261123-registration-sync">
-    <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css?v=20261122-empty-state">
+    <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css?v=20261125-filter-selection">
     <script src="../../assets/js/nav-indicator.js" defer=""></script>
 
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css" />
@@ -46,7 +46,7 @@
     <script src="../../assets/js/pages/lecturer/topic-list.js?v=20261124-invitation-flow" defer></script>
     <script src="../../assets/js/shared/course-filters.js?v=20261122-course-options" defer></script>
     <script src="../../assets/js/shared/topic-list-empty.js?v=20261122-empty-state" defer></script>
-    <script src="../../assets/js/uit-topic-list.js?v=20261123-audit-names2" defer></script>
+    <script src="../../assets/js/uit-topic-list.js?v=20261125-filter-selection" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-sort.js?v=20261123-language" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
@@ -87,10 +87,10 @@
                     <a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a>
                   </li>
                   <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a>
+                    <a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a>
                   </li>
                   <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a>
+                    <a class="main-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a>
                   </li>
                   <li class="main-nav__subitem">
                     <a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a>
@@ -158,10 +158,10 @@
                       <a class="mobile-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a>
                     </li>
                     <li>
-                      <a class="mobile-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a>
+                      <a class="mobile-nav__link" href="../chung/thong-bao.html">Thông báo</a>
                     </li>
                     <li>
-                      <a class="mobile-nav__link" href="../chung/thong-bao.html">Thông báo</a>
+                      <a class="mobile-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a>
                     </li>
                     <li>
                       <a class="mobile-nav__link" href="../chung/lien-he.html">Liên hệ</a>
@@ -230,10 +230,15 @@
           <aside class="topic-filters topic-filters--toggleable" aria-labelledby="topic-filters-title">
             <details class="topic-filters__disclosure" open="">
               <summary class="topic-filters__summary">
-                <svg aria-hidden="true" class="topic-filters__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-<polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-</svg>
+                <svg class="topic-filter-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+                  <path d="M3 4h18l-7 9v7l-4-2v-5L3 4Z" />
+                  <g class="topic-filter-icon__selected">
+                    <circle cx="20" cy="4" r="5.5" />
+                    <path d="m17.6 4 1.6 1.6 3.3-3.3" />
+                  </g>
+                </svg>
                 <h2 id="topic-filters-title" class="topic-filters__title">Bộ lọc</h2>
+                <span class="visually-hidden topic-filter-selection-label">Đã chọn tiêu chí lọc</span>
                 <span class="visually-hidden"><span class="topic-filters__hide">Ẩn</span><span class="topic-filters__show">Hiện</span></span>
                 <svg class="topic-filters__chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
               </summary>
@@ -253,12 +258,6 @@
                       <label for="status-closed">
                         <input type="checkbox" id="status-closed" name="status" value="closed">
                         <span class="topic-filters__option-text">Đã đóng đăng ký</span>
-                      </label>
-                    </div>
-                    <div class="topic-filters__option">
-                      <label for="status-registered">
-                        <input type="checkbox" id="status-registered" name="status" value="registered">
-                        <span class="topic-filters__option-text">Đã có nhóm đăng ký</span>
                       </label>
                     </div>
                   </div>
@@ -670,7 +669,7 @@
                       <p class="topic-card__status topic-card__status--catalog">Đã đóng đăng ký</p>
                       <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDATN-005" aria-label="Xem chi tiết Cổng hỗ trợ sinh viên tìm kiếm và đăng ký hoạt động tình nguyện">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
-                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-001" data-topic-id="ISEDAMH-001" data-topic-type="course" data-course="web" data-status="open" data-created-at="2026-11-20">
+                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-001" data-topic-id="ISEDAMH-001" data-topic-type="course" data-course="web" data-status="closed" data-created-at="2026-11-20">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -699,7 +698,7 @@
                       </ul>
                     </div>
                     <div class="topic-card__actions">
-                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <p class="topic-card__status topic-card__status--closed">Đã đóng đăng ký</p>
                       <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-001" aria-label="Xem chi tiết Website đặt chỗ phòng tự học theo khung giờ">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
                   </article></li><li><article data-hoc-ky="2025-2026-2" class="topic-card" aria-labelledby="uit-ISEDAMH-002" data-topic-id="ISEDAMH-002" data-topic-type="course" data-course="database" data-status="closed" data-created-at="2026-11-20">
@@ -830,7 +829,7 @@
                       <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
                       <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-009" aria-label="Xem chi tiết Thiết kế hạ tầng công nghệ thông tin cho trung tâm đào tạo quy mô nhỏ">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
-                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-010" data-topic-id="ISEDAMH-010" data-topic-type="course" data-course="IE101" data-status="open" data-created-at="2026-11-20">
+                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-010" data-topic-id="ISEDAMH-010" data-topic-type="course" data-course="IE101" data-status="closed" data-created-at="2026-11-20">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -859,7 +858,7 @@
                       </ul>
                     </div>
                     <div class="topic-card__actions">
-                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <p class="topic-card__status topic-card__status--closed">Đã đóng đăng ký</p>
                       <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-010" aria-label="Xem chi tiết Khảo sát và đề xuất phương án nâng cấp hạ tầng CNTT cho thư viện trường học">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
                   </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-011" data-topic-id="ISEDAMH-011" data-topic-type="course" data-course="IE103" data-status="open" data-created-at="2026-11-20">
@@ -926,7 +925,7 @@
                       <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
                       <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-013" aria-label="Xem chi tiết Xây dựng mô hình phân quyền và kiểm soát truy cập tài liệu nội bộ">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
-                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-014" data-topic-id="ISEDAMH-014" data-topic-type="course" data-course="IE105" data-status="open" data-created-at="2026-11-20">
+                  </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-014" data-topic-id="ISEDAMH-014" data-topic-type="course" data-course="IE105" data-status="closed" data-created-at="2026-11-20">
                     <div class="topic-card__media">
                       <div class="topic-card__image-placeholder" aria-hidden="true"><svg aria-hidden="true" class="topic-card__placeholder-icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" viewBox="0 0 24 24">
 <path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"></path>
@@ -955,7 +954,7 @@
                       </ul>
                     </div>
                     <div class="topic-card__actions">
-                      <p class="topic-card__status topic-card__status--catalog">Đang mở đăng ký</p>
+                      <p class="topic-card__status topic-card__status--closed">Đã đóng đăng ký</p>
                       <a class="topic-card__detail-link" href="chi-tiet-de-tai-da-tao-giang-vien.html?topic=ISEDAMH-014" aria-label="Xem chi tiết Thiết kế phương án bảo vệ mạng nội bộ cho văn phòng nhỏ">Xem chi tiết <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"></path></svg></a>
                     </div>
                   </article></li><li><article data-hoc-ky="2026-2027-1" class="topic-card" aria-labelledby="uit-ISEDAMH-015" data-topic-id="ISEDAMH-015" data-topic-type="course" data-course="phan-tich-thiet-ke-phan-mem" data-status="open" data-created-at="2026-11-20">
@@ -993,7 +992,7 @@
                   </article></li></ul>
             </div>
             <div class="topic-results__footer">
-              <nav class="pagination" aria-label="Phân trang đề tài">
+              <nav class="pagination topic-pagination" aria-label="Phân trang đề tài">
                 <ul class="pagination__list">
                   <li><button class="pagination__button" type="button" aria-label="Trang trước" disabled="">‹</button></li>
                   <li><span class="pagination__current" aria-current="page" aria-label="Trang 1">1</span></li>

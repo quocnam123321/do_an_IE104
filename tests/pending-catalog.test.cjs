@@ -95,6 +95,24 @@ function loadStudentServices(ctx) {
   }
   return ctx.IE104.services.proposals;
 }
+test('ba hồ sơ mẫu bị từ chối dùng chung quyết định và không nằm trong hàng chờ', async () => {
+  const storage = new Map(), ctx = setup(storage), service = loadStudentServices(ctx);
+  const { IE104Proposals: store, UITLecturerCatalog: catalog } = ctx;
+  assert.equal(catalog.rejected.length, 3);
+  const topics = service.listMyTopics().filter(item => item.status === 'tu-choi');
+  assert.equal(topics.length, 3);
+  const pendingIds = new Set(store.filterPending(store.getAll()).map(record => record.id));
+  for (const topic of topics) {
+    const record = store.get(topic.id);
+    assert.equal(record.status, 'rejected');
+    assert.equal(topic.title, record.title);
+    assert.equal(topic.feedback, record.reason);
+    assert.ok(Date.parse(record.decidedAt) > Date.parse(record.submittedAt));
+    assert.ok(!pendingIds.has(topic.id));
+    await assert.rejects(store.decide(topic.id, 'approved'), /đã được xử lý/);
+  }
+  assert.equal(storage.size, 0);
+});
 test('hai hồ sơ mẫu ở SV dùng cùng dữ liệu và phản ánh quyết định GV', async () => {
   const ctx = setup(), service = loadStudentServices(ctx);
   const seeds = ctx.UITLecturerCatalog.pending.filter(item => item.studentVisible);
