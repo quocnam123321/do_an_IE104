@@ -3,6 +3,44 @@
 
   const boundButtons = new WeakSet();
 
+  function guardRolePage(loginPage) {
+    const role = /\/pages\/(sinh-vien|giang-vien)\//.exec(location.pathname)?.[1];
+    if (!role || location.protocol === "file:") return;
+
+    const expectedRole = role === "sinh-vien" ? "student" : "lecturer";
+    const page = document.documentElement;
+    const visibleStyle = page.style.visibility;
+    let checkVersion = 0;
+
+    async function checkSession() {
+      const version = ++checkVersion;
+      let session;
+      try {
+        // Phiên đã được ghi nhận khi đăng nhập có thể giữ giao diện trong lúc xác minh.
+        const storedSession = sessionStorage.getItem("ie104.website.session.v1");
+        if (storedSession !== expectedRole && storedSession !== "firebase" && storedSession !== "emulator") {
+          page.style.visibility = "hidden";
+        }
+        const { getWebsiteSession } = await import("../website-session.js");
+        session = await getWebsiteSession();
+      } catch {
+        // Khi phiên không xác minh được, yêu cầu đăng nhập lại.
+      }
+      if (version !== checkVersion) return;
+      if (session?.role === expectedRole) page.style.visibility = visibleStyle;
+      else {
+        page.style.visibility = "hidden";
+        location.replace(loginPage.href);
+      }
+    }
+
+    window.addEventListener("pagehide", () => { checkVersion += 1; });
+    window.addEventListener("pageshow", (event) => {
+      if (event.persisted) checkSession();
+    });
+    checkSession();
+  }
+
   function bindLogout(dialog, buttons, loginPage) {
     const controls = Array.from(buttons);
     if (!controls.length) return;
@@ -73,6 +111,7 @@
   window.IE104BindLogout = bindLogout;
   if (document.currentScript) {
     const loginPage = new URL("../../../pages/chung/dang-nhap.html", document.currentScript.src);
+    guardRolePage(loginPage);
     bindLogout(document.getElementById("logout-dialog"),
       document.querySelectorAll('button[aria-controls="logout-dialog"]'), loginPage);
   }

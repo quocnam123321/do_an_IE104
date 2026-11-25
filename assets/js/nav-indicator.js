@@ -1,5 +1,17 @@
 /* Progressive enhancement: links and details remain native HTML controls. */
 (() => {
+  document.addEventListener('click', (event) => {
+    if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const link = event.target.closest('.main-nav a[aria-current="page"], .mobile-nav a[aria-current="page"]');
+    if (!link || link.target || link.hasAttribute('download') || link.href !== location.href) return;
+    event.preventDefault();
+    const menu = link.closest('.mobile-nav__disclosure');
+    if (menu) {
+      menu.open = false;
+      menu.querySelector('summary')?.focus({ preventScroll: true });
+    }
+  });
+
   document.querySelectorAll('[data-nav-indicator]').forEach((nav) => {
     const tabs = [...nav.querySelectorAll('.main-nav__list > .main-nav__item > .main-nav__link, .main-nav__list > .main-nav__item > details > .main-nav__label')];
     if (!tabs.length || nav.dataset.indicatorInitialized) return;
@@ -14,6 +26,7 @@
     const menu = nav.closest('.site-navigation');
     const compact = window.matchMedia('(max-width: 67.99rem)');
     let hovered = null;
+    let pendingTab = null;
     let layoutFrame = 0;
 
     const tabFor = (element) => tabs.find((tab) =>
@@ -47,20 +60,24 @@
       nav.classList.add('main-nav--indicator-visible');
     };
 
-    const restore = () => moveTo(focused() || current());
-    const refresh = () => {
-      cancelAnimationFrame(layoutFrame);
-      layoutFrame = requestAnimationFrame(() => moveTo(hovered || focused() || current()));
+    const scheduleMove = (tab) => {
+      pendingTab = tab;
+      if (layoutFrame) return;
+      layoutFrame = requestAnimationFrame(() => {
+        layoutFrame = 0;
+        moveTo(pendingTab);
+      });
     };
+    const refresh = () => scheduleMove(hovered || focused() || current());
 
     tabs.forEach((tab) => {
-      tab.addEventListener('pointerenter', () => { hovered = tab; moveTo(tab); });
-      tab.addEventListener('pointerdown', () => moveTo(tab));
+      tab.addEventListener('pointerenter', () => { hovered = tab; scheduleMove(tab); });
+      tab.addEventListener('pointerdown', () => scheduleMove(tab));
     });
-    nav.addEventListener('pointerleave', () => { hovered = null; restore(); });
-    nav.addEventListener('focusin', () => moveTo(focused() || current()));
+    nav.addEventListener('pointerleave', () => { hovered = null; refresh(); });
+    nav.addEventListener('focusin', () => scheduleMove(focused() || current()));
     nav.addEventListener('focusout', () => {
-      queueMicrotask(() => moveTo(focused() || hovered || current()));
+      queueMicrotask(() => scheduleMove(focused() || hovered || current()));
     });
 
     const setLayout = () => {
