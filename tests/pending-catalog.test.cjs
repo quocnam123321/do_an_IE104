@@ -20,22 +20,29 @@ function setup(storage = new Map(), baseline = false) {
   return ctx;
 }
 const plain = value => JSON.parse(JSON.stringify(value));
-test('thêm 10 hồ sơ đủ 3 loại, 4 môn; giữ nguyên dữ liệu quản lý đề tài', () => {
+test('tổng 10 hồ sơ đủ 3 loại, 4 môn; giữ nguyên dữ liệu quản lý đề tài', () => {
   const next = setup(), prev = setup(new Map(), true);
   const before = prev.UITLecturerCatalog, after = next.UITLecturerCatalog;
   assert.deepEqual(plain(after.records), plain(before.records));
   assert.deepEqual(plain(after.created), plain(before.created));
   assert.deepEqual(plain(after.supervised), plain(before.supervised));
-  assert.equal(next.IE104Proposals.getAll().length - prev.IE104Proposals.getAll().length, 10);
-  const added = after.pending.slice(before.pending.length);
+  assert.equal(next.IE104Proposals.getAll().filter(item => item.status === 'pending').length, 10);
+  const added = after.pending;
   assert.deepEqual(plain(added.reduce((counts, item) => {
     counts[item.topicType] = (counts[item.topicType] || 0) + 1; return counts;
   }, {})), { 'khoa-luan': 3, 'do-an-tot-nghiep': 3, 'do-an-mon-hoc': 4 });
   assert.equal(new Set(added.filter(item => item.course).map(item => item.course)).size, 4);
 });
-test('toàn bộ hồ sơ chờ duyệt không trùng mã hoặc tên với đề tài đang hướng dẫn', () => {
+test('giữ quyết định của hồ sơ mẫu cũ khi thay danh sách chờ bằng 10 hồ sơ', async () => {
+  const storage = new Map(), previous = setup(storage, true);
+  await previous.IE104Proposals.decide('DX-ISE-011', 'approved');
+  const current = setup(storage);
+  assert.equal(current.IE104Proposals.getApprovedSeed('ISE-011').status, 'approved');
+  assert.equal(current.IE104Proposals.getAll().filter(item => item.status === 'pending').length, 10);
+});
+test('toàn bộ hồ sơ chờ duyệt không trùng mã hoặc tên với danh mục quản lý đề tài', () => {
   const ctx = setup(), catalog = ctx.UITLecturerCatalog;
-  const supervised = catalog.records.filter(item => catalog.supervised.includes(item.id));
+  const supervised = catalog.records;
   const pending = ctx.IE104Proposals.getAll().filter(item => catalog.isAvailableTopic(item));
   const key = value => value.normalize('NFC').toLocaleLowerCase('vi').replace(/\s+/g, ' ').trim();
   assert.equal(new Set(pending.map(item => item.id)).size, pending.length);

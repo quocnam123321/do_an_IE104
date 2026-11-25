@@ -2142,5 +2142,6 @@ window.UITLecturerCatalog = {
   }
 ];
   additions.forEach(record => { record.courseLabel = catalog.subjectLabel(record); });
-  catalog.pending.push(...additions);
+  catalog.archivedPending = catalog.pending;
+  catalog.pending = additions;
 })();

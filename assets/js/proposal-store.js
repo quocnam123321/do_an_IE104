@@ -51,7 +51,8 @@
   ].map((record) => ({ submittedAt: '', semester: '', academicYear: '', ...record }));
   const uitSeeds = window.UITLecturerCatalog?.pending;
   const realSeeds = window.IE104?.data?.lecturerRealProposalSeeds;
-  const seeds = uitSeeds ? [...uitSeeds, ...legacySeeds] : realSeeds || legacySeeds;
+  const activeSeedIds = uitSeeds ? new Set(uitSeeds.map(record => record.id)) : null;
+  const seeds = uitSeeds ? [...uitSeeds, ...(window.UITLecturerCatalog.archivedPending || []), ...legacySeeds] : realSeeds || legacySeeds;
   const canViewSeed = () => !window.IE104?.data?.currentLecturer || window.IE104.data.currentLecturer.id === 'GV001';
   const listeners = new Set();
   let readError = '';
@@ -88,9 +89,10 @@
 
   function getAll() {
     readError = '';
-    const initial = canViewSeed() ? seeds.map(seedRecord) : [];
+    const initial = canViewSeed() ? seeds.map(seedRecord)
+      .filter(record => !activeSeedIds || activeSeedIds.has(record.id) || record.status !== 'pending') : [];
     // Giữ các quyết định đã duyệt từ bộ dữ liệu cũ khi dùng danh mục UIT.
-    if (realSeeds && canViewSeed()) {
+    if (realSeeds && !uitSeeds && canViewSeed()) {
       initial.push(...legacySeeds.map(seedRecord).filter((record) => record.status === 'approved'));
     }
     let saved = [];
