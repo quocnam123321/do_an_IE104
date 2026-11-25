@@ -6,11 +6,11 @@
 .registration-page input::file-selector-button { margin-right: var(--space-3); padding: var(--space-2) var(--space-3); border: 1px solid var(--color-control-border); border-radius: var(--radius-control); background: var(--color-background); font: inherit; color: var(--color-foreground); cursor: pointer; }
 .registration-page fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
 .registration-page .main-content label { display: block; color: var(--color-heading); font-size: var(--font-size-secondary); font-weight: 500; }
-.registration-page .main-content :is(button:where(:not(.task-card__open, .task-assignee, .progress-member-popover__close, .progress-overview__review)), .topics__create-proposal, .topic-card__link), .registration-page .confirmation-dialog button { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: var(--control-min-height); padding: .625rem var(--space-4); border: 1px solid var(--color-control-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-foreground); font-size: var(--font-size-secondary); font-weight: 500; line-height: 1.5; text-decoration: none; text-align: center; transition: color 150ms ease-out, background-color 150ms ease-out; }
-.registration-page .main-content :is(button:not(:disabled):where(:not(.task-card__open, .task-assignee, .progress-member-popover__close, .progress-overview__review)), .topics__create-proposal, .topic-card__link:not(button)):hover { background: var(--color-neutral-bg); }
+.registration-page .main-content :is(button:where(:not(.task-card__open, .task-assignee, .progress-member-popover__close, .progress-overview__review, .topic-pagination button, .topic-file-picker__remove)), .topics__create-proposal, .topic-card__link), .registration-page .confirmation-dialog button { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2); min-height: var(--control-min-height); padding: .625rem var(--space-4); border: 1px solid var(--color-control-border); border-radius: var(--radius-control); background: var(--color-surface); color: var(--color-foreground); font-size: var(--font-size-secondary); font-weight: 500; line-height: 1.5; text-decoration: none; text-align: center; transition: color 150ms ease-out, background-color 150ms ease-out; }
+.registration-page .main-content :is(button:not(:disabled):where(:not(.task-card__open, .task-assignee, .progress-member-popover__close, .progress-overview__review, .topic-pagination button, .topic-file-picker__remove)), .topics__create-proposal, .topic-card__link:not(button)):hover { background: var(--color-neutral-bg); }
 .registration-page .main-content :is(.button-primary, .topics__create-proposal, .proposal-form__submit, .submit-registration) { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
 .registration-page .main-content .topics__create-proposal:hover { background: var(--color-primary-hover); }
-.registration-page .main-content button:disabled { background: var(--color-neutral-bg); color: var(--color-muted-foreground); border-color: var(--color-border); cursor: not-allowed; }
+.registration-page .main-content button:disabled:where(:not(.topic-pagination button)) { background: var(--color-neutral-bg); color: var(--color-muted-foreground); border-color: var(--color-border); cursor: not-allowed; }
 #attachment-note, .proposal-form__selected-supervisor, #proposal-required-note { color: var(--color-muted-foreground); font-size: var(--font-size-secondary); }
 .page-back-link, .page-back { display: inline-block; margin-top: var(--space-4); font-size: var(--font-size-secondary); }
 .page-back-link + .page-header { margin-top: var(--space-3); }
@@ -20,7 +20,6 @@
 .topics-layout { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: var(--space-4) var(--space-6); align-items: start; }
 .topic-filter-panel { grid-column: 1; grid-row: 2; border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); }
 .topic-filter-panel > summary { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-4); color: var(--color-heading); font-size: var(--font-size-secondary); font-weight: 600; text-transform: uppercase; cursor: pointer; list-style: none; }
-.topic-filter-panel__icon { flex: 0 0 auto; color: var(--color-primary); }
 .topic-filter-panel > summary::-webkit-details-marker { display: none; }
 .topic-filter-panel[open] > summary { border-bottom: 1px solid var(--color-border); }
 .topic-filters { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); padding: var(--space-4); }
@@ -62,11 +61,6 @@
 .topic-card__summary { display: flex; flex-direction: column; justify-content: center; gap: var(--space-3); padding-left: var(--space-4); border-left: 1px solid var(--color-border); min-width: 0; }
 .topic-card__status { display: flex; align-items: center; justify-content: center; text-align: center; padding: var(--space-1) var(--space-2); border: 1px solid var(--color-border); border-radius: .25rem; background: var(--color-success-bg); color: var(--color-success-fg); font-size: .75rem; font-weight: 500; }
 .registration-page .main-content a.topic-card__link { color: var(--color-primary); border-color: var(--color-primary); }
-.pagination { justify-self: center; }
-.pagination__list { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
-.registration-page .main-content .pagination__button, .pagination__current { display: grid; place-items: center; min-width: var(--control-min-height); min-height: var(--control-min-height); padding: var(--space-2); border: 1px solid var(--color-border); border-radius: var(--radius-control); font-size: var(--font-size-secondary); }
-.pagination__current { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); font-weight: 600; }
-
 /* Tạo đề xuất: form và lưu ý hai cột như WF. */
 .proposal-layout { display: grid; grid-template-columns: minmax(0, 2.25fr) minmax(16rem, 1fr); align-items: start; gap: var(--space-6); }
 .proposal-form { min-width: 0; display: grid; gap: var(--space-4); }

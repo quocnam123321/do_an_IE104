@@ -15,6 +15,10 @@
   resize: vertical;
 }
 
+.teacher-request-detail-page .rejection-reason-required {
+  color: var(--color-danger-fg);
+}
+
 .teacher-request-detail-page #rejection-reason:user-invalid {
   border-color: var(--color-danger);
 }
@@ -55,11 +59,11 @@
 }
 
 @media (max-width: 47.99875rem) {
-  .teacher-request-detail-page .request-proposal-dialog .topic-dialog__header {
+  .teacher-request-detail-page .request-proposal-dialog:not(.topic-dialog--confirmation) .topic-dialog__header {
     padding-inline: var(--space-4);
   }
 
-  .teacher-request-detail-page .request-proposal-dialog .topic-dialog__form {
+  .teacher-request-detail-page .request-proposal-dialog:not(.topic-dialog--confirmation) .topic-dialog__form {
     padding: var(--space-4);
   }
 }

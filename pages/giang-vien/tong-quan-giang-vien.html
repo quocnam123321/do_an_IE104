@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="vi">
   <head>
-    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png?v=2" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
@@ -10,22 +10,22 @@
     />
     <title>Tổng quan giảng viên | Quản lý đồ án</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261124-inbox-recipient"></script>
+    <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261125-topic-status"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
     <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-menu-2" />
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/tong-quan-giang-vien.css?v=20261117-department-1" />
+    <link rel="stylesheet" href="../../assets/css/tong-quan-giang-vien.css?v=20261125-chart-visibility" />
     <link rel="stylesheet" href="../../assets/css/supervision-invitations.css" />
     <script src="../../assets/js/uit-lecturer-catalog.js?v=20261125-proposal-outline" defer></script>
     <script src="../../assets/js/shared/topic-identity.js" defer></script>
     <script src="../../assets/js/teacher-topic-store.js" defer></script>
     <script src="../../assets/js/nav-indicator.js" defer></script>
-    <script src="../../assets/js/supervision-store.js?v=20261124-conversation" defer></script>
+    <script src="../../assets/js/supervision-store.js?v=20261125-student-demo-invitations" defer></script>
     <script src="../../assets/js/supervision-entry.js?v=20261124-inbox-recipient" defer></script>
-    <script src="../../assets/js/supervision-shortcut.js?v=20261124-inbox-recipient" defer></script>
+    <script src="../../assets/js/supervision-shortcut.js?v=20261125-invitation-preview" defer></script>
     <link rel="stylesheet" href="../../assets/css/lecturer-overview-data.css">
 <script src="../../assets/js/data/mock-data.js" defer></script>
 <script src="../../assets/js/data/student-projects.js" defer></script>
@@ -35,20 +35,21 @@
 <script src="../../assets/js/data/proposal-actors.js" defer></script>
 <script src="../../assets/js/data/lecturer-topics.js" defer></script>
     <script src="../../assets/js/data/lecturer-merge-catalog.js?v=20261123-audit-names2" defer></script>
-<script src="../../assets/js/data/student-uit-catalog.js?v=20261124-evaluation-pdf" defer></script>
+<script src="../../assets/js/data/student-uit-catalog.js?v=20261125-sample-progress" defer></script>
 <script src="../../assets/js/services/storage.js?v=20261124-demo-invitation-polish" defer></script>
 <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
 <script src="../../assets/js/shared/validation.js" defer></script>
 <script src="../../assets/js/services/proposal-service.js?v=20261125-approved-overview" defer></script>
 <script src="../../assets/js/services/registration-service.js" defer></script>
 <script src="../../assets/js/services/approved-project-service.js?v=20261125-approved-overview" defer></script>
-<script src="../../assets/js/proposal-store.js?v=20261125-proposal-outline" defer></script>
+<script src="../../assets/js/proposal-store.js?v=20261125-pending-preview" defer></script>
 <script src="../../assets/js/services/project-team-service.js?v=20261124-multiple-supervisors" defer></script>
-<script src="../../assets/js/services/project-progress-service.js?v=20261123-audit-names2" defer></script>
+<script src="../../assets/js/services/project-progress-service.js?v=20261125-sample-progress" defer></script>
 <script src="../../assets/js/services/teaching-service.js?v=20261124-invitation-flow" defer></script>
-<script src="../../assets/js/services/lecturer-topic-service.js?v=20261124-invitation-flow" defer></script>
+<script src="../../assets/js/services/lecturer-topic-service.js?v=20261125-progress-preview" defer></script>
 <script src="../../assets/js/services/published-topic-service.js?v=20261123-merged-8f1631f" defer></script>
-<script src="../../assets/js/pages/lecturer/overview.js?v=20261123-audit-names2" defer></script>
+<script src="../../assets/js/pages/lecturer/overview.js?v=20261125-created-status-counts" defer></script>
+<script src="../../assets/js/lecturer-overview.js?v=20261125-chart-fill" defer></script>
 <link rel="stylesheet" href="../../assets/css/lecturer-source-data.css">
   <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
@@ -90,10 +91,10 @@
 <a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a>
 </li>
 <li class="main-nav__subitem">
-<a class="main-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a>
+<a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a>
 </li>
 <li class="main-nav__subitem">
-<a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a>
+<a class="main-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a>
 </li>
 <li class="main-nav__subitem">
 <a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a>
@@ -159,10 +160,10 @@
 <a class="mobile-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a>
 </li>
 <li>
-<a class="mobile-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a>
+<a class="mobile-nav__link" href="../chung/thong-bao.html">Thông báo</a>
 </li>
 <li>
-<a class="mobile-nav__link" href="../chung/thong-bao.html">Thông báo</a>
+<a class="mobile-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a>
 </li>
 <li>
 <a class="mobile-nav__link" href="../chung/lien-he.html">Liên hệ</a>
@@ -271,16 +272,7 @@
             </div>
             <p id="lecturer-welcome-demo" class="visually-hidden">Thông tin giảng viên minh họa, chưa kết nối tài khoản đăng nhập.</p>
           </section>
-          <section class="supervision supervision__panel supervision-shortcut" aria-labelledby="supervision-shortcut-title" data-supervision-shortcut="teacher">
-            <div class="supervision__topline">
-              <div>
-                <h2 class="supervision__heading" id="supervision-shortcut-title">Lời mời cần phản hồi</h2>
-                <p class="supervision__hint" data-supervision-summary role="status">Xem lời mời hướng dẫn trong bản demo.</p>
-              </div>
-              <a class="supervision__button" href="yeu-cau-cho-duyet.html#loi-moi-huong-dan">Xem lời mời</a>
-            </div>
-          </section>
-<p id="lecturer-overview-status" role="status">Đang đọc số liệu trên trình duyệt.</p>
+          <p id="lecturer-overview-status" role="status">Đang đọc số liệu trên trình duyệt.</p>
           <section
             class="dashboard-summary"
             aria-label="Tóm tắt đề tài và yêu cầu"
@@ -292,11 +284,6 @@
               >
                 <h2 id="total-count-title">Tổng số đề tài</h2>
                 <p class="summary-card__value"><strong>—</strong></p>
-                <a
-                  href="danh-sach-de-tai-dang-huong-dan.html"
-                  aria-label="Xem chi tiết: tổng số đề tài"
-                  >Xem chi tiết <span aria-hidden="true">→</span></a
-                >
               </article>
               <article
                 class="summary-card"
@@ -304,11 +291,6 @@
               >
                 <h2 id="created-count-title">Đề tài đã tạo</h2>
                 <p class="summary-card__value"><strong>—</strong></p>
-                <a
-                  href="danh-sach-de-tai-da-tao.html"
-                  aria-label="Xem chi tiết: đề tài đã tạo"
-                  >Xem chi tiết <span aria-hidden="true">→</span></a
-                >
               </article>
               <article
                 class="summary-card"
@@ -316,11 +298,6 @@
               >
                 <h2 id="supervised-count-title">Đang hướng dẫn</h2>
                 <p class="summary-card__value"><strong>—</strong></p>
-                <a
-                  href="danh-sach-de-tai-dang-huong-dan.html"
-                  aria-label="Xem chi tiết: đang hướng dẫn"
-                  >Xem chi tiết <span aria-hidden="true">→</span></a
-                >
               </article>
               <article
                 class="summary-card"
@@ -328,11 +305,6 @@
               >
                 <h2 id="pending-count-title">Yêu cầu chờ xử lý</h2>
                 <p class="summary-card__value"><strong>—</strong></p>
-                <a
-                  href="yeu-cau-cho-duyet.html"
-                  aria-label="Xem chi tiết: yêu cầu chờ xử lý"
-                  >Xem chi tiết <span aria-hidden="true">→</span></a
-                >
               </article>
             </div>
           </section>
@@ -423,36 +395,87 @@
                   <dt>Hoàn thành</dt>
                   <dd>—</dd>
                 </div>
-                <div><dt>Đã đóng đăng ký</dt><dd>—</dd></div>
-                </dl>
+                <div>
+                  <dt>Đã đóng đăng ký</dt>
+                  <dd>—</dd>
+                </div>
+              </dl>
             </div>
             <p id="topic-status-empty" hidden></p>
             <p id="overview-storage-warning" role="status" hidden></p>
           </section>
+          <section class="supervision overview-invitations fade-in-up" aria-labelledby="supervision-shortcut-title" data-supervision-shortcut="teacher">
+            <header class="section-header">
+              <h2 id="supervision-shortcut-title">Lời mời cần phản hồi</h2>
+              <a href="yeu-cau-cho-duyet.html#loi-moi-huong-dan">
+                <span>Xem tất cả</span>
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75">
+                  <path d="M4 12h15m-6-6 6 6-6 6" />
+                </svg>
+              </a>
+            </header>
+            <p class="supervision__hint overview-invitations__status" data-supervision-summary role="status">Bật JavaScript để xem dữ liệu đang lưu trên trình duyệt.</p>
+            <ul class="overview-invitations__list" data-supervision-preview hidden></ul>
+            <template data-supervision-row>
+              <li class="overview-invitations__row">
+                <div>
+                  <h3></h3>
+                  <p class="overview-invitations__meta">
+                    <span>
+                      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75">
+                        <circle cx="12" cy="8" r="4" />
+                        <path d="M5 21v-2a7 7 0 0 1 14 0v2" />
+                      </svg>
+                      <span data-invitation-sender></span>
+                    </span>
+                    <span>
+                      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75">
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 7v5l3 2" />
+                      </svg>
+                      <time></time>
+                    </span>
+                  </p>
+                </div>
+                <a class="supervision__button overview-invitations__reply" aria-label="Phản hồi lời mời">
+                  <span>Phản hồi</span>
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75">
+                    <path d="M4 12h15m-6-6 6 6-6 6" />
+                  </svg>
+                </a>
+              </li>
+            </template>
+          </section>
           <section
-            class="supervised-progress"
+            class="supervised-progress fade-in-up"
             aria-labelledby="supervised-progress-title"
           >
             <header class="section-header">
               <h2 id="supervised-progress-title">
                 Tiến độ đề tài đang hướng dẫn
               </h2>
-              <a href="danh-sach-de-tai-dang-huong-dan.html"
-                >Xem tất cả <span aria-hidden="true">→</span></a
-              >
+              <a href="danh-sach-de-tai-dang-huong-dan.html?status=in-progress&amp;topic_sort=newest">
+                <span>Xem tất cả</span>
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75">
+                  <path d="M4 12h15m-6-6 6 6-6 6" />
+                </svg>
+              </a>
             </header>
 
             <div class="supervised-progress__list"><p>Bật JavaScript để xem dữ liệu đang lưu trên trình duyệt.</p></div>
           </section>
           <section
-            class="pending-requests"
+            class="pending-requests fade-in-up"
             aria-labelledby="pending-requests-title"
           >
             <header class="section-header">
               <h2 id="pending-requests-title">Yêu cầu chờ duyệt</h2>
-              <a href="yeu-cau-cho-duyet.html"
-                >Xem tất cả <span aria-hidden="true">→</span></a
-              >
+              <a href="yeu-cau-cho-duyet.html">
+                <span>Xem tất cả</span>
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75">
+                  <path d="M4 12h15m-6-6 6 6-6 6" />
+                </svg>
+              </a>
             </header>
             <div class="pending-requests__list"><p>Bật JavaScript để xem dữ liệu đang lưu trên trình duyệt.</p></div>
           </section>

@@ -77,6 +77,7 @@
     const topics = [
       ...(uit?.records || []),
       ...(uit?.pending || []),
+      ...(uit?.rejected || []),
       ...(app.services.lecturerTopicRepository?.read() || []),
       ...(lecturerTopics?.allCreated() || []),
       ...(lecturerTopics?.list('supervised') || []),
@@ -172,7 +173,8 @@
       status: record.status === 'da-duyet' ? 'dang-thuc-hien' : record.status, statusLabel: record.status === 'da-duyet' ? 'Đang thực hiện' : labels[record.status], requestStatusLabel: labels[record.status], feedback: record.decision?.reason || '', createdAt: record.createdAt,
       detailUrl: detailUrl(record.id),
     }));
-    const sharedSamples = (globalThis.UITLecturerCatalog?.pending || [])
+    const uit = globalThis.UITLecturerCatalog;
+    const sharedSamples = [...(uit?.pending || []), ...(uit?.rejected || [])]
       .filter(seed => seed.studentVisible)
       .map(seed => globalThis.IE104Proposals?.get(seed.id)).filter(Boolean).map(record => ({
         id: record.id, requestId: record.id, displayId: record.topicCode, title: record.title,

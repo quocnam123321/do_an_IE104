@@ -2,7 +2,7 @@
 
 <html lang="vi">
   <head>
-    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png?v=2" />
     <script src="../../assets/js/shared/topic-identity.js" defer></script>
 
     <meta charset="utf-8" />
@@ -13,18 +13,19 @@
     />
     <title>Tổng quan | Quản lý đồ án</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-student.js"></script>
+    <script defer src="../../assets/js/i18n/en-student.js?v=20261125-student-dashboard"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
     <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-menu-2" />
-    <link rel="stylesheet" href="../../assets/css/tong-quan-sinh-vien.css?v=20261120-overview-layout" />
+    <link rel="stylesheet" href="../../assets/css/tong-quan-giang-vien.css?v=20261125-chart-visibility" />
+    <link rel="stylesheet" href="../../assets/css/tong-quan-sinh-vien.css?v=20261125-student-dashboard" />
     <link rel="stylesheet" href="../../assets/css/supervision-invitations.css" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <script src="../../assets/js/supervision-entry.js?v=20261123-language" defer></script>
-    <script src="../../assets/js/supervision-store.js?v=20261124-conversation" defer></script>
-    <script src="../../assets/js/supervision-shortcut.js?v=20261122-shared-login" defer></script>
+    <script src="../../assets/js/supervision-store.js?v=20261125-student-demo-invitations" defer></script>
+    <script src="../../assets/js/supervision-shortcut.js?v=20261125-student-dashboard" defer></script>
 
     <script src="../../assets/js/data/mock-data.js?v=20261124-da005" defer></script>
     <script src="../../assets/js/data/student-projects.js" defer></script>
@@ -33,26 +34,26 @@
 <script src="../../assets/js/services/approved-project-service.js?v=20261125-approved-overview" defer></script>
     <script src="../../assets/js/shared/validation.js" defer></script>
     <script src="../../assets/js/data/lecturer-topics.js" defer></script>
-    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261125-proposal-outline" defer></script>
-    <script src="../../assets/js/proposal-store.js?v=20261125-proposal-outline" defer></script>
+    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261125-closed-samples" defer></script>
+    <script src="../../assets/js/proposal-store.js?v=20261125-rejected-requests" defer></script>
     <script src="../../assets/js/data/lecturer-merge-catalog.js?v=20261123-audit-names2" defer></script>
-<script src="../../assets/js/data/student-uit-catalog.js?v=20261124-evaluation-pdf" defer></script>
+<script src="../../assets/js/data/student-uit-catalog.js?v=20261125-sample-progress" defer></script>
 <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
-<script src="../../assets/js/services/lecturer-topic-service.js?v=20261124-invitation-flow" defer></script>
+<script src="../../assets/js/services/lecturer-topic-service.js?v=20261125-topic-participants" defer></script>
 <script src="../../assets/js/services/published-topic-service.js?v=20261123-merged-8f1631f" defer></script>
 <script src="../../assets/js/services/registration-service.js" defer></script>
     <script src="../../assets/js/data/proposal-actors.js" defer></script>
-<script src="../../assets/js/services/proposal-service.js?v=20261125-approved-overview" defer></script>
+<script src="../../assets/js/services/proposal-service.js?v=20261125-rejected-requests" defer></script>
 
-    <script src="../../assets/js/data/student-requests.js" defer></script>
-    <script src="../../assets/js/services/request-service.js" defer></script>
-    <script src="../../assets/js/services/topic-service.js?v=20261123-merged-8f1631f" defer></script>
+    <script src="../../assets/js/data/student-requests.js?v=20261125-withdrawn-sample" defer></script>
+    <script src="../../assets/js/services/request-service.js?v=20261125-closed-samples" defer></script>
+    <script src="../../assets/js/services/topic-service.js?v=20261125-student-dashboard" defer></script>
     <script src="../../assets/js/services/project-team-service.js?v=20261124-multiple-supervisors" defer></script>
-    <script src="../../assets/js/services/project-progress-service.js?v=20261123-audit-names2" defer></script>
-    <link rel="stylesheet" href="../../assets/css/student-overview-data.css?v=20261120-overview-layout">
-    <script src="../../assets/js/services/student-overview-service.js" defer></script>
-    <script src="../../assets/js/pages/student/overview.js?v=20261123-audit-names2" defer></script>
-    <script src="../../assets/js/student-overview.js?v=20261120-student-motion" defer></script>
+    <script src="../../assets/js/services/project-progress-service.js?v=20261125-sample-progress" defer></script>
+    <script src="../../assets/js/services/student-topic-codes.js?v=20261123-sv-uit-2" defer></script>
+    <script src="../../assets/js/services/student-overview-service.js?v=20261125-student-dashboard" defer></script>
+    <script src="../../assets/js/pages/student/overview.js?v=20261125-student-dashboard" defer></script>
+    <script src="../../assets/js/lecturer-overview.js?v=20261125-chart-fill" defer></script>
 
 <script src="../../assets/js/dialog-commands.js" defer></script>
   <link rel="stylesheet" href="../../assets/css/project-footer.css" />
@@ -109,13 +110,13 @@
                     >
                   </li>
                   <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="../chung/huong-nghien-cuu.html"
-                      >Hướng nghiên cứu</a
+                    <a class="main-nav__link" href="../chung/thong-bao.html"
+                      >Thông báo</a
                     >
                   </li>
                   <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="../chung/thong-bao.html"
-                      >Thông báo</a
+                    <a class="main-nav__link" href="../chung/huong-nghien-cuu.html"
+                      >Hướng nghiên cứu</a
                     >
                   </li>
                   <li class="main-nav__subitem">
@@ -176,7 +177,7 @@
       <p data-logout-status role="status"></p>
     </dialog>
     <!-- NỘI DUNG RIÊNG CỦA TỪNG TRANG -->
-    <main class="main-content" id="main-content" tabindex="-1">
+    <main class="main-content lecturer-overview-page" id="main-content" tabindex="-1">
       <div class="page-container">
         <!-- Thay tên trang trong breadcrumb khi sử dụng khung -->
         <nav aria-label="Đường dẫn" class="breadcrumb">
@@ -194,10 +195,8 @@
         </header>
         <div class="page-content">
           <p data-overview-notice role="status"></p>
-          <p id="overview-preview-label" class="visually-hidden" hidden>Dữ liệu minh họa.</p>
           <noscript><p>Bật JavaScript để cập nhật số liệu Tổng quan theo dữ liệu hiện tại.</p></noscript>
-          <!-- Dữ liệu minh họa theo wireframe tổng quan sinh viên phiên bản 2. -->
-          <section class="student-welcome fade-in-up" aria-labelledby="student-welcome-name" aria-describedby="student-welcome-demo">
+          <section class="student-welcome" aria-labelledby="student-welcome-name" aria-describedby="student-welcome-demo">
             <a
               class="student-welcome__avatar"
               href="ho-so-ca-nhan.html"
@@ -243,305 +242,134 @@
             </div>
             <p id="student-welcome-demo" class="visually-hidden">Thông tin sinh viên minh họa, chưa kết nối tài khoản đăng nhập.</p>
           </section>
-          <section class="supervision supervision__panel supervision-shortcut fade-in-up" aria-labelledby="supervision-shortcut-title" data-supervision-shortcut="student">
-            <div class="supervision__topline">
-              <div>
-                <h2 class="supervision__heading" id="supervision-shortcut-title">Lời mời hướng dẫn</h2>
-                <p class="supervision__hint" data-supervision-summary role="status">Theo dõi phản hồi của giảng viên.</p>
-              </div>
-              <a class="supervision__button" href="de-tai-cua-toi-sinh-vien.html#loi-moi-huong-dan">Xem lời mời</a>
+          <section class="dashboard-summary" aria-label="Thống kê đề tài">
+            <div class="dashboard-summary__list">
+              <article class="summary-card" aria-labelledby="total-count-title">
+                <h2 id="total-count-title">Tổng số đề tài</h2>
+                <p class="summary-card__value"><a href="de-tai-cua-toi-sinh-vien.html" aria-labelledby="total-count-title total-count-value"><strong id="total-count-value" data-overview-count="total">—</strong></a></p>
+              </article>
+              <article class="summary-card" aria-labelledby="active-count-title">
+                <h2 id="active-count-title">Đang thực hiện</h2>
+                <p class="summary-card__value"><a href="de-tai-cua-toi-sinh-vien.html?status=dang-thuc-hien" aria-labelledby="active-count-title active-count-value"><strong id="active-count-value" data-overview-count="active">—</strong></a></p>
+              </article>
+              <article class="summary-card" aria-labelledby="completed-count-title">
+                <h2 id="completed-count-title">Hoàn thành</h2>
+                <p class="summary-card__value"><a href="de-tai-cua-toi-sinh-vien.html?status=hoan-thanh" aria-labelledby="completed-count-title completed-count-value"><strong id="completed-count-value" data-overview-count="completed">—</strong></a></p>
+              </article>
+              <article class="summary-card" aria-labelledby="pending-count-title">
+                <h2 id="pending-count-title">Chờ duyệt</h2>
+                <p class="summary-card__value"><a href="de-tai-cua-toi-sinh-vien.html?status=cho-duyet" aria-labelledby="pending-count-title pending-count-value"><strong id="pending-count-value" data-overview-count="pending">—</strong></a></p>
+              </article>
             </div>
           </section>
-          <section aria-label="Thống kê đề tài" class="dashboard-summary fade-in-up">
-            <div class="dashboard-summary__items">
-              <article
-                aria-labelledby="total-topics-title"
-                class="summary-card summary-card--total"
+          <section
+            id="topic-status"
+            class="topic-status"
+            aria-labelledby="topic-status-title"
+          >
+            <h2 id="topic-status-title">Trạng thái đề tài</h2>
+            <p>Phân bố trạng thái các đề tài của bạn.</p>
+            <div class="topic-status__content" hidden>
+              <svg
+                class="topic-status__chart"
+                xmlns="http://www.w3.org/2000/svg"
+                width="260"
+                height="240"
+                viewBox="0 0 260 240"
+                role="img"
+                aria-labelledby="status-chart-title status-chart-description"
               >
-                <a class="summary-card__link" href="de-tai-cua-toi-sinh-vien.html">
-                  <h2 id="total-topics-title" class="summary-card__title">
+                <title id="status-chart-title">Trạng thái đề tài</title>
+                <desc id="status-chart-description"></desc>
+                <g
+                  font-family="sans-serif"
+                  text-anchor="middle"
+                  aria-hidden="true"
+                >
+                  <text x="130" y="112" font-size="14" font-weight="bold">
                     Tổng đề tài
-                  </h2>
-                  <p class="summary-card__count"><strong data-preview-count="6">—</strong></p>
-                </a>
-              </article>
-              <article
-                aria-labelledby="active-topics-title"
-                class="summary-card summary-card--active"
-              >
-                <a class="summary-card__link" href="de-tai-cua-toi-sinh-vien.html?status=dang-thuc-hien">
-                  <h2 id="active-topics-title" class="summary-card__title">
-                    Đang thực hiện
-                  </h2>
-                  <p class="summary-card__count"><strong data-preview-count="2">—</strong></p>
-                </a>
-              </article>
-              <article
-                aria-labelledby="approved-topics-title"
-                class="summary-card summary-card--approved"
-              >
-                <a class="summary-card__link" href="#registration-status">
-                  <h2 id="approved-topics-title" class="summary-card__title">
-                    Đã bắt đầu
-                  </h2>
-                  <p class="summary-card__count"><strong data-preview-count="3">—</strong></p>
-                </a>
-              </article>
-              <article
-                aria-labelledby="pending-topics-title"
-                class="summary-card summary-card--pending"
-              >
-                <a class="summary-card__link" href="#recent-requests">
-                  <h2 id="pending-topics-title" class="summary-card__title">
-                    Chờ duyệt
-                  </h2>
-                  <p class="summary-card__count"><strong data-preview-count="2">—</strong></p>
-                </a>
-              </article>
-              <article
-                aria-labelledby="rejected-topics-title"
-                class="summary-card summary-card--rejected"
-              >
-                <a class="summary-card__link" href="#registration-status">
-                  <h2 id="rejected-topics-title" class="summary-card__title">
-                    Đã từ chối
-                  </h2>
-                  <p class="summary-card__count"><strong data-preview-count="1">—</strong></p>
-                </a>
-              </article>
+                  </text>
+                  <text x="130" y="145" font-size="28" font-weight="bold">—</text>
+                </g>
+              </svg>
+              <dl class="topic-status__legend"></dl>
             </div>
+            <p id="topic-status-empty" hidden></p>
           </section>
-
-          <section
-            aria-labelledby="registration-status-title"
-            class="registration-status fade-in-up"
-            id="registration-status"
-          >
-            <header class="dashboard-section__header">
-              <h2 id="registration-status-title">Trạng thái đăng ký</h2>
-            </header>
-            <div class="dashboard-section__body">
-              <p>Tình trạng các đề tài bạn đã đăng ký / đề xuất.</p>
-              <figure class="registration-status__figure" hidden>
-                <svg
-                  class="registration-status__chart"
-                  viewBox="0 0 240 240"
-                  width="240"
-                  height="240"
-                  role="img"
-                  aria-labelledby="status-chart-title status-chart-description"
-                >
-                  <title id="status-chart-title">
-                    Trạng thái đăng ký của 6 đề tài
-                  </title>
-                  <desc id="status-chart-description">
-                    Đã bắt đầu: 3 đề tài, 50%. Chờ duyệt: 2 đề tài, 33,3%. Đã từ
-                    chối: 1 đề tài, 16,7%.
-                  </desc>
-                  <g
-                    fill="none"
-                    stroke-width="44"
-                    transform="rotate(-90 120 120)"
-                    data-chart-slices
-                  >
-                    <circle
-                      cx="120"
-                      cy="120"
-                      r="76"
-                      stroke="#555"
-                      pathLength="6"
-                      stroke-dasharray="3 3"
-                    />
-                    <circle
-                      cx="120"
-                      cy="120"
-                      r="76"
-                      stroke="#888"
-                      pathLength="6"
-                      stroke-dasharray="2 4"
-                      stroke-dashoffset="-3"
-                    />
-                    <circle
-                      cx="120"
-                      cy="120"
-                      r="76"
-                      stroke="#c8c8c8"
-                      pathLength="6"
-                      stroke-dasharray="1 5"
-                      stroke-dashoffset="-5"
-                    />
-                  </g>
-                  <g
-                    text-anchor="middle"
-                    font-family="Arial, sans-serif"
-                    font-weight="700"
-                  >
-                    <text x="120" y="111" font-size="14" fill="#262626">
-                      Tổng đề tài
-                    </text>
-                    <text x="120" y="143" font-size="32" fill="#262626">6</text>
-                  </g>
-                  <g class="registration-status__percentages" text-anchor="middle" aria-hidden="true">
-                    <text x="196" y="125" font-size="13">50%</text>
-                    <text x="53" y="164" font-size="13">33,3%</text>
-                    <text x="82" y="57" font-size="13">16,7%</text>
-                  </g>
+          <section class="supervision overview-invitations fade-in-up" aria-labelledby="supervision-shortcut-title" data-supervision-shortcut="student">
+            <header class="section-header">
+              <h2 id="supervision-shortcut-title">Lời mời hướng dẫn</h2>
+              <a href="de-tai-cua-toi-sinh-vien.html#loi-moi-huong-dan">
+                <span>Xem tất cả</span>
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75">
+                  <path d="M4 12h15m-6-6 6 6-6 6" />
                 </svg>
-                <figcaption class="registration-status__legend">
-                  <ul>
-                    <li
-                      class="registration-status__item registration-status__item--approved"
-                    >
-                      <strong>Đã bắt đầu: 3</strong>
-                    </li>
-                    <li
-                      class="registration-status__item registration-status__item--pending"
-                    >
-                      <strong>Chờ duyệt: 2</strong>
-                    </li>
-                    <li
-                      class="registration-status__item registration-status__item--rejected"
-                    >
-                      <strong>Đã từ chối: 1</strong>
-                    </li>
-                  </ul>
-                </figcaption>
-              </figure>
-              <p class="registration-status__note">
-                Đã bắt đầu gồm đề tài đang thực hiện và đã hoàn thành.
-              </p>
-            </div>
-          </section>
-
-          <section
-            aria-labelledby="topic-progress-title"
-            class="topic-progress fade-in-up"
-          >
-            <header class="dashboard-section__header">
-              <h2 id="topic-progress-title">Tiến độ đề tài đang thực hiện</h2>
-              <a href="de-tai-cua-toi-sinh-vien.html?status=dang-thuc-hien"
-                >Xem tất cả <span aria-hidden="true">→</span></a
-              >
+              </a>
             </header>
-            <ul class="topic-progress__list" hidden>
-              <li>
-                <article
-                  aria-labelledby="library-topic-title"
-                  class="topic-progress__item"
-                >
-                  <div class="topic-progress__info">
-                    <h3 id="library-topic-title">Website quản lý thư viện</h3>
-                    <p>Nhóm 01 · Giảng viên: Nguyễn Văn An</p>
-                  </div>
-                  <div class="topic-progress__completion">
-                    <label for="library-progress">23% hoàn thành</label>
-                    <progress id="library-progress" value="23" max="100">
-                      23%
-                    </progress>
-                  </div>
-                  <a
-                    class="topic-progress__link"
-                    href="chi-tiet-de-tai-sinh-vien.html?project=DA005"
-                    aria-label="Xem đề tài: Website quản lý thư viện"
-                    >Xem đề tài <span aria-hidden="true">→</span></a
-                  >
-                </article>
+            <p class="supervision__hint overview-invitations__status" data-supervision-summary role="status">Bật JavaScript để xem dữ liệu đang lưu trên trình duyệt.</p>
+            <ul class="overview-invitations__list" data-supervision-preview hidden></ul>
+            <template data-supervision-row>
+              <li class="overview-invitations__row">
+                <div>
+                  <h3></h3>
+                  <p class="overview-invitations__meta">
+                    <span>
+                      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75">
+                        <circle cx="12" cy="8" r="4" />
+                        <path d="M5 21v-2a7 7 0 0 1 14 0v2" />
+                      </svg>
+                      <span><span class="visually-hidden">Giảng viên nhận lời mời: </span><span data-invitation-recipient></span></span>
+                    </span>
+                    <span>
+                      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75">
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="M12 7v5l3 2" />
+                      </svg>
+                      <span><span class="visually-hidden">Thời gian gửi: </span><time></time></span>
+                    </span>
+                  </p>
+                </div>
+                <a class="supervision__button overview-invitations__reply">
+                  <span>Xem trao đổi</span>
+                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75">
+                    <path d="M4 12h15m-6-6 6 6-6 6" />
+                  </svg>
+                </a>
               </li>
-              <li>
-                <article
-                  aria-labelledby="expenses-topic-title"
-                  class="topic-progress__item"
-                >
-                  <div class="topic-progress__info">
-                    <h3 id="expenses-topic-title">Website bán sách trực tuyến</h3>
-                    <p>Nhóm 3 · Giảng viên: Trần Thị Bình</p>
-                  </div>
-                  <div class="topic-progress__completion">
-                    <label for="expenses-progress">40% hoàn thành</label>
-                    <progress id="expenses-progress" value="40" max="100">
-                      40%
-                    </progress>
-                  </div>
-                  <a
-                    class="topic-progress__link"
-                    href="chi-tiet-de-tai-sinh-vien.html?project=DA002"
-                    aria-label="Xem đề tài: Website bán sách trực tuyến"
-                    >Xem đề tài <span aria-hidden="true">→</span></a
-                  >
-                </article>
-              </li>
-            </ul>
+            </template>
           </section>
-
           <section
-            aria-labelledby="recent-title"
-            class="recent-requests fade-in-up"
-            id="recent-requests"
+            class="supervised-progress fade-in-up"
+            aria-labelledby="supervised-progress-title"
           >
-            <header class="dashboard-section__header">
-              <h2 id="recent-title">Đăng ký &amp; đề xuất gần đây</h2>
-              <a href="de-tai-cua-toi-sinh-vien.html#danh-sach-de-tai"
-                >Xem tất cả <span aria-hidden="true">→</span></a
-              >
+            <header class="section-header">
+              <h2 id="supervised-progress-title">
+                Tiến độ đề tài đang thực hiện
+              </h2>
+              <a href="de-tai-cua-toi-sinh-vien.html?status=dang-thuc-hien">
+                <span>Xem tất cả</span>
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75">
+                  <path d="M4 12h15m-6-6 6 6-6 6" />
+                </svg>
+              </a>
             </header>
-            <ol class="recent-requests__list" hidden>
-              <li>
-                <article
-                  aria-labelledby="recent-proposal-title"
-                  class="request-card"
-                >
-                  <header class="request-card__header">
-                    <h3 id="recent-proposal-title">Hệ thống gợi ý phim</h3>
-                    <span
-                      class="request-card__status request-card__status--pending"
-                      >Chờ duyệt</span
-                    >
-                  </header>
-                  <p class="request-card__type">Đề xuất đề tài</p>
-                  <p>
-                    Ngày gửi:
-                    <time datetime="2026-10-24T09:00:00+07:00"
-                      >24/10/2026 · 09:00</time
-                    >
-                  </p>
-                  <a
-                    class="request-card__link"
-                    href="de-tai-cua-toi-sinh-vien.html#danh-sach-de-tai"
-                    aria-label="Xem chi tiết đề xuất: Hệ thống gợi ý phim"
-                    >Xem chi tiết <span aria-hidden="true">→</span></a
-                  >
-                </article>
-              </li>
-              <li>
-                <article
-                  aria-labelledby="recent-registration-title"
-                  class="request-card"
-                >
-                  <header class="request-card__header">
-                    <h3 id="recent-registration-title">
-                      Website quản lý thư viện
-                    </h3>
-                    <span
-                      class="request-card__status request-card__status--approved"
-                      >Đã duyệt</span
-                    >
-                  </header>
-                  <p class="request-card__type">Đăng ký đề tài</p>
-                  <p>
-                    Ngày gửi:
-                    <time datetime="2026-10-20T14:30:00+07:00"
-                      >20/10/2026 · 14:30</time
-                    >
-                  </p>
-                  <a
-                    class="request-card__link"
-                    href="de-tai-cua-toi-sinh-vien.html#danh-sach-de-tai"
-                    aria-label="Xem chi tiết đăng ký: Website quản lý thư viện"
-                    >Xem chi tiết <span aria-hidden="true">→</span></a
-                  >
-                </article>
-              </li>
-            </ol>
+
+            <div class="supervised-progress__list"><p>Bật JavaScript để xem dữ liệu đang lưu trên trình duyệt.</p></div>
+          </section>
+          <section
+            class="pending-requests fade-in-up"
+            aria-labelledby="pending-requests-title"
+          >
+            <header class="section-header">
+              <h2 id="pending-requests-title">Yêu cầu chờ duyệt</h2>
+              <a href="de-tai-cua-toi-sinh-vien.html?status=cho-duyet">
+                <span>Xem tất cả</span>
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75">
+                  <path d="M4 12h15m-6-6 6 6-6 6" />
+                </svg>
+              </a>
+            </header>
+            <div class="pending-requests__list"><p>Bật JavaScript để xem dữ liệu đang lưu trên trình duyệt.</p></div>
           </section>
         </div>
       </div>

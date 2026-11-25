@@ -160,7 +160,13 @@
 
   function applyToTopics(topics) {
     const requests = list(true);
-    return topics.flatMap(topic => {
+    const listedIds = new Set(topics.map(topic => topic.id));
+    const samples = requests.filter(record => record.showInMyTopics && isStudentProposal(record) && !listedIds.has(record.id))
+      .map(record => ({
+        id: record.id, requestId: record.id, createdAt: record.createdAt,
+        lecturerLabel: 'Giảng viên nhận đề xuất', groupName: record.groupName,
+      }));
+    return [...topics, ...samples].flatMap(topic => {
       const record = requests.find(item => item.id === topic.id);
       if (!record) return [{ ...topic }];
       if (record.deletedAt) return [];
@@ -168,7 +174,7 @@
       const approved = proposal && record.status === 'da-duyet';
       return [{ ...topic, title: record.title, type: record.type, typeLabel: record.typeLabel, courseId: record.courseId, courseLabel: record.courseLabel, lecturer: record.lecturerName,
         status: approved ? 'dang-thuc-hien' : record.status, statusLabel: approved ? 'Đang thực hiện' : labels[record.status],
-        ...(proposal ? { semester: record.semester, academicYear: record.academicYear, detailUrl: detailUrl(record.id) } : {}),
+        ...(proposal ? { displayId: record.topicCode || topic.displayId, semester: record.semester, academicYear: record.academicYear, detailUrl: detailUrl(record.id) } : {}),
       }];
     });
   }

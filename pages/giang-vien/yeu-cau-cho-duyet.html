@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="vi"><head>
-  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png?v=2" />
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="Xem và xử lý các đề xuất đề tài do sinh viên gửi." name="description">
@@ -8,21 +8,21 @@
    Yêu cầu chờ duyệt | Quản lý đồ án
   </title>
   <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-  <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261124-auto-recipient"></script>
+  <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261125-pending-only"></script>
   <script defer src="../../assets/js/i18n/en-shared.js"></script>
   <script defer src="../../assets/js/shared/language.js"></script>
   <link href="../../assets/css/tokens.css?v=20261123-theme" rel="stylesheet">
   <link href="../../assets/css/base.css?v=20261123-language" rel="stylesheet">
-  <link href="../../assets/css/components.css?v=20261125-account-menu-2" rel="stylesheet">
+  <link href="../../assets/css/components.css?v=20261125-account-pagination" rel="stylesheet">
   <link href="../../assets/css/breadcrumb.css" rel="stylesheet">
-  <link href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1" rel="stylesheet">
+  <link href="../../assets/css/teacher-layout.css?v=20261125-topic-pagination" rel="stylesheet">
   <link href="../../assets/css/teacher-supervised-topics.css?v=20261030-tabs-2" rel="stylesheet">
-  <link href="../../assets/css/teacher-pending-proposals.css?v=20261125-primary-only" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css?v=20261122-empty-state">
+  <link href="../../assets/css/teacher-pending-proposals.css?v=20261125-pending-only" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css?v=20261125-filter-selection">
    <script src="../../assets/js/nav-indicator.js" defer=""></script>
 
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css" />
-    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261125-proposal-outline" defer></script>
+    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261125-rejected-requests" defer></script>
     <script src="../../assets/js/shared/topic-identity.js" defer></script>
     <script src="../../assets/js/teacher-topic-store.js" defer></script>
     <script src="../../assets/js/data/mock-data.js" defer></script>
@@ -34,23 +34,23 @@
     <script src="../../assets/js/services/storage.js?v=20261124-demo-invitation-polish" defer></script>
     <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
     <script src="../../assets/js/shared/validation.js" defer></script>
-    <script src="../../assets/js/services/proposal-service.js?v=20261125-approved-overview" defer></script>
+    <script src="../../assets/js/services/proposal-service.js?v=20261125-rejected-requests" defer></script>
     <script src="../../assets/js/services/registration-service.js" defer></script>
     <script src="../../assets/js/services/approved-project-service.js?v=20261125-approved-overview" defer></script>
     <script src="../../assets/js/services/lecturer-topic-service.js?v=20261124-invitation-flow" defer></script>
     <script src="../../assets/js/services/published-topic-service.js?v=20261123-merged-8f1631f" defer></script>
-    <script src="../../assets/js/proposal-store.js?v=20261125-proposal-outline" defer></script>
+    <script src="../../assets/js/proposal-store.js?v=20261125-rejected-requests" defer></script>
     <script src="../../assets/js/shared/course-filters.js?v=20261122-course-options" defer></script>
     <script src="../../assets/js/shared/topic-list-empty.js?v=20261122-empty-state" defer></script>
     <script src="../../assets/js/services/proposal-file-service.js" defer></script>
     <script src="../../assets/js/shared/proposal-cover.js" defer></script>
-    <script src="../../assets/js/pending-proposals.js?v=20261125-topic-code-display" defer></script>
+    <script src="../../assets/js/pending-proposals.js?v=20261125-pending-topic-codes" defer></script>
     <link rel="stylesheet" href="../../assets/css/supervision-invitations.css?v=20261124-adjacent-reply">
-    <script src="../../assets/js/supervision-store.js?v=20261124-conversation" defer></script>
+    <script src="../../assets/js/supervision-store.js?v=20261125-student-demo-invitations" defer></script>
     <script src="../../assets/js/supervision-entry.js?v=20261124-inbox-recipient" defer></script>
     <script src="../../assets/js/detail-tabs.js" defer></script>
     <script src="../../assets/js/supervision-attachment-ui.js?v=20261124-adjacent-reply" defer></script>
-    <script src="../../assets/js/supervision-inbox.js?v=20261124-inbox-only" defer></script>
+    <script src="../../assets/js/supervision-inbox.js?v=20261125-demo-invitations" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
   <script src="../../assets/js/services/project-team-service.js?v=20261124-multiple-supervisors" defer></script>
@@ -105,13 +105,13 @@
           </a>
          </li>
          <li class="main-nav__subitem">
-          <a class="main-nav__link" href="../chung/huong-nghien-cuu.html">
-           Hướng nghiên cứu
+          <a class="main-nav__link" href="../chung/thong-bao.html">
+           Thông báo
           </a>
          </li>
          <li class="main-nav__subitem">
-          <a class="main-nav__link" href="../chung/thong-bao.html">
-           Thông báo
+          <a class="main-nav__link" href="../chung/huong-nghien-cuu.html">
+           Hướng nghiên cứu
           </a>
          </li>
          <li class="main-nav__subitem">
@@ -200,13 +200,13 @@
            </a>
           </li>
           <li>
-           <a class="mobile-nav__link" href="../chung/huong-nghien-cuu.html">
-            Hướng nghiên cứu
+           <a class="mobile-nav__link" href="../chung/thong-bao.html">
+            Thông báo
            </a>
           </li>
           <li>
-           <a class="mobile-nav__link" href="../chung/thong-bao.html">
-            Thông báo
+           <a class="mobile-nav__link" href="../chung/huong-nghien-cuu.html">
+            Hướng nghiên cứu
            </a>
           </li>
           <li>
@@ -293,13 +293,17 @@
       <!-- Các nhóm lọc kết hợp với tìm kiếm, sắp xếp và phân trang. -->
       <details class="topic-filters__disclosure" open="">
        <summary class="topic-filters__summary">
-        <svg aria-hidden="true" class="topic-filters__icon" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
-         <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3">
-         </polygon>
+        <svg class="topic-filter-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M3 4h18l-7 9v7l-4-2v-5L3 4Z" />
+          <g class="topic-filter-icon__selected">
+            <circle cx="20" cy="4" r="5.5" />
+            <path d="m17.6 4 1.6 1.6 3.3-3.3" />
+          </g>
         </svg>
         <h2 class="topic-filters__title" id="proposal-filters-title">
          Bộ lọc
         </h2>
+        <span class="visually-hidden topic-filter-selection-label">Đã chọn tiêu chí lọc</span>
         <svg aria-hidden="true" class="topic-filters__chevron" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" viewBox="0 0 24 24">
          <path d="m6 9 6 6 6-6">
          </path>
@@ -715,7 +719,7 @@
       </div>
       <!-- Số trang và số đếm được tính từ tập hồ sơ chờ duyệt. -->
       <div class="topic-results__footer">
-       <nav aria-label="Phân trang đề xuất" class="pagination">
+       <nav aria-label="Phân trang đề xuất" class="pagination topic-pagination">
         <ul class="pagination__list">
          <li class="pagination__item">
           <button aria-label="Trang trước" class="pagination__button" disabled="" type="button">

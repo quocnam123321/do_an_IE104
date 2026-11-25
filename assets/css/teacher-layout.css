@@ -981,67 +981,6 @@ body:where(.teacher-workspace-page) {
   }
 }
 
-/* --------------------------------------------------------------------------
-   6. PHÂN TRANG (PAGINATION)
-   -------------------------------------------------------------------------- */
-:where(.teacher-workspace-page) .pagination__list {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 0;
-  list-style: none;
-}
-
-:where(.teacher-workspace-page) .pagination__button,
-:where(.teacher-workspace-page) .pagination__current {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: var(--control-min-height);
-  min-height: var(--control-min-height);
-  padding-inline: var(--space-3);
-  border-radius: var(--control-radius);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  font-variant-numeric: tabular-nums;
-  text-decoration: none;
-}
-
-:where(.teacher-workspace-page) .pagination__button {
-  border: 1px solid var(--color-control-border);
-  background-color: var(--color-surface);
-  color: var(--color-foreground);
-  cursor: pointer;
-  transition: background-color var(--duration-fast) var(--ease-standard),
-    border-color var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard);
-}
-
-:where(.teacher-workspace-page) .pagination__button svg {
-  width: 1.125rem;
-  height: 1.125rem;
-}
-
-:where(.teacher-workspace-page) .pagination__button:hover:not(:disabled) {
-  background-color: var(--color-surface-subtle);
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-}
-
-:where(.teacher-workspace-page) .pagination__button:disabled {
-  background-color: var(--color-disabled-bg);
-  border-color: var(--color-disabled-border);
-  color: var(--color-disabled-fg);
-  cursor: not-allowed;
-}
-
-:where(.teacher-workspace-page) .pagination__current {
-  border: 1px solid var(--color-primary);
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
-}
-
 /* Footer dùng mẫu chung trong components.css. */
 
 @media (prefers-reduced-motion: reduce) {
@@ -1053,8 +992,7 @@ body:where(.teacher-workspace-page) {
 :where(.teacher-workspace-page) .mobile-nav__link,
 :where(.teacher-workspace-page) .breadcrumb__item a,
 :where(.teacher-workspace-page) .page-header__action,
-:where(.teacher-workspace-page) .topic-tabs__link,
-:where(.teacher-workspace-page) .pagination__button {
+:where(.teacher-workspace-page) .topic-tabs__link {
     transition: none;
   }
 }

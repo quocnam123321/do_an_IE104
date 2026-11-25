@@ -65,11 +65,18 @@
   font-size: 2rem;
   font-weight: var(--font-weight-bold);
   text-decoration: none;
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 .lecturer-overview-page .lecturer-welcome__avatar:hover {
   background-color: var(--color-info-hover-bg);
+  border-color: var(--color-primary-hover);
   color: var(--color-primary-hover);
+  box-shadow: 0 0 0 3px var(--color-info-hover-bg);
 }
 
 .lecturer-overview-page .lecturer-welcome__avatar:focus-visible {
@@ -227,11 +234,12 @@
 
 /* --------------------------------------------------------------------------
    7. Shared Dashboard Section Frame
-   (.topic-status, .supervised-progress, .pending-requests)
+   (.topic-status, .supervised-progress, .pending-requests, .overview-invitations)
    -------------------------------------------------------------------------- */
 .lecturer-overview-page .topic-status,
 .lecturer-overview-page .supervised-progress,
-.lecturer-overview-page .pending-requests {
+.lecturer-overview-page .pending-requests,
+.lecturer-overview-page .overview-invitations {
   background-color: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-surface);
@@ -294,14 +302,76 @@
   text-decoration: underline;
 }
 
-/* --------------------------------------------------------------------------
-   8. Topic Status Section (.topic-status)
-   Tinh chỉnh bố cục 2 cột cân đối trên máy tính, xếp dọc trên điện thoại:
-   - Chia .topic-status__content thành 2 cột linh hoạt (1fr 1fr) để phân bố đều
-     biểu đồ (cột trái) và chú giải (cột phải) trên chiều rộng khả dụng, tránh dồn vào giữa.
-   - Giảm padding dọc dư thừa; chiều cao section tự co giãn theo nội dung.
-   - 3 trạng thái phân biệt bằng màu ngữ nghĩa + kiểu hình/viền chú giải + nhãn chữ + số lượng.
-   -------------------------------------------------------------------------- */
+.overview-invitations .section-header a,
+.supervised-progress .section-header a,
+.pending-requests .section-header a {
+  min-height: var(--control-min-height);
+}
+
+/* Lời mời cần phản hồi */
+.overview-invitations__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.overview-invitations__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3) var(--space-6);
+  padding: var(--space-4);
+}
+
+.overview-invitations__row + .overview-invitations__row {
+  border-top: 1px solid var(--color-border);
+  background-color: var(--color-background);
+}
+
+.overview-invitations__row h3 {
+  color: var(--color-heading);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+}
+
+.overview-invitations__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  margin-top: var(--space-2);
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+}
+
+.overview-invitations__meta > span {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.overview-invitations svg {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+}
+
+.overview-invitations__meta svg { margin-top: .125em; }
+.overview-invitations__reply { gap: var(--space-2); }
+.overview-invitations__status { padding: var(--space-4); }
+
+@media (min-width: 48rem) {
+  .overview-invitations__row,
+  .overview-invitations__status {
+    padding-inline: var(--space-5);
+  }
+}
+
+@media (max-width: 35.99rem) {
+  .overview-invitations__row { grid-template-columns: minmax(0, 1fr); }
+  .overview-invitations__reply { justify-self: end; }
+}
+
+/* Trạng thái đề tài */
 .lecturer-overview-page .topic-status > p {
   padding: 0.625rem var(--space-4) 0;
   color: var(--color-muted-foreground);
@@ -315,38 +385,31 @@
 }
 
 .lecturer-overview-page .topic-status__content {
-  padding: var(--space-2) var(--space-4) var(--space-3);
+  padding: var(--space-4);
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   justify-items: center;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-2);
 }
 
 @media (min-width: 40rem) {
   .lecturer-overview-page .topic-status__content {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    column-gap: clamp(1.5rem, 4vw, 3rem);
-    row-gap: var(--space-3);
-    padding: var(--space-2) var(--space-5) var(--space-4);
+    grid-template-columns: auto minmax(0, max-content);
+    justify-content: center;
+    column-gap: clamp(1.5rem, 3vw, 2.5rem);
+    padding: var(--space-4) var(--space-5) var(--space-5);
   }
 }
 
 .lecturer-overview-page .topic-status__chart {
-  width: min(100%, 10.75rem); /* 172px trên điện thoại */
+  width: min(100%, 12rem);
   height: auto;
-  justify-self: center;
 }
 
 @media (min-width: 40rem) {
   .lecturer-overview-page .topic-status__chart {
-    width: 11.75rem; /* 188px trên tablet */
-  }
-}
-
-@media (min-width: 64rem) {
-  .lecturer-overview-page .topic-status__chart {
-    width: 12.25rem; /* 196px trên máy tính — tăng nhẹ vừa vặn cột trái, không phóng chữ */
+    width: 13.5rem;
   }
 }
 
@@ -371,43 +434,121 @@
   stroke: var(--color-muted-foreground);
 }
 
+.lecturer-overview-page .topic-status__chart circle {
+  transition:
+    stroke-width 180ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 180ms ease;
+}
+
+.lecturer-overview-page .topic-status__chart.is-hovering-slice {
+  cursor: pointer;
+}
+
+.lecturer-overview-page .topic-status__chart.is-slice-active circle {
+  opacity: 0.32;
+}
+
+.lecturer-overview-page .topic-status__chart.is-slice-active circle.is-active {
+  opacity: 1;
+  stroke-width: 54;
+}
+
 .lecturer-overview-page .topic-status__chart text:nth-of-type(1),
 .lecturer-overview-page .topic-status__chart text:nth-of-type(2) {
   fill: var(--color-heading);
   font-weight: var(--font-weight-bold);
+  transition: opacity 150ms ease;
 }
 
 .lecturer-overview-page .topic-status__chart .topic-status__percent {
-  fill: var(--color-surface);
+  fill: var(--color-on-primary);
+  font-size: 0.8125rem;
   font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
+  transition: opacity 180ms ease;
 }
 
-.lecturer-overview-page .topic-status__legend {
-  width: min(100%, 20rem);
-  justify-self: center;
-  display: flex;
-  flex-direction: column;
+.lecturer-overview-page .topic-status__chart.is-sweeping .topic-status__percent {
+  opacity: 0;
 }
 
-@media (min-width: 40rem) {
-  .lecturer-overview-page .topic-status__legend {
-    width: min(100%, 22rem);
-  }
+.lecturer-overview-page .topic-status__chart.is-slice-active > g:first-of-type text:nth-of-type(1),
+.lecturer-overview-page .topic-status__chart.is-slice-active > g:first-of-type text:nth-of-type(2) {
+  opacity: 0;
 }
 
-.lecturer-overview-page .topic-status__legend > div {
-  padding-block: 0.5rem;
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  color: var(--color-heading);
-  font-size: var(--font-size-body);
+.lecturer-overview-page .topic-status__chart.is-slice-active .topic-status__percent {
+  opacity: 0.22;
+}
+
+.lecturer-overview-page .topic-status__chart.is-awaiting-sweep circle,
+.lecturer-overview-page .topic-status__chart.is-awaiting-sweep .topic-status__percent {
+  visibility: hidden;
+}
+
+.lecturer-overview-page .topic-status__readout {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 150ms ease;
+}
+
+.lecturer-overview-page .topic-status__readout.is-visible {
+  opacity: 1;
+}
+
+.lecturer-overview-page .topic-status__readout-label {
+  fill: var(--color-muted-foreground);
+  font-size: 11px;
+  font-weight: var(--font-weight-semibold);
+}
+
+.lecturer-overview-page .topic-status__readout-value {
+  fill: var(--color-heading);
+  font-size: 26px;
   font-weight: var(--font-weight-bold);
   font-variant-numeric: tabular-nums;
 }
 
-.lecturer-overview-page .topic-status__legend > div + div {
-  border-top: 1px solid var(--color-border);
+.lecturer-overview-page .topic-status__readout-percent {
+  fill: var(--color-primary);
+  font-size: 12px;
+  font-weight: var(--font-weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.lecturer-overview-page .topic-status__legend {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0;
+  display: grid;
+  gap: var(--space-1);
+}
+
+.lecturer-overview-page .topic-status__legend > div {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0.375rem var(--space-3);
+  margin-inline: calc(var(--space-3) * -1);
+  border-radius: var(--radius-control);
+  color: var(--color-heading);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-bold);
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    opacity var(--transition-fast);
+}
+
+.lecturer-overview-page .topic-status__legend > div:hover,
+.lecturer-overview-page .topic-status__legend > div:focus-visible,
+.lecturer-overview-page .topic-status__legend > div.is-active {
+  background-color: var(--color-info-bg);
+}
+
+.lecturer-overview-page .topic-status__legend.has-active > div:not(.is-active) {
+  opacity: 0.55;
 }
 
 .lecturer-overview-page .topic-status__legend > div::before {
@@ -416,6 +557,8 @@
   height: 1.125rem;
   border-radius: 0.1875rem;
   flex-shrink: 0;
+  align-self: center;
+  margin-inline-end: var(--space-1);
 }
 
 /* Đồng bộ ký hiệu chú thích biểu đồ là hình vuông bo góc (như trang Tổng quan sinh viên) */
@@ -435,64 +578,78 @@
   background-color: var(--color-muted-foreground);
 }
 
-.lecturer-overview-page .topic-status__legend dt {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
 .lecturer-overview-page .topic-status__legend dt::after {
   content: ":";
 }
 
 .lecturer-overview-page .topic-status__legend dd {
-  margin-left: auto;
+  margin: 0;
   flex-shrink: 0;
 }
 
-/* --------------------------------------------------------------------------
-   9. Supervised Topic Progress Section (.supervised-progress & .topic-progress-card)
-   Yêu cầu 3, 5, 6, 7:
-   - Căn cột rõ ràng: Tên đề tài + nhóm/SV | % hoàn thành + thanh tiến độ mảnh | Nút "Xem đề tài →".
-   - Nút "Xem đề tài →" là nút hành động phụ (nền trắng, viền nhẹ, chữ xanh) để phân bậc với nút duyệt.
-   -------------------------------------------------------------------------- */
-.lecturer-overview-page .supervised-progress__list {
-  padding: var(--space-3) var(--space-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-@media (min-width: 48rem) {
-  .lecturer-overview-page .supervised-progress__list {
-    padding: var(--space-4) var(--space-5);
-  }
+/* Tiến độ đề tài đang hướng dẫn */
+.lecturer-overview-page .supervised-progress__list > p,
+.lecturer-overview-page .topic-progress-card {
+  padding: var(--space-4);
 }
 
 .lecturer-overview-page .topic-progress-card {
-  padding: var(--space-3) var(--space-4);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-control);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-3);
   min-width: 0;
 }
 
-.lecturer-overview-page .topic-progress-card > h3 {
+.lecturer-overview-page .topic-progress-card + .topic-progress-card {
+  border-top: 1px solid var(--color-border);
+}
+
+.lecturer-overview-page .topic-progress-card:nth-child(even) {
+  background-color: var(--color-background);
+}
+
+.lecturer-overview-page .topic-progress-card__summary {
+  display: grid;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.lecturer-overview-page .topic-progress-card__summary h3 {
   color: var(--color-heading);
   font-size: var(--font-size-body); /* 16px nội dung chính */
   font-weight: var(--font-weight-bold);
 }
 
-.lecturer-overview-page .topic-progress-card > p:first-of-type {
+.lecturer-overview-page .topic-progress-card__meta,
+.lecturer-overview-page .topic-progress-card__progress {
   color: var(--color-muted-foreground);
   font-size: var(--font-size-secondary); /* 14px thông tin phụ */
   overflow-wrap: anywhere;
 }
 
+.lecturer-overview-page .topic-progress-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+}
+
+.lecturer-overview-page .topic-progress-card__meta-item {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-width: 0;
+  max-width: 100%;
+}
+
+.lecturer-overview-page .topic-progress-card__meta-item svg {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
+  margin-block-start: 0.125em;
+}
+
 /* Cột tiến độ: nhãn % hoàn thành + thanh <progress> mảnh 8px */
-.lecturer-overview-page .topic-progress-card > p:nth-of-type(2) {
+.lecturer-overview-page .topic-progress-card__progress {
   display: flex;
   flex-direction: column;
   gap: 0.375rem;
@@ -533,19 +690,20 @@
   border-radius: var(--radius-full);
 }
 
-/* Nút hành động phụ ("Xem đề tài →") — nền trắng, viền nhẹ, cao tối thiểu 44px */
-.lecturer-overview-page .topic-progress-card > a {
-  min-height: var(--control-min-height); /* 44px */
-  padding: 0.375rem var(--space-3);
+.lecturer-overview-page .topic-progress-card > a,
+.lecturer-overview-page .request-card > a {
+  min-height: var(--control-min-height);
+  min-inline-size: 8.5rem;
+  padding: var(--space-2) var(--space-3);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  align-self: flex-end;
-  gap: 0.375rem;
-  background-color: var(--color-surface);
-  color: var(--color-primary);
-  border: 1px solid var(--color-secondary-btn-border);
-  border-radius: var(--radius-control); /* 8px */
+  justify-self: end;
+  gap: var(--space-2);
+  background-color: var(--button-outline-primary-bg);
+  color: var(--button-outline-primary-fg);
+  border: 1px solid var(--button-outline-primary-border);
+  border-radius: var(--radius-control);
   font-size: var(--font-size-secondary);
   font-weight: var(--font-weight-semibold);
   line-height: 1.25;
@@ -554,186 +712,175 @@
   transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
 }
 
-.lecturer-overview-page .topic-progress-card > a:hover {
-  background-color: var(--color-info-bg);
-  border-color: var(--color-primary);
-  color: var(--color-primary-hover);
+.lecturer-overview-page .topic-progress-card > a:hover,
+.lecturer-overview-page .request-card > a:hover {
+  background-color: var(--button-outline-primary-bg-hover);
+  color: var(--button-outline-primary-fg-hover);
 }
 
-.lecturer-overview-page .topic-progress-card > a:active {
+.lecturer-overview-page .topic-progress-card > a:active,
+.lecturer-overview-page .request-card > a:active {
   background-color: var(--color-primary);
   border-color: var(--color-primary);
   color: var(--color-on-primary);
 }
 
+.supervised-progress .section-header a svg,
+.pending-requests .section-header a svg,
+.topic-progress-card > a svg,
+.request-card svg {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+}
+
 @media (min-width: 48rem) {
+  .lecturer-overview-page .supervised-progress__list > p,
   .lecturer-overview-page .topic-progress-card {
-    display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(11rem, 1fr) auto;
-    grid-template-rows: auto auto;
+    padding-inline: var(--space-5);
+  }
+
+  .lecturer-overview-page .topic-progress-card {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto;
     column-gap: var(--space-6);
-    row-gap: 0.1875rem;
     align-items: center;
   }
-
-  .lecturer-overview-page .topic-progress-card > h3 {
-    grid-column: 1;
-    grid-row: 1;
-    align-self: end;
-  }
-
-  .lecturer-overview-page .topic-progress-card > p:first-of-type {
-    grid-column: 1;
-    grid-row: 2;
-    align-self: start;
-  }
-
-  .lecturer-overview-page .topic-progress-card > p:nth-of-type(2) {
-    grid-column: 2;
-    grid-row: 1 / span 2;
-    align-self: center;
-  }
-
-  .lecturer-overview-page .topic-progress-card > a {
-    grid-column: 3;
-    grid-row: 1 / span 2;
-    justify-self: end;
-    align-self: center;
-  }
 }
 
-/* --------------------------------------------------------------------------
-   10. Pending Requests Section (.pending-requests & .request-card)
-   Yêu cầu 3, 4, 5, 6, 7:
-   - Badge trạng thái ("Chờ duyệt") có nhãn chữ, màu warning đúng ngữ nghĩa và ký hiệu ngoài màu sắc.
-   - Tên đề tài dài xuống dòng tự nhiên, badge căn góc trên phải.
-   - Nút "Xem đề xuất →" là hành động cần xử lý của giảng viên, dùng kiểu nút chính
-     gọn gàng ở góc dưới phải và đồng nhất vị trí giữa các thẻ cùng hàng.
-   -------------------------------------------------------------------------- */
-.lecturer-overview-page .pending-requests__list {
-  padding: var(--space-3) var(--space-4);
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-3);
-  align-items: stretch;
-}
-
-@media (min-width: 48rem) {
-  .lecturer-overview-page .pending-requests__list {
-    padding: var(--space-4) var(--space-5);
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-4);
-  }
+/* Yêu cầu chờ duyệt */
+.lecturer-overview-page .pending-requests__list > p,
+.lecturer-overview-page .request-card {
+  padding: var(--space-4);
 }
 
 .lecturer-overview-page .request-card {
-  height: 100%;
-  padding: var(--space-3) var(--space-4);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-control);
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "title" "meta" "action";
+  gap: var(--space-2) var(--space-4);
+}
+
+/* Trang minh họa vẫn có mẫu thẻ với nhãn trạng thái. */
+.lecturer-overview-page .request-card:has(> .status-badge) {
   grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-rows: auto auto auto 1fr;
-  column-gap: var(--space-2);
-  row-gap: var(--space-1);
-  min-width: 0;
+  grid-template-areas:
+    "title status"
+    "meta meta"
+    "action action";
+}
+
+.lecturer-overview-page .request-card + .request-card {
+  border-block-start: 1px solid var(--color-border);
+}
+
+.lecturer-overview-page .request-card:nth-child(even) {
+  background-color: var(--color-background);
 }
 
 .lecturer-overview-page .request-card > h3 {
-  grid-column: 1;
-  grid-row: 1;
+  grid-area: title;
   color: var(--color-heading);
-  font-size: var(--font-size-body); /* 16px nội dung chính */
+  font-size: var(--font-size-body);
   font-weight: var(--font-weight-bold);
   line-height: 1.35;
-  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
-/* Badge trạng thái "Chờ duyệt": màu warning + viền + ký hiệu hình học ngoài màu sắc */
 .lecturer-overview-page .request-card > .status-badge {
-  grid-column: 2;
-  grid-row: 1;
+  grid-area: status;
   justify-self: end;
   align-self: start;
-  min-height: 1.5rem;
-  padding: 0.125rem 0.625rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.25rem;
+  padding: var(--space-1) var(--space-2);
   background-color: var(--color-warning-bg);
   color: var(--color-warning-fg);
   border: 1px solid var(--color-warning-border);
-  border-radius: var(--radius-small);
+  border-radius: var(--radius-control);
   font-size: var(--text-xs);
   font-weight: var(--font-weight-semibold);
   line-height: 1.3;
   white-space: nowrap;
 }
 
-.lecturer-overview-page .request-card > .status-badge::before {
-  content: "▪";
-  font-size: 0.6875rem;
-  line-height: 1;
-}
-
-.lecturer-overview-page .request-card > p:not(.status-badge) {
-  grid-column: 1 / -1;
+.lecturer-overview-page .request-card__meta {
+  grid-area: meta;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
   color: var(--color-muted-foreground);
-  font-size: var(--font-size-secondary); /* 14px thông tin phụ */
-  line-height: 1.4;
+  font-size: var(--font-size-secondary);
+  line-height: 1.5;
   overflow-wrap: anywhere;
 }
 
-.lecturer-overview-page .request-card > p:nth-of-type(2) {
-  color: var(--color-foreground);
-  margin-top: 0.125rem;
+.lecturer-overview-page .request-card__meta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  max-inline-size: 100%;
 }
 
-/* Nút hành động chính "Xem đề xuất →" của giảng viên:
-   Nền xanh primary, chữ trắng, kích thước vừa phải ở góc dưới phải, cao tối thiểu 44px */
+.lecturer-overview-page .request-card__meta-item svg {
+  margin-block-start: .125em;
+}
+
 .lecturer-overview-page .request-card > a {
-  grid-column: 1 / -1;
-  justify-self: end;
-  align-self: end;
-  margin-top: var(--space-2);
-  min-height: var(--control-min-height); /* 44px */
-  padding: 0.375rem 0.875rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.375rem;
-  background-color: var(--color-primary);
-  color: var(--color-on-primary);
-  border: 1px solid var(--color-primary);
-  border-radius: var(--radius-control); /* 8px */
-  font-size: var(--font-size-secondary);
-  font-weight: var(--font-weight-semibold);
-  line-height: 1.25;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+  grid-area: action;
 }
 
-.lecturer-overview-page .request-card > a:hover {
-  background-color: var(--color-primary-hover);
-  border-color: var(--color-primary-hover);
-  color: var(--color-on-primary);
-}
+@media (min-width: 48rem) {
+  .lecturer-overview-page .pending-requests__list > p,
+  .lecturer-overview-page .request-card {
+    padding-inline: var(--space-5);
+  }
 
-.lecturer-overview-page .request-card > a:active {
-  background-color: var(--color-primary-active);
-  border-color: var(--color-primary-active);
-  color: var(--color-on-primary);
-}
+  .lecturer-overview-page .request-card {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "title action"
+      "meta action";
+    gap: var(--space-1) var(--space-6);
+    align-items: center;
+  }
 
-/* Cho phép badge xuống dòng bên dưới tiêu đề trên màn hình rất hẹp (< 360px) */
-@media (max-width: 22.49875rem) {
-  .lecturer-overview-page .request-card > h3,
+  .lecturer-overview-page .request-card:has(> .status-badge) {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto;
+    grid-template-areas:
+      "title status action"
+      "meta status action";
+  }
+
   .lecturer-overview-page .request-card > .status-badge {
-    grid-column: 1 / -1;
-    grid-row: auto;
     justify-self: start;
+    align-self: center;
+  }
+}
+
+@media (width < 22.5rem) {
+  .lecturer-overview-page .request-card:has(> .status-badge) {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "title" "status" "meta" "action";
+  }
+
+  .lecturer-overview-page .request-card > .status-badge {
+    justify-self: start;
+  }
+}
+
+/* Hiệu ứng xuất hiện từng khối khi cuộn (đồng bộ với Tổng quan sinh viên) */
+@media (prefers-reduced-motion: no-preference) {
+  .lecturer-overview-page .fade-in-up.is-animated:not(.is-visible):not(:focus-within) {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  .lecturer-overview-page .fade-in-up.is-animated.is-visible {
+    transition:
+      opacity 480ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .lecturer-overview-page .fade-in-up.is-animated:focus-within {
+    transition: none;
   }
 }

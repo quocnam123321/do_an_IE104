@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="vi"><head>
-  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png?v=2" />
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <meta content="Xem chi tiết đề xuất đề tài do sinh viên gửi và các hộp thoại duyệt, từ chối." name="description">
@@ -8,22 +8,22 @@
    Chi tiết đề xuất đề tài | Quản lý đồ án
   </title>
   <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-  <script defer src="../../assets/js/i18n/en-lecturer.js"></script>
-  <script defer src="../../assets/js/i18n/en-shared.js"></script>
+  <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261125-reject-success-compact"></script>
+  <script defer src="../../assets/js/i18n/en-shared.js?v=20261125-closed-samples"></script>
   <script defer src="../../assets/js/shared/language.js"></script>
   <link href="../../assets/css/tokens.css?v=20261123-theme" rel="stylesheet">
   <link href="../../assets/css/base.css?v=20261123-language" rel="stylesheet">
-  <link href="../../assets/css/components.css?v=20261125-account-menu-2" rel="stylesheet">
+  <link href="../../assets/css/components.css?v=20261125-reject-success-compact" rel="stylesheet">
   <link href="../../assets/css/breadcrumb.css" rel="stylesheet">
   <link href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1" rel="stylesheet">
-  <link href="../../assets/css/teacher-dialogs.css?v=20261030-1" rel="stylesheet">
+  <link href="../../assets/css/teacher-dialogs.css?v=20261125-confirmation-dialog" rel="stylesheet">
   <link href="../../assets/css/proposal-request-detail.css" rel="stylesheet">
-  <link href="../../assets/css/teacher-request-detail.css?v=20261122" rel="stylesheet">
+  <link href="../../assets/css/teacher-request-detail.css?v=20261125-reject-dialog" rel="stylesheet">
    <script src="../../assets/js/nav-indicator.js" defer=""></script>
    <script src="../../assets/js/dialog-commands.js" defer=""></script>
 
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css" />
-    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261125-proposal-outline" defer></script>
+    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261125-closed-samples" defer></script>
     <script src="../../assets/js/shared/topic-identity.js" defer></script>
     <script src="../../assets/js/teacher-topic-store.js" defer></script>
     <script src="../../assets/js/data/mock-data.js" defer></script>
@@ -34,17 +34,17 @@
     <script src="../../assets/js/services/storage.js?v=20261124-demo-invitation-polish" defer></script>
     <script src="../../assets/js/services/lecturer-topic-repository.js" defer></script>
     <script src="../../assets/js/shared/validation.js" defer></script>
-    <script src="../../assets/js/services/proposal-service.js?v=20261125-approved-overview" defer></script>
+    <script src="../../assets/js/services/proposal-service.js?v=20261125-rejected-requests" defer></script>
     <script src="../../assets/js/services/registration-service.js" defer></script>
     <script src="../../assets/js/services/approved-project-service.js?v=20261125-approved-overview" defer></script>
     <script src="../../assets/js/services/lecturer-topic-service.js?v=20261124-invitation-flow" defer></script>
     <script src="../../assets/js/services/published-topic-service.js?v=20261123-merged-8f1631f" defer></script>
-    <script src="../../assets/js/proposal-store.js?v=20261125-proposal-outline" defer></script>
+    <script src="../../assets/js/proposal-store.js?v=20261125-rejected-requests" defer></script>
     <script src="../../assets/js/services/proposal-file-service.js" defer></script>
     <script src="../../assets/js/shared/proposal-cover.js" defer></script>
     <script src="../../assets/js/shared/download-file.js" defer></script>
-    <script src="../../assets/js/shared/proposal-detail-fields.js?v=20261125-vietnamese-pending-teacher" defer></script>
-    <script src="../../assets/js/proposal-detail.js?v=20261124-merged-50fdab7" defer></script>
+    <script src="../../assets/js/shared/proposal-detail-fields.js?v=20261125-closed-samples" defer></script>
+    <script src="../../assets/js/proposal-detail.js?v=20261125-reject-success" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
 </head>
@@ -98,13 +98,13 @@
           </a>
          </li>
          <li class="main-nav__subitem">
-          <a class="main-nav__link" href="../chung/huong-nghien-cuu.html">
-           Hướng nghiên cứu
+          <a class="main-nav__link" href="../chung/thong-bao.html">
+           Thông báo
           </a>
          </li>
          <li class="main-nav__subitem">
-          <a class="main-nav__link" href="../chung/thong-bao.html">
-           Thông báo
+          <a class="main-nav__link" href="../chung/huong-nghien-cuu.html">
+           Hướng nghiên cứu
           </a>
          </li>
          <li class="main-nav__subitem">
@@ -193,13 +193,13 @@
            </a>
           </li>
           <li>
-           <a class="mobile-nav__link" href="../chung/huong-nghien-cuu.html">
-            Hướng nghiên cứu
+           <a class="mobile-nav__link" href="../chung/thong-bao.html">
+            Thông báo
            </a>
           </li>
           <li>
-           <a class="mobile-nav__link" href="../chung/thong-bao.html">
-            Thông báo
+           <a class="mobile-nav__link" href="../chung/huong-nghien-cuu.html">
+            Hướng nghiên cứu
            </a>
           </li>
           <li>
@@ -429,12 +429,12 @@
    </div>
   </main>
   <!-- Không có JavaScript thì nút xác nhận giữ vô hiệu hóa. -->
-  <dialog aria-describedby="reject-proposal-question" aria-labelledby="reject-proposal-title" class="topic-dialog request-proposal-dialog topic-dialog--danger" id="reject-proposal-dialog">
+  <dialog aria-describedby="reject-proposal-question" aria-labelledby="reject-proposal-title" class="topic-dialog request-proposal-dialog topic-dialog--confirmation" id="reject-proposal-dialog">
    <header class="topic-dialog__header">
     <h2 id="reject-proposal-title">
      Từ chối đề xuất
     </h2>
-    <button aria-label="Đóng hộp thoại từ chối đề xuất" class="topic-dialog__close" command="close" commandfor="reject-proposal-dialog" type="button">
+    <button aria-label="Đóng hộp thoại từ chối đề xuất" autofocus class="topic-dialog__close" command="close" commandfor="reject-proposal-dialog" type="button">
      <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="2" viewBox="0 0 24 24">
       <path d="m6 6 12 12M18 6 6 18">
       </path>
@@ -442,36 +442,18 @@
     </button>
    </header>
    <form class="topic-dialog__form" id="reject-proposal-form" method="dialog">
-    <p class="topic-dialog__desc" id="reject-proposal-question">
-     Bạn muốn từ chối đề xuất này?
-    </p>
-    <div class="topic-dialog__submission-info">
-     <p class="topic-dialog__info-row">
-      <span>
-       Đề xuất:
-       <strong>
-        Website quản lý thư viện
-       </strong>
-      </span>
-     </p>
-    </div>
+    <p class="topic-dialog__desc" id="reject-proposal-question"><span data-reject-question>Bạn muốn từ chối đề xuất</span> <strong translate="no">Website quản lý thư viện</strong>?</p>
     <p class="topic-dialog__field">
      <label for="rejection-reason">
-      Lý do từ chối *
+      Lý do từ chối <span class="rejection-reason-required" aria-hidden="true">*</span>
      </label>
-     <textarea aria-describedby="rejection-reason-hint rejection-reason-error" autofocus="" id="rejection-reason" minlength="10" name="rejection-reason" placeholder="Nhập lý do từ chối để sinh viên biết và điều chỉnh đề xuất" required="" rows="4"></textarea>
+     <textarea aria-describedby="rejection-reason-error" id="rejection-reason" minlength="10" name="rejection-reason" placeholder="Nhập lý do từ chối" required="" rows="4"></textarea>
     </p>
     <p class="rejection-reason-error" id="rejection-reason-error" role="alert" hidden="">
      Vui lòng nhập lý do từ chối từ 10 ký tự.
     </p>
-    <p class="topic-dialog__notice" id="rejection-reason-hint">
-     Ít nhất 10 ký tự, không tính khoảng trắng ở hai đầu.
-    </p>
     <p class="proposal-form-error" data-decision-error="" role="alert" hidden=""></p>
     <div class="topic-dialog__actions">
-     <button class="topic-dialog__btn topic-dialog__btn--secondary" command="close" commandfor="reject-proposal-dialog" type="button">
-      Hủy
-     </button>
      <button class="topic-dialog__btn topic-dialog__btn--danger" disabled="" type="submit">
       Xác nhận từ chối
      </button>
@@ -520,6 +502,21 @@
      </button>
     </div>
    </form>
+  </dialog>
+  <dialog id="reject-proposal-success" class="confirmation-dialog success-dialog" aria-labelledby="reject-proposal-success-title">
+   <button class="success-dialog__close" type="button" command="close" commandfor="reject-proposal-success" aria-label="Đóng thông báo" autofocus>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+     <path d="m6 6 12 12M18 6 6 18" />
+    </svg>
+   </button>
+   <div class="success-dialog__content">
+    <span class="success-dialog__icon" aria-hidden="true">
+     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m5 12 4 4L19 6" />
+     </svg>
+    </span>
+    <h2 id="reject-proposal-success-title">Đã từ chối yêu cầu</h2>
+   </div>
   </dialog>
   <footer class="project-footer">
       <div class="project-footer__columns">

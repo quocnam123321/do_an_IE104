@@ -47,6 +47,49 @@
   overflow-wrap: anywhere;
 }
 
+/* Nhãn Hướng dẫn chính trên thẻ và trong chi tiết đề tài giảng viên. */
+:is(
+  [data-lecturer-list="supervised"] .topic-card .topic-card__status--primary,
+  .topic-summary--supervised .topic-summary__role--managed[data-supervised-role="primary"]
+) {
+  justify-content: center;
+  background-color: light-dark(#e7f0ef, #1b3332);
+  color: light-dark(#2d5554, #a8cdca);
+  font-weight: var(--weight-semibold);
+  line-height: 1.4;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.topic-summary__role--managed[data-supervised-role="primary"] {
+  width: 100%;
+}
+
+@media (min-width: 48rem) {
+  .topic-summary__role--managed[data-supervised-role="primary"] {
+    width: min(100%, 15.9375rem);
+  }
+}
+
+.topic-team__members > .team-member:only-child .team-member__body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+}
+
+.topic-team__members > .team-member:only-child .team-member__role {
+  max-width: 100%;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--role-badge-radius);
+  background-color: var(--role-primary-bg);
+  color: var(--role-primary-fg);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
 /* Chỉ các trang có link tới file này mới dùng khung giao diện chung. */
 .site-header {
   background: var(--header-background);
@@ -755,6 +798,81 @@
   color: var(--color-danger-fg);
 }
 
+.topic-file-picker__remove > svg {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+}
+
 .main-content .topic-file-picker__selection .topic-file-picker__remove:not(:disabled):hover {
   background: var(--color-danger-bg);
+}
+
+/* Phân trang danh sách đề tài và yêu cầu chờ duyệt. */
+.topic-pagination {
+  justify-self: end;
+  margin-inline-start: auto;
+  max-inline-size: 100%;
+}
+
+.topic-pagination .pagination__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.topic-pagination :is(.pagination__button, .pagination__current) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--control-min-height);
+  min-height: var(--control-min-height);
+  padding-inline: var(--space-3);
+  border-radius: var(--control-radius);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  text-decoration: none;
+}
+
+.topic-pagination .pagination__button {
+  border: 1px solid var(--color-control-border);
+  background-color: var(--color-surface);
+  color: var(--color-foreground);
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.topic-pagination .pagination__button svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+.topic-pagination .pagination__button:not(:disabled, .pagination__current):hover {
+  background-color: var(--color-surface-subtle);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.topic-pagination .pagination__button:disabled {
+  background-color: var(--color-disabled-bg);
+  border-color: var(--color-disabled-border);
+  color: var(--color-disabled-fg);
+  cursor: not-allowed;
+}
+
+.topic-pagination .pagination__current {
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .topic-pagination .pagination__button { transition: none; }
 }

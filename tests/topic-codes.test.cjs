@@ -17,25 +17,33 @@ function setup() {
   return { context, codes: context.UITLecturerCatalog, service: context.IE104.services.lecturerTopics, editor: context.IE104.services.lecturerTopicEditor };
 }
 
-test('six faculty prefixes, Vietnamese Đ and legacy codes follow the requested format', () => {
+test('faculty names are recognized and legacy IDs normalize to the current ISE codes', () => {
   const { codes } = setup();
   for (const [faculty, name] of Object.entries(codes.facultyCodes)) {
     assert.equal(codes.facultyCode('Khoa ' + name), faculty);
-    assert.equal(codes.formatCode('course', 'DA001', faculty), `${faculty}-ĐAMH-001`);
-    assert.equal(codes.formatCode('graduation', 'ISEDATN-002', faculty), `${faculty}-ĐATN-002`);
-    assert.equal(codes.formatCode('thesis', 'KL003', faculty), `${faculty}-KLTN-003`);
+    assert.equal(codes.formatCode('course', `${faculty}-ĐAMH-001`, faculty), 'ISEDAMH-001');
+    assert.equal(codes.formatCode('graduation', `${faculty}-ĐATN-002`, faculty), 'ISEDATN-002');
+    assert.equal(codes.formatCode('thesis', `${faculty}-KLTN-003`, faculty), 'ISEKTLN-003');
   }
   assert.equal(codes.facultyCode('Khoa học và kĩ thuật thông tin'), 'ISE');
   assert.equal(codes.facultyCode('KTTT'), 'ISE');
   assert.equal(codes.facultyCode('MMT&TT'), 'MMTT');
+  assert.equal(codes.formatCode('course', 'DA001'), 'ISEDAMH-001');
+  assert.equal(codes.formatCode('thesis', 'ISEKLTN-003'), 'ISEKTLN-003');
   assert.equal(codes.formatCode('master', 'ISE-008'), 'ISE-008');
 });
 
-test('course owner uses verified subject data while graduation subjects use their type', () => {
+test('available courses keep their subject faculty and graduation subjects use their type', () => {
   const { service } = setup();
-  assert.equal(service.get('created', 'ISEDAMH-001').displayId, 'ISE-ĐAMH-001');
-  assert.equal(service.get('created', 'ISEDAMH-002').displayId, 'HTTT-ĐAMH-002');
-  assert.equal(service.get('created', 'ISEDAMH-003').displayId, 'CNPM-ĐAMH-003');
+  const web = service.get('created', 'ISEDAMH-001');
+  assert.equal(web.displayId, 'ISEDAMH-001');
+  assert.equal(web.facultyCode, 'ISE');
+  assert.equal(web.courseLabel, 'Internet và công nghệ web');
+  const database = service.get('created', 'ISEDAMH-002');
+  assert.equal(database.displayId, 'ISEDAMH-002');
+  assert.equal(database.facultyCode, 'HTTT');
+  assert.equal(database.courseLabel, 'Cơ sở dữ liệu');
+  assert.throws(() => service.get('created', 'ISEDAMH-003'), /Không tìm thấy đề tài/);
   assert.equal(service.get('created', 'ISEDATN-004').courseLabel, 'Đồ án tốt nghiệp');
   assert.equal(service.get('created', 'ISE-003').courseLabel, 'Khóa luận tốt nghiệp');
 });
@@ -50,19 +58,20 @@ test('migrated display codes are unique and both old and displayed IDs open the 
   }
 });
 
-test('new codes count by faculty and type, including supervised topics not in the created tab', () => {
-  const { context, editor } = setup();
-  assert.match(editor.nextCode('course', 'web'), /^ISE-ĐAMH-\d+$/);
-  assert.match(editor.nextCode('course', 'database'), /^HTTT-ĐAMH-\d+$/);
-  assert.match(editor.nextCode('course', 'software'), /^CNPM-ĐAMH-\d+$/);
-  assert.equal(editor.nextCode('thesis'), 'ISE-KLTN-017');
-  assert.equal(editor.nextCode('graduation'), 'ISE-ĐATN-006');
+test('new ISE codes share a sequence per topic type and include supervised topics', () => {
+  const { context, codes, editor } = setup();
+  for (const course of Object.keys(codes.courseCatalog)) {
+    assert.equal(editor.nextCode('course', course), 'ISEDAMH-020');
+  }
+  assert.equal(editor.nextCode('thesis'), 'ISEKTLN-017');
+  assert.equal(editor.nextCode('graduation'), 'ISEDATN-006');
   context.IE104.data.currentLecturer.faculty = 'Khoa Khoa học máy tính';
-  assert.equal(editor.nextCode('graduation'), 'KHMT-ĐATN-001');
-  assert.equal(editor.nextCode('thesis'), 'KHMT-KLTN-001');
+  assert.equal(editor.nextCode('graduation'), 'ISEDATN-006');
+  assert.equal(editor.nextCode('thesis'), 'ISEKTLN-017');
+  assert.equal(codes.nextCode('thesis', [{ topicCode: 'ISEKLTN-031' }]), 'ISEKTLN-032');
 });
 
-test('Unicode IDs save and reload, without changing existing display codes or consuming failed numbers', () => {
+test('IDs survive saving and reloading, including existing Unicode IDs, without consuming failed numbers', () => {
   const { context, service, editor } = setup();
   const before = service.list('created').map(topic => [topic.id, topic.displayId]);
   const input = { id: editor.nextCode('course', 'database'), title: 'Đề tài kiểm thử mã khoa', topicType: 'course',
@@ -72,10 +81,17 @@ test('Unicode IDs save and reload, without changing existing display codes or co
   assert.throws(() => editor.create({ ...input, title: '' }, {}, 'GV001'));
   assert.equal(editor.nextCode('course', 'database'), input.id);
   const record = editor.create(input, {}, 'GV001');
-  assert.equal(context.IE104.services.lecturerTopicRepository.read()[0].id, input.id);
+  const repository = context.IE104.services.lecturerTopicRepository;
+  assert.equal(repository.read()[0].id, input.id);
   assert.equal(service.get('created', record.id).displayId, input.id);
   for (const [id, code] of before) assert.equal(service.get('created', id).displayId, code);
   assert.notEqual(editor.nextCode('course', 'database'), input.id);
+
+  const legacy = { ...record, id: 'HTTT-ĐAMH-081', title: 'Đề tài đã lưu theo mã cũ' };
+  repository.write([record, legacy]);
+  assert.equal(service.get('created', legacy.id).displayId, 'ISEDAMH-081');
+  assert.equal(service.get('created', 'ISEDAMH-081').id, legacy.id);
+  assert.equal(editor.nextCode('course', 'database'), 'ISEDAMH-082');
 });
 
 test('workspace IDs stay internal and projects sharing a created topic keep its displayed code', () => {
@@ -86,5 +102,5 @@ test('workspace IDs stay internal and projects sharing a created topic keep its 
   const decorated = service.projectIdentity(project);
   assert.equal(decorated.id, project.id);
   assert.equal(decorated.displayId, service.get('created', 'DA001').displayId);
-  assert.match(decorated.displayId, /^ISE-ĐAMH-\d+$/);
+  assert.match(decorated.displayId, /^ISEDAMH-\d+$/);
 });

@@ -204,6 +204,11 @@
 
   ui.renderSupervisedDemo = record => {
     const work = record.supervision;
+    const project = app.data.lecturerTopics.find(item => item.kind === 'supervised' && item.id === record.id &&
+      item.sharedStudentProject && item.status === 'dang-thuc-hien');
+    const milestones = project
+      ? [project.startsAt, project.progressReportDate, project.finalReportDate]
+      : work.milestones;
     const requestedReturn = new URLSearchParams(location.search).get('return');
     const listUrl = new URL('danh-sach-de-tai-dang-huong-dan.html', location.href);
     let returnUrl = listUrl.href;
@@ -212,8 +217,9 @@
       if (candidate.origin === listUrl.origin && candidate.pathname === listUrl.pathname) returnUrl = candidate.href;
     } catch { /* Giữ liên kết danh sách khi tham số quay lại không hợp lệ. */ }
     document.querySelector('.back-link').href = returnUrl;
-    document.querySelectorAll('.topic-milestones time').forEach((time, index) => setDate(time, work.milestones[index]));
+    document.querySelectorAll('.topic-milestones time').forEach((time, index) => setDate(time, milestones[index]));
     setText('#tien-do > h2', `Tiến độ đề tài ${record.title} · ${work.group}`);
+    if (project) document.querySelector('#tien-do').dataset.sharedProjectId = project.workspaceId;
     renderProgress(work.tasks);
     setText('#bai-nop > h2', `Bài nộp đề tài ${record.title} · ${work.group}`);
     renderRequirements(work.deliverables);

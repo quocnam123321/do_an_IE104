@@ -6,7 +6,7 @@
   const sampleName = 'de-cuong-de-tai-mau.txt';
   const samplePdfName = 'de-cuong-de-xuat-mau.pdf';
 
-  function render(container, record) {
+  function render(container, record, { showSampleSummaryNote = true } = {}) {
     const outline = record.outline;
     const hasReportDates = outline?.version === 3;
     const legacyEndDate = !hasReportDates && outline?.endDate;
@@ -48,6 +48,17 @@
       row.hidden = record.source === 'registration' || (row.dataset.proposalSchedule === 'current') !== hasReportDates;
     }
     void app.shared.renderProposalCover?.(container.querySelector('.request-topic__image'), record.coverImage);
+    const sampleSummary = record.attachmentSample === 'proposal-summary' ? [
+      'ĐỀ CƯƠNG ĐỀ XUẤT MINH HỌA',
+      `${fields.topicCode} — ${record.title}\n${record.typeLabel} · ${fields.courseLabel}\n${fields.academicPeriod}`,
+      `Giảng viên nhận đề xuất\n${record.recipient || record.supervisorName || record.lecturerName}`,
+      `Ngày bắt đầu thực hiện: ${fields.startDate}\nNgày nộp báo cáo tiến độ: ${fields.progressReportDate}\nNgày nộp báo cáo cuối cùng: ${fields.finalReportDate}`,
+      `Tổng quan đề tài\n${record.description}`,
+      `Mục tiêu\n${record.objectives}`,
+      `Kết quả dự kiến\n${record.outcomes}`,
+      `Phương pháp và phạm vi thực hiện\n${fields.methodAndScope}`,
+      `Kế hoạch thực hiện và phân công\n${fields.plan}`,
+    ].join('\n\n') : '';
     renderAttachment(container, {
       name: attachment,
       size: attachmentSize,
@@ -55,6 +66,8 @@
       sample: record.id === 'DX001' && attachment === sampleName ? sampleName :
         globalThis.UITLecturerCatalog?.pending?.some(seed => seed.id === record.id &&
           seed.attachmentSample === 'proposal-outline' && seed.attachment === attachment) ? samplePdfName : null,
+      sampleSummary,
+      showSampleSummaryNote,
       canEdit: record.permissions?.edit,
     });
   }
@@ -64,11 +77,13 @@
     const note = container.querySelector('[data-proposal-attachment-note]');
     const button = row.querySelector('.request-attachments__download');
     const useSample = ref.sample && !ref.fileKey;
-    const canDownload = Boolean(ref.name && (ref.fileKey || useSample));
+    const useSampleSummary = ref.sampleSummary && !ref.fileKey;
+    const canDownload = Boolean(ref.name && (ref.fileKey || useSample || useSampleSummary));
     row.hidden = !ref.name;
     button.disabled = !canDownload;
     let status = '';
     if (!ref.name) status = 'Chưa có tài liệu đính kèm.';
+    else if (useSampleSummary) status = ref.showSampleSummaryNote ? 'Tệp đề cương minh họa.' : '';
     else if (useSample) status = ref.sample === sampleName ? 'Tệp mẫu của đề xuất DX001.' : '';
     else if (!canDownload) {
       const help = ref.canEdit ? 'Mở Chỉnh sửa đề xuất, chọn lại tệp gốc rồi lưu.' : 'Sinh viên cần đính kèm lại tệp gốc.';
@@ -80,7 +95,12 @@
     async function download() {
       button.disabled = true;
       try {
-        const file = useSample ? await readSample(ref.sample, ref.name) : await app.services.proposalFiles.read(ref);
+        let file;
+        if (useSampleSummary) {
+          file = { blob: new Blob([ref.sampleSummary], { type: 'text/plain;charset=utf-8' }), fileName: ref.name };
+        } else {
+          file = useSample ? await readSample(ref.sample, ref.name) : await app.services.proposalFiles.read(ref);
+        }
         if (button.onclick !== download || container.hidden) return;
         app.ui.downloadFile(file);
         note.textContent = status;

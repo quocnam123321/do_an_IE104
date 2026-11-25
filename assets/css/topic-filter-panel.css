@@ -12,6 +12,40 @@
   border: 0;
 }
 
+.topic-filter-icon {
+  flex: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  overflow: visible;
+  color: var(--color-primary);
+}
+
+.topic-filter-icon__selected,
+.topic-filter-selection-label {
+  display: none;
+}
+
+:is(.topic-filter-panel, .topic-filters__disclosure):has(> form input[type="checkbox"]:checked:enabled:not([hidden], [hidden] *))
+  > summary :is(.topic-filter-icon__selected, .topic-filter-selection-label) {
+  display: inline;
+}
+
+.topic-filter-icon__selected circle {
+  fill: var(--color-primary);
+  stroke: var(--color-background);
+  stroke-width: 1.5;
+}
+
+.topic-filter-icon__selected path {
+  stroke: var(--color-on-primary);
+  stroke-width: 1.65;
+}
+
+@media (forced-colors: active) {
+  .topic-filter-icon__selected circle { fill: Highlight; stroke: Canvas; }
+  .topic-filter-icon__selected path { stroke: HighlightText; }
+}
+
 /* Tiêu đề ở ngoài vùng cuộn. Ít tiêu chí không ép chiều cao. */
 :is(.student-topic-registration-page, .student-my-topics-list-page) form.topic-filters,
 .teacher-topic-list-page .topic-filters__form {
@@ -102,14 +136,10 @@
   line-height: var(--leading-normal);
   text-transform: none;
 }
-:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel > summary > span {
+:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel__title {
   font-size: var(--text-lg);
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
-}
-:is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel__icon {
-  width: 1.25rem;
-  height: 1.25rem;
 }
 :is(.student-topic-registration-page, .student-my-topics-list-page) .topic-filter-panel__chevron {
   display: none;

@@ -82,10 +82,6 @@
       ? 'Đề tài được phân công hướng dẫn sẽ xuất hiện tại đây.'
       : 'Đề tài mới sẽ xuất hiện tại đây sau khi được tạo.',
   });
-  const filterTitle = document.getElementById('topic-filters-title');
-  const baseFilterTitle = filterTitle ? filterTitle.textContent.trim() : '';
-  const filterCountNode = document.createElement('span');
-  filterCountNode.className = 'topic-filters__count';
   const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
   let pageEnterTimer = 0;
   let pageEnterHandler = null;
@@ -99,34 +95,18 @@
   const orders = { 'name-asc': (a, b) => collator.compare(a.title, b.title), newest: byDate(-1), oldest: byDate(1) };
   const pageSize = 5;
   const originalOrder = new WeakMap(); let nextOrder = 0;
-  const requested = Number(new URLSearchParams(location.search).get('page'));
+  const params = new URLSearchParams(location.search);
+  const requested = Number(params.get('page'));
   let page = Number.isSafeInteger(requested) && requested > 0 ? requested : 1;
 
-  function countActiveFilters(filterControls) {
-    return filterControls.reduce((total, node) => {
-      if (node.disabled) return total;
-      if (node.type === 'checkbox' || node.type === 'radio') {
-        return total + (node.checked && node.value.trim() !== '' ? 1 : 0);
-      }
-      if (node.tagName === 'SELECT') {
-        if (node.multiple) {
-          return total + Array.from(node.selectedOptions).filter(option => option.value.trim() !== '').length;
-        }
-        return total + (node.value.trim() !== '' ? 1 : 0);
-      }
-      return total;
-    }, 0);
-  }
-
-  function updateFilterTitle(filterControls) {
-    if (!filterTitle) return;
-    const count = countActiveFilters(filterControls);
-    if (count > 0) {
-      filterCountNode.textContent = `(${count})`;
-      filterTitle.replaceChildren(`${baseFilterTitle} `, filterCountNode);
-    } else {
-      filterTitle.textContent = baseFilterTitle;
+  if (isSupervised) {
+    const statuses = params.getAll('status');
+    for (const input of form.querySelectorAll('input[type="checkbox"][name="status"]')) {
+      input.checked = statuses.includes(input.value);
     }
+    const sort = form.elements.namedItem('topic_sort');
+    const requestedSort = params.get('topic_sort');
+    if (sort && Object.hasOwn(orders, requestedSort)) sort.value = requestedSort;
   }
 
   function clearPageTransition() {
@@ -183,7 +163,6 @@
     })));
     const filterControls = Array.from(form.elements).filter(node =>
       node.type === 'checkbox' || node.type === 'radio' || (node.tagName === 'SELECT' && node.name !== 'topic_sort'));
-    updateFilterTitle(filterControls);
     const filters = [...new Set(filterControls.map(node => node.name).filter(Boolean))];
     const data = new FormData(form);
     const selected = filters.map(name => [name, data.getAll(name).filter(Boolean)]);
@@ -235,7 +214,16 @@
     add(page + 1, '›', 'Trang sau', page >= totalPages);
     pagination.replaceChildren(pages); pagination.hidden = totalPages <= 1; viewport.scrollTop = 0;
     if (animatePageChange) triggerPageTransition(visibleCards);
-    const url = new URL(location.href); if (page > 1) url.searchParams.set('page', String(page)); else url.searchParams.delete('page');
+    const url = new URL(location.href);
+    if (page > 1) url.searchParams.set('page', String(page));
+    else url.searchParams.delete('page');
+    if (isSupervised) {
+      url.searchParams.delete('status');
+      for (const value of data.getAll('status')) url.searchParams.append('status', value);
+      const sort = data.get('topic_sort');
+      if (sort && sort !== 'newest') url.searchParams.set('topic_sort', sort);
+      else url.searchParams.delete('topic_sort');
+    }
     try { history.replaceState(null, '', url); } catch {}
   }
   search.addEventListener('input', () => { page = 1; render(); });

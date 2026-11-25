@@ -16,6 +16,20 @@ function setup(){
  return {app,service:app.services.projectTeams,project,recipient,values,fail:()=>{fail=true;},setActor:value=>{actor=value;}};
 }
 async function invite(f){const state=f.service.getState(f.project.id);return f.service.inviteSupervisor(f.project.id,f.recipient.id,'Mời tham gia hướng dẫn',state.revision);}
+
+test('a saved solo student is the team leader and keeps that role when a member joins', () => {
+ const { app, service, project } = setup();
+ const member = { ...app.data.currentStudent, role: 'thanh-vien' };
+ app.storage.writeProjectTeams([{ projectId: project.id, revision: 1, members: [member], invitations: [] }]);
+
+ const state = service.getState(project.id);
+ assert.equal(state.members[0].role, 'nhom-truong');
+ assert.equal(app.storage.readProjectTeams()[0].members[0].role, 'thanh-vien');
+
+ const updated = service.addMember(project.id, { name: 'Sinh viên mới', code: '22529999', role: 'thanh-vien' }, state.revision);
+ assert.deepEqual(Array.from(updated.members, student => student.role), ['nhom-truong', 'thanh-vien']);
+});
+
 test('SV sends; only recipient decides; approval persists membership and lecturer listing',async()=>{
  const f=setup();const state=await invite(f),inv=state.invitations[0];
  assert.equal(f.service.listInvitations(f.recipient.id).length,1);

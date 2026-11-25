@@ -15,7 +15,9 @@
 
   function stateFrom(team, records) {
     const saved = records.find(item => item.projectId === team.projectId);
-    return clone(saved || { projectId: team.projectId, revision: 0, members: team.members, invitations: team.invitations });
+    const state = clone(saved || { projectId: team.projectId, revision: 0, members: team.members, invitations: team.invitations });
+    if (state.members.length === 1) state.members[0].role = 'nhom-truong';
+    return state;
   }
 
   function supervisorIds(team, state) {

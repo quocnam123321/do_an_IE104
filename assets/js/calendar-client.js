@@ -4,6 +4,13 @@ const endpoint = useRecoveryEmulator
   ? "http://127.0.0.1:5001/demo-ie104-recovery/asia-southeast1/calendarBridge"
   : "https://ie104-calendar.ntranphu230606.workers.dev";
 const eventBatchSize = 5;
+const calendarSite = "https://ie104-nhom7.web.app";
+// Keep the original export keys when the lecturer opens the library group's workspace.
+const requirementTopics = new Map([
+  ["DA001", "thu-vien"],
+  ["GV-DT001-N01", "thu-vien"],
+  ["DA002", "ban-sach"],
+]);
 
 const messages = {
   "calendar-file": "Mở website qua HTTP hoặc HTTPS để sử dụng Google Calendar.",
@@ -13,6 +20,7 @@ const messages = {
   "calendar-unconfigured": "Dịch vụ Google Calendar chưa được cấu hình cho dự án.",
   "calendar-invalid-edit": "Kiểm tra tên, nội dung và hạn nộp trước khi lưu.",
   "calendar-stale-edit": "Yêu cầu đã được sửa ở nơi khác. Tải lại trang để lấy bản mới nhất.",
+  "calendar-unknown-event": "Không tìm thấy hạn nộp này trong danh mục đồng bộ Google Calendar.",
   "calendar-connect-required": "Cần kết nối lại tài khoản Google Calendar.",
 };
 
@@ -58,4 +66,37 @@ export async function addCalendarEvents(user, ids) {
     }
   }
   return { results };
+}
+
+function calendarRequirementId(projectId, requirementId) {
+  const topic = requirementTopics.get(projectId);
+  if (topic === "thu-vien" && /^requirement-(?:[1-9]|1\d|2[01])$/.test(requirementId)) return `${topic}--${requirementId}`;
+  if (topic === "ban-sach" && /^requirement-[23]$/.test(requirementId)) return `${topic}--${requirementId}`;
+  return null;
+}
+
+export async function loadCalendarRequirement(projectId, requirementId) {
+  const id = calendarRequirementId(projectId, requirementId);
+  if (!id || (!useRecoveryEmulator && location.origin !== calendarSite)) return null;
+  try {
+    const user = await calendarSession();
+    if (!user) return null;
+    const { events } = await calendarRequest(user, "/events");
+    const event = events.find(item => item.id === id);
+    if (!event) throw Object.assign(new Error(), { code: "calendar-access-denied" });
+    return {
+      due: event.revision > 0 ? event.due : null,
+      async save(deadline) {
+        try {
+          // Use the existing export key and revision so the worker can update its links.
+          const { name, description, revision } = event;
+          await calendarRequest(user, "/save", { id, name, description, revision, due: deadline + "+07:00" });
+        } catch (error) {
+          throw new Error(calendarMessage(error));
+        }
+      },
+    };
+  } catch (error) {
+    throw new Error(calendarMessage(error));
+  }
 }

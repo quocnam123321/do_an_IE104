@@ -2,7 +2,7 @@
 
 <html lang="vi">
   <head>
-    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png?v=2" />
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta
@@ -11,13 +11,13 @@
     />
     <title>Lịch hạn nộp | Quản lý đồ án</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-student.js?v=20261124-project-deadlines"></script>
+    <script defer src="../../assets/js/i18n/en-student.js?v=20261125-calendar-legend"></script>
     <script defer src="../../assets/js/i18n/en-shared.js?v=20261124-demo-deadlines"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
-    <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-menu-2" />
-    <link rel="stylesheet" href="../../assets/css/deadline-calendar.css?v=20261124-demo-deadlines" />
+    <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-pagination" />
+    <link rel="stylesheet" href="../../assets/css/deadline-calendar.css?v=20261125-report-deadlines" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <script src="../../assets/js/data/mock-data.js?v=20261124-completed-actions" defer></script>
     <script src="../../assets/js/data/student-projects.js" defer></script>
@@ -27,13 +27,13 @@
     <script src="../../assets/js/uit-lecturer-catalog.js?v=20261125-proposal-outline" defer></script>
     <script src="../../assets/js/data/lecturer-topics.js" defer></script>
     <script src="../../assets/js/data/lecturer-merge-catalog.js?v=20261123-audit-names2" defer></script>
-    <script src="../../assets/js/data/student-uit-catalog.js?v=20261124-calendar-actions" defer></script>
+    <script src="../../assets/js/data/student-uit-catalog.js?v=20261125-report-deadlines" defer></script>
     <script src="../../assets/js/services/storage.js?v=20261124-demo-invitation-polish" defer></script>
     <script src="../../assets/js/services/approved-project-service.js?v=20261125-approved-overview" defer></script>
     <script src="../../assets/js/services/project-team-service.js?v=20261124-demo-invitation-polish" defer></script>
     <script src="../../assets/js/services/student-submissions-service.js?v=20261125-approved-overview" defer></script>
-    <script src="../../assets/js/services/deadline-service.js?v=20261124-calendar-actions" defer></script>
-    <script src="../../assets/js/deadline-calendar.js?v=20261124-calendar-actions" defer></script>
+    <script src="../../assets/js/services/deadline-service.js?v=20261125-report-deadlines" defer></script>
+    <script src="../../assets/js/deadline-calendar.js?v=20261125-calendar-legend" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
   </head>
@@ -88,13 +88,13 @@
                     >
                   </li>
                   <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="../chung/huong-nghien-cuu.html"
-                      >Hướng nghiên cứu</a
+                    <a class="main-nav__link" href="../chung/thong-bao.html"
+                      >Thông báo</a
                     >
                   </li>
                   <li class="main-nav__subitem">
-                    <a class="main-nav__link" href="../chung/thong-bao.html"
-                      >Thông báo</a
+                    <a class="main-nav__link" href="../chung/huong-nghien-cuu.html"
+                      >Hướng nghiên cứu</a
                     >
                   </li>
                   <li class="main-nav__subitem">
@@ -171,11 +171,6 @@
           <h1 class="page-header__title">Lịch hạn nộp</h1>
         </header>
         <div class="page-content">
-          <p class="demo-notice" id="deadline-demo-notice">
-            <span id="active-deadline-notice" hidden><span>Lịch hiển thị hạn bài nộp và hạn đề tài của các đề tài đang thực hiện.</span>
-            <span>Trạng thái hạn mẫu tháng 10 và 11/2026 được tính theo ngày 30/10 và 24/11.</span></span>
-            <span id="calendar-export-notice">Lịch có dữ liệu minh họa. Đăng nhập để thêm mốc của đề tài được cấp quyền vào Google Calendar.</span>
-          </p>
           <!-- Wireframe_Nhom7: SV - Lịch hạn nộp, node 584:1487. -->
           <section
             class="deadline-calendar"
@@ -187,7 +182,7 @@
               <ul class="deadline-calendar__legend" id="calendar-legend" aria-label="Chú giải loại hạn">
                 <li>
                   <span class="deadline-calendar__swatch deadline-calendar__swatch--submission" aria-hidden="true"></span>
-                  <span>Bài nộp<span class="visually-hidden">: hạn yêu cầu nộp của giảng viên</span></span>
+                  <span>Hạn bài nộp<span class="visually-hidden">: hạn yêu cầu nộp của giảng viên</span></span>
                 </li>
                 <li>
                   <span class="deadline-calendar__swatch deadline-calendar__swatch--topic" aria-hidden="true"></span>
@@ -199,7 +194,6 @@
               class="deadline-calendar__toolbar"
               role="group"
               aria-label="Điều khiển lịch hạn nộp"
-              aria-describedby="deadline-demo-notice"
             >
               <div class="deadline-calendar__field">
                 <label for="deadline-topic">Đề tài</label>
@@ -255,7 +249,7 @@
             >
               <table
                 class="calendar-table"
-                aria-describedby="calendar-legend deadline-demo-notice"
+                aria-describedby="calendar-legend"
               >
                 <caption>
                   Tháng 10/2026 · Giờ Việt Nam (UTC+7)

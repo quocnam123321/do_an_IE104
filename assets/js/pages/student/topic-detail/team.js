@@ -84,7 +84,6 @@
         item.querySelector('.team-member__name').textContent = member.name;
         item.querySelector('.team-member__id').textContent = participants.isGroup ? member.code : participants.code || member.code;
         const role = item.querySelector('.team-member__role');
-        role.hidden = !participants.isGroup;
         role.textContent = member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
         return item;
       }));
@@ -102,7 +101,7 @@
     }
   }
 
-  const { normalizeSearch, departmentLabel } = globalThis.IE104SupervisionEntry;
+  const { normalizeSearch, departmentLabel, selectionDepartment } = globalThis.IE104SupervisionEntry;
 
   function renderInvitations(invitations, canManage) {
     const section = document.querySelector('.pending-invitations');
@@ -223,10 +222,11 @@
       const option = inviteOption.content.firstElementChild.cloneNode(true);
       option.querySelector('input').value = lecturer.id;
       option.querySelector('.supervisor-dialog__name').textContent = lecturer.name;
-      option.querySelector('.supervisor-dialog__specialty').textContent = departmentLabel(lecturer.department);
+      const specialty = selectionDepartment(lecturer);
+      option.querySelector('.supervisor-dialog__specialty').textContent = specialty;
       return {
         option,
-        keywords: normalizeSearch(`${lecturer.name} ${lecturer.department} ${lecturer.email}`),
+        keywords: normalizeSearch(`${lecturer.name} ${specialty} ${lecturer.email}`),
       };
     });
     results.replaceChildren(...inviteOptions.map(({ option }) => option));

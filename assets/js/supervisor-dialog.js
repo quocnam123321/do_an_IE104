@@ -16,7 +16,7 @@
   const empty = dialog.querySelector('.supervisor-dialog__empty');
   const getSelection = () => list.querySelector('label:not([hidden]) input:checked');
   const entry = globalThis.IE104SupervisionEntry;
-  const { normalizeSearch, departmentLabel } = entry;
+  const { normalizeSearch, selectionDepartment } = entry;
   const service = globalThis.IE104.services.proposals;
   let directoryRequest;
   let teachersById = new Map();
@@ -27,7 +27,7 @@
   function renderSavedSelection() {
     const teacher = teachersById.get(savedId.value);
     const name = teacher?.name || savedName;
-    const specialty = teacher ? departmentLabel(teacher.department) : '';
+    const specialty = teacher ? selectionDepartment(teacher) : '';
     const selected = Boolean(savedId.value && name);
     person.hidden = !selected;
     personName.textContent = name;
@@ -126,9 +126,10 @@
         const radio = row.querySelector('input');
         radio.value = teacher.id;
         radio.checked = teacher.id === savedId.value;
+        const specialty = selectionDepartment(teacher);
         row.querySelector('.supervisor-dialog__name').textContent = teacher.name;
-        row.querySelector('.supervisor-dialog__specialty').textContent = departmentLabel(teacher.department);
-        return { row, radio, keywords: normalizeSearch(`${teacher.name} ${teacher.department} ${teacher.email}`) };
+        row.querySelector('.supervisor-dialog__specialty').textContent = specialty;
+        return { row, radio, keywords: normalizeSearch(`${teacher.name} ${specialty} ${teacher.email}`) };
       });
       list.replaceChildren(...options.map(({ row }) => row));
       filterOptions();

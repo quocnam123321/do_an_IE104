@@ -22,6 +22,43 @@
     return renderCard(task, people, date, dialog.id);
   }
 
+  function renderWorkspaceTasks(state, date) {
+    const { tasks, team, projectId } = state;
+    const members = new Map(team.members.map(member => [member.code, member]));
+    for (const task of tasks) {
+      for (const member of task.assignees || []) {
+        if (member.name && member.code && !members.has(member.code)) members.set(member.code, member);
+      }
+    }
+    const people = memberIndex([...members.values()]);
+    popovers.replaceChildren(...Array.from(people.values(), renderMemberPopover));
+    columns.forEach(({ status, list, count }) => {
+      const entries = tasks.filter(task => task.status === status);
+      const scrollTop = list.scrollTop;
+      count.replaceChildren(count.querySelector('.visually-hidden'), `(${entries.length})`);
+      list.replaceChildren(...entries.map(task => {
+        const codes = task.assignees?.map(member => member.code) ?? task.assigneeCodes ?? [task.assigneeCode];
+        const assignees = [...new Set(codes)].map(code => people.get(code)).filter(Boolean);
+        return taskCard(task, assignees, date, projectId);
+      }));
+      if (!entries.length) {
+        list.append(Object.assign(document.createElement('li'), { className: 'task-column__empty', textContent: 'Chưa có công việc.' }));
+      }
+      list.scrollTop = scrollTop;
+    });
+  }
+
+  function renderSummary(tasks, date) {
+    const summary = progress.summarize({ tasks });
+    const meter = overview.querySelector('progress');
+    meter.max = 100;
+    meter.value = summary.percent;
+    meter.textContent = `${summary.percent}%`;
+    overview.querySelector('.progress-overview__percent').textContent = `${summary.percent}% hoàn thành`;
+    fillStats(overview, summary, tasks, date);
+    return summary;
+  }
+
   board.addEventListener('click', event => {
     const trigger = event.target.closest('.task-card__open');
     if (!trigger || dialog.open) return;
@@ -75,6 +112,28 @@
 
   const ui = app.ui.lecturerWorkspace;
   if (!ui) {
+    const projectId = panel.dataset.sharedProjectId;
+    if (projectId) {
+      const preview = location.protocol === 'file:';
+      const catalogPopovers = panel.querySelectorAll('.progress-member-popover');
+      const refresh = () => {
+        let state;
+        try { state = progress.getState(projectId, { preview }); }
+        catch { return false; }
+        tasksById.clear();
+        const date = today();
+        renderSummary(state.tasks, date);
+        renderWorkspaceTasks(state, date);
+        return true;
+      };
+      if (refresh()) {
+        catalogPopovers.forEach(node => node.remove());
+        if (!preview) window.addEventListener('storage', event => {
+          if (event.key === app.storage.progressKey || event.key === app.storage.teamKey || event.key === null) refresh();
+        });
+        return;
+      }
+    }
     renderCatalogCards();
     return;
   }
@@ -82,8 +141,6 @@
   panel.querySelectorAll('.progress-member-popover').forEach(node => node.remove());
   const title = panel.querySelector('h2');
   const work = panel.querySelector('.progress-tasks');
-  const meter = overview.querySelector('progress');
-  const percentLabel = overview.querySelector('.progress-overview__percent');
   const message = el('p');
   const summaryNote = el('p', 'Tính theo số công việc đã hoàn thành vì một số công việc chưa có phần trăm cụ thể.', 'progress-overview__note');
 
@@ -102,33 +159,8 @@
 
     title.textContent = `Tiến độ đề tài ${state.project.title}`;
     const date = today();
-    const summary = progress.summarize(state.progress);
-    meter.max = 100;
-    meter.value = summary.percent;
-    meter.textContent = `${summary.percent}%`;
-    percentLabel.textContent = `${summary.percent}% hoàn thành`;
-    fillStats(overview, summary, state.progress.tasks, date);
+    const summary = renderSummary(state.progress.tasks, date);
     summaryNote.hidden = summary.method !== 'completed-ratio';
-
-    const members = new Map(state.team.members.map(member => [member.code, member]));
-    for (const task of state.progress.tasks) {
-      for (const member of task.assignees || []) {
-        if (member.name && member.code && !members.has(member.code)) members.set(member.code, member);
-      }
-    }
-    const people = memberIndex([...members.values()]);
-    popovers.replaceChildren(...Array.from(people.values(), renderMemberPopover));
-    columns.forEach(({ status, list, count }) => {
-      const tasks = state.progress.tasks.filter(task => task.status === status);
-      const scrollTop = list.scrollTop;
-      count.replaceChildren(count.querySelector('.visually-hidden'), `(${tasks.length})`);
-      list.replaceChildren(...tasks.map(task => {
-        const codes = task.assignees?.map(member => member.code) ?? task.assigneeCodes ?? [task.assigneeCode];
-        const assignees = [...new Set(codes)].map(code => people.get(code)).filter(Boolean);
-        return taskCard(task, assignees, date, state.projectId);
-      }));
-      if (!tasks.length) list.append(el('li', 'Chưa có công việc.', 'task-column__empty'));
-      list.scrollTop = scrollTop;
-    });
+    renderWorkspaceTasks(state.progress, date);
   });
 })();

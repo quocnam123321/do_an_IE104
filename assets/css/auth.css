@@ -1,7 +1,7 @@
 /* Layout for the shared sign-in and account-recovery pages.
    Colors, controls and typography inherit the shared design tokens. */
 
-.theme-toolbar:has(+ .login-page--portal) {
+.theme-toolbar:has(+ :is(.login-page--portal, .recovery-page)) {
   display: none;
 }
 

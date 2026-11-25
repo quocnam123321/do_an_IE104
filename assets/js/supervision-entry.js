@@ -4,14 +4,39 @@
   const teacherIdPattern = /^giang-vien-\d+$/;
   const pages = new URL('../../pages/', document.currentScript.src);
   const directory = new URL('chung/huong-nghien-cuu.html', pages);
+  const unavailableDepartment = 'Chưa cập nhật bộ môn';
+  const mobileWeb = 'Thiết bị Di động và Công nghệ Web';
+  const dataScience = 'Khoa học Dữ liệu';
+  // Phân bổ minh họa một lần để hai danh sách chọn hiển thị nhất quán.
+  const sampleDepartments = new Map([
+    ['giang-vien-4', mobileWeb],
+    ['giang-vien-7', dataScience],
+    ['giang-vien-10', dataScience],
+    ['giang-vien-11', mobileWeb],
+    ['giang-vien-18', mobileWeb],
+    ['giang-vien-19', mobileWeb],
+    ['giang-vien-22', dataScience],
+    ['giang-vien-26', mobileWeb],
+    ['giang-vien-27', mobileWeb],
+    ['giang-vien-28', dataScience],
+    ['giang-vien-30', dataScience],
+    ['giang-vien-35', dataScience],
+    ['giang-vien-36', dataScience],
+    ['giang-vien-38', mobileWeb],
+  ]);
   const normalizeSearch = value => value.toLowerCase().normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '').replace(/đ/g, 'd').trim();
 
   function departmentLabel(value = '') {
     const department = value.trim().replace(/^Bộ môn(?:\s*:\s*|\s+|$)/i, '');
     return !department || normalizeSearch(department).startsWith('chua ')
-      ? 'Chưa cập nhật bộ môn'
+      ? unavailableDepartment
       : department;
+  }
+
+  function selectionDepartment(teacher) {
+    const department = departmentLabel(teacher.department);
+    return department === unavailableDepartment ? sampleDepartments.get(teacher.id) ?? department : department;
   }
 
   function validateTeacherId(id) {
@@ -115,6 +140,6 @@
 
   window.IE104SupervisionEntry = Object.freeze({
     getComposeUrl, getLoginUrl, getInboxLoginUrl, getStudent, getTeacher, getTeachers,
-    normalizeSearch, departmentLabel, getTeacherInboxSession,
+    normalizeSearch, departmentLabel, selectionDepartment, getTeacherInboxSession,
   });
 })();

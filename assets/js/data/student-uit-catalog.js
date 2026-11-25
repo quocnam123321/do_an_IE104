@@ -11,6 +11,118 @@
   const myIds = [...definitions.keys()];
   const completedIds = ['ISE-005', 'ISE-015', 'ISEDATN-004', 'ISEDAMH-002', 'ISEDAMH-005'];
   const completed = new Set(completedIds);
+  const reportDeadlines = new Map([
+    ['ISE-001', ['2026-11-04', '2026-12-08']],
+    ['ISE-002', ['2026-11-05', '2026-12-09']],
+    ['ISE-003', ['2026-11-07', '2026-12-11']],
+    ['ISE-016', ['2026-11-09', '2026-12-12']],
+    ['ISEDATN-001', ['2026-11-10', '2026-12-14']],
+    ['ISEDATN-002', ['2026-11-12', '2026-12-15']],
+    ['ISEDATN-003', ['2026-11-13', '2026-12-16']],
+    ['ISEDATN-005', ['2026-11-15', '2026-12-18']],
+    ['ISEDAMH-004', ['2026-11-17', '2026-12-19']],
+    ['ISEDAMH-007', ['2026-11-18', '2026-12-20']],
+    ['ISEDAMH-008', ['2026-11-20', '2026-12-22']],
+    ['ISEDAMH-009', ['2026-11-21', '2026-12-23']],
+    ['ISEDAMH-010', ['2026-11-23', '2026-12-24']],
+    ['ISEDAMH-011', ['2026-11-24', '2026-12-26']],
+    ['ISEDAMH-012', ['2026-11-26', '2026-12-27']],
+    ['ISEDAMH-013', ['2026-11-27', '2026-12-28']],
+    ['ISEDAMH-014', ['2026-11-29', '2026-12-29']],
+    ['ISEDAMH-015', ['2026-11-30', '2026-12-30']],
+  ]);
+  const sampleTasks = {
+    'ISE-001': [
+      ['Loại các trận bị hoãn khỏi tập dữ liệu huấn luyện', 100],
+      ['Đối chiếu kết quả dự đoán với kết quả vòng đấu gần nhất', 100],
+      ['Phân tích các trận hòa mà mô hình dự đoán sai', 40],
+    ],
+    'ISE-002': [
+      ['Bổ sung bình luận mỉa mai có ngữ cảnh vào tập kiểm thử', 60],
+      ['Rà soát trường hợp hai người gán nhãn bất đồng', 30],
+      ['Đánh giá mô hình trên bình luận chứa tiếng lóng', 0],
+    ],
+    'ISE-003': [
+      ['Loại các đoạn video thiếu khung hình khỏi tập đánh giá', 100],
+      ['Kiểm tra nhãn ở điểm chuyển tiếp giữa hai hành động', 100],
+      ['So sánh kết quả dự đoán khi thay đổi độ dài chuỗi đầu vào', 70],
+    ],
+    'ISE-016': [
+      ['Kiểm tra mã QR của lô hàng đã thu hồi', 100],
+      ['Đo thời gian truy xuất lịch sử qua nhiều điểm giao nhận', 65],
+      ['Thử đồng bộ lại giao dịch khi nút mạng mất kết nối', 0],
+    ],
+    'ISEDATN-001': [
+      ['Kiểm thử hai nhóm đặt cùng một thiết bị trong cùng khung giờ', 30],
+      ['Bổ sung biên bản cho trường hợp thiết bị trả bị hỏng', 0],
+      ['Kiểm tra lịch sử bàn giao khi gia hạn mượn thiết bị', 0],
+    ],
+    'ISEDATN-002': [
+      ['Chuẩn hóa biểu mẫu đánh giá của đơn vị thực tập', 100],
+      ['Kiểm thử việc đổi cán bộ phụ trách giữa kỳ', 65],
+      ['Đối chiếu điểm đã duyệt với bảng tổng hợp xuất ra', 45],
+    ],
+    'ISEDATN-003': [
+      ['So sánh độ chính xác OCR trên văn bản scan bị nghiêng', 70],
+      ['Kiểm tra tìm kiếm số hiệu văn bản có dấu gạch chéo', 40],
+      ['Xử lý các tệp scan trùng số hiệu và ngày ban hành', 0],
+    ],
+    'ISEDATN-005': [
+      ['Kiểm tra số chỗ còn lại khi nhiều sinh viên đăng ký đồng thời', 100],
+      ['Kiểm tra việc mời người tiếp theo khi có lượt hủy', 80],
+      ['Đối chiếu giờ tình nguyện khi một sinh viên đổi ca', 50],
+    ],
+    'ISEDAMH-004': [
+      ['Chuẩn hóa cách ghi tình trạng sách đã qua sử dụng', 100],
+      ['Kiểm tra bộ lọc ấn bản khi nhiều sách trùng tên', 60],
+      ['Thử mở lại tin sau khi hủy lịch trao đổi', 25],
+    ],
+    'ISEDAMH-007': [
+      ['Kiểm tra số chỗ khi người tham gia hủy sát giờ', 50],
+      ['Kiểm thử mã điểm danh cho buổi học đổi lịch', 35],
+      ['Đối chiếu danh sách điểm danh và danh sách đăng ký', 25],
+    ],
+    'ISEDAMH-008': [
+      ['Xác định khóa duy nhất cho lượt đặt suất ăn', 100],
+      ['Kiểm tra tồn kho khi một đơn đặt suất ăn bị hủy', 100],
+      ['Đối soát số suất bán ra với số suất đã nhận', 45],
+    ],
+    'ISEDAMH-009': [
+      ['Cập nhật sơ đồ kết nối giữa các phòng học', 100],
+      ['Tính lại băng thông khi hai phòng học trực tuyến đồng thời', 75],
+      ['Kiểm tra vùng phủ Wi-Fi ở hành lang cuối tầng', 55],
+    ],
+    'ISEDAMH-010': [
+      ['Ghi nhận số cổng mạng còn trống tại từng tầng thư viện', 100],
+      ['So sánh chi phí hai phương án thay thiết bị chuyển mạch', 30],
+      ['Sắp xếp lịch chuyển đổi ngoài giờ mở cửa thư viện', 0],
+    ],
+    'ISEDAMH-011': [
+      ['Thống nhất tên trường dữ liệu cho hồ sơ sự kiện câu lạc bộ', 100],
+      ['Kiểm tra tra cứu sự kiện theo nhiều nhiệm kỳ', 70],
+      ['Rà soát quyền xem biên bản có thông tin thành viên', 35],
+    ],
+    'ISEDAMH-012': [
+      ['Xử lý các thông báo học bổng trùng từ nhiều nguồn', 65],
+      ['Kiểm tra định dạng hạn nộp trên dữ liệu nhập', 50],
+      ['Đối chiếu thông báo hết hạn sau lần đồng bộ mới', 25],
+    ],
+    'ISEDAMH-013': [
+      ['Lập danh sách quyền khi thành viên chuyển phòng ban', 100],
+      ['Kiểm thử thu hồi quyền truy cập được cấp tạm thời', 90],
+      ['Đối chiếu quyền kế thừa ở thư mục nhiều cấp', 65],
+    ],
+    'ISEDAMH-014': [
+      ['Kiểm kê các thiết bị đã kết nối vào mạng khách', 100],
+      ['Kiểm tra kết nối hợp lệ giữa máy in và máy trạm', 50],
+      ['Lập lịch kiểm tra nhật ký cảnh báo mạng', 20],
+    ],
+    'ISEDAMH-015': [
+      ['Xác minh quy tắc khi hai sinh viên chọn cùng giờ tư vấn', 80],
+      ['Kiểm tra việc dời lịch khi cố vấn vắng mặt', 50],
+      ['Rà soát nội dung thông báo xác nhận tư vấn', 35],
+    ],
+  };
   const type = { course: 'do-an-mon-hoc', graduation: 'do-an-tot-nghiep', thesis: 'khoa-luan' };
   const rows = new Map(catalog.records.map(record => [record.id, record]));
   const defaultRequirements = ['Có kiến thức nền tảng phù hợp với lĩnh vực đề tài.', 'Thực hiện khảo sát, xây dựng giải pháp và đánh giá kết quả trong phạm vi đã thống nhất.', 'Bàn giao báo cáo, tài liệu và sản phẩm theo yêu cầu của giảng viên.'];
@@ -62,8 +174,9 @@
     const semester = done ? String(completedIndex % 2 + 1) : '1';
     const academicYear = done ? '2024-2025' : '2026-2027';
     const startsAt = done ? semester === '1' ? '2024-09-09' : '2025-02-10' : '2026-09-21';
-    const finalReportDate = done ? semester === '1' ? '2025-01-10' : '2025-06-10' : '2027-01-03';
-    const progressReportDate = done ? semester === '1' ? '2024-11-15' : '2025-04-15' : '2026-11-15';
+    const [progressReportDate, finalReportDate] = done
+      ? (semester === '1' ? ['2024-11-15', '2025-01-10'] : ['2025-04-15', '2025-06-10'])
+      : reportDeadlines.get(id) ?? ['2026-11-15', '2027-01-03'];
     const subject = catalog.courseCatalog[catalog.courseKey(record.course)];
     const displayId = catalog.formatCode(record.topicType, record.code, catalog.facultyFor(record));
     return {
@@ -156,8 +269,15 @@
           status: done ? 'da-hoan-thanh' : ['chua-thuc-hien', 'dang-thuc-hien', 'da-hoan-thanh'][column], percent: done ? 100 : [0, 50, 100][column] });
       });
     });
+    const additions = !done && sampleTasks[project.topicId];
+    (additions || []).forEach(([title, percent], index) => {
+      const member = projectPeople[index % projectPeople.length];
+      const deadline = percent === 100 ? dayAt('2026-11-25', index - 4) : dayAt(project.finalReportDate, index - 7);
+      const status = percent === 100 ? 'da-hoan-thanh' : percent === 0 ? 'chua-thuc-hien' : 'dang-thuc-hien';
+      tasks.push({ id: `${project.id}-sample-task-${index + 1}`, title, deadline, assigneeCode: member.code, assigneeCodes: [member.code], status, percent });
+    });
     data.projectProgress = data.projectProgress.filter(item => item.projectId !== project.id);
-    data.projectProgress.push({ projectId: project.id, revision: 0, tasks, history: [] });
+    data.projectProgress.push({ projectId: project.id, revision: 0, tasks, history: [], ...(additions && { sampleTaskVersion: 1 }) });
     const requirements = [];
     const submissions = [];
     work.deliverables.forEach((item, index) => {
@@ -191,7 +311,14 @@
     data.teachingSeeds = data.teachingSeeds.filter(item => item.projectId !== project.id);
     data.teachingSeeds.push({ projectId: project.id, revision: 0, submissionsLocked: done, requirements, submissions, progressReviews: [], draft: null, publishedEvaluation: evaluation, audit: [] });
     const existing = data.lecturerTopics.find(item => item.kind === 'supervised' && item.id === project.topicId);
-    if (existing) Object.assign(existing, { workspaceId: project.id, sharedStudentProject: true, representativeName: project.representativeName, lecturer: project.lecturer, role: project.role, roleLabel: project.roleLabel, groupName: project.groupName, semester: project.semester, academicYear: project.academicYear, startsAt: project.startsAt, completesAt: project.finalReportDate, milestones: project.milestones, status: project.status, statusLabel: project.statusLabel });
+    if (existing) Object.assign(existing, {
+      workspaceId: project.id, sharedStudentProject: true, representativeName: project.representativeName,
+      lecturer: project.lecturer, role: project.role, roleLabel: project.roleLabel, groupName: project.groupName,
+      semester: project.semester, academicYear: project.academicYear, startsAt: project.startsAt,
+      progressReportDate: project.progressReportDate, finalReportDate: project.finalReportDate,
+      completesAt: project.finalReportDate, milestones: project.milestones,
+      status: project.status, statusLabel: project.statusLabel,
+    });
   });
   const viewing = projects.find(project => project.id === requestedProjectId);
   if (viewing && data.currentStudent) data.currentStudent = { ...data.currentStudent, name: viewing.representativeName };

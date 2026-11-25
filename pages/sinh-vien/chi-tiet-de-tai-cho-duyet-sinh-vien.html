@@ -1,40 +1,40 @@
 <!doctype html>
 <html lang="vi">
   <head>
-    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png?v=2" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Xem nội dung đề xuất và theo dõi kết quả xét duyệt." />
     <title>Chi tiết đề xuất đề tài | Đề tài của tôi</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-student.js?v=20261125-topic-participants"></script>
-    <script defer src="../../assets/js/i18n/en-shared.js"></script>
+    <script defer src="../../assets/js/i18n/en-student.js?v=20261125-rejection-reason"></script>
+    <script defer src="../../assets/js/i18n/en-shared.js?v=20261125-closed-samples"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
     <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-menu-2" />
     <link rel="stylesheet" href="../../assets/css/proposal-request-detail.css" />
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css" />
-    <link rel="stylesheet" href="../../assets/css/de-tai-cua-toi.css" />
+    <link rel="stylesheet" href="../../assets/css/de-tai-cua-toi.css?v=20261125-rejection-reason" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <script src="../../assets/js/dialog-commands.js" defer></script>
-    <script src="../../assets/js/supervision-entry.js?v=20261123-language" defer></script>
+    <script src="../../assets/js/supervision-entry.js?v=20261125-department-names" defer></script>
     <script src="../../assets/js/data/proposal-actors.js" defer></script>
-    <script src="../../assets/js/data/student-requests.js" defer></script>
+    <script src="../../assets/js/data/student-requests.js?v=20261125-withdrawn-sample" defer></script>
     <script src="../../assets/js/services/storage.js?v=20261124-demo-invitation-polish" defer></script>
-    <script src="../../assets/js/services/proposal-service.js?v=20261125-approved-overview" defer></script>
+    <script src="../../assets/js/services/proposal-service.js?v=20261125-rejected-requests" defer></script>
     <script src="../../assets/js/services/approved-project-service.js?v=20261125-approved-overview" defer></script>
     
     <script src="../../assets/js/services/request-service.js" defer></script>
-    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261125-proposal-outline" defer></script>
-    <script src="../../assets/js/proposal-store.js?v=20261125-proposal-outline" defer></script>
+    <script src="../../assets/js/uit-lecturer-catalog.js?v=20261125-rejection-sample" defer></script>
+    <script src="../../assets/js/proposal-store.js?v=20261125-rejected-requests" defer></script>
     <script src="../../assets/js/shared/student-course-label.js?v=20261122-course-label" defer></script>
     <script src="../../assets/js/services/proposal-file-service.js" defer></script>
     <script src="../../assets/js/shared/proposal-cover.js" defer></script>
     <script src="../../assets/js/shared/download-file.js" defer></script>
-    <script src="../../assets/js/shared/proposal-detail-fields.js?v=20261125-vietnamese-pending-teacher" defer></script>
+    <script src="../../assets/js/shared/proposal-detail-fields.js?v=20261125-withdrawn-attachment-note" defer></script>
     <script src="../../assets/js/services/lecturer-topic-service.js?v=20261125-topic-participants" defer></script>
-    <script src="../../assets/js/pages/student/pending-request.js?v=20261125-topic-participants" defer></script>
+    <script src="../../assets/js/pages/student/pending-request.js?v=20261125-rejection-reason" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
   </head>
@@ -67,8 +67,8 @@
                 <summary class="main-nav__label" id="common-navigation-label"><span class="main-nav__text">Chung</span></summary>
                 <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
-                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a></li>
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a></li>
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
                 </ul>
               </details>
@@ -133,6 +133,16 @@
             <h1 class="page-header__title">Chi tiết đề xuất đề tài</h1>
           </div>
         </header>
+        <section class="pending-proposal-rejection" aria-labelledby="proposal-rejection-title" hidden>
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 8v5m0 3h.01" />
+          </svg>
+          <div>
+            <h2 id="proposal-rejection-title">Lý do từ chối</h2>
+            <p data-proposal-rejection-reason></p>
+          </div>
+        </section>
         <p data-pending-result role="status" tabindex="-1" hidden></p>
         <p class="pending-proposal-notice" role="status"></p>
         <noscript><p>Cần bật JavaScript để xem đề xuất được lưu trên trình duyệt.</p></noscript>
@@ -169,7 +179,7 @@
             <div class="proposal-recipient__profile">
               <span class="proposal-recipient__avatar" aria-hidden="true" hidden></span>
               <div>
-                <p class="proposal-recipient__name" data-proposal-field="recipient"></p>
+                <p class="proposal-recipient__name" data-recipient-name></p>
                 <p class="proposal-recipient__department" data-recipient-department hidden></p>
                 <p class="proposal-recipient__email">
                   <a data-recipient-email hidden></a>

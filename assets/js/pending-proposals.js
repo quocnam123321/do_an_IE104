@@ -24,7 +24,8 @@
     topic_type: 'topicType',
     course: 'course',
   };
-  const queryNames = ['supervision_role', ...Object.keys(filterFields), 'proposal_search', 'proposal_sort', 'page'];
+  // Bỏ cả tham số bộ lọc cũ khi mở lại liên kết đã lưu.
+  const queryNames = ['supervision_role', ...Object.keys(filterFields), 'request_status', 'proposal_search', 'proposal_sort', 'page'];
   const validOrders = Array.from(sort.options, (option) => option.value);
   const collator = new Intl.Collator('vi', { numeric: true });
   const normalize = (value) => String(value || '').toLocaleLowerCase('vi').normalize('NFD')
@@ -36,8 +37,7 @@
       ? catalog.courseKey(proposal.course || proposal.courseId) : '';
   }
 
-  function readUrl() {
-    const params = new URLSearchParams(window.location.search);
+  function readUrl(params) {
     search.value = params.get('proposal_search') || '';
     const requestedOrder = params.get('proposal_sort');
     sort.value = validOrders.includes(requestedOrder) ? requestedOrder : 'oldest';
@@ -103,16 +103,13 @@
     for (const [name, value] of fields) {
       card.querySelector(`.proposal-card__${name} .topic-card__meta-text`).textContent = value;
     }
-    const sentAt = Date.parse(proposal.submittedAt);
-    if (Number.isFinite(sentAt)) {
+    const submitted = store.formatSubmissionDate(proposal.submittedAt);
+    if (submitted) {
       const row = document.createElement('p');
       row.className = 'topic-card__meta-item proposal-card__date';
       const time = document.createElement('time');
       time.dateTime = proposal.submittedAt;
-      time.textContent = new Intl.DateTimeFormat('vi-VN', {
-        year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit',
-        timeZone: 'Asia/Ho_Chi_Minh',
-      }).format(sentAt);
+      time.textContent = submitted;
       row.insertAdjacentHTML('afterbegin', '<svg class="topic-card__meta-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 11h18"/></svg>'); row.append(time);
       card.querySelector('.topic-card__meta').append(row);
     }
@@ -158,31 +155,24 @@
   }
 
   function render(urlMode, restoreUrl = false) {
-    const pending = store.getAll().filter((proposal) => catalog.isAvailableTopic(proposal) && proposal.status === 'pending' && proposal.topicTypeLabel !== 'Luận văn thạc sĩ');
-    window.IE104.ui.renderCourseFilters(form, pending.map(proposal => ({
+    const params = restoreUrl ? new URLSearchParams(window.location.search) : null;
+    const requests = store.filterPending(store.getAll());
+    window.IE104.ui.renderCourseFilters(form, requests.map(proposal => ({
       id: courseKey(proposal),
       label: catalog.subjectLabel(proposal),
     })));
-    if (restoreUrl) readUrl();
+    if (params) readUrl(params);
     const terms = normalize(search.value).split(/\s+/).filter(Boolean);
     const data = new FormData(form);
     const selected = Object.entries(filterFields).map(([name, field]) => [field, data.getAll(name)]);
-    const matching = pending.filter((proposal) => {
+    const matching = requests.filter((proposal) => {
       const haystack = normalize([proposal.id, proposal.topicCode, proposal.title, proposal.studentName, proposal.studentId].join(' '));
       return terms.every((term) => haystack.includes(term)) &&
         selected.every(([field, values]) => !values.length || values.includes(field === 'course' ? courseKey(proposal) : proposal[field]));
     });
     // Ngày gửi chỉ được so sánh khi đã có trong dữ liệu; hồ sơ thiếu ngày giữ thứ tự mẫu.
     if (sort.value === 'name-asc') matching.sort((a, b) => collator.compare(a.title, b.title));
-    else matching.sort((a, b) => {
-      const first = Date.parse(a.submittedAt);
-      const second = Date.parse(b.submittedAt);
-      const hasFirst = Number.isFinite(first);
-      const hasSecond = Number.isFinite(second);
-      if (hasFirst !== hasSecond) return hasFirst ? -1 : 1;
-      if (!hasFirst) return 0;
-      return sort.value === 'newest' ? second - first : first - second;
-    });
+    else matching.sort((a, b) => store.compareSubmissionDates(a, b, sort.value));
 
     const totalPages = Math.max(1, Math.ceil(matching.length / pageSize));
     page = Math.min(page, totalPages);
@@ -193,7 +183,8 @@
     count.textContent = matching.length
       ? `Hiển thị ${first + 1}–${first + visible.length} trên ${matching.length} đề xuất chờ duyệt`
       : 'Không có đề xuất chờ duyệt phù hợp.';
-    showEmpty(matching.length > 0, pending.length > 0);
+    count.classList.add('visually-hidden');
+    showEmpty(matching.length > 0, requests.length > 0);
     viewport.hidden = matching.length === 0;
     viewport.scrollTop = 0;
     renderPagination(totalPages);

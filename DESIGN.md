@@ -112,7 +112,7 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 ### Chuyển ngôn ngữ giao diện
 
 - Tiếng Việt là mặc định. Nút EN / VI nằm cạnh nút chế độ sáng/tối, có tên thao tác cho trình đọc màn hình. Khi chuyển, cập nhật thuộc tính `lang` trên trang và ghi nhớ lựa chọn trong trình duyệt.
-- Trang Đăng nhập áp dụng chế độ màu và ngôn ngữ đã lưu. Hai nút chuyển được ẩn trên trang này.
+- Trang Đăng nhập và Quên mật khẩu áp dụng chế độ màu và ngôn ngữ đã lưu. Cả hai trang ẩn thanh chứa nút chuyển.
 - Dùng bản dịch chung cho header, footer, điều hướng và tên thao tác. Giữ nguyên tên riêng, mã hồ sơ, giá trị biểu mẫu và nội dung do người dùng nhập.
 - Kiểm tra chữ dài ở cả hai ngôn ngữ trên màn hình hẹp. Tên thao tác và liên kết có thể xuống dòng khi thiếu chỗ.
 
@@ -187,6 +187,12 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 - Trường bắt buộc có giải thích rõ; không dựa vào màu hoặc dấu sao không được giải nghĩa.
 - Khi lỗi, giữ dữ liệu người dùng đã nhập. Thông báo thành công chỉ xuất hiện khi thao tác thật sự hoàn thành.
 
+### Trạng thái bộ lọc
+
+- Các danh sách của sinh viên và giảng viên dùng cùng biểu tượng phễu cạnh tiêu đề “Bộ lọc”. Khi có ít nhất một ô tiêu chí được tích, hiện dấu tick ở góc trên bên phải phễu. Vòng tròn dùng màu chính, dấu tick dùng màu chữ trên nền chính và viền mảnh lấy màu nền trang.
+- Dấu tick vẫn hiển thị khi thu gọn. Bỏ tích tiêu chí cuối cùng hoặc xóa bộ lọc sẽ ẩn dấu tick. Tiêu đề giữ nguyên khi đổi cách sắp xếp. Trình đọc màn hình có nhãn “Đã chọn tiêu chí lọc” khi dấu tick xuất hiện.
+- Bộ lọc Trạng thái ở Đề tài đã tạo tập trung vào tình trạng nhận đăng ký, với hai lựa chọn “Đang mở đăng ký” và “Đã đóng đăng ký”. Giảng viên theo dõi các nhóm trong tab Đề tài hướng dẫn.
+
 ### Bảng và phân trang
 
 - Dùng HTML table có caption hoặc tên phần rõ ràng, header có scope phù hợp; không dùng bảng để bố trí trang.
@@ -194,6 +200,7 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 - Padding ô đề xuất 12–16px; tên đề tài wrap. Hành động của mỗi dòng phải có tên dễ hiểu và phân biệt được đối tượng.
 - Có vùng dữ liệu trống và vùng lỗi riêng. Chỉ thêm loading khi tồn tại quá trình tải dữ liệu.
 - Phân trang nêu trang hiện tại và có accessible name cho nút biểu tượng. Không tạo các nút trông hoạt động khi chưa có xử lý.
+- Hai tab Quản lý đề tài, Yêu cầu chờ duyệt, Đăng ký đề tài và Đề tài của tôi dùng cụm phân trang theo mẫu Quản lý đề tài. Các nút có vùng bấm tối thiểu 44px, bo góc 8px, nền trắng và viền xám ở chế độ sáng. Trang hiện tại dùng nền xanh và chữ trắng. Cụm nút nằm dưới danh sách, sát mép phải và căn phải cả khi xuống dòng.
 
 ### Badge trạng thái
 
@@ -316,6 +323,7 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 ### Tổng quan chi tiết đề tài sinh viên — 21/11/2026
 
 - Mỗi thẻ trong Đề tài của tôi có một dòng về người thực hiện. Đề tài nhóm dùng Nhóm X - Tên nhóm, đề tài cá nhân dùng họ tên và MSSV. Thẻ và trang chi tiết dùng chung cách xác định tên với danh sách Đề tài đang hướng dẫn.
+- Sinh viên thực hiện một mình mặc định là Nhóm trưởng. Mục Sinh viên thực hiện trên trang chi tiết hiển thị nhãn Nhóm trưởng sau họ tên và MSSV. Nhãn dùng cùng kiểu ở hai vai trò và xuống dòng khi thiếu chỗ.
 - Hai danh sách Đề tài của tôi và Đề tài mở đăng ký dùng mẫu thẻ Quản lý đề tài của giảng viên cho khung ảnh 16:9, khoảng đệm, cỡ chữ và cột thao tác. Nút Xem chi tiết cao tối thiểu 44px, dùng chữ 16px và cùng biểu tượng mũi tên. Trên điện thoại, nút rộng bằng khung ảnh và nhãn trạng thái nằm ở góc trên bên phải ảnh khi đủ chỗ. Mỗi trang giữ nội dung và màu trạng thái theo nghiệp vụ.
 - Hai trang dùng khoảng cách quanh tiêu đề theo mẫu Quản lý đề tài. Từ đường dẫn đến khối tiêu đề là 12px, từ hàng tìm kiếm đến tiêu đề danh sách là 8px. Thẻ đầu cách tiêu đề danh sách 16px trên máy tính và 12px trên điện thoại.
 
@@ -328,6 +336,7 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 
 - Dùng tab Tổng quan của Đề tài của tôi làm mẫu. Khối tóm tắt dùng ảnh 16:9 và nhãn vai trò cạnh tên đề tài. Hướng dẫn chính dùng nền xanh nhạt, Đồng hướng dẫn dùng nền xám nhạt như danh sách. Phần thông tin có ba hàng ngăn bằng khoảng cách: Mã đề tài và Loại đề tài, Môn học và Trạng thái, Học kỳ và Năm học. Trạng thái hiển thị bằng văn bản. Khi ảnh nằm bên trái, khung rộng tối đa 24rem và căn giữa theo chiều dọc. Trên điện thoại, ảnh rộng theo khung nội dung và phần thông tin xếp thành một cột khi màn hình hẹp. Cột trái hiển thị các thẻ nội dung. Cột phải lần lượt là Nhóm thực hiện, Mốc thời gian chính và Giảng viên hướng dẫn. Hai cột xếp dọc trên màn hình hẹp.
 - Dùng cùng giao diện cho đề tài từ danh mục, đề tài đăng ký và đề xuất đã duyệt. Chỉ hiện giới hạn thành viên, đề cương, phương pháp và kế hoạch khi có dữ liệu tương ứng. Thông tin nhóm ở Tổng quan phía giảng viên hiển thị dưới dạng chỉ đọc.
+- Nhãn Hướng dẫn chính trong Quản lý đề tài dùng cùng kiểu trên thẻ và trong phần tóm tắt chi tiết. Ở chế độ sáng, nhãn có nền xanh nhạt, chữ màu xanh đậm ở độ đậm 600, căn giữa trong khung bo góc.
 - Khối Giảng viên hướng dẫn phía giảng viên là danh sách chỉ đọc. Mỗi dòng có avatar, họ tên, bộ môn và vai trò nếu có dữ liệu. Đề tài thiếu người đồng hướng dẫn dùng thêm một hồ sơ mẫu có ghi Minh họa. Hồ sơ minh họa chỉ phục vụ trình bày.
 
 ### Chi tiết đề xuất đề tài của sinh viên và giảng viên — 22/11/2026
@@ -361,6 +370,9 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 - Trang chi tiết đề xuất của giảng viên theo bố cục đã duyệt phía sinh viên. Khung ảnh đứng nằm bên trái trên máy tính và chuyển sang khung ngang phía trên thông tin trên điện thoại. Nhãn trạng thái nằm cạnh tên đề tài. Hồ sơ có lịch ba mốc dùng bốn hàng gồm Loại đề tài và Môn học, Học kỳ và Năm học, Mã đề tài và Ngày bắt đầu thực hiện, rồi hai ngày nộp báo cáo. Hồ sơ cũ hiển thị hai ngày dự kiến theo dữ liệu đã lưu. Tên tiếng Anh đã lưu nằm ngay dưới tên tiếng Việt.
 - Trang chi tiết đề xuất phía sinh viên hiển thị tên tiếng Việt và lưới bốn hàng hai cột, ngăn các hàng bằng khoảng trắng. Học kỳ và Năm học có hai ô riêng. Mốc chưa có dữ liệu hiển thị “Chưa có thông tin”. Hồ sơ cũ có ngày kết thúc dự kiến giữ ngày và nhãn đã lưu ở ô cuối.
 - Sau khối tóm tắt, trang sinh viên hiển thị giảng viên hướng dẫn với avatar, tên, bộ môn và email. Trang giảng viên hiển thị sinh viên gửi đề xuất với avatar, họ tên, MSSV và thời điểm gửi.
+- Chi tiết đề xuất ở trạng thái Từ chối hoặc Đã rút dùng tiêu đề Giảng viên nhận đề xuất. Các hồ sơ minh họa có mã theo loại đề tài, ba mốc thực hiện, nội dung đề cương và tệp minh họa tải được.
+- Chi tiết đề xuất đã rút hiển thị nhãn “Đã rút” cạnh tên đề tài. Dòng thông báo trạng thái ở đầu trang được ẩn.
+- Chi tiết đề xuất bị từ chối hiển thị khung “Lý do từ chối” ngay dưới tiêu đề trang và trước thẻ thông tin đề tài. Khung dùng nền đỏ nhạt, viền mảnh và biểu tượng dấu chấm than cạnh tiêu đề. Nội dung dùng màu chữ chính và giữ cách xuống dòng của lý do đã lưu.
 - Tổng quan đề tài, Mục tiêu, Kết quả dự kiến, Phương pháp và phạm vi thực hiện, Kế hoạch thực hiện và phân công hiển thị theo từng thẻ với đường kẻ mảnh dưới tiêu đề. Hai thẻ phương pháp và kế hoạch xuất hiện khi có nội dung. Thẻ Tài liệu đính kèm có đường kẻ dưới tiêu đề. Biểu tượng, tên tệp và nút Tải xuống nằm trực tiếp trên nền thẻ. Nội dung tệp được lưu trong IndexedDB khi gửi hoặc cập nhật đề xuất để hai vai trò tải trong cùng trình duyệt và cùng địa chỉ web. Hồ sơ mẫu DX001 có tệp đề cương mẫu tải được từ cả hai trang. Với hồ sơ cũ chỉ có thông tin tệp, nút bị khóa và có hướng dẫn đính kèm lại tệp gốc bên dưới. Hàng nút cuối trang theo vai trò và trạng thái hồ sơ.
 
 ### Tiến độ chi tiết đề tài sinh viên — 21/11/2026
@@ -413,13 +425,35 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 - Từ 24/11/2026, đề tài DA005 “Website quản lý hoạt động học tập” xuất hiện trong Đề tài của tôi với trạng thái Hoàn thành. Sinh viên dùng trang chi tiết để xem dữ liệu hiện có.
 - Nút × trong các hộp thoại dùng nét bo đầu, khung biểu tượng 20px và vùng bấm 44px không viền.
 
+### Trạng thái đề tài trên Tổng quan giảng viên
+
+- Biểu đồ vòng và chú giải tạo thành một cụm căn giữa. Trên màn hình rộng, chú giải nằm bên phải biểu đồ. Trên điện thoại, chú giải nằm bên dưới. Tâm vòng hiển thị tổng số đề tài. Chú giải dùng ô màu vuông bo góc và số lượng ngay sau tên trạng thái.
+- Hai lát Đang mở đăng ký và Đã đóng đăng ký đếm theo trạng thái trong danh sách Đề tài đã tạo. Hồ sơ đang hướng dẫn được tính theo trạng thái thực hiện của hồ sơ đó, kể cả khi dùng chung tên với một đề tài đã tạo. Số ở tâm vòng bằng tổng của bốn lát.
+- Tỷ lệ từ 8% trở lên có nhãn trên vòng. Chú giải luôn hiển thị đủ bốn trạng thái khi có dữ liệu, còn mô tả của biểu đồ cung cấp tỷ lệ của cả các phần nhỏ.
+
 ### Tổng quan đề tài đang hướng dẫn
+
+- Trên trang Tổng quan giảng viên, mục Tiến độ đề tài đang hướng dẫn hiển thị tối đa năm đề tài Đang thực hiện theo thứ tự Mới nhất của tab Đề tài hướng dẫn. Các hàng trải hết khung, dùng nền bề mặt và nền trang xen kẽ, ngăn bằng đường kẻ mảnh. Bên trái là tên đề tài, bên dưới là biểu tượng thẻ và mã đề tài, tiếp đến biểu tượng và tên người hoặc nhóm thực hiện. Tỷ lệ và thanh tiến độ nằm ở giữa. Nút Xem đề tài ở bên phải dùng nền bề mặt, viền xanh, chữ và mũi tên xanh. Trên điện thoại, thông tin và tiến độ xếp dọc, nút căn phải bên dưới.
 
 - Thẻ đề tài hiển thị Nhóm X - Tên nhóm khi có từ hai thành viên và họ tên kèm MSSV khi thực hiện cá nhân. Trang chi tiết dùng cùng tên nhóm với thẻ. Nhóm chưa có tên hiển thị tên mẫu theo đề tài hoặc tên người đại diện.
 
 - Đề tài giảng viên đã tạo vẫn nằm trong danh sách Đề tài đã tạo sau khi có nhóm đăng ký thành công hoặc được duyệt. Thẻ và trang chi tiết dùng nhãn Đã có nhóm đăng ký. Giảng viên chỉnh sửa hồ sơ gốc từ trang chi tiết và theo dõi nhóm trong danh sách Đề tài hướng dẫn.
 
 - Đề tài trong danh mục và đề tài phát sinh từ đăng ký hoặc đề xuất dùng chung khung ảnh 16:9, thẻ thông tin, bố cục nội dung và cột nhóm thực hiện, mốc thời gian. Đề cương, phương pháp và kế hoạch xuất hiện khi đề tài có dữ liệu tương ứng.
+
+### Yêu cầu chờ duyệt trên Tổng quan giảng viên
+
+- Trang Yêu cầu chờ duyệt chỉ hiển thị hồ sơ đang chờ giảng viên xử lý. Sau khi lưu quyết định từ chối, hồ sơ rời khỏi danh sách của giảng viên. Sinh viên xem quyết định và lý do trong chi tiết hồ sơ.
+- Khi lưu từ chối thành công, hộp thoại hiển thị dấu tích xanh, tiêu đề “Đã từ chối yêu cầu” và nút ×. Bấm × hoặc Esc để quay về Yêu cầu chờ duyệt với bộ lọc trước đó nếu có.
+
+- Hiển thị tối đa bốn yêu cầu chờ duyệt mới nhất trong một khung chung. Mỗi yêu cầu trải hết một hàng, với nền xen kẽ và đường kẻ ngang mảnh như mục Tiến độ.
+- Trên màn hình rộng, tên đề tài, họ tên sinh viên, MSSV và thời điểm gửi nằm bên trái. Nút Xem đề xuất viền xanh nằm bên phải. Trên điện thoại, thông tin tự xuống dòng và nút căn phải bên dưới.
+
+### Tổng quan sinh viên
+
+- Dùng bố cục Tổng quan giảng viên cho bốn thẻ thống kê, biểu đồ vòng và các hàng xem trước. Bốn thẻ hiển thị tổng số đề tài, đang thực hiện, hoàn thành và chờ duyệt, liên kết đến bộ lọc tương ứng của Đề tài của tôi. Biểu đồ dùng cùng nguồn và đếm từng đề tài một lần theo trạng thái.
+- Lời mời hướng dẫn hiển thị tối đa hai lời mời đã gửi gần nhất, với tên giảng viên nhận lời mời và thời gian gửi, mỗi thông tin có biểu tượng riêng. Nút Xem trao đổi mở đúng lời mời ở mục Lời mời hướng dẫn. Hồ sơ mẫu của Nguyễn Minh Anh có bốn lời mời gửi tới bốn giảng viên khác nhau và dùng cùng bản ghi ở hai vai trò.
+- Tiến độ hiển thị tối đa năm đề tài đang thực hiện từ Đề tài của tôi, kèm mã đề tài, người hoặc nhóm thực hiện và tỷ lệ tiến độ theo dữ liệu công việc của đề tài. Yêu cầu chờ duyệt hiển thị tối đa bốn đăng ký hoặc đề xuất mới nhất đang chờ duyệt, kèm giảng viên nhận và thời gian gửi.
 
 ### Công bố đánh giá bên giảng viên
 
@@ -451,7 +485,7 @@ Trong hai tab Quản lý đề tài, danh sách nằm ngay dưới tiêu đề v
 ## Chốt hiển thị tên đề tài và thẻ chờ duyệt — 25/11/2026
 
 - Phần chi tiết chỉ hiển thị tên đề tài tiếng Việt, bỏ dòng tên tiếng Anh đi kèm và không lặp tên tiếng Anh trong khung thông tin bổ sung. Giữ dữ liệu đề cương đã lưu để không làm hỏng hồ sơ cũ.
-- Ngoại lệ của dòng người thực hiện trên thẻ Đề tài của tôi: khi trạng thái Chờ duyệt, dùng biểu tượng cá nhân và tên giảng viên nhận hồ sơ (khớp người nhận trong chi tiết), không hiển thị tên/MSSV sinh viên ở dòng này. Đang thực hiện/Hoàn thành tiếp tục dùng thông tin người thực hiện như đã chốt.
+- Trên thẻ Đề tài của tôi, dòng có biểu tượng cá nhân hiển thị tên giảng viên nhận hồ sơ ở các trạng thái Chờ duyệt, Từ chối và Đã rút. Đề tài Đang thực hiện hoặc Hoàn thành hiển thị người thực hiện.
 - Bộ lọc loại đề tài ở hai danh sách quản lý GV ghi đầy đủ Khóa luận tốt nghiệp; không đổi giá trị lọc nội bộ.
 
 
