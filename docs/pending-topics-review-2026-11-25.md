@@ -65,3 +65,16 @@ Gói chỉnh số lượng ghép lại trên main fec7a477ff4cc4c1e246e65679646e
 - Lượt thử UI gửi đề xuất mới kèm PDF trên origin riêng 8783 đã bắt đầu nhưng chưa gửi xong: quyền điều khiển trình duyệt không còn khả dụng sau gián đoạn. Vì vậy chưa xác nhận end-to-end thao tác chọn tệp mới → gửi → GV tải đúng byte trên UI. Đường lưu tệp có sẵn dùng proposalFiles.stage (IndexedDB), lưu fileKey/name/size vào hồ sơ; phía GV nhận các trường này và dùng proposalFiles.read để tải. Phần này đã đọc mã và kiểm tra trao đổi metadata, chưa chứng minh thao tác UI cuối.
 - Phạm vi đồng bộ là cùng trình duyệt và cùng origin (host + port). Chưa có backend để chia sẻ tệp sang máy hoặc trình duyệt khác.
 - Chỉ chỉnh bản GPT, chưa chép/commit/push checkout GitHub. Gói copy cần đối chiếu lại main mới nhất khi người dùng yêu cầu.
+
+
+## Sửa luồng sau khi duyệt đề xuất — 25/11/2026
+
+- Dữ liệu đề xuất phiên bản 3 được ánh xạ sang startsAt/progressReportDate/finalReportDate và hai nội dung phương pháp/kế hoạch khi chuyển sang đề tài đang thực hiện. Cả SV và GV dùng chung bộ định dạng mốc ngày, ưu tiên ngày đã nhập; không gán ngày duyệt làm ngày bắt đầu. Đề cương phiên bản cũ giữ ngày kết thúc làm hạn cuối khi không có hạn cuối mới.
+- Các trường ngày, thành viên, GVHD, phương pháp và kế hoạch được đặt vào khung tương ứng trong Tổng quan. Khung Đề cương chi tiết không in lặp toàn bộ hồ sơ; thông tin bổ sung chưa có chỗ riêng (tên tiếng Anh, người hướng dẫn phụ trong đề cương) vẫn được giữ nếu có, ẩn khung nếu trống.
+- Hai hồ sơ mẫu chung chuyển liên kết SV sang trang đang thực hiện sau duyệt. Giữ đề cương và nhóm trong bản đã duyệt; tài khoản demo được xem hai hồ sơ đã chỉ định nhưng không có quyền sửa nhóm, cập nhật tiến độ hoặc nộp bài thay sinh viên khác.
+- Tham chiếu tài liệu được giữ trong dữ liệu dự án đã duyệt; không biến tài liệu đề xuất thành bài nộp.
+- 28/28 kiểm tra liên quan duyệt đề xuất, đăng ký và lời mời đạt. Tổng bộ kiểm tra trước bổ sung kiểm tra quyền xem bài nộp: 69 kiểm tra, 60 đạt và 9 lỗi cũ ở tổng quan/quy ước mã. Không chỉnh ngoài phạm vi để làm xanh các kiểm tra cũ.
+- Trình duyệt vẫn không được kết nối trong chat này. Chưa xác nhận lại bố cục desktop/mobile và thao tác UI sau sửa; kiểm tra bằng dữ liệu và hàm hiển thị không thay thế kiểm tra trực quan.
+- Bản GitHub main đã lên 609e3941d3234d790f5b50326d703922a1bb9a47 và sạch; chỉ đọc để đối chiếu. Không sửa checkout GitHub.
+
+Kiểm tra cuối sau bổ sung quyền đọc hồ sơ mẫu: 37/37 đạt, gồm kiểm tra đồng bộ bài nộp/tải tệp/đánh giá đã có. Kiểm tra cú pháp các script sửa đạt. Không có bằng chứng kiểm thử UI mới.

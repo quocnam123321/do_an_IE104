@@ -12,7 +12,8 @@
   function forStudent(projectId, now = new Date()) {
     const team = app.services.projectTeams.getState(projectId);
     const studentCode = app.data.currentStudent?.code;
-    if (!studentCode || !team.members.some(member => member.code === studentCode)) {
+    const isMember = Boolean(studentCode && team.members.some(member => member.code === studentCode));
+    if (!isMember && !team.project.isSharedProposalSample) {
       throw new Error('Sinh viên hiện tại không thuộc nhóm thực hiện đề tài này.');
     }
 
@@ -20,7 +21,7 @@
     const record = app.data.studentWebSubmissions?.forProject(projectId, saved) ?? saved ??
       app.data.teachingSeeds?.find(item => item.projectId === projectId);
     const completed = team.project.status === 'hoan-thanh';
-    const canUpload = team.project.status === 'dang-thuc-hien';
+    const canUpload = isMember && team.project.status === 'dang-thuc-hien';
     const submissionsLocked = Boolean(record?.submissionsLocked);
     const activeRequirements = (record?.requirements || []).filter(item => !item.deletedAt);
     const demoReference = item => app.data.studentUITCatalog?.submissionReferenceTime(item);

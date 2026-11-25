@@ -186,7 +186,9 @@
         statusLabel: ({ pending: 'Chờ duyệt', approved: 'Đang thực hiện', rejected: 'Từ chối' })[record.status],
         requestStatusLabel: ({ pending: 'Chờ duyệt', approved: 'Đã duyệt', rejected: 'Từ chối' })[record.status],
         createdAt: record.submittedAt, feedback: record.reason || '',
-        detailUrl: `chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=${encodeURIComponent(record.id)}`,
+        detailUrl: record.status === 'approved'
+          ? `chi-tiet-de-tai-sinh-vien.html?project=${encodeURIComponent(record.topicId)}`
+          : `chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=${encodeURIComponent(record.id)}`,
       }));
     return [...sharedSamples, ...pending, ...(approved?.list('student') || []).filter(project => project.source === 'approved-proposal').map(project => ({ ...project, requestStatusLabel: 'Đã duyệt', feedback: '' }))];
   }

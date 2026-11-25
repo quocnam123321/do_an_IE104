@@ -143,3 +143,80 @@ test('đề xuất SV giữ nội dung, ba ngày và tham chiếu tệp khi GV �
   assert.equal(lecturer.attachmentSize, pdf.length);
   assert.equal(lecturer.attachment, student.attachment.name);
 });
+
+function loadApprovedView(ctx) {
+  for (const file of ['services/approved-project-service.js', 'shared/proposal-outline.js']) {
+    vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js', file), 'utf8'), ctx, { filename: file });
+  }
+  return ctx.IE104.services.approvedProjects;
+}
+test('SV gửi → GV duyệt → hai bên đọc đúng ba ngày, phương pháp, kế hoạch và tài liệu sau tải lại', async () => {
+  const storage = new Map(), ctx = setup(storage), proposals = loadStudentServices(ctx);
+  const approved = loadApprovedView(ctx);
+  ctx.IE104SupervisionEntry = { getTeachers: async () => [{ id: 'placeholder-1', name: 'Nguyễn Văn An' }] };
+  await proposals.listSupervisors();
+  const input = {
+    title: 'Kiểm thử thời gian sau duyệt đề xuất', type: 'khoa-luan', courseId: 'IE505',
+    semester: '1', academicYear: '2026-2027', supervisorId: 'placeholder-1',
+    description: 'Mô tả đề xuất kiểm thử.', objectives: 'Đối chiếu thông tin SV GV.', outcomes: 'Đề tài đã duyệt giữ nguyên nội dung.',
+    outline: { version: 3, startDate: '2026-05-13', progressReportDate: '2026-11-20', finalReportDate: '2026-11-27',
+      methodAndScope: 'Khảo sát và đối chiếu dữ liệu của hai vai trò.', plan: 'Nhóm trưởng chuẩn bị đề cương và phân công kiểm thử.' },
+    attachment: { fileKey: 'uploaded-outline', name: 'De_cuong.pdf', size: 34057, type: 'application/pdf' },
+  };
+  const request = proposals.create(input);
+  const projectId = approved.projectIdFor(request.id);
+  assert.equal(approved.get(projectId), null);
+  await proposals.decide(request.id, 'approved', '', request.revision);
+  const reloaded = setup(storage), reloadedProposals = loadStudentServices(reloaded), reader = loadApprovedView(reloaded);
+  const student = reader.forStudent(projectId).project;
+  const lecturer = reader.list('lecturer').find(item => item.id === projectId);
+  assert.deepEqual(plain(student), plain(lecturer));
+  assert.deepEqual(plain(reloaded.IE104.shared.proposalOutline.milestones(student)), ['13/05/2026', '20/11/2026', '27/11/2026']);
+  assert.equal(student.methodAndScope, input.outline.methodAndScope);
+  assert.equal(student.plan, input.outline.plan);
+  assert.equal(student.attachment.fileKey, input.attachment.fileKey);
+  assert.equal(student.status, 'dang-thuc-hien');
+  const card = reloadedProposals.listMyTopics().find(item => item.id === projectId);
+  assert.equal(card.detailUrl, reader.studentUrl(projectId));
+  assert.deepEqual(plain(reloaded.IE104.shared.proposalOutline.fields(student)), []);
+  const panel = { hidden: false, replaceChildren() {} };
+  reloaded.IE104.shared.proposalOutline.render(panel, student);
+  assert.equal(panel.hidden, true);
+  reloaded.IE104.data.currentStudent = { name: 'Sinh viên khác', code: '25529999' };
+  assert.throws(() => reader.forStudent(projectId), /không thuộc nhóm/);
+});
+test('hồ sơ mẫu SV chuyển đúng trang đang thực hiện khi GV duyệt, không mất đề cương', async () => {
+  const ctx = setup(), proposals = loadStudentServices(ctx), approved = loadApprovedView(ctx);
+  ctx.IE104.services.projectTeams = { getState: id => { const value = approved.get(id); return { ...value.team, project: value.project }; } };
+  vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js/services/student-submissions-service.js'), 'utf8'), ctx);
+  for (const seed of ctx.UITLecturerCatalog.pending.filter(item => item.studentVisible)) {
+    await ctx.IE104Proposals.decide(seed.id, 'approved');
+    const card = proposals.listMyTopics().find(item => item.requestId === seed.id);
+    assert.equal(card.status, 'dang-thuc-hien');
+    assert.equal(card.detailUrl, approved.studentUrl(seed.topicId));
+    const { project, team } = approved.forStudent(seed.topicId);
+    assert.equal(project.displayId, seed.topicCode);
+    assert.equal(project.startsAt, seed.outline.startDate);
+    assert.equal(project.progressReportDate, seed.outline.progressReportDate);
+    assert.equal(project.finalReportDate, seed.outline.finalReportDate);
+    assert.equal(project.methodAndScope, seed.outline.methodAndScope);
+    assert.equal(team.members[0].code, seed.studentId);
+    assert.equal(team.members[0].role, 'nhom-truong');
+    const submissions = ctx.IE104.services.studentSubmissions.forStudent(seed.topicId);
+    assert.equal(submissions.requirements.length, 0);
+    assert.equal(submissions.canUpload, false);
+  }
+});
+test('không dùng ngày duyệt làm ngày bắt đầu, giữ ba ngày riêng từ đăng ký và đề tài cũ', () => {
+  const ctx = setup(); loadStudentServices(ctx); loadApprovedView(ctx);
+  const view = ctx.IE104.shared.proposalOutline;
+  assert.deepEqual(plain(view.milestones({ source: 'approved-proposal', createdAt: '2026-11-25T09:00:00Z' })),
+    ['Chưa có mốc thời gian', 'Chưa có mốc thời gian', 'Chưa có mốc thời gian']);
+  assert.deepEqual(plain(view.milestones({ startsAt: '2026-05-13', progressReportDate: '2026-11-20', finalReportDate: '2026-11-27' })),
+    ['13/05/2026', '20/11/2026', '27/11/2026']);
+  assert.deepEqual(plain(view.milestones({ milestones: ['01/10/2026', '15/11/2026', '20/12/2026'] })),
+    ['01/10/2026', '15/11/2026', '20/12/2026']);
+  const legacy = { outline: { version: 1, startDate: '2026-05-13', endDate: '2026-11-27', englishTitle: 'Legacy title' } };
+  assert.deepEqual(plain(view.milestones(legacy)), ['13/05/2026', 'Chưa có mốc thời gian', '27/11/2026']);
+  assert.deepEqual(plain(view.fields(legacy)), [['Tên đề tài tiếng Anh', 'Legacy title']]);
+});

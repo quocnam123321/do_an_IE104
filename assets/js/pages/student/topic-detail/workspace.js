@@ -56,10 +56,8 @@
       if (project.isArchivedSample) text('.topic-team__group-name', app.services.lecturerTopics.supervisedParticipants(project).label);
       app.shared.topicOverview.renderAcceptedSupervisors(root.querySelector('.project-supervisors'), project, app.services.projectTeams.getState(project.id, { preview: location.protocol === 'file:' }));
       const dates = root.querySelectorAll('.topic-milestones__list dd');
-      const milestones = project.milestones || (!project.isArchivedSample && project.createdAt
-        ? [new Date(project.createdAt).toLocaleDateString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })]
-        : []);
-      dates.forEach((node, index) => { node.textContent = milestones[index] || 'Chưa có mốc thời gian'; });
+      const milestones = app.shared.proposalOutline.milestones(project);
+      dates.forEach((node, index) => { node.textContent = milestones[index]; });
       notice.hidden = true;
       valid = true;
       if (initialized) { root.hidden = false; document.body.dataset.projectState = 'ready'; }

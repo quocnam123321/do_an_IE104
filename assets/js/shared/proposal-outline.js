@@ -1,34 +1,38 @@
 (() => {
   const app = globalThis.IE104 = globalThis.IE104 || {};
   app.shared ||= {};
+  const dateFormat = new Intl.DateTimeFormat('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'Asia/Ho_Chi_Minh' });
+  function milestones(record, fallback) {
+    const outline = record.outline;
+    const saved = record.milestones || record.sourceRecord?.supervision?.milestones || fallback || [];
+    return [
+      outline?.startDate || record.startsAt || saved[0],
+      outline?.progressReportDate || record.progressReportDate || saved[1],
+      outline?.finalReportDate || outline?.endDate || record.finalReportDate || saved[2],
+    ].map(value => {
+      if (!value) return 'Chưa có mốc thời gian';
+      if (/^\d{4}-\d{2}-\d{2}(?:T|$)/.test(value) && Number.isFinite(Date.parse(value))) return dateFormat.format(new Date(value));
+      return value;
+    });
+  }
   function fields(record) {
     const outline = record.outline;
     if (!outline) return [];
-    const person = value => [value.name, value.degree, value.workplace].filter(Boolean).join(' - ');
-    const date = value => value ? value.split('-').reverse().join('/') : 'Chưa xác định';
+    // Ngày, nhóm, GVHD, phương pháp và kế hoạch có khung riêng trong Tổng quan.
+    const secondary = outline.secondarySupervisor;
     return [
       ['Tên đề tài tiếng Anh', outline.englishTitle],
-      ...(outline.version === 3 ? [
-        ['Ngày bắt đầu thực hiện', date(outline.startDate)],
-        ['Ngày nộp báo cáo tiến độ', date(outline.progressReportDate)],
-        ['Ngày nộp báo cáo cuối cùng', date(outline.finalReportDate)],
-      ] : [['Thời gian dự kiến', outline.startDate || outline.endDate ? `${date(outline.startDate)} - ${date(outline.endDate)}` : '']]),
-      ['Sinh viên thực hiện', outline.members.map(member => `${member.name} - ${member.code}${member.role === 'nhom-truong' ? ' - Nhóm trưởng' : ''}`).join('\n')],
-      ['Thông tin GVHD trong đề cương', person(outline.supervisor)],
-      ['Người hướng dẫn phụ trong đề cương', person(outline.secondarySupervisor)],
-      ...(outline.version !== 1
-        ? [['Phương pháp và phạm vi thực hiện', outline.methodAndScope]]
-        : [['Phương pháp thực hiện', outline.method], ['Nội dung chính, phạm vi và cách đánh giá', outline.scope]]),
-      ['Kế hoạch thực hiện và phân công', outline.plan],
-    ].filter(([, value]) => Boolean(value));
+      ['Người hướng dẫn phụ trong đề cương', secondary?.name ? [secondary.name, secondary.degree, secondary.workplace].filter(Boolean).join(' - ') : ''],
+    ].filter(([, value]) => Boolean(value?.trim()));
   }
   function render(container, record) {
+    if (!container) return;
     container.replaceChildren();
     const rows = fields(record);
     container.hidden = !rows.length;
     if (!rows.length) return;
     const title = document.createElement('h2');
-    title.textContent = 'Đề cương chi tiết';
+    title.textContent = 'Thông tin bổ sung';
     const list = document.createElement('dl');
     list.className = 'proposal-outline-details';
     rows.forEach(([label, value]) => {
@@ -42,5 +46,5 @@
     });
     container.append(title, list);
   }
-  app.shared.proposalOutline = { fields, render };
+  app.shared.proposalOutline = { fields, render, milestones };
 })();

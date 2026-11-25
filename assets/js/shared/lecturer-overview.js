@@ -2,7 +2,6 @@
   const app = globalThis.IE104;
   app.shared ||= {};
   const { renderList, renderLecturerSupervisors, renderSupervisedSummary } = app.shared.topicOverview;
-  const overviewDate = new Intl.DateTimeFormat('vi-VN', {day:'2-digit',month:'2-digit',year:'numeric',timeZone:'Asia/Ho_Chi_Minh'});
   const el = (tag, value, className) => {const node=document.createElement(tag);if(value)node.textContent=value;if(className)node.className=className;return node;};
   function render(overview, { projectId, project, team, readOnly }, overviewTemplate, participants) {
     const isGroup = participants?.isGroup ?? true;
@@ -32,17 +31,9 @@
       for (const key of ['objectives', 'outcomes']) {
         renderList(overview.querySelector(`.topic-${key} .topic-bullet-list`), project[key] || sample?.[key]);
       }
-      const dates = [
-        project.outline?.startDate || project.startsAt || project.createdAt,
-        project.outline?.progressReportDate || project.progressReportDate,
-        project.outline?.finalReportDate || project.finalReportDate,
-      ];
-      const milestones = project.milestones || project.sourceRecord?.supervision?.milestones || sample?.milestones;
+      const milestones = app.shared.proposalOutline.milestones(project, sample?.milestones);
       overview.querySelectorAll('.topic-milestones__list dd').forEach((node, index) => {
-        const dateValue = milestones?.[index] || dates[index];
-        node.textContent = dateValue && Number.isFinite(Date.parse(dateValue)) && !dateValue.includes('/')
-          ? overviewDate.format(new Date(dateValue))
-          : dateValue || 'Chưa có mốc thời gian';
+        node.textContent = milestones[index];
       });
     }
 

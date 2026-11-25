@@ -6,6 +6,22 @@
   const studentUrl = projectId => `chi-tiet-de-tai-sinh-vien.html?project=${encodeURIComponent(projectId)}`;
   const lecturerUrl = projectId => `chi-tiet-de-tai-dang-huong-dan-giang-vien.html?project=${encodeURIComponent(projectId)}`;
 
+  function proposalContent(record) {
+    const outline = record.outline;
+    return {
+      outline: outline ? clone(outline) : null,
+      startsAt: outline?.startDate || record.startsAt || '',
+      progressReportDate: outline?.progressReportDate || record.progressReportDate || '',
+      finalReportDate: outline?.finalReportDate || outline?.endDate || record.finalReportDate || '',
+      methodAndScope: outline?.methodAndScope || [outline?.method, outline?.scope].filter(Boolean).join('\n\n') || record.methodAndScope || '',
+      plan: outline?.plan || record.plan || '',
+      attachment: record.attachment ? clone(record.attachment) : null,
+      attachmentSize: record.attachmentSize,
+      attachmentFileKey: record.attachmentFileKey,
+      attachmentSample: record.attachmentSample,
+    };
+  }
+
   function definitions() {
     const proposals = app.storage.readProposals().filter(record => record.status === 'da-duyet').map(record => {
       const student = record.student || app.data.legacyProposalStudent;
@@ -18,7 +34,7 @@
         status: 'dang-thuc-hien', statusLabel: 'Đang thực hiện', groupName: `Nhóm của ${student.name}`,
         lecturer: record.supervisorName, lecturerLabel: 'Giảng viên hướng dẫn', roleLabel: 'Hướng dẫn chính',
         lecturerId: record.decision.lecturerId, createdAt: record.decision.decidedAt,
-        description: record.description, objectives: record.objectives, outcomes: record.outcomes, outline: record.outline ? clone(record.outline) : null,
+        description: record.description, objectives: record.objectives, outcomes: record.outcomes, ...proposalContent(record),
         detailUrl: studentUrl(id), requestDetailUrl: `chi-tiet-de-tai-cho-duyet-sinh-vien.html?proposal=${encodeURIComponent(record.id)}`,
       };
       return {
@@ -64,17 +80,20 @@
     return clone({
       project: {
         id: projectId, topicId: record.topicId, requestId: record.id, source: 'approved-proposal',
+        topicCode: record.topicCode, displayId: record.topicCode,
+        isSharedProposalSample: Boolean(record.studentVisible),
         title: record.title, type: record.topicType, typeLabel: record.topicTypeLabel,
         courseLabel: record.courseLabel, semester: record.semester, academicYear: record.academicYear,
         status: 'dang-thuc-hien', statusLabel: 'Đang thực hiện',
         groupName: record.groupName || '', roleLabel: record.supervisionRoleLabel,
-        lecturer: record.supervisor || app.data.currentLecturer.name, lecturerId, createdAt: record.decidedAt,
-        description: record.description, objectives: record.objectives, outcomes: record.outcomes,
+        lecturer: record.supervisorName || record.supervisor || app.data.currentLecturer.name, lecturerId, createdAt: record.decidedAt,
+        description: record.description, objectives: record.objectives, outcomes: record.outcomes, ...proposalContent(record),
         sourceRecord: record.sourceRecord,
       },
       team: {
         projectId,
-        members: record.studentId && record.studentName ? [{ code: record.studentId, name: record.studentName }] : [],
+        maxMembers: 4,
+        members: record.outline?.members ? clone(record.outline.members) : record.studentId && record.studentName ? [{ code: record.studentId, name: record.studentName, role: 'nhom-truong' }] : [],
         supervisorIds: [lecturerId], invitations: [],
       },
       progress: { projectId, revision: 0, tasks: [], history: [] },
@@ -89,7 +108,7 @@
   function forStudent(projectId) {
     const definition = get(projectId);
     if (!definition) throw new Error('Không tìm thấy đề tài đang thực hiện.');
-    if (!studentCanView(definition, app.storage.readProjectTeams())) throw new Error('Sinh viên hiện tại không thuộc nhóm thực hiện đề tài này.');
+    if (!definition.project.isSharedProposalSample && !studentCanView(definition, app.storage.readProjectTeams())) throw new Error('Sinh viên hiện tại không thuộc nhóm thực hiện đề tài này.');
     return definition;
   }
 
