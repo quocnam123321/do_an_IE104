@@ -43,17 +43,22 @@ function createTokenVault(secret) {
   };
 }
 
+const isTopic = (item) => item.kind === "topic" || item.id.endsWith("--deadline");
+
 function buildEvent(item, site) {
   const link = new URL(item.path, site).href;
-  const type = item.id.endsWith("--deadline") ? "Hạn đề tài" : "Bài nộp";
+  const type = isTopic(item) ? "Hạn đề tài" : "Bài nộp";
   const deadline = new Date(item.due).getTime();
   const timeZone = "Asia/Ho_Chi_Minh";
+  const allDay = item.due.length === 10;
+  const start = allDay ? { date: item.due } : { dateTime: new Date(deadline).toISOString(), timeZone };
+  const end = allDay ? { date: new Date(deadline + 86_400_000).toISOString().split("T")[0] }
+    : { dateTime: new Date(deadline + 5 * 60_000).toISOString(), timeZone };
   return {
     summary: "[" + type + "] " + item.name,
     description: (item.description ? escapeHtml(item.description).replace(/\r?\n/g, "<br>") + "<br><br>" : "")
       + '<a href="' + escapeHtml(link) + '">Xem chi tiết trong hệ thống IE104</a>',
-    start: { dateTime: new Date(deadline).toISOString(), timeZone },
-    end: { dateTime: new Date(deadline + 5 * 60_000).toISOString(), timeZone },
+    start, end,
     extendedProperties: { private: { ie104Key: item.id, ie104Revision: String(item.revision) } },
   };
 }
@@ -104,7 +109,10 @@ function createGoogleCalendar({ clientId, clientSecret, redirectUri, site, fetch
       if (stored.status === "cancelled") return "removed";
       const properties = stored.extendedProperties?.private;
       if (properties?.ie104Key !== item.id || !stored.etag) return "unlinked";
-      if (Number(properties.ie104Revision) >= item.revision) return "current";
+      const current = item.selectionId
+        ? properties.ie104Revision === item.revision
+        : Number(properties.ie104Revision) >= item.revision;
+      if (current) return "current";
 
       const fields = buildEvent(item, site);
       fields.extendedProperties.private = { ...properties, ...fields.extendedProperties.private };
@@ -146,7 +154,7 @@ function createGoogleCalendar({ clientId, clientSecret, redirectUri, site, fetch
       const fields = buildEvent(item, site);
       const body = {
         ...fields, id, transparency: "transparent", visibility: "private",
-        colorId: item.id.endsWith("--deadline") ? "6" : "9",
+        colorId: isTopic(item) ? "6" : "9",
         reminders: { useDefault: false, overrides: [{ method: "popup", minutes: 1440 }, { method: "popup", minutes: 60 }] },
         source: { title: "Lịch hạn nộp IE104", url: new URL(item.path, site).href },
       };

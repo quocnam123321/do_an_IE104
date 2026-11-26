@@ -1,4 +1,4 @@
-const { CalendarError } = require("./google-calendar.cjs");
+const { CalendarError, digest } = require("./google-calendar.cjs");
 
 const verifiedDomains = new Map([["gm.uit.edu.vn", "student"], ["uit.edu.vn", "lecturer"]]);
 const actor = (token) => {
@@ -38,4 +38,35 @@ function withOverride(seed, override) {
   };
 }
 
-module.exports = { actor, editable, validateEdit, withOverride };
+function readCalendarSelection(input, catalog, maximumBatch) {
+  const { ids = [], personalEvents = [] } = input;
+  const invalid = () => new CalendarError(400, "calendar-invalid-events");
+  if (!Array.isArray(ids) || !Array.isArray(personalEvents)
+      || ids.length + personalEvents.length < 1 || ids.length + personalEvents.length > maximumBatch
+      || ids.some((id) => typeof id !== "string" || !catalog.has(id))) throw invalid();
+
+  const personal = new Map();
+  for (const event of personalEvents) {
+    const { id, name, project, due, kind } = event ?? {};
+    if (typeof id !== "string" || !id.trim() || id.length > 256 || catalog.has(id)
+        || typeof name !== "string" || !name.trim() || name.length > 300
+        || typeof project !== "string" || project.length > 300
+        || !["topic", "submission"].includes(kind) || typeof due !== "string") throw invalid();
+
+    const parts = /^(\d{4}-\d{2}-\d{2})(?:T(\d{2}:\d{2})(?::(\d{2}))?\+07:00)?$/.exec(due);
+    if (!parts || parts[1].startsWith("0000") || !Number.isFinite(Date.parse(due))) throw invalid();
+    const [, date, time, seconds = "00"] = parts;
+    const normalized = time ? `${date}T${time}:${seconds}` : `${date}T00:00:00`;
+    if (new Date(normalized + "Z").toISOString().slice(0, 19) !== normalized) throw invalid();
+
+    // Browser-only milestones are private copies with their own identifiers.
+    personal.set(id, {
+      id: "personal:" + digest(id), selectionId: id, kind, name: name.trim(), due,
+      description: project.trim(), path: "pages/sinh-vien/lich-han-nop.html",
+      revision: digest(JSON.stringify([name.trim(), project.trim(), due, kind])),
+    });
+  }
+  return { seeds: [...new Set(ids)].map((id) => catalog.get(id)), personal: [...personal.values()] };
+}
+
+module.exports = { actor, editable, validateEdit, withOverride, readCalendarSelection };

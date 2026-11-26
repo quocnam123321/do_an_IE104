@@ -1,7 +1,7 @@
 import { randomBytes } from "node:crypto";
 import catalog from "../functions/calendar-catalog.json" with { type: "json" };
 import { CalendarError, createGoogleCalendar, createTokenVault, digest, eventId } from "../functions/google-calendar.cjs";
-import { editable, validateEdit, withOverride } from "../functions/calendar-policy.cjs";
+import { editable, validateEdit, withOverride, readCalendarSelection } from "../functions/calendar-policy.cjs";
 import { authenticate } from "./auth.mjs";
 import { createStore } from "./store.mjs";
 
@@ -98,12 +98,8 @@ async function finishOAuth(parameters, store, env, site, fetcher) {
   }
 }
 
-async function addEvents(store, user, ids, access, env, site, fetcher) {
-  if (!Array.isArray(ids) || ids.length < 1 || ids.length > maximumBatch
-      || ids.some((id) => typeof id !== "string" || !catalogById.has(id))) {
-    throw new CalendarError(400, "calendar-invalid-events");
-  }
-  const seeds = [...new Set(ids)].map((id) => catalogById.get(id));
+async function addEvents(store, user, input, access, env, site, fetcher) {
+  const { seeds, personal } = readCalendarSelection(input, catalogById, maximumBatch);
   if (seeds.some(({ topic }) => !access.has(topic))) throw new CalendarError(403, "calendar-access-denied");
 
   const connection = await store.credentials(user.uid);
@@ -116,7 +112,7 @@ async function addEvents(store, user, ids, access, env, site, fetcher) {
     if (error.code === "calendar-connect-required") throw new CalendarError(409, error.code);
     throw error;
   }
-  const items = await store.readItems(seeds);
+  const items = [...await store.readItems(seeds), ...personal];
   const outcomes = [];
   const links = [];
   // Keep below Workers Free's six simultaneous outgoing connections.
@@ -124,15 +120,16 @@ async function addEvents(store, user, ids, access, env, site, fetcher) {
     outcomes.push(...await Promise.allSettled(items.slice(offset, offset + 4).map(async (item) => {
       const id = eventId(user.uid, item.id);
       const status = await google.insert(token, id, item);
-      links.push({ item, eventId: id });
-      return { id: item.id, status };
+      if (!item.selectionId) links.push({ item, eventId: id });
+      return { id: item.selectionId ?? item.id, status };
     })));
   }
   if (links.length) await store.linkStatements(links, user.uid, connection.account_id);
   if (outcomes.every((result) => result.reason?.code === "calendar-connect-required")) {
     throw new CalendarError(409, "calendar-connect-required");
   }
-  return outcomes.map((result, index) => result.value ?? { id: items[index].id, status: "failed" });
+  return outcomes.map((result, index) => result.value
+    ?? { id: items[index].selectionId ?? items[index].id, status: "failed" });
 }
 
 export function createCalendarWorker(fetcher = (...args) => fetch(...args)) {
@@ -188,7 +185,7 @@ export function createCalendarWorker(fetcher = (...args) => fetch(...args)) {
             break;
           case "/add":
             if (user.role === "student" && access.size) {
-              return json({ results: await addEvents(store, user, body.ids, access, env, site, fetcher) });
+              return json({ results: await addEvents(store, user, body, access, env, site, fetcher) });
             }
             break;
           default:

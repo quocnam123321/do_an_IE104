@@ -4,7 +4,7 @@ const catalog = require("./calendar-catalog.json");
 
 const byId = new Map(catalog.map((item) => [item.id, item]));
 const projects = [...new Set(catalog.map((item) => item.topic))];
-const { actor, editable, validateEdit, withOverride } = require("./calendar-policy.cjs");
+const { actor, editable, validateEdit, withOverride, readCalendarSelection } = require("./calendar-policy.cjs");
 const allowed = (access, user) => {
   const uids = user.role === "lecturer" ? access?.lecturerUids : access?.studentUids;
   return Array.isArray(uids) && uids.includes(user.uid);
@@ -110,13 +110,9 @@ function createCalendarBridge({ db, auth, getConfig, log }) {
   }
 
   async function addEvents(user, input, config) {
-    if (!Array.isArray(input.ids) || input.ids.length < 1 || input.ids.length > 50
-        || input.ids.some((id) => typeof id !== "string" || !byId.has(id))) {
-      throw new CalendarError(400, "calendar-invalid-events");
-    }
+    const { seeds, personal } = readCalendarSelection(input, byId, 50);
     const access = await accessFor(user);
-    const seeds = [...new Set(input.ids)].map((id) => byId.get(id));
-    if (seeds.some((item) => !access.has(item.topic))) {
+    if (seeds.some((item) => !access.has(item.topic)) || (personal.length && !access.size)) {
       throw new CalendarError(403, "calendar-access-denied");
     }
     const { google, vault } = config;
@@ -130,10 +126,11 @@ function createCalendarBridge({ db, auth, getConfig, log }) {
       throw error;
     }
 
-    const items = await readItems(seeds);
+    const items = [...await readItems(seeds), ...personal];
     const results = await inBatches(items, async (item) => {
       const id = eventId(user.uid, item.id);
       const result = await google.insert(token, id, item);
+      if (item.selectionId) return result;
       const link = links(item.id).doc(user.uid);
       await link.set({ eventId: id, calendarId: "primary", accountId: credential.accountId });
       // Lượt sửa có thể hoàn tất trước khi lần thêm này tạo liên kết.
@@ -145,7 +142,7 @@ function createCalendarBridge({ db, auth, getConfig, log }) {
       throw new CalendarError(409, "calendar-connect-required");
     }
     return { results: results.map((outcome, index) => ({
-      id: items[index].id,
+      id: items[index].selectionId ?? items[index].id,
       status: outcome.status === "fulfilled" ? outcome.value : "failed",
     })) };
   }
