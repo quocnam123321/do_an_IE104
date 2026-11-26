@@ -22,6 +22,7 @@ const messages = {
   "calendar-invalid-edit": "Kiểm tra tên, nội dung và hạn nộp trước khi lưu.",
   "calendar-stale-edit": "Yêu cầu đã được sửa ở nơi khác. Tải lại trang để lấy bản mới nhất.",
   "calendar-unknown-event": "Không tìm thấy hạn nộp này trong danh mục đồng bộ Google Calendar.",
+  "calendar-invalid-events": "Một số mốc có dữ liệu chưa hợp lệ. Kiểm tra tên và ngày giờ rồi thử lại.",
   "calendar-connect-required": "Cần kết nối lại tài khoản Google Calendar.",
 };
 
@@ -55,16 +56,23 @@ export async function calendarRequest(user, route, body = {}) {
   return data;
 }
 
-export async function addCalendarEvents(user, ids) {
+export async function addCalendarEvents(user, selection) {
   const results = [];
-  for (let offset = 0; offset < ids.length; offset += eventBatchSize) {
-    const batch = ids.slice(offset, offset + eventBatchSize);
+  for (let offset = 0; offset < selection.length; offset += eventBatchSize) {
+    const ids = [];
+    const personalEvents = [];
+    for (const event of selection.slice(offset, offset + eventBatchSize)) {
+      if (typeof event === "string") ids.push(event);
+      else personalEvents.push(event);
+    }
     try {
-      const response = await calendarRequest(user, "/add", { ids: batch });
+      const response = await calendarRequest(user, "/add", personalEvents.length ? { ids, personalEvents } : { ids });
       results.push(...response.results);
     } catch (error) {
       if (offset === 0 || error.code === "calendar-connect-required") throw error;
-      results.push(...ids.slice(offset).map((id) => ({ id, status: "failed" })));
+      results.push(...selection.slice(offset).map((event) => ({
+        id: typeof event === "string" ? event : event.id, status: "failed",
+      })));
       break;
     }
   }

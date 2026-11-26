@@ -424,6 +424,7 @@
   const deadlineService = globalThis.IE104?.services?.deadlines;
   const defaultMonth = month.value;
   let refreshVersion = 0;
+  let initialActiveDeadlines;
 
   async function refreshActiveDeadlines() {
     const version = ++refreshVersion;
@@ -474,12 +475,14 @@
     const add = dialog.querySelector('.calendar-export__add');
     const closeButtons = Array.from(dialog.querySelectorAll('[data-calendar-export-close]'));
     const storageKey = 'ie104-calendar-selection';
-    const client = location.protocol === 'file:' ? null : import('./calendar-client.js?v=20261119-calendar-worker');
+    const client = location.protocol === 'file:' ? null : import('./calendar-client.js?v=20261126-all-deadlines');
     const request = client?.then(async (api) => {
       const user = await api.calendarSession();
       return { api, user };
     });
-    request?.catch(() => {});
+    let catalogNotice = request
+      ? 'Đang tải các mốc có thể thêm vào Google Calendar…'
+      : 'Mở website qua HTTP hoặc HTTPS để sử dụng Google Calendar.';
     let rows = [];
     let results = [];
     let busy = false;
@@ -504,22 +507,18 @@
       const project = element.querySelector('.calendar-export__project');
       project.textContent = projectName;
       project.hidden = !projectName;
-      return { element, input, event, projectName, terms: normalize(`${event.name} ${projectName}`) };
+      return { element, input, event, projectName, isTopic, terms: normalize(`${event.name} ${projectName}`) };
     }
 
     function updateSelection() {
-      const selected = selectedRows();
+      const selected = selectedIds().length;
       const selectedResults = results.filter(({ input }) => input.checked).length;
+      search.disabled = busy || rows.length === 0;
       selectAll.disabled = busy || results.length === 0;
       selectAll.checked = results.length > 0 && selectedResults === results.length;
       selectAll.indeterminate = selectedResults > 0 && !selectAll.checked;
-      add.disabled = busy || selected.length === 0;
-      const action = canSync(selected.length ? selected : rows) ? 'Thêm lịch' : 'Tải tệp .ics';
-      if (add.dataset.action !== action) {
-        add.dataset.action = action;
-        add.textContent = action;
-      }
-      const countLabel = `Đã chọn ${selected.length} mốc`;
+      add.disabled = busy || selected === 0;
+      const countLabel = `Đã chọn ${selected} mốc`;
       if (count.textContent !== countLabel) count.textContent = countLabel;
       feedback.textContent = '';
     }
@@ -533,7 +532,9 @@
       list.hidden = results.length === 0;
       empty.hidden = !list.hidden;
       if (!empty.hidden) {
-        empty.textContent = rows.length ? 'Không tìm thấy mốc phù hợp.' : 'Không có mốc nào cho tháng và đề tài đang chọn.';
+        empty.textContent = rows.length
+          ? 'Không tìm thấy mốc phù hợp.'
+          : catalogNotice || 'Thử chọn tháng hoặc đề tài khác để tìm mốc có thể thêm vào Google Calendar.';
       }
       list.scrollTop = 0;
       updateSelection();
@@ -542,8 +543,10 @@
     function showRows(selectedIds = []) {
       const [year, number] = displayedMonth.split('-');
       monthLabel.textContent = `Tháng ${Number(number)}/${year}`;
-      rows = [...eventsByDate].flatMap(([date, day]) => date.startsWith(`${displayedMonth}-`)
-        ? day.filter(event => matchesTopic(event) && Number.isFinite(Date.parse(event.due))) : []).map(createRow);
+      rows = catalogNotice ? [] : [...eventsByDate]
+        .filter(([date]) => date.startsWith(`${displayedMonth}-`))
+        .flatMap(([, day]) => day.filter(event => matchesTopic(event) && Number.isFinite(Date.parse(event.due))))
+        .map(createRow);
       const checkedIds = new Set(selectedIds);
       for (const row of rows) row.input.checked = checkedIds.has(row.event.id);
       list.replaceChildren(...rows.map(({ element }) => element));
@@ -566,10 +569,6 @@
       return selectedRows().map(({ event }) => event.id);
     }
 
-    function canSync(selected) {
-      return selected.every(({ event }) => event.canSync);
-    }
-
     function feedbackMessage(message) {
       feedback.textContent = message;
       if (message) feedback.scrollIntoView({ block: 'nearest' });
@@ -578,23 +577,13 @@
     async function submit(allowConnect = true) {
       const selected = selectedRows();
       if (busy || !selected.length) return;
-      if (!canSync(selected)) {
-        if (!allowConnect) {
-          feedbackMessage('Tải tệp .ics để nhập các mốc đã chọn vào Google Calendar.');
-          return;
-        }
-        try {
-          pickers.downloadFile(pickers.createCalendarFile(selected, displayedMonth));
-          feedbackMessage('Trên máy tính, mở Google Calendar → Cài đặt → Nhập và xuất để nhập tệp .ics vừa tải.');
-        } catch {
-          feedbackMessage('Không tải được tệp lịch. Vui lòng thử lại.');
-        }
-        return;
-      }
-      const ids = selected.map(({ event }) => event.id);
+      const selection = selected.map(({ event, projectName, isTopic }) => event.fromCatalog ? event.id : {
+        id: event.id, name: event.name, project: projectName.trim(), due: event.due,
+        kind: isTopic ? 'topic' : 'submission',
+      });
       function setBusy(value) {
         busy = value;
-        for (const control of [search, ...closeButtons, ...rows.map(({ input }) => input)]) control.disabled = value;
+        for (const control of [...closeButtons, ...rows.map(({ input }) => input)]) control.disabled = value;
         updateSelection();
         dialog.setAttribute('aria-busy', String(value));
       }
@@ -608,13 +597,15 @@
         const send = (path, body) => api.calendarRequest(session.user, path, body);
         let response;
         try {
-          response = await api.addCalendarEvents(session.user, ids);
+          response = await api.addCalendarEvents(session.user, selection);
         } catch (error) {
           if (!allowConnect || error.code !== 'calendar-connect-required') throw error;
           const { url } = await send('/connect');
           const authorize = new URL(url);
           if (authorize.origin !== 'https://accounts.google.com') throw new Error('Invalid authorization URL');
-          sessionStorage.setItem(storageKey, JSON.stringify({ ids, month: displayedMonth, topic: displayedTopic }));
+          sessionStorage.setItem(storageKey, JSON.stringify({
+            ids: selected.map(({ event }) => event.id), month: displayedMonth, topic: displayedTopic, uid: session.user.uid,
+          }));
           location.assign(authorize.href);
           message = 'Đang mở trang xác nhận quyền của Google…';
           return;
@@ -625,7 +616,7 @@
         message = counts.map((number, index) => number ? `${labels[index]} ${number} mốc` : '').filter(Boolean).join(' · ');
         if (counts[3]) {
           const retryIds = response.results.filter(({ status }) => status === 'failed').map(({ id }) => id);
-          for (const row of rows) row.input.checked = retryIds.includes(row.event.id);
+          for (const { event, input } of rows) input.checked = retryIds.includes(event.id);
         }
       } catch (error) {
         message = api?.calendarMessage(error) ?? 'Không kết nối được dịch vụ lịch. Vui lòng thử lại.';
@@ -637,8 +628,11 @@
 
     async function loadSavedCalendar() {
       if (!request) return;
+      let api;
       try {
-        const { api, user } = await request;
+        const session = await request;
+        api = session.api;
+        const { user } = session;
         if (user) {
           const { events: saved } = await api.calendarRequest(user, '/events');
           const now = Date.now();
@@ -659,16 +653,22 @@
             }
             const dueTime = Date.parse(due);
             const status = element.dataset.status ?? 'pending';
-            return { id, element, name, topicId, due, dueTime, date: due.slice(0, 10), canSync: true,
+            return { id, element, name, topicId, due, dueTime, date: due.slice(0, 10), fromCatalog: true,
               submitted: sample?.submitted,
               status: status === 'pending' && dueTime < now ? 'overdue' : status };
           }).sort((first, second) => first.dueTime - second.dueTime);
+          catalogNotice = saved.length ? '' : 'Tài khoản của bạn chưa có mốc nào được cấp quyền thêm vào Google Calendar.';
           indexEvents();
           renderCalendar();
+          return;
         }
-      } catch {
-        // Dữ liệu HTML mẫu vẫn xem được khi chưa triển khai dịch vụ.
+        catalogNotice = 'Đăng nhập bằng tài khoản sinh viên IE104 để thêm lịch vào Google Calendar.';
+      } catch (error) {
+        catalogNotice = api && error?.code?.startsWith('calendar-')
+          ? api.calendarMessage(error)
+          : 'Không tải được danh sách mốc đồng bộ. Tải lại trang để thử lại.';
       }
+      if (dialog.open) filterRows();
     }
 
     async function resumeAuthorization() {
@@ -685,14 +685,16 @@
         return;
       }
       if (!pending || !Array.isArray(pending.ids)) return;
-      await calendarLoaded;
+      await Promise.all([calendarLoaded, initialActiveDeadlines]);
+      const session = await request?.catch(() => null);
+      if (!session?.user || (pending.uid && pending.uid !== session.user.uid)) return;
       month.value = pending.month;
       if (topic) topic.value = pending.topic ?? '';
       renderCalendar();
       if (dialog.open) showRows(pending.ids);
       else openDialog(pending.ids);
       if (result === 'connected') {
-        if (selectedIds().length) await submit(false);
+        if (!add.disabled) await submit(false);
         else feedbackMessage('Đã kết nối Google Calendar. Hãy chọn mốc muốn thêm.');
       } else {
         feedbackMessage(result === 'account-mismatch'
@@ -771,7 +773,7 @@
     window.addEventListener('storage', event => {
       if (dataKeys.includes(event.key)) void refreshActiveDeadlines();
     });
-    void refreshActiveDeadlines();
+    initialActiveDeadlines = refreshActiveDeadlines();
   }
   setupGoogleCalendarDialog();
 })();

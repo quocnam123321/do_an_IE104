@@ -209,6 +209,45 @@ test("links Google events once and retries propagation after a lecturer saves", 
   assert.equal(remote.size, 2);
 });
 
+test("adds catalog and browser milestones together as private events without duplicates", async (t) => {
+  const { DB, remote, call, consent } = fixture(t);
+  const report = {
+    id: "DA005--progress-report", name: "Báo cáo tiến độ", project: "Học tập & kiểm thử",
+    due: "2026-11-25", kind: "topic",
+  };
+  const submission = {
+    id: "DA005--REQ-local", name: "Bài nộp mới", project: report.project,
+    due: "2026-11-25T23:59:30+07:00", kind: "submission",
+  };
+  const input = { ids: [key], personalEvents: [report, submission] };
+  const add = (data) => call("/add", "student", data);
+  assert.equal((await call("/add", "outsider", { personalEvents: [report] })).status, 403);
+  assert.equal((await call("/add", "lecturer", { personalEvents: [report] })).status, 403);
+  assert.equal((await add(input)).status, 409);
+  assert.equal(await consent("student", "student"), "connected");
+  for (const bad of [{ id: key }, { due: "2026-02-30" }, { due: "2026-11-25T24:00+07:00" }, { kind: "other" }]) {
+    assert.equal((await add({ personalEvents: [{ ...report, ...bad }] })).status, 400);
+  }
+  assert.equal((await add({ ids: ["ban-sach--deadline"], personalEvents: [report] })).status, 403);
+  assert.equal(remote.size, 0);
+
+  assert.deepEqual((await (await add(input)).json()).results, [key, report.id, submission.id].map(id => ({ id, status: "added" })));
+  const allDay = [...remote.values()].find(item => item.summary === "[Hạn đề tài] " + report.name);
+  assert.deepEqual(allDay.start, { date: "2026-11-25" });
+  assert.deepEqual(allDay.end, { date: "2026-11-26" });
+  assert.equal(allDay.visibility, "private");
+  assert.match(allDay.description, /Học tập &amp; kiểm thử/);
+  assert.equal(allDay.source.url, site + "pages/sinh-vien/lich-han-nop.html");
+  const timed = [...remote.values()].find(item => item.summary === "[Bài nộp] " + submission.name);
+  assert.equal(timed.start.dateTime, "2026-11-25T16:59:30.000Z");
+  assert.deepEqual((await (await add(input)).json()).results, [key, report.id, submission.id].map(id => ({ id, status: "existing" })));
+  assert.deepEqual((await (await add({ personalEvents: [{ ...report, due: "2026-12-02" }] })).json()).results,
+    [{ id: report.id, status: "updated" }]);
+  assert.deepEqual(remote.get(allDay.id).start, { date: "2026-12-02" });
+  assert.equal(remote.size, 3);
+  assert.deepEqual(DB.db.prepare("SELECT requirement_id FROM calendar_links").all().map(row => row.requirement_id), [key]);
+});
+
 test("the lecturer editor updates the original Google event through the calendar client", async (t) => {
   const { env, remote, worker, call, consent } = fixture(t);
   assert.equal(await consent("student", "student"), "connected");
@@ -217,12 +256,12 @@ test("the lecturer editor updates the original Google event through the calendar
   const [[eventId, before]] = remote;
   const requests = [];
   const source = readFileSync(new URL("../assets/js/calendar-client.js", import.meta.url), "utf8")
-    .replace(/^import .+;\n/, "").replace(/^export /gm, "");
+    .replace(/^import .+;\n/gm, "").replace(/^export /gm, "");
   const loadRequirement = runInNewContext(source + "\nloadCalendarRequirement", {
     location: new URL("https://ie104-nhom7.web.app/"),
     useRecoveryEmulator: false,
-    getFirebaseAuth: async () => ({
-      auth: { authStateReady: async () => {}, currentUser: { getIdToken: async () => "lecturer-session" } },
+    getWebsiteSession: async () => ({
+      user: { getIdToken: async () => "lecturer-session" },
     }),
     AbortSignal,
     fetch: (url, options) => {
