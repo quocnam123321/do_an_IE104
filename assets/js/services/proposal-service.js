@@ -22,6 +22,7 @@
     supervisors: {},
   };
   const labels = { 'cho-duyet': 'Chờ duyệt', 'da-rut': 'Đã rút', 'da-duyet': 'Đã duyệt', 'tu-choi': 'Từ chối' };
+  const sampleStatuses = { pending: 'cho-duyet', approved: 'da-duyet', rejected: 'tu-choi', withdrawn: 'da-rut' };
   const topicCodePrefixes = { 'do-an-mon-hoc': 'ISEDAMH', 'do-an-tot-nghiep': 'ISEDATN', 'khoa-luan': 'ISEKLTN' };
   const detailUrl = id => `chi-tiet-de-tai-cho-duyet-sinh-vien.html?proposal=${encodeURIComponent(id)}`;
   const clone = value => JSON.parse(JSON.stringify(value));
@@ -124,7 +125,54 @@
   }
 
   function findById(id) {
-    return app.storage.readProposals().find(record => record.id === id && studentOwns(record)) || null;
+    return findStudentSample(id) || app.storage.readProposals().find(record => record.id === id && studentOwns(record)) || null;
+  }
+
+  function sampleCourseId(record) {
+    return record.courseId || globalThis.UITLecturerCatalog.subjectLabel(record, true).match(/^([A-Z]+\d{3}) - /)?.[1] || '';
+  }
+
+  function studentSample(record) {
+    const attachment = record.attachmentFileKey ? {
+      fileKey: record.attachmentFileKey, name: record.attachment, size: record.attachmentSize, type: record.attachmentType,
+    } : null;
+    return {
+      ...record,
+      type: record.topicType,
+      typeLabel: record.topicTypeLabel,
+      courseId: sampleCourseId(record),
+      semester: record.semester === '3' ? 'he' : record.semester,
+      academicYear: record.academicYear.replace('–', '-'),
+      student: { code: record.studentId, name: record.studentName },
+      status: sampleStatuses[record.status],
+      attachment,
+      attachmentName: record.attachment,
+    };
+  }
+
+  function findStudentSample(id) {
+    const record = globalThis.IE104Proposals?.getStudentSeed?.(id);
+    return record ? studentSample(record) : null;
+  }
+
+  async function updateSample(id, input, revision) {
+    const updated = await globalThis.IE104Proposals.changeStudentSeed(id, revision, seed => {
+      const previous = studentSample(seed);
+      const checked = validate({ ...input, outline: input.outline ?? previous.outline }, previous);
+      if (checked.errors.length) throw new Error(checked.errors[0].message);
+      const { title, type, courseId, semester, academicYear, supervisorId, description, objectives, outcomes, outline, attachment, coverImage } = checked.value;
+      const supervisorName = catalogFor(previous).supervisors[supervisorId];
+      const keepSampleFile = !attachment && input.keepAttachmentName && previous.attachmentSample;
+      return {
+        title, topicType: type, topicTypeLabel: catalog.types[type].label, course: courseId, courseId,
+        courseLabel: catalog.types[type].courses[courseId], semester, academicYear,
+        supervisorId, supervisorName, lecturerName: supervisorName, description, objectives, outcomes, outline,
+        attachment: attachment?.name || (keepSampleFile ? previous.attachmentName : ''),
+        attachmentSize: attachment?.size, attachmentType: attachment?.type, attachmentFileKey: attachment?.fileKey,
+        attachmentSample: keepSampleFile || null, coverImage: coverImage === undefined ? previous.coverImage : coverImage,
+      };
+    });
+    return studentSample(updated);
   }
 
   function rejectDuplicate(records, value, excludedId) {
@@ -142,6 +190,7 @@
   }
 
   function update(id, input, revision) {
+    if (findStudentSample(id)) return updateSample(id, input, revision);
     const records = app.storage.readProposals();
     const previous = getEditable(records, id, revision);
     const checked = validate(input.outline === undefined && previous.outline ? { ...input, outline: previous.outline } : input, previous);
@@ -155,6 +204,7 @@
   }
 
   function withdraw(id, revision) {
+    if (findStudentSample(id)) return globalThis.IE104Proposals.changeStudentSeed(id, revision).then(studentSample);
     const records = app.storage.readProposals();
     const previous = getEditable(records, id, revision);
     const record = { ...previous, status: 'da-rut', revision: (previous.revision || 0) + 1, withdrawnAt: new Date().toISOString() };
@@ -177,16 +227,16 @@
     const sharedSamples = [...(uit?.pending || []), ...(uit?.rejected || [])]
       .filter(seed => seed.studentVisible)
       .map(seed => globalThis.IE104Proposals?.get(seed.id)).filter(Boolean).map(record => ({
-        id: record.id, requestId: record.id, displayId: record.topicCode, title: record.title,
+        id: record.id, requestId: record.id, displayId: record.topicCode, title: record.title, coverImage: record.coverImage,
         type: record.topicType, typeLabel: record.topicTypeLabel,
-        courseId: record.course || (record.topicType === 'khoa-luan' ? 'IE505' : 'IE501'),
+        courseId: sampleCourseId(record),
         courseLabel: record.courseLabel, semester: record.semester, academicYear: record.academicYear.replace('–', '-'),
         lecturer: record.supervisorName, lecturerId: record.lecturerId, lecturerLabel: 'Giảng viên nhận đề xuất',
         representativeName: record.studentName, representativeCode: record.studentId, outline: clone(record.outline),
         groupName: '', source: 'uit-demo',
-        status: ({ pending: 'cho-duyet', approved: 'dang-thuc-hien', rejected: 'tu-choi' })[record.status],
-        statusLabel: ({ pending: 'Chờ duyệt', approved: 'Đang thực hiện', rejected: 'Từ chối' })[record.status],
-        requestStatusLabel: ({ pending: 'Chờ duyệt', approved: 'Đã duyệt', rejected: 'Từ chối' })[record.status],
+        status: record.status === 'approved' ? 'dang-thuc-hien' : sampleStatuses[record.status],
+        statusLabel: record.status === 'approved' ? 'Đang thực hiện' : labels[sampleStatuses[record.status]],
+        requestStatusLabel: labels[sampleStatuses[record.status]],
         createdAt: record.submittedAt, feedback: record.reason || '',
         detailUrl: record.status === 'approved'
           ? `chi-tiet-de-tai-sinh-vien.html?project=${encodeURIComponent(record.topicId)}`
@@ -249,5 +299,5 @@
     return withWriteLock(apply);
   }
 
-  app.services.proposals = { catalog, catalogFor, listSupervisors, lecturerIdFor, labels, detailUrl, validate, nextTopicCode, create, findById, update, withdraw, listMyTopics, listForLecturer, canReview, withWriteLock, decide };
+  app.services.proposals = { catalog, catalogFor, listSupervisors, lecturerIdFor, labels, detailUrl, validate, nextTopicCode, create, findById, findStudentSample, update, withdraw, listMyTopics, listForLecturer, canReview, withWriteLock, decide };
 })();

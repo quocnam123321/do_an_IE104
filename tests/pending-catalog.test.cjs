@@ -135,6 +135,39 @@ test('hai hồ sơ mẫu ở SV dùng cùng dữ liệu và phản ánh quyết 
   assert.equal(updated.status, 'tu-choi');
   assert.equal(updated.feedback, 'Cần bổ sung nội dung đánh giá.');
 });
+test('sinh viên sửa và rút hồ sơ mẫu đang chờ duyệt, cập nhật cả hai vai trò', async () => {
+  const storage = new Map();
+  const student = setup(storage), proposals = loadStudentServices(student);
+  const teacher = setup(storage).IE104Proposals;
+  const id = 'DX-ISEDATN-101';
+  const original = proposals.findById(id);
+  assert.equal(original.courseId, 'IE501');
+  assert.equal(original.status, 'cho-duyet');
+  const title = `${original.title} (đã chỉnh sửa)`;
+  const edited = await proposals.update(id, { ...original, title, keepAttachmentName: true }, original.revision);
+  assert.equal(edited.topicCode, original.topicCode);
+  assert.equal(edited.student.code, original.student.code);
+  assert.equal(edited.attachmentName, original.attachmentName);
+  assert.equal(teacher.get(id).title, title);
+  assert.equal(teacher.get(id).revision, edited.revision);
+  assert.equal(teacher.getSeedDecision(id), null);
+  await assert.rejects(teacher.decide(id, 'approved', '', original.revision), /Sinh viên đã sửa đề xuất/);
+  await assert.rejects(proposals.withdraw(id, original.revision), /đã thay đổi ở tab khác/);
+
+  const reloaded = loadStudentServices(setup(storage));
+  assert.equal(reloaded.findById(id).title, title);
+  assert.equal((await reloaded.withdraw(id, edited.revision)).status, 'da-rut');
+  assert.equal(reloaded.listMyTopics().find(item => item.id === id).status, 'da-rut');
+  assert.equal(teacher.get(id).status, 'withdrawn');
+  assert.ok(!teacher.filterPending(teacher.getAll()).some(item => item.id === id));
+  await assert.rejects(teacher.decide(id, 'approved', '', edited.revision), /đã rút/);
+  await assert.rejects(proposals.update(id, original, edited.revision), /đã rút/);
+
+  const otherSample = student.UITLecturerCatalog.pending.find(item => !item.studentVisible);
+  assert.equal(proposals.findById(otherSample.id), null);
+  student.IE104.data.currentStudent = { code: '25529999', name: 'Sinh viên khác' };
+  assert.equal(proposals.findById('DX-ISEKTLN-101'), null);
+});
 test('đề xuất SV giữ nội dung, ba ngày và tham chiếu tệp khi GV đọc lại sau tải trang', async () => {
   const storage = new Map(), ctx = setup(storage), service = loadStudentServices(ctx);
   ctx.IE104SupervisionEntry = { getTeachers: async () => [{ id: 'placeholder-1', name: 'Nguyễn Văn An' }] };

@@ -49,22 +49,22 @@
       };
     }
 
-    if (query.has('proposal')) {
-      const record = proposals.findById(id);
-      if (!record) return null;
+    const record = query.has('proposal') ? proposals.findById(id) : proposals.findStudentSample(id);
+    if (record) {
       const canChange = record.status === 'cho-duyet';
       return {
         ...record, owner: true, permissions: { edit: canChange, withdraw: canChange },
-        recipient: record.supervisorName, recipientRole: 'Hướng dẫn chính',
+        recipient: record.supervisorName, recipientRole: record.supervisionRoleLabel || 'Hướng dẫn chính',
       };
     }
+    if (query.has('proposal')) return null;
 
     const seed = IE104Proposals.getSeed(id);
     if (!seed) return null;
     return {
       ...seed, permissions: {},
       typeLabel: seed.topicTypeLabel, recipient: seed.lecturerName, recipientRole: seed.supervisionRoleLabel,
-      status: { pending: 'cho-duyet', approved: 'da-duyet', rejected: 'tu-choi' }[seed.status],
+      status: { pending: 'cho-duyet', approved: 'da-duyet', rejected: 'tu-choi', withdrawn: 'da-rut' }[seed.status],
       decision: seed.decidedAt ? { reason: seed.reason, decidedAt: seed.decidedAt } : null,
     };
   }
@@ -161,7 +161,7 @@
       if (!edit.hidden) edit.href = `tao-de-xuat.html?proposal=${encodeURIComponent(record.id)}`;
       for (const button of buttons) button.hidden = withdrawn || !record.permissions[button.dataset.proposalAction];
       project.hidden = isLegacy || !record.owner || record.status !== 'da-duyet';
-      if (!project.hidden) project.href = approvedProjects.studentUrl(approvedProjects.projectIdFor(record.id));
+      if (!project.hidden) project.href = approvedProjects.studentUrl(record.topicId || approvedProjects.projectIdFor(record.id));
       actions.hidden = edit.hidden && project.hidden && Array.from(buttons).every(button => button.hidden);
       if (article.hidden) return;
 

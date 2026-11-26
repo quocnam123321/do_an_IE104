@@ -3,6 +3,7 @@
 
   // Dữ liệu demo dùng chung giữa hai vai trò, không thay thế kiểm tra phía máy chủ.
   const prefix = 'ie104.proposal-decision.v1.';
+  const restoredPrefix = 'ie104.restored-uit.proposal-decision.v1.';
   const courseProject = { topicType: 'do-an-mon-hoc', topicTypeLabel: 'Đồ án môn học' };
   const primary = { supervisionRole: 'huong-dan-chinh', supervisionRoleLabel: 'Hướng dẫn chính' };
   const legacySeeds = [
@@ -63,28 +64,80 @@
   });
   let readError = '';
 
-  function readDecision(id) {
+  function readSeedState(id) {
     const raw = window.localStorage.getItem(prefix + id) ??
-      window.localStorage.getItem('ie104.restored-uit.proposal-decision.v1.' + id);
+      window.localStorage.getItem(restoredPrefix + id);
     if (raw === null) {
       const sample = rejectedSeeds.find(record => record.id === id);
       return sample ? { ...sample.decision } : null;
     }
-    const decision = JSON.parse(raw);
-    if (!decision || !['approved', 'rejected'].includes(decision.status) ||
-        typeof decision.reason !== 'string' || !Number.isFinite(Date.parse(decision.decidedAt)) ||
-        (decision.status === 'rejected' && decision.reason.trim().length < 10)) {
-      throw new Error('Dữ liệu quyết định đã lưu không hợp lệ.');
+    const state = JSON.parse(raw);
+    if (state?.status === 'pending' || state?.status === 'withdrawn') {
+      if (Number.isInteger(state.revision) && state.revision > 0 &&
+          (state.changes === undefined || (state.changes && typeof state.changes === 'object' && !Array.isArray(state.changes)))) return state;
+    } else if (state && ['approved', 'rejected'].includes(state.status) &&
+        typeof state.reason === 'string' && Number.isFinite(Date.parse(state.decidedAt)) &&
+        (state.status !== 'rejected' || state.reason.trim().length >= 10)) {
+      return state;
     }
-    return { status: decision.status, reason: decision.reason, decidedAt: decision.decidedAt };
+    throw new Error('Dữ liệu quyết định đã lưu không hợp lệ.');
   }
 
-  function seedRecord(seed) {
-    let decision;
-    try { decision = readDecision(seed.id); }
-    catch { readError = 'Không đọc được dữ liệu đã lưu. Kiểm tra quyền lưu trữ của trình duyệt trước khi xử lý đề xuất.'; }
-    const { decision: initialDecision, ...fields } = seed;
-    const record = { ...fields, status: 'pending', reason: '', decidedAt: '', ...(decision || initialDecision) };
+  function readDecision(id) {
+    const state = readSeedState(id);
+    if (state?.status === 'approved' || state?.status === 'rejected') {
+      const { status, reason, decidedAt } = state;
+      return { status, reason, decidedAt };
+    }
+    return null;
+  }
+
+  function studentSeed(id) {
+    const data = window.IE104?.data;
+    const demoStudentCode = data?.legacyProposalStudent?.code;
+    // Các hồ sơ được đưa vào Đề tài của tôi dành cho tài khoản sinh viên demo.
+    if (!demoStudentCode || data.currentStudent?.code !== demoStudentCode) return null;
+    return uitSeeds?.find(record => record.id === id && record.studentVisible) || null;
+  }
+
+  function withSeedLock(id, save) {
+    if (navigator.locks?.request) return navigator.locks.request(prefix + id, save);
+    return save();
+  }
+
+  async function changeStudentSeed(id, revision, edit) {
+    return withSeedLock(id, () => {
+      const seed = studentSeed(id);
+      if (!seed) throw new Error('Không tìm thấy đề xuất của sinh viên hiện tại.');
+      const previous = readSeedState(id) || seed.decision;
+      if (previous && previous.status !== 'pending') throw new Error('Đề xuất đã rút hoặc đã được xử lý.');
+      if (!Number.isInteger(revision) || revision !== (previous?.revision || 0)) {
+        throw new Error('Đề xuất đã thay đổi ở tab khác. Hãy tải lại trang để xem bản mới trước khi thao tác tiếp.');
+      }
+      const changes = edit ? edit(seedRecord(seed, previous)) : previous?.changes;
+      const state = { status: edit ? 'pending' : 'withdrawn', revision: revision + 1, changes };
+      try {
+        window.localStorage.setItem(prefix + id, JSON.stringify(state));
+      } catch {
+        throw new Error('Chưa lưu được đề xuất. Trình duyệt có thể đang chặn lưu trữ hoặc đã hết dung lượng.');
+      }
+      notify();
+      return seedRecord(seed, state);
+    });
+  }
+
+  function readSeedStateForDisplay(id) {
+    try { return readSeedState(id); }
+    catch {
+      readError = 'Không đọc được dữ liệu đã lưu. Kiểm tra quyền lưu trữ của trình duyệt trước khi xử lý đề xuất.';
+      return null;
+    }
+  }
+
+  function seedRecord(seed, state = readSeedStateForDisplay(seed.id)) {
+    const { decision, ...fields } = seed;
+    const { changes, ...activity } = state || decision || {};
+    const record = { ...fields, ...changes, status: 'pending', reason: '', decidedAt: '', revision: 0, ...activity };
     record.topicStatus = record.status === 'approved' ? 'in-progress' : record.status;
     return record;
   }
@@ -99,11 +152,11 @@
 
   function getAll() {
     readError = '';
-    const initial = canViewSeed() ? seeds.map(seedRecord)
+    const initial = canViewSeed() ? seeds.map(seed => seedRecord(seed))
       .filter(record => !activeSeedIds || activeSeedIds.has(record.id) || record.status !== 'pending') : [];
     // Giữ các quyết định đã duyệt từ bộ dữ liệu cũ khi dùng danh mục UIT.
     if (realSeeds && !uitSeeds && canViewSeed()) {
-      initial.push(...legacySeeds.map(seedRecord).filter((record) => record.status === 'approved'));
+      initial.push(...legacySeeds.map(seed => seedRecord(seed)).filter((record) => record.status === 'approved'));
     }
     let saved = [];
     try { saved = window.IE104?.services?.proposals?.listForLecturer() || []; }
@@ -172,19 +225,21 @@
       if (status === 'rejected' && trimmedReason.length < 10) {
         throw new Error('Vui lòng nhập lý do từ chối từ 10 ký tự, không tính khoảng trắng ở hai đầu.');
       }
-      if (seed.decision || readDecision(id)) throw new Error('Đề xuất này đã được xử lý. Vui lòng xem kết quả mới nhất.');
-      const decision = { status, reason: status === 'rejected' ? trimmedReason : '', decidedAt: new Date().toISOString() };
+      const previous = readSeedState(id) || seed.decision;
+      if (previous && previous.status !== 'pending') throw new Error('Đề xuất này đã được xử lý hoặc đã rút. Vui lòng xem kết quả mới nhất.');
+      if ((revision ?? 0) !== (previous?.revision || 0)) {
+        throw new Error('Sinh viên đã sửa đề xuất. Hãy tải lại để đọc nội dung mới trước khi xét duyệt.');
+      }
+      const decision = { ...previous, status, reason: status === 'rejected' ? trimmedReason : '', decidedAt: new Date().toISOString() };
       window.localStorage.setItem(prefix + id, JSON.stringify(decision));
       notify();
       return getAll().find((record) => record.id === id);
     };
-    // Khóa theo hồ sơ khi trình duyệt hỗ trợ, tránh hai tab xác nhận cùng lúc.
-    if (navigator.locks?.request) return navigator.locks.request(prefix + id, save);
-    return save();
+    return withSeedLock(id, save);
   }
 
   window.addEventListener('storage', (event) => {
-    if (event.key === null || event.key.startsWith(prefix) || event.key === window.IE104?.storage?.proposalKey || event.key === window.IE104?.storage?.registrationKey || event.key === window.IE104?.storage?.requestKey) notify();
+    if (event.key === null || event.key.startsWith(prefix) || event.key.startsWith(restoredPrefix) || event.key === window.IE104?.storage?.proposalKey || event.key === window.IE104?.storage?.registrationKey || event.key === window.IE104?.storage?.requestKey) notify();
   });
   window.addEventListener('pageshow', notify);
   window.addEventListener('ie104:proposals-updated', notify);
@@ -200,6 +255,11 @@
       return canViewSeed() && seed ? seedRecord(seed) : null;
     },
     getSeedDecision: readDecision,
+    getStudentSeed: id => {
+      const seed = studentSeed(id);
+      return seed ? seedRecord(seed) : null;
+    },
+    changeStudentSeed,
     getApprovedSeed,
     getError: () => readError,
     decide,
