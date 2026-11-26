@@ -222,14 +222,21 @@
       }
       const attachment = selectedAttachment();
       const confirmation = modal(publishLabel, revising ? 'Xác nhận công bố lại' : 'Xác nhận công bố', body => {
-        body.append(el('p', `${state.project.title} · ${state.project.groupName}`));
-        body.append(el('p', `Điểm tổng kết: ${checked.value.score.toFixed(1)} / 10`));
-        if (!completed) body.append(el('p', 'Sau khi công bố, đề tài sẽ chuyển sang trạng thái Hoàn thành.'));
+        const summary = el('div', null, 'publish-evaluation__summary');
+        const project = el('div');
+        project.append(el('h3', state.project.title), el('p', state.project.groupName));
+        const score = el('dl', null, 'publish-evaluation__score');
+        score.append(el('dt', 'Điểm tổng kết'), el('dd', `${checked.value.score.toFixed(1)} / 10`));
+        summary.append(project, score);
+        body.append(summary);
         if (attachment) {
+          const file = el('div', null, 'publish-evaluation__file');
           const fileName = el('p', attachment.name);
           fileName.translate = false;
-          body.append(el('p', 'Tệp đánh giá đính kèm'), fileName);
+          file.append(el('h3', 'Tệp đánh giá đính kèm'), fileName);
+          body.append(file);
         }
+        if (!completed) body.append(el('p', 'Sau khi công bố, đề tài sẽ chuyển sang trạng thái Hoàn thành.', 'publish-evaluation__note'));
       }, async (_, snapshot) => {
         const changed = attachment !== originalAttachment;
         const files = app.services.proposalFiles;
@@ -251,7 +258,11 @@
         }
         editingPublished = false;
         ui.dirty = false;
-      }, 'Đã công bố đánh giá trên trình duyệt này.', { onSuccess: () => successDialog.showModal() });
+      }, 'Đã công bố đánh giá trên trình duyệt này.', {
+        className: 'publish-evaluation-dialog',
+        showCancel: false,
+        onSuccess: () => successDialog.showModal(),
+      });
     });
     preview();
   }

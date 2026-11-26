@@ -202,19 +202,23 @@
     if (checked.errors.length) return showErrors(checked.errors);
     clearErrors();
     pending = checked.value;
-    review.replaceChildren();
-    const lines = [service.getTopic(topicId).title, `Hình thức: ${pending.members.length === 1 ? 'Cá nhân' : 'Theo nhóm'}`];
+    const title = document.createElement('h3');
+    title.className = 'registration-review__topic';
+    title.textContent = current.title;
+    const details = document.createElement('div');
+    details.className = 'registration-review__details';
+    const lines = [`Hình thức: ${pending.members.length === 1 ? 'Cá nhân' : 'Theo nhóm'}`];
     if (pending.groupName) lines.push(`Tên nhóm: ${pending.groupName}`);
     for (const member of pending.members) {
       lines.push(`${member.code} - ${member.name}${pending.members.length > 1 ? ` - ${member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên'}` : ''}`);
     }
     if (pending.message) lines.push(`Lời nhắn: ${pending.message}`);
-    lines.forEach(text => { const line = document.createElement('p'); line.textContent = text; review.append(line); });
-    const outcome = document.createElement('p');
-    outcome.id = 'registration-confirm-note';
-    outcome.textContent = 'Sau khi xác nhận, đề tài sẽ chuyển sang Đang thực hiện trong bản demo.';
-    review.append(outcome);
-    dialog.setAttribute('aria-describedby', outcome.id);
+    for (const text of lines) {
+      const line = document.createElement('p');
+      line.textContent = text;
+      details.append(line);
+    }
+    review.replaceChildren(title, details);
     confirm.disabled = false;
     dialog.showModal();
   }
