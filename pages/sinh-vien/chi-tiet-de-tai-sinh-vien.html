@@ -38,14 +38,14 @@
       body:has(#ket-qua-danh-gia:target, #ket-qua-danh-gia :target) > .skip-link--ket-qua-danh-gia { display: inline; }
     </style>
   <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-  <script defer src="../../assets/js/i18n/en-student.js?v=20261126-picker-parity"></script>
-  <script defer src="../../assets/js/i18n/en-shared.js?v=20261125-main-rebase"></script>
+  <script defer src="../../assets/js/i18n/en-student.js?v=20261126-member-success"></script>
+  <script defer src="../../assets/js/i18n/en-shared.js?v=20261126-invite-success"></script>
   <script defer src="../../assets/js/shared/language.js"></script>
   <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
 <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
 <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-student-team-leader" />
-<link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css" />
-<link rel="stylesheet" href="../../assets/css/de-tai-dang-thuc-hien.css?v=20261124-logout-actions" />
+<link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css?v=20261126-success-dialogs" />
+<link rel="stylesheet" href="../../assets/css/de-tai-dang-thuc-hien.css?v=20261126-invite-success" />
 
 
 <link rel="stylesheet" href="../../assets/css/supervisor-dialog.css">
@@ -63,9 +63,9 @@
 
 
 
-<link rel="stylesheet" href="../../assets/css/topic-detail-boards.css?v=20261123-submission-files" />
+<link rel="stylesheet" href="../../assets/css/topic-detail-boards.css?v=20261126-progress-spacing" />
 <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css?v=20261124-evaluation-summary" />
-<link rel="stylesheet" href="../../assets/css/student-topic-detail.css?v=20261124-feedback-divider" />
+<link rel="stylesheet" href="../../assets/css/student-topic-detail.css?v=20261126-success-dialogs" />
 
 <script src="../../assets/js/shared/proposal-outline.js?v=20261125-vietnamese-pending-teacher" defer></script>
 <script src="../../assets/js/nav-indicator.js" defer></script>
@@ -99,23 +99,20 @@
 <script src="../../assets/js/services/lecturer-topic-service.js?v=20261125-topic-participants" defer></script>
 <script src="../../assets/js/pages/student/topic-detail/workspace.js?v=20261125-approved-overview" defer></script>
 <script src="../../assets/js/shared/detail-tabs.js" defer></script>
-<script src="../../assets/js/pages/student/topic-detail/team.js?v=20261125-student-team-leader" defer></script>
+<script src="../../assets/js/pages/student/topic-detail/team.js?v=20261126-member-success" defer></script>
 <script src="../../assets/js/shared/task-comments.js?v=20261123-comment-composer" defer></script>
 <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261126-calendar-year">
 <script src="../../assets/js/pages/student/proposal-pickers.js?v=20261126-picker-parity" defer></script>
 <script src="../../assets/js/pages/student/proposal-date-picker.js?v=20261126-calendar-year" defer></script>
-<script src="../../assets/js/pages/student/topic-detail/progress.js?v=20261126-picker-parity" defer></script>
+<script src="../../assets/js/pages/student/topic-detail/progress.js?v=20261126-column-labels" defer></script>
 <script src="../../assets/js/shared/evaluation-attachment.js" defer></script>
 <script src="../../assets/js/pages/student/topic-detail/evaluation.js?v=20261124-attachment-frame" defer></script>
-<script src="../../assets/js/pages/student/topic-detail/lecturer-reviews.js" defer></script>
 <link rel="stylesheet" href="../../assets/css/proposal-outline.css">
 <link rel="stylesheet" href="../../assets/css/topic-media-shared.css">
 
 <link rel="stylesheet" href="../../assets/css/workflow-detail-shared.css?v=20261123-progress-parity">
   <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
-  <link rel="stylesheet" href="../../assets/css/invitation-dialogs.css?v=20261124-demo-invitation-polish">
-  <script src="../../assets/js/shared/invitation-dialogs.js?v=20261124-demo-invitation-polish" defer></script>
 </head>
   <body id="page-top" tabindex="-1" class="registration-page active-topic-page student-topic-detail-page">
     <a class="skip-link skip-link--default" href="#main-content">Chuyển đến nội dung chính</a>
@@ -151,6 +148,7 @@
                 <ul class="main-nav__sublist" aria-labelledby="common-navigation-label">
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/gioi-thieu.html">Giới thiệu</a></li>
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/thong-bao.html">Thông báo</a></li>
+                  <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/huong-nghien-cuu.html">Hướng nghiên cứu</a></li>
                   <li class="main-nav__subitem"><a class="main-nav__link" href="../chung/lien-he.html">Liên hệ</a></li>
                 </ul>
               </details>
@@ -298,7 +296,7 @@
             <aside class="topic-overview-layout__aside" aria-label="Nhóm thực hiện, mốc thời gian và giảng viên hướng dẫn">
               <section class="project-team topic-overview-card topic-team" aria-labelledby="team-title">
                 <header class="project-team__header">
-                  <h2 id="team-title">Nhóm thực hiện</h2>
+                  <h2 id="team-title" tabindex="-1">Nhóm thực hiện</h2>
                   <button id="add-team-member-button" disabled class="project-team__add" type="button" commandfor="add-team-member-dialog" command="show-modal" aria-haspopup="dialog" aria-controls="add-team-member-dialog">+ Thêm thành viên</button>
                 </header>
                 <p class="topic-team__group-name">Nhóm 7 - Web UIT</p>
@@ -319,7 +317,6 @@
                   </li>
                 </ul>
                 <p data-team-notice role="status"></p>
-                <p data-team-result role="status" tabindex="-1" hidden></p>
               </section>
 
               <section class="topic-milestones topic-overview-card" aria-labelledby="milestones-title">
@@ -541,7 +538,7 @@
               <p>Chưa có cập nhật tiến độ.</p>
             </template>
           </section>
-
+        </div>
 
           <section
             class="task-popovers-section"
@@ -720,16 +717,18 @@
 
 
 
-            <dialog id="task-saved-dialog" class="workflow-dialog task-saved-dialog" aria-labelledby="task-saved-title" aria-describedby="task-saved-message">
-              <div class="task-saved-dialog__body">
-                <span class="task-saved-dialog__icon" aria-hidden="true">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <dialog id="task-saved-dialog" class="confirmation-dialog success-dialog task-saved-dialog" aria-labelledby="task-saved-title" aria-describedby="task-saved-message">
+              <button class="success-dialog__close" type="button" command="close" commandfor="task-saved-dialog" aria-label="Đóng thông báo" autofocus>
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#student-submission-close-icon"></use></svg>
+              </button>
+              <div class="success-dialog__content">
+                <span class="success-dialog__icon" aria-hidden="true">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" focusable="false">
                     <path d="m5 12 4 4L19 6"></path>
                   </svg>
                 </span>
                 <h2 id="task-saved-title">Đã lưu thay đổi</h2>
                 <p id="task-saved-message">Công việc đã được cập nhật.</p>
-                <button type="button" class="workflow-dialog__primary" commandfor="task-saved-dialog" command="close" autofocus>Xong</button>
               </div>
             </dialog>
 
@@ -752,7 +751,6 @@
               </footer>
             </dialog>
           </section>
-        </div>
         </section>
 
         <section id="bai-nop" class="student-detail-panel" aria-labelledby="bai-nop-panel-title" tabindex="-1"><h2 id="bai-nop-panel-title">Bài nộp</h2>
@@ -784,15 +782,17 @@
             <dl class="student-feedback-dialog__details" hidden></dl>
           </dialog>
           <dialog class="submission-dialog submission-upload-dialog" id="student-upload-dialog"></dialog>
-          <dialog id="student-upload-success" class="workflow-dialog workflow-saved-dialog" aria-labelledby="student-upload-success-title">
-            <div class="workflow-saved-dialog__body">
-              <span class="workflow-saved-dialog__icon" aria-hidden="true">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+          <dialog id="student-upload-success" class="confirmation-dialog success-dialog" aria-labelledby="student-upload-success-title">
+            <button class="success-dialog__close" type="button" command="close" commandfor="student-upload-success" aria-label="Đóng thông báo" autofocus>
+              <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#student-submission-close-icon"></use></svg>
+            </button>
+            <div class="success-dialog__content">
+              <span class="success-dialog__icon" aria-hidden="true">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" focusable="false">
                   <path d="m5 12 4 4L19 6"></path>
                 </svg>
               </span>
               <h2 id="student-upload-success-title">Nộp bài thành công</h2>
-              <button type="button" class="workflow-dialog__primary" command="close" commandfor="student-upload-success" autofocus>Xong</button>
             </div>
           </dialog>
         </section>
@@ -949,15 +949,17 @@
         <button type="button" class="student-destructive-confirm__submit" data-confirm-cancel-invitation>Xác nhận hủy</button>
       </footer>
     </dialog>
-    <dialog id="cancel-team-invitation-success" class="workflow-dialog workflow-saved-dialog" aria-labelledby="cancel-team-invitation-success-title">
-      <div class="workflow-saved-dialog__body">
-        <span class="workflow-saved-dialog__icon" aria-hidden="true">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+    <dialog id="cancel-team-invitation-success" class="confirmation-dialog success-dialog" aria-labelledby="cancel-team-invitation-success-title">
+      <button class="success-dialog__close" type="button" command="close" commandfor="cancel-team-invitation-success" aria-label="Đóng thông báo" autofocus>
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#student-submission-close-icon"></use></svg>
+      </button>
+      <div class="success-dialog__content">
+        <span class="success-dialog__icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" focusable="false">
             <path d="m5 12 4 4L19 6"></path>
           </svg>
         </span>
         <h2 id="cancel-team-invitation-success-title">Đã hủy lời mời</h2>
-        <button type="button" class="workflow-dialog__primary" command="close" commandfor="cancel-team-invitation-success" autofocus>Xong</button>
       </div>
     </dialog>
     <dialog id="add-team-member-dialog" class="team-member-dialog" aria-labelledby="add-team-member-title">
@@ -983,6 +985,19 @@
           <button type="submit" disabled>Thêm thành viên</button>
         </footer>
       </form>
+    </dialog>
+    <dialog id="add-team-member-success" class="confirmation-dialog success-dialog" aria-labelledby="add-team-member-success-title">
+      <button class="success-dialog__close" type="button" command="close" commandfor="add-team-member-success" aria-label="Đóng thông báo" autofocus>
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#student-submission-close-icon"></use></svg>
+      </button>
+      <div class="success-dialog__content">
+        <span class="success-dialog__icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+            <path d="m5 12 4 4L19 6"></path>
+          </svg>
+        </span>
+        <h2 id="add-team-member-success-title">Đã thêm thành viên</h2>
+      </div>
     </dialog>
 
 
@@ -1011,6 +1026,19 @@
           </div>
         </footer>
       </form>
+    </dialog>
+    <dialog id="invite-supervisor-success" class="confirmation-dialog success-dialog" aria-labelledby="invite-supervisor-success-title">
+      <button class="success-dialog__close" type="button" command="close" commandfor="invite-supervisor-success" aria-label="Đóng thông báo" autofocus>
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#student-submission-close-icon"></use></svg>
+      </button>
+      <div class="success-dialog__content">
+        <span class="success-dialog__icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" focusable="false">
+            <path d="m5 12 4 4L19 6"></path>
+          </svg>
+        </span>
+        <h2 id="invite-supervisor-success-title">Đã gửi lời mời hướng dẫn</h2>
+      </div>
     </dialog>
     <template id="invite-supervisor-option">
       <label class="supervisor-dialog__option">
@@ -1049,9 +1077,6 @@
                       </svg>
                       <span>
                         Chưa nộp
-                      </span>
-                      <span class="task-column__count">
-                        (9)
                       </span>
                     </h4>
                     <div aria-labelledby="requirements-pending-title" class="submission-column__viewport" role="region" tabindex="0">
@@ -1263,7 +1288,7 @@
                         </li>
                       </ul>
                     </div>
-                  </section><section class="task-column submission-column submission-column--info" aria-label="Đã nộp"><h4 class="task-column__title"><svg aria-hidden="true" class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Đã nộp <span class="task-column__count">(18)</span></h4><div class="submission-column__viewport" tabindex="0" role="region" aria-label="Yêu cầu đã có bài nộp"><ul class="task-column__list submission-column__list"><li><article class="requirement-board-card" id="requirement-2">
+                  </section><section class="task-column submission-column submission-column--info" aria-label="Đã nộp"><h4 class="task-column__title"><svg aria-hidden="true" class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Đã nộp</h4><div class="submission-column__viewport" tabindex="0" role="region" aria-label="Yêu cầu đã có bài nộp"><ul class="task-column__list submission-column__list"><li><article class="requirement-board-card" id="requirement-2">
                             <button aria-controls="submission-requirements-2" aria-describedby="requirement-2-deadline" aria-haspopup="dialog" aria-labelledby="requirement-2-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-2" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="requirement-2-title">
@@ -1635,9 +1660,6 @@
                       </svg>
                       <span>
                         Chờ phản hồi
-                      </span>
-                      <span class="task-column__count">
-                        (9)
                       </span>
                     </h4>
                     <div aria-labelledby="submissions-awaiting-title" class="submission-column__viewport" role="region" tabindex="0">
@@ -2116,9 +2138,6 @@
                       </svg>
                       <span>
                         Đã phản hồi
-                      </span>
-                      <span class="task-column__count">
-                        (9)
                       </span>
                     </h4>
                     <div aria-labelledby="submissions-done-title" class="submission-column__viewport" role="region" tabindex="0">
@@ -3499,9 +3518,6 @@
                       <span>
                         Chưa nộp
                       </span>
-                      <span class="task-column__count">
-                        (3)
-                      </span>
                     </h4>
                     <div aria-labelledby="requirements-pending-title" class="submission-column__viewport" role="region" tabindex="0">
                       <ul aria-label="5 thẻ đầu tiên" class="task-column__list submission-column__list">
@@ -3583,7 +3599,7 @@
                         </li>
                       </ul>
                     </div>
-                  </section><section class="task-column submission-column submission-column--info" aria-label="Đã nộp"><h4 class="task-column__title"><svg aria-hidden="true" class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Đã nộp <span class="task-column__count">(2)</span></h4><div class="submission-column__viewport" tabindex="0" role="region" aria-label="Yêu cầu đã có bài nộp"><ul class="task-column__list submission-column__list"><li><article class="requirement-board-card" id="requirement-2">
+                  </section><section class="task-column submission-column submission-column--info" aria-label="Đã nộp"><h4 class="task-column__title"><svg aria-hidden="true" class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Đã nộp</h4><div class="submission-column__viewport" tabindex="0" role="region" aria-label="Yêu cầu đã có bài nộp"><ul class="task-column__list submission-column__list"><li><article class="requirement-board-card" id="requirement-2">
                             <button aria-controls="submission-requirements-2" aria-describedby="requirement-2-deadline requirement-2-late" aria-haspopup="dialog" aria-labelledby="required-submission-2-title" class="requirement-board-card__open" command="show-modal" commandfor="submission-requirements-2" type="button">
                               <span class="requirement-board-card__header">
                                 <span class="requirement-board-card__title" id="required-submission-2-title">
@@ -3651,9 +3667,6 @@
                       <span>
                         Chờ phản hồi
                       </span>
-                      <span class="task-column__count">
-                        (0)
-                      </span>
                     </h4>
                     <div aria-labelledby="submissions-awaiting-title" class="submission-column__viewport" role="region" tabindex="0">
                       <ul aria-label="5 thẻ đầu tiên" class="task-column__list submission-column__list">
@@ -3675,9 +3688,6 @@
                       </svg>
                       <span>
                         Đã phản hồi
-                      </span>
-                      <span class="task-column__count">
-                        (5)
                       </span>
                     </h4>
                     <div aria-labelledby="submissions-done-title" class="submission-column__viewport" role="region" tabindex="0">
@@ -4358,6 +4368,6 @@
     <script src="../../assets/js/pages/student/topic-detail/submission-upload.js?v=20261124-upload-dialog" defer></script>
     <script src="../../assets/js/shared/submission-file-list.js" defer></script>
     <script src="../../assets/js/pages/student/topic-detail/submission-zip.js" defer></script>
-    <script src="../../assets/js/pages/student/topic-detail/submissions.js?v=20261124-upload-dialog" defer></script>
+    <script src="../../assets/js/pages/student/topic-detail/submissions.js?v=20261126-submission-notice" defer></script>
   </body>
 </html>

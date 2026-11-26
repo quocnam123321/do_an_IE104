@@ -64,7 +64,7 @@
   font-weight: var(--weight-semibold);
   line-height: 1.3;
 }
-.teacher-workspace-page :is(.submission-feedback-dialog, .requirement-delete-dialog) .topic-dialog__close {
+.teacher-workspace-page :is(.submission-feedback-dialog, .requirement-delete-dialog, .evaluation-confirm-dialog) .topic-dialog__close {
   display: inline-grid;
   place-items: center;
   padding: 0;
@@ -72,7 +72,7 @@
   background: transparent;
   color: var(--color-foreground);
 }
-.teacher-workspace-page :is(.submission-feedback-dialog, .requirement-delete-dialog) .topic-dialog__close:hover {
+.teacher-workspace-page :is(.submission-feedback-dialog, .requirement-delete-dialog, .evaluation-confirm-dialog) .topic-dialog__close:hover {
   background: var(--color-neutral-bg);
 }
 .submission-feedback-dialog .topic-dialog__form {
@@ -111,12 +111,14 @@
   padding: var(--space-4) 0 0;
   border-top: 1px solid var(--color-border);
 }
-.workflow-dialog:is(.submission-feedback-dialog, .requirement-form-dialog) .topic-dialog__btn--primary {
+.workflow-dialog:is(.submission-feedback-dialog, .requirement-form-dialog) .topic-dialog__btn--primary,
+.workflow-dialog.evaluation-confirm-dialog .topic-dialog__btn--primary:enabled {
   border-color: var(--button-primary-bg);
   background-color: var(--button-primary-bg);
   color: var(--button-primary-fg);
 }
-.workflow-dialog:is(.submission-feedback-dialog, .requirement-form-dialog) .topic-dialog__btn--primary:hover:not(:disabled) {
+.workflow-dialog:is(.submission-feedback-dialog, .requirement-form-dialog) .topic-dialog__btn--primary:hover:not(:disabled),
+.workflow-dialog.evaluation-confirm-dialog .topic-dialog__btn--primary:hover:enabled {
   border-color: var(--button-primary-bg-hover);
   background-color: var(--button-primary-bg-hover);
 }
@@ -130,7 +132,7 @@
     padding-block-end: var(--space-4);
   }
 }
-.teacher-workspace-page .requirement-delete-dialog {
+.teacher-workspace-page :is(.requirement-delete-dialog, .evaluation-confirm-dialog) {
   width: min(36rem, calc(100% - 2rem));
   padding: var(--space-6);
   border: 1px solid var(--color-border);
@@ -143,24 +145,32 @@
   backdrop-filter: blur(3px);
 }
 
-.teacher-workspace-page .requirement-delete-dialog > header {
+.evaluation-confirm-dialog::backdrop {
+  backdrop-filter: none;
+}
+
+.evaluation-confirm-dialog__score {
+  white-space: nowrap;
+}
+
+.teacher-workspace-page :is(.requirement-delete-dialog, .evaluation-confirm-dialog) > header {
   flex-shrink: 0;
   gap: var(--space-3);
   margin: 0;
   padding: 0 0 var(--space-3);
 }
 
-.requirement-delete-dialog > header h2 {
+:is(.requirement-delete-dialog, .evaluation-confirm-dialog) > header h2 {
   font-size: var(--font-size-section-title);
   font-weight: var(--weight-bold);
 }
 
-.teacher-workspace-page .requirement-delete-dialog .topic-dialog__form {
+.teacher-workspace-page :is(.requirement-delete-dialog, .evaluation-confirm-dialog) .topic-dialog__form {
   gap: var(--space-4);
   padding: var(--space-4) 0 0;
 }
 
-.requirement-delete-dialog .topic-dialog__desc {
+:is(.requirement-delete-dialog, .evaluation-confirm-dialog) .topic-dialog__desc {
   font-size: var(--text-sm);
   line-height: 1.75;
 }
@@ -187,17 +197,18 @@
   border-top: 1px solid var(--color-border);
 }
 
-.workflow-dialog.requirement-delete-dialog .teaching-fields {
+.workflow-dialog:is(.requirement-delete-dialog, .evaluation-confirm-dialog) .teaching-fields {
   padding: 0;
 }
 
-.teacher-workspace-page .requirement-delete-dialog .topic-dialog__actions {
+.teacher-workspace-page :is(.requirement-delete-dialog, .evaluation-confirm-dialog) .topic-dialog__actions {
   margin: 0;
   padding: var(--space-4) 0 0;
   border-top: 1px solid var(--color-border);
 }
 
-.teacher-workspace-page .requirement-delete-dialog .topic-dialog__btn--danger {
+.teacher-workspace-page .requirement-delete-dialog .topic-dialog__btn--danger,
+.teacher-workspace-page .evaluation-confirm-dialog .topic-dialog__btn--primary {
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
 }
@@ -213,7 +224,7 @@
 }
 
 @media (max-width: 47.99rem) {
-  .teacher-workspace-page .requirement-delete-dialog {
+  .teacher-workspace-page :is(.requirement-delete-dialog, .evaluation-confirm-dialog) {
     padding: var(--space-4);
   }
 }

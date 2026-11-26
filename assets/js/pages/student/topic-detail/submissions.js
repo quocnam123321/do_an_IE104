@@ -440,11 +440,6 @@
       row.append(submissionFileCard(record, deadline));
       (record.feedback ? reviewedColumn.querySelector('.submission-column__list') : waiting).prepend(row);
     }
-    for (const column of [pendingColumn, submittedColumn, waitingColumn, reviewedColumn]) {
-      const size = [...column.querySelectorAll('.requirement-board-card, .submission-board-card')]
-        .filter(card => !card.closest('li[hidden]')).length;
-      column.querySelector('.task-column__count').textContent = '(' + size + ')';
-    }
   }
 
   function uploadSaved(record, editing) {
@@ -473,7 +468,7 @@
     columns.forEach(({ label, variant, items }, index) => {
       const column = element('section', undefined, 'task-column submission-column submission-column--' + variant);
       const labelId = 'student-' + className + '-' + index;
-      const columnHeading = element('h4', label + ' (' + items.length + ')', 'task-column__title');
+      const columnHeading = element('h4', label, 'task-column__title');
       columnHeading.id = labelId;
       columnHeading.prepend(app.ui.workflowIcon(variant === 'success' ? 'done' : variant === 'neutral' ? 'pending' : 'progress'));
       const viewport = element('div', undefined, 'submission-column__viewport');
@@ -504,9 +499,6 @@
 
   function updateSampleColumn(selector, rows) {
     const column = host.querySelector(selector);
-    const count = column.querySelector('.task-column__count');
-    const label = '(' + rows.length + ')';
-    if (count.textContent.trim() !== label) count.textContent = label;
     const [first, overflow] = column.querySelectorAll('.submission-column__list');
     const update = (list, items) => {
       if (items.length !== list.children.length || items.some((item, index) => item !== list.children[index])) {
@@ -625,9 +617,8 @@
   function renderLiveBoards(state, deadlines, requirementsWithUploads, allSubmissions) {
     const notice = element('p', state.submissionsLocked
       ? 'Giảng viên đã khóa nhận bài cho đề tài này.'
-      : state.hasDemoDeadlines ? 'Trạng thái hạn mẫu tháng 10 và 11/2026 được tính theo ngày 30/10 và 24/11.'
-        : 'Yêu cầu được cập nhật theo dữ liệu giảng viên lưu trên trình duyệt.', 'student-submission-notice');
-    notice.hidden = !state.submissionsLocked && !state.hasDemoDeadlines && Boolean(app.data.studentUITCatalog?.myIds
+      : 'Yêu cầu được cập nhật theo dữ liệu giảng viên lưu trên trình duyệt.', 'student-submission-notice');
+    notice.hidden = !state.submissionsLocked && Boolean(app.data.studentUITCatalog?.myIds
       .some(id => app.data.studentUITCatalog.projectId(id) === document.body.dataset.projectId));
     const requirements = board('Yêu cầu bài nộp', 'requirements', [
       { label: 'Chưa nộp', variant: 'neutral', items: requirementsWithUploads.filter(item => !item.submitted) },

@@ -12,7 +12,6 @@
   const columns = [...board.querySelectorAll('.task-column')].map((column, index) => ({
     status: Object.keys(labels)[index],
     list: column.querySelector('.task-column__list'),
-    count: column.querySelector('.task-column__count'),
   }));
   const popovers = document.createElement('div');
   board.after(popovers);
@@ -32,10 +31,9 @@
     }
     const people = memberIndex([...members.values()]);
     popovers.replaceChildren(...Array.from(people.values(), renderMemberPopover));
-    columns.forEach(({ status, list, count }) => {
+    columns.forEach(({ status, list }) => {
       const entries = tasks.filter(task => task.status === status);
       const scrollTop = list.scrollTop;
-      count.replaceChildren(count.querySelector('.visually-hidden'), `(${entries.length})`);
       list.replaceChildren(...entries.map(task => {
         const codes = task.assignees?.map(member => member.code) ?? task.assigneeCodes ?? [task.assigneeCode];
         const assignees = [...new Set(codes)].map(code => people.get(code)).filter(Boolean);

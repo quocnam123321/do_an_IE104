@@ -575,14 +575,6 @@ Nạp từ [chi-tiet-de-tai-sinh-vien.html](../../pages/sinh-vien/chi-tiet-de-ta
 
 **Hàm** [renderUnpublished](../../assets/js/pages/student/topic-detail/evaluation.js#L18) (dựng lại phần hiển thị), [renderAttachment](../../assets/js/pages/student/topic-detail/evaluation.js#L29) (dựng lại phần hiển thị), [renderPublished](../../assets/js/pages/student/topic-detail/evaluation.js#L42) (dựng lại phần hiển thị), [render](../../assets/js/pages/student/topic-detail/evaluation.js#L71) (dựng lại phần hiển thị).
 
-#### [lecturer-reviews.js](../../assets/js/pages/student/topic-detail/lecturer-reviews.js)
-
-Nạp từ [chi-tiet-de-tai-sinh-vien.html](../../pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html).
-
-**Sự kiện** `pageshow`, `storage`.
-
-**Hàm** [render](../../assets/js/pages/student/topic-detail/lecturer-reviews.js#L13) (dựng lại phần hiển thị).
-
 #### [progress.js](../../assets/js/pages/student/topic-detail/progress.js)
 
 Nạp từ [chi-tiet-de-tai-sinh-vien.html](../../pages/sinh-vien/chi-tiet-de-tai-sinh-vien.html).

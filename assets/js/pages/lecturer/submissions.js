@@ -280,9 +280,9 @@
       const icon = app.ui.workflowIcon(iconKind);
       if (isRequirements) {
         icon.setAttribute('class', 'task-column__icon');
-        heading.append(icon, el('span', group.title), el('span', `(${group.items.length})`, 'task-column__count'));
+        heading.append(icon, el('span', group.title));
       } else {
-        heading.append(icon, `${group.title} (${group.items.length})`);
+        heading.append(icon, group.title);
       }
       const list = el('div', '', 'task-column__list submission-column__list teaching-column-list');
       list.tabIndex = 0;
@@ -415,9 +415,7 @@
     header.append(toolbar);
     const notice = state.readOnly ? 'Chưa có dữ liệu yêu cầu và bài nộp cho nhóm này.'
       : state.submissionsLocked ? 'Toàn bộ đề tài đang khóa nhận bài.'
-      : !state.canManageRequirements ? 'Đề tài đã hoàn thành. Không mở nhận bài mới.'
-      : requirements.some(item => demoReference(item) !== undefined)
-        ? 'Trạng thái hạn mẫu tháng 10 và 11/2026 được tính theo ngày 30/10 và 24/11.' : null;
+      : !state.canManageRequirements ? 'Đề tài đã hoàn thành. Không mở nhận bài mới.' : null;
     if (notice) header.after(el('p', notice, 'submission-board-demo-note'));
     panel.append(requirementsBoard);
     if (restoreModeFocus) mode.focus({ preventScroll: true });

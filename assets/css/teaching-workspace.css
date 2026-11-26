@@ -41,7 +41,6 @@
 #teaching-total-score { font-size: 2rem; font-weight: 700; color: var(--color-primary); }
 #teaching-evaluation-form > .teaching-actions { margin-block-start: 1.5rem; }
 #teaching-evaluation-form #teaching-resultLabel { width: 100%; max-width: 36rem; }
-.lecturer-progress-reviews { padding: var(--space-6); margin-block: var(--space-4); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-surface); }
 .teaching-card progress { width: 100%; accent-color: var(--color-primary); }
 .teacher-workspace-page :is(button, input, textarea, select, [tabindex]):focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
 @media (max-width: 1000px) {

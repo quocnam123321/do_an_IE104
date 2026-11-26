@@ -8,7 +8,7 @@
       Chi tiết đề tài đang hướng dẫn | Quản lý đồ án
     </title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261125-deadline-sync"></script>
+    <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261126-evaluation-dialog-notice"></script>
     <script defer src="../../assets/js/i18n/en-shared.js?v=20261126-number-stepper"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme">
@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-student-team-leader">
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
     <link rel="stylesheet" href="../../assets/css/teacher-dialogs.css?v=20261124-requirement-filenames">
-    <link rel="stylesheet" href="../../assets/css/topic-detail-boards.css?v=20261124-requirements-done">
+    <link rel="stylesheet" href="../../assets/css/topic-detail-boards.css?v=20261126-progress-spacing">
     <link rel="stylesheet" href="../../assets/css/topic-detail-overview-evaluation.css?v=20261126-score-input">
     <link rel="stylesheet" href="../../assets/css/project-evaluation.css?v=20261126-publish-dialog">
     <link rel="stylesheet" href="../../assets/css/teacher-topic-detail.css?v=20261125-student-team-leader">
@@ -28,9 +28,9 @@
     <script src="../../assets/js/detail-tabs.js" defer=""></script>
     <script src="../../assets/js/dialog-commands.js" defer=""></script>
     <script src="../../assets/js/shared/topic-overview.js?v=20261124-invitation-flow" defer></script>
-    <script src="../../assets/js/uit-supervised-demo.js?v=20261125-sample-progress" defer></script>
+    <script src="../../assets/js/uit-supervised-demo.js?v=20261126-compact-evaluation-confirmation" defer></script>
     <link rel="stylesheet" href="../../assets/css/uit-restored-submissions.css">
-    <link rel="stylesheet" href="../../assets/css/workflow-detail-shared.css?v=20261124-requirement-calendar" />
+    <link rel="stylesheet" href="../../assets/css/workflow-detail-shared.css?v=20261126-compact-evaluation-confirmation" />
     <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261126-calendar-year">
     <link rel="stylesheet" href="../../assets/css/topic-media-shared.css?v=20261121-matching-topic-covers" />
     <script src="../../assets/js/shared/topic-identity.js" defer></script>
@@ -71,16 +71,16 @@
     <script src="../../assets/js/services/submission-file-service.js" defer></script>
     <script src="../../assets/js/uit-lecturer-view.js?v=20261125-solo-team-leader" defer></script>
     <script src="../../assets/js/shared/lecturer-overview.js?v=20261125-solo-team-leader" defer></script>
-<script src="../../assets/js/pages/lecturer/workspace.js?v=20261125-topic-participants" defer></script>
+<script src="../../assets/js/pages/lecturer/workspace.js?v=20261126-evaluation-dialog-notice" defer></script>
     <script src="../../assets/js/pages/student/proposal-pickers.js?v=20261126-picker-parity" defer></script>
     <link rel="stylesheet" href="../../assets/css/number-stepper.css?v=20261126-number-stepper" />
     <script src="../../assets/js/shared/number-stepper.js?v=20261126-number-stepper" defer></script>
     <script src="../../assets/js/pages/student/proposal-date-picker.js?v=20261126-calendar-year" defer></script>
-    <script src="../../assets/js/pages/lecturer/submissions.js?v=20261126-picker-parity" defer></script>
+    <script src="../../assets/js/pages/lecturer/submissions.js?v=20261126-submission-notice" defer></script>
     <script src="../../assets/js/shared/task-comments.js?v=20261123-comment-composer" defer></script>
-    <script src="../../assets/js/pages/lecturer/progress.js?v=20261125-shared-progress" defer></script>
+    <script src="../../assets/js/pages/lecturer/progress.js?v=20261126-column-labels" defer></script>
     <script src="../../assets/js/shared/evaluation-attachment.js" defer></script>
-    <script src="../../assets/js/pages/lecturer/evaluation.js?v=20261126-publish-dialog-actions" defer></script>
+    <script src="../../assets/js/pages/lecturer/evaluation.js?v=20261126-publish-dialog-success" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
   <script src="../../assets/js/supervision-entry.js" defer></script>
@@ -512,7 +512,7 @@
                 <div class="task-board" role="region" aria-label="Các cột công việc" aria-describedby="task-board-help" tabindex="0">
                   <div class="task-board__columns">
                   <section class="task-column task-column--not-started" aria-labelledby="task-column-not-started-title">
-                    <h4 id="task-column-not-started-title" class="task-column__title"><svg class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12"></path><path d="M3 6h.01M3 12h.01M3 18h.01"></path></svg><span>Chưa bắt đầu</span><span class="task-column__count"><span class="visually-hidden">Số công việc: </span>(4)</span></h4>
+                    <h4 id="task-column-not-started-title" class="task-column__title"><svg class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6h12M9 12h12M9 18h12"></path><path d="M3 6h.01M3 12h.01M3 18h.01"></path></svg><span>Chưa bắt đầu</span></h4>
                     <ul class="task-column__list" tabindex="0" aria-labelledby="task-column-not-started-title" aria-describedby="task-board-help">
                     <li>
                       <article class="task-card task-card--overdue" aria-labelledby="task-1-title">
@@ -565,7 +565,7 @@
                     </ul>
                   </section>
                   <section class="task-column task-column--in-progress" aria-labelledby="task-column-in-progress-title">
-                    <h4 id="task-column-in-progress-title" class="task-column__title"><svg class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg><span>Đang thực hiện</span><span class="task-column__count"><span class="visually-hidden">Số công việc: </span>(6)</span></h4>
+                    <h4 id="task-column-in-progress-title" class="task-column__title"><svg class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg><span>Đang thực hiện</span></h4>
                     <ul class="task-column__list" tabindex="0" aria-labelledby="task-column-in-progress-title" aria-describedby="task-board-help">
                     <li>
                       <article class="task-card" aria-labelledby="task-5-title">
@@ -642,7 +642,7 @@
                     </ul>
                   </section>
                   <section class="task-column task-column--done" aria-labelledby="task-column-done-title">
-                    <h4 id="task-column-done-title" class="task-column__title"><svg class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg><span>Đã hoàn thành</span><span class="task-column__count"><span class="visually-hidden">Số công việc: </span>(3)</span></h4>
+                    <h4 id="task-column-done-title" class="task-column__title"><svg class="task-column__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="m8 12 3 3 5-6"></path></svg><span>Đã hoàn thành</span></h4>
                     <ul class="task-column__list" tabindex="0" aria-labelledby="task-column-done-title" aria-describedby="task-board-help">
                     <li>
                       <article class="task-card" aria-labelledby="task-10-title">
@@ -802,9 +802,6 @@
                   </svg>
                   <span>
                     Chưa nộp
-                  </span>
-                  <span class="task-column__count">
-                    (9)
                   </span>
                 </h4>
                 <div aria-labelledby="requirements-pending-title" class="submission-column__viewport" role="region" tabindex="0">
@@ -1048,7 +1045,6 @@
                   <span>
                     Đã nộp
                   </span>
-                  <span class="task-column__count">(18)</span>
                 </h4>
                 <div aria-labelledby="requirements-submitted-title" class="submission-column__viewport" role="region" tabindex="0">
                   <ul aria-label="5 thẻ đầu tiên" class="task-column__list submission-column__list">
@@ -1495,9 +1491,6 @@
                   <span>
                     Chưa nộp
                   </span>
-                  <span class="task-column__count">
-                    (9)
-                  </span>
                 </h4>
                 <div aria-labelledby="requirements-delete-pending-title" class="submission-column__viewport" role="region" tabindex="0">
                   <ul aria-label="5 thẻ đầu tiên" class="task-column__list submission-column__list">
@@ -1782,7 +1775,6 @@
                   <span>
                     Đã nộp
                   </span>
-                  <span class="task-column__count">(18)</span>
                 </h4>
                 <div aria-labelledby="requirements-delete-submitted-title" class="submission-column__viewport" role="region" tabindex="0">
                   <ul aria-label="5 thẻ đầu tiên" class="task-column__list submission-column__list">
@@ -2208,9 +2200,6 @@
               </svg>
               <span>
                 Chờ phản hồi
-              </span>
-              <span class="task-column__count">
-                (9)
               </span>
             </h4>
             <div aria-labelledby="submissions-awaiting-title" class="submission-column__viewport" role="region" tabindex="0">
@@ -2832,9 +2821,6 @@
               </svg>
               <span>
                 Đã phản hồi
-              </span>
-              <span class="task-column__count">
-                (9)
               </span>
             </h4>
             <div aria-labelledby="submissions-done-title" class="submission-column__viewport" role="region" tabindex="0">
@@ -4089,26 +4075,33 @@
     </div>
   </form>
 </dialog>
-    <dialog id="evaluation-published-dialog" class="confirmation-dialog success-dialog" aria-labelledby="evaluation-published-title" aria-describedby="evaluation-published-description">
+    <dialog id="evaluation-published-dialog" class="confirmation-dialog success-dialog" aria-labelledby="evaluation-published-title">
+      <button class="success-dialog__close" type="button" command="close" commandfor="evaluation-published-dialog" aria-label="Đóng thông báo" autofocus>
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#submission-feedback-close-icon"></use></svg>
+      </button>
       <div class="success-dialog__content">
         <span class="success-dialog__icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 4 4L19 6"/></svg>
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m5 12 4 4L19 6" />
+          </svg>
         </span>
         <h2 id="evaluation-published-title">Đã công bố đánh giá</h2>
-        <p id="evaluation-published-description">Trạng thái đề tài: Hoàn thành.</p>
-        <button class="success-dialog__link" type="button" autofocus>Xong</button>
       </div>
     </dialog>
-    <dialog class="topic-dialog" id="publish-evaluation" aria-labelledby="publish-evaluation-title" aria-describedby="publish-description">
-      <header class="topic-dialog__header">
-        <h2 id="publish-evaluation-title">Xác nhận công bố đánh giá</h2>
-        <button class="topic-dialog__close" type="button" command="close" commandfor="publish-evaluation" aria-label="Đóng hộp thoại xác nhận công bố đánh giá">×</button>
+    <dialog class="topic-dialog workflow-dialog evaluation-confirm-dialog" id="publish-evaluation" aria-labelledby="publish-evaluation-title" aria-describedby="publish-description">
+      <header>
+        <h2 id="publish-evaluation-title">Công bố đánh giá</h2>
+        <button class="topic-dialog__close" type="button" command="close" commandfor="publish-evaluation" aria-label="Đóng hộp thoại" autofocus>
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><use href="#submission-feedback-close-icon"></use></svg>
+        </button>
       </header>
       <form id="publish-evaluation-form" method="dialog" class="topic-dialog__form">
-        <p>Bạn muốn công bố đánh giá cho nhóm này?</p>
-        <dl class="topic-dialog__submission-info"><div><dt>Đề tài</dt><dd>Website quản lý thư viện</dd></div><div><dt>Nhóm thực hiện</dt><dd>Nhóm 01</dd></div><div><dt>Điểm tổng kết</dt><dd>Chưa tính / 10</dd></div></dl>
-        <p id="publish-description">Sau khi công bố, tất cả thành viên của nhóm sẽ xem được điểm và nhận xét.</p>
-        <div class="topic-dialog__actions"><button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled="" title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Xác nhận công bố</button></div>
+        <div class="teaching-fields">
+          <p id="publish-description" class="topic-dialog__desc">Bạn có muốn công bố kết quả đánh giá của <strong data-publish-evaluation-group translate="no">Nhóm 01</strong> với điểm tổng kết <strong class="evaluation-confirm-dialog__score"><span>Chưa tính</span> / 10</strong>?</p>
+        </div>
+        <div class="topic-dialog__actions">
+          <button class="topic-dialog__btn topic-dialog__btn--primary" type="submit" disabled title="Chức năng lưu hoặc gửi dữ liệu chưa được kết nối">Xác nhận công bố</button>
+        </div>
       </form>
     </dialog>
     <footer class="project-footer">

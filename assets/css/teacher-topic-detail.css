@@ -426,11 +426,6 @@
   font-weight: var(--weight-semibold);
 }
 
-.lecturer-evaluation__status--published {
-  background: var(--color-success-bg);
-  color: var(--color-success-fg);
-}
-
 .lecturer-evaluation__comment {
   min-height: 7rem;
   white-space: pre-wrap;

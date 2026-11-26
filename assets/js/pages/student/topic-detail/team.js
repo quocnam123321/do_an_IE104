@@ -14,7 +14,9 @@
   }
   const preview = location.protocol === 'file:';
   const memberDialog = document.getElementById('add-team-member-dialog');
+  const memberSuccess = document.getElementById('add-team-member-success');
   const inviteDialog = document.getElementById('invite-supervisor-dialog');
+  const inviteSuccess = document.getElementById('invite-supervisor-success');
   const memberForm = document.getElementById('add-team-member-form');
   const inviteForm = document.getElementById('invite-supervisor-form');
   const addButton = document.getElementById('add-team-member-button');
@@ -28,7 +30,6 @@
   const capacityLimit = capacity.querySelector('[data-team-capacity]');
   const fullMessage = capacity.querySelector('[data-team-full-message]');
   const notice = document.querySelector('[data-team-notice]');
-  const result = document.querySelector('[data-team-result]');
   const memberError = document.querySelector('[data-member-error]');
   const inviteError = document.querySelector('[data-invite-error]');
   const cancelDialog = document.getElementById('cancel-team-invitation-dialog');
@@ -52,12 +53,6 @@
     node.textContent = failure.message;
     node.hidden = false;
     node.focus();
-  }
-
-  function setResult(message) {
-    result.textContent = message;
-    result.hidden = false;
-    result.focus();
   }
 
   function refresh() {
@@ -307,9 +302,13 @@
       service.addMember(projectId, checked.value, memberRevision);
       memberDialog.close();
       refresh();
-      setResult('Đã lưu thành viên vào nhóm thử trên trình duyệt. Chưa xác minh thông tin sinh viên.');
+      memberSuccess.showModal();
     } catch (failure) { showError(memberError, failure); }
     finally { saving = false; }
+  });
+  memberSuccess.addEventListener('close', () => {
+    const focusTarget = addButton.disabled ? teamTitle : addButton;
+    focusTarget.focus({ preventScroll: true });
   });
   inviteForm.addEventListener('submit', async event => {
     event.preventDefault();
@@ -322,8 +321,7 @@
       inviteDialog.close();
       selectedLecturer = '';
       refresh();
-      result.hidden = true;
-      globalThis.IE104.ui.invitationSuccess('Đã gửi lời mời hướng dẫn', 'Giảng viên sẽ nhận được lời mời. Bạn có thể mở mục Xem trao đổi trong chi tiết đề tài để xem phản hồi.');
+      inviteSuccess.showModal();
     } catch (failure) {
       if (inviteDialog.open) showError(inviteError, failure);
     } finally {
@@ -339,7 +337,6 @@
       await service.cancelInvitation(projectId, pendingCancel.id, pendingCancel.revision);
       cancelDialog.close();
       refresh();
-      result.hidden = true;
       cancelSuccess.showModal();
     } catch (failure) { showError(cancelError, failure); }
     finally { saving = false; }
@@ -347,6 +344,7 @@
   cancelDialog.addEventListener('close', () => {
     if (!cancelDialog.open) pendingCancel = null;
   });
+  inviteSuccess.addEventListener('close', () => inviteButton.focus({ preventScroll: true }));
   cancelSuccess.addEventListener('close', () => inviteButton.focus({ preventScroll: true }));
   window.addEventListener('storage', event => { if ([globalThis.IE104.storage.teamKey, globalThis.IE104.storage.teachingKey, null].includes(event.key)) refresh(); });
   document.addEventListener('ie104:project-team-updated', refresh);

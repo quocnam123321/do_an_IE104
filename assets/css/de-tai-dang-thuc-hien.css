@@ -11,7 +11,7 @@
 .student-detail-panel { scroll-margin-top: var(--space-4); }
 .student-detail-panel > h2 { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .student-detail-panel .page-content, .project-overview-layout__main, .project-overview-layout__sidebar { display: grid; gap: var(--space-4); }
-.active-topic-page h2 { font-size: 1.125rem; font-weight: 600; }
+.active-topic-page h2:where(:not(.success-dialog h2)) { font-size: 1.125rem; font-weight: 600; }
 .active-topic-page h3 { font-size: var(--font-size-secondary); font-weight: 600; }
 .project-summary, .project-overview-layout__main > section, .project-overview-layout__sidebar > section, .project-progress, .task-list-section, .update-history-section, .required-submissions-section, .submission-history-section, .evaluation-summary, .evaluation-details, .lecturer-feedback, .evaluation-attachments { min-width: 0; padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); }
 .active-topic-page section:not(:where(.topic-overview-card)) > h2, .active-topic-page .section-header, .evaluation-section__header { margin-bottom: var(--space-3); }
@@ -69,10 +69,10 @@
 .lecturer-feedback__metadata dd { margin: 0; color: var(--color-heading); font-weight: 500; }
 .lecturer-feedback__content { margin-top: var(--space-3); padding: var(--space-4); border-left: 3px solid var(--color-primary); border-radius: var(--radius-control); background: var(--color-neutral-bg); font-size: var(--font-size-secondary); line-height: 1.8; }
 .evaluation-attachments__item { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-3); font-size: var(--font-size-secondary); }
-.active-topic-page dialog { width: min(34rem,calc(100% - 2rem)); max-height: calc(100svh - 2rem); padding: var(--space-6); border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); color: var(--color-foreground); overflow-y: auto; }
-.active-topic-page dialog::backdrop { background: rgb(15 23 42 / .4); }
+.active-topic-page dialog:where(:not(.success-dialog)) { width: min(34rem,calc(100% - 2rem)); max-height: calc(100svh - 2rem); padding: var(--space-6); border: 1px solid var(--color-border); border-radius: var(--radius-surface); background: var(--color-surface); color: var(--color-foreground); overflow-y: auto; }
+.active-topic-page dialog:where(:not(.success-dialog))::backdrop { background: rgb(15 23 42 / .4); }
 .active-topic-page dialog :is(header,.popover-header) { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); padding-bottom: var(--space-3); margin-bottom: var(--space-4); border-bottom: 1px solid var(--color-border); }
-.active-topic-page dialog :is(h2,h3) { font-size: 1.125rem; }
+.active-topic-page dialog:where(:not(.success-dialog)) :is(h2,h3) { font-size: 1.125rem; }
 .active-topic-page dialog:where(:not(.logout-dialog)) form, .active-topic-page .form-group, .submission-form__field { display: grid; gap: var(--space-2); }
 .active-topic-page dialog:where(:not(.logout-dialog)) form { gap: var(--space-4); }
 .active-topic-page dialog label { display: block; font-size: var(--font-size-secondary); font-weight: 500; margin-bottom: var(--space-1); }
@@ -103,7 +103,7 @@
  .progress-stat-item { padding: var(--space-2); font-size: .75rem; }
  .lecturer-feedback__metadata { grid-template-columns: minmax(0,1fr); }
  .active-project-name { align-items: start; }
- .active-topic-page dialog { padding: var(--space-4); }
+ .active-topic-page dialog:where(:not(.success-dialog)) { padding: var(--space-4); }
 }
 @media(prefers-reduced-motion:reduce) { .active-topic-page * { scroll-behavior: auto; } }
 

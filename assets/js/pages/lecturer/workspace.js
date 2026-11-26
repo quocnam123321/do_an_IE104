@@ -81,7 +81,7 @@
       const result = await operation(snapshot);
       dialog?.close();
       refresh();
-      notify(message || 'Đã lưu thay đổi trên trình duyệt này.');
+      if (message !== null) notify(message || 'Đã lưu thay đổi trên trình duyệt này.');
       if (onSuccess) onSuccess(result);
       else if (dialog) requestAnimationFrame(() => notice.focus({ preventScroll: true }));
     } catch (failure) {

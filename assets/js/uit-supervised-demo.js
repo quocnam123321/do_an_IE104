@@ -54,9 +54,6 @@
     list.replaceChildren(...kept);
     list.removeAttribute('aria-label');
     column.querySelectorAll('.submission-column__overflow').forEach(overflow => overflow.remove());
-    const countLabel = column.querySelector('.task-column__count');
-    const label = countLabel.querySelector('.visually-hidden');
-    countLabel.replaceChildren(...(label ? [label] : []), `(${count})`);
     return kept;
   }
 
@@ -229,8 +226,6 @@
       row.cells[1].textContent = work.criteria[index];
     });
     document.querySelector('#evaluation-comment').value = work.comment;
-    const [title, group] = document.querySelectorAll('#publish-evaluation dd');
-    title.textContent = record.title;
-    group.textContent = work.group;
+    setText('[data-publish-evaluation-group]', work.group);
   };
 })();

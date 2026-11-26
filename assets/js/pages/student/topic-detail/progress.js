@@ -187,16 +187,15 @@
     const column = element('li', 'task-column ' + columnClasses[status]);
     const heading = element('h4', 'task-column__title');
     heading.id = 'progress-column-' + status;
-    const count = element('span', 'task-column__count');
     const statusIcon = icon(columnIcons[status], 'task-column__icon');
     column.append(heading);
-    heading.append(statusIcon, element('span', '', label), count);
+    heading.append(statusIcon, element('span', '', label));
     const tasks = element('ul', 'task-column__list');
     tasks.tabIndex = 0;
     tasks.setAttribute('aria-labelledby', heading.id);
     tasks.setAttribute('aria-describedby', 'student-task-board-help');
     column.append(tasks);
-    return { status, column, count, tasks };
+    return { status, column, tasks };
   });
 
   function renderTask(task, members, date) {
@@ -238,10 +237,9 @@
       fillStats(overview, summary, state.tasks, date);
       const members = memberIndex(state.team.members);
       popovers.replaceChildren(...Array.from(members.values(), renderMemberPopover));
-      columns.forEach(({ status, count, tasks }) => {
+      columns.forEach(({ status, tasks }) => {
         const matching = state.tasks.filter(task => task.status === status);
         const scrollTop = tasks.scrollTop;
-        count.replaceChildren(element('span', 'visually-hidden', 'Số công việc: '), '(' + matching.length + ')');
         tasks.replaceChildren(...matching.map(task => renderTask(task, members, date)));
         if (!matching.length) tasks.append(element('li', 'task-column__empty', 'Chưa có công việc.'));
         tasks.scrollTop = scrollTop;

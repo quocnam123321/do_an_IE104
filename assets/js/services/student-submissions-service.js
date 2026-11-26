@@ -50,8 +50,7 @@
       overdue: !completed && Date.parse(item.deadline) < (demoReference(item) ?? now.getTime()),
     }));
     requirements.sort((first, second) => Date.parse(first.deadline) - Date.parse(second.deadline));
-    return { hasRecord: Boolean(record), completed, canUpload, submissionsLocked, requirements, submissions,
-      hasDemoDeadlines: activeRequirements.some(item => demoReference(item) !== undefined) };
+    return { hasRecord: Boolean(record), completed, canUpload, submissionsLocked, requirements, submissions };
   }
 
   function localUploads(mode, request) {

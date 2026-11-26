@@ -126,58 +126,23 @@
   cursor: not-allowed;
 }
 
-.active-topic-page :is(.task-detail-dialog, .task-saved-dialog, .workflow-saved-dialog) .workflow-dialog__primary {
+.active-topic-page .task-detail-dialog .workflow-dialog__primary {
   border-color: var(--color-primary);
   background: var(--color-primary);
   color: var(--color-on-primary);
   font-weight: var(--weight-semibold);
 }
 
-.active-topic-page :is(.task-detail-dialog, .task-saved-dialog, .workflow-saved-dialog) .workflow-dialog__primary:hover {
+.active-topic-page .task-detail-dialog .workflow-dialog__primary:hover {
   background: var(--color-primary-hover);
   border-color: var(--color-primary-hover);
 }
 
-.active-topic-page .workflow-dialog:is(.task-saved-dialog, .workflow-saved-dialog) {
-  width: min(28rem, calc(100% - 2rem));
-  text-align: center;
-}
-
-:is(.task-saved-dialog__body, .workflow-saved-dialog__body) {
-  display: grid;
-  justify-items: center;
-  padding: var(--space-6);
-}
-
-:is(.task-saved-dialog__icon, .workflow-saved-dialog__icon) {
-  display: grid;
-  place-items: center;
-  width: 3.5rem;
-  height: 3.5rem;
-  margin-bottom: var(--space-4);
-  border-radius: 50%;
-  background: var(--green-100);
-  color: var(--color-success-fg);
-}
-
-.active-topic-page :is(.task-saved-dialog, .workflow-saved-dialog) h2 {
-  font-size: var(--text-2xl);
-  line-height: var(--leading-tight);
-}
-
-.active-topic-page .task-saved-dialog p {
-  margin: var(--space-2) 0 var(--space-5);
+.task-saved-dialog p {
+  margin: 0;
   color: var(--color-muted-foreground);
   font-size: var(--text-base);
   line-height: var(--leading-normal);
-}
-
-.active-topic-page :is(.task-saved-dialog, .workflow-saved-dialog) .workflow-dialog__primary {
-  min-width: 7rem;
-}
-
-.workflow-saved-dialog__body > .workflow-dialog__primary {
-  margin-block-start: var(--space-5);
 }
 
 .active-topic-page #tien-do .task-editor {
@@ -437,7 +402,7 @@
   object-fit: contain;
 }
 
-#overview-section .project-team :is([data-team-notice], [data-team-result]) {
+#overview-section .project-team [data-team-notice] {
   margin-block-start: var(--space-3);
 }
 

@@ -1,4 +1,4 @@
-.active-topic-page [data-team-notice], .active-topic-page [data-team-result] { margin: 0; padding: var(--space-3); border-radius: var(--radius-control); background: var(--color-info-bg); color: var(--color-info-fg); font-size: var(--font-size-secondary); overflow-wrap: anywhere; }
+.active-topic-page [data-team-notice] { margin: 0; padding: var(--space-3); border-radius: var(--radius-control); background: var(--color-info-bg); color: var(--color-info-fg); font-size: var(--font-size-secondary); overflow-wrap: anywhere; }
 .active-topic-page .team-error { color: var(--color-danger-fg); font-size: var(--font-size-secondary); }
 .active-topic-page #add-team-member-form [aria-invalid="true"] { border-color: var(--color-danger-fg); }
 .active-topic-page :is(#add-team-member-dialog, #invite-supervisor-dialog) { max-height: calc(100svh - 2rem); overflow-y: auto; overflow-wrap: anywhere; }

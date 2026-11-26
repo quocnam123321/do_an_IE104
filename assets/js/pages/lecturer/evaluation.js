@@ -10,7 +10,7 @@
   const template = document.getElementById('ket-qua-danh-gia').cloneNode(true);
   const panel = ui.region('evaluation-section', 'ket-qua-danh-gia');
   const successDialog = document.getElementById('evaluation-published-dialog');
-  successDialog.querySelector('button').addEventListener('click', () => successDialog.close());
+  const successTitle = document.getElementById('evaluation-published-title');
   successDialog.addEventListener('close', () => panel.querySelector('.evaluation-form__publish')?.focus({ preventScroll: true }));
   let loadedProject;
   let editingPublished = false;
@@ -136,18 +136,6 @@
       resultRow.hidden = !resultLabel || editingPublished || score !== published?.score;
     }
 
-    const status = el('p', null, 'evaluation-form__status');
-    const publishedAt = published?.publishedAt ? ui.date(published.publishedAt) : published?.evaluatedAt?.split('-').reverse().join('/');
-    if (completed) {
-      const badge = el('span', published ? 'Đã công bố' : 'Chưa công bố', 'lecturer-evaluation__status');
-      badge.classList.toggle('lecturer-evaluation__status--published', Boolean(published));
-      status.append(badge);
-      if (publishedAt) status.append(el('span', publishedAt));
-    } else if (published) {
-      status.textContent = publishedAt ? `Đã công bố ngày ${publishedAt}` : 'Đã công bố';
-    } else {
-      status.hidden = true;
-    }
     const comment = form.querySelector('.evaluation-comment');
     const feedback = comment.querySelector('textarea');
     const originalAttachment = published?.attachment ?? null;
@@ -165,7 +153,7 @@
       });
       edit.className = 'evaluation-form__publish';
       labelAction(edit, 'Sửa kết quả đánh giá', 'edit');
-      actions.replaceChildren(status, edit);
+      actions.replaceChildren(edit);
       form.addEventListener('submit', event => event.preventDefault());
       return;
     }
@@ -180,7 +168,12 @@
     labelAction(publishButton, publishLabel, 'publish');
     publishButton.type = 'submit';
     publishButton.setAttribute('aria-haspopup', 'dialog');
-    actions.replaceChildren(status, publishButton);
+    actions.replaceChildren(publishButton);
+    if (completed && !published) {
+      const status = el('p', null, 'evaluation-form__status');
+      status.append(el('span', 'Chưa công bố', 'lecturer-evaluation__status'));
+      actions.prepend(status);
+    }
     if (revising) {
       const cancel = button('Hủy', () => {
         editingPublished = false;
@@ -221,10 +214,14 @@
         return;
       }
       const attachment = selectedAttachment();
+      const descriptionId = 'evaluation-confirm-description';
       const confirmation = modal(publishLabel, revising ? 'Xác nhận công bố lại' : 'Xác nhận công bố', body => {
         const summary = el('div', null, 'publish-evaluation__summary');
+        summary.id = descriptionId;
         const project = el('div');
-        project.append(el('h3', state.project.title), el('p', state.project.groupName));
+        const group = el('p', state.project.groupName);
+        group.translate = false;
+        project.append(el('h3', state.project.title), group);
         const score = el('dl', null, 'publish-evaluation__score');
         score.append(el('dt', 'Điểm tổng kết'), el('dd', `${checked.value.score.toFixed(1)} / 10`));
         summary.append(project, score);
@@ -258,10 +255,14 @@
         }
         editingPublished = false;
         ui.dirty = false;
-      }, 'Đã công bố đánh giá trên trình duyệt này.', {
+      }, null, {
         className: 'publish-evaluation-dialog',
+        descriptionId,
         showCancel: false,
-        onSuccess: () => successDialog.showModal(),
+        onSuccess: () => {
+          successTitle.textContent = revising ? 'Đã công bố lại đánh giá' : 'Đã công bố đánh giá';
+          successDialog.showModal();
+        },
       });
     });
     preview();

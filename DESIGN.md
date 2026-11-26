@@ -309,6 +309,7 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 
 ## Đồng bộ Tiến độ, Bài nộp và ảnh SV/GV — 19/11/2026
 
+- Tiêu đề các cột trong tab Tiến độ và Bài nộp chỉ hiển thị biểu tượng và tên trạng thái ở cả hai vai trò.
 - Tiến độ: bấm thẻ công việc để mở chi tiết, nút Sửa công việc ở cuối theo quyền; Xóa/Xong bật dấu trừ để xác nhận và xóa liên tiếp. Ba cột màu và icon giống nhau, tên người phụ trách và hạn hoàn thành xuống dòng; bảng được bao bằng block trắng. Ẩn lịch sử chung ngoài bảng và giữ dữ liệu đã lưu.
 - Hộp cập nhật tự điền trạng thái và % hiện tại của công việc được chọn, nội dung báo cáo mới trống khi mở. Chi tiết có lịch sử riêng theo task: tên/mã, giờ Việt Nam, % từng lần, mới nhất trước; details/summary mở nội dung. Chưa có lịch sử hiện trạng thái trống, không sinh người/thời gian giả.
 - Bài nộp: phía trên Chưa nộp/Đã nộp, phía dưới Chờ phản hồi/Đã phản hồi. Giữ nhãn thời hạn riêng: Quá hạn · Chưa nộp, Đã nộp trễ, Đúng hạn. Các nút có khoảng cách, Tạo yêu cầu và Thêm công việc dùng primary. Tiêu đề thẻ GV trải hàng đầu, chừa chỗ nhãn thời hạn.
@@ -340,6 +341,7 @@ Tổng quan, Quản lý đề tài và Yêu cầu chờ duyệt dùng cùng kho�
 - Tab Lời mời hướng dẫn của sinh viên dùng huy hiệu số giống giảng viên. Số đếm các lời mời sinh viên đã gửi đang chờ quyết định và ẩn khi bằng 0. Các cuộc trao đổi có phản hồi chưa đọc hiện số riêng trong danh sách lời mời.
 - Hộp thư giảng viên tự xác định người nhận theo email tài khoản và danh mục giảng viên. Thanh chọn tự hiển thị tên người nhận của lời mời được mở qua liên kết hoặc của lời mời mới nhất khi vào hộp thư. Khi có lời mời mới, hộp thư tự chọn người nhận và mở lời mời. Phiên demo cho phép chuyển giữa các giảng viên có lời mời đã lưu trong trình duyệt.
 - Thông báo giới hạn thành viên đặt ngay dưới tên nhóm với biểu tượng thông tin và cụm “tối đa X thành viên” in đậm. Dùng nền vàng nhạt, viền vàng mảnh, chữ và biểu tượng màu nâu ở mọi trạng thái sức chứa.
+- Sau khi lưu thành viên mới, hộp thoại “Đã thêm thành viên” dùng dấu tích xanh và nút × ở góc trên bên phải như thông báo gửi lời mời hướng dẫn. Bấm × hoặc Esc để đưa tiêu điểm về nút Thêm thành viên nếu nút còn dùng được, hoặc về tiêu đề Nhóm thực hiện khi nhóm đã đủ người.
 
 ### Tổng quan chi tiết đề tài đang hướng dẫn — 23/11/2026
 
@@ -395,10 +397,11 @@ Tổng quan, Quản lý đề tài và Yêu cầu chờ duyệt dùng cùng kho�
 - Hộp Xóa công việc dùng bố cục của hộp Hủy lời mời giảng viên với tên công việc in đậm ngay trong câu hỏi. Dấu × hoặc Esc đóng hộp. Cuối hộp có một nút đỏ Xác nhận xóa.
 - Hộp chi tiết công việc bên sinh viên dùng tên công việc làm tiêu đề. Trạng thái có nhãn xám, xanh dương hoặc xanh lá theo ba cột của bảng. Hạn hoàn thành, tên người phụ trách và mô tả lấy theo dữ liệu công việc. Dấu × và phím Esc dùng để đóng hộp. Cuối hộp thoại hiển thị nút Sửa công việc khi người xem có quyền sửa. Khi đề tài đã hoàn thành, nút Sửa công việc giữ vị trí ở cuối hộp thoại và dùng trạng thái vô hiệu hóa.
 - Khi đổi trạng thái trong hộp Sửa công việc, Lưu thay đổi chuyển thẻ sang cột tương ứng. Chưa bắt đầu dùng 0%, Đã hoàn thành dùng 100%. Khi chuyển sang Đang thực hiện, công việc chưa có phần trăm cụ thể. Nếu trạng thái giữ nguyên, mức đã ghi tiếp tục được dùng.
-- Sau khi lưu thành công trong hộp Sửa công việc, hộp Đã lưu thay đổi hiển thị dấu tích xanh, dòng “Công việc đã được cập nhật.” và nút Xong. Đóng hộp đưa tiêu điểm về thẻ vừa sửa.
+- Sau khi lưu thành công trong hộp Sửa công việc, hộp Đã lưu thay đổi hiển thị dấu tích xanh, dòng “Công việc đã được cập nhật.” và dấu × ở góc trên bên phải. Bấm × hoặc Esc đưa tiêu điểm về thẻ vừa sửa.
 
 ### Tiến độ chi tiết đề tài giảng viên — 23/11/2026
 
+- Tab Tiến độ của hai vai trò kết thúc ở Bảng công việc và chừa khoảng cách 32px trước chân trang. Nhận xét về từng công việc nằm trong phần Bình luận của hộp thoại chi tiết công việc.
 - Dùng chung thẻ công việc với sinh viên, gồm tiêu đề, cảnh báo quá hạn, hạn hoàn thành và đầy đủ avatar của người phụ trách. Avatar dùng hai tông xanh nhạt và xuống hàng khi thiếu chỗ.
 - Chọn thẻ bằng chuột hoặc bàn phím để mở hộp thoại có tên công việc, trạng thái, hạn hoàn thành, người phụ trách và mô tả. Hộp chi tiết công việc của cả hai vai trò chỉ hiển thị nhãn trong mục Trạng thái. Đóng hộp thoại đưa tiêu điểm về thẻ vừa mở.
 
@@ -419,7 +422,7 @@ Tổng quan, Quản lý đề tài và Yêu cầu chờ duyệt dùng cùng kho�
 - Khi đề tài đã hoàn thành, Xóa và Tạo yêu cầu giữ vị trí trong bảng Yêu cầu bài nộp và dùng cùng kiểu vô hiệu hóa với nút Phản hồi.
 - Hộp thoại Xóa yêu cầu bài nộp in đậm tên yêu cầu trong câu hỏi. Cuối hộp có nút đỏ Xác nhận xóa. Dùng dấu × hoặc phím Esc để đóng.
 - Hộp thoại yêu cầu bài nộp ở cả hai vai trò dùng tên yêu cầu làm tiêu đề, giống hộp thoại chi tiết công việc. Nội dung yêu cầu hiển thị trực tiếp dưới mốc thời gian. Nút Sửa yêu cầu nằm cuối hộp thoại phía giảng viên. Nút Mở nhận bài xuất hiện cho yêu cầu đã khóa từ trước. Ngày giờ nộp của lần gửi gần nhất nằm dưới hạn nộp. Tệp nằm dưới nội dung yêu cầu. Bài mẫu có tệp liên kết dùng nút Tải xuống cùng kiểu với Bài nộp của nhóm. Nút mở biểu mẫu mẫu có tên Nộp bài hoặc Cập nhật bài nộp theo trạng thái yêu cầu.
-- Biểu mẫu nộp bài lấy tên yêu cầu làm tiêu đề. Cả hàng trắng mở trình chọn tệp khi danh sách trống. Nút Chọn tệp và Thêm tệp dùng viền xanh, biểu tượng mũi tên hướng lên và cùng một trình chọn nhiều tệp. Mỗi hàng có biểu tượng thùng rác đỏ để gỡ tệp. Bản nộp gồm các tệp và ghi chú được lưu trong IndexedDB trên trình duyệt hiện tại. Sau khi lưu, hộp xác nhận chỉ hiển thị dấu tích xanh, “Nộp bài thành công” và nút Xong.
+- Biểu mẫu nộp bài lấy tên yêu cầu làm tiêu đề. Cả hàng trắng mở trình chọn tệp khi danh sách trống. Nút Chọn tệp và Thêm tệp dùng viền xanh, biểu tượng mũi tên hướng lên và cùng một trình chọn nhiều tệp. Mỗi hàng có biểu tượng thùng rác đỏ để gỡ tệp. Bản nộp gồm các tệp và ghi chú được lưu trong IndexedDB trên trình duyệt hiện tại. Sau khi lưu, hộp xác nhận hiển thị dấu tích xanh, “Nộp bài thành công” và dấu × ở góc trên bên phải.
 - Thẻ Bài nộp của nhóm hiện tên tệp đầu tiên trên một dòng. Khi thiếu chỗ, tên tệp kết thúc bằng dấu ba chấm và hiện đầy đủ khi rê chuột. Với nhiều tệp, nút +N tệp mở danh sách các tệp còn lại trong khung nổi, căn mép phải theo nút, lật lên khi thiếu chỗ bên dưới và đóng khi cuộn bảng. Tiêu đề đứng yên, phần danh sách hiện tối đa hai hàng và cuộn riêng. Nút Tải xuống tải cả bộ ZIP khi có nhiều tệp, tải trực tiếp khi chỉ có một tệp.
 - Thẻ Bài đã nộp phía giảng viên dùng cùng kiểu nút Tải xuống nền trắng viền xám có biểu tượng và dùng cùng nút +N tệp cạnh tên tệp đầu tiên. Thời gian nộp trên thẻ hiển thị theo dạng `DD/MM/YYYY · HH:mm`.
 - Hai cột Chờ phản hồi và Đã phản hồi dùng cùng khoảng cách 8px giữa các thẻ ở cả hai vai trò. Bài gửi sau hạn dùng nhãn Nộp sau hạn với nền vàng nhạt, viền vàng và chữ nâu.
@@ -429,7 +432,7 @@ Tổng quan, Quản lý đề tài và Yêu cầu chờ duyệt dùng cùng kho�
 - Khi giảng viên mở Xem phản hồi, tiêu đề dùng cùng cỡ chữ, độ đậm và chiều cao dòng với hộp thoại bên sinh viên. Nội dung hiển thị trực tiếp dưới tiêu đề Nội dung phản hồi. Bấm Sửa phản hồi để mở ô nhập có viền và chuyển tiêu điểm vào nội dung đã có. Nút Lưu thay đổi lưu bản sửa.
 - Khi đề tài đã hoàn thành, các nút Phản hồi và Sửa phản hồi phía giảng viên giữ vị trí và dùng cùng nền xám nhạt, chữ xám đậm và viền xám của nút vô hiệu hóa bên sinh viên. Giảng viên vẫn dùng Xem phản hồi và Tải xuống để tra cứu bài đã nộp.
 - Trong chi tiết yêu cầu đã nộp ở cả hai vai trò, khối Tệp đã nộp hiển thị tên tệp và rút gọn bằng dấu ba chấm khi thiếu chỗ. Danh sách hiện tối đa bốn hàng và cuộn riêng khi có thêm. Tải xuống nằm ở từng hàng có tệp. Khi có nhiều tệp, nút Tải tất cả ở cạnh tiêu đề dùng chữ và biểu tượng tải xuống màu xanh trên nền trắng.
-- Khi cập nhật bài nộp, biểu mẫu điền tệp và ghi chú sẵn có. Thêm hoặc gỡ tệp chỉ thay đổi bản nháp cho đến khi bấm Lưu thay đổi và lưu thành công. Hộp xác nhận cập nhật hiển thị dấu tích xanh, “Đã lưu thay đổi” và nút Xong.
+- Khi cập nhật bài nộp, biểu mẫu điền tệp và ghi chú sẵn có. Thêm hoặc gỡ tệp chỉ thay đổi bản nháp cho đến khi bấm Lưu thay đổi và lưu thành công. Hộp xác nhận cập nhật hiển thị dấu tích xanh, “Đã lưu thay đổi” và dấu × ở góc trên bên phải. Bấm × hoặc Esc trong cả hai thông báo đưa tiêu điểm về thẻ yêu cầu tương ứng.
 - Khi đề tài đã hoàn thành, nút Nộp bài hoặc Cập nhật bài nộp hiển thị ở cuối hộp thoại yêu cầu với cùng kiểu vô hiệu hóa của các nút trong tab Tiến độ.
 - Đề tài DA005 dùng chung yêu cầu, bài nộp mẫu và phản hồi giữa sinh viên và giảng viên. Tệp sinh viên nộp và phản hồi của giảng viên cho lần nộp đó dùng chung dữ liệu lưu trên cùng trình duyệt và địa chỉ web.
 - Từ 24/11/2026, đề tài DA005 “Website quản lý hoạt động học tập” xuất hiện trong Đề tài của tôi với trạng thái Hoàn thành. Sinh viên dùng trang chi tiết để xem dữ liệu hiện có.
@@ -469,8 +472,9 @@ Tổng quan, Quản lý đề tài và Yêu cầu chờ duyệt dùng cùng kho�
 
 - Bảng Đánh giá theo tiêu chí dùng cùng tỷ lệ cột ở giảng viên và sinh viên. Tiêu chí chiếm 27%, Mô tả tiêu chí hoặc Nhận xét chiếm 39%, Trọng số (%) và Điểm / 10 mỗi cột chiếm 17%. Trên màn hình hẹp, cuộn ngang trong khung bảng. Ô Nhập điểm của giảng viên dùng nền trắng và viền xám bo góc. Chữ gợi ý và số điểm nhập vào được căn giữa.
 - Tab lần lượt hiển thị bốn thẻ Đánh giá theo tiêu chí, Điểm tổng kết, Nhận xét và Tệp đánh giá đính kèm. Nút Công bố đánh giá kiểm tra điểm và nhận xét đang nhập, sau đó mở hộp xác nhận có điểm tổng kết. Xác nhận lưu kết quả để sinh viên xem trong cùng trình duyệt và cùng địa chỉ web. Giao diện hiển thị thông báo sau khi lưu thành công.
-- Khi lưu công bố thành công, đề tài Đang thực hiện chuyển sang Hoàn thành. Giảng viên thấy hộp thoại Đã công bố đánh giá với trạng thái đề tài và nút Xong. Đóng hộp thoại đưa tiêu điểm về thao tác của phần đánh giá.
-- Thẻ Điểm tổng kết phía giảng viên hiển thị điểm bằng số đen in đậm trên nền trắng như phía sinh viên. Khi chưa có điểm hợp lệ, hiển thị “Chưa tính”. Dòng Kết quả hiển thị nội dung đã công bố bên dưới điểm tương ứng, với nhãn xanh lá nhạt cho “Đạt yêu cầu”. Trạng thái và ngày công bố nằm cạnh thao tác công bố hoặc sửa.
+- Hộp thoại xác nhận công bố hiển thị đề tài, nhóm, điểm tổng kết và tên tệp đính kèm nếu có. Khi công bố lần đầu cho đề tài đang thực hiện, hộp thoại báo đề tài sẽ chuyển sang Hoàn thành. Hộp thoại có dấu × và một nút xác nhận màu xanh. Bản xem mẫu dùng câu hỏi ngắn với tên nhóm và điểm tổng kết in đậm.
+- Khi lưu công bố thành công, đề tài Đang thực hiện chuyển sang Hoàn thành. Hộp thoại có dấu tích xanh, tiêu đề “Đã công bố đánh giá” hoặc “Đã công bố lại đánh giá” và dấu × ở góc trên bên phải. Đóng bằng dấu × hoặc phím Esc đưa tiêu điểm về thao tác của phần đánh giá.
+- Thẻ Điểm tổng kết phía giảng viên hiển thị điểm bằng số đen in đậm trên nền trắng như phía sinh viên. Khi chưa có điểm hợp lệ, hiển thị “Chưa tính”. Dòng Kết quả hiển thị nội dung đã công bố bên dưới điểm tương ứng, với nhãn xanh lá nhạt cho “Đạt yêu cầu”. Khi đề tài đã hoàn thành mà chưa có kết quả, nhãn “Chưa công bố” nằm cạnh nút công bố.
 - Nút Công bố đánh giá nằm bên phải dưới thẻ Tệp đánh giá đính kèm, dùng nền xanh, chữ trắng và biểu tượng loa cho cả đề tài Đang thực hiện và Hoàn thành. Với đề tài Hoàn thành đã công bố, điểm và nhận xét hiển thị để đọc, nút Sửa kết quả đánh giá dùng biểu tượng bút. Trong chế độ sửa, Hủy quay về kết quả đã công bố. Công bố lại mở hộp xác nhận trước khi thay thế kết quả sinh viên đang xem.
 - Tệp đánh giá đính kèm nằm trong thẻ riêng ngay sau thẻ Nhận xét. Giảng viên có thể chọn tối đa một tệp, xem tên tệp và gỡ hoặc chọn tệp khác khi sửa đánh giá. Tệp được lưu vào IndexedDB khi xác nhận công bố để cả hai vai trò tải trong cùng trình duyệt và địa chỉ web.
 

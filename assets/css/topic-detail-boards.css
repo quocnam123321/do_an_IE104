@@ -11,6 +11,10 @@
   gap: var(--space-4);
 }
 
+.main-content:has(a[href="#tien-do"][aria-current="location"]) {
+  padding-block-end: var(--space-8);
+}
+
 .progress-overview,
 .progress-tasks {
   min-width: 0;
@@ -203,7 +207,6 @@
 }
 
 .task-column__icon { width: 1.25rem; height: 1.25rem; flex: 0 0 auto; color: var(--column-accent); }
-.task-column__count { color: var(--color-muted-foreground); font-weight: var(--weight-regular); font-variant-numeric: tabular-nums; }
 .task-column__list { position: relative; display: grid; align-content: start; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
 .task-column__list > li { min-width: 0; }
 
