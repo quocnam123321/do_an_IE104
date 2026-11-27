@@ -1,5 +1,10 @@
 Object.assign(globalThis.ie104English ??= {}, {
   "Tổng quan quản trị | Quản lý đồ án": "Admin Overview | Project Management",
+  "Tài khoản | Quản lý đồ án": "Accounts | Project Management",
+  "Học kỳ và đợt đăng ký | Quản lý đồ án": "Terms and Registration | Project Management",
+  "Chi tiết đợt đăng ký | Quản lý đồ án": "Registration Period Details | Project Management",
+  "Đề tài và hồ sơ | Quản lý đồ án": "Topics and Requests | Project Management",
+  "Thông báo | Quản lý đồ án": "Announcements | Project Management",
   "Tổng quan": "Overview",
   "Quản trị viên": "Administrator",
   "Điều hướng quản trị": "Admin navigation",
