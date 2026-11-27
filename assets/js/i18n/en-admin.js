@@ -102,7 +102,9 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Thao tác": "Actions",
   "Mã đợt": "Period ID",
   "Thêm học kỳ": "Add term",
+  "Đã thêm học kỳ": "Term added",
   "Tạo đợt đăng ký": "Create registration period",
+  "Đã tạo đợt đăng ký": "Registration period created",
   "Tạo đợt": "Create period",
   "Chỉnh sửa đợt": "Edit period",
   "Đã lưu thay đổi": "Changes saved",
@@ -133,6 +135,7 @@ Object.assign(globalThis.ie104English ??= {}, {
   "CN": "Sun",
   "Hãy nhập ngày và giờ đăng ký hợp lệ.": "Enter a valid registration date and time.",
   "Hãy nhập năm bắt đầu từ 2000 đến 2099.": "Enter a start year from 2000 to 2099.",
+  "Hãy chọn học kỳ 1, 2 hoặc 3.": "Select term 1, 2, or 3.",
   "Học kỳ này đã tồn tại.": "This term already exists.",
   "Hãy nhập tên đợt đăng ký.": "Enter a registration period name.",
   "Hãy chọn học kỳ và loại đề tài hợp lệ.": "Select a valid term and topic type.",
@@ -141,7 +144,6 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Không thể đọc thay đổi đã lưu. Đang hiển thị dữ liệu mẫu.": "Could not read saved changes. Showing sample data.",
   "Không thể lưu dữ liệu mẫu trong trình duyệt.": "Could not save the sample data in this browser.",
   "Đợt đã thay đổi. Hãy đóng biểu mẫu và mở lại.": "The registration period changed. Close the form and open it again.",
-  "Đã lưu dữ liệu mẫu trong trình duyệt.": "Sample data saved in this browser.",
 });
 
 (globalThis.ie104EnglishPatterns ??= []).push(

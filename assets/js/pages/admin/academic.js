@@ -8,7 +8,8 @@
   const academicActions = document.querySelector("#admin-academic-actions");
   const roundStatus = document.querySelector("#admin-round-status");
   const academicMessage = document.querySelector("#admin-academic-message");
-  const saveSuccess = document.querySelector("#admin-round-save-success");
+  const saveSuccess = document.querySelector("#admin-academic-success");
+  const saveSuccessTitle = document.querySelector("#admin-academic-success-title");
   const isDetail = document.body.dataset.adminPage === "chi-tiet-dot";
   const academicDialog = document.querySelector("#admin-academic-dialog");
   const academicForm = academicDialog.querySelector("form");
@@ -96,9 +97,9 @@
   }
 
   const formCopy = {
-    term: ["Thêm học kỳ", "Thêm học kỳ"],
-    round: ["Tạo đợt đăng ký", "Tạo đợt"],
-    edit: ["Chỉnh sửa đợt", "Lưu thay đổi"],
+    term: { title: "Thêm học kỳ", submit: "Thêm học kỳ", success: "Đã thêm học kỳ" },
+    round: { title: "Tạo đợt đăng ký", submit: "Tạo đợt", success: "Đã tạo đợt đăng ký" },
+    edit: { title: "Chỉnh sửa đợt", submit: "Lưu thay đổi", success: "Đã lưu thay đổi" },
   };
 
   function showFormError(message) {
@@ -117,9 +118,10 @@
     } else {
       academicFields.replaceChildren(...roundFields);
     }
-    const [dialogTitle, submitLabel] = formCopy[formAction];
+    const { title: dialogTitle, submit: submitLabel, success } = formCopy[formAction];
     document.querySelector("#admin-academic-title").textContent = dialogTitle;
     academicSubmit.textContent = submitLabel;
+    saveSuccessTitle.textContent = success;
     showFormError("");
 
     const controls = academicForm.elements;
@@ -206,21 +208,20 @@
     data = academic.snapshot();
     if (isDetail) {
       refreshDetail();
-      academicMessage.hidden = true;
-      saveSuccess.showModal();
-      return;
+    } else {
+      populateTerms(term, isTerm ? result.id : values.term, true);
+      rememberTerm();
+      search.value = "";
+      type.value = "";
+      status.value = "";
+      updateListUrl();
+      renderRounds();
     }
-    populateTerms(term, isTerm ? result.id : values.term, true);
-    rememberTerm();
-    search.value = "";
-    type.value = "";
-    status.value = "";
-    updateListUrl();
-    renderRounds();
-    academicMessage.hidden = false;
-    academicMessage.textContent = "Đã lưu dữ liệu mẫu trong trình duyệt.";
-    title.focus({ preventScroll: true });
+    academicMessage.hidden = true;
+    saveSuccess.showModal();
   });
+
+  saveSuccess.querySelector("button").addEventListener("click", () => saveSuccess.close());
 
   if (data.unavailable) {
     academicMessage.hidden = false;
@@ -229,7 +230,6 @@
 
   if (isDetail) {
     document.querySelector("#admin-round-back").href = pageUrl("hoc-ky-va-dot-dang-ky.html", { term: params.get("term") });
-    saveSuccess.querySelector("button").addEventListener("click", () => saveSuccess.close());
     refreshDetail();
   } else {
     initializeTerm(true);

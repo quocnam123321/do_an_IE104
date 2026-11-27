@@ -5,7 +5,8 @@
   const roundTypes = ["course", "thesis"];
   const startYears = Array.from({ length: 100 }, (_, index) => String(2099 - index));
 
-  const termPattern = /^20\d{2}-[1-4]$/;
+  // Học kỳ 4 vẫn đọc được từ dữ liệu của các phiên bản trước.
+  const storedTermPattern = /^20\d{2}-[1-4]$/;
   const datetimePattern = /^20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 
   function validWindow(start, end) {
@@ -21,7 +22,7 @@
     if (!Array.isArray(data?.terms) || !Array.isArray(data.rounds)) throw new Error();
     const validTerms = new Set([...initialTerms, ...data.terms]);
     const valid = validTerms.size === initialTerms.length + data.terms.length &&
-      data.terms.every((id) => typeof id === "string" && termPattern.test(id)) &&
+      data.terms.every((id) => typeof id === "string" && storedTermPattern.test(id)) &&
       new Set(data.rounds.map((round) => round?.id)).size === data.rounds.length &&
       data.rounds.every((round) =>
         typeof round?.id === "string" && /^DOT-\d{2,}$/.test(round.id) &&
@@ -79,7 +80,8 @@
   function addTerm(year, number) {
     const id = `${year}-${number}`;
     return save((data) => {
-      if (!termPattern.test(id)) return { error: "Hãy nhập năm bắt đầu từ 2000 đến 2099." };
+      if (!/^20\d{2}$/.test(year)) return { error: "Hãy nhập năm bắt đầu từ 2000 đến 2099." };
+      if (!/^[1-3]$/.test(number)) return { error: "Hãy chọn học kỳ 1, 2 hoặc 3." };
       if ([...initialTerms, ...data.terms].includes(id)) {
         return { error: "Học kỳ này đã tồn tại." };
       }
