@@ -164,6 +164,7 @@
 }
 
 .common-page .research-toolbar .research-search input[type="search"] {
+  border-color: var(--color-control-border);
   padding: 0.6875rem 1rem 0.6875rem 2.75rem;
 }
 
