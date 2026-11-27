@@ -1,7 +1,7 @@
 (() => {
   const { topics } = globalThis.IE104AdminSampleData;
   const {
-    academic, badge, dataTable, definitions, displayDate, forTerm, initializeTerm, labels,
+    academic, badge, dataTable, definitions, displayDateTime, forTerm, initializeTerm, labels,
     normalizeSearch, pageUrl, params, populateTerms, rememberTerm, roundLabels, term, view,
   } = globalThis.IE104Admin;
   const title = document.querySelector("#admin-title");
@@ -65,7 +65,7 @@
     const roundTopics = topics.filter((topic) => topic.roundId === item.id);
     const topicColumns = { ...definitions["de-tai"], hideType: true };
     const datetime = (value) =>
-      `<time class="admin-round-datetime" datetime="${value}+07:00">${calendar}${displayDate(value)} · ${value.split("T")[1]}</time>`;
+      `<time class="admin-round-datetime" datetime="${value}+07:00">${calendar}${displayDateTime(value)}</time>`;
     const field = (label, value) => `<div><dt>${label}</dt><dd>${value}</dd></div>`;
     view.innerHTML = `
       <section class="pending-requests" aria-labelledby="round-detail-heading">

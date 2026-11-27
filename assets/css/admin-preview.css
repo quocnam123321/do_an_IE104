@@ -801,6 +801,13 @@
   width: 27%;
 }
 
+.admin-round-record {
+  display: grid;
+  padding-block: var(--space-1);
+  color: var(--color-heading);
+  font-weight: var(--font-weight-semibold);
+}
+
 .admin-round-table td:is(:nth-child(3), :nth-child(4)) {
   white-space: nowrap;
   font-variant-numeric: tabular-nums;

@@ -25,7 +25,8 @@
       extra: [["email", "Email"]], search: "Tìm theo tên, mã hoặc email",
     },
     "dot-dang-ky": {
-      name: "Học kỳ và đợt đăng ký", hasRoundActions: true, nameLabel: "Đợt đăng ký", extra: [["start", "Ngày mở"], ["end", "Ngày đóng"]],
+      name: "Học kỳ và đợt đăng ký", hasRoundActions: true, nameLabel: "Đợt đăng ký",
+      extra: [["start", "Mở đăng ký"], ["end", "Đóng đăng ký"]],
       statusLabels: roundLabels,
     },
     "de-tai": {
@@ -66,6 +67,10 @@
 
   function displayDate(value) {
     return value.split("T")[0].split("-").reverse().join("/");
+  }
+
+  function displayDateTime(value) {
+    return `${displayDate(value)} · ${value.split("T")[1]}`;
   }
 
   function escapeHtml(value) {
@@ -137,7 +142,7 @@
           <tbody>
             ${items.map((item) => `<tr>
               <th scope="row">
-                ${recordControl(definition, item)}
+                ${recordCell(definition, item)}
               </th>
               ${definition.hideType ? "" : `<td>${labels[item.type]}</td>`}
               ${definition.extra.map(([key]) => `<td translate="no">${cellValue(item, key)}</td>`).join("")}
@@ -152,17 +157,18 @@
   }
 
   function cellValue(item, key) {
-    return ["start", "end", "date"].includes(key) ? displayDate(item[key]) : item[key];
+    if (key === "start" || key === "end") return displayDateTime(item[key]);
+    return key === "date" ? displayDate(item[key]) : item[key];
   }
 
   function roundUrl(item) {
     return pageUrl("chi-tiet-dot-dang-ky.html", { id: item.id, term: term?.value });
   }
 
-  function recordControl(definition, item) {
+  function recordCell(definition, item) {
     const label = `<span translate="no">${escapeHtml(item.name)}</span><span class="admin-code" translate="no">${item.id}</span>`;
     if (definition.hasRoundActions) {
-      return `<a class="admin-record" href="${roundUrl(item)}">${label}</a>`;
+      return `<span class="admin-round-record">${label}</span>`;
     }
     return `<button class="admin-record" type="button" data-record="${item.id}">${label}</button>`;
   }
@@ -204,7 +210,7 @@
   });
 
   globalThis.IE104Admin = {
-    academic, arrow, badge, dataTable, definitions, displayDate, escapeHtml, forTerm,
+    academic, arrow, badge, dataTable, definitions, displayDate, displayDateTime, escapeHtml, forTerm,
     initializeTerm, labels, normalizeSearch, pageUrl, params, populateTerms,
     rememberTerm, roundLabels, roundUrl, term, view,
   };
