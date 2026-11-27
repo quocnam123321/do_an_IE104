@@ -1020,6 +1020,14 @@
   border-color: var(--color-border);
 }
 
+.admin-academic-form :is(.proposal-calendar__grid, .proposal-calendar__month-grid) button:disabled,
+.admin-academic-form .proposal-calendar__time-options > [aria-disabled="true"] {
+  background: transparent;
+  color: var(--color-muted-foreground);
+  opacity: .65;
+  cursor: not-allowed;
+}
+
 @media (width < 34rem) {
   .admin-academic-form .proposal-calendar--with-time:popover-open {
     grid-template-rows: auto minmax(0, 1fr) auto auto;

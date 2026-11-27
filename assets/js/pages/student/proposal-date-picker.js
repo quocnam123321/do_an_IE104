@@ -83,11 +83,12 @@
     list.append(...options);
     let selected = -1;
     let active = 0;
+    let minimum = 0;
 
     function activate(index) {
       options[active].classList.remove('is-active');
-      active = index;
-      const option = options[index];
+      active = Math.max(minimum, index);
+      const option = options[active];
       option.classList.add('is-active');
       list.setAttribute('aria-activedescendant', option.id);
       if (option.offsetTop < list.scrollTop) list.scrollTop = option.offsetTop;
@@ -105,7 +106,7 @@
 
     list.addEventListener('click', event => {
       const index = options.indexOf(event.target.closest('[role="option"]'));
-      if (index < 0) return;
+      if (index < minimum) return;
       list.focus({ preventScroll: true });
       select(index);
       onSelect();
@@ -125,10 +126,22 @@
     return {
       get value() { return options[selected]?.textContent || ''; },
       set value(value) { select(value ? Number(value) : -1); },
+      setMinimum(index) {
+        if (minimum === index) return;
+        minimum = index;
+        options.forEach((option, value) => {
+          if (value < minimum) option.setAttribute('aria-disabled', 'true');
+          else option.removeAttribute('aria-disabled');
+        });
+        if (selected >= 0 && selected < minimum) select(-1);
+        else if (active < minimum) activate(minimum);
+      },
     };
   }
 
-  function enhanceDate(input, { timeZone, timeLabel = 'Giờ hết hạn đăng ký', label = input.labels[0], preferAbove = false, todayValue } = {}) {
+  function enhanceDate(input, {
+    timeZone, timeLabel = 'Giờ hết hạn đăng ký', label = input.labels[0], preferAbove = false, todayValue, minimumDateTime,
+  } = {}) {
     if (enhanced.has(input)) return;
     const group = document.createElement('div');
     group.className = 'proposal-date-control';
@@ -241,11 +254,24 @@
     const grid = panel.querySelector('table');
     const gridBody = grid?.tBodies[0];
     const clear = panel.querySelector('[data-clear-date]');
+    const todayButton = panel.querySelector('[data-today]');
     const hours = withTime && createTimeColumn(panel.querySelector(`#${panelId}-hours`), 24, updateDateTime);
     const minutes = withTime && createTimeColumn(panel.querySelector(`#${panelId}-minutes`), 60, updateDateTime);
     let today;
     let selected;
     let active;
+    let minimum = '';
+    const earliestDay = () => minimum.slice(0, 10);
+
+    function clampDay(date) {
+      return isoDate(date) < earliestDay() ? parseDate(earliestDay()) : date;
+    }
+
+    function updateTimeLimits() {
+      const [hour, minute] = selected === earliestDay() ? minimum.slice(11).split(':').map(Number) : [0, 0];
+      hours.setMinimum(hour);
+      minutes.setMinimum(hours.value && Number(hours.value) === hour ? minute : 0);
+    }
 
     const months = Array.from({ length: 12 }, (_, index) => {
       const month = document.createElement('button');
@@ -269,13 +295,20 @@
       const month = active.getUTCMonth();
       title.textContent = onlyMonth ? `Năm ${year}` : `Tháng ${month + 1} năm ${year}`;
       navigation[0].disabled = year === 1 && (!jump.hidden || month === 0);
+      if (minimum) {
+        const precision = jump.hidden ? 7 : 4;
+        navigation[0].disabled = isoDate(active).slice(0, precision) <= minimum.slice(0, precision);
+        todayButton.disabled = isoDate(today) < earliestDay();
+      }
       navigation[1].disabled = year === 9999 && (!jump.hidden || month === 11);
       updateActions();
       if (!jump.hidden) {
         yearField.value = year;
-        months.forEach((button, index) => button.setAttribute('aria-pressed', String(onlyMonth
-          ? input.value === isoDate(dateAt(year, index, 1)).slice(0, 7)
-          : index === month)));
+        months.forEach((button, index) => {
+          const monthValue = isoDate(dateAt(year, index, 1)).slice(0, 7);
+          button.setAttribute('aria-pressed', String(onlyMonth ? input.value === monthValue : index === month));
+          button.disabled = monthValue < minimum.slice(0, 7);
+        });
         popup.place();
         return;
       }
@@ -294,6 +327,7 @@
           button.type = 'button';
           button.dataset.date = value;
           button.textContent = date.getUTCDate();
+          button.disabled = value < earliestDay();
           button.tabIndex = date.getTime() === active.getTime() ? 0 : -1;
           button.setAttribute('aria-label', fullDate.format(date));
           if (date.getUTCMonth() !== month) button.classList.add('is-outside-month');
@@ -332,7 +366,7 @@
     function setYear() {
       const year = yearField.valueAsNumber;
       if (Number.isInteger(year) && year >= 1 && year <= 9999) {
-        active = addMonths(active, (year - active.getUTCFullYear()) * 12);
+        active = clampDay(addMonths(active, (year - active.getUTCFullYear()) * 12));
       }
       render();
     }
@@ -352,15 +386,22 @@
         today = parseDate(local) || today;
       }
       today = parseDate(todayValue?.() || '') || today;
+      minimum = minimumDateTime?.() || '';
+      if (minimum) yearField.min = minimum.slice(0, 4);
       const date = parseDate(onlyMonth ? `${input.value}-01` : input.value);
-      selected = date ? isoDate(date) : '';
-      active = date || today;
+      selected = date && isoDate(date) >= earliestDay() ? isoDate(date) : '';
+      active = clampDay(date || today);
       showMonths(onlyMonth);
       popup.open();
       if (withTime) {
         const [hour = '', minute = ''] = parseTime(timeInput.value).split(':');
+        if (minimum) {
+          hours.setMinimum(0);
+          minutes.setMinimum(0);
+        }
         hours.value = hour;
         minutes.value = minute;
+        if (minimum) updateTimeLimits();
         updateActions();
       }
       if (onlyMonth) months[active.getUTCMonth()].focus({ preventScroll: true });
@@ -389,6 +430,14 @@
     }
 
     function updateDateTime() {
+      if (minimumDateTime) {
+        const previous = minimum;
+        minimum = minimumDateTime();
+        if (selected < earliestDay()) selected = '';
+        active = clampDay(active);
+        updateTimeLimits();
+        if (previous !== minimum) render();
+      }
       const value = parseDateTime(selected, `${hours.value}:${minutes.value}`);
       if (!value) {
         updateActions();
@@ -400,6 +449,7 @@
     }
 
     function choose(value) {
+      if (!value || value < earliestDay()) return;
       if (!withTime) {
         commit(value);
         close();
@@ -464,7 +514,7 @@
     });
     navigation.forEach(button => button.addEventListener('click', () => {
       const step = Number(button.dataset.step);
-      active = addMonths(active, jump.hidden ? step : step * 12);
+      active = clampDay(addMonths(active, jump.hidden ? step : step * 12));
       render();
       if (button.disabled) (onlyMonth ? yearField : heading).focus({ preventScroll: true });
     }));
@@ -490,7 +540,7 @@
       if (!next) return;
       event.preventDefault();
       if (!inRange(next)) return;
-      active = next;
+      active = clampDay(next);
       render();
       focusDay();
     });
@@ -498,7 +548,7 @@
       commit('');
       close();
     });
-    panel.querySelector('[data-today]').addEventListener('click', () => choose(isoDate(today)));
+    todayButton.addEventListener('click', () => choose(isoDate(today)));
     input.form?.addEventListener('reset', popup.close);
     input.closest('dialog')?.addEventListener('close', popup.close);
     if (onlyMonth) {

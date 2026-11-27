@@ -3,11 +3,25 @@
   const storageKey = "ie104.admin.academic-demo.v1";
   const initialTerms = ["2026-1", "2025-2"];
   const roundTypes = ["course", "thesis"];
-  const startYears = Array.from({ length: 100 }, (_, index) => String(2099 - index));
+  const vietnamOffsetMs = 7 * 60 * 60 * 1000;
+  const minuteMs = 60 * 1000;
 
   // Học kỳ 4 vẫn đọc được từ dữ liệu của các phiên bản trước.
   const storedTermPattern = /^20\d{2}-[1-4]$/;
   const datetimePattern = /^20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+
+  function currentYear() {
+    return new Date(Date.now() + vietnamOffsetMs).getUTCFullYear();
+  }
+
+  function availableStartYears() {
+    return Array.from({ length: 2100 - currentYear() }, (_, index) => String(2099 - index));
+  }
+
+  function minimumDateTime() {
+    const minute = Math.ceil((Date.now() + vietnamOffsetMs) / minuteMs) * minuteMs;
+    return new Date(minute).toISOString().slice(0, 16);
+  }
 
   function validWindow(start, end) {
     return datetimePattern.test(start) && datetimePattern.test(end) &&
@@ -81,6 +95,7 @@
     const id = `${year}-${number}`;
     return save((data) => {
       if (!/^20\d{2}$/.test(year)) return { error: "Hãy nhập năm bắt đầu từ 2000 đến 2099." };
+      if (Number(year) < currentYear()) return { error: "Năm bắt đầu phải từ năm hiện tại trở đi." };
       if (!/^[1-3]$/.test(number)) return { error: "Hãy chọn học kỳ 1, 2 hoặc 3." };
       if ([...initialTerms, ...data.terms].includes(id)) {
         return { error: "Học kỳ này đã tồn tại." };
@@ -103,6 +118,9 @@
       if (original && (!existing || original.revision !== existing.revision)) {
         return { error: "Đợt đã thay đổi. Hãy đóng biểu mẫu và mở lại." };
       }
+      const minimum = minimumDateTime();
+      const field = ["start", "end"].find((key) => values[key] !== existing?.[key] && values[key] < minimum);
+      if (field) return { error: "Mốc mới phải từ thời điểm hiện tại trở đi.", field };
       if (![...initialTerms, ...data.terms].includes(values.term) || !roundTypes.includes(values.type)) {
         return { error: "Hãy chọn học kỳ và loại đề tài hợp lệ." };
       }
@@ -115,5 +133,5 @@
     });
   }
 
-  globalThis.IE104AdminAcademic = { roundTypes, startYears, snapshot, termLabel, addTerm, saveRound };
+  globalThis.IE104AdminAcademic = { roundTypes, availableStartYears, minimumDateTime, snapshot, termLabel, addTerm, saveRound };
 })();

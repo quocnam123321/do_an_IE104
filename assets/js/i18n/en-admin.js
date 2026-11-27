@@ -135,6 +135,8 @@ Object.assign(globalThis.ie104English ??= {}, {
   "CN": "Sun",
   "Hãy nhập ngày và giờ đăng ký hợp lệ.": "Enter a valid registration date and time.",
   "Hãy nhập năm bắt đầu từ 2000 đến 2099.": "Enter a start year from 2000 to 2099.",
+  "Năm bắt đầu phải từ năm hiện tại trở đi.": "The start year must be the current year or later.",
+  "Mốc mới phải từ thời điểm hiện tại trở đi.": "Choose a date and time from now onward.",
   "Hãy chọn học kỳ 1, 2 hoặc 3.": "Select term 1, 2, or 3.",
   "Học kỳ này đã tồn tại.": "This term already exists.",
   "Hãy nhập tên đợt đăng ký.": "Enter a registration period name.",

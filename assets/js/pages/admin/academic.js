@@ -126,8 +126,10 @@
 
     const controls = academicForm.elements;
     if (isTerm) {
-      const selectedYear = (term.value || data.terms[0]).split("-")[0];
-      controls.year.replaceChildren(...academic.startYears.map((year) => new Option(year, year, false, year === selectedYear)));
+      const years = academic.availableStartYears();
+      const filterYear = (term.value || data.terms[0]).split("-")[0];
+      const selectedYear = years.includes(filterYear) ? filterYear : years.at(-1);
+      controls.year.replaceChildren(...years.map((year) => new Option(year, year, false, year === selectedYear)));
     } else {
       const record = formAction === "edit" ? currentRound : null;
       populateTerms(controls.term, record?.term ?? term?.value);
@@ -137,11 +139,18 @@
       controls.term.disabled = hasTopics;
       controls.type.disabled = hasTopics;
       const dates = [[controls.start, record?.start, "Giờ mở đăng ký"], [controls.end, record?.end, "Giờ đóng đăng ký"]];
+      const minimum = academic.minimumDateTime();
+      // Biểu mẫu vẫn kiểm tra bằng JavaScript khi ngày cũ nằm ngoài giới hạn của lịch gốc.
+      academicForm.noValidate = !datePicker && dates.some(([, value]) => value && value < minimum);
       for (const [input, value, timeLabel] of dates) {
         input.removeAttribute("aria-invalid");
-        datePicker?.enhanceDate(input, { timeZone, timeLabel });
-        if (datePicker) datePicker.fill(input, value ?? "");
-        else input.value = value ?? "";
+        if (datePicker) {
+          datePicker.enhanceDate(input, { timeZone, timeLabel, minimumDateTime: academic.minimumDateTime });
+          datePicker.fill(input, value ?? "");
+        } else {
+          input.min = minimum;
+          input.value = value ?? "";
+        }
       }
     }
     academicDialog.showModal();
@@ -201,6 +210,11 @@
     if (!academicDialog.open) return;
     if (result.error) {
       showFormError(result.error);
+      if (result.field) {
+        const input = controls[result.field];
+        input.setAttribute("aria-invalid", "true");
+        input.focus();
+      }
       return;
     }
 
