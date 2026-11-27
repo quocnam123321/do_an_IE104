@@ -11,10 +11,13 @@
   <link rel="stylesheet" href="../../assets/css/components.css">
   <link rel="stylesheet" href="../../assets/css/tong-quan-giang-vien.css">
   <link rel="stylesheet" href="../../assets/css/project-footer.css">
+  <link rel="stylesheet" href="../../assets/css/proposal-pickers.css">
   <link rel="stylesheet" href="../../assets/css/admin-preview.css">
   <script defer src="../../assets/js/i18n/en-shared.js"></script>
   <script defer src="../../assets/js/i18n/en-admin.js"></script>
   <script defer src="../../assets/js/shared/language.js"></script>
+  <script defer src="../../assets/js/pages/student/proposal-pickers.js"></script>
+  <script defer src="../../assets/js/pages/student/proposal-date-picker.js"></script>
   <script defer src="../../assets/js/pages/admin/sample-data.js"></script>
   <script defer src="../../assets/js/pages/admin/academic-store.js"></script>
   <script defer src="../../assets/js/pages/admin/preview.js"></script>
@@ -235,11 +238,11 @@
         <option value="thesis">Khóa luận tốt nghiệp</option>
       </select>
     </div>
-    <div class="admin-field">
+    <div class="admin-field requirement-deadline">
       <label for="academic-round-start">Mở đăng ký</label>
-      <input id="academic-round-start" name="start" type="datetime-local" required>
+      <input id="academic-round-start" name="start" type="datetime-local" aria-describedby="admin-academic-error" required>
     </div>
-    <div class="admin-field">
+    <div class="admin-field requirement-deadline">
       <label for="academic-round-end">Đóng đăng ký</label>
       <input id="academic-round-end" name="end" type="datetime-local" aria-describedby="admin-academic-error" required>
     </div>

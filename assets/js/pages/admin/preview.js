@@ -79,6 +79,10 @@
   const academicFields = document.querySelector("#admin-academic-fields");
   const academicError = document.querySelector("#admin-academic-error");
   const academicSubmit = academicForm.querySelector('[type="submit"]');
+  const roundFields = [...document.querySelector("#admin-round-form-fields").content.cloneNode(true).children];
+  const datePicker = globalThis.IE104?.ui?.proposalDatePicker;
+  const timeZone = "Asia/Ho_Chi_Minh";
+  let roundListTerm;
   let currentRound;
   let formAction;
   let data = academic.snapshot();
@@ -90,7 +94,7 @@
   compactMenu.addEventListener("change", syncMenu);
 
   function forTerm(items) {
-    return items.filter((item) => !item.term || item.term === term.value);
+    return items.filter((item) => !term.value || !item.term || item.term === term.value);
   }
 
   function displayDate(value) {
@@ -103,8 +107,10 @@
     })[character]);
   }
 
-  function populateTerms(select, selected) {
-    select.replaceChildren(...data.terms.map((id) => new Option(academic.termLabel(id), id, false, id === selected)));
+  function populateTerms(select, selected, includeAll = false) {
+    const options = data.terms.map((id) => new Option(academic.termLabel(id), id, false, id === selected));
+    if (includeAll) options.unshift(new Option("Tất cả học kỳ", "", false, selected === ""));
+    select.replaceChildren(...options);
   }
 
   function statusLabel(definition, status) {
@@ -360,6 +366,7 @@
         <div class="admin-panel" id="admin-results"></div>
       </section>`;
     view.querySelector("#admin-round-term-slot").replaceWith(termControl);
+    roundListTerm = term.value;
 
     const search = view.querySelector("#admin-search");
     const type = view.querySelector("#admin-filter-type");
@@ -432,7 +439,9 @@
     const round = detailId && data.rounds.find((item) => item.id === detailId);
     currentRound = round;
     if (termControl.parentElement !== heading) heading.append(termControl);
-    populateTerms(term, round?.term ?? term.value);
+    const isRoundList = isAcademic && !detailId;
+    const selectedTerm = isRoundList && !filter ? roundListTerm ?? term.value : term.value;
+    populateTerms(term, round?.term ?? selectedTerm, isRoundList);
     title.textContent = round?.name ?? (detailId ? "Chi tiết đợt đăng ký" : definition.name);
     title.translate = !round;
     locationLabel.textContent = detailId ? "Chi tiết đợt đăng ký" : definition.name;
@@ -488,8 +497,12 @@
     if (!button) return;
     formAction = button.dataset.academicAction;
     const isTerm = formAction === "term";
-    const template = document.querySelector(isTerm ? "#admin-term-form-fields" : "#admin-round-form-fields");
-    academicFields.replaceChildren(template.content.cloneNode(true));
+    if (isTerm) {
+      const template = document.querySelector("#admin-term-form-fields");
+      academicFields.replaceChildren(template.content.cloneNode(true));
+    } else {
+      academicFields.replaceChildren(...roundFields);
+    }
     const [dialogTitle, submitLabel] = formCopy[formAction];
     document.querySelector("#admin-academic-title").textContent = dialogTitle;
     academicSubmit.textContent = submitLabel;
@@ -497,16 +510,22 @@
 
     const controls = academicForm.elements;
     if (isTerm) {
-      const selectedYear = term.value.split("-")[0];
+      const selectedYear = (term.value || data.terms[0]).split("-")[0];
       controls.year.replaceChildren(...academic.startYears.map((year) => new Option(year, year, false, year === selectedYear)));
     } else {
       const record = formAction === "edit" ? currentRound : null;
       populateTerms(controls.term, record?.term ?? term.value);
-      if (record) {
-        for (const key of ["name", "type", "start", "end"]) controls[key].value = record[key];
-        const hasTopics = topics.some((topic) => topic.roundId === record.id);
-        controls.term.disabled = hasTopics;
-        controls.type.disabled = hasTopics;
+      controls.name.value = record?.name ?? "";
+      controls.type.value = record?.type ?? "course";
+      const hasTopics = Boolean(record && topics.some((topic) => topic.roundId === record.id));
+      controls.term.disabled = hasTopics;
+      controls.type.disabled = hasTopics;
+      const dates = [[controls.start, record?.start, "Giờ mở đăng ký"], [controls.end, record?.end, "Giờ đóng đăng ký"]];
+      for (const [input, value, timeLabel] of dates) {
+        input.removeAttribute("aria-invalid");
+        datePicker?.enhanceDate(input, { timeZone, timeLabel });
+        if (datePicker) datePicker.fill(input, value ?? "");
+        else input.value = value ?? "";
       }
     }
     academicDialog.showModal();
@@ -522,6 +541,7 @@
   });
   academicForm.addEventListener("input", () => {
     showFormError("");
+    academicForm.elements.start?.removeAttribute("aria-invalid");
     academicForm.elements.end?.removeAttribute("aria-invalid");
   });
   academicForm.addEventListener("submit", async (event) => {
@@ -532,10 +552,23 @@
     const original = formAction === "edit" ? currentRound : null;
     let values;
     if (!isTerm) {
-      values = Object.fromEntries(["name", "term", "type", "start", "end"].map((key) => [key, controls[key].value.trim()]));
+      values = {
+        name: controls.name.value.trim(),
+        term: controls.term.value,
+        type: controls.type.value,
+        start: datePicker?.read(controls.start) ?? controls.start.value,
+        end: datePicker?.read(controls.end) ?? controls.end.value,
+      };
       if (!values.name) {
         showFormError("Hãy nhập tên đợt đăng ký.");
         controls.name.focus();
+        return;
+      }
+      if (!values.start || !values.end) {
+        const input = values.start ? controls.end : controls.start;
+        showFormError("Hãy nhập ngày và giờ đăng ký hợp lệ.");
+        input.setAttribute("aria-invalid", "true");
+        input.focus();
         return;
       }
       if (values.end <= values.start) {
@@ -557,6 +590,7 @@
 
     academicDialog.close();
     const selected = isTerm ? result.id : values.term;
+    if (!original) roundListTerm = selected;
     if (getRoute().detailId === undefined && location.hash !== "#dot-dang-ky") {
       history.replaceState(null, "", "#dot-dang-ky");
     }
@@ -616,6 +650,9 @@
     });
   });
 
-  term.addEventListener("change", () => refreshTerm?.());
+  term.addEventListener("change", () => {
+    if (view.contains(termControl)) roundListTerm = term.value;
+    refreshTerm?.();
+  });
   renderPage();
 })();

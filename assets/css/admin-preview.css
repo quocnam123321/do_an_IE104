@@ -897,6 +897,33 @@
   cursor: pointer;
 }
 
+.admin-academic-form .proposal-date-control--with-time {
+  font-variant-numeric: tabular-nums;
+}
+
+.admin-academic-form .proposal-date-control--with-time:has(> input:first-child:placeholder-shown):has(> .proposal-date-time:placeholder-shown):not(:focus-within) > .proposal-date-separator {
+  visibility: hidden;
+}
+
+.admin-academic-form .proposal-date-control--with-time:has(> input:first-child:placeholder-shown) > .proposal-date-time:not(:focus)::placeholder {
+  color: transparent;
+}
+
+.admin-academic-form .proposal-calendar {
+  border-color: var(--color-border);
+}
+
+@media (width < 34rem) {
+  .admin-academic-form .proposal-calendar--with-time:popover-open {
+    grid-template-rows: auto minmax(0, 1fr) auto auto;
+    overflow: hidden;
+  }
+
+  .admin-academic-form .proposal-calendar__time-options {
+    max-block-size: clamp(var(--control-min-height), 13dvh, calc(2 * var(--control-min-height)));
+  }
+}
+
 .admin-academic-form input[aria-invalid="true"] {
   border-color: var(--color-danger-fg);
 }
