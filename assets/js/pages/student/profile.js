@@ -77,9 +77,8 @@
       dialog.close();
       refresh();
       status.classList.remove('profile-feedback-error');
-      status.textContent = 'Đã lưu hồ sơ thử trên trình duyệt này. Chưa cập nhật tài khoản trên hệ thống.';
-      status.tabIndex = -1;
-      status.focus();
+      status.textContent = '';
+      globalThis.IE104.ui.profileSuccess('Lưu thông tin thành công', 'Thông tin cá nhân đã được cập nhật trên trình duyệt này.', open);
     } catch (failure) {
       error.textContent = failure.message;
       error.hidden = false;
@@ -90,30 +89,6 @@
   window.addEventListener('storage', event => { if (event.key === globalThis.IE104.storage.profileKey || event.key === null) refresh(); });
   window.addEventListener('pageshow', refresh);
 
-  const passwordForm = document.getElementById('profile-password-form');
-  const passwordDialog = document.getElementById('profile-password-dialog');
-  const passwordError = document.getElementById('profile-password-error');
-  const passwordStatus = document.getElementById('profile-password-status');
-  const passwordFields = { current: document.getElementById('profile-password-current'), next: document.getElementById('profile-password-new'), confirm: document.getElementById('profile-password-confirm') };
-  passwordForm.noValidate = true;
-  document.querySelectorAll('#profile-password-dialog .password-toggle').forEach(button => { button.disabled = false; });
-  document.getElementById('password-submit').disabled = false;
-  passwordForm.addEventListener('submit', event => {
-    event.preventDefault();
-    Object.values(passwordFields).forEach(field => field.removeAttribute('aria-invalid'));
-    passwordError.textContent = '';
-    passwordStatus.textContent = '';
-    const errors = service.validatePassword(Object.fromEntries(Object.entries(passwordFields).map(([key, field]) => [key, field.value])));
-    if (errors.length) {
-      passwordError.textContent = errors.map(item => item.message).join(' ');
-      errors.forEach(item => passwordFields[item.field].setAttribute('aria-invalid', 'true'));
-      passwordFields[errors[0].field].focus();
-      return;
-    }
-    passwordStatus.textContent = 'Các trường đã nhập khớp nhau. Chưa xác minh mật khẩu hiện tại hoặc đổi mật khẩu vì chưa kết nối hệ thống.';
-  });
-  passwordDialog.addEventListener('close', () => { passwordForm.reset(); passwordError.textContent = ''; passwordStatus.textContent = ''; Object.values(passwordFields).forEach(field => field.removeAttribute('aria-invalid')); });
-  window.addEventListener('pagehide', () => passwordForm.reset());
   refresh();
   document.body.dataset.profileReady = 'true';
 })();

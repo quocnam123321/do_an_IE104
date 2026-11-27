@@ -124,3 +124,28 @@ Object.assign(globalThis.ie104English ??= {}, {
   [/^Năm học (\d{4}[–-]\d{4})$/, "Academic Year $1"],
   [/^(\d+)% hoàn thành$/, "$1% complete"]
 );
+
+Object.assign(globalThis.ie104English ||= {}, {
+  "Lưu thông tin thành công": "Profile saved successfully",
+  "Thông tin cá nhân đã được cập nhật trên trình duyệt này.": "Your profile has been updated in this browser.",
+  "Cập nhật ảnh thành công": "Profile photo updated",
+  "Ảnh đại diện đã được cập nhật trên trình duyệt này.": "Your profile photo has been updated in this browser.",
+  "Đổi mật khẩu thành công": "Password changed successfully",
+  "Mật khẩu tài khoản mẫu đã được cập nhật trên trình duyệt này. Dùng mật khẩu mới cho lần đăng nhập tiếp theo.": "The demo account password has been updated in this browser. Use the new password the next time you sign in.",
+  "Mật khẩu đã được cập nhật. Dùng mật khẩu mới cho lần đăng nhập tiếp theo.": "Your password has been updated. Use the new password the next time you sign in.",
+  "Mật khẩu mới cần từ 8 đến 128 ký tự.": "The new password must contain 8 to 128 characters.",
+  "Đang đổi mật khẩu…": "Changing password…",
+  "Mật khẩu hiện tại không đúng.": "The current password is incorrect.",
+  "Hãy đăng nhập lại trước khi đổi mật khẩu.": "Please sign in again before changing your password.",
+  "Tài khoản đăng nhập bằng Google. Hãy đổi mật khẩu trong tài khoản Google của bạn.": "This account uses Google sign-in. Change your password in your Google Account.",
+  "Không kết nối được máy chủ. Vui lòng thử lại.": "Unable to connect to the server. Please try again.",
+  "Thông tin cá nhân được lưu trên trình duyệt này.": "Your profile is saved in this browser.",
+  "Đóng thông báo": "Close notification",
+  "Mật khẩu mới chưa đáp ứng yêu cầu bảo mật.": "The new password does not meet the security requirements.",
+  "Bạn đã thử quá nhiều lần. Hãy thử lại sau.": "Too many attempts. Please try again later.",
+  "Chưa đổi được mật khẩu. Vui lòng thử lại.": "The password could not be changed. Please try again."
+});
+
+Object.assign(globalThis.ie104English ||= {}, {"Mật khẩu mặc định:": "Default password:"});
+
+Object.assign(globalThis.ie104English ||= {}, {"Khoa": "Faculty", "Công nghệ thông tin": "Information Technology", "Thạc sĩ": "Master", "Thiết bị Di động và Công nghệ Web": "Mobile Devices and Web Technology", "Phát triển ứng dụng web, thiết kế phần mềm và cơ sở dữ liệu": "Web development, software design and databases"});

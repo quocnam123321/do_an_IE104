@@ -516,3 +516,12 @@ Tổng quan, Quản lý đề tài và Yêu cầu chờ duyệt dùng cùng kho�
 
 - Một bố cục danh sách tại thong-bao.html. Bộ lọc dùng ?loai=..., phân trang dùng ?trang=..., giữ giao diện hiện có, 12 thông báo/trang, Back/Forward và link chia sẻ/tải lại.
 - Bài viết vẫn dùng chi-tiet-thong-bao.html?id=...; nguồn thông báo đại học UIT giữ trang riêng vì khác dữ liệu và cách đọc nội dung. Các URL danh sách cũ chuyển hướng về trang chung khi chạy Firebase Hosting.
+
+
+## Hồ sơ SV/GV và số đếm tab — 28/11/2026
+
+- Các số cạnh tên tab quản lý đề tài và lời mời được ẩn khỏi giao diện; giữ dữ liệu và thông tin hỗ trợ trình đọc màn hình. Số lượng trong cột công việc/bài nộp không thuộc thay đổi này.
+- Hộp đổi mật khẩu GV dùng cùng `profile-dialog`, `password-field`, `password-input` như SV, có nút hiện/ẩn mật khẩu và lỗi nhập liệu. Không đổi màu, font hay token.
+- Sau khi lưu hồ sơ, ảnh hoặc mật khẩu thành công, mở hộp thông báo ngắn dùng header/nút X và nội dung; không lặp nút Đóng. Lỗi lưu giữ tại biểu mẫu, không mở hộp thành công.
+- Nút X của hộp chỉnh sửa không có viền; hàng thao tác căn phải, xuống dòng khi thiếu chỗ. Hộp thoại giới hạn theo viewport, Escape đóng và trả focus về nút mở.
+- Giữ avatar mặc định trung tính. Thông tin tài khoản minh họa phải phân biệt trong bàn giao; không gán thông tin cá nhân thật cho một tài khoản mẫu khác người.

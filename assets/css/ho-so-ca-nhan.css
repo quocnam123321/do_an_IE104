@@ -234,3 +234,19 @@
 @container (max-width: 32rem) {
   .profile-field { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
 }
+
+/* Shared profile form and operation feedback. */
+.profile-edit__actions { justify-content: flex-end; padding-top: var(--space-4); border-top: 1px solid var(--color-border); }
+.profile-edit > header { padding-bottom: var(--space-4); border-bottom: 1px solid var(--color-border); }
+.profile-edit > header > button { border-color: transparent; background: transparent; font-size: 1.5rem; }
+.profile-dialog :is(#password-submit, .change-password-dialog__submit, #avatar-save):not(:disabled) { background: var(--color-primary); border-color: var(--color-primary); color: var(--color-on-primary); }
+.profile-dialog :is(#password-submit, .change-password-dialog__submit, #avatar-save):not(:disabled):hover { background: var(--color-primary-hover); border-color: var(--color-primary-hover); }
+.profile-dialog [aria-invalid="true"] { border-color: var(--color-danger-fg); }
+.profile-success-dialog > header { background: var(--color-surface); }
+.profile-success-dialog .profile-dialog__body { gap: var(--space-3); }
+.profile-success-dialog p { margin: 0; color: var(--color-foreground); }
+.profile-dialog [role="alert"]:empty { display: none; }
+.profile-dialog .password-input { min-width: 0; }
+@media (max-width: 35.99rem) {
+  .profile-edit__actions > button { flex: 1 1 auto; }
+}

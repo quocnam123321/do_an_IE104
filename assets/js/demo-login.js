@@ -97,7 +97,10 @@
     }
 
     const demo = destinations.get(account);
-    if (!demo || password.value !== demoPassword) {
+    let passwordMatches = false;
+    try { passwordMatches = Boolean(demo) && await globalThis.IE104.services.accountPassword.verifyDemo(demo.role, password.value, demoPassword); }
+    catch (failure) { error.textContent = failure.message; return; }
+    if (!demo || !passwordMatches) {
       username.setAttribute("aria-invalid", "true");
       password.setAttribute("aria-invalid", "true");
       error.textContent = "Tài khoản hoặc mật khẩu không đúng. Vui lòng kiểm tra thông tin mẫu.";

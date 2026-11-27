@@ -11,21 +11,23 @@
     <title>Hồ sơ cá nhân | Quản lý đồ án</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
     <script defer src="../../assets/js/i18n/en-student.js"></script>
-    <script defer src="../../assets/js/i18n/en-shared.js"></script>
+    <script defer src="../../assets/js/i18n/en-shared.js?v=20261128-profile"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
     <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-menu-2" />
-    <link rel="stylesheet" href="../../assets/css/ho-so-ca-nhan.css" />
+    <link rel="stylesheet" href="../../assets/css/ho-so-ca-nhan.css?v=20261128-profile" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <script src="../../assets/js/shared/dialog-commands.js" defer></script>
-    <link rel="stylesheet" href="../../assets/css/student-profile.css">
-    <script src="../../assets/js/data/student-profile.js" defer></script>
+    <link rel="stylesheet" href="../../assets/css/student-profile.css?v=20261128-profile">
+    <script src="../../assets/js/data/student-profile.js?v=20261128-profile" defer></script>
     <script src="../../assets/js/services/storage.js?v=20261124-demo-invitation-polish" defer></script>
     <script src="../../assets/js/services/profile-service.js" defer></script>
+    <script src="../../assets/js/services/account-password.js?v=20261128-profile" defer></script>
+    <script src="../../assets/js/pages/common/profile-feedback.js?v=20261128-profile" defer></script>
     <script src="../../assets/js/services/avatar-service.js" defer></script>
-    <script src="../../assets/js/pages/student/profile.js" defer></script>
-    <script src="../../assets/js/pages/student/profile-avatar.js" defer></script>
+    <script src="../../assets/js/pages/student/profile.js?v=20261128-profile" defer></script>
+    <script src="../../assets/js/pages/student/profile-avatar.js?v=20261128-profile" defer></script>
     <script src="../../assets/js/pages/common/password-toggle.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
@@ -226,28 +228,28 @@
                 <label for="profile-password-current">Mật khẩu hiện tại</label>
                 <div class="password-input">
                   <input id="profile-password-current" aria-describedby="profile-password-error profile-password-notice" name="current-password" type="password" autocomplete="current-password" placeholder="Nhập mật khẩu hiện tại" required autofocus />
-                  <button type="button" class="password-toggle password-field__toggle" aria-controls="profile-password-current" aria-label="Hiện mật khẩu hiện tại" aria-describedby="profile-password-notice" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="password-toggle password-field__toggle" aria-controls="profile-password-current" aria-label="Hiện mật khẩu hiện tại" aria-describedby="profile-password-notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
                 </div>
               </div>
               <div class="password-field">
                 <label for="profile-password-new">Mật khẩu mới</label>
                 <div class="password-input">
                   <input id="profile-password-new" aria-describedby="profile-password-error profile-password-notice" name="new-password" type="password" autocomplete="new-password" placeholder="Nhập mật khẩu mới" required />
-                  <button type="button" class="password-toggle password-field__toggle" aria-controls="profile-password-new" aria-label="Hiện mật khẩu mới" aria-describedby="profile-password-notice" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="password-toggle password-field__toggle" aria-controls="profile-password-new" aria-label="Hiện mật khẩu mới" aria-describedby="profile-password-notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
                 </div>
               </div>
               <div class="password-field">
                 <label for="profile-password-confirm">Xác nhận mật khẩu mới</label>
                 <div class="password-input">
                   <input id="profile-password-confirm" aria-describedby="profile-password-error profile-password-notice" name="confirm-password" type="password" autocomplete="new-password" placeholder="Nhập lại mật khẩu mới" required />
-                  <button type="button" class="password-toggle password-field__toggle" aria-controls="profile-password-confirm" aria-label="Hiện xác nhận mật khẩu mới" aria-describedby="profile-password-notice" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  <button type="button" class="password-toggle password-field__toggle" aria-controls="profile-password-confirm" aria-label="Hiện xác nhận mật khẩu mới" aria-describedby="profile-password-notice"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg></button>
                 </div>
               </div>
-              <p id="profile-password-notice">Bản minh họa: chưa kết nối hệ thống để kiểm tra hoặc cập nhật mật khẩu.</p>
+              <p id="profile-password-notice">Mật khẩu mới cần từ 8 đến 128 ký tự.</p>
               <p id="profile-password-error" role="alert"></p>
               <p id="profile-password-status" role="status"></p>
             </div>
-            <footer><button type="button" commandfor="profile-password-dialog" command="close">Hủy</button><button id="password-submit" type="submit" disabled>Kiểm tra thông tin</button></footer>
+            <footer><button type="button" commandfor="profile-password-dialog" command="close">Hủy</button><button id="password-submit" type="submit" disabled>Đổi mật khẩu</button></footer>
           </form>
         </dialog>
         <!-- Hộp thoại 3: Thay đổi ảnh đại diện. -->
