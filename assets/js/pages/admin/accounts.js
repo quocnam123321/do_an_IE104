@@ -16,6 +16,7 @@
   const editorTitle = document.querySelector("#admin-account-dialog-title");
   const editorError = document.querySelector("#admin-account-form-error");
   const editorSubmit = form.querySelector('button[type="submit"]');
+  const addedDialog = document.querySelector("#admin-account-success");
   const confirm = document.querySelector("#admin-account-confirm-dialog");
   const confirmForm = document.querySelector("#admin-account-confirm-form");
   const confirmTitle = document.querySelector("#admin-account-confirm-title");
@@ -135,6 +136,7 @@
 
   [search, roleFilter, statusFilter].forEach((control) => control.addEventListener("input", render));
   addButton.addEventListener("click", () => openEditor(null));
+  addedDialog.querySelector("button").addEventListener("click", () => addedDialog.close());
   rows.addEventListener("click", (event) => {
     const button = event.target.closest("[data-account-action]");
     if (!button) return;
@@ -189,7 +191,8 @@
       return;
     }
     editor.close();
-    refreshAndFocus(result.id, "edit", editing ? "Đã lưu thay đổi." : "Đã thêm tài khoản mẫu.");
+    refreshAndFocus(result.id, "edit", editing ? "Đã lưu thay đổi." : "");
+    if (!editing) addedDialog.showModal();
   });
 
   confirmForm.addEventListener("submit", async (event) => {

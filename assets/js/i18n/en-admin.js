@@ -53,7 +53,7 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Mật khẩu phải có từ 6 đến 128 ký tự.": "Use a password with 6 to 128 characters.",
   "Mật khẩu xác nhận chưa khớp.": "The passwords do not match.",
   "Đã lưu thay đổi.": "Changes saved.",
-  "Đã thêm tài khoản mẫu.": "Sample account added.",
+  "Đã thêm tài khoản": "Account added",
   "Đã khóa tài khoản mẫu.": "Sample account locked.",
   "Đã mở khóa tài khoản mẫu.": "Sample account unlocked.",
   "Học kỳ và đợt đăng ký": "Terms and registration",

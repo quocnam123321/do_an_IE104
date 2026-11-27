@@ -892,11 +892,11 @@
   justify-content: flex-end;
 }
 
-.admin-academic-success::backdrop {
+:is(.admin-academic-success, .admin-account-success)::backdrop {
   backdrop-filter: none;
 }
 
-.admin-academic-success .success-dialog__close svg {
+:is(.admin-academic-success, .admin-account-success) .success-dialog__close svg {
   inline-size: 1.25rem;
   block-size: 1.25rem;
 }
