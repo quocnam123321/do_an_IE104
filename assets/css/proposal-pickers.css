@@ -23,8 +23,18 @@
 
 .proposal-picker-trigger > span,
 .proposal-month-trigger > span {
+  flex: 1 1 auto;
   min-width: 0;
-  overflow-wrap: anywhere;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: start;
+}
+
+.proposal-picker-trigger > svg,
+.proposal-month-trigger > svg {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
 }
 
 .research-select-wrap > .proposal-picker-trigger {

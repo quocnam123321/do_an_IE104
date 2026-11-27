@@ -525,3 +525,10 @@ Tổng quan, Quản lý đề tài và Yêu cầu chờ duyệt dùng cùng kho�
 - Sau khi lưu hồ sơ, ảnh hoặc mật khẩu thành công, mở hộp thông báo ngắn dùng header/nút X và nội dung; không lặp nút Đóng. Lỗi lưu giữ tại biểu mẫu, không mở hộp thành công.
 - Nút X của hộp chỉnh sửa không có viền; hàng thao tác căn phải, xuống dòng khi thiếu chỗ. Hộp thoại giới hạn theo viewport, Escape đóng và trả focus về nút mở.
 - Giữ avatar mặc định trung tính. Thông tin tài khoản minh họa phải phân biệt trong bàn giao; không gán thông tin cá nhân thật cho một tài khoản mẫu khác người.
+
+
+## Căn nội dung ô chọn — 28/11/2026
+
+- Ô chọn dùng proposal-picker-trigger hoặc proposal-month-trigger: nhãn căn đầu dòng, chiếm phần chiều rộng còn lại; mũi tên ở cuối ô và không bị co. Không để CSS căn giữa nút của từng trang gom chữ và mũi tên vào giữa.
+- Nhãn đã chọn giữ một dòng và rút gọn bằng dấu … khi dài. Danh sách mở và tên hỗ trợ trình đọc màn hình vẫn giữ đầy đủ; không cắt dữ liệu lựa chọn.
+- Áp dụng cùng quy tắc cho bộ lọc giảng viên, hướng nghiên cứu, lịch hạn nộp, chọn vai trò thành viên và các ô chọn trong biểu mẫu SV/GV; giữ màu, font, khoảng đệm và thao tác hiện có.
