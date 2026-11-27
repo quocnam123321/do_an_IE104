@@ -141,6 +141,10 @@
   min-inline-size: 5.5rem;
 }
 
+.admin-account-actions > .admin-account-unlock {
+  flex-grow: 1;
+}
+
 .admin-account-lock {
   border-color: var(--color-danger-fg);
   color: var(--color-danger-fg);
