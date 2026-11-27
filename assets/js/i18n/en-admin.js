@@ -100,8 +100,6 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Tạo đợt": "Create period",
   "Chỉnh sửa đợt": "Edit period",
   "Năm bắt đầu": "Start year",
-  "Học kỳ I": "Term 1",
-  "Học kỳ II": "Term 2",
   "Tên đợt đăng ký": "Registration period name",
   "Mở đăng ký": "Registration opens",
   "Đóng đăng ký": "Registration closes",
@@ -118,6 +116,6 @@ Object.assign(globalThis.ie104English ??= {}, {
 });
 
 (globalThis.ie104EnglishPatterns ??= []).push(
-  [/^HK I · (\d{4}–\d{4})$/, "Term 1 · $1"],
-  [/^HK II · (\d{4}–\d{4})$/, "Term 2 · $1"],
+  [/^Học kỳ ([1-4])$/, "Term $1"],
+  [/^HK ([1-4]) · (\d{4}–\d{4})$/, "Term $1 · $2"],
 );

@@ -3,8 +3,9 @@
   const storageKey = "ie104.admin.academic-demo.v1";
   const initialTerms = ["2026-1", "2025-2"];
   const roundTypes = ["course", "thesis"];
+  const startYears = Array.from({ length: 100 }, (_, index) => String(2099 - index));
 
-  const termPattern = /^20\d{2}-[12]$/;
+  const termPattern = /^20\d{2}-[1-4]$/;
   const datetimePattern = /^20\d{2}-\d{2}-\d{2}T\d{2}:\d{2}$/;
 
   function validWindow(start, end) {
@@ -34,7 +35,7 @@
 
   function termLabel(id) {
     const [year, number] = id.split("-");
-    return `HK ${number === "1" ? "I" : "II"} · ${year}–${Number(year) + 1}`;
+    return `HK ${number} · ${year}–${Number(year) + 1}`;
   }
 
   function statusOf({ start, end }) {
@@ -112,5 +113,5 @@
     });
   }
 
-  globalThis.IE104AdminAcademic = { roundTypes, snapshot, termLabel, addTerm, saveRound };
+  globalThis.IE104AdminAcademic = { roundTypes, startYears, snapshot, termLabel, addTerm, saveRound };
 })();

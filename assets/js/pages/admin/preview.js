@@ -497,7 +497,8 @@
 
     const controls = academicForm.elements;
     if (isTerm) {
-      controls.year.value = term.value.split("-")[0];
+      const selectedYear = term.value.split("-")[0];
+      controls.year.replaceChildren(...academic.startYears.map((year) => new Option(year, year, false, year === selectedYear)));
     } else {
       const record = formAction === "edit" ? currentRound : null;
       populateTerms(controls.term, record?.term ?? term.value);

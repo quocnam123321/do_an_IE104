@@ -860,6 +860,10 @@
   padding: var(--space-5);
 }
 
+.admin-academic-dialog select[name="year"] {
+  font-variant-numeric: tabular-nums;
+}
+
 .admin-academic-form input[aria-invalid="true"] {
   border-color: var(--color-danger-fg);
 }
