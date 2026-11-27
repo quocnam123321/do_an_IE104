@@ -147,6 +147,7 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Tên đề tài": "Topic title",
   "Giảng viên hướng dẫn": "Supervisor",
   "Người gửi": "Sender",
+  "Đại diện nhóm": "Team representative",
   "Giảng viên tiếp nhận": "Receiving lecturer",
   "Ngày gửi": "Submitted on",
   "Ngày cập nhật": "Last updated",

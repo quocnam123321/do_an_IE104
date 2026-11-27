@@ -133,7 +133,8 @@
     const groupLabel = definition.typeLabel ?? "Phân loại";
     const headers = [definition.nameLabel, ...(definition.hideType ? [] : [groupLabel]), ...definition.extra.map(([, label]) => label), "Trạng thái"];
     const detailUrl = definition.detailUrl ?? (definition.hasRoundActions ? roundUrl : null);
-    if (detailUrl) headers.push("Thao tác");
+    const hasActionColumn = detailUrl && !definition.detailInRecord;
+    if (hasActionColumn) headers.push("Thao tác");
     return `
       <div class="admin-table-scroll" tabindex="0" role="region" aria-label="${caption}">
         <table class="admin-table ${definition.tableClass ?? (definition.hasRoundActions ? "admin-round-table" : "")}">
@@ -147,9 +148,7 @@
               ${definition.hideType ? "" : `<td>${definition.typeLabels?.[item.type] ?? labels[item.type]}</td>`}
               ${definition.extra.map(([key, , render]) => render ? `<td>${render(item)}</td>` : `<td translate="no">${escapeHtml(cellValue(item, key))}</td>`).join("")}
               <td>${badge(statusLabel(definition, item.status), item.status)}</td>
-              ${detailUrl ? `<td>
-                <a class="admin-button" href="${escapeHtml(detailUrl(item))}"><span>Xem chi tiết</span>${arrow}<span class="visually-hidden" translate="no"> ${escapeHtml(item.name)}</span></a>
-              </td>` : ""}
+              ${hasActionColumn ? `<td>${detailLink(item, detailUrl(item))}</td>` : ""}
             </tr>`).join("")}
           </tbody>
         </table>
@@ -165,12 +164,19 @@
     return pageUrl("chi-tiet-dot-dang-ky.html", { id: item.id, term: term?.value });
   }
 
+  function detailLink(item, url) {
+    return `<a class="admin-button" href="${escapeHtml(url)}"><span>Xem chi tiết</span>${arrow}<span class="visually-hidden" translate="no"> ${escapeHtml(item.name)}</span></a>`;
+  }
+
   function recordCell(definition, item) {
     const label = `<span translate="no">${escapeHtml(item.name)}</span><span class="admin-code" translate="no">${escapeHtml(item.id)}</span>`;
     if (definition.hasRoundActions) {
       return `<span class="admin-round-record">${label}</span>`;
     }
-    if (definition.detailUrl) return `<span class="admin-catalog-record">${label}</span>`;
+    if (definition.detailUrl) {
+      const link = definition.detailInRecord ? detailLink(item, definition.detailUrl(item)) : "";
+      return `<span class="admin-catalog-record">${label}${link}</span>`;
+    }
     return `<button class="admin-record" type="button" data-record="${item.id}">${label}</button>`;
   }
 

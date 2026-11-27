@@ -38,6 +38,15 @@
       <span class="admin-code">${escapeHtml(member.code ?? member.id)}</span></span>`;
   }
 
+  function senderCell(item) {
+    const representative = students.get(item.representativeId);
+    if (!representative) return identity(item.sender);
+    return `<span class="admin-catalog-person" translate="no">
+      <strong>${escapeHtml(item.sender)}</strong>
+      <span class="admin-code">${identity(representative.name, representative.code ?? representative.id)}</span>
+    </span>`;
+  }
+
   function dateMarkup(value) {
     if (!value) return "Chưa ghi nhận";
     const hasTime = value.includes("T");
@@ -81,8 +90,9 @@
 
     const items = isRequest ? [...requests].sort((a, b) => b.date.localeCompare(a.date)) : catalogTopics;
     const definition = isRequest ? {
-      nameLabel: "Hồ sơ", typeLabel: "Loại hồ sơ", typeLabels: requestTypes, tableClass: "admin-catalog-table admin-catalog-table--requests",
-      extra: [["sender", "Người gửi"], ["lecturer", "Giảng viên tiếp nhận"], ["date", "Ngày gửi", (item) => dateMarkup(item.date)]],
+      nameLabel: "Hồ sơ", typeLabel: "Loại hồ sơ", typeLabels: requestTypes,
+      tableClass: "admin-catalog-table admin-catalog-table--requests", detailInRecord: true,
+      extra: [["sender", "Người gửi", senderCell], ["lecturer", "Giảng viên tiếp nhận"], ["date", "Ngày gửi", (item) => dateMarkup(item.date)]],
     } : {
       nameLabel: "Đề tài", tableClass: "admin-catalog-table",
       extra: [["lecturer", "Giảng viên phụ trách"], ["performer", "Người thực hiện", performerCell]],
@@ -96,7 +106,11 @@
         status: isRequest ? extra.value || null : topicStatus,
       };
       const matches = forTerm(items).filter((item) => {
-        const searchable = isRequest ? [item.id, item.name, item.sender, item.senderCode ?? ""] : [item.id, item.name];
+        const searchable = [item.id, item.name];
+        if (isRequest) {
+          const representative = students.get(item.representativeId);
+          searchable.push(item.sender, item.senderCode ?? "", representative?.name ?? "", representative?.code ?? representative?.id ?? "");
+        }
         return (!type.value || item.type === type.value) &&
           (!extra.value || (isRequest ? item.status : item.lecturer) === extra.value) &&
           (isRequest || !topicStatus || item.status === topicStatus) &&
@@ -196,10 +210,12 @@
   function showRequest(item) {
     const registration = item.type === "registration";
     const topic = topics.find(({ id }) => id === item.topicId);
+    const representative = students.get(item.representativeId);
+    const rejection = item.status === "rejected" ?
+      panel("admin-catalog-rejection", "Lý do từ chối", `<p>${item.reason ? identity(item.reason) : "Chưa ghi nhận"}</p>`) : "";
     const content = `<dl class="admin-catalog-completion">
       ${topic ? field("Đề tài đăng ký", identity(topic.name, topic.id)) : ""}
       ${field(registration ? "Lời nhắn của người gửi" : "Nội dung đề xuất", identity(item.message))}
-      ${item.reason ? field("Lý do từ chối", identity(item.reason)) : ""}
     </dl>`;
     const attachment = item.hasSampleOutline ? `<div class="admin-catalog-attachment">
       <span>Đề cương đề xuất mẫu (PDF)</span>
@@ -211,9 +227,10 @@
       field("Loại hồ sơ", requestTypes[item.type]) +
       field("Học kỳ", academic.termLabel(item.term)) +
       field("Người gửi", identity(item.sender, item.senderCode)) +
+      (representative ? field("Đại diện nhóm", identity(representative.name, representative.code ?? representative.id)) : "") +
       field("Giảng viên tiếp nhận", identity(item.lecturer)) +
       field("Ngày gửi", `<span class="admin-round-datetime">${calendar}${dateMarkup(item.date)}</span>`)
-    ) + panel("admin-catalog-content", registration ? "Nội dung đăng ký" : "Nội dung đề xuất", content) +
+    ) + rejection + panel("admin-catalog-content", registration ? "Nội dung đăng ký" : "Nội dung đề xuất", content) +
       panel("admin-catalog-attachments", "Tệp đính kèm", attachment);
   }
 
