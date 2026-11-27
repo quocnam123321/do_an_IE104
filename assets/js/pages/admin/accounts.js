@@ -8,7 +8,6 @@
   const roleFilter = document.querySelector("#admin-account-role-filter");
   const statusFilter = document.querySelector("#admin-account-status-filter");
   const dataError = document.querySelector("#admin-account-data-error");
-  const notice = document.querySelector("#admin-account-result");
   const editor = document.querySelector("#admin-account-dialog");
   const form = document.querySelector("#admin-account-form");
   const fields = form.elements;
@@ -16,7 +15,8 @@
   const editorTitle = document.querySelector("#admin-account-dialog-title");
   const editorError = document.querySelector("#admin-account-form-error");
   const editorSubmit = form.querySelector('button[type="submit"]');
-  const addedDialog = document.querySelector("#admin-account-success");
+  const successDialog = document.querySelector("#admin-account-success");
+  const successTitle = document.querySelector("#admin-account-success-title");
   const confirm = document.querySelector("#admin-account-confirm-dialog");
   const confirmForm = document.querySelector("#admin-account-confirm-form");
   const confirmTitle = document.querySelector("#admin-account-confirm-title");
@@ -127,16 +127,17 @@
     confirm.showModal();
   }
 
-  function refreshAndFocus(id, action, message) {
+  function showSuccess(id, action, message) {
     render();
     const control = rows.querySelector(`[data-account-id="${CSS.escape(id)}"][data-account-action="${action}"]`);
     (control ?? addButton).focus();
-    notice.textContent = message;
+    successTitle.textContent = message;
+    successDialog.showModal();
   }
 
   [search, roleFilter, statusFilter].forEach((control) => control.addEventListener("input", render));
   addButton.addEventListener("click", () => openEditor(null));
-  addedDialog.querySelector("button").addEventListener("click", () => addedDialog.close());
+  successDialog.querySelector(".success-dialog__close").addEventListener("click", () => successDialog.close());
   rows.addEventListener("click", (event) => {
     const button = event.target.closest("[data-account-action]");
     if (!button) return;
@@ -191,8 +192,7 @@
       return;
     }
     editor.close();
-    refreshAndFocus(result.id, "edit", editing ? "Đã lưu thay đổi." : "");
-    if (!editing) addedDialog.showModal();
+    showSuccess(result.id, "edit", editing ? "Đã lưu thay đổi" : "Đã thêm tài khoản");
   });
 
   confirmForm.addEventListener("submit", async (event) => {
@@ -207,7 +207,7 @@
       return;
     }
     confirm.close();
-    refreshAndFocus(result.id, locking ? "unlock" : "lock", locking ? "Đã khóa tài khoản mẫu." : "Đã mở khóa tài khoản mẫu.");
+    showSuccess(result.id, locking ? "unlock" : "lock", locking ? "Đã khóa tài khoản" : "Đã mở khóa tài khoản");
   });
 
   window.addEventListener("storage", (event) => {
