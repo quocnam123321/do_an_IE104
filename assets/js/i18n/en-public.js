@@ -1,5 +1,7 @@
 /* English copy for the public, sign-in, recovery and announcement pages. */
 Object.assign(globalThis.ie104English ??= {}, {
+  "Quản trị viên": "Administrator",
+  "Tổng quan quản trị": "Admin overview",
   "Chi tiết thông báo": "Announcement details",
   "Không tìm thấy thông báo.": "Announcement not found.",
   "Thông báo đại học UIT": "UIT undergraduate announcements",

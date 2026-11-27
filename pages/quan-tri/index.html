@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tổng quan quản trị | Quản lý đồ án</title>
+  <link rel="icon" href="../../assets/images/favicon.png">
+  <script src="../../assets/js/shared/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/tong-quan-giang-vien.css">
+  <link rel="stylesheet" href="../../assets/css/project-footer.css">
+  <link rel="stylesheet" href="../../assets/css/admin-preview.css">
+  <script defer src="../../assets/js/i18n/en-shared.js"></script>
+  <script defer src="../../assets/js/i18n/en-admin.js"></script>
+  <script defer src="../../assets/js/shared/language.js"></script>
+  <script defer src="../../assets/js/pages/admin/sample-data.js"></script>
+  <script defer src="../../assets/js/pages/admin/preview.js"></script>
+</head>
+<body id="page-top" class="admin-preview lecturer-overview-page" tabindex="-1">
+  <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-brand" href="#tong-quan">
+        <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="" width="40" height="40">
+        <span class="site-brand__name"><span>QUẢN LÝ ĐỒ ÁN VÀ</span><br><span>KHÓA LUẬN TỐT NGHIỆP</span></span>
+      </a>
+      <details class="site-navigation admin-navigation" open>
+        <summary class="site-navigation__toggle">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <span>Menu</span>
+        </summary>
+        <nav class="main-nav" aria-label="Điều hướng quản trị">
+          <ul class="main-nav__list">
+            <li class="main-nav__item"><a class="main-nav__link" href="#tong-quan" data-admin-nav="tong-quan" aria-current="page">Tổng quan</a></li>
+            <li class="main-nav__item"><a class="main-nav__link" href="#tai-khoan" data-admin-nav="tai-khoan">Tài khoản</a></li>
+            <li class="main-nav__item"><a class="main-nav__link" href="#dot-dang-ky" data-admin-nav="dot-dang-ky">Học kỳ và đợt đăng ký</a></li>
+            <li class="main-nav__item"><a class="main-nav__link" href="#de-tai" data-admin-nav="de-tai">Đề tài và hồ sơ</a></li>
+            <li class="main-nav__item"><a class="main-nav__link" href="#thong-bao" data-admin-nav="thong-bao">Thông báo</a></li>
+          </ul>
+        </nav>
+      </details>
+      <div class="account-menu">
+        <details class="account-menu__disclosure">
+          <summary class="account-menu__toggle" aria-label="Tài khoản quản trị">
+            <span class="account-menu__avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>
+              </svg>
+            </span>
+          </summary>
+          <div class="account-menu__list admin-account-card">
+            <strong>Quản trị viên</strong>
+            <p><span translate="no">QT001</span> · <span>Dữ liệu mẫu</span></p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="main-content" tabindex="-1">
+    <div class="page-container">
+      <nav class="breadcrumb" aria-label="Đường dẫn">
+        <ol class="breadcrumb__list">
+          <li class="breadcrumb__item"><a href="#tong-quan">Quản trị viên</a></li>
+          <li class="breadcrumb__item"><span aria-current="page" id="admin-location">Tổng quan</span></li>
+        </ol>
+      </nav>
+      <header class="admin-heading">
+        <div>
+          <h1 class="page-header__title" id="admin-title" tabindex="-1">Tổng quan</h1>
+          <p id="admin-description" hidden></p>
+        </div>
+        <div class="admin-term" id="admin-term-control">
+          <label for="admin-term">Học kỳ</label>
+          <select id="admin-term">
+            <option value="2026-1">HK I · 2026–2027</option>
+            <option value="2025-2">HK II · 2025–2026</option>
+          </select>
+        </div>
+      </header>
+      <div class="page-content">
+        <section id="admin-welcome" class="lecturer-welcome" aria-labelledby="admin-welcome-title">
+          <span class="lecturer-welcome__avatar" aria-hidden="true" translate="no">QT</span>
+          <div class="lecturer-welcome__content">
+            <div class="lecturer-welcome__heading">
+              <p class="lecturer-welcome__greeting">Xin chào,</p>
+              <h2 id="admin-welcome-title">Quản trị viên</h2>
+            </div>
+            <ul class="lecturer-welcome__meta" role="list" aria-label="Thông tin quản trị viên">
+              <li>
+                <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+                  <rect x="2" y="4" width="20" height="16" rx="2"/>
+                  <circle cx="8" cy="10" r="2"/>
+                  <path d="M5 16a3 3 0 0 1 6 0M14 9h5M14 13h5M14 16h3"/>
+                </svg>
+                <span translate="no">QT001</span>
+              </li>
+              <li>
+                <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+                  <ellipse cx="12" cy="5" rx="8" ry="3"/>
+                  <path d="M4 5v14a8 3 0 0 0 16 0V5M4 12a8 3 0 0 0 16 0"/>
+                </svg>
+                <span>Dữ liệu mẫu</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+        <p id="admin-demo" class="admin-demo" hidden>Dữ liệu mẫu</p>
+        <noscript><p>Bật JavaScript để xem dữ liệu mẫu và sử dụng bộ lọc.</p></noscript>
+        <div id="admin-view" class="page-content"></div>
+      </div>
+    </div>
+  </main>
+    <footer class="project-footer">
+      <div class="project-footer__columns">
+        <div class="project-footer__identity">
+          <img class="project-footer__logo" src="../../assets/images/uit-footer-logo.png"
+            alt="UIT – Trường Đại học Công nghệ Thông tin" width="480" height="180" loading="lazy" />
+          <p class="project-footer__name">Quản lý đồ án và khóa luận tốt nghiệp</p>
+          <a href="../chung/gioi-thieu.html#team-title">Đồ án IE104 — Nhóm 7</a>
+        </div>
+        <nav aria-labelledby="project-footer-navigation">
+          <h2 id="project-footer-navigation">Truy cập nhanh</h2>
+          <ul>
+            <li><a href="../../index.html">Trang chủ</a></li>
+            <li><a href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+            <li><a href="../chung/thong-bao.html">Thông báo</a></li>
+            <li><a href="../chung/lien-he.html">Liên hệ</a></li>
+          </ul>
+        </nav>
+        <nav aria-labelledby="project-footer-policy">
+          <h2 id="project-footer-policy">Điều khoản và quy chế</h2>
+          <ul>
+            <li><a href="../../assets/documents/dieu-khoan-va-chinh-sach-ie104.pdf#page=1" target="_blank" rel="noopener">Điều khoản sử dụng<span class="visually-hidden"> (PDF, mở trong thẻ mới)</span></a></li>
+            <li><a href="../../assets/documents/dieu-khoan-va-chinh-sach-ie104.pdf#page=2" target="_blank" rel="noopener">Quy chế, chính sách bảo mật<span class="visually-hidden"> (PDF, mở trong thẻ mới)</span></a></li>
+          </ul>
+        </nav>
+        <nav aria-labelledby="project-footer-resources">
+          <h2 id="project-footer-resources">Tài nguyên UIT</h2>
+          <ul>
+            <li><a href="https://ise.uit.edu.vn/vi" target="_blank" rel="noopener">Khoa Khoa học và Kỹ thuật Thông tin<span class="visually-hidden"> (mở trong thẻ mới)</span></a></li>
+            <li><a href="https://portal.uit.edu.vn/" target="_blank" rel="noopener">Cổng thông tin UIT<span class="visually-hidden"> (mở trong thẻ mới)</span></a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="project-footer__bottom">
+        <p>&copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
+        <a class="project-footer__top" href="#page-top" aria-label="Về đầu trang">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 19V5m-6 6 6-6 6 6" />
+          </svg>
+        </a>
+      </div>
+    </footer>
+  <dialog class="admin-dialog" aria-labelledby="admin-detail-title">
+    <div class="admin-dialog__header">
+      <h2 id="admin-detail-title"></h2>
+      <form method="dialog"><button class="admin-button" autofocus>Đóng</button></form>
+    </div>
+    <dl class="admin-detail-fields"></dl>
+  </dialog>
+</body>
+</html>
