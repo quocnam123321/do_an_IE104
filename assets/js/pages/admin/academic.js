@@ -8,6 +8,7 @@
   const academicActions = document.querySelector("#admin-academic-actions");
   const roundStatus = document.querySelector("#admin-round-status");
   const academicMessage = document.querySelector("#admin-academic-message");
+  const saveSuccess = document.querySelector("#admin-round-save-success");
   const isDetail = document.body.dataset.adminPage === "chi-tiet-dot";
   const academicDialog = document.querySelector("#admin-academic-dialog");
   const academicForm = academicDialog.querySelector("form");
@@ -202,22 +203,23 @@
     }
 
     academicDialog.close();
-    const selected = isTerm ? result.id : values.term;
     data = academic.snapshot();
     if (isDetail) {
       refreshDetail();
-    } else {
-      populateTerms(term, selected, true);
-      rememberTerm();
-      search.value = "";
-      type.value = "";
-      status.value = "";
-      updateListUrl();
-      renderRounds();
+      academicMessage.hidden = true;
+      saveSuccess.showModal();
+      return;
     }
+    populateTerms(term, isTerm ? result.id : values.term, true);
+    rememberTerm();
+    search.value = "";
+    type.value = "";
+    status.value = "";
+    updateListUrl();
+    renderRounds();
     academicMessage.hidden = false;
     academicMessage.textContent = "Đã lưu dữ liệu mẫu trong trình duyệt.";
-    if (!isDetail) title.focus({ preventScroll: true });
+    title.focus({ preventScroll: true });
   });
 
   if (data.unavailable) {
@@ -227,6 +229,7 @@
 
   if (isDetail) {
     document.querySelector("#admin-round-back").href = pageUrl("hoc-ky-va-dot-dang-ky.html", { term: params.get("term") });
+    saveSuccess.querySelector("button").addEventListener("click", () => saveSuccess.close());
     refreshDetail();
   } else {
     initializeTerm(true);

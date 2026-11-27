@@ -105,6 +105,8 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Tạo đợt đăng ký": "Create registration period",
   "Tạo đợt": "Create period",
   "Chỉnh sửa đợt": "Edit period",
+  "Đã lưu thay đổi": "Changes saved",
+  "Đóng thông báo": "Close notification",
   "Năm bắt đầu": "Start year",
   "Tên đợt đăng ký": "Registration period name",
   "Mở đăng ký": "Registration opens",
