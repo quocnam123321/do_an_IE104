@@ -36,19 +36,24 @@ test("adds a password profile with optional email and never persists credentials
   assert.equal((await store.saveAccount({ ...fields, code: "SV-101", username: "MINH.ANH" })).field, "username");
 });
 
-test("locks in place, rejects stale and locked edits, and restores editing after unlock", async () => {
+test("requires a reason for status changes, rejects locked edits, and restores editing after unlock", async () => {
   const { store } = loadAccounts();
   const account = store.snapshot().accounts.find(({ id }) => id === "SV-041");
-  assert.equal((await store.toggleStatus(account)).id, account.id);
+  assert.equal((await store.toggleStatus(account, "  ")).field, "reason");
+  assert.equal((await store.toggleStatus(account, "a".repeat(2001))).field, "reason");
+  assert.equal((await store.toggleStatus(account, "  Cần xác minh tài khoản  ")).id, account.id);
   const locked = store.snapshot().accounts.find(({ id }) => id === account.id);
   assert.equal(locked.status, "locked");
+  assert.equal(locked.statusReason, "Cần xác minh tài khoản");
   assert.equal(locked.code, account.code);
   assert((await store.saveAccount(fields, account)).error);
   assert((await store.saveAccount(fields, locked)).error);
-  assert.equal((await store.toggleStatus(locked)).id, account.id);
+  assert((await store.toggleStatus(account, "Yêu cầu đã cũ")).error);
+  assert.equal((await store.toggleStatus(locked, "Đã xác minh tài khoản")).id, account.id);
   const unlocked = store.snapshot().accounts.find(({ id }) => id === account.id);
   assert.equal(unlocked.status, "enabled");
   assert.equal((await store.saveAccount(fields, unlocked)).id, account.id);
+  assert.equal(store.snapshot().accounts.find(({ id }) => id === account.id).statusReason, "Đã xác minh tài khoản");
 });
 
 test("keeps the original Google sign-in email when editing profile information", async () => {

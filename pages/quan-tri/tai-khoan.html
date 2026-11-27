@@ -252,16 +252,20 @@
       </div>
     </form>
   </dialog>
-  <dialog class="admin-dialog admin-account-dialog admin-account-confirm-dialog" id="admin-account-confirm-dialog" aria-labelledby="admin-account-confirm-title" aria-describedby="admin-account-confirm-name">
+  <dialog class="admin-dialog admin-account-dialog admin-account-confirm-dialog" id="admin-account-confirm-dialog" aria-labelledby="admin-account-confirm-title" aria-describedby="admin-account-confirm-question">
     <div class="admin-dialog__header">
       <h2 id="admin-account-confirm-title"></h2>
       <button type="button" class="admin-dialog-close" aria-label="Đóng" autofocus>
         <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
       </button>
     </div>
-    <form method="dialog" id="admin-account-confirm-form">
+    <form method="dialog" id="admin-account-confirm-form" novalidate>
       <div class="admin-account-confirm-body">
-        <p id="admin-account-confirm-name" translate="no"></p>
+        <p id="admin-account-confirm-question"><span id="admin-account-confirm-prompt"></span> <strong id="admin-account-confirm-name" translate="no"></strong>?</p>
+        <div class="admin-field">
+          <label for="admin-account-status-reason"><span id="admin-account-status-reason-label"></span><span class="admin-account-required" aria-hidden="true">*</span></label>
+          <textarea id="admin-account-status-reason" name="reason" required maxlength="2000" rows="4"></textarea>
+        </div>
         <p class="admin-account-error" id="admin-account-confirm-error" role="alert" hidden></p>
       </div>
       <div class="admin-account-dialog__footer">

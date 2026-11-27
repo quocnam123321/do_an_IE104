@@ -33,6 +33,7 @@
         account && ["id", "name", "code", "username", "email"].every((key) => typeof account[key] === "string") &&
         account.id && Number.isSafeInteger(account.revision) && account.revision >= 0 &&
         ["enabled", "locked"].includes(account.status) && ["password", "google"].includes(account.provider) &&
+        (account.statusReason === undefined || typeof account.statusReason === "string") &&
         !validateProfile(account)
       ) &&
       new Set(accounts.map(({ id }) => id)).size === accounts.length;
@@ -79,6 +80,7 @@
         email: google ? existing.email : fields.email.trim(),
         provider: existing?.provider ?? "password",
         status: existing?.status ?? "enabled",
+        ...(existing?.statusReason && { statusReason: existing.statusReason }),
         revision: (existing?.revision ?? 0) + 1,
       };
       const invalid = validateProfile(account);
@@ -102,7 +104,11 @@
     });
   }
 
-  function toggleStatus(original) {
+  function toggleStatus(original, reason = "") {
+    const statusReason = reason.trim();
+    if (!statusReason || statusReason.length > 2000) {
+      return { error: "Nhập lý do từ 1 đến 2000 ký tự.", field: "reason" };
+    }
     return write((accounts) => {
       const index = accounts.findIndex(({ id }) => id === original.id);
       const account = accounts[index];
@@ -110,7 +116,7 @@
         return { error: "Tài khoản đã thay đổi. Hãy đóng hộp thoại và thử lại." };
       }
       const status = account.status === "enabled" ? "locked" : "enabled";
-      accounts[index] = { ...account, status, revision: account.revision + 1 };
+      accounts[index] = { ...account, status, statusReason, revision: account.revision + 1 };
       return { id: account.id };
     });
   }

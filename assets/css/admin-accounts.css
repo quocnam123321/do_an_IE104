@@ -167,12 +167,70 @@
 }
 
 .admin-account-confirm-dialog {
-  inline-size: min(29rem, calc(100% - 2rem));
+  inline-size: min(36rem, calc(100% - 2rem));
+  padding-block: var(--account-dialog-gutter);
+  border: 1px solid var(--color-border);
+}
+
+.admin-account-confirm-dialog::backdrop {
+  backdrop-filter: blur(2px);
+}
+
+.admin-account-confirm-dialog .admin-dialog-close {
+  margin-inline-end: 0;
+  color: var(--color-foreground);
+}
+
+.admin-account-confirm-dialog .admin-account-dialog__footer {
+  padding-block-end: 0;
+}
+
+.admin-account-confirm-body {
+  display: grid;
+  gap: var(--space-4);
+  overflow-wrap: anywhere;
+}
+
+#admin-account-confirm-question {
+  font-size: var(--font-size-secondary);
+  line-height: 1.75;
+}
+
+.admin-account-confirm-body textarea {
+  inline-size: 100%;
+  min-block-size: 7.5rem;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-control-border);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  resize: vertical;
+}
+
+.admin-account-confirm-body textarea::placeholder {
+  color: var(--color-muted-foreground);
+}
+
+.admin-account-confirm-body textarea[aria-invalid="true"] {
+  border-color: var(--color-danger-fg);
+}
+
+.admin-account-confirm-dialog .admin-account-confirm-lock {
+  border-color: var(--color-danger-fg);
+  background: var(--color-danger-fg);
+  color: var(--color-on-danger);
+}
+
+.admin-account-confirm-dialog .admin-account-confirm-lock:hover:not(:disabled) {
+  filter: brightness(.92);
 }
 
 .admin-account-dialog .admin-dialog__header {
   align-items: center;
   padding: var(--space-3) 0 var(--space-2);
+}
+
+.admin-account-confirm-dialog .admin-dialog__header {
+  padding: 0 0 var(--space-3);
 }
 
 .admin-account-fields,
@@ -256,7 +314,7 @@
 }
 
 .admin-account-confirm-body .admin-account-error {
-  margin-block: var(--space-2) 0;
+  margin: 0;
 }
 
 .admin-account-dialog__footer {
