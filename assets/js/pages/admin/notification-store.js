@@ -6,6 +6,7 @@
   const categories = ["plan", "submissions", "defense"];
   const audiences = ["student", "lecturer", "both"];
   const fileLimit = 10 * 1024 * 1024;
+  const imageTypes = ["image/jpeg", "image/png", "image/gif", "image/webp", "image/avif"];
   const failure = "Không thể lưu thông báo trên trình duyệt. Hãy thử lại.";
   const seeds = [
     ...notices.map((notice) => ({ ...notice, kind: "academic", revision: 0 })),
@@ -77,21 +78,35 @@
     };
   }
 
-  function validateText(name, body) {
+  function validateText(name, body, hasImage = false) {
     if (!name || name.length > 120) return { error: "Nhập tiêu đề từ 1 đến 120 ký tự.", field: "title" };
-    if (!body || body.length > 5000) return { error: "Nhập nội dung từ 1 đến 5000 ký tự.", field: "body" };
+    if ((!body && !hasImage) || body.length > 5000) return { error: "Nhập nội dung từ 1 đến 5000 ký tự.", field: "body" };
     return null;
   }
 
-  function saveDraft(fields, original) {
-    const name = fields.title.trim();
-    const body = fields.body.trim();
-    const invalid = validateText(name, body);
+  function validateImage(file) {
+    if (!imageTypes.includes(file.type)) return "Chọn ảnh JPG, PNG, GIF, WebP hoặc AVIF.";
+    if (!file.size || file.size > fileLimit) return "Chọn ảnh có dung lượng từ 1 byte đến 10 MB.";
+    return "";
+  }
+
+  function validateAcademic(fields) {
+    const invalid = validateText(fields.title.trim(), fields.body.trim(), Boolean(fields.images.length));
     if (invalid) return invalid;
     if (!categories.includes(fields.category)) return { error: "Hãy chọn chuyên mục.", field: "category" };
     if (fields.attachment && (!fields.attachment.size || fields.attachment.size > fileLimit)) {
       return { error: "Chọn tệp đính kèm có dung lượng từ 1 byte đến 10 MB.", field: "attachment" };
     }
+    for (const { file } of fields.images) {
+      const error = validateImage(file);
+      if (error) return { error, field: "body" };
+    }
+    return null;
+  }
+
+  function saveAcademic(fields, original, status = "draft") {
+    const invalid = validateAcademic(fields);
+    if (invalid) return invalid;
 
     return transaction("readwrite", (entries) => {
       const current = original && entries.get(original.id);
@@ -100,7 +115,8 @@
       }
       return { record: {
         id: current?.id ?? nextId(entries, "TB-"),
-        kind: "academic", name, body, type: fields.category, status: "draft",
+        kind: "academic", name: fields.title.trim(), body: fields.body.trim(), type: fields.category, status,
+        html: fields.html, images: fields.images,
         attachment: fields.attachment, date: currentDateTime(), revision: (current?.revision ?? 0) + 1,
       } };
     });
@@ -151,5 +167,7 @@
     }
   }
 
-  globalThis.IE104AdminNotices = { categories, audiences, eligibleRecipients, snapshot, saveDraft, changeStatus, createSystem };
+  globalThis.IE104AdminNotices = {
+    categories, audiences, eligibleRecipients, snapshot, saveAcademic, validateAcademic, validateImage, changeStatus, createSystem,
+  };
 })();

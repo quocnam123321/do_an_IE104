@@ -1,6 +1,7 @@
 (() => {
   const { badge, displayDateTime, escapeHtml, labels, normalizeSearch, params, view } = globalThis.IE104Admin;
   const store = globalThis.IE104AdminNotices;
+  const { setup, renderArticle, articleImage } = globalThis.IE104NoticeContent;
   const byId = (id) => document.getElementById(id);
   const system = params.get("tab") === "he-thong";
   const events = {
@@ -21,7 +22,8 @@
   const editor = byId("admin-notice-editor");
   const form = byId("admin-notice-form");
   const fields = form.elements;
-  const submit = form.querySelector('[type="submit"]');
+  const submit = byId("admin-notice-save");
+  const previewDraft = byId("admin-notice-preview");
   const editorError = byId("admin-notice-editor-error");
   const attachment = byId("admin-notice-existing-file");
   const picker = byId("admin-notice-picker");
@@ -32,13 +34,15 @@
   const detail = byId("admin-notice-detail");
   const detailBody = byId("admin-notice-detail-body");
   const detailError = byId("admin-notice-detail-error");
+  const backToEditor = byId("admin-notice-edit-back");
   const confirm = byId("admin-notice-confirm");
+  const composer = setup(byId("admin-notice-content"), form.querySelector(".admin-notice-tools"), editorMessage);
+  const detailUrls = new Set();
   const selected = new Set();
   let records = [];
   let editing;
   let retainedFile;
   let action;
-  let fileUrl;
   let ready = false;
 
   function message(target, text) {
@@ -193,7 +197,6 @@
     retainedFile = item?.attachment;
     editorMessage("");
     byId("admin-notice-editor-title").textContent = system ? "Tạo thông báo" : item ? "Chỉnh sửa thông báo" : "Soạn thông báo";
-    submit.textContent = system ? "Gửi thông báo" : "Lưu bản nháp";
     byId("admin-notice-academic-fields").hidden = system;
     byId("admin-notice-system-fields").hidden = !system;
     fields.title.value = item?.name ?? "";
@@ -201,36 +204,75 @@
     fields.category.value = item?.type ?? "";
     showPicker(false);
     if (system) renderPicker();
-    else renderAttachment();
+    else {
+      composer.reset(item);
+      renderAttachment();
+    }
     editor.showModal();
   }
 
-  function openDetail(item, operation) {
-    action = { item, operation };
+  function openDetail(item, operation, draft) {
+    action = { item, operation, draft };
     message(detailError, "");
     const preview = operation === "preview";
     const publish = operation === "published";
     byId("admin-notice-detail-title").textContent = preview ? "Xem trước thông báo" : publish ? "Đăng thông báo?" : "Gỡ thông báo?";
-    byId("admin-notice-confirm-footer").hidden = preview;
-    confirm.textContent = publish ? "Xác nhận đăng" : "Xác nhận gỡ";
-    confirm.classList.toggle("admin-button--primary", publish);
-    confirm.classList.toggle("admin-notice-danger", !publish);
+    byId("admin-notice-confirm-footer").hidden = preview && !draft;
+    backToEditor.hidden = !draft;
+    confirm.textContent = draft ? "Đăng thông báo" : publish ? "Xác nhận đăng" : "Xác nhận gỡ";
+    confirm.classList.toggle("admin-button--primary", publish || Boolean(draft));
+    confirm.classList.toggle("admin-notice-danger", !publish && !draft);
+    detailBody.classList.toggle("admin-notice-preview", preview);
     detailBody.innerHTML = `<h3 translate="no">${escapeHtml(item.name)}</h3>
-      <p class="admin-demo"><span>${labels[item.type]}</span> · <span>${states[item.status]}</span></p>
-      ${preview ? `<p class="admin-notice-preview-text" translate="no">${escapeHtml(item.body ?? "")}</p>` :
+      <p class="admin-demo"><span>${labels[item.type]}</span>${draft ? "" : ` · <span>${states[item.status]}</span>`}</p>
+      ${preview ? '<div class="admin-notice-article admin-notice-preview-text" translate="no"></div>' :
         `<p>${publish ? "Thông báo sẽ chuyển sang trạng thái Đã đăng trong bản mẫu." : "Thông báo sẽ chuyển sang trạng thái Đã gỡ trong bản mẫu."}</p>`}`;
 
+    if (preview) {
+      renderArticle(detailBody.querySelector(".admin-notice-article"), item, (id, file) => {
+        const url = URL.createObjectURL(file);
+        detailUrls.add(url);
+        return articleImage(id, file, url);
+      });
+    }
     if (preview && item.attachment) {
-      fileUrl = URL.createObjectURL(item.attachment);
+      const fileUrl = URL.createObjectURL(item.attachment);
+      detailUrls.add(fileUrl);
       detailBody.insertAdjacentHTML("beforeend", `<a class="admin-button" href="${fileUrl}" download="${escapeHtml(item.attachment.name)}">
         <span>Tải xuống</span> ${localText(item.attachment.name)}</a>`);
     }
     detail.showModal();
   }
 
-  async function commit(dialog, button, operation, notice) {
+  function showDraftError(result) {
+    const control = result.field === "body" && !system ? composer.element : fields[result.field];
+    editorMessage(result.error, control);
+  }
+
+  function readDraft() {
+    if (composer.busy) {
+      editorMessage("Đang mở ảnh. Hãy thử lại sau giây lát.");
+      return;
+    }
+    const draft = {
+      ...composer.read(),
+      title: fields.title.value,
+      category: fields.category.value,
+      attachment: fields.attachment.files[0] ?? retainedFile,
+    };
+    const invalid = store.validateAcademic(draft);
+    if (invalid) {
+      showDraftError(invalid);
+      return;
+    }
+    editorMessage("");
+    return draft;
+  }
+
+  async function commit(dialog, button, operation, notice, closeEditor = false) {
     if (button.disabled) return;
     button.disabled = true;
+    if (dialog === editor) previewDraft.disabled = true;
     let result;
     try {
       result = await operation();
@@ -238,13 +280,15 @@
       result = { error: "Không thể lưu thông báo trên trình duyệt. Hãy thử lại." };
     } finally {
       button.disabled = false;
+      if (dialog === editor) previewDraft.disabled = false;
     }
     if (result.error) {
-      if (dialog === editor) editorMessage(result.error, fields[result.field]);
+      if (dialog === editor) showDraftError(result);
       else message(detailError, result.error);
       return;
     }
     dialog.close();
+    if (closeEditor) editor.close();
     await refresh(notice);
     (results.querySelector(`[data-notice-id="${result.record.id}"]`) ?? create).focus();
   }
@@ -268,12 +312,29 @@
     });
   }
 
+  editor.addEventListener("close", () => {
+    if (!system && !editor.open) composer.reset();
+  });
   detail.addEventListener("close", () => {
-    if (fileUrl) URL.revokeObjectURL(fileUrl);
-    fileUrl = undefined;
+    for (const url of detailUrls) URL.revokeObjectURL(url);
+    detailUrls.clear();
+    detailBody.replaceChildren();
+  });
+  backToEditor.addEventListener("click", () => {
+    if (!confirm.disabled) detail.close();
+  });
+  previewDraft.addEventListener("click", () => {
+    const draft = readDraft();
+    if (!draft) return;
+    openDetail({ ...draft, name: draft.title.trim(), type: draft.category }, "preview", draft);
   });
   confirm.addEventListener("click", () => {
-    const { item, operation } = action;
+    const { item, operation, draft } = action;
+    if (draft) {
+      commit(detail, confirm, () => store.saveAcademic(draft, editing, "published"),
+        "Đã đăng thông báo trong bản mẫu.", true);
+      return;
+    }
     commit(detail, confirm, () => store.changeStatus(item, operation),
       operation === "published" ? "Đã đăng thông báo trong bản mẫu." : "Đã gỡ thông báo trong bản mẫu.");
   });
@@ -296,16 +357,15 @@
   });
   form.addEventListener("submit", (event) => {
     event.preventDefault();
-    const text = { title: fields.title.value, body: fields.body.value };
     if (system) {
+      const text = { title: fields.title.value, body: fields.body.value };
       const audience = fields.audience.value;
       const scope = fields.scope.value;
       commit(editor, submit, () => store.createSystem({ ...text, audience, scope, ids: [...selected] }),
         "Đã lưu thông báo hệ thống trong bản mẫu.");
     } else {
-      const category = fields.category.value;
-      const file = fields.attachment.files[0] ?? retainedFile;
-      commit(editor, submit, () => store.saveDraft({ ...text, category, attachment: file }, editing), "Đã lưu bản nháp.");
+      const draft = readDraft();
+      if (draft) commit(editor, submit, () => store.saveAcademic(draft, editing), "Đã lưu bản nháp.");
     }
   });
 
@@ -356,6 +416,9 @@
   });
 
   if (system) {
+    submit.textContent = "Gửi thông báo";
+    submit.classList.add("admin-button--primary");
+    previewDraft.hidden = true;
     create.querySelector("span").textContent = "Tạo thông báo";
     search.placeholder = "Tìm theo thông báo hoặc người nhận";
     type.labels[0].textContent = "Sự kiện";
