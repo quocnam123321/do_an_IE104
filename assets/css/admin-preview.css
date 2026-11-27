@@ -830,23 +830,43 @@
 }
 
 .admin-academic-dialog {
-  width: min(42rem, calc(100% - 2rem));
+  --academic-dialog-gutter: var(--space-6);
+  width: min(40rem, calc(100% - 2rem));
+  max-block-size: calc(100dvh - 2rem);
+  padding: 0 var(--academic-dialog-gutter);
+  border: 0;
+  box-shadow: var(--shadow-overlay);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.admin-academic-dialog:has(#new-academic-year) {
+  width: min(32rem, calc(100% - 2rem));
 }
 
 .admin-academic-dialog .admin-dialog__header {
   align-items: center;
-  padding: var(--space-3) var(--space-5);
+  gap: var(--space-3);
+  padding: var(--space-3) 0 var(--space-2);
 }
 
 .admin-dialog-close {
   display: grid;
   place-items: center;
+  flex: none;
   min-width: var(--control-min-height);
   min-height: var(--control-min-height);
+  margin-inline-end: calc(-1 * var(--space-2));
+  padding: 0;
   border: 0;
   border-radius: var(--radius-control);
   background: transparent;
   color: var(--color-muted-foreground);
+}
+
+.admin-dialog-close svg {
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
 }
 
 .admin-dialog-close:hover {
@@ -856,12 +876,25 @@
 
 #admin-academic-fields {
   display: grid;
-  gap: var(--space-4);
-  padding: var(--space-5);
+  gap: var(--space-4) var(--space-5);
+  padding-block: var(--space-5);
 }
 
-.admin-academic-dialog select[name="year"] {
+.admin-academic-form .admin-field {
+  align-content: start;
+  gap: var(--space-2);
+}
+
+.admin-academic-form :is(input, select) {
+  min-inline-size: 0;
+}
+
+.admin-academic-form :is(select[name="year"], input[type="datetime-local"]) {
   font-variant-numeric: tabular-nums;
+}
+
+.admin-academic-form input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
 }
 
 .admin-academic-form input[aria-invalid="true"] {
@@ -869,8 +902,9 @@
 }
 
 .admin-form-error {
-  padding: 0 var(--space-5) var(--space-4);
+  margin-block: calc(-1 * var(--space-2)) var(--space-4);
   color: var(--color-danger-fg);
+  font-size: var(--font-size-secondary);
 }
 
 .admin-academic-footer {
@@ -878,8 +912,18 @@
   flex-wrap: wrap;
   justify-content: end;
   gap: var(--space-3);
-  padding: var(--space-4) var(--space-5);
+  padding-block: var(--space-4);
   border-block-start: 1px solid var(--color-border);
+}
+
+.admin-academic-footer .admin-button {
+  padding-inline: var(--space-4);
+}
+
+@media (width < 36rem) {
+  .admin-academic-dialog {
+    --academic-dialog-gutter: var(--space-4);
+  }
 }
 
 @media (min-width: 36rem) {
