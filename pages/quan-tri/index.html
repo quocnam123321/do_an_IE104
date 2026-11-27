@@ -16,6 +16,7 @@
   <script defer src="../../assets/js/i18n/en-admin.js"></script>
   <script defer src="../../assets/js/shared/language.js"></script>
   <script defer src="../../assets/js/pages/admin/sample-data.js"></script>
+  <script defer src="../../assets/js/pages/admin/academic-store.js"></script>
   <script defer src="../../assets/js/pages/admin/preview.js"></script>
 </head>
 <body id="page-top" class="admin-preview lecturer-overview-page" tabindex="-1">
@@ -71,8 +72,25 @@
       </nav>
       <header class="admin-heading">
         <div>
-          <h1 class="page-header__title" id="admin-title" tabindex="-1">Tổng quan</h1>
+          <div class="admin-title-row">
+            <h1 class="page-header__title" id="admin-title" tabindex="-1">Tổng quan</h1>
+            <span id="admin-round-status" hidden></span>
+          </div>
           <p id="admin-description" hidden></p>
+        </div>
+        <div id="admin-academic-actions" class="admin-academic-actions" hidden>
+          <button class="admin-button" type="button" data-academic-action="term">
+            <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M8 2v4m8-4v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/></svg>
+            <span>Thêm học kỳ</span>
+          </button>
+          <button class="admin-button admin-button--primary" type="button" data-academic-action="round">
+            <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            <span>Tạo đợt đăng ký</span>
+          </button>
+          <button class="admin-button admin-button--primary" type="button" data-academic-action="edit" hidden>
+            <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m14 6 4 4M5 19l4-.8L20 7a2.8 2.8 0 0 0-4-4L5 14.2 4 20Z"/></svg>
+            <span>Chỉnh sửa đợt</span>
+          </button>
         </div>
         <div class="admin-term" id="admin-term-control">
           <label for="admin-term">Học kỳ</label>
@@ -109,7 +127,14 @@
             </ul>
           </div>
         </section>
-        <p id="admin-demo" class="admin-demo" hidden>Dữ liệu mẫu</p>
+        <p id="admin-demo" class="admin-demo" hidden>
+          <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24" hidden>
+            <ellipse cx="12" cy="5" rx="8" ry="3"/>
+            <path d="M4 5v14a8 3 0 0 0 16 0V5M4 12a8 3 0 0 0 16 0"/>
+          </svg>
+          <span>Dữ liệu mẫu</span>
+        </p>
+        <p class="admin-demo" id="admin-academic-message" role="status" hidden></p>
         <noscript><p>Bật JavaScript để xem dữ liệu mẫu và sử dụng bộ lọc.</p></noscript>
         <div id="admin-view" class="page-content"></div>
       </div>
@@ -163,5 +188,59 @@
     </div>
     <dl class="admin-detail-fields"></dl>
   </dialog>
+  <dialog id="admin-academic-dialog" class="admin-dialog admin-academic-dialog" aria-labelledby="admin-academic-title">
+    <div class="admin-dialog__header">
+      <h2 id="admin-academic-title"></h2>
+      <button type="button" class="admin-dialog-close" aria-label="Đóng" data-academic-close>
+        <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <form class="admin-academic-form">
+      <div id="admin-academic-fields"></div>
+      <p id="admin-academic-error" class="admin-form-error" role="alert" hidden></p>
+      <div class="admin-academic-footer">
+        <button type="button" class="admin-button" data-academic-close>Hủy</button>
+        <button type="submit" class="admin-button admin-button--primary"></button>
+      </div>
+    </form>
+  </dialog>
+  <template id="admin-term-form-fields">
+    <div class="admin-field">
+      <label for="new-academic-year">Năm bắt đầu</label>
+      <input id="new-academic-year" name="year" type="number" min="2000" max="2099" required autofocus>
+    </div>
+    <div class="admin-field">
+      <label for="new-academic-term">Học kỳ</label>
+      <select id="new-academic-term" name="number">
+        <option value="1">Học kỳ I</option>
+        <option value="2">Học kỳ II</option>
+      </select>
+    </div>
+  </template>
+  <template id="admin-round-form-fields">
+    <div class="admin-field admin-field--full">
+      <label for="academic-round-name">Tên đợt đăng ký</label>
+      <input id="academic-round-name" name="name" maxlength="120" required autofocus>
+    </div>
+    <div class="admin-field">
+      <label for="academic-round-term">Học kỳ</label>
+      <select id="academic-round-term" name="term" required></select>
+    </div>
+    <div class="admin-field">
+      <label for="academic-round-type">Loại đề tài</label>
+      <select id="academic-round-type" name="type" required>
+        <option value="course">Đồ án môn học</option>
+        <option value="thesis">Khóa luận tốt nghiệp</option>
+      </select>
+    </div>
+    <div class="admin-field">
+      <label for="academic-round-start">Mở đăng ký</label>
+      <input id="academic-round-start" name="start" type="datetime-local" required>
+    </div>
+    <div class="admin-field">
+      <label for="academic-round-end">Đóng đăng ký</label>
+      <input id="academic-round-end" name="end" type="datetime-local" aria-describedby="admin-academic-error" required>
+    </div>
+  </template>
 </body>
 </html>

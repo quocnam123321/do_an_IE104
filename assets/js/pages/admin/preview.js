@@ -1,5 +1,6 @@
 (() => {
-  const { accounts, notices, requests, rounds, topics } = globalThis.IE104AdminSampleData;
+  const { accounts, notices, requests, topics } = globalThis.IE104AdminSampleData;
+  const academic = globalThis.IE104AdminAcademic;
 
   const labels = {
     active: "Đang thực hiện", completed: "Hoàn thành", approved: "Đã duyệt",
@@ -32,8 +33,7 @@
       extra: [["email", "Email"]], search: "Tìm theo tên, mã hoặc email",
     },
     "dot-dang-ky": {
-      name: names.rounds, description: "Theo dõi thời gian mở và đóng đăng ký theo học kỳ.",
-      items: rounds, nameLabel: "Đợt đăng ký", extra: [["start", "Ngày mở"], ["end", "Ngày đóng"]],
+      name: names.rounds, hasRoundActions: true, nameLabel: "Đợt đăng ký", extra: [["start", "Ngày mở"], ["end", "Ngày đóng"]],
       statusLabels: roundLabels, search: "Tìm theo tên hoặc mã đợt",
     },
     "de-tai": {
@@ -70,6 +70,18 @@
   const accountMenu = document.querySelector(".account-menu__disclosure");
   let refreshTerm = null;
   const detail = document.querySelector(".admin-dialog");
+  const heading = document.querySelector(".admin-heading");
+  const academicActions = document.querySelector("#admin-academic-actions");
+  const roundStatus = document.querySelector("#admin-round-status");
+  const academicMessage = document.querySelector("#admin-academic-message");
+  const academicDialog = document.querySelector("#admin-academic-dialog");
+  const academicForm = academicDialog.querySelector("form");
+  const academicFields = document.querySelector("#admin-academic-fields");
+  const academicError = document.querySelector("#admin-academic-error");
+  const academicSubmit = academicForm.querySelector('[type="submit"]');
+  let currentRound;
+  let formAction;
+  let data = academic.snapshot();
 
   function syncMenu(event) {
     navigation.open = !event.matches;
@@ -82,7 +94,17 @@
   }
 
   function displayDate(value) {
-    return value.split("-").reverse().join("/");
+    return value.split("T")[0].split("-").reverse().join("/");
+  }
+
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, (character) => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+    })[character]);
+  }
+
+  function populateTerms(select, selected) {
+    select.replaceChildren(...data.terms.map((id) => new Option(academic.termLabel(id), id, false, id === selected)));
   }
 
   function statusLabel(definition, status) {
@@ -97,6 +119,14 @@
     <path d="M4 12h15m-6-6 6 6-6 6"/>
   </svg>`;
 
+  const searchIcon = `<svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24">
+    <circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/>
+  </svg>`;
+
+  const calendar = `<svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24">
+    <path d="M8 2v4m8-4v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/>
+  </svg>`;
+
   function listTabs(current) {
     return `<nav class="admin-tabs" aria-label="Danh mục đề tài và hồ sơ">
       <a href="#de-tai" ${current === "de-tai" ? 'aria-current="page"' : ""}>Đề tài</a>
@@ -106,10 +136,11 @@
 
   function dataTable(definition, items, caption) {
     const groupLabel = definition.typeLabel ?? "Phân loại";
-    const headers = [definition.nameLabel, groupLabel, ...definition.extra.map(([, label]) => label), "Trạng thái"];
+    const headers = [definition.nameLabel, ...(definition.hideType ? [] : [groupLabel]), ...definition.extra.map(([, label]) => label), "Trạng thái"];
+    if (definition.hasRoundActions) headers.push("Thao tác");
     return `
       <div class="admin-table-scroll" tabindex="0" role="region" aria-label="${caption}">
-        <table class="admin-table">
+        <table class="admin-table${definition.hasRoundActions ? " admin-round-table" : ""}">
           <caption class="visually-hidden">${caption}</caption>
           <thead><tr>${headers.map((label) => `<th scope="col">${label}</th>`).join("")}</tr></thead>
           <tbody>
@@ -117,9 +148,12 @@
               <th scope="row">
                 ${recordControl(definition, item)}
               </th>
-              <td>${labels[item.type]}</td>
+              ${definition.hideType ? "" : `<td>${labels[item.type]}</td>`}
               ${definition.extra.map(([key]) => `<td translate="no">${cellValue(item, key)}</td>`).join("")}
               <td>${badge(statusLabel(definition, item.status), item.status)}</td>
+              ${definition.hasRoundActions ? `<td>
+                <a class="admin-button" href="${roundUrl(item)}"><span>Xem chi tiết</span>${arrow}<span class="visually-hidden" translate="no"> ${escapeHtml(item.name)}</span></a>
+              </td>` : ""}
             </tr>`).join("")}
           </tbody>
         </table>
@@ -130,10 +164,14 @@
     return ["start", "end", "date"].includes(key) ? displayDate(item[key]) : item[key];
   }
 
+  function roundUrl(item) {
+    return `#dot-dang-ky/chi-tiet/${item.id}`;
+  }
+
   function recordControl(definition, item) {
-    const label = `<span translate="no">${item.name}</span><span class="admin-code" translate="no">${item.id}</span>`;
-    if (definition === definitions["dot-dang-ky"]) {
-      return `<a class="admin-record" href="#dot-dang-ky/chi-tiet/${item.id}">${label}</a>`;
+    const label = `<span translate="no">${escapeHtml(item.name)}</span><span class="admin-code" translate="no">${item.id}</span>`;
+    if (definition.hasRoundActions) {
+      return `<a class="admin-record" href="${roundUrl(item)}">${label}</a>`;
     }
     return `<button class="admin-record" type="button" data-record="${item.id}">${label}</button>`;
   }
@@ -186,7 +224,7 @@
   }
 
   function renderOverview() {
-    const termRounds = forTerm(rounds).filter((item) => item.status === "open").sort((a, b) => a.end.localeCompare(b.end));
+    const termRounds = forTerm(data.rounds).filter((item) => item.status === "open").sort((a, b) => a.end.localeCompare(b.end));
     const termTopics = forTerm(topics);
     const termRequests = forTerm(requests);
     const recent = termRequests[0];
@@ -208,8 +246,8 @@
         </header>
         ${termRounds.length ? `<ul class="admin-overview-list">
           ${termRounds.map((item) => `<li class="admin-overview-row">
-            <h3 id="title-${item.id}" translate="no">${item.name}</h3>
-            <time class="admin-row-date" datetime="${item.end}"><span class="visually-hidden">Ngày đóng</span> ${displayDate(item.end)}</time>
+            <h3 id="title-${item.id}" translate="no">${escapeHtml(item.name)}</h3>
+            <time class="admin-row-date" datetime="${item.end}+07:00"><span class="visually-hidden">Ngày đóng</span> ${displayDate(item.end)}</time>
             <a class="admin-button admin-row-action" href="#dot-dang-ky/chi-tiet/${item.id}" aria-labelledby="action-${item.id} title-${item.id}">
               <span id="action-${item.id}">Xem chi tiết</span>${arrow}
             </a>
@@ -234,11 +272,11 @@
       </section>`;
   }
 
-  function selectFilter(id, label, values, glossary, selected) {
+  function selectFilter(id, label, values, glossary, selected, allLabel) {
     return `<div class="admin-field">
-      <label for="${id}">${label}</label>
+      <label for="${id}" ${allLabel ? 'class="visually-hidden"' : ""}>${label}</label>
       <select id="${id}">
-        <option value="">Tất cả</option>
+        <option value="">${allLabel ?? "Tất cả"}</option>
         ${values.map((value) => `<option value="${value}" ${value === selected ? "selected" : ""}>${glossary[value]}</option>`).join("")}
       </select>
     </div>`;
@@ -298,6 +336,55 @@
     return filterItems;
   }
 
+  function renderRounds(initialStatus) {
+    const definition = definitions["dot-dang-ky"];
+    const caption = "Danh sách đợt đăng ký";
+    view.innerHTML = `
+      <div class="admin-round-toolbar">
+        <div class="admin-round-search">
+          <label class="visually-hidden" for="admin-search">Tìm kiếm</label>
+          ${searchIcon}
+          <input id="admin-search" type="search" placeholder="${definition.search}">
+        </div>
+        <div class="admin-round-filters" role="group" aria-label="Bộ lọc">
+          <div id="admin-round-term-slot"></div>
+          ${selectFilter("admin-filter-type", "Loại đề tài", academic.roundTypes, labels, "", "Tất cả loại đề tài")}
+          ${selectFilter("admin-filter-status", "Trạng thái", Object.keys(roundLabels), roundLabels, initialStatus, "Tất cả trạng thái")}
+        </div>
+      </div>
+      <section class="admin-round-list" aria-labelledby="admin-round-list-title">
+        <div class="admin-round-list__heading">
+          <h2 id="admin-round-list-title">${caption}</h2>
+          <p id="admin-result-count" role="status"><span></span> <span>đợt đăng ký</span></p>
+        </div>
+        <div class="admin-panel" id="admin-results"></div>
+      </section>`;
+    view.querySelector("#admin-round-term-slot").replaceWith(termControl);
+
+    const search = view.querySelector("#admin-search");
+    const type = view.querySelector("#admin-filter-type");
+    const status = view.querySelector("#admin-filter-status");
+    const count = view.querySelector("#admin-result-count span");
+    const results = view.querySelector("#admin-results");
+
+    function filter() {
+      const query = normalizeSearch(search.value);
+      const matches = forTerm(data.rounds).filter((round) =>
+        (!type.value || type.value === round.type) &&
+        (!status.value || status.value === round.status) &&
+        [round.id, round.name].some((value) => normalizeSearch(value).includes(query))
+      );
+      count.textContent = matches.length;
+      const empty = query || type.value || status.value ?
+        "Không có kết quả phù hợp. Hãy đổi từ khóa hoặc bộ lọc." : "Học kỳ này chưa có đợt đăng ký.";
+      results.innerHTML = matches.length ? dataTable(definition, matches, caption) : `<p class="admin-empty">${empty}</p>`;
+    }
+
+    [search, type, status].forEach((input) => input.addEventListener("input", filter));
+    filter();
+    return filter;
+  }
+
   function getRoute() {
     const [section, filter, record] = location.hash.slice(1).split("/");
     const route = Object.hasOwn(definitions, section) ? section : "tong-quan";
@@ -313,41 +400,58 @@
     }
 
     const roundTopics = topics.filter((topic) => topic.roundId === item.id);
-    const selectedTerm = [...term.options].find((option) => option.value === item.term);
+    const topicColumns = { ...definitions["de-tai"], hideType: true };
+    const datetime = (value) =>
+      `<time class="admin-round-datetime" datetime="${value}+07:00">${calendar}${displayDate(value)} · ${value.split("T")[1]}</time>`;
     const field = (label, value) => `<div><dt>${label}</dt><dd>${value}</dd></div>`;
     view.innerHTML = `
-      ${back}
       <section class="pending-requests" aria-labelledby="round-detail-heading">
         <header class="section-header"><h2 id="round-detail-heading">Thông tin đợt đăng ký</h2></header>
-        <dl class="admin-detail-fields">
-          ${field("Mã", item.id)}
-          ${field("Học kỳ", globalThis.IE104Language.optionLabel(selectedTerm))}
-          ${field("Phân loại", labels[item.type])}
-          ${field("Trạng thái", badge(roundLabels[item.status], item.status))}
-          ${field("Ngày mở", `<time datetime="${item.start}">${displayDate(item.start)}</time>`)}
-          ${field("Ngày đóng", `<time datetime="${item.end}">${displayDate(item.end)}</time>`)}
+        <dl class="admin-detail-fields admin-round-detail-fields">
+          ${field("Mã đợt", item.id)}
+          ${field("Học kỳ", academic.termLabel(item.term))}
+          ${field("Loại đề tài", labels[item.type])}
+          ${field("Mở đăng ký", datetime(item.start))}
+          ${field("Đóng đăng ký", datetime(item.end))}
         </dl>
       </section>
       <section class="pending-requests" aria-labelledby="round-topics-heading">
         <header class="section-header"><h2 id="round-topics-heading">Đề tài thuộc đợt</h2></header>
-        ${roundTopics.length ? dataTable(definitions["de-tai"], roundTopics, "Đề tài thuộc đợt") :
+        ${roundTopics.length ? dataTable(topicColumns, roundTopics, "Đề tài thuộc đợt") :
           '<p class="admin-empty">Đợt này chưa có đề tài.</p>'}
-      </section>`;
+      </section>
+      ${back}`;
   }
 
   function renderPage() {
     const { route, filter, detailId } = getRoute();
     const definition = definitions[route] ?? overview;
     const isOverview = route === "tong-quan";
-    const round = detailId && rounds.find((item) => item.id === detailId);
+    const isAcademic = route === "dot-dang-ky";
+    data = academic.snapshot();
+    const round = detailId && data.rounds.find((item) => item.id === detailId);
+    currentRound = round;
+    if (termControl.parentElement !== heading) heading.append(termControl);
+    populateTerms(term, round?.term ?? term.value);
     title.textContent = round?.name ?? (detailId ? "Chi tiết đợt đăng ký" : definition.name);
     title.translate = !round;
     locationLabel.textContent = detailId ? "Chi tiết đợt đăng ký" : definition.name;
     description.textContent = detailId ? "" : definition.description ?? "";
     description.hidden = !description.textContent;
     termControl.hidden = route === "tai-khoan" || Boolean(detailId);
+    termControl.querySelector("label").classList.toggle("visually-hidden", isAcademic);
     welcome.hidden = !isOverview;
     demo.hidden = isOverview;
+    demo.querySelector("svg").toggleAttribute("hidden", !isAcademic);
+    academicMessage.hidden = !isAcademic || !data.unavailable;
+    academicMessage.textContent = data.unavailable ? "Không thể đọc thay đổi đã lưu. Đang hiển thị dữ liệu mẫu." : "";
+    academicActions.hidden = !isAcademic;
+    academicActions.querySelectorAll("button").forEach((button) => {
+      button.hidden = detailId ? button.dataset.academicAction !== "edit" || !round : button.dataset.academicAction === "edit";
+    });
+    roundStatus.hidden = !round;
+    roundStatus.innerHTML = round ? badge(roundLabels[round.status], round.status) : "";
+    view.closest("main").classList.toggle("admin-academic-page", isAcademic);
 
     const menuRoute = route === "ho-so" ? "de-tai" : route;
     navigation.querySelectorAll("[data-admin-nav]").forEach((link) => {
@@ -356,22 +460,118 @@
     });
 
     if (detailId) {
-      if (round) term.value = round.term;
       renderRoundDetail(round);
       refreshTerm = null;
     } else if (isOverview) {
       renderOverview();
       refreshTerm = renderOverview;
+    } else if (isAcademic) {
+      refreshTerm = renderRounds(filter);
     } else {
       refreshTerm = renderList(route, definition, filter);
     }
   }
 
+  const formCopy = {
+    term: ["Thêm học kỳ", "Thêm học kỳ"],
+    round: ["Tạo đợt đăng ký", "Tạo đợt"],
+    edit: ["Chỉnh sửa đợt", "Lưu thay đổi"],
+  };
+
+  function showFormError(message) {
+    academicError.textContent = message;
+    academicError.hidden = !message;
+  }
+
+  academicActions.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-academic-action]");
+    if (!button) return;
+    formAction = button.dataset.academicAction;
+    const isTerm = formAction === "term";
+    const template = document.querySelector(isTerm ? "#admin-term-form-fields" : "#admin-round-form-fields");
+    academicFields.replaceChildren(template.content.cloneNode(true));
+    const [dialogTitle, submitLabel] = formCopy[formAction];
+    document.querySelector("#admin-academic-title").textContent = dialogTitle;
+    academicSubmit.textContent = submitLabel;
+    showFormError("");
+
+    const controls = academicForm.elements;
+    if (isTerm) {
+      controls.year.value = term.value.split("-")[0];
+    } else {
+      const record = formAction === "edit" ? currentRound : null;
+      populateTerms(controls.term, record?.term ?? term.value);
+      if (record) {
+        for (const key of ["name", "type", "start", "end"]) controls[key].value = record[key];
+        const hasTopics = topics.some((topic) => topic.roundId === record.id);
+        controls.term.disabled = hasTopics;
+        controls.type.disabled = hasTopics;
+      }
+    }
+    academicDialog.showModal();
+  });
+
+  academicDialog.querySelectorAll("[data-academic-close]").forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!academicSubmit.disabled) academicDialog.close();
+    });
+  });
+  academicDialog.addEventListener("cancel", (event) => {
+    if (academicSubmit.disabled) event.preventDefault();
+  });
+  academicForm.addEventListener("input", () => {
+    showFormError("");
+    academicForm.elements.end?.removeAttribute("aria-invalid");
+  });
+  academicForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (academicSubmit.disabled) return;
+    const controls = academicForm.elements;
+    const isTerm = formAction === "term";
+    const original = formAction === "edit" ? currentRound : null;
+    let values;
+    if (!isTerm) {
+      values = Object.fromEntries(["name", "term", "type", "start", "end"].map((key) => [key, controls[key].value.trim()]));
+      if (!values.name) {
+        showFormError("Hãy nhập tên đợt đăng ký.");
+        controls.name.focus();
+        return;
+      }
+      if (values.end <= values.start) {
+        showFormError("Thời điểm đóng phải sau thời điểm mở đăng ký.");
+        controls.end.setAttribute("aria-invalid", "true");
+        controls.end.focus();
+        return;
+      }
+    }
+
+    academicSubmit.disabled = true;
+    const result = isTerm ? await academic.addTerm(controls.year.value, controls.number.value) : await academic.saveRound(values, original);
+    academicSubmit.disabled = false;
+    if (!academicDialog.open) return;
+    if (result.error) {
+      showFormError(result.error);
+      return;
+    }
+
+    academicDialog.close();
+    const selected = isTerm ? result.id : values.term;
+    if (getRoute().detailId === undefined && location.hash !== "#dot-dang-ky") {
+      history.replaceState(null, "", "#dot-dang-ky");
+    }
+    data = academic.snapshot();
+    populateTerms(term, selected);
+    renderPage();
+    academicMessage.hidden = false;
+    academicMessage.textContent = "Đã lưu dữ liệu mẫu trong trình duyệt.";
+    title.focus({ preventScroll: true });
+  });
+
   view.addEventListener("click", (event) => {
     const trigger = event.target.closest("[data-record]");
     if (!trigger) return;
     const recordId = trigger.dataset.record;
-    const definition = Object.values(definitions).find(({ items }) => items.some(({ id }) => id === recordId));
+    const definition = Object.values(definitions).find(({ items }) => items?.some(({ id }) => id === recordId));
     if (!definition) return;
 
     const item = definition.items.find(({ id }) => id === recordId);
@@ -398,6 +598,7 @@
   });
   window.addEventListener("hashchange", () => {
     if (detail.open) detail.close();
+    if (academicDialog.open) academicDialog.close();
     if (compactMenu.matches) navigation.open = false;
     accountMenu.open = false;
     renderPage();

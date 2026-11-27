@@ -3,11 +3,11 @@
   const previousTerm = "2025-2";
 
   const rounds = [
-    { id: "DOT-01", term, name: "Đăng ký đồ án môn học", type: "course", start: "2026-11-16", end: "2026-11-30", status: "open" },
-    { id: "DOT-02", term, name: "Đăng ký khóa luận tốt nghiệp", type: "thesis", start: "2026-11-23", end: "2026-12-07", status: "open" },
-    { id: "DOT-03", term, name: "Đăng ký bổ sung đồ án", type: "course", start: "2026-12-08", end: "2026-12-14", status: "upcoming" },
-    { id: "DOT-04", term, name: "Đăng ký đồ án đợt 1", type: "course", start: "2026-09-07", end: "2026-09-21", status: "closed" },
-    { id: "DOT-05", term: previousTerm, name: "Đăng ký đồ án môn học", type: "course", start: "2026-02-23", end: "2026-03-09", status: "closed" },
+    { id: "DOT-01", term, name: "Đăng ký đồ án môn học", type: "course", start: "2026-11-16T08:00", end: "2026-11-30T23:59", status: "open" },
+    { id: "DOT-02", term, name: "Đăng ký khóa luận tốt nghiệp", type: "thesis", start: "2026-11-23T08:00", end: "2026-12-07T23:59", status: "open" },
+    { id: "DOT-03", term, name: "Đăng ký bổ sung đồ án", type: "course", start: "2026-12-08T08:00", end: "2026-12-14T23:59", status: "upcoming" },
+    { id: "DOT-04", term, name: "Đăng ký đồ án đợt 1", type: "course", start: "2026-09-07T08:00", end: "2026-09-21T23:59", status: "closed" },
+    { id: "DOT-05", term: previousTerm, name: "Đăng ký đồ án môn học", type: "course", start: "2026-02-23T08:00", end: "2026-03-09T23:59", status: "closed" },
   ];
 
   const topics = [
