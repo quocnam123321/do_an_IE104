@@ -905,6 +905,31 @@
   width: min(32rem, calc(100% - 2rem));
 }
 
+.admin-round-edit-dialog select:disabled {
+  appearance: none;
+  opacity: 1;
+}
+
+@supports selector(select::picker-icon) {
+  .admin-round-edit-dialog select:disabled::picker-icon {
+    display: none;
+  }
+}
+
+.admin-round-edit-dialog .proposal-date-trigger {
+  cursor: pointer;
+}
+
+.admin-round-edit-dialog .proposal-date-trigger svg {
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+}
+
+.admin-round-edit-dialog .proposal-date-control--with-time > .proposal-date-trigger:is(:hover, :focus-visible, [aria-expanded="true"]) {
+  background: var(--color-info-hover-bg);
+  color: var(--color-primary);
+}
+
 .admin-academic-dialog .admin-dialog__header {
   align-items: center;
   gap: var(--space-3);
