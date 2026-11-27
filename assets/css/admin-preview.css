@@ -82,13 +82,23 @@
   color: var(--color-foreground);
 }
 
+/* Viền focus của bộ lọc và biểu mẫu học vụ nằm trong ô chọn. */
+.admin-preview :is(.admin-academic-page, .admin-academic-dialog) {
+  --admin-select-accent: var(--color-foreground);
+}
+
+.admin-preview :is(.admin-academic-page, .admin-academic-dialog) select:focus-visible {
+  outline-color: var(--admin-select-accent);
+  outline-offset: -2px;
+}
+
 /* Các ô chọn dùng chung giao diện ở bộ lọc và biểu mẫu quản trị. */
 .admin-preview select {
   min-inline-size: 0;
 }
 
 .admin-preview select:not(:disabled):hover {
-  border-color: var(--color-primary);
+  border-color: var(--admin-select-accent, var(--color-primary));
 }
 
 .admin-preview select:disabled {
@@ -104,8 +114,8 @@
   }
 
   .admin-preview select:open {
-    border-color: var(--color-primary);
-    box-shadow: inset 0 0 0 1px var(--color-primary);
+    border-color: var(--admin-select-accent, var(--color-primary));
+    box-shadow: inset 0 0 0 1px var(--admin-select-accent, var(--color-primary));
   }
 
   .admin-preview select::picker-icon {
@@ -116,7 +126,7 @@
     margin-inline-end: var(--space-1);
     border-inline-end: 2px solid currentColor;
     border-block-end: 2px solid currentColor;
-    color: var(--color-primary);
+    color: var(--admin-select-accent, var(--color-primary));
     transform: translateY(-.125rem) rotate(45deg);
   }
 
@@ -164,7 +174,7 @@
   }
 
   .admin-preview option:focus-visible {
-    outline: 2px solid var(--color-focus);
+    outline: 2px solid var(--admin-select-accent, var(--color-focus));
     outline-offset: -2px;
   }
 
