@@ -2,7 +2,7 @@
   const { accounts, sampleMembers, requests, topics } = globalThis.IE104AdminSampleData;
   const {
     academic, arrow, badge, dataTable, displayDate, displayDateTime, escapeHtml,
-    forTerm, initializeTerm, labels, normalizeSearch, pageUrl, params, term, view,
+    forTerm, labels, normalizeSearch, pageUrl, params, populateTerms, rememberTerm, term, view,
   } = globalThis.IE104Admin;
 
   const catalogFile = "de-tai-va-ho-so.html";
@@ -123,7 +123,9 @@
       }
     }
 
-    initializeTerm(true);
+    populateTerms(term, params.get("term") ?? "", true);
+    rememberTerm();
+    term.addEventListener("change", rememberTerm);
     [term, type, extra].forEach((control) => control.addEventListener("change", render));
     search.addEventListener("input", render);
     render();
