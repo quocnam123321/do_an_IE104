@@ -1,5 +1,5 @@
 (() => {
-  const { accounts, notices, requests, topics } = globalThis.IE104AdminSampleData;
+  const { notices, requests, topics } = globalThis.IE104AdminSampleData;
   const academic = globalThis.IE104AdminAcademic;
 
   const labels = {
@@ -19,11 +19,6 @@
   };
 
   const definitions = {
-    "tai-khoan": {
-      name: "Tài khoản",
-      items: accounts, typeLabel: "Vai trò", nameLabel: "Họ và tên",
-      extra: [["email", "Email"]], search: "Tìm theo tên, mã hoặc email",
-    },
     "dot-dang-ky": {
       name: "Học kỳ và đợt đăng ký", hasRoundActions: true, nameLabel: "Đợt đăng ký",
       extra: [["start", "Mở đăng ký"], ["end", "Đóng đăng ký"]],
@@ -48,7 +43,7 @@
 
   const view = document.querySelector("#admin-view");
   const term = document.querySelector("#admin-term");
-  const detail = document.querySelector(".admin-dialog");
+  const detail = document.querySelector('dialog[aria-labelledby="admin-detail-title"]');
   const params = new URLSearchParams(location.search);
   const termKey = "ie104.admin.term";
   const roundListTermKey = "ie104.admin.round-list-term";

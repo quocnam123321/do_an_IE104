@@ -38,14 +38,14 @@
   ];
 
   const accounts = [
-    { id: "SV-041", name: "Lê Minh Anh", email: "minh.anh@example.com", type: "student", status: "enabled" },
-    { id: "SV-042", name: "Trần Nhật Minh", email: "nhat.minh@example.com", type: "student", status: "enabled" },
-    { id: "SV-043", name: "Phạm Ngọc Linh", email: "ngoc.linh@example.com", type: "student", status: "enabled" },
-    { id: "SV-044", name: "Vũ Gia Hân", email: "gia.han@example.com", type: "student", status: "enabled" },
-    { id: "SV-045", name: "Đỗ Hoài Nam", email: "hoai.nam@example.com", type: "student", status: "locked" },
-    { id: "GV-021", name: "Nguyễn Minh Khang", email: "minh.khang@example.com", type: "lecturer", status: "enabled" },
-    { id: "GV-022", name: "Trần Thảo Nguyên", email: "thao.nguyen@example.com", type: "lecturer", status: "enabled" },
-    { id: "GV-023", name: "Võ Hoàng Nam", email: "hoang.nam@example.com", type: "lecturer", status: "enabled" },
+    { id: "SV-041", name: "Lê Minh Anh", username: "minh.anh", email: "", provider: "password", type: "student", status: "enabled" },
+    { id: "SV-042", name: "Trần Nhật Minh", username: "", email: "nhat.minh@example.com", provider: "google", type: "student", status: "enabled" },
+    { id: "SV-043", name: "Phạm Ngọc Linh", username: "ngoc.linh", email: "ngoc.linh@example.com", provider: "password", type: "student", status: "enabled" },
+    { id: "SV-044", name: "Vũ Gia Hân", username: "", email: "gia.han@example.com", provider: "google", type: "student", status: "enabled" },
+    { id: "SV-045", name: "Đỗ Hoài Nam", username: "hoai.nam", email: "hoai.nam@example.com", provider: "password", type: "student", status: "locked" },
+    { id: "GV-021", name: "Nguyễn Minh Khang", username: "", email: "minh.khang@example.com", provider: "google", type: "lecturer", status: "enabled" },
+    { id: "GV-022", name: "Trần Thảo Nguyên", username: "", email: "thao.nguyen@example.com", provider: "google", type: "lecturer", status: "enabled" },
+    { id: "GV-023", name: "Võ Hoàng Nam", username: "hoang.nam", email: "hoang.nam@example.com", provider: "password", type: "lecturer", status: "enabled" },
   ];
 
   const notices = [

@@ -1,0 +1,278 @@
+.admin-accounts-page .admin-heading {
+  margin-block-start: var(--space-4);
+}
+
+.admin-accounts-sample {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-secondary);
+}
+
+.admin-account-filters {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+.admin-account-filters,
+.admin-account-dialog {
+  --admin-select-accent: var(--color-foreground);
+}
+
+@supports selector(select::picker-icon) {
+  :is(.admin-account-filters, .admin-account-dialog) select::picker-icon {
+    align-self: center;
+    inline-size: .375rem;
+    block-size: .375rem;
+  }
+}
+
+.admin-account-search {
+  position: relative;
+  grid-column: 1 / -1;
+}
+
+.admin-account-search svg {
+  position: absolute;
+  inset-inline-start: var(--space-3);
+  inset-block-start: calc((var(--control-min-height) - 1.125rem) / 2);
+  color: var(--color-muted-foreground);
+  pointer-events: none;
+}
+
+.admin-account-search input {
+  padding-inline-start: var(--space-10);
+  border-color: var(--color-heading);
+}
+
+.admin-account-list {
+  display: grid;
+  min-inline-size: 0;
+  gap: var(--space-3);
+  margin-block-start: var(--space-4);
+}
+
+.admin-account-list__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.admin-account-list__heading h2 {
+  font-size: var(--font-size-section-title);
+}
+
+.admin-account-list__heading p,
+.admin-account-note {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+}
+
+.admin-account-list .admin-table-scroll {
+  position: relative;
+}
+
+.admin-accounts-table {
+  min-inline-size: 64rem;
+}
+
+.admin-accounts-table :is(th, td) {
+  padding-inline: var(--space-3);
+}
+
+.admin-accounts-table :is(thead th, td:nth-child(5)) {
+  white-space: nowrap;
+}
+
+.admin-accounts-table th[scope="row"] {
+  color: var(--color-heading);
+  font-weight: var(--font-weight-semibold);
+}
+
+.admin-accounts-table :is(th[scope="row"], .admin-code, .admin-account-identity) {
+  overflow-wrap: anywhere;
+}
+
+.admin-account-identity span + span {
+  display: block;
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+}
+
+.admin-account-identity > .admin-account-email {
+  font-size: var(--font-size-secondary);
+}
+
+.admin-account-method {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.admin-account-method svg {
+  flex: none;
+}
+
+.admin-accounts-table .admin-status {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 9rem;
+  min-block-size: 2.25rem;
+  border: 0;
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+}
+
+.admin-accounts-table .admin-status--success {
+  background: var(--green-100);
+}
+
+.admin-account-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  white-space: nowrap;
+}
+
+.admin-account-actions :is(.admin-account-lock, .admin-account-unlock) {
+  min-inline-size: 5.5rem;
+}
+
+.admin-account-lock {
+  border-color: var(--color-danger-fg);
+  color: var(--color-danger-fg);
+}
+
+.admin-account-lock:hover {
+  background: var(--color-danger-bg);
+  color: var(--color-danger-fg);
+}
+
+.admin-account-unlock {
+  border-color: var(--color-success-fg);
+  color: var(--color-success-fg);
+}
+
+.admin-account-unlock:hover {
+  background: var(--color-success-bg);
+  color: var(--color-success-fg);
+}
+
+.admin-account-dialog {
+  --account-dialog-gutter: var(--space-6);
+  inline-size: min(42rem, calc(100% - 2rem));
+  max-block-size: calc(100dvb - 2rem);
+  padding: 0 var(--account-dialog-gutter);
+  border: 0;
+  box-shadow: var(--shadow-overlay);
+}
+
+.admin-account-confirm-dialog {
+  inline-size: min(29rem, calc(100% - 2rem));
+}
+
+.admin-account-dialog .admin-dialog__header {
+  align-items: center;
+  padding: var(--space-3) 0 var(--space-2);
+}
+
+.admin-account-fields,
+.admin-account-password-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4) var(--space-5);
+}
+
+.admin-account-fields,
+.admin-account-confirm-body {
+  padding-block: var(--space-5);
+}
+
+.admin-account-name-field,
+.admin-account-password-fields,
+.admin-account-password-fields .admin-account-note {
+  grid-column: 1 / -1;
+}
+
+.admin-account-password-fields {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.admin-account-fields .admin-field {
+  gap: var(--space-2);
+}
+
+.admin-account-fields input {
+  min-inline-size: 0;
+}
+
+.admin-account-fields input:read-only {
+  background: var(--color-neutral-bg);
+  color: var(--color-muted-foreground);
+}
+
+.admin-account-fields [aria-invalid="true"] {
+  border-color: var(--color-danger-fg);
+}
+
+.admin-account-password {
+  position: relative;
+}
+
+.admin-account-password input {
+  padding-inline-end: var(--control-min-height);
+}
+
+.admin-account-password-toggle {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  inset-block: 1px;
+  inset-inline-end: 1px;
+  inline-size: var(--control-min-height);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--color-muted-foreground);
+}
+
+.admin-account-password-toggle:hover {
+  background: var(--color-info-bg);
+  color: var(--color-primary);
+}
+
+.admin-account-error {
+  margin-block-end: var(--space-3);
+  color: var(--color-danger-fg);
+  font-size: var(--font-size-secondary);
+}
+
+.admin-account-confirm-body .admin-account-error {
+  margin-block: var(--space-2) 0;
+}
+
+.admin-account-dialog__footer {
+  display: flex;
+  justify-content: flex-end;
+  padding-block: var(--space-4);
+  border-block-start: 1px solid var(--color-border);
+}
+
+@media (width < 36rem) {
+  .admin-account-filters,
+  .admin-account-fields,
+  .admin-account-password-fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .admin-account-dialog {
+    --account-dialog-gutter: var(--space-4);
+  }
+}
