@@ -32,6 +32,10 @@
   min-inline-size: 56rem;
 }
 
+.admin-catalog-table--requests {
+  min-inline-size: 67rem;
+}
+
 .admin-catalog-table :is(th, td) {
   padding: var(--space-2) var(--space-3);
 }
@@ -41,7 +45,7 @@
 }
 
 .admin-catalog-table--requests th:first-child {
-  inline-size: 28%;
+  inline-size: 23%;
 }
 
 .admin-catalog-table :is(td:nth-last-child(-n+2), time),
@@ -59,20 +63,6 @@
   display: grid;
   gap: var(--space-1);
   overflow-wrap: anywhere;
-}
-
-.admin-catalog-table--requests .admin-catalog-record {
-  grid-template-columns: max-content minmax(0, 1fr);
-  align-items: center;
-  column-gap: var(--space-3);
-}
-
-.admin-catalog-table--requests .admin-catalog-record > :first-child {
-  grid-column: 1 / -1;
-}
-
-.admin-catalog-table--requests .admin-catalog-record .admin-button {
-  justify-self: start;
 }
 
 .admin-catalog-table .admin-status {

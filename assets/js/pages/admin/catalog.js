@@ -91,7 +91,7 @@
     const items = isRequest ? [...requests].sort((a, b) => b.date.localeCompare(a.date)) : catalogTopics;
     const definition = isRequest ? {
       nameLabel: "Hồ sơ", typeLabel: "Loại hồ sơ", typeLabels: requestTypes,
-      tableClass: "admin-catalog-table admin-catalog-table--requests", detailInRecord: true,
+      tableClass: "admin-catalog-table admin-catalog-table--requests",
       extra: [["sender", "Người gửi", senderCell], ["lecturer", "Giảng viên tiếp nhận"], ["date", "Ngày gửi", (item) => dateMarkup(item.date)]],
     } : {
       nameLabel: "Đề tài", tableClass: "admin-catalog-table",
