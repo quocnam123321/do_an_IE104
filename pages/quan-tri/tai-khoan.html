@@ -200,23 +200,24 @@
     </div>
     <form method="dialog" id="admin-account-form">
       <div class="admin-account-fields">
+        <p class="admin-account-note admin-account-required-note">Các trường có dấu * là bắt buộc.</p>
         <div class="admin-field admin-account-name-field">
-          <label for="admin-account-name">Họ và tên</label>
+          <label for="admin-account-name">Họ và tên<span class="admin-account-required" aria-hidden="true">*</span></label>
           <input id="admin-account-name" name="fullName" autocomplete="off" maxlength="120" required autofocus>
         </div>
         <div class="admin-field">
-          <label for="admin-account-role">Vai trò</label>
-          <select id="admin-account-role" name="role">
+          <label for="admin-account-role">Vai trò<span class="admin-account-required" aria-hidden="true">*</span></label>
+          <select id="admin-account-role" name="role" required>
             <option value="student">Sinh viên</option>
             <option value="lecturer">Giảng viên</option>
           </select>
         </div>
         <div class="admin-field">
-          <label for="admin-account-code" id="admin-account-code-label">MSSV</label>
+          <label for="admin-account-code"><span id="admin-account-code-label">MSSV</span><span class="admin-account-required" aria-hidden="true">*</span></label>
           <input id="admin-account-code" name="code" maxlength="32" required>
         </div>
         <div class="admin-field" id="admin-account-username-field">
-          <label for="admin-account-username">Tên đăng nhập</label>
+          <label for="admin-account-username">Tên đăng nhập<span class="admin-account-required" aria-hidden="true">*</span></label>
           <input id="admin-account-username" name="username" autocomplete="off" spellcheck="false" minlength="3" maxlength="32" required>
         </div>
         <div class="admin-field">
@@ -225,7 +226,7 @@
         </div>
         <fieldset class="admin-account-password-fields" id="admin-account-password-fields" aria-label="Mật khẩu" aria-describedby="admin-account-password-note">
           <div class="admin-field">
-            <label for="admin-account-password">Mật khẩu</label>
+            <label for="admin-account-password">Mật khẩu<span class="admin-account-required" aria-hidden="true">*</span></label>
             <div class="admin-account-password">
               <input id="admin-account-password" name="password" type="password" autocomplete="new-password" minlength="6" maxlength="128" required>
               <button class="password-field__toggle admin-account-password-toggle" type="button" aria-controls="admin-account-password" aria-label="Hiện mật khẩu" hidden>
@@ -235,7 +236,7 @@
             </div>
           </div>
           <div class="admin-field">
-            <label for="admin-account-confirm-password">Xác nhận mật khẩu</label>
+            <label for="admin-account-confirm-password">Xác nhận mật khẩu<span class="admin-account-required" aria-hidden="true">*</span></label>
             <div class="admin-account-password">
               <input id="admin-account-confirm-password" name="confirmPassword" type="password" autocomplete="new-password" minlength="6" maxlength="128" required>
               <button class="password-field__toggle admin-account-password-toggle" type="button" aria-controls="admin-account-confirm-password" aria-label="Hiện mật khẩu xác nhận" data-password-label="xác nhận" hidden>

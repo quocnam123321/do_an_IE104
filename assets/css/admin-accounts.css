@@ -192,6 +192,7 @@
 }
 
 .admin-account-name-field,
+.admin-account-required-note,
 .admin-account-password-fields,
 .admin-account-password-fields .admin-account-note {
   grid-column: 1 / -1;
@@ -206,6 +207,11 @@
 
 .admin-account-fields .admin-field {
   gap: var(--space-2);
+}
+
+.admin-account-required {
+  margin-inline-start: var(--space-1);
+  color: var(--color-danger-fg);
 }
 
 .admin-account-fields input {

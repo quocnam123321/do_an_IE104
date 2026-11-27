@@ -26,6 +26,7 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Hiện mật khẩu xác nhận": "Show password confirmation",
   "Ẩn mật khẩu xác nhận": "Hide password confirmation",
   "Email (tùy chọn)": "Email (optional)",
+  "Các trường có dấu * là bắt buộc.": "Fields marked with * are required.",
   "Email Google": "Google email",
   "Chưa có email": "No email",
   "Thêm tài khoản": "Add account",
