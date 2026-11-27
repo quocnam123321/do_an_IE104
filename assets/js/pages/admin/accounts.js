@@ -22,8 +22,6 @@
   const confirmTitle = document.querySelector("#admin-account-confirm-title");
   const confirmPrompt = document.querySelector("#admin-account-confirm-prompt");
   const confirmName = document.querySelector("#admin-account-confirm-name");
-  const reasonLabel = document.querySelector("#admin-account-status-reason-label");
-  const reason = confirmForm.elements.reason;
   const confirmError = document.querySelector("#admin-account-confirm-error");
   const confirmSubmit = confirmForm.querySelector('button[type="submit"]');
   const googleMark = `<svg aria-hidden="true" width="18" height="18" viewBox="0 0 48 48">
@@ -121,14 +119,9 @@
   function openStatusDialog(account) {
     changingStatus = account;
     const locked = account.status === "locked";
-    confirmForm.reset();
-    reason.removeAttribute("aria-invalid");
-    reason.removeAttribute("aria-describedby");
     confirmTitle.textContent = locked ? "Mở khóa tài khoản" : "Khóa tài khoản";
     confirmPrompt.textContent = locked ? "Bạn muốn mở khóa tài khoản" : "Bạn muốn khóa tài khoản";
     confirmName.textContent = `${account.name} · ${account.code}`;
-    reasonLabel.textContent = locked ? "Lý do mở khóa" : "Lý do khóa";
-    reason.placeholder = locked ? "Nhập lý do mở khóa" : "Nhập lý do khóa";
     confirmSubmit.textContent = locked ? "Xác nhận mở khóa" : "Xác nhận khóa";
     confirmSubmit.classList.toggle("admin-account-confirm-lock", !locked);
     confirmSubmit.classList.toggle("admin-button--primary", locked);
@@ -163,12 +156,6 @@
 
   fields.role.addEventListener("input", updateCodeLabel);
   form.addEventListener("input", clearEditorError);
-  reason.addEventListener("input", () => {
-    if (!reason.hasAttribute("aria-invalid")) return;
-    reason.removeAttribute("aria-invalid");
-    reason.removeAttribute("aria-describedby");
-    setError(confirmError, "");
-  });
   editor.addEventListener("close", () => {
     if (!editor.open) form.reset();
   });
@@ -215,12 +202,10 @@
     if (confirmSubmit.disabled) return;
     const locking = changingStatus.status === "enabled";
     confirmSubmit.disabled = true;
-    reason.readOnly = true;
-    const result = await store.toggleStatus(changingStatus, reason.value);
-    reason.readOnly = false;
+    const result = await store.toggleStatus(changingStatus);
     confirmSubmit.disabled = false;
     if (result.error) {
-      setError(confirmError, result.error, result.field === "reason" ? reason : null);
+      setError(confirmError, result.error);
       return;
     }
     confirm.close();

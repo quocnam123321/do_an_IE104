@@ -104,11 +104,7 @@
     });
   }
 
-  function toggleStatus(original, reason = "") {
-    const statusReason = reason.trim();
-    if (!statusReason || statusReason.length > 2000) {
-      return { error: "Nhập lý do từ 1 đến 2000 ký tự.", field: "reason" };
-    }
+  function toggleStatus(original) {
     return write((accounts) => {
       const index = accounts.findIndex(({ id }) => id === original.id);
       const account = accounts[index];
@@ -116,7 +112,7 @@
         return { error: "Tài khoản đã thay đổi. Hãy đóng hộp thoại và thử lại." };
       }
       const status = account.status === "enabled" ? "locked" : "enabled";
-      accounts[index] = { ...account, status, statusReason, revision: account.revision + 1 };
+      accounts[index] = { ...account, status, revision: account.revision + 1 };
       return { id: account.id };
     });
   }
