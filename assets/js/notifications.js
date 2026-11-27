@@ -17,6 +17,7 @@
   const mobile = tools.querySelector('.notification-tools__mobile');
   const count = footer.querySelector('p');
   if (!count) return;
+  count.classList.add('visually-hidden');
   count.setAttribute('role', 'status');
   count.setAttribute('aria-live', 'polite');
   count.setAttribute('aria-atomic', 'true');
