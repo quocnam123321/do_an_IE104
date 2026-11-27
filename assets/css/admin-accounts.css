@@ -193,8 +193,7 @@
 
 .admin-account-name-field,
 .admin-account-required-note,
-.admin-account-password-fields,
-.admin-account-password-fields .admin-account-note {
+.admin-account-password-fields {
   grid-column: 1 / -1;
 }
 

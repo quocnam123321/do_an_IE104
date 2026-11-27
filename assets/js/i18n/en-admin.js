@@ -38,7 +38,6 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Khóa tài khoản?": "Lock account?",
   "Mở khóa tài khoản?": "Unlock account?",
   "Khóa tài khoản vẫn giữ lịch sử đề tài, bài nộp và đánh giá.": "Locking an account preserves topic, submission, and assessment history.",
-  "Dùng mật khẩu mẫu để thử biểu mẫu.": "Use a test password to try the form.",
   "Không có tài khoản phù hợp.": "No matching accounts.",
   "Không thể đọc tài khoản đã lưu. Đang hiển thị dữ liệu mẫu.": "Could not read saved accounts. Showing sample data.",
   "Không thể lưu tài khoản mẫu trên trình duyệt.": "Could not save the sample accounts in this browser.",
