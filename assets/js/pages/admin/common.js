@@ -1,5 +1,5 @@
 (() => {
-  const { notices, requests, topics } = globalThis.IE104AdminSampleData;
+  const { requests, topics } = globalThis.IE104AdminSampleData;
   const academic = globalThis.IE104AdminAcademic;
 
   const labels = {
@@ -35,11 +35,6 @@
       name: "Đề tài và hồ sơ",
       items: requests, nameLabel: "Tên đề tài", extra: [["sender", "Người gửi"], ["lecturer", "Giảng viên tiếp nhận"], ["date", "Ngày gửi"]],
       search: "Tìm theo tên, mã hồ sơ hoặc người gửi",
-    },
-    "thong-bao": {
-      name: "Thông báo",
-      items: notices, typeLabel: "Chuyên mục", nameLabel: "Tiêu đề", extra: [["date", "Ngày cập nhật"]],
-      search: "Tìm theo tiêu đề hoặc mã thông báo",
     },
   };
 

@@ -73,10 +73,16 @@
   ];
 
   const notices = [
-    { id: "TB-028", term, name: "Kế hoạch đăng ký đồ án học kỳ I", type: "plan", date: "2026-11-16", status: "published" },
-    { id: "TB-027", term, name: "Hướng dẫn nộp báo cáo tiến độ", type: "submissions", date: "2026-11-13", status: "published" },
-    { id: "TB-026", term, name: "Lịch bảo vệ khóa luận đợt 1", type: "defense", date: "2026-11-11", status: "draft" },
-    { id: "TB-025", term: previousTerm, name: "Lịch bảo vệ khóa luận học kỳ II", type: "defense", date: "2026-05-18", status: "published" },
+    { id: "TB-028", name: "Kế hoạch đăng ký đồ án học kỳ 1", type: "plan", date: "2026-11-16T08:00", status: "published",
+      body: "Sinh viên theo dõi thời gian đăng ký và chọn đề tài phù hợp trong đợt của học kỳ." },
+    { id: "TB-027", name: "Hướng dẫn nộp báo cáo tiến độ", type: "submissions", date: "2026-11-13T09:00", status: "published",
+      body: "Sinh viên nộp báo cáo tiến độ theo yêu cầu của giảng viên hướng dẫn. Kiểm tra tệp và hạn nộp trước khi gửi." },
+    { id: "TB-026", name: "Lịch bảo vệ khóa luận đợt 1", type: "defense", date: "2026-11-11T15:30", status: "draft",
+      body: "Lịch bảo vệ dự kiến sẽ được cập nhật sau khi xác nhận thời gian và danh sách hội đồng." },
+    { id: "TB-025", name: "Lịch bảo vệ khóa luận học kỳ II", type: "defense", date: "2026-05-18T14:00", status: "published",
+      body: "Sinh viên theo dõi lịch bảo vệ và chuẩn bị báo cáo, bài trình bày theo yêu cầu của hội đồng." },
+    { id: "TB-024", name: "Lịch nộp báo cáo dự kiến", type: "submissions", date: "2026-05-12T10:00", status: "withdrawn",
+      body: "Lịch dự kiến đã được thay thế bằng hướng dẫn nộp báo cáo mới." },
   ];
 
   globalThis.IE104AdminSampleData = { accounts, sampleMembers, notices, requests, rounds, topics };
