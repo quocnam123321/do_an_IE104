@@ -28,7 +28,7 @@
     return { errors, value: { groupName, message, members } };
   }
 
-  function validateProposalOutline(input, type, student) {
+  function validateProposalOutline(input, type, student, previous) {
     const errors = [];
     if (![1, 2, 3].includes(input?.version)) return { errors: [{ message: 'Thông tin đề cương không hợp lệ.' }], value: null };
     const value = { version: input.version };
@@ -63,6 +63,14 @@
       if (type !== 'khoa-luan' && Boolean(value.startDate) !== Boolean(value.endDate)) errors.push({ field: `outline.${value.startDate ? 'endDate' : 'startDate'}`, message: 'Điền cả ngày bắt đầu và kết thúc dự kiến.' });
       if (validDate(value.startDate) && validDate(value.endDate) && value.endDate <= value.startDate) errors.push({ field: 'outline.endDate', message: 'Ngày kết thúc phải sau ngày bắt đầu.' });
     }
+    const today = new Date(Date.now() + 7 * 3600000).toISOString().slice(0, 10);
+    const dates = hasReportDates ? ['startDate', ...Object.keys(reportDateLabels)] : ['startDate', 'endDate'];
+    for (const key of dates) {
+      const saved = previous?.[key] ?? (key === 'finalReportDate' ? previous?.endDate : '');
+      if (validDate(value[key]) && value[key] < today && value[key] !== saved) {
+        errors.push({ field: `outline.${key}`, message: 'Chọn ngày từ hôm nay trở đi.' });
+      }
+    }
     for (const key of ['supervisor', 'secondarySupervisor']) {
       const person = input[key] || {};
       value[key] = {};
@@ -79,7 +87,7 @@
     return { errors, value };
   }
 
-  function validateProposal(input, catalog, student = app.data.currentStudent) {
+  function validateProposal(input, catalog, student = app.data.currentStudent, previousOutline) {
     const errors = [];
     const value = {};
     const labels = { title: 'tên đề tài', description: 'mô tả đề tài', objectives: 'mục tiêu', outcomes: 'kết quả dự kiến' };
@@ -95,7 +103,7 @@
     if (!catalog.academicYears.includes(value.academicYear)) errors.push({ field: 'academicYear', message: 'Chọn năm học hợp lệ.' });
     if (!Object.hasOwn(catalog.supervisors, value.supervisorId)) errors.push({ field: 'supervisorId', message: 'Vui lòng chọn giảng viên hướng dẫn.' });
     if (input.outline !== undefined) {
-      const checked = validateProposalOutline(input.outline, value.type, student);
+      const checked = validateProposalOutline(input.outline, value.type, student, previousOutline);
       value.outline = checked.value;
       if (value.outline) value.outline.supervisor.name = catalog.supervisors[value.supervisorId] || '';
       errors.push(...checked.errors);

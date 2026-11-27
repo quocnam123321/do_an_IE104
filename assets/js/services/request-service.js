@@ -61,7 +61,7 @@
   }
 
   function validateProposal(input, record) {
-    const checked = app.validation.validateProposal(input, proposalCatalog(record));
+    const checked = app.validation.validateProposal(input, proposalCatalog(record), undefined, record.outline);
     const value = checked.value;
     if (value.title.length > 200) checked.errors.push({ field: 'title', message: 'Nhập tên đề tài từ 1 đến 200 ký tự.' });
     const memberCount = value.outline?.members.length;

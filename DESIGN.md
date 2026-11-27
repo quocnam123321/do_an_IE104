@@ -186,6 +186,7 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 - Thông báo lỗi đặt gần trường, liên kết bằng `aria-describedby` và dùng `aria-invalid` khi lỗi đã được xác định.
 - Trường bắt buộc có giải thích rõ; không dựa vào màu hoặc dấu sao không được giải nghĩa.
 - Khi lỗi, giữ dữ liệu người dùng đã nhập. Thông báo thành công chỉ xuất hiện khi thao tác thật sự hoàn thành.
+- Bộ chọn mốc thực hiện và hạn nộp vô hiệu hóa ngày, giờ đã qua theo giờ Việt Nam. Trường chỉ có ngày vẫn cho chọn hôm nay. Khi chỉnh sửa, có thể giữ nguyên mốc đã lưu, còn mốc thay đổi phải hợp lệ tại thời điểm lưu.
 
 ### Trạng thái bộ lọc
 

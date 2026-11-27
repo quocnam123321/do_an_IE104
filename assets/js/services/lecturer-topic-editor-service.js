@@ -95,7 +95,23 @@
         error('finalReportDate', 'Ngày nộp báo cáo cuối cùng phải sau ngày nộp báo cáo tiến độ.');
       }
     }
-    if (value.deadline && Date.parse(value.deadline) <= now.getTime() && value.deadline !== (previous?.registration?.deadline ? new Date(previous.registration.deadline).toISOString() : null)) error('deadline', 'Hạn đăng ký mới phải sau thời điểm hiện tại.');
+    const vietnamDate = timestamp => Number.isFinite(timestamp) ? new Date(timestamp + 7 * 3600000).toISOString().slice(0, 10) : '';
+    const today = vietnamDate(now.getTime());
+    for (const field of ['startsAt', ...reportFields]) {
+      if (!value[field]) continue;
+      const day = field === 'startsAt' ? vietnamDate(Date.parse(value[field])) : value[field];
+      const saved = vietnamDate(Date.parse(previous?.[field]));
+      if (day < today && day !== saved) error(field, 'Chọn ngày từ hôm nay trở đi.');
+    }
+    const previousDeadline = Date.parse(previous?.registration?.deadline);
+    if (value.deadline) {
+      const timestamp = Date.parse(value.deadline);
+      if (timestamp === Math.floor(previousDeadline / 60000) * 60000) {
+        value.deadline = new Date(previousDeadline).toISOString();
+      } else if (timestamp <= now.getTime()) {
+        error('deadline', 'Hạn đăng ký mới phải sau thời điểm hiện tại.');
+      }
+    }
     if (Date.parse(value.opensAt) >= Date.parse(value.deadline)) {
       error(Object.hasOwn(input, 'opensAt') ? 'opensAt' : 'deadline', 'Thời điểm mở phải trước hạn đăng ký.');
     }

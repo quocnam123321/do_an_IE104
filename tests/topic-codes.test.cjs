@@ -104,3 +104,25 @@ test('workspace IDs stay internal and projects sharing a created topic keep its 
   assert.equal(decorated.displayId, service.get('created', 'DA001').displayId);
   assert.match(decorated.displayId, /^ISEDAMH-\d+$/);
 });
+
+test('lecturer topic dates use Vietnam time and preserve existing past dates during other edits', () => {
+  const { editor } = setup();
+  const now = new Date('2026-11-27T17:01:20Z');
+  const input = {
+    id: 'ISEDAMH-999', title: 'Kiểm tra thời gian', topicType: 'course', course: 'database',
+    semester: '1', academicYear: '2026-2027', minMembers: '1', maxMembers: '3',
+    description: 'Mô tả', objectives: 'Mục tiêu', outcomes: 'Kết quả', requirements: 'Yêu cầu',
+    startsAt: '2026-11-28', progressReportDate: '2026-11-29', finalReportDate: '2026-11-30',
+    deadline: '2026-11-28T00:02',
+  };
+  assert.equal(editor.validate(input, null, now).errors.length, 0);
+  const earlier = { ...input, startsAt: '2026-11-27', deadline: '2026-11-28T00:01' };
+  assert.deepEqual(Array.from(editor.validate(earlier, null, now).errors, item => item.field), ['startsAt', 'deadline']);
+  const saved = {
+    ...editor.validate(earlier, null, now).value,
+    registration: { deadline: '2026-11-27T17:01:45Z' },
+  };
+  const checked = editor.validate(earlier, saved, new Date('2026-12-01T00:00:00+07:00'));
+  assert.equal(checked.errors.length, 0);
+  assert.equal(checked.value.deadline, '2026-11-27T17:01:45.000Z');
+});

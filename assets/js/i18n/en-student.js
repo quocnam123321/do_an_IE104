@@ -932,6 +932,7 @@ Object.assign(globalThis.ie104English, {
   "Chọn vai trò hợp lệ.": "Select a valid role.",
   "Nhóm cần đúng một nhóm trưởng.": "The team must have exactly one leader.",
   "Chọn ngày tồn tại theo định dạng ngày/tháng/năm.": "Select a valid date in day/month/year format.",
+  "Chọn ngày từ hôm nay trở đi.": "Choose today or a later date.",
   "Vui lòng nhập ngày bắt đầu thực hiện.": "Enter the project start date.",
   "Vui lòng nhập ngày nộp báo cáo tiến độ.": "Enter the progress report due date.",
   "Vui lòng nhập ngày nộp báo cáo cuối cùng.": "Enter the final report due date.",

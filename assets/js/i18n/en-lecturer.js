@@ -609,6 +609,8 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Ngày nộp báo cáo cuối cùng phải sau ngày nộp báo cáo tiến độ.": "The final report must be due after the progress report.",
   "Ngày bắt đầu thực hiện phải trước ngày nộp báo cáo tiến độ.": "The start date must be before the progress report is due.",
   "Hạn đăng ký mới phải sau thời điểm hiện tại.": "The new registration deadline must be after the current time.",
+  "Hạn nộp mới phải sau thời điểm hiện tại.": "The new submission deadline must be after the current time.",
+  "Chọn ngày từ hôm nay trở đi.": "Choose today or a later date.",
   "Thời điểm mở phải trước hạn đăng ký.": "Registration must open before the deadline.",
   "Hạn hoàn thành phải sau ngày bắt đầu.": "The completion deadline must be after the start date.",
   "Giảng viên hiện tại đã thay đổi. Hãy tải lại trang.": "The current lecturer has changed. Reload the page.",

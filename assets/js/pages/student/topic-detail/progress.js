@@ -280,7 +280,10 @@
       assigneeCodes: values.getAll('nguoi-phu-trach'),
       deadline: datePicker ? datePicker.read(deadline) : values.get('han-hoan-thanh'),
       status: values.get('trang-thai'),
-    }, state.team, { editing: key === 'edit' });
+    }, state.team, {
+      editing: key === 'edit',
+      previousDeadline: state.tasks.find(task => task.id === pending?.taskId)?.deadline,
+    });
     const fields = {
       title: form.elements['ten-cong-viec'],
       description: form.elements['mo-ta'],

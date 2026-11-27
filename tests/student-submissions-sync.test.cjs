@@ -277,6 +277,9 @@ test('yêu cầu lưu phía giảng viên cập nhật ở bài nộp và lịch
   const calendar = (month = '2099-01') => deadlines.getState({ projectId, month }).events
     .filter(event => event.kind === 'submission');
 
+  assert.throws(() => teaching.saveRequirement(projectId, null, {
+    title: 'Báo cáo tiến độ', content: 'Nộp bản thử', deadline: '2000-01-01T00:15',
+  }, 0), /Hạn nộp mới phải sau thời điểm hiện tại/);
   let state = teaching.saveRequirement(projectId, null, {
     title: 'Báo cáo tiến độ', content: 'Nộp bản thử', deadline: '2099-01-01T00:15',
   }, 0);

@@ -58,16 +58,16 @@
     return profile ? { code: profile.code, name: profile.name } : null;
   }
 
-  function validateForStudent(input, student, options = catalog) {
+  function validateForStudent(input, student, options = catalog, previousOutline) {
     const outline = input.outline;
     if ([1, 2, 3].includes(outline?.version) && outline.members === undefined && student) {
       input = { ...input, outline: { ...outline, members: [{ ...student, role: 'nhom-truong' }] } };
     }
-    return app.validation.validateProposal(input, options, student);
+    return app.validation.validateProposal(input, options, student, previousOutline);
   }
 
   function validate(input, record) {
-    return validateForStudent(input, record ? record.student || defaultStudent() : submittingStudent(), catalogFor(record));
+    return validateForStudent(input, record ? record.student || defaultStudent() : submittingStudent(), catalogFor(record), record?.outline);
   }
 
   function nextTopicCode(type, proposals = app.storage.readProposals()) {

@@ -203,6 +203,8 @@ function loadApprovedView(ctx) {
 }
 test('SV gửi → GV duyệt → hai bên đọc đúng ba ngày, phương pháp, kế hoạch và tài liệu sau tải lại', async () => {
   const storage = new Map(), ctx = setup(storage), proposals = loadStudentServices(ctx);
+  ctx.testClock = Date.parse('2026-05-12T17:30:00Z');
+  vm.runInContext('Date.now = () => testClock', ctx);
   const approved = loadApprovedView(ctx);
   ctx.IE104SupervisionEntry = { getTeachers: async () => [{ id: 'placeholder-1', name: 'Nguyễn Văn An' }] };
   await proposals.listSupervisors();
@@ -214,10 +216,15 @@ test('SV gửi → GV duyệt → hai bên đọc đúng ba ngày, phương phá
       methodAndScope: 'Khảo sát và đối chiếu dữ liệu của hai vai trò.', plan: 'Nhóm trưởng chuẩn bị đề cương và phân công kiểm thử.' },
     attachment: { fileKey: 'uploaded-outline', name: 'De_cuong.pdf', size: 34057, type: 'application/pdf' },
   };
+  const earlier = { ...input, outline: { ...input.outline, startDate: '2026-05-12' } };
+  assert.throws(() => proposals.create(earlier), /từ hôm nay trở đi/);
   const request = proposals.create(input);
   const projectId = approved.projectIdFor(request.id);
   assert.equal(approved.get(projectId), null);
-  await proposals.decide(request.id, 'approved', '', request.revision);
+  ctx.testClock = Date.parse('2026-11-28T00:00:00+07:00');
+  assert.throws(() => proposals.update(request.id, earlier, request.revision), /từ hôm nay trở đi/);
+  const edited = proposals.update(request.id, input, request.revision);
+  await proposals.decide(request.id, 'approved', '', edited.revision);
   const reloaded = setup(storage), reloadedProposals = loadStudentServices(reloaded), reader = loadApprovedView(reloaded);
   const student = reader.forStudent(projectId).project;
   const lecturer = reader.list('lecturer').find(item => item.id === projectId);

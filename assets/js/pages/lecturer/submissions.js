@@ -87,6 +87,7 @@
         return;
       }
     }
+    const initialDeadline = item ? localDate(calendarRequirement?.due || item.deadline) : '';
     let deadline;
     const readDeadline = () => datePicker ? datePicker.read(deadline) : deadline.value;
     modal(item ? 'Sửa yêu cầu bài nộp' : 'Tạo yêu cầu bài nộp', 'Lưu yêu cầu', body => {
@@ -94,15 +95,18 @@
       field(body, 'content', 'Nội dung yêu cầu', 'textarea', item?.content || '', { required: true, maxLength: 5000, rows: 3 });
       const deadlineField = el('div', '', 'topic-dialog__field requirement-deadline');
       deadline = field(deadlineField, 'deadline', 'Hạn nộp (giờ Việt Nam)', 'datetime-local',
-        item ? localDate(calendarRequirement?.due || item.deadline) : '', { required: true });
+        initialDeadline, { required: true });
       datePicker?.enhanceDate(deadline, { ...calendarOptions, label: deadline.previousElementSibling });
       deadlineField.addEventListener('input', () => deadline.setCustomValidity(''));
       body.append(deadlineField);
     }, async (values, snapshot) => {
       values.set('deadline', readDeadline());
       const input = Object.fromEntries(values);
-      const saveLocal = () => service.saveRequirement(snapshot.projectId, item?.id || null, input, snapshot.revision);
-      if (!calendarRequirement) return saveLocal();
+      const deadlineChanged = input.deadline !== initialDeadline;
+      const saveLocal = () => service.saveRequirement(snapshot.projectId, item?.id || null, {
+        ...input, deadline: item && !deadlineChanged ? localDate(item.deadline) : input.deadline,
+      }, snapshot.revision);
+      if (!calendarRequirement || !deadlineChanged) return saveLocal();
 
       const checked = service.validateRequirement(input);
       if (checked.errors.length) throw new Error(checked.errors.join(' '));
