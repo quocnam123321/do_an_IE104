@@ -12,15 +12,16 @@
   <link rel="stylesheet" href="../../assets/css/tong-quan-giang-vien.css">
   <link rel="stylesheet" href="../../assets/css/project-footer.css">
   <link rel="stylesheet" href="../../assets/css/admin-preview.css">
+  <link rel="stylesheet" href="../../assets/css/admin-catalog.css">
   <script defer src="../../assets/js/i18n/en-shared.js"></script>
   <script defer src="../../assets/js/i18n/en-admin.js"></script>
   <script defer src="../../assets/js/shared/language.js"></script>
   <script defer src="../../assets/js/pages/admin/sample-data.js"></script>
   <script defer src="../../assets/js/pages/admin/academic-store.js"></script>
   <script defer src="../../assets/js/pages/admin/common.js"></script>
-  <script defer src="../../assets/js/pages/admin/lists.js"></script>
+  <script defer src="../../assets/js/pages/admin/catalog.js"></script>
 </head>
-<body id="page-top" class="admin-preview lecturer-overview-page" tabindex="-1" data-admin-page="de-tai">
+<body id="page-top" class="admin-preview lecturer-overview-page admin-catalog-page" tabindex="-1" data-admin-page="de-tai">
   <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
   <header class="site-header">
     <div class="site-header__inner">
@@ -68,34 +69,56 @@
       <nav class="breadcrumb" aria-label="Đường dẫn">
         <ol class="breadcrumb__list">
           <li class="breadcrumb__item"><a href="tong-quan-quan-tri.html">Quản trị viên</a></li>
-          <li class="breadcrumb__item"><span aria-current="page">Đề tài và hồ sơ</span></li>
+          <li class="breadcrumb__item" id="admin-catalog-breadcrumb"><span aria-current="page">Đề tài và hồ sơ</span></li>
         </ol>
       </nav>
-      <header class="admin-heading">
-        <div>
-          <div class="admin-title-row">
-            <h1 class="page-header__title" id="admin-title" tabindex="-1">Đề tài và hồ sơ</h1>
-          </div>
-          <p>Tra cứu đề tài, hồ sơ đăng ký và đề xuất của sinh viên.</p>
-        </div>
-        <div class="admin-term" id="admin-term-control">
-          <label for="admin-term">Học kỳ</label>
-          <select id="admin-term">
-            <option value="2026-1">HK 1 · 2026–2027</option>
-            <option value="2025-2">HK 2 · 2025–2026</option>
-          </select>
-        </div>
-      </header>
-      <div class="page-content">
+      <header class="admin-heading" id="admin-catalog-heading">
+        <h1 class="page-header__title">Đề tài và hồ sơ</h1>
         <p id="admin-demo" class="admin-demo">
-          <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24" hidden>
+          <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24">
             <ellipse cx="12" cy="5" rx="8" ry="3"/>
             <path d="M4 5v14a8 3 0 0 0 16 0V5M4 12a8 3 0 0 0 16 0"/>
           </svg>
           <span>Dữ liệu mẫu</span>
         </p>
-        <noscript><p>Bật JavaScript để xem dữ liệu mẫu và sử dụng bộ lọc.</p></noscript>
-        <div id="admin-view" class="page-content"></div>
+      </header>
+      <noscript><p>Bật JavaScript để xem dữ liệu mẫu và sử dụng bộ lọc.</p></noscript>
+      <div id="admin-view" class="page-content" hidden>
+        <nav class="admin-tabs" aria-label="Danh mục đề tài và hồ sơ">
+          <a id="admin-catalog-topic-tab" href="de-tai-va-ho-so.html">Đề tài</a>
+          <a id="admin-catalog-request-tab" href="de-tai-va-ho-so.html?tab=ho-so">Hồ sơ đăng ký và đề xuất</a>
+        </nav>
+        <div class="admin-round-toolbar">
+          <div class="admin-round-search">
+            <label class="visually-hidden" for="admin-search">Tìm kiếm</label>
+            <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24">
+              <circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/>
+            </svg>
+            <input id="admin-search" type="search">
+          </div>
+          <div class="admin-round-filters admin-catalog-filters" role="group" aria-label="Bộ lọc">
+            <div class="admin-term">
+              <label class="visually-hidden" for="admin-term">Học kỳ</label>
+              <select id="admin-term"></select>
+            </div>
+            <div class="admin-field">
+              <label class="visually-hidden" id="admin-catalog-type-label" for="admin-filter-type">Loại đề tài</label>
+              <select id="admin-filter-type"></select>
+            </div>
+            <div class="admin-field">
+              <label class="visually-hidden" id="admin-catalog-filter-label" for="admin-catalog-filter">Giảng viên phụ trách</label>
+              <select id="admin-catalog-filter"></select>
+            </div>
+          </div>
+        </div>
+        <section class="admin-round-list" aria-labelledby="admin-catalog-list-title">
+          <div class="admin-round-list__heading">
+            <h2 id="admin-catalog-list-title">Danh sách đề tài</h2>
+            <p role="status"><span id="admin-catalog-count"></span> <span id="admin-catalog-count-label">đề tài</span></p>
+          </div>
+          <p class="admin-catalog-status-filter" id="admin-catalog-status-filter" hidden></p>
+          <div class="admin-panel" id="admin-results"></div>
+        </section>
       </div>
     </div>
   </main>
@@ -140,12 +163,5 @@
         </a>
       </div>
     </footer>
-  <dialog class="admin-dialog" aria-labelledby="admin-detail-title">
-    <div class="admin-dialog__header">
-      <h2 id="admin-detail-title"></h2>
-      <form method="dialog"><button class="admin-button" autofocus>Đóng</button></form>
-    </div>
-    <dl class="admin-detail-fields"></dl>
-  </dialog>
 </body>
 </html>

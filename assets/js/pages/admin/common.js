@@ -4,18 +4,20 @@
 
   const labels = {
     active: "Đang thực hiện", completed: "Hoàn thành", approved: "Đã duyệt",
-    pending: "Chờ duyệt", open: "Đang mở đăng ký", upcoming: "Sắp mở",
+    pending: "Chờ duyệt", rejected: "Từ chối", withdrawn: "Đã rút",
+    open: "Đang mở đăng ký", upcoming: "Sắp mở",
     closed: "Đã đóng đăng ký", enabled: "Đang hoạt động", locked: "Đã khóa",
     draft: "Bản nháp", published: "Đã đăng",
     student: "Sinh viên", lecturer: "Giảng viên", course: "Đồ án môn học",
-    thesis: "Khóa luận tốt nghiệp", registration: "Đăng ký", proposal: "Đề xuất",
+    graduation: "Đồ án tốt nghiệp", thesis: "Khóa luận tốt nghiệp",
+    registration: "Đăng ký", proposal: "Đề xuất",
     plan: "Kế hoạch học vụ", submissions: "Báo cáo và nộp bài", defense: "Lịch bảo vệ",
   };
 
   const roundLabels = { open: "Đang mở", upcoming: "Sắp mở", closed: "Đã đóng" };
   const statusColors = {
     active: "info", completed: "success", approved: "success", open: "info",
-    pending: "warning", upcoming: "warning", enabled: "success", published: "success",
+    pending: "warning", rejected: "danger", upcoming: "warning", enabled: "success", published: "success",
   };
 
   const definitions = {
@@ -98,7 +100,9 @@
     if (!term) return;
     let saved;
     try {
-      if (includeAll) saved = sessionStorage.getItem(roundListTermKey);
+      if (includeAll && document.body.dataset.adminPage === "dot-dang-ky") {
+        saved = sessionStorage.getItem(roundListTermKey);
+      }
       saved ??= sessionStorage.getItem(termKey);
     } catch {
       // The current page uses the default term if storage is unavailable.
@@ -128,10 +132,11 @@
   function dataTable(definition, items, caption) {
     const groupLabel = definition.typeLabel ?? "Phân loại";
     const headers = [definition.nameLabel, ...(definition.hideType ? [] : [groupLabel]), ...definition.extra.map(([, label]) => label), "Trạng thái"];
-    if (definition.hasRoundActions) headers.push("Thao tác");
+    const detailUrl = definition.detailUrl ?? (definition.hasRoundActions ? roundUrl : null);
+    if (detailUrl) headers.push("Thao tác");
     return `
       <div class="admin-table-scroll" tabindex="0" role="region" aria-label="${caption}">
-        <table class="admin-table${definition.hasRoundActions ? " admin-round-table" : ""}">
+        <table class="admin-table ${definition.tableClass ?? (definition.hasRoundActions ? "admin-round-table" : "")}">
           <caption class="visually-hidden">${caption}</caption>
           <thead><tr>${headers.map((label) => `<th scope="col">${label}</th>`).join("")}</tr></thead>
           <tbody>
@@ -139,11 +144,11 @@
               <th scope="row">
                 ${recordCell(definition, item)}
               </th>
-              ${definition.hideType ? "" : `<td>${labels[item.type]}</td>`}
-              ${definition.extra.map(([key]) => `<td translate="no">${cellValue(item, key)}</td>`).join("")}
+              ${definition.hideType ? "" : `<td>${definition.typeLabels?.[item.type] ?? labels[item.type]}</td>`}
+              ${definition.extra.map(([key, , render]) => render ? `<td>${render(item)}</td>` : `<td translate="no">${escapeHtml(cellValue(item, key))}</td>`).join("")}
               <td>${badge(statusLabel(definition, item.status), item.status)}</td>
-              ${definition.hasRoundActions ? `<td>
-                <a class="admin-button" href="${roundUrl(item)}"><span>Xem chi tiết</span>${arrow}<span class="visually-hidden" translate="no"> ${escapeHtml(item.name)}</span></a>
+              ${detailUrl ? `<td>
+                <a class="admin-button" href="${escapeHtml(detailUrl(item))}"><span>Xem chi tiết</span>${arrow}<span class="visually-hidden" translate="no"> ${escapeHtml(item.name)}</span></a>
               </td>` : ""}
             </tr>`).join("")}
           </tbody>
@@ -161,10 +166,11 @@
   }
 
   function recordCell(definition, item) {
-    const label = `<span translate="no">${escapeHtml(item.name)}</span><span class="admin-code" translate="no">${item.id}</span>`;
+    const label = `<span translate="no">${escapeHtml(item.name)}</span><span class="admin-code" translate="no">${escapeHtml(item.id)}</span>`;
     if (definition.hasRoundActions) {
       return `<span class="admin-round-record">${label}</span>`;
     }
+    if (definition.detailUrl) return `<span class="admin-catalog-record">${label}</span>`;
     return `<button class="admin-record" type="button" data-record="${item.id}">${label}</button>`;
   }
 

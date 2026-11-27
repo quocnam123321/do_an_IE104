@@ -6,7 +6,7 @@
   } = globalThis.IE104Admin;
 
   const roundsUrl = () => pageUrl("hoc-ky-va-dot-dang-ky.html", { status: "open", term: term.value });
-  const requestsUrl = (status) => pageUrl("ho-so-dang-ky-va-de-xuat.html", { status, term: term.value });
+  const requestsUrl = (status) => pageUrl("de-tai-va-ho-so.html", { tab: "ho-so", status, term: term.value });
   const topicsUrl = (status) => pageUrl("de-tai-va-ho-so.html", { status, term: term.value });
 
   function metric(label, count, href) {

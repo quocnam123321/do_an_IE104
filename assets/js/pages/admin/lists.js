@@ -2,13 +2,6 @@
   const { dataTable, definitions, forTerm, initializeTerm, labels, normalizeSearch, params, term, view } =
     globalThis.IE104Admin;
 
-  function listTabs(current) {
-    return `<nav class="admin-tabs" aria-label="Danh mục đề tài và hồ sơ">
-      <a href="de-tai-va-ho-so.html" ${current === "de-tai" ? 'aria-current="page"' : ""}>Đề tài</a>
-      <a href="ho-so-dang-ky-va-de-xuat.html" ${current === "ho-so" ? 'aria-current="page"' : ""}>Hồ sơ đăng ký và đề xuất</a>
-    </nav>`;
-  }
-
   function selectFilter(id, label, values, selected) {
     return `<div class="admin-field">
       <label for="${id}">${label}</label>
@@ -19,11 +12,10 @@
     </div>`;
   }
 
-  function renderList(route, definition, initialStatus) {
+  function renderList(definition, initialStatus) {
     const values = (key) => [...new Set(definition.items.map((item) => item[key]))];
-    const caption = route === "ho-so" ? "Hồ sơ đăng ký và đề xuất" : route === "de-tai" ? "Danh sách đề tài" : definition.name;
+    const caption = definition.name;
     view.innerHTML = `
-      ${["de-tai", "ho-so"].includes(route) ? listTabs(route) : ""}
       <form class="admin-filters admin-panel" aria-label="Bộ lọc">
         ${selectFilter("admin-filter-type", definition.typeLabel ?? "Phân loại", values("type"))}
         ${selectFilter("admin-filter-status", "Trạng thái", values("status"), initialStatus)}
@@ -71,6 +63,6 @@
 
   initializeTerm();
   const route = document.body.dataset.adminPage;
-  const refresh = renderList(route, definitions[route], params.get("status"));
+  const refresh = renderList(definitions[route], params.get("status"));
   term?.addEventListener("change", refresh);
 })();
