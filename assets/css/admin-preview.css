@@ -849,7 +849,7 @@
   --admin-topic-registration-bg: var(--amber-100);
 }
 
-.admin-round-detail .admin-status {
+:is(.admin-round-detail, .admin-round-table) .admin-status {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -858,6 +858,11 @@
   border: 0;
   font-weight: var(--font-weight-semibold);
   text-align: center;
+}
+
+.admin-round-table .admin-status {
+  inline-size: 8rem;
+  min-block-size: 2.25rem;
 }
 
 .admin-round-detail .admin-title-row [data-status="open"] {
