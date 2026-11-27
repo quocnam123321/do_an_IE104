@@ -202,7 +202,13 @@
   color: var(--color-on-danger);
 }
 
-.admin-account-confirm-dialog .admin-account-confirm-lock:hover:not(:disabled) {
+.admin-account-confirm-dialog .admin-account-confirm-unlock {
+  border-color: var(--color-success-fg);
+  background: var(--color-success-fg);
+  color: var(--color-surface);
+}
+
+.admin-account-confirm-dialog :is(.admin-account-confirm-lock, .admin-account-confirm-unlock):hover:not(:disabled) {
   filter: brightness(.92);
 }
 

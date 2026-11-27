@@ -124,7 +124,7 @@
     confirmName.textContent = `${account.name} · ${account.code}`;
     confirmSubmit.textContent = locked ? "Xác nhận mở khóa" : "Xác nhận khóa";
     confirmSubmit.classList.toggle("admin-account-confirm-lock", !locked);
-    confirmSubmit.classList.toggle("admin-button--primary", locked);
+    confirmSubmit.classList.toggle("admin-account-confirm-unlock", locked);
     setError(confirmError, "");
     confirm.showModal();
   }
