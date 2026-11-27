@@ -54,6 +54,31 @@
         "source": "/",
         "destination": "/pages/chung/gioi-thieu.html",
         "type": 302
+      },
+      {
+        "source": "/pages/chung/thong-bao-ke-hoach-hoc-vu.html",
+        "destination": "/pages/chung/thong-bao.html?loai=ke-hoach-hoc-vu",
+        "type": 301
+      },
+      {
+        "source": "/pages/chung/thong-bao-bao-cao-nop-bai.html",
+        "destination": "/pages/chung/thong-bao.html?loai=bao-cao-nop-bai",
+        "type": 301
+      },
+      {
+        "source": "/pages/chung/thong-bao-lich-bao-ve.html",
+        "destination": "/pages/chung/thong-bao.html?loai=lich-bao-ve",
+        "type": 301
+      },
+      {
+        "source": "/pages/chung/thong-bao-tong-ket-vinh-danh.html",
+        "destination": "/pages/chung/thong-bao.html?loai=tong-ket-vinh-danh",
+        "type": 301
+      },
+      {
+        "source": "/pages/chung/thong-bao-trang-2.html",
+        "destination": "/pages/chung/thong-bao.html?trang=2",
+        "type": 301
       }
     ]
   }

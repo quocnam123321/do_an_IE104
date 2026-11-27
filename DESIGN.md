@@ -509,3 +509,9 @@ Tổng quan, Quản lý đề tài và Yêu cầu chờ duyệt dùng cùng kho�
 
 - Tái sử dụng picker chọn có sẵn: cùng token, mũi tên, trạng thái chọn và focus. Danh sách vai trò mở bằng popover top layer với vị trí fixed, cùng chiều rộng ô chọn; tự lật lên nếu thiếu chỗ phía dưới, không làm thay đổi kích thước dialog.
 - Duy trì chọn bằng bàn phím, Escape/Tab đóng danh sách, click ngoài đóng; đóng dialog cũng đóng danh sách. Giá trị select gốc giữ nguyên cho kiểm tra và lưu đăng ký. Khi trình duyệt không hỗ trợ Popover API, giữ select native.
+
+
+## Gộp danh sách thông báo — 27/11/2026
+
+- Một bố cục danh sách tại thong-bao.html. Bộ lọc dùng ?loai=..., phân trang dùng ?trang=..., giữ giao diện hiện có, 12 thông báo/trang, Back/Forward và link chia sẻ/tải lại.
+- Bài viết vẫn dùng chi-tiet-thong-bao.html?id=...; nguồn thông báo đại học UIT giữ trang riêng vì khác dữ liệu và cách đọc nội dung. Các URL danh sách cũ chuyển hướng về trang chung khi chạy Firebase Hosting.
