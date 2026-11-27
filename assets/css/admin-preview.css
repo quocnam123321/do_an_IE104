@@ -182,17 +182,17 @@
     display: none;
   }
 
-  .admin-preview :where(.admin-academic-page, .admin-academic-dialog) select::picker-icon {
+  .admin-preview :where(.admin-academic-page, .admin-academic-dialog, .admin-account-filters, .admin-account-dialog) select::picker-icon {
     align-self: center;
     inline-size: .375rem;
     block-size: .375rem;
   }
 
-  .admin-preview :where(.admin-academic-page, .admin-academic-dialog) select::picker(select) {
+  .admin-preview :where(.admin-academic-page, .admin-academic-dialog, .admin-account-filters, .admin-account-dialog) select::picker(select) {
     border: 0;
   }
 
-  .admin-preview :where(.admin-academic-page, .admin-academic-dialog) option:focus-visible {
+  .admin-preview :where(.admin-academic-page, .admin-academic-dialog, .admin-account-filters, .admin-account-dialog) option:focus-visible {
     outline-color: transparent;
     text-decoration: underline;
   }

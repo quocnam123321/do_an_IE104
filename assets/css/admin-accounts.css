@@ -20,14 +20,6 @@
   --admin-select-accent: var(--color-foreground);
 }
 
-@supports selector(select::picker-icon) {
-  :is(.admin-account-filters, .admin-account-dialog) select::picker-icon {
-    align-self: center;
-    inline-size: .375rem;
-    block-size: .375rem;
-  }
-}
-
 .admin-account-search {
   position: relative;
   grid-column: 1 / -1;
