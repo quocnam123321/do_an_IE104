@@ -16,8 +16,8 @@
     <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-menu-2" />
     <link rel="stylesheet" href="../../assets/css/common.css?v=20261124-public-session" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
-    <script src="../../assets/js/notifications-data.js" defer></script>
-    <script src="../../assets/js/notifications.js" defer></script>
+    <script src="../../assets/js/notifications-data.js?v=20261127-one-notification-page" defer></script>
+    <script src="../../assets/js/notifications.js?v=20261127-one-notification-page" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   </head>
   <body id="page-top" tabindex="-1" class="common-page">
@@ -69,19 +69,19 @@
         <nav class="notification-tools" aria-label="Lọc theo loại thông báo">
           <ul class="notification-categories">
             <li><a class="button" href="thong-bao.html" aria-current="true">Tất cả</a></li>
-            <li><a class="button" href="thong-bao-ke-hoach-hoc-vu.html">Kế hoạch học vụ</a></li>
-            <li><a class="button" href="thong-bao-bao-cao-nop-bai.html">Báo cáo &amp; nộp bài</a></li>
-            <li><a class="button" href="thong-bao-lich-bao-ve.html">Lịch bảo vệ</a></li>
-            <li><a class="button" href="thong-bao-tong-ket-vinh-danh.html">Tổng kết &amp; vinh danh</a></li>
+            <li><a class="button" href="thong-bao.html?loai=ke-hoach-hoc-vu">Kế hoạch học vụ</a></li>
+            <li><a class="button" href="thong-bao.html?loai=bao-cao-nop-bai">Báo cáo &amp; nộp bài</a></li>
+            <li><a class="button" href="thong-bao.html?loai=lich-bao-ve">Lịch bảo vệ</a></li>
+            <li><a class="button" href="thong-bao.html?loai=tong-ket-vinh-danh">Tổng kết &amp; vinh danh</a></li>
           </ul>
           <details class="notification-tools__mobile">
             <summary>Loại thông báo · Tất cả</summary>
             <ul class="notification-categories">
               <li><a class="button" href="thong-bao.html" aria-current="true">Tất cả</a></li>
-              <li><a class="button" href="thong-bao-ke-hoach-hoc-vu.html">Kế hoạch học vụ</a></li>
-              <li><a class="button" href="thong-bao-bao-cao-nop-bai.html">Báo cáo &amp; nộp bài</a></li>
-              <li><a class="button" href="thong-bao-lich-bao-ve.html">Lịch bảo vệ</a></li>
-              <li><a class="button" href="thong-bao-tong-ket-vinh-danh.html">Tổng kết &amp; vinh danh</a></li>
+              <li><a class="button" href="thong-bao.html?loai=ke-hoach-hoc-vu">Kế hoạch học vụ</a></li>
+              <li><a class="button" href="thong-bao.html?loai=bao-cao-nop-bai">Báo cáo &amp; nộp bài</a></li>
+              <li><a class="button" href="thong-bao.html?loai=lich-bao-ve">Lịch bảo vệ</a></li>
+              <li><a class="button" href="thong-bao.html?loai=tong-ket-vinh-danh">Tổng kết &amp; vinh danh</a></li>
             </ul>
           </details>
         </nav>
@@ -264,8 +264,8 @@
               <ul>
                 <li><button type="button" disabled>Trước</button></li>
                 <li><span aria-current="page" aria-label="Trang 1">1</span></li>
-                <li><a class="button" href="thong-bao-trang-2.html" aria-label="Trang 2">2</a></li>
-                <li><a class="button" href="thong-bao-trang-2.html" rel="next" aria-label="Trang sau">Sau</a></li>
+                <li><a class="button" href="thong-bao.html?trang=2" aria-label="Trang 2">2</a></li>
+                <li><a class="button" href="thong-bao.html?trang=2" rel="next" aria-label="Trang sau">Sau</a></li>
               </ul>
             </nav>
           </div>

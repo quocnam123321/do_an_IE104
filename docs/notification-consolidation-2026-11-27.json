@@ -1,0 +1,21 @@
+{
+  "baseline": "a1904a64defe8fb73c5519b25d219fdf088b618f",
+  "removed": [
+    "thong-bao-ke-hoach-hoc-vu.html",
+    "thong-bao-bao-cao-nop-bai.html",
+    "thong-bao-lich-bao-ve.html",
+    "thong-bao-tong-ket-vinh-danh.html",
+    "thong-bao-trang-2.html"
+  ],
+  "routes": {
+    "thong-bao-ke-hoach-hoc-vu.html": "thong-bao.html?loai=ke-hoach-hoc-vu",
+    "thong-bao-bao-cao-nop-bai.html": "thong-bao.html?loai=bao-cao-nop-bai",
+    "thong-bao-lich-bao-ve.html": "thong-bao.html?loai=lich-bao-ve",
+    "thong-bao-tong-ket-vinh-danh.html": "thong-bao.html?loai=tong-ket-vinh-danh",
+    "thong-bao-trang-2.html": "thong-bao.html?trang=2"
+  },
+  "updatedReferences": [
+    "pages/chung/thong-bao.html",
+    "assets/js/data/notification-details.js"
+  ]
+}

@@ -109,7 +109,7 @@ window.IE104_NOTIFICATION_DETAILS = {
               </li>
     `,
     back: "thong-bao.html#thong-bao-01",
-    filteredBack: "thong-bao-tong-ket-vinh-danh.html#thong-bao-01",
+    filteredBack: "thong-bao.html?loai=tong-ket-vinh-danh#thong-bao-01",
   },
   "02": {
     title: "[KH&KTTT] THÔNG BÁO THỜI GIAN BẢO VỆ KHÓA LUẬN TỐT NGHIỆP HỌC KỲ II NĂM HỌC 2025-2026 | Thông báo",
@@ -181,7 +181,7 @@ window.IE104_NOTIFICATION_DETAILS = {
               </li>
     `,
     back: "thong-bao.html#thong-bao-02",
-    filteredBack: "thong-bao-lich-bao-ve.html#thong-bao-02",
+    filteredBack: "thong-bao.html?loai=lich-bao-ve#thong-bao-02",
   },
   "03": {
     title: "[KH&KTTT] KẾ HOẠCH THỰC HIỆN HỌC PHẦN ĐỒ ÁN_HKI_NH2025 - 2026 | Thông báo",
@@ -265,7 +265,7 @@ window.IE104_NOTIFICATION_DETAILS = {
               </li>
     `,
     back: "thong-bao.html#thong-bao-03",
-    filteredBack: "thong-bao-ke-hoach-hoc-vu.html#thong-bao-03",
+    filteredBack: "thong-bao.html?loai=ke-hoach-hoc-vu#thong-bao-03",
   },
   "04": {
     title: "[KH&KTTT] THÔNG BÁO KẾ HOẠCH THỰC HIỆN KLTN HỌC KỲ I NĂM HỌC 2025 - 2026 | Thông báo",
@@ -360,7 +360,7 @@ window.IE104_NOTIFICATION_DETAILS = {
               </li>
     `,
     back: "thong-bao.html#thong-bao-04",
-    filteredBack: "thong-bao-ke-hoach-hoc-vu.html#thong-bao-04",
+    filteredBack: "thong-bao.html?loai=ke-hoach-hoc-vu#thong-bao-04",
   },
   "05": {
     title: "[KH&KTTT] THÔNG TIN HỘI ĐỒNG BẢO VỆ KHÓA LUẬN TỐT NGHIỆP HỌC KỲ II NĂM HỌC 2024-2025 | Thông báo",
@@ -433,7 +433,7 @@ window.IE104_NOTIFICATION_DETAILS = {
               </li>
     `,
     back: "thong-bao.html#thong-bao-05",
-    filteredBack: "thong-bao-lich-bao-ve.html#thong-bao-05",
+    filteredBack: "thong-bao.html?loai=lich-bao-ve#thong-bao-05",
   },
   "06": {
     title: "[KH&KTTT] THÔNG BÁO KẾT QUẢ BÁO CÁO TIẾN ĐỘ GIỮA KỲ KLTN_HKII_NH 22024 - 2025 | Thông báo",
@@ -518,7 +518,7 @@ window.IE104_NOTIFICATION_DETAILS = {
               </li>
     `,
     back: "thong-bao.html#thong-bao-06",
-    filteredBack: "thong-bao-bao-cao-nop-bai.html#thong-bao-06",
+    filteredBack: "thong-bao.html?loai=bao-cao-nop-bai#thong-bao-06",
   },
   "07": {
     title: "[KH&KTTT] TỔNG KẾT LỄ BẢO VỆ KLTN HKI NH 2024 - 2025 | Thông báo",
@@ -587,7 +587,7 @@ window.IE104_NOTIFICATION_DETAILS = {
               </li>
     `,
     back: "thong-bao.html#thong-bao-07",
-    filteredBack: "thong-bao-tong-ket-vinh-danh.html#thong-bao-07",
+    filteredBack: "thong-bao.html?loai=tong-ket-vinh-danh#thong-bao-07",
   },
   "08": {
     title: "[KH&KTTT] HỘI ĐỒNG BẢO VỆ KLTN HKI NH 2024 - 2025 | Thông báo",
@@ -658,7 +658,7 @@ window.IE104_NOTIFICATION_DETAILS = {
               </li>
     `,
     back: "thong-bao.html#thong-bao-08",
-    filteredBack: "thong-bao-lich-bao-ve.html#thong-bao-08",
+    filteredBack: "thong-bao.html?loai=lich-bao-ve#thong-bao-08",
   },
   "09": {
     title: "[KH&KTTT] KẾ HOẠCH HỌC VỤ ĐỒ ÁN HKII NĂM HỌC 2024 - 2025 | Thông báo",
@@ -762,7 +762,7 @@ window.IE104_NOTIFICATION_DETAILS = {
               </li>
     `,
     back: "thong-bao.html#thong-bao-09",
-    filteredBack: "thong-bao-ke-hoach-hoc-vu.html#thong-bao-09",
+    filteredBack: "thong-bao.html?loai=ke-hoach-hoc-vu#thong-bao-09",
   },
   "10": {
     title: "[KH&KTTT] THÔNG BÁO HỌC VỤ KLTN_HKII_NH 2024 - 2025 | Thông báo",
@@ -912,7 +912,7 @@ window.IE104_NOTIFICATION_DETAILS = {
               </li>
     `,
     back: "thong-bao.html#thong-bao-10",
-    filteredBack: "thong-bao-ke-hoach-hoc-vu.html#thong-bao-10",
+    filteredBack: "thong-bao.html?loai=ke-hoach-hoc-vu#thong-bao-10",
   },
   "11": {
     title: "[KH&KTTT] THÔNG BÁO HĐ BÁO CÁO GIỮA KỲ KLTN HKI NH 2024-2025 | Thông báo",
@@ -1001,7 +1001,7 @@ window.IE104_NOTIFICATION_DETAILS = {
               </li>
     `,
     back: "thong-bao.html#thong-bao-11",
-    filteredBack: "thong-bao-bao-cao-nop-bai.html#thong-bao-11",
+    filteredBack: "thong-bao.html?loai=bao-cao-nop-bai#thong-bao-11",
   },
   "12": {
     title: "[KH&KTTT] THÔNG BÁO THỰC HIỆN KLTN HKI NĂM HỌC 2024 - 2025 | Thông báo",
@@ -1151,7 +1151,7 @@ window.IE104_NOTIFICATION_DETAILS = {
               </li>
     `,
     back: "thong-bao.html#thong-bao-12",
-    filteredBack: "thong-bao-ke-hoach-hoc-vu.html#thong-bao-12",
+    filteredBack: "thong-bao.html?loai=ke-hoach-hoc-vu#thong-bao-12",
   },
   "13": {
     title: "[KH&KTTT] TỔNG KẾT LỄ BẢO VỆ KHÓA LUẬN TỐT NGHIỆP ĐỢT 2 - NĂM 2023 | Thông báo",
@@ -1233,8 +1233,8 @@ window.IE104_NOTIFICATION_DETAILS = {
                 </article>
               </li>
     `,
-    back: "thong-bao-trang-2.html#thong-bao-13",
-    filteredBack: "thong-bao-tong-ket-vinh-danh.html#thong-bao-13",
+    back: "thong-bao.html?trang=2#thong-bao-13",
+    filteredBack: "thong-bao.html?loai=tong-ket-vinh-danh#thong-bao-13",
   },
   "14": {
     title: "[KH&KTTT] LỄ BẢO VỆ KHÓA LUẬN TỐT NGHIỆP ĐỢT 2 NĂM HỌC 2022 - 2023 | Thông báo",
@@ -1309,8 +1309,8 @@ window.IE104_NOTIFICATION_DETAILS = {
                 </article>
               </li>
     `,
-    back: "thong-bao-trang-2.html#thong-bao-14",
-    filteredBack: "thong-bao-lich-bao-ve.html#thong-bao-14",
+    back: "thong-bao.html?trang=2#thong-bao-14",
+    filteredBack: "thong-bao.html?loai=lich-bao-ve#thong-bao-14",
   },
   "15": {
     title: "[KH&KTTT] BẢO VỆ KHÓA LUẬN TỐT NGHIỆP - ĐỢT 1 - NĂM HỌC 2022 - 2023 | Thông báo",
@@ -1379,8 +1379,8 @@ window.IE104_NOTIFICATION_DETAILS = {
                 </article>
               </li>
     `,
-    back: "thong-bao-trang-2.html#thong-bao-15",
-    filteredBack: "thong-bao-lich-bao-ve.html#thong-bao-15",
+    back: "thong-bao.html?trang=2#thong-bao-15",
+    filteredBack: "thong-bao.html?loai=lich-bao-ve#thong-bao-15",
   },
   "16": {
     title: "[KH&KTTT] THÔNG BÁO CUỐI KỲ KHÓA LUẬN TỐT NGHIỆP HK I NĂM HỌC 2022 - 2023 | Thông báo",
@@ -1447,8 +1447,8 @@ window.IE104_NOTIFICATION_DETAILS = {
                 </article>
               </li>
     `,
-    back: "thong-bao-trang-2.html#thong-bao-16",
-    filteredBack: "thong-bao-bao-cao-nop-bai.html#thong-bao-16",
+    back: "thong-bao.html?trang=2#thong-bao-16",
+    filteredBack: "thong-bao.html?loai=bao-cao-nop-bai#thong-bao-16",
   },
   "17": {
     title: "[KH&KTTT] KHÓA LUẬN TỐT NGHIỆP HK I NĂM HỌC 2022 - 2023 | Thông báo",
@@ -1559,8 +1559,8 @@ window.IE104_NOTIFICATION_DETAILS = {
                 </article>
               </li>
     `,
-    back: "thong-bao-trang-2.html#thong-bao-17",
-    filteredBack: "thong-bao-ke-hoach-hoc-vu.html#thong-bao-17",
+    back: "thong-bao.html?trang=2#thong-bao-17",
+    filteredBack: "thong-bao.html?loai=ke-hoach-hoc-vu#thong-bao-17",
   },
   "18": {
     title: "[KH&KTTT] VINH DANH SINH VIÊN ĐẠT THÀNH TÍCH CAO TRONG LỄ BẢO VỆ KHÓA LUẬN TỐT NGHIỆP ĐỢT 2 - NĂM HỌC 2021-2022 NGÀNH CNTT, KHDL | Thông báo",
@@ -1649,8 +1649,8 @@ window.IE104_NOTIFICATION_DETAILS = {
                 </article>
               </li>
     `,
-    back: "thong-bao-trang-2.html#thong-bao-18",
-    filteredBack: "thong-bao-tong-ket-vinh-danh.html#thong-bao-18",
+    back: "thong-bao.html?trang=2#thong-bao-18",
+    filteredBack: "thong-bao.html?loai=tong-ket-vinh-danh#thong-bao-18",
   },
   "19": {
     title: "[KH&KTTT] [TỔNG KẾT] LỄ TỐT NGHIỆP VÀ TRAO BẰNG KHOA KHOA HỌC VÀ KỸ THUẬT THÔNG TIN, ĐỢT 1 NĂM 2022 | Thông báo",
@@ -1740,8 +1740,8 @@ window.IE104_NOTIFICATION_DETAILS = {
                 </article>
               </li>
     `,
-    back: "thong-bao-trang-2.html#thong-bao-19",
-    filteredBack: "thong-bao-tong-ket-vinh-danh.html#thong-bao-19",
+    back: "thong-bao.html?trang=2#thong-bao-19",
+    filteredBack: "thong-bao.html?loai=tong-ket-vinh-danh#thong-bao-19",
   },
   "20": {
     title: "[KH&KTTT] KẾT QUẢ XÉT DUYỆT ĐỀ CƯƠNG KLTN HK2 2021-2022 | Thông báo",
@@ -1804,8 +1804,8 @@ window.IE104_NOTIFICATION_DETAILS = {
                 </article>
               </li>
     `,
-    back: "thong-bao-trang-2.html#thong-bao-20",
-    filteredBack: "thong-bao-bao-cao-nop-bai.html#thong-bao-20",
+    back: "thong-bao.html?trang=2#thong-bao-20",
+    filteredBack: "thong-bao.html?loai=bao-cao-nop-bai#thong-bao-20",
   },
   "21": {
     title: "[KH&KTTT] NỘP ĐỀ CƯƠNG KHÓA LUẬN TỐT NGHIỆP | Thông báo",
@@ -1873,8 +1873,8 @@ window.IE104_NOTIFICATION_DETAILS = {
                 </article>
               </li>
     `,
-    back: "thong-bao-trang-2.html#thong-bao-21",
-    filteredBack: "thong-bao-bao-cao-nop-bai.html#thong-bao-21",
+    back: "thong-bao.html?trang=2#thong-bao-21",
+    filteredBack: "thong-bao.html?loai=bao-cao-nop-bai#thong-bao-21",
   },
   "22": {
     title: "[KH&KTTT] KHÓA LUẬN TỐT NGHIỆP HK2 NĂM HỌC 2021-2022 | Thông báo",
@@ -1975,8 +1975,8 @@ window.IE104_NOTIFICATION_DETAILS = {
                 </article>
               </li>
     `,
-    back: "thong-bao-trang-2.html#thong-bao-22",
-    filteredBack: "thong-bao-ke-hoach-hoc-vu.html#thong-bao-22",
+    back: "thong-bao.html?trang=2#thong-bao-22",
+    filteredBack: "thong-bao.html?loai=ke-hoach-hoc-vu#thong-bao-22",
   },
   "23": {
     title: "[KH&KTTT] VINH DANH SINH VIÊN ĐẠT ĐIỂM SỐ CAO NHẤT - BẢO VỆ KLTN NGÀNH KHDL KHÓA 2018 | Thông báo",
@@ -2055,8 +2055,8 @@ window.IE104_NOTIFICATION_DETAILS = {
                 </article>
               </li>
     `,
-    back: "thong-bao-trang-2.html#thong-bao-23",
-    filteredBack: "thong-bao-tong-ket-vinh-danh.html#thong-bao-23",
+    back: "thong-bao.html?trang=2#thong-bao-23",
+    filteredBack: "thong-bao.html?loai=tong-ket-vinh-danh#thong-bao-23",
   },
   "24": {
     title: "[KH&KTTT] THÔNG BÁO KHOÁ LUẬN TỐT NGHIỆP HK1 NĂM HỌC 2021-2022 | Thông báo",
@@ -2209,7 +2209,7 @@ window.IE104_NOTIFICATION_DETAILS = {
                 </article>
               </li>
     `,
-    back: "thong-bao-trang-2.html#thong-bao-24",
-    filteredBack: "thong-bao-lich-bao-ve.html#thong-bao-24",
+    back: "thong-bao.html?trang=2#thong-bao-24",
+    filteredBack: "thong-bao.html?loai=lich-bao-ve#thong-bao-24",
   },
 };

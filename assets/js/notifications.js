@@ -11,13 +11,9 @@
   if (!title || !tools || !list || !footer || !template) return;
 
   const pageSize = 12;
-  const categories = [
-    { value: '', label: 'Tất cả', title: 'Tất cả thông báo', file: 'thong-bao.html' },
-    { value: 'ke-hoach-hoc-vu', label: 'Kế hoạch học vụ', file: 'thong-bao-ke-hoach-hoc-vu.html' },
-    { value: 'bao-cao-nop-bai', label: 'Báo cáo & nộp bài', file: 'thong-bao-bao-cao-nop-bai.html' },
-    { value: 'lich-bao-ve', label: 'Lịch bảo vệ', file: 'thong-bao-lich-bao-ve.html' },
-    { value: 'tong-ket-vinh-danh', label: 'Tổng kết & vinh danh', file: 'thong-bao-tong-ket-vinh-danh.html' },
-  ];
+  const routes = window.IE104_NOTIFICATION_ROUTES;
+  if (!routes) return;
+  const categories = routes.categories;
   const mobile = tools.querySelector('.notification-tools__mobile');
   const count = footer.querySelector('p');
   if (!count) return;
@@ -42,22 +38,8 @@
   empty.hidden = true;
   list.after(empty);
 
-  function readState() {
-    const url = new URL(window.location.href);
-    const file = url.pathname.split('/').pop();
-    const category = categories.find((item) => item.file === file) || categories[0];
-    const defaultPage = file === 'thong-bao-trang-2.html' ? 2 : 1;
-    const requested = url.searchParams.get('trang');
-    const number = requested && /^\d+$/.test(requested) ? Number(requested) : defaultPage;
-    return { category, number: Number.isSafeInteger(number) && number > 0 ? number : 1 };
-  }
-
-  function stateUrl(category, number) {
-    const file = !category.value && number === 2 ? 'thong-bao-trang-2.html' : category.file;
-    const url = new URL(file, window.location.href);
-    if (number > 1 && (category.value || number > 2)) url.searchParams.set('trang', number);
-    return url;
-  }
+  const readState = () => routes.read(window.location.href);
+  const stateUrl = (category, number) => routes.url(window.location.href, category, number);
 
   function createCard(notification, filtered) {
     const item = template.cloneNode(true);
@@ -112,7 +94,7 @@
     document.title = `${title.textContent} | Quản lý đồ án và khóa luận`;
 
     for (const link of tools.querySelectorAll('.notification-categories a')) {
-      const selected = new URL(link.href).pathname.split('/').pop() === category.file;
+      const selected = routes.read(link.href).category.value === category.value;
       if (selected) link.setAttribute('aria-current', 'true');
       else link.removeAttribute('aria-current');
     }
