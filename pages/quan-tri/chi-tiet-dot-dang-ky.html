@@ -66,7 +66,7 @@
       </div>
     </div>
   </header>
-  <main id="main-content" class="main-content admin-academic-page" tabindex="-1">
+  <main id="main-content" class="main-content admin-academic-page admin-round-detail" tabindex="-1">
     <div class="page-container">
       <nav class="breadcrumb" aria-label="Đường dẫn">
         <ol class="breadcrumb__list">
@@ -74,18 +74,16 @@
           <li class="breadcrumb__item"><span aria-current="page">Chi tiết đợt đăng ký</span></li>
         </ol>
       </nav>
+      <a class="admin-button" id="admin-round-back" href="hoc-ky-va-dot-dang-ky.html">
+        <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20 12H5m6-6-6 6 6 6"/></svg>
+        <span>Quay lại danh sách các đợt</span>
+      </a>
       <header class="admin-heading">
         <div>
           <div class="admin-title-row">
             <h1 class="page-header__title" id="admin-title" tabindex="-1">Chi tiết đợt đăng ký</h1>
             <span id="admin-round-status" hidden></span>
           </div>
-        </div>
-        <div id="admin-academic-actions" class="admin-academic-actions">
-          <button class="admin-button admin-button--primary" type="button" data-academic-action="edit" hidden>
-            <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m14 6 4 4M5 19l4-.8L20 7a2.8 2.8 0 0 0-4-4L5 14.2 4 20Z"/></svg>
-            <span>Chỉnh sửa đợt</span>
-          </button>
         </div>
       </header>
       <div class="page-content">
@@ -99,6 +97,12 @@
         <p class="admin-demo" id="admin-academic-message" role="status" hidden></p>
         <noscript><p>Bật JavaScript để xem dữ liệu mẫu và sử dụng bộ lọc.</p></noscript>
         <div id="admin-view" class="page-content"></div>
+        <div id="admin-academic-actions" class="admin-academic-actions admin-round-edit-actions" hidden>
+          <button class="admin-button admin-button--primary" type="button" data-academic-action="edit">
+            <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m14 6 4 4M5 19l4-.8L20 7a2.8 2.8 0 0 0-4-4L5 14.2 4 20Z"/></svg>
+            <span>Chỉnh sửa đợt</span>
+          </button>
+        </div>
       </div>
     </div>
   </main>

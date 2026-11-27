@@ -87,7 +87,7 @@ Object.assign(globalThis.ie104English ??= {}, {
   "hồ sơ": "requests",
   "Xem chi tiết": "View details",
   "Xem hồ sơ": "View request",
-  "← Danh sách các đợt": "← Registration periods",
+  "Quay lại danh sách các đợt": "Back to registration periods",
   "Chi tiết đợt đăng ký": "Registration period details",
   "Thông tin đợt đăng ký": "Registration period information",
   "Đề tài thuộc đợt": "Topics in this period",

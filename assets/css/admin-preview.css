@@ -376,14 +376,6 @@
   color: var(--color-warning-fg);
 }
 
-.admin-back {
-  justify-self: start;
-  align-self: flex-start;
-  display: inline-flex;
-  align-items: center;
-  min-height: var(--control-min-height);
-}
-
 .admin-demo {
   color: var(--color-muted-foreground);
   font-size: var(--font-size-secondary);
@@ -827,6 +819,75 @@
 
 .admin-round-datetime svg {
   color: var(--color-muted-foreground);
+}
+
+.admin-round-detail {
+  --admin-round-open-bg: #ede0fa;
+  --admin-round-open-fg: #6b21a8;
+  --admin-topic-registration-bg: #ffebd2;
+  padding-block-end: var(--space-6);
+}
+
+.admin-round-detail .breadcrumb {
+  margin-block-end: var(--space-5);
+}
+
+.admin-round-detail .admin-heading {
+  margin-block-start: var(--space-5);
+}
+
+:root[data-theme="dark"] .admin-round-detail {
+  --admin-round-open-bg: #38264e;
+  --admin-round-open-fg: #e9d5ff;
+  --admin-topic-registration-bg: var(--amber-100);
+}
+
+.admin-round-detail .admin-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 2rem;
+  padding-inline: var(--space-3);
+  border: 0;
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+}
+
+.admin-round-detail .admin-title-row [data-status="open"] {
+  background: var(--admin-round-open-bg);
+  color: var(--admin-round-open-fg);
+}
+
+.admin-round-topics .admin-status {
+  inline-size: 12.5rem;
+  min-block-size: 2.25rem;
+}
+
+.admin-round-topics .admin-status--info {
+  background: var(--blue-100);
+}
+
+.admin-round-topics .admin-status--success {
+  background: var(--green-100);
+}
+
+.admin-round-topics [data-status="open"] {
+  background: var(--admin-topic-registration-bg);
+  color: var(--color-warning-fg);
+}
+
+.admin-round-edit-actions {
+  justify-content: flex-end;
+}
+
+@media (min-width: 64rem) {
+  .admin-round-topics .admin-table thead th:first-child {
+    width: 50%;
+  }
+
+  .admin-round-topics .admin-table thead th:nth-child(2) {
+    width: 25%;
+  }
 }
 
 .admin-academic-dialog {

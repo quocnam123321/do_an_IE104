@@ -56,10 +56,8 @@
   }
 
   function renderRoundDetail(item) {
-    const backUrl = pageUrl("hoc-ky-va-dot-dang-ky.html", { term: params.get("term") });
-    const back = `<a class="admin-back" href="${backUrl}">← Danh sách các đợt</a>`;
     if (!item) {
-      view.innerHTML = `${back}<p class="admin-panel admin-empty">Không tìm thấy đợt đăng ký này.</p>`;
+      view.innerHTML = '<p class="admin-panel admin-empty">Không tìm thấy đợt đăng ký này.</p>';
       return;
     }
 
@@ -79,12 +77,11 @@
           ${field("Đóng đăng ký", datetime(item.end))}
         </dl>
       </section>
-      <section class="pending-requests" aria-labelledby="round-topics-heading">
+      <section class="pending-requests admin-round-topics" aria-labelledby="round-topics-heading">
         <header class="section-header"><h2 id="round-topics-heading">Đề tài thuộc đợt</h2></header>
         ${roundTopics.length ? dataTable(topicColumns, roundTopics, "Đề tài thuộc đợt") :
           '<p class="admin-empty">Đợt này chưa có đề tài.</p>'}
-      </section>
-      ${back}`;
+      </section>`;
   }
 
   function refreshDetail() {
@@ -93,7 +90,7 @@
     title.translate = !currentRound;
     roundStatus.hidden = !currentRound;
     roundStatus.innerHTML = currentRound ? badge(roundLabels[currentRound.status], currentRound.status) : "";
-    academicActions.querySelector('[data-academic-action="edit"]').hidden = !currentRound;
+    academicActions.hidden = !currentRound;
     renderRoundDetail(currentRound);
   }
 
@@ -220,7 +217,7 @@
     }
     academicMessage.hidden = false;
     academicMessage.textContent = "Đã lưu dữ liệu mẫu trong trình duyệt.";
-    title.focus({ preventScroll: true });
+    if (!isDetail) title.focus({ preventScroll: true });
   });
 
   if (data.unavailable) {
@@ -229,6 +226,7 @@
   }
 
   if (isDetail) {
+    document.querySelector("#admin-round-back").href = pageUrl("hoc-ky-va-dot-dang-ky.html", { term: params.get("term") });
     refreshDetail();
   } else {
     initializeTerm(true);
