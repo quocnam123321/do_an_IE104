@@ -321,6 +321,7 @@
       (errors[0].field.endsWith('.name') ? memberName : errors[0].field.endsWith('.role') ? rolePicker?.trigger || memberRole : memberCode).focus();
       return;
     }
+    const wasEditing = Boolean(editingCard);
     if (!editingCard) {
       const fragment = template.content.cloneNode(true);
       fragment.querySelectorAll('*').forEach(node => {
@@ -339,6 +340,7 @@
     clearErrors();
     refreshMembers();
     memberDialog.close();
+    if (wasEditing) app.ui.studentSuccess('Cập nhật thành viên thành công', 'Danh sách thành viên của biểu mẫu đã được cập nhật. Đăng ký đề tài để gửi thông tin.', { returnTo: memberOpener || add });
   });
   memberDialog.querySelector('.registration-member-close').addEventListener('click', () => memberDialog.close());
   memberDialog.addEventListener('close', () => {
@@ -351,7 +353,7 @@
     button.closest('.member-card').remove();
     clearErrors();
     refreshMembers();
-    (add.disabled ? studentRole : add).focus();
+    app.ui.studentSuccess('Xóa thành viên thành công', 'Thành viên đã được xóa khỏi biểu mẫu đăng ký.', { returnTo: add.disabled ? studentRole : add });
   });
   submit.addEventListener('click', showReview);
   form.addEventListener('submit', event => { event.preventDefault(); if (!submit.disabled) showReview(); });
@@ -364,7 +366,7 @@
       dialog.close();
       showSaved(record);
       resultBox.tabIndex = -1;
-      resultBox.focus();
+      app.ui.studentSuccess('Đăng ký đề tài thành công', 'Yêu cầu đăng ký đã được lưu. Bạn có thể theo dõi trong Đề tài của tôi.', { returnTo: resultBox });
     } catch (error) {
       dialog.close();
       if (error.fields) showErrors(error.fields);

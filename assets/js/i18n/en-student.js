@@ -1164,3 +1164,36 @@ globalThis.ie104EnglishPatterns.push(
   [/^((?:DK|DX)\d+ - .+) - (Chờ duyệt|Đã duyệt|Từ chối|Đã từ chối|Yêu cầu chỉnh sửa|Đã rút)$/, (_, label, status) => label + ' - ' + (status === 'Từ chối' ? 'Rejected' : globalThis.ie104English[status] ?? status)],
   [/^(.+) \| Đề tài của tôi$/, (_, prefix) => (globalThis.ie104English[prefix] ?? prefix) + ' | My Topics']
 );
+
+Object.assign(globalThis.ie104English ||= {}, {
+  "Thêm công việc thành công": "Task added successfully",
+  "Xóa công việc thành công": "Task deleted successfully",
+  "Cập nhật công việc thành công": "Task updated successfully",
+  "Công việc đã được thêm vào bảng tiến độ.": "The task has been added to the progress board.",
+  "Công việc đã được xóa khỏi bảng tiến độ.": "The task has been removed from the progress board.",
+  "Rút đề xuất thành công": "Proposal withdrawn successfully",
+  "Xóa đề xuất thành công": "Proposal removed successfully",
+  "Đăng ký đề tài thành công": "Topic registration successful",
+  "Yêu cầu đăng ký đã được lưu. Bạn có thể theo dõi trong Đề tài của tôi.": "Your registration has been saved. Track it in My Topics.",
+  "Thêm thành viên thành công": "Member added successfully",
+  "Cập nhật thành viên thành công": "Member updated successfully",
+  "Xóa thành viên thành công": "Member removed successfully",
+  "Danh sách thành viên của biểu mẫu đã được cập nhật. Đăng ký đề tài để gửi thông tin.": "The members in this form have been updated. Register the topic to submit the information.",
+  "Thành viên đã được xóa khỏi biểu mẫu đăng ký.": "The member has been removed from the registration form.",
+  "Gửi lại đề xuất thành công": "Proposal resubmitted successfully",
+  "Cập nhật đề xuất thành công": "Proposal updated successfully",
+  "Gửi đề xuất thành công": "Proposal submitted successfully",
+  "Cập nhật yêu cầu thành công": "Request updated successfully",
+  "Gửi lại yêu cầu thành công": "Request resubmitted successfully",
+  "Rút yêu cầu thành công": "Request withdrawn successfully",
+  "Xóa yêu cầu thành công": "Request removed successfully",
+  "Thay đổi đã được lưu.": "Your changes have been saved.",
+  "Gửi lời mời thành công": "Invitation sent successfully",
+  "Lời mời hướng dẫn đã được gửi. Bạn có thể theo dõi phản hồi trong Đề tài của tôi.": "Your supervision invitation has been sent. Track replies in My Topics.",
+  "Gửi phản hồi thành công": "Reply sent successfully",
+  "Phản hồi đã được lưu trong cuộc trao đổi.": "Your reply has been saved in this conversation.",
+  "Gửi bình luận thành công": "Comment posted successfully",
+  "Bình luận đã được lưu trong công việc.": "Your comment has been saved in this task.",
+  "Phản hồi đã được lưu trong công việc.": "Your reply has been saved in this task.",
+  "Cập nhật lịch thành công": "Calendar updated successfully"
+});

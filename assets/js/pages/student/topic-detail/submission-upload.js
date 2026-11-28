@@ -20,7 +20,6 @@
     const list = form.querySelector('.submission-upload__files');
     const submit = form.querySelector('button[type="submit"]');
     const close = dialog.querySelector('.submission-dialog__close');
-    const cancel = form.querySelector('[data-upload-cancel]');
     const error = form.querySelector('.submission-upload__error');
     const scope = form.querySelector('.submission-upload__scope');
     const notes = form.elements['ghi-chu'];
@@ -40,7 +39,7 @@
     }
 
     function updateControls() {
-      close.disabled = cancel.disabled = saving;
+      close.disabled = saving;
       picker.disabled = saving || Boolean(loading) || loadFailed;
       submit.disabled = !files.length || isFile || picker.disabled;
       submit.textContent = saving ? 'Đang lưu…' : editing ? 'Lưu thay đổi' : 'Xác nhận nộp bài';
@@ -86,7 +85,6 @@
       renderFiles();
     });
     close.addEventListener('click', () => dialog.close());
-    cancel.addEventListener('click', () => dialog.close());
     dialog.addEventListener('cancel', event => { if (saving) event.preventDefault(); });
     dialog.addEventListener('close', () => {
       if (dialog.open) return;

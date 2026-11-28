@@ -171,6 +171,11 @@ async function submit(allowConnect = true) {
       const total = results.filter(({ status }) => status === key).length;
       return total ? `${label} ${total} mốc` : "";
     }).filter(Boolean).join(" · ");
+    if (results.length && results.every(({ status }) => ["added", "updated", "existing"].includes(status))) {
+      const summary = feedback.textContent;
+      dialog.close();
+      globalThis.IE104.ui.studentSuccess("Cập nhật lịch thành công", summary, { returnTo: trigger });
+    }
   } catch (error) {
     try {
       if (!allowConnect || error.code !== "calendar-connect-required") throw error;

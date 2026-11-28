@@ -532,3 +532,24 @@ Tổng quan, Quản lý đề tài và Yêu cầu chờ duyệt dùng cùng kho�
 - Ô chọn dùng proposal-picker-trigger hoặc proposal-month-trigger: nhãn căn đầu dòng, chiếm phần chiều rộng còn lại; mũi tên ở cuối ô và không bị co. Không để CSS căn giữa nút của từng trang gom chữ và mũi tên vào giữa.
 - Nhãn đã chọn giữ một dòng và rút gọn bằng dấu … khi dài. Danh sách mở và tên hỗ trợ trình đọc màn hình vẫn giữ đầy đủ; không cắt dữ liệu lựa chọn.
 - Áp dụng cùng quy tắc cho bộ lọc giảng viên, hướng nghiên cứu, lịch hạn nộp, chọn vai trò thành viên và các ô chọn trong biểu mẫu SV/GV; giữ màu, font, khoảng đệm và thao tác hiện có.
+
+
+## Hộp thoại thao tác sinh viên — 28/11/2026
+
+- Trong phạm vi SV, bỏ nút Hủy dùng để đóng hộp nếu đã có X ở góc. Giữ Hủy ở biểu mẫu không có X và các thao tác mang nghĩa riêng như hủy lời mời; không xóa điều khiển hủy phần trả lời đang soạn trong một hộp khác.
+- Sau khi thao tác tạo/xóa/sửa/gửi/cập nhật hoàn tất, mở thông báo thành công dùng thiết kế hộp hiện có. Không báo thành công từ sự kiện bấm nút hoặc chỉ kiểm tra form. Lỗi giữ ở biểu mẫu, dữ liệu đang nhập không bị xóa khi lưu thất bại.
+- Hộp thông báo bổ sung dùng token chung, tiêu đề/nội dung ngắn và X không khung. Escape đóng, trả focus về vị trí thao tác; giữ danh sách phản hồi sau khi gửi.
+- Thao tác thành viên trong biểu mẫu đăng ký chỉ cập nhật bản nháp: thông báo ghi rõ cần đăng ký đề tài để gửi; không mô tả đã gửi dữ liệu.
+- Đồng bộ Google Calendar chỉ thông báo thành công khi toàn bộ kết quả là đã thêm/cập nhật/đã có; lỗi hoặc kết quả một phần giữ trong hộp chọn lịch.
+- Chưa triển khai thay đổi UI phía GV. Các hook thêm trong mã dùng chung chỉ chạy cho vai trò SV.
+
+### Điều chỉnh phản hồi thao tác SV
+
+- Không mở hộp thành công khi thêm thành viên (biểu mẫu đăng ký hoặc nhóm đề tài); cập nhật danh sách và giữ focus phù hợp.
+- Không mở hộp thành công cho tin nhắn trong lời mời hoặc bình luận/phản hồi công việc; hiện nội dung vừa gửi ngay trong cuộc trao đổi và giữ thông báo lỗi tại chỗ.
+- Đây là ngoại lệ cho quy tắc thông báo thao tác ở trên, theo yêu cầu mới nhất của người dùng.
+
+### Biểu tượng đóng hộp SV
+
+- Nút X hộp thoại/popover SV dùng biểu tượng SVG 24px, nét 1.75px, vùng bấm 44×44px; không dùng độ đậm của ký tự × để vẽ icon.
+- Màu theo foreground của theme, không khung mặc định, giữ nhãn truy cập và focus bàn phím. Quy tắc chỉ được nạp vào trang SV, không đổi GV.

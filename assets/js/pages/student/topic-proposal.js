@@ -383,13 +383,10 @@
       link.href = service.detailUrl(record.id);
       link.textContent = editing ? 'Xem chi tiết' : 'Xem đề xuất';
       result.append(link);
-      if (sendingAgain) showSavedResult();
-      else {
-        successTitle.textContent = submit.textContent;
-        successLink.href = link.href;
-        successLink.textContent = link.textContent;
-        successDialog.showModal();
-      }
+      successTitle.textContent = sendingAgain ? 'Gửi lại đề xuất thành công' : editing ? 'Cập nhật đề xuất thành công' : 'Gửi đề xuất thành công';
+      successLink.href = link.href;
+      successLink.textContent = link.textContent;
+      successDialog.showModal();
     } catch (failure) {
       if (!saved) await Promise.allSettled(staged.map(ref => files.discard(ref.fileKey)));
       if (sendingAgain) {

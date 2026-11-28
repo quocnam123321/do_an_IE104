@@ -14,7 +14,6 @@
   }
   const preview = location.protocol === 'file:';
   const memberDialog = document.getElementById('add-team-member-dialog');
-  const memberSuccess = document.getElementById('add-team-member-success');
   const inviteDialog = document.getElementById('invite-supervisor-dialog');
   const inviteSuccess = document.getElementById('invite-supervisor-success');
   const memberForm = document.getElementById('add-team-member-form');
@@ -302,13 +301,9 @@
       service.addMember(projectId, checked.value, memberRevision);
       memberDialog.close();
       refresh();
-      memberSuccess.showModal();
+      (addButton.disabled ? teamTitle : addButton).focus({ preventScroll: true });
     } catch (failure) { showError(memberError, failure); }
     finally { saving = false; }
-  });
-  memberSuccess.addEventListener('close', () => {
-    const focusTarget = addButton.disabled ? teamTitle : addButton;
-    focusTarget.focus({ preventScroll: true });
   });
   inviteForm.addEventListener('submit', async event => {
     event.preventDefault();

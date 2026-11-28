@@ -10,7 +10,7 @@
     />
     <title>Hồ sơ cá nhân | Quản lý đồ án</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-student.js"></script>
+    <script defer src="../../assets/js/i18n/en-student.js?v=20261128-student-dialogs"></script>
     <script defer src="../../assets/js/i18n/en-shared.js?v=20261128-profile"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <script type="module" src="../../assets/js/shared/notification-bell.js"></script>
@@ -33,7 +33,10 @@
     <script src="../../assets/js/pages/common/password-toggle.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
-  </head>
+      <link rel="stylesheet" href="../../assets/css/student-operation-feedback.css?v=20261128-student-dialogs" />
+    <script src="../../assets/js/shared/student-operation-feedback.js?v=20261128-student-dialogs" defer></script>
+    <link rel="stylesheet" href="../../assets/css/student-dialog-close.css?v=20261128-close-icon">
+</head>
 
   <body id="page-top" tabindex="-1" class="student-profile-page">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
@@ -214,7 +217,7 @@
             <p id="profile-edit-notice">Thay đổi được lưu trong bản demo trên trình duyệt này.</p>
             <p id="profile-edit-error" role="alert" tabindex="-1" hidden></p>
             <div class="profile-edit__actions">
-              <button type="button" commandfor="profile-edit-dialog" command="close">Hủy</button>
+              
               <button type="reset">Đặt lại</button>
               <button data-profile-save type="submit" disabled>Lưu thay đổi</button>
             </div>
@@ -251,7 +254,7 @@
               <p id="profile-password-error" role="alert"></p>
               <p id="profile-password-status" role="status"></p>
             </div>
-            <footer><button type="button" commandfor="profile-password-dialog" command="close">Hủy</button><button id="password-submit" type="submit" disabled>Đổi mật khẩu</button></footer>
+            <footer><button id="password-submit" type="submit" disabled>Đổi mật khẩu</button></footer>
           </form>
         </dialog>
         <!-- Hộp thoại 3: Thay đổi ảnh đại diện. -->
@@ -265,7 +268,7 @@
             <p id="avatar-note">Chọn ảnh JPG, PNG hoặc WebP không quá 2 MB. Ảnh chỉ lưu thử trên trình duyệt này.</p>
             <p id="avatar-error" role="alert"></p>
           </div>
-          <footer><button type="button" commandfor="profile-avatar-dialog" command="close">Hủy</button><button id="avatar-save" type="button" disabled>Lưu thay đổi</button></footer>
+          <footer><button id="avatar-save" type="button" disabled>Lưu thay đổi</button></footer>
         </dialog>
       </div>
     </main>
