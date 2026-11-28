@@ -11,14 +11,16 @@
     />
     <title>Lịch hạn nộp | Quản lý đồ án</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-student.js?v=20261126-all-deadlines"></script>
+    <script defer src="../../assets/js/i18n/en-student.js?v=20261128-student-dialogs"></script>
     <script defer src="../../assets/js/i18n/en-shared.js?v=20261124-demo-deadlines"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
+    <script type="module" src="../../assets/js/shared/notification-bell.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
     <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-pagination" />
-    <link rel="stylesheet" href="../../assets/css/deadline-calendar.css?v=20261126-calendar-export" />
-    <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261126-calendar-year" />
+    <link rel="stylesheet" href="../../assets/css/notification-bell.css" />
+    <link rel="stylesheet" href="../../assets/css/deadline-calendar.css?v=20261128-compact-caption" />
+    <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261128-label-alignment" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <script src="../../assets/js/data/mock-data.js?v=20261124-completed-actions" defer></script>
     <script src="../../assets/js/data/student-projects.js" defer></script>
@@ -39,7 +41,10 @@
     <script src="../../assets/js/deadline-calendar.js?v=20261128-database-sync" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
-  </head>
+      <link rel="stylesheet" href="../../assets/css/student-operation-feedback.css?v=20261128-student-dialogs" />
+    <script src="../../assets/js/shared/student-operation-feedback.js?v=20261128-student-dialogs" defer></script>
+    <link rel="stylesheet" href="../../assets/css/student-dialog-close.css?v=20261128-close-icon">
+</head>
   <body id="page-top" tabindex="-1" class="student-deadline-page">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
     <!-- ĐẦU TRANG -->
@@ -604,7 +609,7 @@
             <footer class="calendar-export__footer">
               <p class="calendar-export__count" role="status">Đã chọn 0 mốc</p>
               <div class="calendar-export__actions">
-                <button type="button" data-calendar-export-close>Hủy</button>
+
                 <button class="calendar-export__add" type="button" disabled>Thêm lịch</button>
               </div>
             </footer>

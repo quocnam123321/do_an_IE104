@@ -90,6 +90,7 @@ test('new student tasks preserve multiple assignees, description and initial sta
   };
 
   assert.throws(() => service.saveTask(projectId, null, { ...input, status: 'da-hoan-thanh' }, 0), /Chưa bắt đầu hoặc Đang thực hiện/);
+  assert.throws(() => service.saveTask(projectId, null, { ...input, deadline: '2000-01-01' }, 0), /từ hôm nay trở đi/);
   assert.throws(() => service.saveTask(projectId, null, { ...input, assigneeCodes: [] }, 0), /ít nhất một người phụ trách/);
   assert.throws(() => service.saveTask(projectId, null, { ...input, assigneeCodes: ['24520001', 'ngoai-nhom'] }, 0), /trong nhóm hiện tại/);
 
@@ -133,4 +134,9 @@ test('new student tasks preserve multiple assignees, description and initial sta
   }, service.getState(projectId).revision).tasks.at(-1);
   assert.equal(legacy.status, 'chua-thuc-hien');
   assert.equal(legacy.percent, 0);
+
+  runInContext('Date.now = () => Date.parse("2099-11-25T17:30:00Z")', context);
+  revision = service.getState(projectId).revision;
+  assert.throws(() => service.saveTask(projectId, task.id, { ...input, deadline: '2099-11-24' }, revision), /từ hôm nay trở đi/);
+  assert.equal(service.saveTask(projectId, task.id, input, revision).tasks.find(item => item.id === task.id).deadline, input.deadline);
 });

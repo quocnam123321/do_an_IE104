@@ -25,19 +25,16 @@
   function refresh() {
     try {
       const state = databaseProfile ? databaseState : service.getState();
-      const { id, email, phone, expertise } = state ?? {};
+      const { id, email, phone, faculty, department, degree, expertise } = state ?? {};
       const name = demoName || state?.name;
-      const values = [name, id, email, phone, '', '', '', expertise];
+      const values = [name, id, email, phone, faculty, department, degree, expertise];
       document.querySelectorAll('.profile-details dd').forEach((node, index) => { node.textContent = values[index] || 'Chưa có thông tin'; });
       const placeholder = document.querySelector('.profile-avatar__placeholder');
       placeholder.replaceChildren();
-      const avatar = databaseAvatar ? avatarUrl : state?.avatar;
-      if (avatar) {
-        const image = document.createElement('img');
-        image.src = avatar;
-        image.alt = `Ảnh đại diện ${name}`;
-        placeholder.append(image);
-      } else placeholder.textContent = 'Chưa có ảnh đại diện';
+      const image = document.createElement('img');
+      image.src = (databaseAvatar ? avatarUrl : state?.avatar) || '../../assets/images/student-avatar.svg';
+      image.alt = name ? `Ảnh đại diện ${name}` : 'Ảnh đại diện';
+      placeholder.append(image);
       open.disabled = busy || loadingProfile;
       avatarButton.disabled = busy;
       return state;
@@ -87,7 +84,7 @@
     snapshot = await loadProfile();
     if (!snapshot) return;
     Object.entries(fields).forEach(([key, field]) => {
-      field.value = key === 'name' && demoName ? demoName : snapshot[key];
+      field.defaultValue = field.value = key === 'name' && demoName ? demoName : snapshot[key];
       field.removeAttribute('aria-invalid');
     });
     message(error, '');
@@ -95,6 +92,7 @@
     dialog.showModal();
     (demoName ? fields.email : fields.name).focus();
   });
+  form.addEventListener('reset', () => { message(error, ''); Object.values(fields).forEach(field => field.removeAttribute('aria-invalid')); });
   form.noValidate = true;
   form.addEventListener('submit', async event => {
     event.preventDefault();
@@ -116,8 +114,10 @@
       if (databaseProfile) databaseState = { ...databaseState, ...await databaseProfile.save(checked.value, snapshot.revision) };
       else await service.update(checked.value, snapshot.revision, snapshot.id);
       dialog.close();
-      message(status, databaseProfile ? 'Đã lưu thông tin hồ sơ.' : 'Đã lưu hồ sơ thử trên trình duyệt này.');
-      status.focus();
+      message(status, '');
+      app.ui.profileSuccess('Lưu thông tin thành công', databaseProfile
+        ? 'Thông tin cá nhân đã được cập nhật trên hệ thống.'
+        : 'Thông tin cá nhân đã được cập nhật trên trình duyệt này.', open);
     } catch (failure) { message(error, failure.message); error.focus(); }
     finally { busy = false; submit.disabled = false; form.removeAttribute('aria-busy'); refresh(); }
   });
@@ -140,7 +140,6 @@
       if (!valid) throw new Error('Không đọc được nội dung ảnh.');
       if (databaseAvatar) {
         renderAvatar(await databaseAvatar.save(file));
-        message(status, 'Đã lưu ảnh đại diện.');
       } else {
         const data = await new Promise((resolve, reject) => {
           const reader = new FileReader();
@@ -149,10 +148,13 @@
           reader.readAsDataURL(file);
         });
         await service.update({}, captured.revision, captured.id, data);
-        message(status, 'Đã lưu ảnh đại diện thử trên trình duyệt này.');
       }
+      message(status, '');
+      app.ui.profileSuccess('Cập nhật ảnh thành công', databaseAvatar
+        ? 'Ảnh đại diện đã được cập nhật trên hệ thống.'
+        : 'Ảnh đại diện đã được cập nhật trên trình duyệt này.', avatarButton);
     } catch (failure) { message(status, failure.message); }
-    finally { busy = false; fileInput.value = ''; refresh(); status.focus(); }
+    finally { busy = false; fileInput.value = ''; refresh(); if (status.textContent) status.focus(); }
   });
   document.querySelectorAll('.change-password-form__visibility').forEach(button => {
     button.disabled = false;

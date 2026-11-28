@@ -14,7 +14,6 @@
   }
   const preview = location.protocol === 'file:';
   const memberDialog = document.getElementById('add-team-member-dialog');
-  const memberSuccess = document.getElementById('add-team-member-success');
   const removeMemberDialog = document.getElementById('remove-team-member-dialog');
   const removeMemberError = removeMemberDialog.querySelector('[data-remove-member-error]');
   removeMemberDialog.querySelector('[data-close-remove-member]').addEventListener('click', () => removeMemberDialog.close());
@@ -341,8 +340,13 @@
       else await service.addMember(projectId, checked.value, memberRevision);
       memberDialog.close();
       refresh();
-      memberSuccess.querySelector('h2').textContent = editingMemberKey ? 'Đã cập nhật thành viên' : 'Đã thêm thành viên';
-      memberSuccess.showModal();
+      const returnTo = addButton.disabled ? teamTitle : addButton;
+      if (state.databaseTeam) {
+        const title = editingMemberKey ? 'Đã cập nhật thành viên' : 'Đã thêm thành viên';
+        app.ui.studentSuccess(title, 'Danh sách thành viên đã được cập nhật.', { returnTo });
+      } else {
+        returnTo.focus({ preventScroll: true });
+      }
     } catch (failure) { showError(memberError, failure); }
     finally { saving = false; }
   });
@@ -354,14 +358,9 @@
       await service.removeMember(projectId, pendingRemoveMember.key, pendingRemoveMember.revision);
       removeMemberDialog.close();
       refresh();
-      memberSuccess.querySelector('h2').textContent = 'Đã xóa thành viên';
-      memberSuccess.showModal();
+      app.ui.studentSuccess('Đã xóa thành viên', 'Danh sách thành viên đã được cập nhật.', { returnTo: teamTitle });
     } catch (failure) { showError(removeMemberError, failure); }
     finally { saving = false; }
-  });
-  memberSuccess.addEventListener('close', () => {
-    const focusTarget = addButton.disabled ? teamTitle : addButton;
-    focusTarget.focus({ preventScroll: true });
   });
   inviteForm.addEventListener('submit', async event => {
     event.preventDefault();

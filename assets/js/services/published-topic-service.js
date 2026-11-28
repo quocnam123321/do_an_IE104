@@ -12,6 +12,16 @@
       return { allowed: false, reason: 'Đề tài mẫu chỉ nhận đăng ký trong chế độ minh họa.', label: 'Chưa mở đăng ký' };
     }
     if (topic.registered) return { allowed: false, reason: 'Đề tài đã có nhóm đăng ký.', label: 'Đã có nhóm đăng ký' };
+    if (topic.registration.roundId) {
+      const round = globalThis.IE104AdminAcademic?.forTopic(topic, now.getTime());
+      if (round?.status !== 'open') {
+        const reason = round?.status === 'upcoming' ? 'Đợt đăng ký chưa mở.' :
+          round ? 'Đợt đăng ký đã đóng.' : 'Không tìm thấy đợt đăng ký.';
+        return { allowed:false, reason, label: reason.slice(0, -1) };
+      }
+      return topic.status === 'open' ? { allowed:true, reason:'', label:'Mở đăng ký' } :
+        { allowed:false, reason:'Giảng viên đã đóng đăng ký đề tài này.', label:'Đã đóng đăng ký' };
+    }
     if (topic.status !== 'open') return { allowed:false, reason:'Giảng viên đã đóng đăng ký đề tài này.', label:'Đã đóng đăng ký' };
     if (Date.parse(topic.registration.deadline) <= now.getTime()) return { allowed:false, reason:'Đề tài đã hết hạn đăng ký.', label:'Đã hết hạn' };
     if (topic.registration.opensAt && Date.parse(topic.registration.opensAt) > now.getTime()) return { allowed:false, reason:'Chưa đến thời điểm mở đăng ký đề tài.', label:'Chưa mở đăng ký' };
@@ -27,7 +37,8 @@
       createdAt:topic.createdAt, revision:topic.revision || 0, description:topic.description,
       objectives:[...topic.objectives], outcomes:[...topic.outcomes], requirements:[...topic.requirements], supervisor:{...topic.supervisor},
       methodAndScope:topic.methodAndScope || '', plan:topic.plan || '',
-      registrationRules:{minMembers:topic.isDatabaseTopic ? topic.registration.minMembers : 1,maxMembers:topic.registration.maxMembers}, registration:{...topic.registration},
+      registrationRules:{minMembers:topic.isDatabaseTopic ? topic.registration.minMembers : 1,maxMembers:topic.registration.maxMembers},
+      registration:{...(topic.isDatabaseTopic ? topic : globalThis.IE104AdminAcademic?.withRegistration(topic, now.getTime()) || topic).registration},
       startsAt:topic.startsAt, progressReportDate:topic.progressReportDate, finalReportDate:topic.finalReportDate, completesAt:topic.completesAt,
       availability:availability(topic,now), imageRef:topic.imageRef || null, attachmentRef:topic.attachmentRef, attachmentName:topic.attachmentName || '',
       detailUrl:`chi-tiet-de-tai-gv-mo-dang-ky.html?topic=${encodeURIComponent(publicId(topic))}`,

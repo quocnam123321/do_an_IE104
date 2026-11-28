@@ -97,7 +97,9 @@
       .map(topic => [topic.id, topic.sourceRecord]));
     const published = database.map(topic => sources.has(topic.legacyCatalogId)
       ? { ...topic, sourceRecord: sources.get(topic.legacyCatalogId) } : topic);
-    return [...published, ...decorate(merged.filter(topic => topic.kind !== 'created' || !databaseCodes.has(topic.id)))];
+    const rounds = globalThis.IE104AdminAcademic;
+    const localTopics = decorate(merged.filter(topic => topic.kind !== 'created' || !databaseCodes.has(topic.id)));
+    return [...published, ...localTopics.map(topic => rounds?.withRegistration(topic) || topic)];
   };
 
   function registeredTopicIds() {
@@ -122,9 +124,13 @@
     const publicId = app.services.publishedTopics?.publicId;
     const matches = publicId && [topic.id, topic.displayId].some(id =>
       id && registeredIds.has(publicId({ ...topic, id })));
-    return matches
-      ? { status: 'registered', statusLabel: 'Đã có nhóm đăng ký' }
-      : { status: topic.status, statusLabel: topic.statusLabel };
+    if (matches) return { status: 'registered', statusLabel: 'Đã có nhóm đăng ký' };
+    if (topic.registration?.roundId) {
+      const round = globalThis.IE104AdminAcademic?.forTopic(topic);
+      if (round?.status !== 'open') return { status: 'closed', statusLabel:
+        round?.status === 'upcoming' ? 'Đợt đăng ký chưa mở' : round ? 'Đợt đăng ký đã đóng' : 'Không tìm thấy đợt đăng ký' };
+    }
+    return { status: topic.status, statusLabel: topic.statusLabel };
   }
 
   function list(kind, { catalogOnly = false } = {}) {

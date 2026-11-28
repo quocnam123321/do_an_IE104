@@ -23,8 +23,18 @@
 
 .proposal-picker-trigger > span,
 .proposal-month-trigger > span {
+  flex: 1 1 auto;
   min-width: 0;
-  overflow-wrap: anywhere;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: start;
+}
+
+.proposal-picker-trigger > svg,
+.proposal-month-trigger > svg {
+  flex: 0 0 auto;
+  margin-inline-start: auto;
 }
 
 .research-select-wrap > .proposal-picker-trigger {
@@ -453,7 +463,7 @@
   cursor: pointer;
 }
 
-.proposal-calendar__time-options > [role="option"]:hover {
+.proposal-calendar__time-options > [role="option"]:not([aria-disabled="true"]):hover {
   color: var(--color-primary);
   background: var(--color-info-bg);
 }
@@ -468,6 +478,12 @@
 .proposal-calendar__time-options:focus-visible > .is-active {
   outline: 2px solid currentColor;
   outline-offset: -3px;
+}
+
+.proposal-calendar :is([data-date], .proposal-calendar__month-grid button, [data-today]):disabled,
+.proposal-calendar__time-options > [aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: .45;
 }
 
 @media (min-width: 34rem) {

@@ -128,11 +128,15 @@
       if (badge) { badge.textContent = status.statusLabel; badge.className = `status-badge status-badge--${status.status}`; }
       document.querySelectorAll('.registration-close-button').forEach(button => { button.hidden = readOnly || status.status !== 'open'; });
       let reopen = document.querySelector('.registration-reopen-button');
-      if (!reopen && topic.status === 'closed') {
+      if (!reopen && status.status === 'closed') {
         const prototype = document.getElementById('registration-closed-template')?.content.querySelector('.registration-reopen-button');
         if (prototype) { reopen = prototype.cloneNode(true); document.querySelector('.registration-close-button')?.after(reopen); }
       }
-      if (reopen) reopen.hidden = readOnly || status.status !== 'closed';
+      if (reopen) {
+        reopen.hidden = readOnly || status.status !== 'closed';
+        const round = globalThis.IE104AdminAcademic?.forTopic(topic);
+        reopen.disabled = Boolean(topic.registration?.roundId && round?.status !== 'open');
+      }
       const edit = document.querySelector('.topic-edit-link');
       if (edit) {
         const url = new URL('chinh-sua-de-tai-giang-vien.html', location.href);
@@ -156,6 +160,8 @@
   }
   if (mode === 'detail') {
     window.addEventListener('pageshow',render);
+    window.addEventListener('ie104:registration-rounds-updated', render);
+    globalThis.IE104AdminAcademic?.watch();
     window.addEventListener('ie104:registrations-updated', render);
     window.addEventListener('ie104:lecturer-topics-updated', render);
     document.addEventListener('ie104:lecturer-topic-state-changed',render);

@@ -7,7 +7,8 @@
   const editing = form.id === 'topic-edit-form';
   const fieldIds = {
     id: 'topic-code', title: 'topic-name', topicType: 'topic-type', course: 'course',
-    semester: 'semester', academicYear: 'academic-year', deadline: 'registration-closes',
+    semester: 'semester', academicYear: 'academic-year', roundId: 'registration-round',
+    deadline: 'registration-closes',
     startsAt: 'topic-start-date', progressReportDate: 'topic-progress-report-date',
     finalReportDate: 'topic-final-report-date', description: 'topic-description',
     objectives: 'topic-objectives', outcomes: 'topic-outcomes', requirements: 'topic-requirements',
@@ -42,6 +43,10 @@
   const removed = {};
   const pendingFiles = new Map();
   const inlineErrors = new Map();
+  let roundClosed = false;
+  function syncSubmit() {
+    submit.disabled = saving || committed || pendingFiles.size > 0 || roundClosed;
+  }
   const owner = app.data.currentLecturer.id;
   const localDate = value => {
     const timestamp = Date.parse(value);
@@ -54,7 +59,7 @@
     field.value = String(value ?? '');
   }
   function read() {
-    return Object.fromEntries(Object.entries(fields).map(([key, field]) => {
+    return Object.fromEntries(Object.entries(fields).filter(([, field]) => field && !field.disabled).map(([key, field]) => {
       if (key === 'id' && original) return [key, original.id];
       const value = datePicker && field?.matches('input[data-proposal-picker]') ? datePicker.read(field) : field?.value;
       return [key, value || ''];
@@ -122,6 +127,14 @@
   }
   try {
     if (editing) original = app.services.lecturerTopics.get('created', new URLSearchParams(location.search).get('topic') ?? app.data.lecturerRealDefaultTopicId ?? 'DA001');
+    const database = usesDatabase();
+    validationOptions.useRounds = !database;
+    fields.roundId.disabled = database;
+    fields.roundId.closest('.registration-round-grid').hidden = database;
+    if (fields.deadline) {
+      fields.deadline.disabled = !database;
+      fields.deadline.closest('[data-database-deadline]').hidden = !database;
+    }
     const types = { ...service.catalog.types };
     if (original?.topicType === 'thesis' && original.sourceRecord?.type === 'Luận văn thạc sĩ') {
       types.thesis = original.sourceRecord.type;
@@ -140,12 +153,13 @@
         requirements: original.requirements?.join('\n'),
         minMembers: original.registration?.minMembers,
         maxMembers: original.registration?.maxMembers,
-        deadline: localDate(original.registration?.deadline),
+        roundId: original.registration?.roundId,
         startsAt: localDate(original.startsAt).slice(0, 10),
         progressReportDate: localDate(original.progressReportDate).slice(0, 10),
         finalReportDate: localDate(original.finalReportDate).slice(0, 10),
       };
       for (const [key, field] of Object.entries(fields)) {
+        if (!field) continue;
         const value = values[key] ?? '';
         if (datePicker && field.matches('input[data-proposal-picker]')) datePicker.fill(field, value);
         else field.value = value;
@@ -193,7 +207,7 @@
         if (!file) return;
         reportFileError('');
         pendingFiles.set(purpose, file);
-        submit.disabled = true;
+        syncSubmit();
         try {
           await fileService.validateSelection(file, purpose);
           if (pendingFiles.get(purpose) !== file) return;
@@ -209,7 +223,7 @@
           input.focus();
         } finally {
           if (pendingFiles.get(purpose) === file) pendingFiles.delete(purpose);
-          submit.disabled = saving || pendingFiles.size > 0;
+          syncSubmit();
         }
       });
       remove.addEventListener('click', () => {
@@ -254,7 +268,17 @@
         if (!invalidFields.has(field)) clearFieldError(field);
       }
     });
-    form.noValidate = true; submit.disabled = false; submit.removeAttribute('title');
+    if (!database) app.ui.registrationRound.bind(form, {
+      lecturer: true,
+      previous: original?.registration?.roundId,
+      legacy: editing && !original?.registration?.roundId,
+      onChange(round) {
+        roundClosed = !editing && round?.status === 'closed';
+        syncSubmit();
+      },
+    });
+    syncSubmit();
+    form.noValidate = true; submit.removeAttribute('title');
     status.textContent = '';
     form.dataset.topicEditorReady = 'true';
   } catch (failure) { submit.disabled = true; showErrors([{ message: failure.message }]); return; }
@@ -301,7 +325,7 @@
         controls.forEach(([node,disabled]) => { node.disabled = disabled; });
       }
       saving = false;
-      submit.disabled = committed;
+      syncSubmit();
       form.removeAttribute('aria-busy');
     }
     if (!committed) return;
@@ -319,6 +343,6 @@
     }
   });
   window.addEventListener('storage', event => { if (event.key === app.services.lecturerTopicRepository.key || event.key === null) status.textContent = 'Danh sách đề tài đã đổi ở tab khác. Khi lưu, hệ thống sẽ kiểm tra lại phiên bản.'; });
-  window.addEventListener('pageshow',event => { if (event.persisted && !dirty && !saving && submit.disabled) location.reload(); });
+  window.addEventListener('pageshow',event => { if (event.persisted && !dirty && committed) location.reload(); });
   window.addEventListener('beforeunload', event => { if (dirty) { event.preventDefault(); event.returnValue = ''; } });
 })();

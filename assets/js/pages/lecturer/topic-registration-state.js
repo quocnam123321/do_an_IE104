@@ -15,6 +15,8 @@
       ?.focus({ preventScroll: true });
   });
   const deadline = document.getElementById('registration-reopen-deadline');
+  const legacyDeadline = deadline.closest('.topic-dialog__field');
+  const roundDeadline = document.querySelector('[data-round-reopen-time]');
   const datePicker = app.ui?.proposalDatePicker;
   datePicker?.enhanceDate(deadline, { timeZone: 'Asia/Ho_Chi_Minh', preferAbove: true });
   const setDeadlineValidity = message => {
@@ -43,8 +45,9 @@
     form.addEventListener('submit',async event => {
       event.preventDefault();
       if (!pending || busy || pending.action !== action) return;
-      const value = action === 'open' ? datePicker?.read(deadline) ?? deadline.value : '';
-      if (action === 'open' && !value) {
+      const needsDeadline = action === 'open' && !pending.bound;
+      const value = needsDeadline ? datePicker?.read(deadline) ?? deadline.value : '';
+      if (needsDeadline && !value) {
         setDeadlineValidity('Nhập ngày và giờ hợp lệ.');
         deadline.reportValidity();
         return;
@@ -71,19 +74,33 @@
     });
     document.addEventListener('click',event => {
       const trigger = event.target.closest(action === 'open' ? '.registration-reopen-button' : '.registration-close-button');
-      if (!trigger || busy) return;
+      if (!trigger || trigger.disabled || busy) return;
       event.preventDefault();
       triggerError.hidden = true;
       try {
         const topic = app.services.lecturerTopics.get('created',document.body.dataset.topicId);
-        pending = { id:topic.id,revision:topic.revision || 0,ownerId:app.data.currentLecturer.id,action };
+        const bound = Boolean(topic.registration?.roundId);
+        pending = { id:topic.id,revision:topic.revision || 0,ownerId:app.data.currentLecturer.id,action,bound };
         dialog.querySelector('strong').textContent = topic.title; error.hidden = true;
         if (action === 'open') {
-          const timestamp = Date.parse(topic.registration?.deadline);
-          const value = Number.isFinite(timestamp) ? new Date(timestamp + 7 * 3600000).toISOString().slice(0, 16) : '';
+          legacyDeadline.hidden = bound;
+          roundDeadline.hidden = !bound;
+          deadline.required = !bound;
+          deadline.disabled = bound;
           setDeadlineValidity('');
-          if (datePicker) datePicker.fill(deadline, value);
-          else deadline.value = value;
+          if (bound) {
+            const academic = globalThis.IE104AdminAcademic;
+            const round = academic?.forTopic(topic);
+            if (round?.status !== 'open') throw new Error('Đợt đăng ký hiện chưa mở.');
+            const time = roundDeadline.querySelector('time');
+            time.dateTime = round.end + '+07:00';
+            time.textContent = academic.displayTime(round.end);
+          } else {
+            const timestamp = Date.parse(topic.registration?.deadline);
+            const value = Number.isFinite(timestamp) ? new Date(timestamp + 7 * 3600000).toISOString().slice(0, 16) : '';
+            if (datePicker) datePicker.fill(deadline, value);
+            else deadline.value = value;
+          }
         }
         dialog.showModal();
       } catch (failure) {

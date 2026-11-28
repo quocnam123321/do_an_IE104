@@ -186,6 +186,7 @@ Các cặp chữ/nền trạng thái trên đã được tính tương phản �
 - Thông báo lỗi đặt gần trường, liên kết bằng `aria-describedby` và dùng `aria-invalid` khi lỗi đã được xác định.
 - Trường bắt buộc có giải thích rõ; không dựa vào màu hoặc dấu sao không được giải nghĩa.
 - Khi lỗi, giữ dữ liệu người dùng đã nhập. Thông báo thành công chỉ xuất hiện khi thao tác thật sự hoàn thành.
+- Bộ chọn mốc thực hiện và hạn nộp vô hiệu hóa ngày, giờ đã qua theo giờ Việt Nam. Trường chỉ có ngày vẫn cho chọn hôm nay. Khi chỉnh sửa, có thể giữ nguyên mốc đã lưu, còn mốc thay đổi phải hợp lệ tại thời điểm lưu.
 
 ### Trạng thái bộ lọc
 
@@ -364,9 +365,10 @@ Tổng quan, Quản lý đề tài và Yêu cầu chờ duyệt dùng cùng kho�
 - Nút Đóng đăng ký có nền trắng, viền và chữ đỏ, với biểu tượng ổ khóa nét mảnh trước nhãn. Nút nằm ngay trước Chỉnh sửa đề tài ở cuối trang chi tiết.
 - Khi đã đóng đăng ký, nút Mở lại đăng ký xuất hiện trước Chỉnh sửa đề tài. Nút có nền trắng, viền và chữ xanh dương, với biểu tượng ổ khóa mở trước nhãn.
 - Hộp thoại Đóng đăng ký đề tài hiển thị câu hỏi có tên đề tài in đậm. Nút × và phím Esc đóng hộp thoại. Nút đỏ Xác nhận đóng đăng ký nằm ở cuối bên phải, với đường kẻ mảnh dưới tiêu đề và trên hàng nút.
-- Hộp thoại Mở lại đăng ký đề tài dùng cùng bố cục, với trường Hạn đăng ký mới và nút xanh Xác nhận mở lại đăng ký. Bộ chọn ngày giờ dùng cùng giao diện với Yêu cầu bài nộp và mở nổi phía trên ô nhập. Kích thước hộp thoại giữ nguyên khi mở lịch.
+- Hộp thoại Mở lại đăng ký đề tài hiển thị giờ đóng của đợt và nút Xác nhận mở lại đăng ký. Giảng viên chỉ mở lại đề tài trong thời gian đợt đang mở. Đề tài cũ chưa gắn đợt vẫn dùng bộ chọn hạn đăng ký để mở lại.
 - Sau khi lưu thao tác đóng hoặc mở lại đăng ký, hộp thoại thành công dùng khung gọn, dấu tích xanh và tiêu đề căn giữa theo thao tác vừa lưu. Nút × ở góc trên bên phải hoặc phím Esc đóng thông báo và đưa tiêu điểm về nút đăng ký đang hiển thị.
-- Khối Thông tin đề tài của biểu mẫu Tạo đề tài phía giảng viên dùng cùng thứ tự trường, menu thả xuống và ba ngày bắt buộc như biểu mẫu sinh viên. Môn học hiển thị mã trước tên. Hạn đăng ký là ô ngày giờ bắt buộc, trải hết chiều rộng ở hàng cuối khối Thông tin đề tài, ngay dưới hai ngày nộp báo cáo. Cụm `dd/mm/yyyy · hh:mm` nằm sát nhau ở trái, biểu tượng lịch ở mép phải. Khi nhập ngày giờ hoặc mở lịch, một viền xanh bao quanh toàn bộ ô, cách viền của ô 2px. Khi mở lịch, hai cột cuộn Giờ và Phút nằm bên phải phần chọn ngày trên màn hình rộng và xếp bên dưới trên màn hình hẹp. Xóa nằm bên trái và làm trống ngày giờ. Hôm nay nằm bên phải và chọn ngày hiện tại. Khi đã chọn đủ ngày, giờ và phút, biểu mẫu tự cập nhật và lịch đóng.
+- Thẻ tra cứu lịch trên trang Đề tài mở đăng ký của sinh viên và hai tab Quản lý đề tài của giảng viên hiển thị Đợt đăng ký, Học kỳ, Giờ mở, Giờ đóng và nhãn trạng thái theo thứ tự đó. Tên đợt nằm trong ô chọn. Danh sách xổ xuống dùng cùng kiểu với bộ chọn trong biểu mẫu, có nền xanh nhạt cho đợt đang chọn và mục đang trỏ tới. Học kỳ và hai mốc giờ là các ô chỉ đọc, hiển thị đủ giờ và ngày theo giờ Việt Nam. Các ô cùng hàng trên máy tính và tự xuống hàng khi màn hình hẹp.
+- Trong form Tạo đề xuất của sinh viên và Tạo đề tài của giảng viên, ô Đợt đăng ký và Giờ đóng của đợt nằm cạnh nhau dưới học kỳ và năm học, rồi xếp dọc trên màn hình hẹp. Danh sách đợt lọc theo học kỳ, năm học và loại đề tài. Giờ đóng hiển thị theo giờ Việt Nam và chỉ đọc. Môn học hiển thị mã trước tên. Cả hai biểu mẫu giữ ba mốc thực hiện và nộp báo cáo.
 - Cả hai biểu mẫu khóa ô Môn học với dòng “Chọn loại đề tài trước” khi chưa chọn loại. Đồ án môn học mở danh sách để chọn. Đồ án tốt nghiệp và Khóa luận tốt nghiệp tự điền môn tương ứng. Khi đổi loại đề tài, bỏ môn cũ nếu môn đó không thuộc loại vừa chọn.
 - Với Khóa luận tốt nghiệp, hai ô Phương pháp và phạm vi thực hiện và Kế hoạch thực hiện và phân công có dấu sao và bắt buộc nhập khi tạo hoặc chỉnh sửa đề tài. Với các loại còn lại, hai ô là tùy chọn.
 - Nút Tạo đề tài nằm ở góc dưới bên phải biểu mẫu của giảng viên. Khi có lỗi nhập liệu, thông báo hiện dưới trường cần sửa và tiêu điểm chuyển đến trường lỗi đầu tiên. Khi đang lưu, nút khóa thao tác và hiện trạng thái Đang tạo đề tài. Sau khi lưu, hộp thoại dùng cùng kiểu với xác nhận lưu đề xuất của sinh viên, có dấu tích xanh, tiêu đề “Tạo đề tài thành công” và nút Xem đề tài. Nút mở trang chi tiết đề tài vừa tạo và vẫn có ở cuối biểu mẫu khi đóng hộp thoại.
@@ -509,3 +511,46 @@ Tổng quan, Quản lý đề tài và Yêu cầu chờ duyệt dùng cùng kho�
 
 - Tái sử dụng picker chọn có sẵn: cùng token, mũi tên, trạng thái chọn và focus. Danh sách vai trò mở bằng popover top layer với vị trí fixed, cùng chiều rộng ô chọn; tự lật lên nếu thiếu chỗ phía dưới, không làm thay đổi kích thước dialog.
 - Duy trì chọn bằng bàn phím, Escape/Tab đóng danh sách, click ngoài đóng; đóng dialog cũng đóng danh sách. Giá trị select gốc giữ nguyên cho kiểm tra và lưu đăng ký. Khi trình duyệt không hỗ trợ Popover API, giữ select native.
+
+
+## Gộp danh sách thông báo — 27/11/2026
+
+- Một bố cục danh sách tại thong-bao.html. Bộ lọc dùng ?loai=..., phân trang dùng ?trang=..., giữ giao diện hiện có, 12 thông báo/trang, Back/Forward và link chia sẻ/tải lại.
+- Bài viết vẫn dùng chi-tiet-thong-bao.html?id=...; nguồn thông báo đại học UIT giữ trang riêng vì khác dữ liệu và cách đọc nội dung. Các URL danh sách cũ chuyển hướng về trang chung khi chạy Firebase Hosting.
+
+
+## Hồ sơ SV/GV và số đếm tab — 28/11/2026
+
+- Các số cạnh tên tab quản lý đề tài và lời mời được ẩn khỏi giao diện; giữ dữ liệu và thông tin hỗ trợ trình đọc màn hình. Số lượng trong cột công việc/bài nộp không thuộc thay đổi này.
+- Hộp đổi mật khẩu GV dùng cùng `profile-dialog`, `password-field`, `password-input` như SV, có nút hiện/ẩn mật khẩu và lỗi nhập liệu. Không đổi màu, font hay token.
+- Sau khi lưu hồ sơ, ảnh hoặc mật khẩu thành công, mở hộp thông báo ngắn dùng header/nút X và nội dung; không lặp nút Đóng. Lỗi lưu giữ tại biểu mẫu, không mở hộp thành công.
+- Nút X của hộp chỉnh sửa không có viền; hàng thao tác căn phải, xuống dòng khi thiếu chỗ. Hộp thoại giới hạn theo viewport, Escape đóng và trả focus về nút mở.
+- Giữ avatar mặc định trung tính. Thông tin tài khoản minh họa phải phân biệt trong bàn giao; không gán thông tin cá nhân thật cho một tài khoản mẫu khác người.
+
+
+## Căn nội dung ô chọn — 28/11/2026
+
+- Ô chọn dùng proposal-picker-trigger hoặc proposal-month-trigger: nhãn căn đầu dòng, chiếm phần chiều rộng còn lại; mũi tên ở cuối ô và không bị co. Không để CSS căn giữa nút của từng trang gom chữ và mũi tên vào giữa.
+- Nhãn đã chọn giữ một dòng và rút gọn bằng dấu … khi dài. Danh sách mở và tên hỗ trợ trình đọc màn hình vẫn giữ đầy đủ; không cắt dữ liệu lựa chọn.
+- Áp dụng cùng quy tắc cho bộ lọc giảng viên, hướng nghiên cứu, lịch hạn nộp, chọn vai trò thành viên và các ô chọn trong biểu mẫu SV/GV; giữ màu, font, khoảng đệm và thao tác hiện có.
+
+
+## Hộp thoại thao tác sinh viên — 28/11/2026
+
+- Trong phạm vi SV, bỏ nút Hủy dùng để đóng hộp nếu đã có X ở góc. Giữ Hủy ở biểu mẫu không có X và các thao tác mang nghĩa riêng như hủy lời mời; không xóa điều khiển hủy phần trả lời đang soạn trong một hộp khác.
+- Sau khi thao tác tạo/xóa/sửa/gửi/cập nhật hoàn tất, mở thông báo thành công dùng thiết kế hộp hiện có. Không báo thành công từ sự kiện bấm nút hoặc chỉ kiểm tra form. Lỗi giữ ở biểu mẫu, dữ liệu đang nhập không bị xóa khi lưu thất bại.
+- Hộp thông báo bổ sung dùng token chung, tiêu đề/nội dung ngắn và X không khung. Escape đóng, trả focus về vị trí thao tác; giữ danh sách phản hồi sau khi gửi.
+- Thao tác thành viên trong biểu mẫu đăng ký chỉ cập nhật bản nháp: thông báo ghi rõ cần đăng ký đề tài để gửi; không mô tả đã gửi dữ liệu.
+- Đồng bộ Google Calendar chỉ thông báo thành công khi toàn bộ kết quả là đã thêm/cập nhật/đã có; lỗi hoặc kết quả một phần giữ trong hộp chọn lịch.
+- Chưa triển khai thay đổi UI phía GV. Các hook thêm trong mã dùng chung chỉ chạy cho vai trò SV.
+
+### Điều chỉnh phản hồi thao tác SV
+
+- Không mở hộp thành công khi thêm thành viên (biểu mẫu đăng ký hoặc nhóm đề tài); cập nhật danh sách và giữ focus phù hợp.
+- Không mở hộp thành công cho tin nhắn trong lời mời hoặc bình luận/phản hồi công việc; hiện nội dung vừa gửi ngay trong cuộc trao đổi và giữ thông báo lỗi tại chỗ.
+- Đây là ngoại lệ cho quy tắc thông báo thao tác ở trên, theo yêu cầu mới nhất của người dùng.
+
+### Biểu tượng đóng hộp SV
+
+- Nút X hộp thoại/popover SV dùng biểu tượng SVG 24px, nét 1.75px, vùng bấm 44×44px; không dùng độ đậm của ký tự × để vẽ icon.
+- Màu theo foreground của theme, không khung mặc định, giữ nhãn truy cập và focus bàn phím. Quy tắc chỉ được nạp vào trang SV, không đổi GV.

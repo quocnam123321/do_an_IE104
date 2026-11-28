@@ -38,12 +38,14 @@
       body:has(#ket-qua-danh-gia:target, #ket-qua-danh-gia :target) > .skip-link--ket-qua-danh-gia { display: inline; }
     </style>
   <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-  <script defer src="../../assets/js/i18n/en-student.js?v=20261126-member-success"></script>
+  <script defer src="../../assets/js/i18n/en-student.js?v=20261128-student-dialogs"></script>
   <script defer src="../../assets/js/i18n/en-shared.js?v=20261126-invite-success"></script>
   <script defer src="../../assets/js/shared/language.js"></script>
+  <script type="module" src="../../assets/js/shared/notification-bell.js"></script>
   <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
 <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
 <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-student-team-leader" />
+<link rel="stylesheet" href="../../assets/css/notification-bell.css" />
 <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css?v=20261126-success-dialogs" />
 <link rel="stylesheet" href="../../assets/css/de-tai-dang-thuc-hien.css?v=20261126-invite-success" />
 
@@ -83,7 +85,7 @@
 <script src="../../assets/js/supervision-entry.js?v=20261125-department-names" defer></script>
 <script src="../../assets/js/supervision-store.js?v=20261124-conversation" defer></script>
 <script src="../../assets/js/services/project-team-service.js?v=20261125-solo-team-leader" defer></script>
-<script src="../../assets/js/services/project-progress-service.js?v=20261128-demo-workspaces" defer></script>
+<script src="../../assets/js/services/project-progress-service.js?v=20261128-db-merge" defer></script>
 <script src="../../assets/js/services/task-comments-service.js" defer></script>
 <script src="../../assets/js/services/evaluation-service.js?v=20261128-shared-demo-evaluations" defer></script>
 <script src="../../assets/js/uit-lecturer-catalog.js?v=20261125-proposal-outline" defer></script>
@@ -99,12 +101,12 @@
 <script src="../../assets/js/services/lecturer-topic-service.js?v=20261125-topic-participants" defer></script>
 <script src="../../assets/js/pages/student/topic-detail/workspace.js?v=20261125-approved-overview" defer></script>
 <script src="../../assets/js/shared/detail-tabs.js" defer></script>
-<script src="../../assets/js/pages/student/topic-detail/team.js?v=20261128-demo-teams" defer></script>
-<script src="../../assets/js/shared/task-comments.js?v=20261123-comment-composer" defer></script>
-<link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261126-calendar-year">
+<script src="../../assets/js/pages/student/topic-detail/team.js?v=20261128-db-merge" defer></script>
+<script src="../../assets/js/shared/task-comments.js?v=20261128-student-dialogs-r2" defer></script>
+<link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261128-label-alignment">
 <script src="../../assets/js/pages/student/proposal-pickers.js?v=20261126-picker-parity" defer></script>
-<script src="../../assets/js/pages/student/proposal-date-picker.js?v=20261126-calendar-year" defer></script>
-<script src="../../assets/js/pages/student/topic-detail/progress.js?v=20261126-column-labels" defer></script>
+<script src="../../assets/js/pages/student/proposal-date-picker.js?v=20261127-future-dates" defer></script>
+<script src="../../assets/js/pages/student/topic-detail/progress.js?v=20261128-student-dialogs" defer></script>
 <script src="../../assets/js/shared/evaluation-attachment.js" defer></script>
 <script src="../../assets/js/pages/student/topic-detail/evaluation.js?v=20261124-attachment-frame" defer></script>
 <link rel="stylesheet" href="../../assets/css/proposal-outline.css">
@@ -113,6 +115,9 @@
 <link rel="stylesheet" href="../../assets/css/workflow-detail-shared.css?v=20261123-progress-parity">
   <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
+    <link rel="stylesheet" href="../../assets/css/student-operation-feedback.css?v=20261128-student-dialogs" />
+    <script src="../../assets/js/shared/student-operation-feedback.js?v=20261128-student-dialogs" defer></script>
+    <link rel="stylesheet" href="../../assets/css/student-dialog-close.css?v=20261128-close-icon">
 </head>
   <body id="page-top" tabindex="-1" class="registration-page active-topic-page student-topic-detail-page">
     <a class="skip-link skip-link--default" href="#main-content">Chuyển đến nội dung chính</a>
@@ -667,7 +672,7 @@
                   </fieldset>
                 </div>
                 <div class="popover-actions">
-                  <button type="button" commandfor="task-add-popover" command="close">Hủy</button>
+
                   <button type="submit" disabled>Thêm công việc</button>
                 </div>
               </form>
@@ -732,7 +737,7 @@
                   </div>
                 </div>
                 <div class="popover-actions">
-                  <button type="button" commandfor="task-edit-cv-01" command="close">Hủy</button>
+
                   <button type="submit" disabled>Lưu thay đổi</button>
                 </div>
               </form>
@@ -1030,19 +1035,6 @@
         <button type="button" data-close-remove-member autofocus>Quay lại</button>
         <button type="button" class="student-destructive-confirm__submit" data-confirm-remove-member>Xóa thành viên</button>
       </footer>
-    </dialog>
-    <dialog id="add-team-member-success" class="confirmation-dialog success-dialog" aria-labelledby="add-team-member-success-title">
-      <button class="success-dialog__close" type="button" command="close" commandfor="add-team-member-success" aria-label="Đóng thông báo" autofocus>
-        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#student-submission-close-icon"></use></svg>
-      </button>
-      <div class="success-dialog__content">
-        <span class="success-dialog__icon" aria-hidden="true">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" focusable="false">
-            <path d="m5 12 4 4L19 6"></path>
-          </svg>
-        </span>
-        <h2 id="add-team-member-success-title">Đã thêm thành viên</h2>
-      </div>
     </dialog>
 
 
@@ -4390,7 +4382,7 @@
         <p class="submission-upload__scope">Bài nộp được lưu trên trình duyệt này.</p>
         <p class="submission-upload__error" role="alert" hidden></p>
         <div class="submission-dialog__actions">
-          <button type="button" data-upload-cancel>Hủy</button>
+
           <button type="submit" class="submission-dialog__submit" disabled>Xác nhận nộp bài</button>
         </div>
       </form>
@@ -4409,8 +4401,8 @@
       </li>
     </template>
     <script src="../../assets/js/shared/download-file.js" defer></script>
-    <script src="../../assets/js/services/student-submissions-service.js?v=20261128-demo-workspaces" defer></script>
-    <script src="../../assets/js/pages/student/topic-detail/submission-upload.js?v=20261124-upload-dialog" defer></script>
+    <script src="../../assets/js/services/student-submissions-service.js?v=20261128-db-merge" defer></script>
+    <script src="../../assets/js/pages/student/topic-detail/submission-upload.js?v=20261128-db-merge" defer></script>
     <script src="../../assets/js/shared/submission-file-list.js" defer></script>
     <script src="../../assets/js/pages/student/topic-detail/submission-zip.js" defer></script>
     <script src="../../assets/js/pages/student/topic-detail/submissions.js?v=20261126-submission-notice" defer></script>

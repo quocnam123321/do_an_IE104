@@ -88,7 +88,8 @@
       const record = await store.create({
         student, teacher, subject: subject.value, message: message.value, attachment: attachment.getFile(),
       });
-      location.assign(`de-tai-cua-toi-sinh-vien.html?loi-moi=${encodeURIComponent(record.id)}#loi-moi-huong-dan`);
+      form.reset();
+      globalThis.IE104.ui.studentSuccess('Gửi lời mời thành công', 'Lời mời hướng dẫn đã được gửi. Bạn có thể theo dõi phản hồi trong Đề tài của tôi.', { onClose: () => location.assign(`de-tai-cua-toi-sinh-vien.html?loi-moi=${encodeURIComponent(record.id)}#loi-moi-huong-dan`) });
     } catch (problem) {
       error.textContent = problem.message;
       saving = false;

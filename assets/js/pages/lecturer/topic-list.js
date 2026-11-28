@@ -117,6 +117,7 @@
   const refreshTopics = () => document.dispatchEvent(new Event('ie104:lecturer-topics-updated'));
   window.addEventListener('ie104:lecturer-topics-updated', refreshTopics);
   window.addEventListener('ie104:registrations-updated', refreshTopics);
+  window.addEventListener('ie104:registration-rounds-updated', refreshTopics);
   document.addEventListener('ie104:lecturer-topics-updated', () => { render(); document.dispatchEvent(new Event('ie104:topics-updated')); });
   window.addEventListener('storage', event => {
     const app = globalThis.IE104;

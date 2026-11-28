@@ -12,12 +12,16 @@
     />
     <title>Đăng ký đề tài | Quản lý đồ án</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-student.js?v=20261126-filter-toggle"></script>
-    <script defer src="../../assets/js/i18n/en-shared.js"></script>
+    <script defer src="../../assets/js/i18n/en-student.js?v=20261128-student-dialogs"></script>
+    <script defer src="../../assets/js/i18n/en-shared.js?v=20261128-round-lookup"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
+    <script defer src="../../assets/js/pages/admin/sample-data.js"></script>
+    <script defer src="../../assets/js/pages/admin/academic-store.js"></script>
+    <script type="module" src="../../assets/js/shared/notification-bell.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
     <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-pagination" />
+    <link rel="stylesheet" href="../../assets/css/notification-bell.css" />
     <link rel="stylesheet" href="../../assets/css/dang-ky-de-tai.css?v=20261125-topic-pagination" />
     <link rel="stylesheet" href="../../assets/css/student-topic-registration.css?v=20261126-list-heading" />
     <link rel="stylesheet" href="../../assets/css/topic-filter-panel.css?v=20261126-filter-toggle" />
@@ -34,8 +38,9 @@
     <script src="../../assets/js/services/topic-service.js?v=20261123-merged-8f1631f" defer></script>
     <script src="../../assets/js/shared/course-filters.js?v=20261122-course-options" defer></script>
     <script src="../../assets/js/shared/topic-list-empty.js?v=20261122-empty-state" defer></script>
-    <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261126-picker-parity" />
+    <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261128-label-alignment" />
     <script src="../../assets/js/pages/student/proposal-pickers.js?v=20261126-picker-parity" defer></script>
+    <script defer src="../../assets/js/shared/registration-round-ui.js?v=20261128-round-picker"></script>
     <script src="../../assets/js/shared/topic-list.js?v=20261126-picker-parity" defer></script>
     <script src="../../assets/js/data/student-projects.js" defer></script>
 <script src="../../assets/js/data/student-uit-catalog.js?v=20261124-evaluation-pdf" defer></script>
@@ -47,7 +52,11 @@
 <link rel="stylesheet" href="../../assets/css/topic-media-shared.css">
   <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
-  </head>
+      <link rel="stylesheet" href="../../assets/css/student-operation-feedback.css?v=20261128-student-dialogs" />
+    <script src="../../assets/js/shared/student-operation-feedback.js?v=20261128-student-dialogs" defer></script>
+    <link rel="stylesheet" href="../../assets/css/student-dialog-close.css?v=20261128-close-icon">
+    <link rel="stylesheet" href="../../assets/css/registration-round.css?v=20261128-round-picker">
+</head>
   <body id="page-top" tabindex="-1" class="registration-page student-topic-registration-page">
     <a class="skip-link" href="#main-content"> Chuyển đến nội dung chính </a>
     <!-- ĐẦU TRANG CHUNG CHO SINH VIÊN -->
@@ -144,6 +153,35 @@
           <h1 class="page-header__title">Đề tài mở đăng ký</h1>
           <a class="topics__create-proposal" href="tao-de-xuat.html"><span aria-hidden="true">+</span> Tạo đề xuất</a>
         </header>
+        <section class="registration-round-summary" data-round-summary aria-label="Lịch đợt đăng ký" hidden>
+          <div class="registration-round-field registration-round-summary__choice">
+            <label for="round-schedule-choice"><span class="registration-round-label">Đợt đăng ký</span></label>
+            <select id="round-schedule-choice" translate="no"></select>
+          </div>
+          <div class="registration-round-field">
+            <span id="round-schedule-term" class="registration-round-label">Học kỳ</span>
+            <div class="registration-round-summary__value" role="group" aria-labelledby="round-schedule-term">
+              <span data-round-term translate="no"></span>
+            </div>
+          </div>
+          <div class="registration-round-field">
+            <span id="round-schedule-start" class="registration-round-label">Giờ mở</span>
+            <div class="registration-round-deadline registration-round-summary__value" role="group" aria-labelledby="round-schedule-start">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></svg>
+              <time data-round-start translate="no"></time>
+            </div>
+          </div>
+          <div class="registration-round-field">
+            <span id="round-schedule-end" class="registration-round-label">Giờ đóng</span>
+            <div class="registration-round-deadline registration-round-summary__value" role="group" aria-labelledby="round-schedule-end">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></svg>
+              <time data-round-end translate="no"></time>
+            </div>
+          </div>
+          <div class="registration-round-summary__state">
+            <span data-round-status role="status"></span>
+          </div>
+        </section>
         <div class="page-content">
           <div class="topics-layout">
             <details class="topic-filter-panel" open>

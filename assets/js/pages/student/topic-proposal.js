@@ -6,7 +6,7 @@
   const dialog = document.getElementById('proposal-confirm-dialog');
   if (!form || !service || !dialog) return;
   const database = globalThis.IE104.proposalDatabase;
-  const fields = Object.fromEntries(Object.entries({ title: 'topic-name', type: 'topic-type', courseId: 'course', semester: 'semester', academicYear: 'academic-year', description: 'topic-description', objectives: 'topic-objectives', outcomes: 'expected-results', supervisorId: 'add-supervisor', attachment: 'proposal-attachment' }).map(([key, id]) => [key, document.getElementById(id)]));
+  const fields = Object.fromEntries(Object.entries({ title: 'topic-name', type: 'topic-type', courseId: 'course', semester: 'semester', academicYear: 'academic-year', roundId: 'registration-round', description: 'topic-description', objectives: 'topic-objectives', outcomes: 'expected-results', supervisorId: 'add-supervisor', attachment: 'proposal-attachment' }).map(([key, id]) => [key, document.getElementById(id)]));
   const outline = globalThis.IE104.ui?.proposalOutline;
   const pickers = globalThis.IE104.ui?.proposalPickers;
   const fieldFor = key => {
@@ -42,6 +42,12 @@
   const editId = params.get('proposal');
   let legacy = null;
   let original = null;
+  let currentRound;
+  function syncRoundButtons() {
+    const closed = Boolean(currentRound && currentRound.status !== 'open');
+    submit.disabled = saved || saving || (!editing && closed);
+    resubmit.disabled = saved || saving || resubmit.hidden || closed;
+  }
   let retainedAttachment = null;
   let retainedAttachmentName = '';
   const attachmentPicker = fields.attachment.parentElement;
@@ -173,7 +179,10 @@
   }
 
   function readInput() {
-    return { ...Object.fromEntries(Object.entries(fields).filter(([key]) => !['supervisorId', 'attachment'].includes(key)).map(([key, field]) => [key, field.value])), supervisorId: supervisorId.value, attachment: fields.attachment.files[0] || retainedAttachment, ...(outline ? { outline: outline.read() } : {}) };
+    const values = Object.entries(fields)
+      .filter(([key]) => !['supervisorId', 'attachment'].includes(key) && (key !== 'roundId' || !database))
+      .map(([key, field]) => [key, field.value]);
+    return { ...Object.fromEntries(values), supervisorId: supervisorId.value, attachment: fields.attachment.files[0] || retainedAttachment, ...(outline ? { outline: outline.read() } : {}) };
   }
 
   function showErrors(errors) {
@@ -260,6 +269,18 @@
       return;
     }
   }
+  if (database) {
+    fields.roundId.disabled = true;
+    fields.roundId.closest('.registration-round-grid').hidden = true;
+  } else {
+    globalThis.IE104.ui.registrationRound?.bind(form, {
+      previous: original?.roundId, legacy: editing && !original?.roundId,
+      onChange(round) {
+        currentRound = round;
+        syncRoundButtons();
+      },
+    });
+  }
   form.dataset.proposalReady = 'true';
   fields.type.addEventListener('change', () => updateCourse());
   supervisorId.addEventListener('change', () => {
@@ -338,7 +359,7 @@
     const input = readInput();
     let checked;
     try {
-      checked = legacy ? requests.validateProposal(input, legacy) : service.validate(input, original);
+      checked = legacy ? requests.validateProposal(input, legacy, event.submitter === resubmit) : service.validate(input, original);
     } catch (failure) {
       showErrors([{ message: failure.message }]);
       return;
@@ -375,8 +396,7 @@
   async function saveProposal(value, { attachment, coverImage }, sendingAgain = false) {
     if (saved || saving) return;
     saving = true;
-    const resubmitWasDisabled = resubmit.disabled;
-    submit.disabled = resubmit.disabled = true;
+    syncRoundButtons();
     if (sendingAgain) confirm.disabled = closeReview.disabled = true;
     const staged = [];
     try {
@@ -431,13 +451,10 @@
       link.href = service.detailUrl(record.id);
       link.textContent = editing ? 'Xem chi tiết' : 'Xem đề xuất';
       result.append(link);
-      if (sendingAgain) showSavedResult();
-      else {
-        successTitle.textContent = submit.textContent;
-        successLink.href = link.href;
-        successLink.textContent = link.textContent;
-        successDialog.showModal();
-      }
+      successTitle.textContent = sendingAgain ? 'Gửi lại đề xuất thành công' : editing ? 'Cập nhật đề xuất thành công' : 'Gửi đề xuất thành công';
+      successLink.href = link.href;
+      successLink.textContent = link.textContent;
+      successDialog.showModal();
     } catch (failure) {
       if (!saved) await Promise.allSettled(staged.map(ref => files.discard(ref.fileKey)));
       if (sendingAgain) {
@@ -449,8 +466,7 @@
       }
     } finally {
       saving = false;
-      submit.disabled = saved;
-      resubmit.disabled = saved || resubmitWasDisabled;
+      syncRoundButtons();
       if (sendingAgain) {
         confirm.disabled = saved;
         closeReview.disabled = false;

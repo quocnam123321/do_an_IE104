@@ -164,6 +164,7 @@
 }
 
 .common-page .research-toolbar .research-search input[type="search"] {
+  border-color: var(--color-control-border);
   padding: 0.6875rem 1rem 0.6875rem 2.75rem;
 }
 
@@ -443,4 +444,17 @@
 
 :root[data-theme="dark"] .research-hero {
   --research-hero-overlay: 12 20 34;
+}
+
+/* Keep long selected filter names aligned with the search field. */
+.common-page .research-toolbar .research-select-wrap > .proposal-picker-trigger {
+  height: 3rem;
+}
+.common-page .research-toolbar .research-select-wrap > .proposal-picker-trigger > span {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  overflow-wrap: normal;
+  text-overflow: ellipsis;
 }

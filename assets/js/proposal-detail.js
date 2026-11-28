@@ -193,12 +193,12 @@
       form.setAttribute('aria-busy', 'true');
       render();
       try {
-        await store.decide(id, reject ? 'rejected' : 'approved', reason.value, pendingRevision ?? displayedRevision);
+        const decision = await store.decide(id, reject ? 'rejected' : 'approved', reason.value, pendingRevision ?? displayedRevision);
         form.closest('dialog').close();
         if (reject) {
           rejectionSuccess.showModal();
         } else {
-          feedback.textContent = `Đã lưu quyết định duyệt ${id}.`;
+          feedback.textContent = `Đã lưu quyết định duyệt ${decision.topicCode || id}.`;
           feedback.focus();
         }
       } catch (failure) {

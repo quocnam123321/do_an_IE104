@@ -1,0 +1,272 @@
+.admin-catalog-page .admin-heading {
+  display: grid;
+  gap: var(--space-2);
+  margin-block-start: var(--space-4);
+}
+
+.admin-catalog-page .admin-demo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.admin-catalog-page .admin-tabs {
+  gap: var(--space-2);
+}
+
+.admin-catalog-page .admin-tabs a[aria-current="page"] {
+  font-weight: var(--font-weight-semibold);
+}
+
+.admin-catalog-filters {
+  --admin-select-accent: var(--color-foreground);
+}
+
+.admin-catalog-filters select:focus-visible {
+  outline-color: var(--admin-select-accent);
+  outline-offset: -2px;
+}
+
+.admin-catalog-table {
+  min-inline-size: 56rem;
+}
+
+.admin-catalog-table--requests {
+  min-inline-size: 67rem;
+}
+
+.admin-catalog-table :is(th, td) {
+  padding: var(--space-2) var(--space-3);
+}
+
+.admin-catalog-table th:first-child {
+  inline-size: 29%;
+}
+
+.admin-catalog-table--requests th:first-child {
+  inline-size: 23%;
+}
+
+.admin-catalog-table :is(td:nth-last-child(-n+2), time),
+.admin-catalog-table--requests td:nth-child(2) {
+  white-space: nowrap;
+}
+
+.admin-catalog-table th[scope="row"],
+.admin-catalog-table td:nth-child(2) {
+  color: var(--color-heading);
+}
+
+.admin-catalog-record,
+.admin-catalog-person {
+  display: grid;
+  gap: var(--space-1);
+  overflow-wrap: anywhere;
+}
+
+.admin-catalog-page .admin-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-block-size: 2rem;
+  padding-inline: var(--space-3);
+  border: 0;
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+  white-space: normal;
+}
+
+.admin-catalog-table .admin-status {
+  inline-size: 8rem;
+  padding-inline: var(--space-2);
+}
+
+.admin-catalog-page .admin-status--info {
+  background: var(--blue-100);
+}
+
+.admin-catalog-page .admin-status--success {
+  background: var(--green-100);
+}
+
+.admin-catalog-page .admin-status--warning {
+  background: var(--amber-100);
+}
+
+.admin-catalog-page .admin-status--danger {
+  background: var(--red-100);
+  color: var(--color-danger-fg);
+}
+
+.admin-catalog-status-filter {
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--font-size-secondary);
+}
+
+.admin-catalog-status-filter:not([hidden]) {
+  display: flex;
+}
+
+.admin-catalog-page .admin-catalog-detail {
+  display: grid;
+  gap: var(--space-4);
+  margin-block-start: var(--space-4);
+}
+
+.admin-catalog-back {
+  justify-self: start;
+}
+
+.admin-catalog-back svg {
+  transform: rotate(180deg);
+}
+
+.admin-catalog-detail :is(h1, h2) {
+  overflow-wrap: anywhere;
+}
+
+.admin-catalog-detail-top,
+.admin-catalog-detail-panel {
+  padding: var(--space-4);
+}
+
+.admin-catalog-detail-top h1 {
+  min-inline-size: 0;
+  font-size: var(--font-size-page-title);
+  line-height: 1.25;
+}
+
+.admin-catalog-detail-top .admin-title-row > .admin-status {
+  flex: none;
+}
+
+.admin-catalog-detail-top .admin-demo {
+  margin-block-start: var(--space-2);
+}
+
+.admin-catalog-detail-panel h2 {
+  font-size: var(--font-size-section-title);
+  margin-block-end: var(--space-3);
+  padding-block-end: var(--space-2);
+  border-block-end: 1px solid var(--color-border);
+}
+
+.admin-catalog-detail-grid,
+.admin-catalog-detail-grid > div,
+.admin-catalog-detail-fields,
+.admin-catalog-completion {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+  min-inline-size: 0;
+}
+
+.admin-catalog-detail-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-catalog-detail-fields {
+  margin: var(--space-3) 0 0;
+}
+
+.admin-catalog-detail :is(dt, .admin-catalog-detail-person p) {
+  color: var(--color-muted-foreground);
+}
+
+.admin-catalog-detail dd {
+  margin: 0;
+  color: var(--color-foreground);
+  font-weight: var(--font-weight-medium);
+  overflow-wrap: anywhere;
+}
+
+.admin-catalog-group-name {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-control);
+  background: var(--color-neutral-bg);
+  color: var(--color-heading);
+  font-weight: var(--font-weight-semibold);
+}
+
+.admin-catalog-detail-person,
+.admin-catalog-milestones > div {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  padding-block: var(--space-2);
+}
+
+.admin-catalog-detail-person + .admin-catalog-detail-person,
+.admin-catalog-milestones > div + div {
+  border-block-start: 1px solid var(--color-border);
+}
+
+.admin-catalog-detail-person > div {
+  flex: 1;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+.admin-catalog-detail-person p {
+  font-size: var(--font-size-secondary);
+}
+
+.admin-catalog-avatar,
+.admin-catalog-milestones .admin-action-icon {
+  flex: 0 0 2.5rem;
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  border-radius: 50%;
+}
+
+.admin-catalog-avatar {
+  display: grid;
+  place-items: center;
+  background: var(--color-neutral-bg);
+  color: var(--color-neutral-fg);
+  font-weight: var(--font-weight-semibold);
+}
+
+.admin-catalog-milestones .admin-action-icon {
+  padding: .625rem;
+  background: var(--color-info-bg);
+  color: var(--color-primary);
+}
+
+.admin-catalog-attachment {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+@media (min-width: 36rem) {
+  .admin-catalog-detail-top .admin-title-row {
+    flex-wrap: nowrap;
+  }
+
+  .admin-catalog-detail-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 48rem) {
+  .admin-catalog-detail-top--request .admin-catalog-detail-fields {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .admin-catalog-detail-grid {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  }
+
+  .admin-catalog-detail-top,
+  .admin-catalog-detail-panel {
+    padding: var(--space-5);
+  }
+}

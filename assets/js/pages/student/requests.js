@@ -267,12 +267,13 @@
     saving = true;
     confirm.disabled = true;
     try {
-      const record = service.mutate(pending.id, pending.revision, pending.action, pending.input);
+      const action = pending.action;
+      const record = service.mutate(pending.id, pending.revision, action, pending.input);
       dialog.close();
       navigate(`#${record.id.toLowerCase()}`);
       status.textContent = 'Đã lưu thao tác thử trên trình duyệt. Chưa gửi đến giảng viên hoặc hệ thống.';
       status.tabIndex = -1;
-      status.focus();
+      globalThis.IE104.ui.studentSuccess({ edit: 'Cập nhật yêu cầu thành công', resubmit: 'Gửi lại yêu cầu thành công', withdraw: 'Rút yêu cầu thành công', remove: 'Xóa yêu cầu thành công' }[action], 'Thay đổi đã được lưu.', { returnTo: status });
     } catch (failure) { error.textContent = failure.message; error.hidden = false; error.focus(); }
     finally { saving = false; confirm.disabled = false; }
   });

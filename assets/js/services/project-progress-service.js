@@ -73,7 +73,7 @@
     return permission.update && (permission.manage || (task.assigneeCodes || [task.assigneeCode]).includes(memberKey(currentMember(state))));
   }
 
-  function validateTask(input, team, { editing = false } = {}) {
+  function validateTask(input, team, { editing = false, previousDeadline } = {}) {
     const requestedCodes = input.assigneeCodes ?? [input.assigneeCode];
     const assigneeCodes = Array.isArray(requestedCodes)
       ? [...new Set(requestedCodes.map(code => String(code ?? '').trim()))]
@@ -101,6 +101,9 @@
     }
     const date = new Date(`${value.deadline}T00:00:00.000Z`);
     if (!/^\d{4}-\d{2}-\d{2}$/.test(value.deadline) || value.deadline.startsWith('0000') || !Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== value.deadline) errors.push({ field: 'deadline', message: 'Chọn hạn hoàn thành là ngày hợp lệ.' });
+    else if (value.deadline !== previousDeadline && value.deadline < new Date(Date.now() + 7 * 3600000).toISOString().slice(0, 10)) {
+      errors.push({ field: 'deadline', message: 'Chọn ngày từ hôm nay trở đi.' });
+    }
     return { errors, value };
   }
 
@@ -138,12 +141,12 @@
     if (usesDatabase(projectId)) return app.proposalDatabase.saveTask(projectId, taskId, input, revision);
     return mutate(projectId, revision, (state, team, permission) => {
       if (!permission.manage) throw new Error('Chỉ nhóm trưởng được thêm hoặc sửa công việc.');
-      const checked = validateTask(input, team, { editing: Boolean(taskId) });
+      const task = taskId ? state.tasks.find(item => item.id === taskId) : null;
+      if (taskId && !task) throw new Error('Công việc không còn tồn tại.');
+      const checked = validateTask(input, team, { editing: Boolean(taskId), previousDeadline: task?.deadline });
       if (checked.errors.length) throw new Error(checked.errors[0].message);
       const { status, ...fields } = checked.value;
-      if (taskId) {
-        const task = state.tasks.find(item => item.id === taskId);
-        if (!task) throw new Error('Công việc không còn tồn tại.');
+      if (task) {
         Object.assign(task, fields);
         delete task.assignees;
         if (status !== undefined && status !== task.status) {

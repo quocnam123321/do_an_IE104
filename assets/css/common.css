@@ -270,6 +270,16 @@
 .notification-detail__content li { margin-bottom: 0.5rem; }
 .notification-detail__content > :last-child { margin-bottom: 0; }
 .notification-detail__content h2 { margin-top: 2rem; }
+.notification-detail__content--published { white-space: pre-wrap; }
+.notification-detail__content--published img {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+  margin-block: var(--space-2);
+  border-radius: var(--radius-control);
+}
+.notification-detail__content--published ul { list-style: disc; }
+.notification-detail__content--published ol { list-style: decimal; }
 
 @font-face {
   font-family: "Roboto UIT";

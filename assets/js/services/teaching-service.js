@@ -128,7 +128,7 @@
     if (meta.project.status !== 'dang-thuc-hien') throw new Error('Đề tài không đang thực hiện nên không thể thay đổi yêu cầu hoặc mở nhận bài.');
   }
 
-  function validateRequirement(input) {
+  function validateRequirement(input, previousDeadline) {
     const value = { title: String(input.title || '').trim(), content: String(input.content || '').trim() };
     const errors = [];
     if (!value.title || value.title.length > 200) errors.push('Nhập tên yêu cầu từ 1 đến 200 ký tự.');
@@ -141,7 +141,16 @@
       date.setUTCFullYear(year, month - 1, day);
       date.setUTCHours(hour, minute, 0, 0);
       if (year < 1 || date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 || date.getUTCDate() !== day || hour > 23 || minute > 59) errors.push('Ngày hoặc giờ đến hạn không tồn tại.');
-      else value.deadline = new Date(date.getTime() - 7 * 60 * 60 * 1000).toISOString();
+      else {
+        const timestamp = date.getTime() - 7 * 3600000;
+        const saved = Date.parse(previousDeadline);
+        if (timestamp === Math.floor(saved / 60000) * 60000) {
+          value.deadline = new Date(saved).toISOString();
+        } else {
+          value.deadline = new Date(timestamp).toISOString();
+          if (timestamp <= Date.now()) errors.push('Hạn nộp mới phải sau thời điểm hiện tại.');
+        }
+      }
     }
     return { value, errors };
   }
@@ -155,11 +164,11 @@
     if (app.proposalDatabase?.submissionBoard?.(projectId)) return app.proposalDatabase.saveRequirement(projectId, id, input, revision);
     return mutate(projectId, revision, id ? 'edit-requirement' : 'create-requirement', id, (record, meta) => {
       active(meta);
-      const checked = validateRequirement(input);
+      const requirement = id ? record.requirements.find(item => item.id === id && !item.deletedAt) : null;
+      if (id && !requirement) throw new Error('Yêu cầu không còn tồn tại.');
+      const checked = validateRequirement(input, requirement?.deadline);
       if (checked.errors.length) throw new Error(checked.errors.join(' '));
-      if (id) {
-        const requirement = record.requirements.find(item => item.id === id && !item.deletedAt);
-        if (!requirement) throw new Error('Yêu cầu không còn tồn tại.');
+      if (requirement) {
         Object.assign(requirement, checked.value);
       } else record.requirements.push({ ...checked.value, id: newId('REQ'), locked: false, sourceStage: 'pending' });
     });

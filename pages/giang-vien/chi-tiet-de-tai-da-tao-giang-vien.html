@@ -8,17 +8,21 @@
       Chi tiết đề tài đã tạo | Quản lý đồ án và khóa luận tốt nghiệp
     </title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261124-registration-success"></script>
+    <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261127-future-dates"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
+    <script defer src="../../assets/js/pages/admin/sample-data.js"></script>
+    <script defer src="../../assets/js/pages/admin/academic-store.js"></script>
+    <script type="module" src="../../assets/js/shared/notification-bell.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme">
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language">
     <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-menu-2">
+    <link rel="stylesheet" href="../../assets/css/notification-bell.css" />
     <link rel="stylesheet" href="../../assets/css/teacher-layout.css?v=20261111-heading-sync-1">
     <link rel="stylesheet" href="../../assets/css/teacher-dialogs.css?v=20261125-confirmation-dialog">
     <link rel="stylesheet" href="../../assets/css/proposal-request-detail.css?v=20261124-topic-attachment">
     <link rel="stylesheet" href="../../assets/css/teacher-created-detail.css?v=20261125-confirmation-dialog">
-    <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261126-calendar-year">
+    <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261128-label-alignment">
     <script src="../../assets/js/nav-indicator.js" defer=""></script>
     <script src="../../assets/js/dialog-commands.js" defer=""></script>
 
@@ -42,13 +46,13 @@
     <script src="../../assets/js/services/published-topic-service.js?v=20261123-merged-8f1631f" defer></script>
     <script src="../../assets/js/proposal-store.js?v=20261126-sample-actions" defer></script>
     <script src="../../assets/js/services/lecturer-topic-file-service.js" defer></script>
-    <script src="../../assets/js/services/lecturer-topic-editor-service.js" defer></script>
+    <script src="../../assets/js/services/lecturer-topic-editor-service.js?v=20261127-future-dates" defer></script>
     <script src="../../assets/js/shared/topic-attachment.js" defer></script>
     <script src="../../assets/js/pages/lecturer/created-topic.js?v=20261124-topic-attachment" defer></script>
     <script src="../../assets/js/shared/download-file.js" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-media.js?v=20261124-topic-attachment" defer></script>
     <script src="../../assets/js/pages/student/proposal-pickers.js?v=20261125-registration-role" defer></script>
-    <script src="../../assets/js/pages/student/proposal-date-picker.js?v=20261126-calendar-year" defer></script>
+    <script src="../../assets/js/pages/student/proposal-date-picker.js?v=20261127-future-dates" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-registration-state.js?v=20261124-registration-actions" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
@@ -352,6 +356,7 @@
       </header>
       <form method="dialog" class="topic-dialog__form">
         <p id="reopen-registration-description" class="topic-dialog__desc">Bạn có muốn mở lại đăng ký cho đề tài <strong translate="no">Website quản lý thư viện</strong>?</p>
+        <p class="topic-dialog__desc" data-round-reopen-time hidden>Giờ đóng của đợt <time></time></p>
         <div class="topic-dialog__field requirement-deadline">
           <label for="registration-reopen-deadline">Hạn đăng ký mới</label>
           <input id="registration-reopen-deadline" type="datetime-local" required>

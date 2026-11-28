@@ -33,7 +33,6 @@
   const question = document.getElementById('withdraw-proposal-question');
   const dialogNotice = document.getElementById('withdraw-proposal-notice');
   const closeDialog = dialog.querySelector('.pending-withdraw-dialog__close');
-  const cancel = dialog.querySelector('[data-pending-cancel]');
   const confirm = dialog.querySelector('[data-confirm-pending-withdraw]');
   const error = dialog.querySelector('[data-pending-error]');
   const actionLabels = { withdraw: 'Rút đề xuất', remove: 'Xóa khỏi danh sách' };
@@ -217,13 +216,13 @@
       } else {
         question.textContent = `Bạn có chắc muốn xóa đề xuất “${displayed.title}” khỏi danh sách?`;
       }
-      dialogNotice.hidden = cancel.hidden = withdrawing;
+      dialogNotice.hidden = withdrawing;
       dialog.setAttribute('aria-describedby', withdrawing ? question.id : `${question.id} ${dialogNotice.id}`);
       confirm.textContent = withdrawing ? 'Xác nhận rút' : actionLabels[action];
       error.hidden = true;
       confirm.disabled = false;
       dialog.showModal();
-      (withdrawing ? closeDialog : cancel).focus();
+      closeDialog.focus();
     });
   }
 
@@ -231,7 +230,7 @@
     if (!pending || saving) return;
     const { action, revision } = pending;
     saving = true;
-    confirm.disabled = closeDialog.disabled = cancel.disabled = true;
+    confirm.disabled = closeDialog.disabled = true;
     try {
       if (isLegacy) {
         if (action === 'withdraw') await requests.withdrawProposal(id, revision);
@@ -244,14 +243,14 @@
       result.textContent = app.proposalDatabase ? 'Đã rút đề xuất.'
         : action === 'withdraw' ? 'Đã rút đề xuất trên bản demo.' : 'Đã xóa đề xuất khỏi danh sách trên bản demo.';
       result.hidden = false;
-      result.focus();
+      globalThis.IE104.ui.studentSuccess(action === 'withdraw' ? 'Rút đề xuất thành công' : 'Xóa đề xuất thành công', result.textContent, { returnTo: result });
     } catch (failure) {
       error.textContent = failure.message;
       error.hidden = false;
       error.focus();
     } finally {
       saving = false;
-      confirm.disabled = closeDialog.disabled = cancel.disabled = false;
+      confirm.disabled = closeDialog.disabled = false;
     }
   });
 

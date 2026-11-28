@@ -1,0 +1,164 @@
+.registration-round-grid {
+  align-items: start;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.registration-round-field {
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+
+.registration-round-deadline,
+.registration-round-summary__value {
+  display: flex;
+  align-items: center;
+  min-block-size: var(--control-min-height);
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-control);
+  background: var(--color-neutral-bg);
+  color: var(--color-foreground);
+  font-variant-numeric: tabular-nums;
+}
+
+.registration-round-deadline svg {
+  flex: none;
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.teacher-topic-form .registration-round-field > label {
+  margin-block-end: 0;
+}
+
+.registration-round-grid label,
+.registration-round-label {
+  line-height: 1.5;
+}
+
+.registration-round-label {
+  color: var(--color-heading);
+  font-weight: var(--font-weight-semibold);
+}
+
+.student-proposal-page .registration-round-label {
+  font-size: var(--font-size-secondary);
+}
+
+.registration-round-note {
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+}
+
+.registration-round-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--space-4);
+  margin-block-end: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-surface);
+  background: var(--color-surface);
+}
+
+.registration-round-summary .registration-round-label {
+  display: block;
+  font-size: var(--font-size-secondary);
+}
+
+.registration-round-summary__choice {
+  grid-column: 1 / -1;
+}
+
+#round-schedule-choice,
+#round-schedule-choice-picker {
+  inline-size: 100%;
+  min-inline-size: 0;
+  min-block-size: var(--control-min-height);
+  padding-inline: var(--space-3);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-foreground);
+  font: inherit;
+  font-weight: var(--font-weight-semibold);
+  text-overflow: ellipsis;
+}
+
+#round-schedule-choice-picker {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-2);
+  line-height: 1.5;
+}
+
+.registration-round-summary__value {
+  border: 1px solid var(--color-border);
+  font-weight: var(--font-weight-semibold);
+}
+
+.registration-round-summary__value svg {
+  color: var(--color-muted-foreground);
+}
+
+.registration-round-summary__state {
+  display: flex;
+  align-items: center;
+  align-self: end;
+  min-block-size: var(--control-min-height);
+}
+
+.registration-round-summary [data-round-status] {
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-control);
+  background: var(--color-neutral-bg);
+  color: var(--color-neutral-fg);
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.registration-round-summary [data-state="open"] {
+  background: var(--color-info-bg);
+  color: var(--color-info-fg);
+}
+
+@media (width >= 64rem) {
+  .registration-round-summary {
+    grid-template-columns: minmax(0, 1fr) repeat(4, max-content);
+  }
+
+  .registration-round-summary__choice {
+    grid-column: auto;
+  }
+}
+
+@media (width < 40rem) {
+  .registration-round-grid,
+  .registration-round-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #round-schedule-choice,
+  #round-schedule-choice-picker {
+    font-size: var(--font-size-secondary);
+  }
+
+  #round-schedule-choice-picker {
+    gap: var(--space-1);
+    padding-inline: var(--space-2);
+  }
+
+  #round-schedule-choice-picker > span {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}

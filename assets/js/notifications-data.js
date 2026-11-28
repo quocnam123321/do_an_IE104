@@ -169,3 +169,29 @@ window.IE104_NOTIFICATIONS = [
     "summary": "Khoa Khoa học và Kỹ thuật Thông tin thông báo Danh sách các Hội đồng Bảo vệ Khóa luận Tốt nghiệp HK1 năm học 2021-2022. STT MSSV HỌ TÊN TÊN ĐỀ TÀI TIẾNG VIỆT TÊN ĐỀ TÀI TIẾNG ANH CÁN BỘ HƯỚNG DẪN CÁN BỘ PHẢN BIỆN H..."
   }
 ];
+
+
+// Danh sách dùng một trang; tham số URL giữ loại lọc và phân trang khi chia sẻ/tải lại.
+window.IE104_NOTIFICATION_ROUTES = (() => {
+  const categories = [
+    { value: '', label: 'Tất cả', title: 'Tất cả thông báo' },
+    { value: 'ke-hoach-hoc-vu', label: 'Kế hoạch học vụ' },
+    { value: 'bao-cao-nop-bai', label: 'Báo cáo & nộp bài' },
+    { value: 'lich-bao-ve', label: 'Lịch bảo vệ' },
+    { value: 'tong-ket-vinh-danh', label: 'Tổng kết & vinh danh' },
+  ];
+  function read(href) {
+    const url = new URL(href);
+    const category = categories.find(item => item.value === url.searchParams.get('loai')) || categories[0];
+    const value = url.searchParams.get('trang');
+    const number = /^\d+$/.test(value || '') ? Number(value) : 1;
+    return { category, number: Number.isSafeInteger(number) && number > 0 ? number : 1 };
+  }
+  function url(href, category, number) {
+    const result = new URL('thong-bao.html', href);
+    if (categories.some(item => item.value === category.value) && category.value) result.searchParams.set('loai', category.value);
+    if (Number.isSafeInteger(number) && number > 1) result.searchParams.set('trang', number);
+    return result;
+  }
+  return { categories, read, url };
+})();

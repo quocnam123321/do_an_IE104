@@ -63,6 +63,15 @@
   const weekdays = ['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'];
   const enhanced = new WeakSet();
   const dateTimeFields = new WeakMap();
+  const vietnamClock = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Asia/Ho_Chi_Minh', year: 'numeric', month: '2-digit', day: '2-digit',
+    hour: '2-digit', minute: '2-digit', hourCycle: 'h23',
+  });
+
+  function vietnamDateTime(timestamp) {
+    const parts = Object.fromEntries(vietnamClock.formatToParts(timestamp).map(({ type, value }) => [type, value]));
+    return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}`;
+  }
 
   function fillEnhancedDate(input, value) {
     const [day, time = ''] = value.split('T');
@@ -83,6 +92,7 @@
     list.append(...options);
     let selected = -1;
     let active = 0;
+    let minimum = 0;
 
     function activate(index) {
       options[active].classList.remove('is-active');
@@ -100,12 +110,12 @@
       options[selected]?.setAttribute('aria-selected', 'false');
       selected = index;
       options[selected]?.setAttribute('aria-selected', 'true');
-      activate(Math.max(0, selected));
+      activate(Math.max(minimum, selected));
     }
 
     list.addEventListener('click', event => {
       const index = options.indexOf(event.target.closest('[role="option"]'));
-      if (index < 0) return;
+      if (index < minimum) return;
       list.focus({ preventScroll: true });
       select(index);
       onSelect();
@@ -118,13 +128,24 @@
         select(active);
         onSelect();
       } else if (key === 'End') activate(count - 1);
-      else if (key === 'Home') activate(0);
-      else if (key === 'ArrowUp') activate(Math.max(0, active - 1));
+      else if (key === 'Home') activate(minimum);
+      else if (key === 'ArrowUp') activate(Math.max(minimum, active - 1));
       else activate(Math.min(count - 1, active + 1));
     });
     return {
       get value() { return options[selected]?.textContent || ''; },
       set value(value) { select(value ? Number(value) : -1); },
+      reveal() { activate(active); },
+      setMinimum(index) {
+        if (index === minimum) return;
+        minimum = index;
+        options.forEach((option, index) => {
+          if (index < minimum) option.setAttribute('aria-disabled', 'true');
+          else option.removeAttribute('aria-disabled');
+        });
+        if (selected >= 0 && selected < minimum) select(-1);
+        else if (active < minimum) activate(minimum);
+      },
     };
   }
 
@@ -241,9 +262,12 @@
     const grid = panel.querySelector('table');
     const gridBody = grid?.tBodies[0];
     const clear = panel.querySelector('[data-clear-date]');
+    const todayButton = panel.querySelector('[data-today]');
     const hours = withTime && createTimeColumn(panel.querySelector(`#${panelId}-hours`), 24, updateDateTime);
     const minutes = withTime && createTimeColumn(panel.querySelector(`#${panelId}-minutes`), 60, updateDateTime);
     let today;
+    let minimumDate = '';
+    let minimumTime = '';
     let selected;
     let active;
 
@@ -264,18 +288,41 @@
     });
     monthGrid.append(...months);
 
+    function refreshBounds() {
+      if (onlyMonth) return;
+      const now = Date.now();
+      today = parseDate(vietnamDateTime(now).slice(0, 10));
+      const earliest = withTime ? vietnamDateTime((Math.floor(now / 60000) + 1) * 60000) : isoDate(today);
+      [minimumDate, minimumTime = ''] = earliest.split('T');
+      if (!active || isoDate(active) < minimumDate) active = parseDate(minimumDate);
+      if (selected && selected < minimumDate) selected = '';
+      if (withTime) {
+        const [hour, minute] = minimumTime.split(':').map(Number);
+        hours.setMinimum(selected === minimumDate ? hour : 0);
+        minutes.setMinimum(selected === minimumDate && hours.value && Number(hours.value) === hour ? minute : 0);
+      }
+    }
+
     function render() {
+      refreshBounds();
       const year = active.getUTCFullYear();
       const month = active.getUTCMonth();
       title.textContent = onlyMonth ? `Năm ${year}` : `Tháng ${month + 1} năm ${year}`;
-      navigation[0].disabled = year === 1 && (!jump.hidden || month === 0);
+      const firstYear = minimumDate ? Number(minimumDate.slice(0, 4)) : 1;
+      const firstMonth = minimumDate ? Number(minimumDate.slice(5, 7)) - 1 : 0;
+      navigation[0].disabled = year === firstYear && (!jump.hidden || month === firstMonth);
       navigation[1].disabled = year === 9999 && (!jump.hidden || month === 11);
+      todayButton.disabled = isoDate(today) < minimumDate;
       updateActions();
       if (!jump.hidden) {
+        yearField.min = firstYear;
         yearField.value = year;
-        months.forEach((button, index) => button.setAttribute('aria-pressed', String(onlyMonth
-          ? input.value === isoDate(dateAt(year, index, 1)).slice(0, 7)
-          : index === month)));
+        months.forEach((button, index) => {
+          button.disabled = year === firstYear && index < firstMonth;
+          button.setAttribute('aria-pressed', String(onlyMonth
+            ? input.value === isoDate(dateAt(year, index, 1)).slice(0, 7)
+            : index === month));
+        });
         popup.place();
         return;
       }
@@ -294,6 +341,7 @@
           button.type = 'button';
           button.dataset.date = value;
           button.textContent = date.getUTCDate();
+          button.disabled = value < minimumDate;
           button.tabIndex = date.getTime() === active.getTime() ? 0 : -1;
           button.setAttribute('aria-label', fullDate.format(date));
           if (date.getUTCMonth() !== month) button.classList.add('is-outside-month');
@@ -343,25 +391,26 @@
     }
 
     function open() {
-      const now = new Date();
-      today = dateAt(now.getFullYear(), now.getMonth(), now.getDate());
-      if (timeZone) {
+      if (onlyMonth) {
+        const now = new Date();
         const local = new Intl.DateTimeFormat('vi-VN', {
           timeZone, day: '2-digit', month: '2-digit', year: 'numeric',
         }).format(now);
-        today = parseDate(local) || today;
+        today = parseDate(todayValue?.() || local) || dateAt(now.getFullYear(), now.getMonth(), now.getDate());
       }
-      today = parseDate(todayValue?.() || '') || today;
       const date = parseDate(onlyMonth ? `${input.value}-01` : input.value);
       selected = date ? isoDate(date) : '';
-      active = date || today;
-      showMonths(onlyMonth);
-      popup.open();
+      active = date || (onlyMonth ? today : null);
       if (withTime) {
         const [hour = '', minute = ''] = parseTime(timeInput.value).split(':');
         hours.value = hour;
         minutes.value = minute;
-        updateActions();
+      }
+      showMonths(onlyMonth);
+      popup.open();
+      if (withTime) {
+        hours.reveal();
+        minutes.reveal();
       }
       if (onlyMonth) months[active.getUTCMonth()].focus({ preventScroll: true });
       else focusDay();
@@ -389,6 +438,7 @@
     }
 
     function updateDateTime() {
+      refreshBounds();
       const value = parseDateTime(selected, `${hours.value}:${minutes.value}`);
       if (!value) {
         updateActions();
@@ -400,6 +450,12 @@
     }
 
     function choose(value) {
+      refreshBounds();
+      if (!value || value < minimumDate) {
+        render();
+        focusDay();
+        return;
+      }
       if (!withTime) {
         commit(value);
         close();
@@ -470,7 +526,7 @@
     }));
     gridBody?.addEventListener('click', event => {
       const day = event.target.closest('button[data-date]');
-      if (day) choose(day.dataset.date);
+      if (day && !day.disabled) choose(day.dataset.date);
     });
     gridBody?.addEventListener('keydown', event => {
       if (event.key === 'Enter' || event.key === ' ') {
@@ -498,7 +554,7 @@
       commit('');
       close();
     });
-    panel.querySelector('[data-today]').addEventListener('click', () => choose(isoDate(today)));
+    todayButton.addEventListener('click', () => choose(isoDate(today)));
     input.form?.addEventListener('reset', popup.close);
     input.closest('dialog')?.addEventListener('close', popup.close);
     if (onlyMonth) {

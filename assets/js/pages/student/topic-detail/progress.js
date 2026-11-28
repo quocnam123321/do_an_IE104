@@ -146,7 +146,11 @@
   detailDialog.addEventListener('close', () => {
     if (!dialogs.edit.open && !savedDialog.open) focusTask(detailDialog.dataset.taskId);
   });
-  savedDialog.addEventListener('close', () => focusTask(savedDialog.dataset.taskId));
+  savedDialog.addEventListener('close', () => {
+    if (savedDialog.dataset.action === 'add') addButton.focus({ preventScroll: true });
+    else if (savedDialog.dataset.action === 'remove') mode.focus({ preventScroll: true });
+    else focusTask(savedDialog.dataset.taskId);
+  });
 
   function focusTask(taskId) {
     const card = [...list.querySelectorAll('[data-task-id]')].find(item => item.dataset.taskId === taskId);
@@ -341,7 +345,10 @@
       assigneeCodes: values.getAll('nguoi-phu-trach'),
       deadline: datePicker ? datePicker.read(deadline) : values.get('han-hoan-thanh'),
       status: values.get('trang-thai'),
-    }, state.team, { editing: key === 'edit' });
+    }, state.team, {
+      editing: key === 'edit',
+      previousDeadline: state.tasks.find(task => task.id === pending?.taskId)?.deadline,
+    });
     const fields = {
       title: form.elements['ten-cong-viec'],
       description: form.elements['mo-ta'],
@@ -420,16 +427,13 @@
         committed = true;
         dialog.close();
         refresh();
-        if (key === 'edit') {
-          if (detailDialog.open) detailDialog.close();
-          result.hidden = true;
-          savedDialog.dataset.taskId = taskId;
-          savedDialog.showModal();
-          return;
-        }
-        result.textContent = databaseProject ? 'Đã lưu thay đổi công việc.' : 'Đã lưu thay đổi công việc/tiến độ thử trên trình duyệt này.';
-        result.hidden = false;
-        result.focus();
+        if (detailDialog.open) detailDialog.close();
+        result.hidden = true;
+        savedDialog.dataset.taskId = taskId || '';
+        savedDialog.dataset.action = key;
+        savedDialog.querySelector('h2').textContent = key === 'add' ? 'Thêm công việc thành công' : key === 'remove' ? 'Xóa công việc thành công' : 'Cập nhật công việc thành công';
+        savedDialog.querySelector('#task-saved-message').textContent = key === 'add' ? 'Công việc đã được thêm vào bảng tiến độ.' : key === 'remove' ? 'Công việc đã được xóa khỏi bảng tiến độ.' : 'Công việc đã được cập nhật.';
+        savedDialog.showModal();
       } catch (failure) { showError(key, failure); }
       finally { saving = false; }
     });

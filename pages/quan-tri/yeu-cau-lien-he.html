@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yêu cầu liên hệ | Quản lý đồ án</title>
+  <link rel="icon" href="../../assets/images/favicon.png">
+  <script src="../../assets/js/shared/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/tong-quan-giang-vien.css">
+  <link rel="stylesheet" href="../../assets/css/project-footer.css">
+  <link rel="stylesheet" href="../../assets/css/admin-preview.css">
+  <link rel="stylesheet" href="../../assets/css/admin-contacts.css">
+  <script defer src="../../assets/js/i18n/en-shared.js"></script>
+  <script defer src="../../assets/js/i18n/en-admin.js"></script>
+  <script defer src="../../assets/js/shared/language.js"></script>
+  <script defer src="../../assets/js/pages/admin/sample-data.js"></script>
+  <script defer src="../../assets/js/pages/admin/academic-store.js"></script>
+  <script defer src="../../assets/js/pages/admin/common.js"></script>
+  <script defer src="../../assets/js/shared/contact-request-store.js"></script>
+  <script defer src="../../assets/js/pages/admin/contacts.js"></script>
+</head>
+<body id="page-top" class="admin-preview lecturer-overview-page admin-contacts-page" tabindex="-1" data-admin-page="yeu-cau-lien-he">
+  <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-brand" href="tong-quan-quan-tri.html">
+        <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="" width="40" height="40">
+        <span class="site-brand__name"><span>QUẢN LÝ ĐỒ ÁN VÀ</span><br><span>KHÓA LUẬN TỐT NGHIỆP</span></span>
+      </a>
+      <details class="site-navigation admin-navigation" open>
+        <summary class="site-navigation__toggle">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <span>Menu</span>
+        </summary>
+        <nav class="main-nav" aria-label="Điều hướng quản trị">
+          <ul class="main-nav__list">
+            <li class="main-nav__item"><a class="main-nav__link" href="tong-quan-quan-tri.html">Tổng quan</a></li>
+            <li class="main-nav__item"><a class="main-nav__link" href="tai-khoan.html">Tài khoản</a></li>
+            <li class="main-nav__item"><a class="main-nav__link" href="hoc-ky-va-dot-dang-ky.html">Học kỳ và đợt đăng ký</a></li>
+            <li class="main-nav__item"><a class="main-nav__link" href="de-tai-va-ho-so.html">Đề tài và hồ sơ</a></li>
+            <li class="main-nav__item"><a class="main-nav__link" href="thong-bao.html">Thông báo</a></li>
+            <li class="main-nav__item"><a class="main-nav__link" href="yeu-cau-lien-he.html" aria-current="page">Yêu cầu liên hệ</a></li>
+          </ul>
+        </nav>
+      </details>
+      <div class="account-menu">
+        <details class="account-menu__disclosure">
+          <summary class="account-menu__toggle" aria-label="Tài khoản quản trị">
+            <span class="account-menu__avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>
+              </svg>
+            </span>
+          </summary>
+          <div class="account-menu__list admin-account-card">
+            <strong>Quản trị viên</strong>
+            <p><span translate="no">QT001</span> · <span>Dữ liệu mẫu</span></p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="main-content" tabindex="-1">
+    <div class="page-container">
+      <nav class="breadcrumb" aria-label="Đường dẫn">
+        <ol class="breadcrumb__list">
+          <li class="breadcrumb__item"><a href="tong-quan-quan-tri.html">Quản trị viên</a></li>
+          <li class="breadcrumb__item"><span aria-current="page">Yêu cầu liên hệ</span></li>
+        </ol>
+      </nav>
+      <header class="admin-heading">
+        <div>
+          <h1 class="page-header__title">Yêu cầu liên hệ</h1>
+          <p class="admin-code">Dữ liệu mẫu và lời nhắn lưu trên trình duyệt này.</p>
+        </div>
+      </header>
+      <noscript><p>Bật JavaScript để xem lời nhắn và sử dụng bộ lọc.</p></noscript>
+      <div class="admin-round-toolbar admin-contact-toolbar" role="group" aria-label="Bộ lọc">
+        <div class="admin-round-search">
+          <label class="visually-hidden" for="admin-contact-search">Tìm kiếm</label>
+          <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/>
+          </svg>
+          <input id="admin-contact-search" type="search" placeholder="Tìm theo chủ đề hoặc người gửi">
+        </div>
+        <div class="admin-field">
+          <label class="visually-hidden" for="admin-contact-filter">Trạng thái</label>
+          <select id="admin-contact-filter">
+            <option value="">Tất cả trạng thái</option>
+            <option value="new">Mới</option>
+            <option value="processing">Đang xử lý</option>
+            <option value="resolved">Đã xử lý</option>
+          </select>
+        </div>
+      </div>
+      <section class="admin-round-list" aria-labelledby="admin-contact-list-title">
+        <div class="admin-round-list__heading">
+          <h2 id="admin-contact-list-title">Danh sách lời nhắn</h2>
+          <p id="admin-contact-total" role="status" hidden><span id="admin-contact-count"></span> <span>lời nhắn</span></p>
+        </div>
+        <p id="admin-contact-feedback" role="status">Đang tải lời nhắn…</p>
+        <div class="admin-panel">
+          <div id="admin-contact-table" class="admin-table-scroll" tabindex="0" role="region" aria-labelledby="admin-contact-list-title" hidden>
+            <table class="admin-table admin-contact-table">
+              <thead><tr>
+                <th scope="col">Chủ đề</th>
+                <th scope="col">Người gửi</th>
+                <th scope="col">Thời điểm gửi</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Thao tác</th>
+              </tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p id="admin-contact-empty" class="admin-empty" hidden>Không tìm thấy lời nhắn phù hợp.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+  <template id="admin-contact-row">
+    <tr>
+      <th scope="row" translate="no"></th>
+      <td><span class="admin-contact-sender" translate="no"></span><span class="admin-code"></span></td>
+      <td><time translate="no"></time></td>
+      <td><span class="admin-status"></span></td>
+      <td><button type="button" class="admin-button" aria-haspopup="dialog"><span>Xem chi tiết</span><span class="visually-hidden" translate="no"></span></button></td>
+    </tr>
+  </template>
+  <dialog id="admin-contact-detail" class="admin-dialog admin-contact-detail" aria-labelledby="admin-contact-detail-title">
+    <header class="admin-dialog__header">
+      <h2 id="admin-contact-detail-title">Chi tiết yêu cầu liên hệ</h2>
+      <button type="button" class="admin-dialog-close" aria-label="Đóng" autofocus>
+        <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+    <form id="admin-contact-status-form">
+      <div class="admin-contact-detail__content">
+        <div class="admin-title-row">
+          <h3 id="admin-contact-subject" translate="no"></h3>
+          <span class="admin-status" id="admin-contact-badge"></span>
+        </div>
+        <time class="admin-code" id="admin-contact-date" translate="no"></time>
+        <dl class="admin-detail-fields">
+          <div><dt>Người gửi</dt><dd><span id="admin-contact-name" translate="no"></span> · <span id="admin-contact-role"></span></dd></div>
+          <div><dt>Email</dt><dd id="admin-contact-email" translate="no"></dd></div>
+          <div><dt>Số điện thoại</dt><dd id="admin-contact-phone"></dd></div>
+        </dl>
+        <section class="admin-contact-message" aria-labelledby="admin-contact-message-title">
+          <h3 id="admin-contact-message-title">Nội dung lời nhắn</h3>
+          <p id="admin-contact-message" translate="no"></p>
+        </section>
+        <div class="admin-field admin-contact-status">
+          <label for="admin-contact-status">Trạng thái xử lý</label>
+          <select id="admin-contact-status">
+            <option value="new">Mới</option>
+            <option value="processing">Đang xử lý</option>
+            <option value="resolved">Đã xử lý</option>
+          </select>
+        </div>
+        <p id="admin-contact-save-error" class="admin-contact-error" role="alert" hidden></p>
+      </div>
+      <div class="admin-contact-actions">
+        <a class="admin-button" id="admin-contact-gmail" target="_blank" rel="noopener noreferrer"><span>Soạn trong Gmail</span><span class="visually-hidden">, mở trong thẻ mới</span></a>
+        <button type="submit" class="admin-button admin-button--primary" disabled>Lưu trạng thái</button>
+      </div>
+    </form>
+  </dialog>
+    <footer class="project-footer">
+      <div class="project-footer__columns">
+        <div class="project-footer__identity">
+          <img class="project-footer__logo" src="../../assets/images/uit-footer-logo.png"
+            alt="UIT – Trường Đại học Công nghệ Thông tin" width="480" height="180" loading="lazy" />
+          <p class="project-footer__name">Quản lý đồ án và khóa luận tốt nghiệp</p>
+          <a href="../chung/gioi-thieu.html#team-title">Đồ án IE104 — Nhóm 7</a>
+        </div>
+        <nav aria-labelledby="project-footer-navigation">
+          <h2 id="project-footer-navigation">Truy cập nhanh</h2>
+          <ul>
+            <li><a href="../../index.html">Trang chủ</a></li>
+            <li><a href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+            <li><a href="../chung/thong-bao.html">Thông báo</a></li>
+            <li><a href="../chung/lien-he.html">Liên hệ</a></li>
+          </ul>
+        </nav>
+        <nav aria-labelledby="project-footer-policy">
+          <h2 id="project-footer-policy">Điều khoản và quy chế</h2>
+          <ul>
+            <li><a href="../../assets/documents/dieu-khoan-va-chinh-sach-ie104.pdf#page=1" target="_blank" rel="noopener">Điều khoản sử dụng<span class="visually-hidden"> (PDF, mở trong thẻ mới)</span></a></li>
+            <li><a href="../../assets/documents/dieu-khoan-va-chinh-sach-ie104.pdf#page=2" target="_blank" rel="noopener">Quy chế, chính sách bảo mật<span class="visually-hidden"> (PDF, mở trong thẻ mới)</span></a></li>
+          </ul>
+        </nav>
+        <nav aria-labelledby="project-footer-resources">
+          <h2 id="project-footer-resources">Tài nguyên UIT</h2>
+          <ul>
+            <li><a href="https://ise.uit.edu.vn/vi" target="_blank" rel="noopener">Khoa Khoa học và Kỹ thuật Thông tin<span class="visually-hidden"> (mở trong thẻ mới)</span></a></li>
+            <li><a href="https://portal.uit.edu.vn/" target="_blank" rel="noopener">Cổng thông tin UIT<span class="visually-hidden"> (mở trong thẻ mới)</span></a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="project-footer__bottom">
+        <p>&copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
+        <a class="project-footer__top" href="#page-top" aria-label="Về đầu trang">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 19V5m-6 6 6-6 6 6" />
+          </svg>
+        </a>
+      </div>
+    </footer>
+</body>
+</html>

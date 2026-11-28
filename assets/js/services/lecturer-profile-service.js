@@ -16,7 +16,7 @@
   }
   function getState() {
     if (globalThis.location?.protocol === 'file:') throw new Error('Mở website qua localhost để lưu hồ sơ thử giữa các trang.');
-    const initial = { id: actor().id, name: actor().name, email: '', phone: '', expertise: '', avatar: '', revision: 0 };
+    const initial = { id: actor().id, name: actor().name, email: actor().email || 'giangvien@example.com', phone: '0900000002', faculty: actor().faculty || 'Khoa Khoa học và Kỹ thuật Thông tin', department: actor().department || 'Thiết bị Di động và Công nghệ Web', degree: actor().degree || 'Thạc sĩ', expertise: actor().expertise || 'Phát triển ứng dụng web, thiết kế phần mềm và cơ sở dữ liệu', avatar: '', revision: 0 };
     try {
       const raw = localStorage.getItem(key());
       if (raw === null) return initial;
@@ -26,7 +26,7 @@
           !Number.isFinite(Date.parse(record.updatedAt)) || !['name', 'email', 'phone', 'expertise', 'avatar'].every(field => typeof record[field] === 'string') ||
           !record.name.trim() || record.name.length > 100 || validate(record).errors.some(item => item.field !== 'email' || record.email) ||
           (record.avatar && (!/^data:image\/(png|jpeg);base64,[A-Za-z0-9+/]+=*$/.test(record.avatar) || record.avatar.length > 3000000))) throw new Error();
-      return { ...initial, ...record };
+      return { ...initial, ...record, ...(record.defaultsVersion === 1 ? {} : Object.fromEntries(['email', 'phone', 'expertise'].map(field => [field, record[field] || initial[field]]))) };
     } catch { throw new Error('Không đọc được hồ sơ giảng viên đã lưu. Dữ liệu cũ chưa bị thay thế.'); }
   }
   async function update(input, revision, expectedId, avatar) {
@@ -37,7 +37,7 @@
       const checked = validate(input);
       if (avatar === undefined && checked.errors.length) throw new Error(checked.errors[0].message);
       if (avatar !== undefined && avatar !== '' && (!/^data:image\/(png|jpeg);base64,[A-Za-z0-9+/]+=*$/.test(avatar) || avatar.length > 3000000)) throw new Error('Ảnh đại diện không hợp lệ.');
-      const record = { ...previous, ...(avatar === undefined ? checked.value : { avatar }), revision: revision + 1, updatedAt: new Date().toISOString() };
+      const record = { ...previous, defaultsVersion: 1, ...(avatar === undefined ? checked.value : { avatar }), revision: revision + 1, updatedAt: new Date().toISOString() };
       try { localStorage.setItem(key(), JSON.stringify({ version: 1, record })); }
       catch { throw new Error('Chưa lưu được hồ sơ. Trình duyệt có thể chặn lưu trữ hoặc đã hết dung lượng.'); }
       globalThis.dispatchEvent?.(new Event('ie104:lecturer-profile-updated'));

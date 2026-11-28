@@ -60,18 +60,18 @@
     });
   }
 
-  function validateProposal(input, record) {
-    const checked = app.validation.validateProposal(input, proposalCatalog(record));
+  function validateProposal(input, record, resubmit = false) {
+    const checked = app.validation.validateProposal(input, proposalCatalog(record), undefined, record.outline);
     const value = checked.value;
     if (value.title.length > 200) checked.errors.push({ field: 'title', message: 'Nhập tên đề tài từ 1 đến 200 ký tự.' });
     const memberCount = value.outline?.members.length;
     const mode = memberCount === 1 ? 'ca-nhan' : 'nhom';
     if (memberCount && !record.allowedModes.includes(mode)) checked.errors.push({ field: 'outline.members', message: 'Đề xuất này cần ít nhất hai sinh viên thực hiện.' });
-    return checked;
+    return app.services.proposals.validateRound(checked, input, record, resubmit);
   }
 
-  function proposalChanges(input, record) {
-    const checked = validateProposal(input, record);
+  function proposalChanges(input, record, resubmit) {
+    const checked = validateProposal(input, record, resubmit);
     if (checked.errors.length) return checked;
     const { value } = checked;
     const catalog = proposalCatalog(record);
@@ -118,7 +118,7 @@
     if (!Number.isInteger(revision) || record.revision !== revision) throw new Error('Yêu cầu đã thay đổi ở tab khác. Hãy mở lại biểu mẫu để đọc bản mới.');
     const from = record.status;
     if (action === 'edit' || action === 'resubmit') {
-      const checked = useProposalEditor ? proposalChanges(input, record) : validate(input, record);
+      const checked = useProposalEditor ? proposalChanges(input, record, action === 'resubmit') : validate(input, record);
       if (checked.errors.length) throw new Error(checked.errors[0].message);
       Object.assign(record, checked.value);
       if (record.kind === 'de-xuat' && !useProposalEditor) {

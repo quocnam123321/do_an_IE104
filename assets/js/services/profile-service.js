@@ -16,7 +16,7 @@
     const record = app.storage.readProfile();
     if (!record) return { ...initial, revision: 0 };
     if (record.code !== initial.code || validate(record).errors.length) throw new Error('Hồ sơ đã lưu không hợp lệ với sinh viên mẫu hiện tại.');
-    return { ...initial, name: record.name, email: record.email, phone: record.phone, revision: record.revision, updatedAt: record.updatedAt };
+    return { ...initial, name: record.name, email: record.defaultsVersion === 1 ? record.email : record.email || initial.email, phone: record.defaultsVersion === 1 ? record.phone : record.phone || initial.phone, revision: record.revision, updatedAt: record.updatedAt };
   }
 
   function update(input, revision) {
@@ -24,7 +24,7 @@
     if (!Number.isInteger(revision) || previous.revision !== revision) throw new Error('Hồ sơ đã thay đổi ở tab khác. Hãy đóng hộp thoại và mở lại để đọc bản mới.');
     const checked = validate(input);
     if (checked.errors.length) throw new Error(checked.errors[0].message);
-    const record = { ...checked.value, code: previous.code, revision: revision + 1, updatedAt: new Date().toISOString() };
+    const record = { defaultsVersion: 1, ...checked.value, code: previous.code, revision: revision + 1, updatedAt: new Date().toISOString() };
     app.storage.writeProfile(record);
     return { ...previous, ...record };
   }
