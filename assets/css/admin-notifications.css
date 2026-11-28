@@ -194,6 +194,53 @@
   padding: 0 var(--notice-dialog-gutter) var(--space-4);
 }
 
+.admin-notice-dialog--withdraw {
+  inline-size: min(36rem, calc(100% - 2rem));
+  padding: var(--notice-dialog-gutter);
+}
+
+.admin-notice-dialog--withdraw::backdrop {
+  backdrop-filter: blur(2px);
+}
+
+.admin-notice-dialog--withdraw .admin-dialog__header {
+  padding: 0 0 var(--space-3);
+}
+
+.admin-notice-dialog--withdraw .admin-dialog-close {
+  margin-inline-end: 0;
+  color: var(--color-foreground);
+}
+
+.admin-notice-dialog--withdraw .admin-notice-dialog-body {
+  padding: var(--space-5) 0;
+  font-size: var(--font-size-secondary);
+  line-height: 1.75;
+  overflow-wrap: anywhere;
+}
+
+.admin-notice-dialog--withdraw .admin-notice-dialog-body strong {
+  color: var(--color-heading);
+}
+
+.admin-notice-dialog--withdraw .admin-notice-detail-error {
+  padding-inline: 0;
+}
+
+.admin-notice-dialog--withdraw .admin-notice-dialog-footer {
+  padding: var(--space-4) 0 0;
+}
+
+.admin-notice-dialog--withdraw .admin-notice-danger {
+  border-color: var(--color-danger-fg);
+  background: var(--color-danger-fg);
+  color: var(--color-on-danger);
+}
+
+.admin-notice-dialog--withdraw .admin-notice-danger:hover:enabled {
+  filter: brightness(.92);
+}
+
 .admin-notice-choice {
   min-inline-size: 0;
   margin: 0;

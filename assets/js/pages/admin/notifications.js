@@ -246,18 +246,25 @@
     message(detailError, "");
     const preview = operation === "preview";
     const deleting = operation === "delete-draft";
-    byId("admin-notice-detail-title").textContent = preview ? "Xem trước thông báo" : deleting ? "Xóa bản nháp?" : "Gỡ thông báo?";
+    const withdrawing = operation === "withdrawn";
+    byId("admin-notice-detail-title").textContent = preview ? "Xem trước thông báo" : deleting ? "Xóa bản nháp?" : "Gỡ thông báo";
     byId("admin-notice-confirm-footer").hidden = preview && !draft;
     backToEditor.hidden = !draft;
     confirm.textContent = draft ? "Đăng thông báo" : deleting ? "Xóa bản nháp" : "Xác nhận gỡ";
     confirm.classList.toggle("admin-button--primary", Boolean(draft));
     confirm.classList.toggle("admin-notice-danger", !draft);
+    detail.classList.toggle("admin-notice-dialog--withdraw", withdrawing);
     detailBody.classList.toggle("admin-notice-preview", preview);
-    detailBody.innerHTML = `<h3 translate="no">${escapeHtml(item.name)}</h3>
-      <p class="admin-demo"><span>${labels[item.type]}</span>${draft || deleting ? "" : ` · <span>${states[item.status]}</span>`}</p>
-      ${preview ? '<div class="admin-notice-article admin-notice-preview-text" translate="no"></div>' :
-        `<p>${deleting ? "Nội dung và tệp đính kèm của bản nháp sẽ bị xóa." :
-          "Thông báo sẽ được gỡ khỏi trang Thông báo chung của trình duyệt này."}</p>`}`;
+    if (withdrawing) {
+      detail.setAttribute("aria-describedby", detailBody.id);
+      detailBody.innerHTML = `<p>Bạn muốn gỡ thông báo <strong translate="no">“${escapeHtml(item.name)}”</strong> khỏi trang Thông báo chung?</p>`;
+    } else {
+      detail.removeAttribute("aria-describedby");
+      detailBody.innerHTML = `<h3 translate="no">${escapeHtml(item.name)}</h3>
+        <p class="admin-demo"><span>${labels[item.type]}</span>${draft || deleting ? "" : ` · <span>${states[item.status]}</span>`}</p>
+        ${preview ? '<div class="admin-notice-article admin-notice-preview-text" translate="no"></div>' :
+          '<p>Nội dung và tệp đính kèm của bản nháp sẽ bị xóa.</p>'}`;
+    }
 
     if (preview) {
       renderArticle(detailBody.querySelector(".admin-notice-article"), item, (id, file) => {
