@@ -117,10 +117,6 @@
   min-inline-size: 64rem;
 }
 
-.admin-accounts-table--database .admin-account-actions {
-  flex-wrap: wrap;
-}
-
 .admin-accounts-table :is(th, td) {
   padding-inline: var(--space-3);
 }
@@ -172,10 +168,15 @@
   background: var(--green-100);
 }
 
-.admin-account-actions {
+.admin-account-actions,
+.admin-account-management {
   display: flex;
-  justify-content: flex-end;
   gap: var(--space-2);
+}
+
+.admin-account-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
   white-space: nowrap;
 }
 

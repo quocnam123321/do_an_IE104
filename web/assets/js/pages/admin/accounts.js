@@ -61,7 +61,10 @@
     const method = methods.map((value) => `<span class="admin-account-method">${methodLabels[value]}</span>`).join("<br>");
     const management = databaseMode && !account.canManage ? "" : locked ?
       button("unlock", "admin-account-unlock", "Mở khóa") :
-      button("edit", "", "Sửa thông tin") + button("lock", "admin-account-lock", "Khóa");
+      `<div class="admin-account-management">
+        ${button("edit", "", "Sửa thông tin")}
+        ${button("lock", "admin-account-lock", "Khóa")}
+      </div>`;
     const actions = management + (canShowReset(account) ? button("reset", "", "Cấp mã đặt lại") : "");
     return `<tr>
       <th scope="row"${name ? ' translate="no"' : ""}>${name || "Chưa có thông tin"}</th>
@@ -284,7 +287,6 @@
     document.querySelector(".admin-accounts-sample").hidden = true;
     document.querySelector("#admin-account-sample-identity").hidden = true;
     document.querySelector("#admin-account-lock-note").textContent = "Khóa tài khoản sẽ thu hồi phiên đăng nhập và giữ lịch sử đề tài, bài nộp, đánh giá.";
-    rows.closest("table").classList.add("admin-accounts-table--database");
     fields.fullName.maxLength = 100;
     statusFilter.add(new Option(labels.pending, "pending"));
     statusFilter.add(new Option(labels.rejected, "rejected"));
