@@ -89,7 +89,7 @@
             <span>Dữ liệu mẫu</span>
           </p>
         </div>
-        <button class="admin-button admin-button--primary" id="admin-account-add" type="button" hidden>
+        <button class="admin-button admin-button--primary" id="admin-account-add" type="button" disabled>
           <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24">
             <circle cx="9" cy="7" r="4"/><path d="M2 21v-2a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v2m4-12v6m-3-3h6"/>
           </svg>
@@ -98,18 +98,18 @@
       </header>
       <div class="page-content">
         <noscript><p>Bật JavaScript để xem danh sách tài khoản và sử dụng bộ lọc.</p></noscript>
-        <div id="admin-view" class="page-content" hidden>
+        <div id="admin-view" class="page-content">
           <div class="admin-account-filters" role="group" aria-label="Bộ lọc">
             <div class="admin-account-search admin-field">
               <label class="visually-hidden" for="admin-account-search">Tìm kiếm</label>
               <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24">
                 <circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/>
               </svg>
-              <input id="admin-account-search" type="search" placeholder="Tìm theo tên, mã, tên đăng nhập hoặc email">
+              <input id="admin-account-search" type="search" placeholder="Tìm theo tên, mã, tên đăng nhập hoặc email" disabled>
             </div>
             <div class="admin-field">
               <label class="visually-hidden" for="admin-account-role-filter">Vai trò</label>
-              <select id="admin-account-role-filter">
+              <select id="admin-account-role-filter" disabled>
                 <option value="">Tất cả vai trò</option>
                 <option value="student">Sinh viên</option>
                 <option value="lecturer">Giảng viên</option>
@@ -117,14 +117,14 @@
             </div>
             <div class="admin-field">
               <label class="visually-hidden" for="admin-account-status-filter">Trạng thái</label>
-              <select id="admin-account-status-filter">
+              <select id="admin-account-status-filter" disabled>
                 <option value="">Tất cả trạng thái</option>
                 <option value="enabled">Đang hoạt động</option>
                 <option value="locked">Đã khóa</option>
               </select>
             </div>
           </div>
-          <section class="admin-account-list" aria-labelledby="admin-account-list-title">
+          <section class="admin-account-list" aria-labelledby="admin-account-list-title" hidden>
             <div class="admin-account-list__heading">
               <h2 id="admin-account-list-title">Danh sách tài khoản</h2>
               <div class="admin-account-list__tools">

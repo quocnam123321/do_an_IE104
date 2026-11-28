@@ -1,5 +1,5 @@
 (() => {
-  const { badge, escapeHtml, labels, normalizeSearch, params, view } = globalThis.IE104Admin;
+  const { badge, escapeHtml, labels, normalizeSearch, params } = globalThis.IE104Admin;
   const store = globalThis.IE104AdminAccounts;
   const accountMode = document.querySelector('meta[name="ie104-admin-accounts"]')?.content;
   const databaseMode = accountMode === "database" || accountMode === "demo";
@@ -196,7 +196,6 @@
     successDialog.showModal();
   }
 
-  [search, roleFilter, statusFilter].forEach((control) => control.addEventListener("input", render));
   addButton.addEventListener("click", () => openEditor(null));
   successDialog.querySelector(".success-dialog__close").addEventListener("click", () => successDialog.close());
   rows.addEventListener("click", (event) => {
@@ -298,13 +297,15 @@
     reloadButton.addEventListener("click", loadDatabase);
   }
   if (Array.from(statusFilter.options).some(({ value }) => value === initialStatus)) statusFilter.value = initialStatus;
-  view.hidden = false;
-  if (databaseMode) {
-    addButton.hidden = false;
-    void loadDatabase();
+  for (const control of [search, roleFilter, statusFilter]) {
+    control.addEventListener("input", render);
+    control.disabled = false;
   }
-  else {
+  rows.closest(".admin-account-list").hidden = false;
+  if (databaseMode) {
+    void loadDatabase();
+  } else {
     render();
-    addButton.hidden = false;
+    addButton.disabled = false;
   }
 })();
