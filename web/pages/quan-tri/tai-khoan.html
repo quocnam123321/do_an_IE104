@@ -129,10 +129,7 @@
             </div>
           </div>
           <section class="admin-account-list" aria-labelledby="admin-account-list-title" hidden>
-            <div class="admin-account-list__heading">
-              <h2 id="admin-account-list-title">Danh sách tài khoản</h2>
-              <p role="status"><span id="admin-account-count">0</span> <span>tài khoản</span></p>
-            </div>
+            <h2 id="admin-account-list-title">Danh sách tài khoản</h2>
             <p class="admin-account-error" id="admin-account-data-error" role="alert" hidden>Không thể đọc tài khoản đã lưu. Đang hiển thị dữ liệu mẫu.</p>
             <div class="admin-panel admin-table-scroll" tabindex="0" role="region" aria-labelledby="admin-account-list-title">
               <table class="admin-table admin-accounts-table">
@@ -276,7 +273,7 @@
       </div>
     </form>
   </dialog>
-  <dialog class="admin-dialog admin-account-dialog admin-account-confirm-dialog" id="admin-account-reset-dialog" aria-labelledby="admin-account-reset-title">
+  <dialog class="admin-dialog admin-account-dialog admin-account-confirm-dialog" id="admin-account-reset-dialog" aria-labelledby="admin-account-reset-title" aria-describedby="admin-account-reset-help">
     <div class="admin-dialog__header">
       <h2 id="admin-account-reset-title">Cấp mã đặt lại mật khẩu</h2>
       <button type="button" class="admin-dialog-close" aria-label="Đóng" autofocus>
@@ -287,11 +284,10 @@
       <div class="admin-account-confirm-body">
         <p><strong id="admin-account-reset-name" translate="no"></strong></p>
         <p id="admin-account-reset-help">Cấp mã mới sẽ thay thế mã trước đó. Chỉ gửi mã sau khi xác minh người yêu cầu.</p>
-        <p id="admin-account-reset-demo-help" hidden>Mã này chỉ để minh họa. Người dùng tự thử ở trang Quên mật khẩu.</p>
         <div class="admin-field" id="admin-account-reset-result" hidden>
-          <label for="admin-account-reset-code" id="admin-account-reset-code-label">Mã đặt lại mật khẩu</label>
+          <label for="admin-account-reset-code">Mã đặt lại mật khẩu</label>
           <input id="admin-account-reset-code" type="text" autocomplete="off" spellcheck="false" readonly translate="no">
-          <p class="admin-account-note" id="admin-account-reset-validity"><span>Có hiệu lực đến</span> <time id="admin-account-reset-expiry" translate="no"></time></p>
+          <p class="admin-account-note"><span>Có hiệu lực đến</span> <time id="admin-account-reset-expiry" translate="no"></time></p>
         </div>
         <p class="admin-account-error" id="admin-account-reset-error" role="alert" hidden></p>
       </div>

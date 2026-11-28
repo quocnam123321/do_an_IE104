@@ -3,10 +3,8 @@
   const store = globalThis.IE104AdminAccounts;
   const accountMode = document.querySelector('meta[name="ie104-admin-accounts"]')?.content;
   const databaseMode = accountMode === "database" || accountMode === "demo";
-  const simulateReset = accountMode === "demo";
   const addButton = document.querySelector("#admin-account-add");
   const rows = document.querySelector("#admin-account-rows");
-  const count = document.querySelector("#admin-account-count");
   const search = document.querySelector("#admin-account-search");
   const roleFilter = document.querySelector("#admin-account-role-filter");
   const statusFilter = document.querySelector("#admin-account-status-filter");
@@ -41,7 +39,7 @@
   let loadError = false;
 
   function canShowReset(account) {
-    return databaseMode && (simulateReset ? account.status === "enabled" : account.canReset);
+    return accountMode === "database" && account.canReset;
   }
 
   function accountRow(account) {
@@ -61,11 +59,10 @@
     const methods = databaseMode ? account.methods : [account.provider];
     const methodLabels = { google: `${googleMark}Google`, password: "Mật khẩu", demo: "Tài khoản minh họa" };
     const method = methods.map((value) => `<span class="admin-account-method">${methodLabels[value]}</span>`).join("<br>");
-    const resetLabel = simulateReset ? "Xem mã minh họa" : "Cấp mã đặt lại";
     const management = databaseMode && !account.canManage ? "" : locked ?
       button("unlock", "admin-account-unlock", "Mở khóa") :
       button("edit", "", "Sửa thông tin") + button("lock", "admin-account-lock", "Khóa");
-    const actions = management + (canShowReset(account) ? button("reset", "", resetLabel) : "");
+    const actions = management + (canShowReset(account) ? button("reset", "", "Cấp mã đặt lại") : "");
     return `<tr>
       <th scope="row"${name ? ' translate="no"' : ""}>${name || "Chưa có thông tin"}</th>
       <td class="admin-code" translate="no">${escapeHtml(account.code || "—")}</td>
@@ -86,7 +83,6 @@
       [account.name, account.code, account.username, account.email].some((value) => normalizeSearch(value).includes(query))
     );
     dataError.hidden = !unavailable;
-    count.textContent = loading || loadError ? "—" : matches.length;
     const emptyText = loading ? "Đang tải tài khoản…" : loadError ? "Danh sách tài khoản chưa tải được." : "Không có tài khoản phù hợp.";
     rows.innerHTML = matches.length ? matches.map(accountRow).join("") :
       `<tr><td class="admin-empty" colspan="7">${emptyText}</td></tr>`;
@@ -204,7 +200,7 @@
     const accounts = databaseMode ? databaseAccounts : store.snapshot().accounts;
     const account = accounts.find(({ id }) => id === accountId);
     if (!account) return;
-    if (accountAction === "reset" && canShowReset(account)) return database.openResetDialog(account, simulateReset);
+    if (accountAction === "reset" && canShowReset(account)) return database.openResetDialog(account);
     if (databaseMode && !account.canManage) return;
     if (accountAction === "edit") {
       if (account.status !== "locked") openEditor(account);

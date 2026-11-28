@@ -6,13 +6,8 @@ const submit = form.querySelector('button[type="submit"]');
 const actions = form.querySelector(".admin-account-dialog__footer");
 const close = dialog.querySelector(".admin-dialog-close");
 const name = document.querySelector("#admin-account-reset-name");
-const title = document.querySelector("#admin-account-reset-title");
-const help = document.querySelector("#admin-account-reset-help");
-const demoHelp = document.querySelector("#admin-account-reset-demo-help");
 const result = document.querySelector("#admin-account-reset-result");
 const code = document.querySelector("#admin-account-reset-code");
-const codeLabel = document.querySelector("#admin-account-reset-code-label");
-const validity = document.querySelector("#admin-account-reset-validity");
 const expires = document.querySelector("#admin-account-reset-expiry");
 const feedback = document.querySelector("#admin-account-reset-error");
 const statuses = { active: "enabled", pending_approval: "pending", rejected: "rejected" };
@@ -76,17 +71,11 @@ function showCode(value) {
   code.select();
 }
 
-export function openResetDialog(account, simulation) {
+export function openResetDialog(account) {
   clearResult();
-  accountId = simulation ? undefined : account.id;
-  title.textContent = simulation ? "Mã minh họa" : "Cấp mã đặt lại mật khẩu";
-  codeLabel.textContent = simulation ? "Mã minh họa đặt lại mật khẩu" : "Mã đặt lại mật khẩu";
-  help.hidden = validity.hidden = simulation;
-  demoHelp.hidden = !simulation;
-  dialog.setAttribute("aria-describedby", simulation ? demoHelp.id : help.id);
+  accountId = account.id;
   name.textContent = account.name || account.username || account.email;
   dialog.showModal();
-  if (simulation) showCode("IE104-DEMO");
 }
 
 form.addEventListener("submit", async (event) => {
