@@ -7,7 +7,7 @@
   const editing = form.id === 'topic-edit-form';
   const fieldIds = {
     id: 'topic-code', title: 'topic-name', topicType: 'topic-type', course: 'course',
-    semester: 'semester', academicYear: 'academic-year', deadline: 'registration-closes',
+    semester: 'semester', academicYear: 'academic-year', roundId: 'registration-round',
     startsAt: 'topic-start-date', progressReportDate: 'topic-progress-report-date',
     finalReportDate: 'topic-final-report-date', description: 'topic-description',
     objectives: 'topic-objectives', outcomes: 'topic-outcomes', requirements: 'topic-requirements',
@@ -38,6 +38,10 @@
   const removed = {};
   const pendingFiles = new Map();
   const inlineErrors = new Map();
+  let roundClosed = false;
+  function syncSubmit() {
+    submit.disabled = saving || committed || pendingFiles.size > 0 || roundClosed;
+  }
   const owner = app.data.currentLecturer.id;
   const localDate = value => {
     const timestamp = Date.parse(value);
@@ -121,7 +125,7 @@
         requirements: original.requirements?.join('\n'),
         minMembers: original.registration?.minMembers,
         maxMembers: original.registration?.maxMembers,
-        deadline: localDate(original.registration?.deadline),
+        roundId: original.registration?.roundId,
         startsAt: localDate(original.startsAt).slice(0, 10),
         progressReportDate: localDate(original.progressReportDate).slice(0, 10),
         finalReportDate: localDate(original.finalReportDate).slice(0, 10),
@@ -174,7 +178,7 @@
         if (!file) return;
         reportFileError('');
         pendingFiles.set(purpose, file);
-        submit.disabled = true;
+        syncSubmit();
         try {
           await fileService.validateSelection(file, purpose);
           if (pendingFiles.get(purpose) !== file) return;
@@ -190,7 +194,7 @@
           input.focus();
         } finally {
           if (pendingFiles.get(purpose) === file) pendingFiles.delete(purpose);
-          submit.disabled = saving || pendingFiles.size > 0;
+          syncSubmit();
         }
       });
       remove.addEventListener('click', () => {
@@ -232,7 +236,16 @@
         if (!invalidFields.has(field)) clearFieldError(field);
       }
     });
-    form.noValidate = true; submit.disabled = false; submit.removeAttribute('title');
+    app.ui.registrationRound.bind(form, {
+      lecturer: true,
+      previous: original?.registration?.roundId,
+      legacy: editing && !original?.registration?.roundId,
+      onChange(round) {
+        roundClosed = !editing && round?.status === 'closed';
+        syncSubmit();
+      },
+    });
+    form.noValidate = true; submit.removeAttribute('title');
     status.textContent = '';
     form.dataset.topicEditorReady = 'true';
   } catch (failure) { submit.disabled = true; showErrors([{ message: failure.message }]); return; }
@@ -270,7 +283,7 @@
         controls.forEach(([node,disabled]) => { node.disabled = disabled; });
       }
       saving = false;
-      submit.disabled = committed;
+      syncSubmit();
       form.removeAttribute('aria-busy');
     }
     if (!committed) return;
@@ -288,6 +301,6 @@
     }
   });
   window.addEventListener('storage', event => { if (event.key === app.services.lecturerTopicRepository.key || event.key === null) status.textContent = 'Danh sách đề tài đã đổi ở tab khác. Khi lưu, hệ thống sẽ kiểm tra lại phiên bản.'; });
-  window.addEventListener('pageshow',event => { if (event.persisted && !dirty && !saving && submit.disabled) location.reload(); });
+  window.addEventListener('pageshow',event => { if (event.persisted && !dirty && committed) location.reload(); });
   window.addEventListener('beforeunload', event => { if (dirty) { event.preventDefault(); event.returnValue = ''; } });
 })();

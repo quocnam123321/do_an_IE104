@@ -91,7 +91,8 @@
       if (topic.patchOnly) throw new Error('Không tìm thấy nguồn của trạng thái đăng ký đã lưu.');
       merged.push(topic);
     }
-    return decorate(merged);
+    const rounds = globalThis.IE104AdminAcademic;
+    return decorate(merged).map(topic => rounds?.withRegistration(topic) || topic);
   };
 
   function registeredTopicIds() {
@@ -113,9 +114,13 @@
     const publicId = app.services.publishedTopics?.publicId;
     const matches = publicId && [topic.id, topic.displayId].some(id =>
       id && registeredIds.has(publicId({ ...topic, id })));
-    return matches
-      ? { status: 'registered', statusLabel: 'Đã có nhóm đăng ký' }
-      : { status: topic.status, statusLabel: topic.statusLabel };
+    if (matches) return { status: 'registered', statusLabel: 'Đã có nhóm đăng ký' };
+    if (topic.registration?.roundId) {
+      const round = globalThis.IE104AdminAcademic?.forTopic(topic);
+      if (round?.status !== 'open') return { status: 'closed', statusLabel:
+        round?.status === 'upcoming' ? 'Đợt đăng ký chưa mở' : round ? 'Đợt đăng ký đã đóng' : 'Không tìm thấy đợt đăng ký' };
+    }
+    return { status: topic.status, statusLabel: topic.statusLabel };
   }
 
   function list(kind, { catalogOnly = false } = {}) {

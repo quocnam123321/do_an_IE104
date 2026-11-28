@@ -10,6 +10,10 @@
     <script defer src="../../assets/js/i18n/en-student.js?v=20261128-student-dialogs"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
+    <script defer src="../../assets/js/pages/admin/sample-data.js"></script>
+    <script defer src="../../assets/js/pages/admin/academic-store.js"></script>
+    <script defer src="../../assets/js/shared/registration-round-ui.js"></script>
+    <link rel="stylesheet" href="../../assets/css/registration-round.css">
     <script type="module" src="../../assets/js/shared/notification-bell.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
@@ -170,11 +174,6 @@
                 </div>
                 <div class="proposal-form__row">
                   <div class="proposal-form__field">
-                    <label for="proposal-topic-code">Mã đề tài</label>
-                    <output id="proposal-topic-code" class="topic-code-preview" for="topic-type" aria-describedby="proposal-topic-code-note">Chọn loại đề tài</output>
-                    <p id="proposal-topic-code-note" class="proposal-outline-hint" role="status">Mã dự kiến được chốt khi lưu đề xuất.</p>
-                  </div>
-                  <div class="proposal-form__field">
                     <label for="semester">Học kỳ <span class="proposal-form__required" aria-hidden="true">*</span></label>
                     <select id="semester" name="hoc-ky" data-proposal-picker required>
                       <option value="1" selected>Học kỳ 1</option>
@@ -183,14 +182,35 @@
                     </select>
                     <p id="proposal-legacy-semester" class="proposal-form__selected-supervisor" hidden></p>
                   </div>
-                </div>
-                <div class="proposal-form__row">
                   <div class="proposal-form__field">
                     <label for="academic-year">Năm học <span class="proposal-form__required" aria-hidden="true">*</span></label>
                     <select id="academic-year" name="nam-hoc" data-proposal-picker required>
                       <option value="2026-2027" selected>2026 – 2027</option>
                       <option value="2025-2026">2025 – 2026</option>
                     </select>
+                  </div>
+                </div>
+                <div class="proposal-form__row registration-round-grid">
+                  <div class="proposal-form__field">
+                    <label for="registration-round">Đợt đăng ký <span class="proposal-form__required" data-round-required aria-hidden="true">*</span></label>
+                    <select id="registration-round" name="registration-round" data-round-choice data-proposal-picker aria-describedby="round-selection-note" required>
+                      <option value="" selected disabled>Chọn đợt đăng ký</option>
+                    </select>
+                    <p id="round-selection-note" class="registration-round-note" data-round-note role="status" hidden></p>
+                  </div>
+                  <div class="proposal-form__field">
+                    <span class="registration-round-label" id="round-close-label">Giờ đóng của đợt</span>
+                    <div class="registration-round-deadline" role="group" aria-labelledby="round-close-label">
+                      <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></svg>
+                      <time data-round-deadline translate="no">—</time>
+                    </div>
+                  </div>
+                </div>
+                <div class="proposal-form__row">
+                  <div class="proposal-form__field">
+                    <label for="proposal-topic-code">Mã đề tài</label>
+                    <output id="proposal-topic-code" class="topic-code-preview" for="topic-type" aria-describedby="proposal-topic-code-note">Chọn loại đề tài</output>
+                    <p id="proposal-topic-code-note" class="proposal-outline-hint" role="status">Mã dự kiến được chốt khi lưu đề xuất.</p>
                   </div>
                   <div class="proposal-form__field">
                     <label for="outline-startDate">Ngày bắt đầu thực hiện <span class="proposal-form__required" aria-hidden="true">*</span></label>

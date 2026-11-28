@@ -41,7 +41,8 @@
   }
 
   function validate(input, previous = null, now = new Date()) {
-    const value = Object.fromEntries(['id', 'title', 'topicType', 'course', 'semester', 'academicYear', 'description', 'objectives', 'outcomes', 'requirements', 'domain', 'technologies', 'opensAt', 'deadline', 'startsAt', 'completesAt'].map(field => [field, text(input[field])]));
+    const rounds = globalThis.IE104AdminAcademic;
+    const value = Object.fromEntries(['roundId', 'id', 'title', 'topicType', 'course', 'semester', 'academicYear', 'description', 'objectives', 'outcomes', 'requirements', 'domain', 'technologies', 'opensAt', 'deadline', 'startsAt', 'completesAt'].map(field => [field, text(input[field])]));
     value.domain = text(input.domain ?? previous?.domain);
     value.technologies = text(input.technologies ?? previous?.technologies);
     value.id = value.id.toUpperCase();
@@ -61,15 +62,26 @@
     if (value.topicType === 'course' && !Object.hasOwn(catalog.courses, value.course)) error('course', 'Chọn môn học trong danh sách.');
     if (value.topicType !== 'course') value.course = '';
     if (!Object.hasOwn(catalog.semesters, value.semester)) error('semester', 'Chọn học kỳ trong danh sách.');
-    if (!catalog.years.includes(value.academicYear)) error('academicYear', 'Chọn năm học trong danh sách.');
+    if (!catalog.years.includes(value.academicYear) && !rounds?.academicYears().includes(value.academicYear)) error('academicYear', 'Chọn năm học trong danh sách.');
     if (!Number.isInteger(value.minMembers) || value.minMembers < 1 || value.minMembers > 100) error('minMembers', 'Nhập số nguyên từ 1 đến 100.');
     if (!Number.isInteger(value.maxMembers) || value.maxMembers < value.minMembers || value.maxMembers > 100) error('maxMembers', 'Số tối đa phải là số nguyên, không nhỏ hơn tối thiểu và không vượt quá 100.');
     for (const [field, limit] of [['domain', 100], ['technologies', 300]]) if (value[field].length > limit) error(field, `Nội dung tối đa ${limit} ký tự.`);
     const reportFields = ['progressReportDate', 'finalReportDate'];
     const reportDates = Object.fromEntries(reportFields.map(field => [field, text(input[field] ?? previous?.[field])]));
     const hasReportDates = !previous || reportFields.some(field => reportDates[field] || previous[field]);
+    const boundToRound = Boolean(rounds && (value.roundId || previous?.registration?.roundId || !previous));
+    if (boundToRound) {
+      const keep = Boolean(previous && previous.registration?.roundId === value.roundId);
+      const choice = rounds.selection(value.roundId, value, { now: now.getTime(), allowUpcoming: true, keep });
+      if (choice.error) error('roundId', choice.error);
+      value.opensAt = date(choice.round?.start);
+      value.deadline = date(choice.round?.end);
+    } else if (previous && !Object.hasOwn(input, 'deadline')) {
+      const previousDeadline = Date.parse(previous.registration?.deadline);
+      if (Number.isFinite(previousDeadline)) value.deadline = new Date(previousDeadline + 7 * 3600000).toISOString().slice(0, 16);
+    }
     const legacySchedule = { opensAt: previous?.registration?.opensAt, completesAt: previous?.completesAt };
-    for (const field of ['opensAt', 'deadline', 'startsAt', 'completesAt']) {
+    for (const field of boundToRound ? ['startsAt', 'completesAt'] : ['opensAt', 'deadline', 'startsAt', 'completesAt']) {
       if (previous && Object.hasOwn(legacySchedule, field) && !Object.hasOwn(input, field)) {
         value[field] = legacySchedule[field] || '';
         continue;
@@ -104,7 +116,7 @@
       if (day < today && day !== saved) error(field, 'Chọn ngày từ hôm nay trở đi.');
     }
     const previousDeadline = Date.parse(previous?.registration?.deadline);
-    if (value.deadline) {
+    if (!boundToRound && value.deadline) {
       const timestamp = Date.parse(value.deadline);
       if (timestamp === Math.floor(previousDeadline / 60000) * 60000) {
         value.deadline = new Date(previousDeadline).toISOString();
@@ -112,7 +124,7 @@
         error('deadline', 'Hạn đăng ký mới phải sau thời điểm hiện tại.');
       }
     }
-    if (Date.parse(value.opensAt) >= Date.parse(value.deadline)) {
+    if (!boundToRound && Date.parse(value.opensAt) >= Date.parse(value.deadline)) {
       error(Object.hasOwn(input, 'opensAt') ? 'opensAt' : 'deadline', 'Thời điểm mở phải trước hạn đăng ký.');
     }
     if ((!hasReportDates || Object.hasOwn(input, 'completesAt')) && Date.parse(value.startsAt) >= Date.parse(value.completesAt)) {
@@ -150,7 +162,7 @@
       ...Object.fromEntries(['objectives', 'outcomes', 'requirements'].map(field => [field, value[field].split(/\r?\n/).map(text).filter(Boolean)])),
       methodAndScope: value.methodAndScope, plan: value.plan,
       domain: value.domain, technologies: value.technologies,
-      registration: { ...previous?.registration, minMembers: value.minMembers, maxMembers: value.maxMembers, deadline: value.deadline, opensAt: value.opensAt || '' },
+      registration: { ...previous?.registration, minMembers: value.minMembers, maxMembers: value.maxMembers, deadline: value.deadline, opensAt: value.opensAt || '', ...(value.roundId && { roundId: value.roundId }) },
       startsAt: value.startsAt || '', completesAt: value.completesAt || '',
       ...(value.progressReportDate && { progressReportDate: value.progressReportDate, finalReportDate: value.finalReportDate }),
       supervisor: previous?.supervisor || getSupervisor(),
@@ -172,10 +184,17 @@
     let registration;
     if (open) {
       if (!app.services.publishedTopics.complete(topic)) throw new Error('Bổ sung đầy đủ thông tin đề tài trong trang Chỉnh sửa trước khi mở đăng ký.');
-      const converted = date(deadline);
-      if (!converted || Date.parse(converted) <= Date.now()) throw new Error('Hạn đăng ký mới phải là ngày giờ hợp lệ trong tương lai.');
-      if (topic.registration.opensAt && Date.parse(topic.registration.opensAt) >= Date.parse(converted)) throw new Error('Hạn đóng phải sau thời điểm mở đăng ký.');
-      registration = { ...topic.registration, deadline:converted };
+      if (topic.registration.roundId) {
+        const rounds = globalThis.IE104AdminAcademic;
+        const choice = rounds?.selection(topic.registration.roundId, topic);
+        if (!choice?.round || choice.error) throw new Error(choice?.error || 'Không đọc được lịch đợt đăng ký. Hãy thử lại.');
+        registration = rounds.withRegistration(topic).registration;
+      } else {
+        const converted = date(deadline);
+        if (!converted || Date.parse(converted) <= Date.now()) throw new Error('Hạn đăng ký mới phải là ngày giờ hợp lệ trong tương lai.');
+        if (topic.registration.opensAt && Date.parse(topic.registration.opensAt) >= Date.parse(converted)) throw new Error('Hạn đóng phải sau thời điểm mở đăng ký.');
+        registration = { ...topic.registration, deadline:converted };
+      }
     }
     const previous = saved.find(record => record.id === id);
     const record = previous && !previous.patchOnly ? { ...previous } : { id, kind:'created', ownerId:actor.id, patchOnly:true };

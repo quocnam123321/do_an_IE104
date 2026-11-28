@@ -40,8 +40,10 @@
 
   function catalogFor(record) {
     const id = record?.supervisorId;
-    if (!id || !record.supervisorName || Object.hasOwn(catalog.supervisors, id)) return catalog;
-    return { ...catalog, supervisors: { ...catalog.supervisors, [id]: record.supervisorName } };
+    const academicYears = [...new Set([...catalog.academicYears, ...(globalThis.IE104AdminAcademic?.academicYears() || [])])];
+    const supervisors = id && record.supervisorName && !Object.hasOwn(catalog.supervisors, id)
+      ? { ...catalog.supervisors, [id]: record.supervisorName } : catalog.supervisors;
+    return { ...catalog, supervisors, academicYears };
   }
 
   function notify() {
@@ -66,8 +68,21 @@
     return app.validation.validateProposal(input, options, student, previousOutline);
   }
 
-  function validate(input, record) {
-    return validateForStudent(input, record ? record.student || defaultStudent() : submittingStudent(), catalogFor(record), record?.outline);
+  function validateRound(checked, input, record, resubmit = false) {
+    const academic = globalThis.IE104AdminAcademic;
+    if (!academic || checked.errors.length) return checked;
+    const id = String(input.roundId || '').trim();
+    if (record && !id && !record.roundId && !resubmit) return checked;
+    const keep = Boolean(id && id === record?.roundId && !resubmit);
+    const { error } = academic.selection(id, checked.value, { keep });
+    if (error) checked.errors.push({ field: 'roundId', message: error });
+    else checked.value.roundId = id;
+    return checked;
+  }
+
+  function validate(input, record, student = record ? record.student || defaultStudent() : submittingStudent()) {
+    const checked = validateForStudent(input, student, catalogFor(record), record?.outline);
+    return validateRound(checked, input, record);
   }
 
   function nextTopicCode(type, proposals = app.storage.readProposals()) {
@@ -101,7 +116,7 @@
 
   function create(input) {
     const student = submittingStudent();
-    const checked = validateForStudent(input, student);
+    const checked = validate(input, undefined, student);
     if (checked.errors.length) throw new Error(checked.errors[0].message);
     const value = checked.value;
     if (!student?.code || !assignedLecturer(value)) throw new Error('Chưa có thông tin sinh viên hoặc giảng viên nhận đề xuất.');
@@ -160,12 +175,12 @@
       const previous = studentSample(seed);
       const checked = validate({ ...input, outline: input.outline ?? previous.outline }, previous);
       if (checked.errors.length) throw new Error(checked.errors[0].message);
-      const { title, type, courseId, semester, academicYear, supervisorId, description, objectives, outcomes, outline, attachment, coverImage } = checked.value;
+      const { title, type, courseId, semester, academicYear, supervisorId, description, objectives, outcomes, outline, attachment, coverImage, roundId } = checked.value;
       const supervisorName = catalogFor(previous).supervisors[supervisorId];
       const keepSampleFile = !attachment && input.keepAttachmentName && previous.attachmentSample;
       return {
         title, topicType: type, topicTypeLabel: catalog.types[type].label, course: courseId, courseId,
-        courseLabel: catalog.types[type].courses[courseId], semester, academicYear,
+        courseLabel: catalog.types[type].courses[courseId], semester, academicYear, ...(roundId && { roundId }),
         supervisorId, supervisorName, lecturerName: supervisorName, description, objectives, outcomes, outline,
         attachment: attachment?.name || (keepSampleFile ? previous.attachmentName : ''),
         attachmentSize: attachment?.size, attachmentType: attachment?.type, attachmentFileKey: attachment?.fileKey,
@@ -299,5 +314,5 @@
     return withWriteLock(apply);
   }
 
-  app.services.proposals = { catalog, catalogFor, listSupervisors, lecturerIdFor, labels, detailUrl, validate, nextTopicCode, create, findById, findStudentSample, update, withdraw, listMyTopics, listForLecturer, canReview, withWriteLock, decide };
+  app.services.proposals = { catalog, catalogFor, listSupervisors, lecturerIdFor, labels, detailUrl, validate, validateRound, nextTopicCode, create, findById, findStudentSample, update, withdraw, listMyTopics, listForLecturer, canReview, withWriteLock, decide };
 })();

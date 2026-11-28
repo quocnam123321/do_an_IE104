@@ -5,7 +5,7 @@
   const files = globalThis.IE104?.services?.proposalFiles;
   const dialog = document.getElementById('proposal-confirm-dialog');
   if (!form || !service || !dialog) return;
-  const fields = Object.fromEntries(Object.entries({ title: 'topic-name', type: 'topic-type', courseId: 'course', semester: 'semester', academicYear: 'academic-year', description: 'topic-description', objectives: 'topic-objectives', outcomes: 'expected-results', supervisorId: 'add-supervisor', attachment: 'proposal-attachment' }).map(([key, id]) => [key, document.getElementById(id)]));
+  const fields = Object.fromEntries(Object.entries({ title: 'topic-name', type: 'topic-type', courseId: 'course', semester: 'semester', academicYear: 'academic-year', roundId: 'registration-round', description: 'topic-description', objectives: 'topic-objectives', outcomes: 'expected-results', supervisorId: 'add-supervisor', attachment: 'proposal-attachment' }).map(([key, id]) => [key, document.getElementById(id)]));
   const outline = globalThis.IE104.ui?.proposalOutline;
   const pickers = globalThis.IE104.ui?.proposalPickers;
   const fieldFor = key => {
@@ -41,6 +41,12 @@
   const editId = params.get('proposal');
   let legacy = null;
   let original = null;
+  let currentRound;
+  function syncRoundButtons() {
+    const closed = Boolean(currentRound && currentRound.status !== 'open');
+    submit.disabled = saved || saving || (!editing && closed);
+    resubmit.disabled = saved || saving || resubmit.hidden || closed;
+  }
   let retainedAttachment = null;
   let retainedAttachmentName = '';
   const attachmentPicker = fields.attachment.parentElement;
@@ -239,6 +245,13 @@
       return;
     }
   }
+  globalThis.IE104.ui.registrationRound?.bind(form, {
+    previous: original?.roundId, legacy: editing && !original?.roundId,
+    onChange(round) {
+      currentRound = round;
+      syncRoundButtons();
+    },
+  });
   form.dataset.proposalReady = 'true';
   fields.type.addEventListener('change', () => updateCourse());
   supervisorId.addEventListener('change', () => {
@@ -312,7 +325,7 @@
     const input = readInput();
     let checked;
     try {
-      checked = legacy ? requests.validateProposal(input, legacy) : service.validate(input, original);
+      checked = legacy ? requests.validateProposal(input, legacy, event.submitter === resubmit) : service.validate(input, original);
     } catch (failure) {
       showErrors([{ message: failure.message }]);
       return;
@@ -349,8 +362,7 @@
   async function saveProposal(value, { attachment, coverImage }, sendingAgain = false) {
     if (saved || saving) return;
     saving = true;
-    const resubmitWasDisabled = resubmit.disabled;
-    submit.disabled = resubmit.disabled = true;
+    syncRoundButtons();
     if (sendingAgain) confirm.disabled = closeReview.disabled = true;
     const staged = [];
     try {
@@ -398,8 +410,7 @@
       }
     } finally {
       saving = false;
-      submit.disabled = saved;
-      resubmit.disabled = saved || resubmitWasDisabled;
+      syncRoundButtons();
       if (sendingAgain) {
         confirm.disabled = saved;
         closeReview.disabled = false;

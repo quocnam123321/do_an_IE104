@@ -384,6 +384,7 @@
     } else if (event.key === app.storage.registrationKey || event.key === store?.key) checkExisting();
   });
   window.addEventListener('ie104:published-topics-updated',checkExisting);
+  globalThis.IE104AdminAcademic?.watch();
   form.noValidate = true;
   refreshMembers();
   checkExisting();

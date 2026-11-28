@@ -9,6 +9,10 @@
     <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261125-filter-selection"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
+    <script defer src="../../assets/js/pages/admin/sample-data.js"></script>
+    <script defer src="../../assets/js/pages/admin/academic-store.js"></script>
+    <script defer src="../../assets/js/shared/registration-round-ui.js"></script>
+    <link rel="stylesheet" href="../../assets/css/registration-round.css">
     <script type="module" src="../../assets/js/shared/notification-bell.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme">
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language">
@@ -212,6 +216,23 @@
           <h1 class="page-header__title">Quản lý đề tài</h1>
           <a class="page-header__action" href="tao-de-tai-giang-vien.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg><span>Tạo đề tài mới</span></a>
         </header>
+        <section class="registration-round-summary" data-round-summary aria-label="Lịch đợt đăng ký" hidden>
+          <div>
+            <div class="registration-round-summary__heading">
+              <h2 data-round-title translate="no"></h2>
+              <span data-round-status></span>
+            </div>
+            <p class="registration-round-note" data-round-term translate="no"></p>
+            <label class="registration-round-summary__choice">
+              <span class="visually-hidden">Xem lịch đợt đăng ký</span>
+              <select translate="no"></select>
+            </label>
+          </div>
+          <div class="registration-round-summary__deadline">
+            <span class="registration-round-label">Hạn đóng</span>
+            <time translate="no"></time>
+          </div>
+        </section>
         <nav class="topic-tabs" aria-label="Danh sách đề tài giảng viên">
           <ul class="topic-tabs__list">
             <li>

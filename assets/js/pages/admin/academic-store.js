@@ -2,7 +2,14 @@
   const seedRounds = globalThis.IE104AdminSampleData.rounds;
   const storageKey = "ie104.admin.academic-demo.v1";
   const initialTerms = ["2026-1", "2025-2"];
-  const roundTypes = ["course", "thesis"];
+  const roundTypes = ["course", "graduation", "thesis"];
+  const updateEvent = "ie104:registration-rounds-updated";
+  const changedEvent = "ie104:registration-rounds-changed";
+  const topicTypes = {
+    "do-an-mon-hoc": "course", "do-an-tot-nghiep": "graduation", "khoa-luan": "thesis",
+  };
+  const statusLabels = { upcoming: "Sắp mở", open: "Đang mở", closed: "Đã đóng" };
+  const instant = (value) => Date.parse(value + "+07:00");
   const vietnamOffsetMs = 7 * 60 * 60 * 1000;
   const minuteMs = 60 * 1000;
 
@@ -25,7 +32,7 @@
 
   function validWindow(start, end) {
     return datetimePattern.test(start) && datetimePattern.test(end) &&
-      Date.parse(start + "+07:00") < Date.parse(end + "+07:00");
+      instant(start) < instant(end);
   }
 
   function read() {
@@ -53,35 +60,105 @@
     return `HK ${number} · ${year}–${Number(year) + 1}`;
   }
 
-  function statusOf({ start, end }) {
-    const now = Date.now();
-    if (now < Date.parse(start + "+07:00")) return "upcoming";
-    return now >= Date.parse(end + "+07:00") ? "closed" : "open";
+  function statusOf({ start, end }, now = Date.now()) {
+    if (now < instant(start)) return "upcoming";
+    return now >= instant(end) ? "closed" : "open";
   }
 
-  function records(data) {
-    const result = new Map(seedRounds.map((round) => [round.id, round]));
-    data.rounds.forEach((round) => result.set(round.id, { ...round, status: statusOf(round) }));
-    return [...result.values()];
+  function records(data, now = Date.now()) {
+    const result = new Map([...seedRounds, ...data.rounds].map((round) => [round.id, round]));
+    return [...result.values()].map((round) => ({ ...round, status: statusOf(round, now) }));
   }
 
-  function snapshot() {
+  function snapshot(now = Date.now()) {
     try {
       const state = read();
       return {
         terms: [...initialTerms, ...state.terms].sort((a, b) => b.localeCompare(a)),
-        rounds: records(state),
+        rounds: records(state, now),
       };
     } catch {
-      return { terms: initialTerms, rounds: seedRounds, unavailable: true };
+      return { terms: initialTerms, rounds: records({ rounds: [] }, now), unavailable: true };
     }
+  }
+
+  function academicYears() {
+    return [...new Set(snapshot().terms.map((id) => {
+      const year = Number(id.split("-")[0]);
+      return `${year}-${year + 1}`;
+    }))];
+  }
+
+  function matches(round, { academicYear, semester, topicType, type }) {
+    const year = String(academicYear ?? "").match(/^20\d{2}(?=\s*[-–])/);
+    const termNumber = ["he", "summer"].includes(semester) ? "3" : String(semester);
+    return year && round.term === `${year[0]}-${termNumber}` &&
+      round.type === (topicType || topicTypes[type] || type);
+  }
+
+  function selection(id, attrs, { now = Date.now(), allowUpcoming = false, keep = false } = {}) {
+    const data = snapshot(now);
+    if (data.unavailable) return { error: "Không đọc được lịch đợt đăng ký. Hãy thử lại." };
+    const round = data.rounds.find((item) => item.id === id);
+    if (!round || !matches(round, attrs)) return { error: "Chọn đợt đăng ký phù hợp với học kỳ và loại đề tài." };
+    if (!keep && round.status === "closed") return { round, error: "Đợt đăng ký đã đóng." };
+    if (!keep && !allowUpcoming && round.status === "upcoming") return { round, error: "Đợt đăng ký chưa mở." };
+    return { round };
+  }
+
+  function forTopic(topic, now) {
+    const id = topic.registration?.roundId;
+    return id ? selection(id, topic, { now, keep: true }).round : undefined;
+  }
+
+  function withRegistration(topic, now) {
+    const round = forTopic(topic, now);
+    if (!round) return topic;
+    return { ...topic, registration: {
+      ...topic.registration,
+      opensAt: new Date(instant(round.start)).toISOString(),
+      deadline: new Date(instant(round.end)).toISOString(),
+    } };
+  }
+
+  function displayTime(value) {
+    const [day, time] = value.split("T");
+    return `${time} · ${day.split("-").reverse().join("/")}`;
+  }
+
+  let watching = false;
+  function watch() {
+    if (watching) return;
+    watching = true;
+    let timer;
+    function schedule(notify = true) {
+      clearTimeout(timer);
+      const now = Date.now();
+      const next = Math.min(...snapshot(now).rounds.flatMap(({ start, end }) => [instant(start), instant(end)])
+        .filter((timestamp) => timestamp > now));
+      if (Number.isFinite(next)) timer = setTimeout(schedule, Math.min(2147483647, next - now));
+      if (notify) {
+        window.dispatchEvent(new Event(updateEvent));
+        window.dispatchEvent(new Event("ie104:published-topics-updated"));
+      }
+    }
+    window.addEventListener("storage", (event) => {
+      if (event.key === storageKey || event.key === null) schedule();
+    });
+    window.addEventListener("pageshow", () => schedule());
+    window.addEventListener(changedEvent, () => schedule());
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) schedule(); });
+    schedule(false);
   }
 
   async function save(update) {
     function write() {
       const data = read();
       const result = update(data);
-      if (!result.error) localStorage.setItem(storageKey, JSON.stringify(data));
+      if (!result.error) {
+        localStorage.setItem(storageKey, JSON.stringify(data));
+        globalThis.dispatchEvent?.(new Event(changedEvent));
+      }
       return result;
     }
     try {
@@ -133,5 +210,6 @@
     });
   }
 
-  globalThis.IE104AdminAcademic = { roundTypes, availableStartYears, minimumDateTime, snapshot, termLabel, addTerm, saveRound };
+  globalThis.IE104AdminAcademic = { roundTypes, availableStartYears, minimumDateTime, snapshot, termLabel, addTerm, saveRound,
+    academicYears, matches, selection, forTopic, withRegistration, displayTime, watch, updateEvent, statusLabels };
 })();

@@ -11,6 +11,8 @@
     <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261127-future-dates"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
+    <script defer src="../../assets/js/pages/admin/sample-data.js"></script>
+    <script defer src="../../assets/js/pages/admin/academic-store.js"></script>
     <script type="module" src="../../assets/js/shared/notification-bell.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme">
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language">
@@ -354,6 +356,7 @@
       </header>
       <form method="dialog" class="topic-dialog__form">
         <p id="reopen-registration-description" class="topic-dialog__desc">Bạn có muốn mở lại đăng ký cho đề tài <strong translate="no">Website quản lý thư viện</strong>?</p>
+        <p class="topic-dialog__desc" data-round-reopen-time hidden>Giờ đóng của đợt <time></time></p>
         <div class="topic-dialog__field requirement-deadline">
           <label for="registration-reopen-deadline">Hạn đăng ký mới</label>
           <input id="registration-reopen-deadline" type="datetime-local" required>

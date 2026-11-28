@@ -15,6 +15,10 @@
     <script defer src="../../assets/js/i18n/en-student.js?v=20261128-student-dialogs"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
+    <script defer src="../../assets/js/pages/admin/sample-data.js"></script>
+    <script defer src="../../assets/js/pages/admin/academic-store.js"></script>
+    <script defer src="../../assets/js/shared/registration-round-ui.js"></script>
+    <link rel="stylesheet" href="../../assets/css/registration-round.css">
     <script type="module" src="../../assets/js/shared/notification-bell.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
@@ -149,6 +153,23 @@
           <h1 class="page-header__title">Đề tài mở đăng ký</h1>
           <a class="topics__create-proposal" href="tao-de-xuat.html"><span aria-hidden="true">+</span> Tạo đề xuất</a>
         </header>
+        <section class="registration-round-summary" data-round-summary aria-label="Lịch đợt đăng ký" hidden>
+          <div>
+            <div class="registration-round-summary__heading">
+              <h2 data-round-title translate="no"></h2>
+              <span data-round-status></span>
+            </div>
+            <p class="registration-round-note" data-round-term translate="no"></p>
+            <label class="registration-round-summary__choice">
+              <span class="visually-hidden">Xem lịch đợt đăng ký</span>
+              <select translate="no"></select>
+            </label>
+          </div>
+          <div class="registration-round-summary__deadline">
+            <span class="registration-round-label">Hạn đóng</span>
+            <time translate="no"></time>
+          </div>
+        </section>
         <div class="page-content">
           <div class="topics-layout">
             <details class="topic-filter-panel" open>
