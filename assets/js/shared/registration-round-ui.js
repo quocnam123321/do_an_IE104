@@ -61,6 +61,7 @@
   const summary = document.querySelector("[data-round-summary]");
   if (summary) {
     const select = summary.querySelector("select");
+    const picker = app.ui.proposalPickers?.enhanceSelect(select);
     const term = summary.querySelector("[data-round-term]");
     const status = summary.querySelector("[data-round-status]");
     const start = summary.querySelector("[data-round-start]");
@@ -68,17 +69,23 @@
     function paint() {
       const { rounds, unavailable } = academic.snapshot();
       summary.hidden = unavailable || !rounds.length;
-      if (summary.hidden) return;
+      if (summary.hidden) {
+        picker?.close();
+        return;
+      }
       const latest = [...rounds].sort((a, b) => b.id.localeCompare(a.id, undefined, { numeric: true }));
       const active = latest.find((round) => round.status === "open");
       const current = latest.find((round) => round.id === select.value) || active || latest[0];
       const ids = JSON.stringify(latest.map(({ id, name }) => [id, name]));
       if (select.dataset.rounds !== ids) {
+        picker?.close();
         select.replaceChildren(...latest.map(option));
         select.dataset.rounds = ids;
       }
       select.value = current.id;
-      select.title = select.selectedOptions[0].text;
+      picker?.sync();
+      const control = picker?.trigger || select;
+      control.title = select.selectedOptions[0].text;
       term.textContent = academic.termLabel(current.term);
       status.dataset.state = current.status;
       status.textContent = academic.statusLabels[current.status];

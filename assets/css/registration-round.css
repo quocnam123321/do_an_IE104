@@ -78,7 +78,8 @@
   grid-column: 1 / -1;
 }
 
-#round-schedule-choice {
+#round-schedule-choice,
+#round-schedule-choice-picker {
   inline-size: 100%;
   min-inline-size: 0;
   min-block-size: var(--control-min-height);
@@ -90,6 +91,14 @@
   font: inherit;
   font-weight: var(--font-weight-semibold);
   text-overflow: ellipsis;
+}
+
+#round-schedule-choice-picker {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding-block: var(--space-2);
+  line-height: 1.5;
 }
 
 .registration-round-summary__value {
@@ -138,7 +147,18 @@
     grid-template-columns: minmax(0, 1fr);
   }
 
-  #round-schedule-choice {
+  #round-schedule-choice,
+  #round-schedule-choice-picker {
     font-size: var(--font-size-secondary);
+  }
+
+  #round-schedule-choice-picker {
+    gap: var(--space-1);
+    padding-inline: var(--space-2);
+  }
+
+  #round-schedule-choice-picker > span {
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 }
