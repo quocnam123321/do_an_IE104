@@ -5,7 +5,6 @@
   const databaseMode = accountMode === "database" || accountMode === "demo";
   const simulateReset = accountMode === "demo";
   const addButton = document.querySelector("#admin-account-add");
-  const reloadButton = document.querySelector("#admin-account-reload");
   const rows = document.querySelector("#admin-account-rows");
   const count = document.querySelector("#admin-account-count");
   const search = document.querySelector("#admin-account-search");
@@ -95,7 +94,7 @@
 
   async function loadDatabase() {
     if (loading) return;
-    loading = reloadButton.disabled = addButton.disabled = true;
+    loading = addButton.disabled = true;
     loadError = false;
     databaseAccounts = [];
     render();
@@ -106,9 +105,9 @@
       if (error.status === 401) location.replace("../chung/dang-nhap.html");
       loadError = true;
       dataError.textContent = error.status === 403 ? "Bạn không có quyền xem danh sách tài khoản." :
-        "Không thể tải danh sách tài khoản. Vui lòng thử lại.";
+        "Không thể tải danh sách tài khoản. Vui lòng làm mới trang.";
     } finally {
-      loading = reloadButton.disabled = false;
+      loading = false;
       addButton.disabled = !database;
       render();
     }
@@ -293,8 +292,6 @@
     fields.fullName.maxLength = 100;
     statusFilter.add(new Option(labels.pending, "pending"));
     statusFilter.add(new Option(labels.rejected, "rejected"));
-    reloadButton.hidden = false;
-    reloadButton.addEventListener("click", loadDatabase);
   }
   if (Array.from(statusFilter.options).some(({ value }) => value === initialStatus)) statusFilter.value = initialStatus;
   for (const control of [search, roleFilter, statusFilter]) {
