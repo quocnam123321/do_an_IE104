@@ -92,7 +92,7 @@
     return null;
   }
 
-  function saveAcademic(fields, original, status = "draft") {
+  function publishAcademic(fields, original) {
     const invalid = validateAcademic(fields);
     if (invalid) return invalid;
 
@@ -104,25 +104,22 @@
       const now = new Date();
       return { record: {
         id: current?.id ?? nextId(entries, "TB-"),
-        kind: "academic", name: fields.title.trim(), body: fields.body.trim(), type: fields.category, status,
+        kind: "academic", name: fields.title.trim(), body: fields.body.trim(), type: fields.category, status: "published",
         html: fields.html, images: fields.images,
         attachment: fields.attachment, date: currentDateTime(now), revision: (current?.revision ?? 0) + 1,
-        ...(status === "published" ? { publishedAt: now.toISOString() } : {}),
+        publishedAt: now.toISOString(),
       } };
     });
   }
 
-  function changeStatus(original, next) {
-    const expected = next === "published" ? "draft" : "published";
+  function withdrawAcademic(original) {
     return transaction("readwrite", (entries) => {
       const current = entries.get(original.id);
-      if (current?.kind !== "academic" || current.status !== expected || current.revision !== original.revision) {
+      if (current?.kind !== "academic" || current.status !== "published" || current.revision !== original.revision) {
         return { error: "Thông báo đã thay đổi. Hãy mở lại và thử lại." };
       }
-      const now = new Date();
       return { record: {
-        ...current, status: next, date: currentDateTime(now), revision: current.revision + 1,
-        ...(next === "published" ? { publishedAt: now.toISOString() } : {}),
+        ...current, status: "withdrawn", date: currentDateTime(), revision: current.revision + 1,
       } };
     });
   }
@@ -162,6 +159,6 @@
   }
 
   globalThis.IE104AdminNotices = {
-    categories, audiences, eligibleRecipients, snapshot, saveAcademic, validateAcademic, validateImage, changeStatus, createSystem,
+    categories, audiences, eligibleRecipients, snapshot, publishAcademic, validateAcademic, validateImage, withdrawAcademic, createSystem,
   };
 })();

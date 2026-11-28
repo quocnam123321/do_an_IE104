@@ -23,7 +23,7 @@
   const editor = byId("admin-notice-editor");
   const form = byId("admin-notice-form");
   const fields = form.elements;
-  const submit = byId("admin-notice-save");
+  const submit = byId("admin-notice-submit");
   const previewDraft = byId("admin-notice-preview");
   const editorError = byId("admin-notice-editor-error");
   const chooseFile = byId("admin-notice-choose-file");
@@ -44,6 +44,7 @@
   const selected = new Set();
   let records = [];
   let editing;
+  let editorDirty = false;
   let retainedFile;
   let action;
   let ready = false;
@@ -78,7 +79,7 @@
         <span>${label}</span><span class="visually-hidden" translate="no"> ${escapeHtml(item.name)}</span></button>`;
     const preview = button("preview", "Xem trước");
     if (item.status === "draft") {
-      return preview + button("edit", "Chỉnh sửa") + button("published", "Đăng", "admin-button--primary");
+      return preview + button("edit", "Chỉnh sửa");
     }
     return preview + (item.status === "published" ? button("withdrawn", "Gỡ", "admin-notice-danger") : "");
   }
@@ -199,6 +200,7 @@
     form.reset();
     selected.clear();
     editing = item;
+    editorDirty = false;
     retainedFile = item?.attachment;
     editorMessage("");
     byId("admin-notice-editor-title").textContent = system ? "Tạo thông báo" : item ? "Chỉnh sửa thông báo" : "Soạn thông báo";
@@ -217,21 +219,20 @@
   }
 
   function openDetail(item, operation, draft) {
-    action = { item, operation, draft };
+    action = { item, draft };
     message(detailError, "");
     const preview = operation === "preview";
-    const publish = operation === "published";
-    byId("admin-notice-detail-title").textContent = preview ? "Xem trước thông báo" : publish ? "Đăng thông báo?" : "Gỡ thông báo?";
+    byId("admin-notice-detail-title").textContent = preview ? "Xem trước thông báo" : "Gỡ thông báo?";
     byId("admin-notice-confirm-footer").hidden = preview && !draft;
     backToEditor.hidden = !draft;
-    confirm.textContent = draft ? "Đăng thông báo" : publish ? "Xác nhận đăng" : "Xác nhận gỡ";
-    confirm.classList.toggle("admin-button--primary", publish || Boolean(draft));
-    confirm.classList.toggle("admin-notice-danger", !publish && !draft);
+    confirm.textContent = draft ? "Đăng thông báo" : "Xác nhận gỡ";
+    confirm.classList.toggle("admin-button--primary", Boolean(draft));
+    confirm.classList.toggle("admin-notice-danger", !draft);
     detailBody.classList.toggle("admin-notice-preview", preview);
     detailBody.innerHTML = `<h3 translate="no">${escapeHtml(item.name)}</h3>
       <p class="admin-demo"><span>${labels[item.type]}</span>${draft ? "" : ` · <span>${states[item.status]}</span>`}</p>
       ${preview ? '<div class="admin-notice-article admin-notice-preview-text" translate="no"></div>' :
-        `<p>${publish ? "Thông báo sẽ xuất hiện trên trang Thông báo chung của trình duyệt này." : "Thông báo sẽ được gỡ khỏi trang Thông báo chung của trình duyệt này."}</p>`}`;
+        '<p>Thông báo sẽ được gỡ khỏi trang Thông báo chung của trình duyệt này.</p>'}`;
 
     if (preview) {
       renderArticle(detailBody.querySelector(".admin-notice-article"), item, (id, file) => {
@@ -300,6 +301,18 @@
     (results.querySelector(`[data-notice-id="${result.record.id}"]`) ?? create).focus();
   }
 
+  function publish(draft, dialog, button) {
+    return commit(dialog, button, () => store.publishAcademic(draft, editing),
+      "Đã đăng thông báo trong bản mẫu.", dialog === detail);
+  }
+
+  function canClose(dialog, button) {
+    if (button.disabled) return false;
+    if (dialog !== editor || !editorDirty) return true;
+    const question = "Đóng hộp thoại và bỏ các thay đổi chưa đăng?";
+    return window.confirm(document.documentElement.lang === "en" ? globalThis.ie104English[question] : question);
+  }
+
   create.addEventListener("click", () => openEditor());
   results.addEventListener("click", (event) => {
     const button = event.target.closest("[data-notice-action]");
@@ -312,10 +325,10 @@
 
   for (const [dialog, button] of [[editor, submit], [detail, confirm]]) {
     dialog.querySelector(".admin-dialog-close").addEventListener("click", () => {
-      if (!button.disabled) dialog.close();
+      if (canClose(dialog, button)) dialog.close();
     });
     dialog.addEventListener("cancel", (event) => {
-      if (button.disabled) event.preventDefault();
+      if (!canClose(dialog, button)) event.preventDefault();
     });
   }
 
@@ -336,17 +349,18 @@
     openDetail({ ...draft, name: draft.title.trim(), type: draft.category }, "preview", draft);
   });
   confirm.addEventListener("click", () => {
-    const { item, operation, draft } = action;
+    const { item, draft } = action;
     if (draft) {
-      commit(detail, confirm, () => store.saveAcademic(draft, editing, "published"),
-        "Đã đăng thông báo trong bản mẫu.", true);
+      publish(draft, detail, confirm);
       return;
     }
-    commit(detail, confirm, () => store.changeStatus(item, operation),
-      operation === "published" ? "Đã đăng thông báo trong bản mẫu." : "Đã gỡ thông báo trong bản mẫu.");
+    commit(detail, confirm, () => store.withdrawAcademic(item), "Đã gỡ thông báo trong bản mẫu.");
   });
 
-  form.addEventListener("input", () => editorMessage(""));
+  form.addEventListener("input", (event) => {
+    if (!system && event.target.id !== "admin-notice-image-file") editorDirty = true;
+    editorMessage("");
+  });
   form.addEventListener("change", (event) => {
     if (["audience", "scope"].includes(event.target.name)) {
       fields.recipientSearch.value = "";
@@ -360,21 +374,23 @@
   attachment.addEventListener("click", (event) => {
     if (!event.target.closest("button")) return;
     retainedFile = undefined;
+    editorDirty = true;
     renderAttachment();
     chooseFile.focus();
   });
+  submit.addEventListener("click", () => {
+    if (system) return;
+    const draft = readDraft();
+    if (draft) publish(draft, editor, submit);
+  });
   form.addEventListener("submit", (event) => {
     event.preventDefault();
-    if (system) {
-      const text = { title: fields.title.value, body: fields.body.value };
-      const audience = fields.audience.value;
-      const scope = fields.scope.value;
-      commit(editor, submit, () => store.createSystem({ ...text, audience, scope, ids: [...selected] }),
-        "Đã lưu thông báo hệ thống trong bản mẫu.");
-    } else {
-      const draft = readDraft();
-      if (draft) commit(editor, submit, () => store.saveAcademic(draft, editing), "Đã lưu bản nháp.");
-    }
+    if (!system) return;
+    const text = { title: fields.title.value, body: fields.body.value };
+    const audience = fields.audience.value;
+    const scope = fields.scope.value;
+    commit(editor, submit, () => store.createSystem({ ...text, audience, scope, ids: [...selected] }),
+      "Đã lưu thông báo hệ thống trong bản mẫu.");
   });
 
   fields.recipientSearch.addEventListener("input", () => {
@@ -424,8 +440,8 @@
   });
 
   if (system) {
+    submit.type = "submit";
     submit.textContent = "Gửi thông báo";
-    submit.classList.add("admin-button--primary");
     previewDraft.hidden = true;
     create.querySelector("span").textContent = "Tạo thông báo";
     search.placeholder = "Tìm theo thông báo hoặc người nhận";
