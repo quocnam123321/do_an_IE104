@@ -10,13 +10,16 @@
     <script defer src="../../assets/js/i18n/en-public.js"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/data/notification-details.js?v=20261127-one-notification-page"></script>
-    <script defer src="../../assets/js/notification-detail.js?v=20261127-one-notification-page"></script>
+    <script defer src="../../assets/js/notifications-data.js?v=20261127-one-notification-page"></script>
+    <script defer src="../../assets/js/shared/academic-notices.js"></script>
+    <script defer src="../../assets/js/shared/notice-article.js"></script>
+    <script defer src="../../assets/js/notification-detail.js?v=20261128-admin-notifications"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <script type="module" src="../../assets/js/shared/public-session.js?v=20261125-direct-logout"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
     <link rel="stylesheet" href="../../assets/css/components.css?v=20261125-account-menu-2" />
-    <link rel="stylesheet" href="../../assets/css/common.css?v=20261124-notice-detail" />
+    <link rel="stylesheet" href="../../assets/css/common.css?v=20261128-admin-notifications" />
     <script src="../../assets/js/nav-indicator.js" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   </head>
@@ -72,6 +75,13 @@
           </a>
         </p>
         <p data-notice-fallback>Không tìm thấy thông báo. <a href="thong-bao.html">Quay lại thông báo</a></p>
+        <template id="published-notice-template">
+          <header class="notification-detail__header">
+            <h1 id="notification-title" translate="no"></h1>
+            <p><time class="notification-card__date"></time></p>
+          </header>
+          <div class="notification-detail__content notification-detail__content--published" translate="no"></div>
+        </template>
         <div class="notification-detail-layout" data-notice-layout hidden>
           <article class="notification-detail" aria-labelledby="notification-title" data-notice-article></article>
           <aside class="related-notifications" aria-labelledby="related-notifications-title">
@@ -79,6 +89,19 @@
             <ul class="related-notifications__list" data-notice-related></ul>
           </aside>
         </div>
+        <template id="published-notice-related-template">
+          <li>
+            <article class="related-notification">
+              <div class="related-notification__image">
+                <img src="../../assets/images/notification-cover.png" alt="" width="320" height="180" loading="lazy">
+              </div>
+              <div class="related-notification__content">
+                <h3><a></a></h3>
+                <time></time>
+              </div>
+            </article>
+          </li>
+        </template>
       </div>
     </main>
 

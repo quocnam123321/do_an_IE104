@@ -1,4 +1,11 @@
 import { roleSessionPrefix, websitePageRole } from "../website-session.js";
+import "../pages/admin/sample-data.js";
+import "../pages/admin/account-store.js";
+import "./academic-notices.js";
+import "./system-notices.js";
+
+const directory = globalThis.IE104AdminAccounts;
+const system = globalThis.IE104SystemNotices;
 
 const demoNotices = {
   student: [
@@ -25,6 +32,8 @@ function installBell() {
   if (!preferences || !role) return;
   const readKey = "ie104.notifications.read." + role + ".";
   const sessionKey = roleSessionPrefix + role;
+  const selectedAccountKey = "ie104.notifications.viewer." + role;
+  const defaultAccountId = globalThis.IE104AdminSampleData.accounts.find(({ type }) => type === role)?.id;
   const getSaved = (key) => {
     try {
       return localStorage.getItem(key);
@@ -47,7 +56,11 @@ function installBell() {
         <button class="notification-inbox__mark" type="button">Đánh dấu tất cả đã đọc</button>
       </header>
       <p class="notification-inbox__sample">Dữ liệu mẫu</p>
-      <p class="notification-inbox__empty" hidden>Chưa có thông báo.</p>
+      <label class="notification-inbox__account" hidden>
+        <span>Tài khoản xem thử</span>
+        <select translate="no"></select>
+      </label>
+      <p class="notification-inbox__empty" role="status" hidden></p>
       <ul class="notification-inbox__list"></ul>
     </section>`);
 
@@ -59,10 +72,10 @@ function installBell() {
         </svg>
       </button>
       <header class="notification-message__header">
-        <h2 id="website-notification-title"></h2>
+        <h2 id="website-notification-title" translate="no"></h2>
         <time class="notification-message__time"></time>
       </header>
-      <p class="notification-message__body"></p>
+      <p class="notification-message__body" translate="no"></p>
     </dialog>`);
 
   const bell = preferences.querySelector(".notification-bell");
@@ -71,13 +84,45 @@ function installBell() {
   const markAll = inbox.querySelector(".notification-inbox__mark");
   const sample = inbox.querySelector(".notification-inbox__sample");
   const empty = inbox.querySelector(".notification-inbox__empty");
+  const accountField = inbox.querySelector(".notification-inbox__account");
+  const accountSelect = accountField.querySelector("select");
   const list = inbox.querySelector(".notification-inbox__list");
   const message = document.querySelector(".notification-message");
   const close = message.querySelector(".notification-message__close");
   const title = message.querySelector("h2");
   const sentTime = message.querySelector("time");
   const body = message.querySelector(".notification-message__body");
-  let notices = [];
+  let usingSamples;
+  let accounts = [];
+  let account;
+  let status = "";
+  let messages = [];
+  let refreshNumber = 0;
+
+  function savedAccountId() {
+    try {
+      return sessionStorage.getItem(selectedAccountKey);
+    } catch {
+      return null;
+    }
+  }
+
+  function selectAccount(id) {
+    account = accounts.find((entry) => entry.id === id) ?? accounts[0];
+    accountSelect.value = account?.id ?? "";
+    try {
+      if (account) sessionStorage.setItem(selectedAccountKey, account.id);
+    } catch {
+      // The selected account still applies on this page.
+    }
+    messages = [];
+    status = usingSamples && !account ? "Không có tài khoản xem thử khả dụng." : "";
+    if (message.open) message.close();
+    title.textContent = sentTime.textContent = body.textContent = "";
+    sentTime.removeAttribute("datetime");
+    render();
+    void refreshInbox();
+  }
 
   const formatter = new Intl.DateTimeFormat("vi-VN", {
     timeZone: "Asia/Ho_Chi_Minh",
@@ -97,37 +142,67 @@ function installBell() {
     return minutes < 60 ? relative.format(-minutes, "minute") : relative.format(-Math.floor(minutes / 60), "hour");
   }
 
-  function hasRead(notice) {
-    return notice.read || unsavedReads.has(notice.id) || getSaved(readKey + notice.id) === "1";
+  function sampleReadKey(id) {
+    return readKey + (account && account.id !== defaultAccountId ? account.id + "." : "") + id;
   }
 
-  function markRead(items) {
-    for (const { id } of items) {
+  function hasRead(notice) {
+    if (notice.system) return notice.read;
+    const key = sampleReadKey(notice.id);
+    return notice.read || unsavedReads.has(key) || getSaved(key) === "1";
+  }
+
+  async function markRead(items) {
+    const viewer = account;
+    const ids = [];
+    for (const notice of items) {
+      if (hasRead(notice)) continue;
+      if (notice.system) {
+        ids.push(notice.id);
+        continue;
+      }
+      const key = sampleReadKey(notice.id);
       try {
-        localStorage.setItem(readKey + id, "1");
+        localStorage.setItem(key, "1");
       } catch {
-        unsavedReads.add(id);
+        unsavedReads.add(key);
       }
     }
     render();
+    if (viewer && ids.length) {
+      try {
+        await system.markRead(viewer, ids);
+        if (account === viewer) await refreshInbox();
+      } catch {
+        if (account === viewer) {
+          status = "Không thể lưu trạng thái đã đọc. Hãy thử lại.";
+          render();
+        }
+      }
+    }
   }
 
   function render() {
+    const notices = usingSamples ? [...messages, ...demoNotices[role]] : [];
     const unread = notices.filter((notice) => !hasRead(notice)).length;
+    const focusedId = list.contains(document.activeElement) ? document.activeElement.dataset.noticeId : "";
     count.textContent = String(unread);
     count.hidden = unread === 0;
     markAll.setAttribute("aria-disabled", String(unread === 0));
     markAll.hidden = notices.length === 0;
-    empty.hidden = notices.length !== 0;
-    sample.hidden = notices.length === 0;
+    empty.hidden = !status && notices.length !== 0;
+    empty.textContent = status || "Chưa có thông báo.";
+    sample.hidden = !usingSamples;
     bell.setAttribute("aria-label", unread ? `Thông báo (${unread} chưa đọc)` : "Thông báo");
     list.replaceChildren(...notices.map((notice) => {
       const item = document.createElement("li");
       const row = document.createElement("button");
       row.type = "button";
       row.className = "notification-inbox__item";
+      row.dataset.noticeId = notice.id;
       const heading = document.createElement("strong");
       heading.textContent = notice.title;
+      if (notice.system) heading.translate = false;
       const date = document.createElement("time");
       date.dateTime = notice.date;
       date.textContent = listTime(notice.date);
@@ -141,7 +216,8 @@ function installBell() {
       }
       row.addEventListener("click", () => {
         inbox.hidePopover();
-        markRead([notice]);
+        void markRead([notice]);
+        title.translate = body.translate = !notice.system;
         title.textContent = notice.title;
         sentTime.dateTime = notice.date;
         sentTime.textContent = dateLabel(notice.date);
@@ -151,11 +227,38 @@ function installBell() {
       item.append(row);
       return item;
     }));
+    if (focusedId) {
+      const row = [...list.querySelectorAll("button")].find((button) => button.dataset.noticeId === focusedId);
+      if (row && inbox.matches(":popover-open")) row.focus({ preventScroll: true });
+    }
   }
 
-  function refreshInbox() {
+  function refreshAccounts() {
     const session = getSaved(sessionKey);
-    notices = session === null || session === "demo" ? demoNotices[role] : [];
+    usingSamples = session === null || session === "demo";
+    const snapshot = usingSamples ? directory.snapshot() : null;
+    accounts = snapshot && !snapshot.unavailable
+      ? snapshot.accounts.filter(({ type, status }) => type === role && status === "enabled") : [];
+    accountField.hidden = accounts.length === 0;
+    accountSelect.replaceChildren(...accounts.map(({ id, name, code }) => new Option(`${name} · ${code}`, id)));
+    selectAccount(savedAccountId());
+  }
+
+  async function refreshInbox() {
+    const number = ++refreshNumber;
+    if (!account) return;
+    let incoming;
+    try {
+      incoming = await system.readInbox(account);
+    } catch {
+      if (number !== refreshNumber) return;
+      status = "Không thể tải thông báo đã gửi. Hãy mở lại để thử lại.";
+      render();
+      return;
+    }
+    if (number !== refreshNumber) return;
+    messages = incoming;
+    status = "";
     render();
   }
 
@@ -169,7 +272,10 @@ function installBell() {
   }
 
   inbox.addEventListener("beforetoggle", (event) => {
-    if (event.newState === "open") placeInbox();
+    if (event.newState === "open") {
+      placeInbox();
+      void refreshInbox();
+    }
   });
   window.addEventListener("resize", () => {
     if (inbox.matches(":popover-open")) placeInbox();
@@ -179,21 +285,23 @@ function installBell() {
     if (bell.getBoundingClientRect().bottom < 0) inbox.hidePopover();
     else placeInbox();
   }, { passive: true });
+  accountSelect.addEventListener("change", () => selectAccount(accountSelect.value));
   markAll.addEventListener("click", () => {
-    if (markAll.getAttribute("aria-disabled") === "false") markRead(notices);
+    if (markAll.getAttribute("aria-disabled") === "false") void markRead([...messages, ...demoNotices[role]]);
   });
   close.addEventListener("click", () => message.close());
   message.addEventListener("close", () => bell.focus());
   document.addEventListener("ie104:languagechange", render);
   window.addEventListener("storage", (event) => {
     if (event.storageArea !== localStorage) return;
-    if (event.key === null || event.key === sessionKey) refreshInbox();
+    if (event.key === null || event.key === sessionKey || event.key === directory.storageKey) refreshAccounts();
     else if (event.key.startsWith(readKey)) render();
   });
   window.addEventListener("pageshow", (event) => {
-    if (event.persisted) refreshInbox();
+    if (event.persisted) refreshAccounts();
   });
-  refreshInbox();
+  system.onChange(refreshInbox);
+  refreshAccounts();
 }
 
 document.addEventListener("DOMContentLoaded", installBell, { once: true });

@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Thông báo | Quản lý đồ án</title>
+  <link rel="icon" href="../../assets/images/favicon.png">
+  <script src="../../assets/js/shared/theme.js"></script>
+  <link rel="stylesheet" href="../../assets/css/tokens.css">
+  <link rel="stylesheet" href="../../assets/css/base.css">
+  <link rel="stylesheet" href="../../assets/css/components.css">
+  <link rel="stylesheet" href="../../assets/css/tong-quan-giang-vien.css">
+  <link rel="stylesheet" href="../../assets/css/project-footer.css">
+  <link rel="stylesheet" href="../../assets/css/admin-preview.css">
+  <link rel="stylesheet" href="../../assets/css/admin-notifications.css">
+  <script defer src="../../assets/js/i18n/en-shared.js"></script>
+  <script defer src="../../assets/js/i18n/en-admin.js"></script>
+  <script defer src="../../assets/js/shared/language.js"></script>
+  <script defer src="../../assets/js/pages/admin/sample-data.js"></script>
+  <script defer src="../../assets/js/pages/admin/academic-store.js"></script>
+  <script defer src="../../assets/js/pages/admin/common.js"></script>
+  <script defer src="../../assets/js/pages/admin/account-store.js"></script>
+  <script defer src="../../assets/js/shared/academic-notices.js"></script>
+  <script defer src="../../assets/js/shared/notice-article.js"></script>
+  <script defer src="../../assets/js/shared/system-notices.js"></script>
+  <script defer src="../../assets/js/pages/admin/notification-store.js"></script>
+  <script defer src="../../assets/js/pages/admin/notice-content.js"></script>
+  <script defer src="../../assets/js/pages/admin/notifications.js"></script>
+</head>
+<body id="page-top" class="admin-preview lecturer-overview-page admin-notifications-page" tabindex="-1" data-admin-page="thong-bao">
+  <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="site-brand" href="../../index.html">
+        <img class="site-brand__logo" src="../../assets/images/images.jpg" alt="" width="40" height="40">
+        <span class="site-brand__name"><span>QUẢN LÝ ĐỒ ÁN VÀ</span><br><span>KHÓA LUẬN TỐT NGHIỆP</span></span>
+      </a>
+      <details class="site-navigation admin-navigation" open>
+        <summary class="site-navigation__toggle">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+            <path d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <span>Menu</span>
+        </summary>
+        <nav class="main-nav" aria-label="Điều hướng quản trị">
+          <ul class="main-nav__list">
+            <li class="main-nav__item"><a class="main-nav__link" href="thong-bao.html" aria-current="page">Thông báo</a></li>
+          </ul>
+        </nav>
+      </details>
+      <div class="account-menu">
+        <details class="account-menu__disclosure">
+          <summary class="account-menu__toggle" aria-label="Tài khoản quản trị">
+            <span class="account-menu__avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
+                <circle cx="12" cy="8" r="4"/>
+                <path d="M5.5 20a6.5 6.5 0 0 1 13 0"/>
+              </svg>
+            </span>
+          </summary>
+          <div class="account-menu__list admin-account-card">
+            <strong>Quản trị viên</strong>
+            <p><span translate="no">QT001</span> · <span>Dữ liệu mẫu</span></p>
+          </div>
+        </details>
+      </div>
+    </div>
+  </header>
+  <main id="main-content" class="main-content" tabindex="-1">
+    <div class="page-container">
+      <nav class="breadcrumb" aria-label="Đường dẫn">
+        <ol class="breadcrumb__list">
+          <li class="breadcrumb__item"><span>Quản trị viên</span></li>
+          <li class="breadcrumb__item"><span aria-current="page">Thông báo</span></li>
+        </ol>
+      </nav>
+      <header class="admin-heading">
+        <div>
+          <h1 class="page-header__title">Thông báo</h1>
+          <p class="admin-demo">
+            <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24">
+              <ellipse cx="12" cy="5" rx="8" ry="3"/>
+              <path d="M4 5v14a8 3 0 0 0 16 0V5M4 12a8 3 0 0 0 16 0"/>
+            </svg>
+            <span>Dữ liệu mẫu</span>
+          </p>
+        </div>
+        <button type="button" class="admin-button admin-button--primary" id="admin-notice-create" hidden>
+          <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          <span>Soạn thông báo</span>
+        </button>
+      </header>
+      <noscript><p>Bật JavaScript để xem dữ liệu mẫu và sử dụng bộ lọc.</p></noscript>
+      <div id="admin-view" class="page-content" hidden>
+        <nav class="admin-tabs" aria-label="Danh mục thông báo">
+          <a id="admin-notice-academic-tab" href="thong-bao.html">Thông báo học vụ</a>
+          <a id="admin-notice-system-tab" href="thong-bao.html?tab=he-thong">Thông báo hệ thống</a>
+        </nav>
+        <details class="admin-panel admin-notice-drafts" id="admin-notice-drafts" hidden>
+          <summary><span>Bản nháp đã lưu</span> <span class="admin-code" id="admin-notice-draft-count"></span></summary>
+          <ul class="admin-notice-draft-list" id="admin-notice-draft-list"></ul>
+        </details>
+        <div class="admin-round-toolbar">
+          <div class="admin-round-search">
+            <label class="visually-hidden" for="admin-search">Tìm kiếm</label>
+            <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24">
+              <circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/>
+            </svg>
+            <input id="admin-search" type="search" placeholder="Tìm theo tiêu đề hoặc mã thông báo">
+          </div>
+          <div class="admin-notice-filters" role="group" aria-label="Bộ lọc">
+            <div class="admin-field">
+              <label class="visually-hidden" for="admin-notice-type">Chuyên mục</label>
+              <select id="admin-notice-type"></select>
+            </div>
+            <div class="admin-field">
+              <label class="visually-hidden" for="admin-notice-state">Trạng thái</label>
+              <select id="admin-notice-state"></select>
+            </div>
+          </div>
+        </div>
+        <section class="admin-round-list" aria-labelledby="admin-notice-list-title">
+          <div class="admin-round-list__heading">
+            <h2 id="admin-notice-list-title">Danh sách thông báo</h2>
+            <p role="status"><span id="admin-notice-count"></span> <span>thông báo</span></p>
+          </div>
+          <p class="admin-notice-feedback" id="admin-notice-feedback" role="status" hidden></p>
+          <div class="admin-panel" id="admin-results"></div>
+        </section>
+      </div>
+    </div>
+  </main>
+    <footer class="project-footer">
+      <div class="project-footer__columns">
+        <div class="project-footer__identity">
+          <img class="project-footer__logo" src="../../assets/images/uit-footer-logo.png"
+            alt="UIT – Trường Đại học Công nghệ Thông tin" width="480" height="180" loading="lazy" />
+          <p class="project-footer__name">Quản lý đồ án và khóa luận tốt nghiệp</p>
+          <a href="../chung/gioi-thieu.html#team-title">Đồ án IE104 — Nhóm 7</a>
+        </div>
+        <nav aria-labelledby="project-footer-navigation">
+          <h2 id="project-footer-navigation">Truy cập nhanh</h2>
+          <ul>
+            <li><a href="../../index.html">Trang chủ</a></li>
+            <li><a href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+            <li><a href="../chung/thong-bao.html">Thông báo</a></li>
+            <li><a href="../chung/lien-he.html">Liên hệ</a></li>
+          </ul>
+        </nav>
+        <nav aria-labelledby="project-footer-policy">
+          <h2 id="project-footer-policy">Điều khoản và quy chế</h2>
+          <ul>
+            <li><a href="../../assets/documents/dieu-khoan-va-chinh-sach-ie104.pdf#page=1" target="_blank" rel="noopener">Điều khoản sử dụng<span class="visually-hidden"> (PDF, mở trong thẻ mới)</span></a></li>
+            <li><a href="../../assets/documents/dieu-khoan-va-chinh-sach-ie104.pdf#page=2" target="_blank" rel="noopener">Quy chế, chính sách bảo mật<span class="visually-hidden"> (PDF, mở trong thẻ mới)</span></a></li>
+          </ul>
+        </nav>
+        <nav aria-labelledby="project-footer-resources">
+          <h2 id="project-footer-resources">Tài nguyên UIT</h2>
+          <ul>
+            <li><a href="https://ise.uit.edu.vn/vi" target="_blank" rel="noopener">Khoa Khoa học và Kỹ thuật Thông tin<span class="visually-hidden"> (mở trong thẻ mới)</span></a></li>
+            <li><a href="https://portal.uit.edu.vn/" target="_blank" rel="noopener">Cổng thông tin UIT<span class="visually-hidden"> (mở trong thẻ mới)</span></a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="project-footer__bottom">
+        <p>&copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
+        <a class="project-footer__top" href="#page-top" aria-label="Về đầu trang">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 19V5m-6 6 6-6 6 6" />
+          </svg>
+        </a>
+      </div>
+    </footer>
+  <dialog class="admin-dialog admin-notice-dialog" id="admin-notice-editor" aria-labelledby="admin-notice-editor-title">
+    <header class="admin-dialog__header">
+      <h2 id="admin-notice-editor-title">Soạn thông báo</h2>
+      <button type="button" class="admin-dialog-close" aria-label="Đóng">
+        <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+    <form id="admin-notice-form" method="dialog" novalidate>
+      <div class="admin-notice-dialog-body">
+        <div class="admin-field">
+          <label for="admin-notice-title">Tiêu đề<span class="admin-notice-required" aria-hidden="true"> *</span></label>
+          <input id="admin-notice-title" name="title" maxlength="120" placeholder="Nhập tiêu đề thông báo" required autofocus>
+        </div>
+        <div id="admin-notice-academic-fields" class="admin-notice-field-group">
+          <div class="admin-field">
+            <label for="admin-notice-category">Chuyên mục<span class="admin-notice-required" aria-hidden="true"> *</span></label>
+            <select id="admin-notice-category" name="category" required>
+              <option value="">Chọn chuyên mục</option>
+              <option value="plan">Kế hoạch học vụ</option>
+              <option value="submissions">Báo cáo và nộp bài</option>
+              <option value="defense">Lịch bảo vệ</option>
+            </select>
+          </div>
+          <div class="admin-field">
+            <span class="admin-notice-label" id="admin-notice-content-label">Nội dung<span class="admin-notice-required" aria-hidden="true"> *</span></span>
+            <div class="admin-notice-composer">
+              <div class="admin-notice-tools" role="group" aria-labelledby="admin-notice-content-label">
+                <button type="button" class="admin-button" data-notice-format="bold" aria-label="In đậm" title="In đậm" aria-pressed="false">
+                  <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 12h8a4 4 0 0 0 0-8H6v16h9a4 4 0 0 0 0-8h-1"/></svg>
+                </button>
+                <button type="button" class="admin-button" data-notice-format="insertUnorderedList" aria-label="Danh sách dấu đầu dòng" title="Danh sách dấu đầu dòng" aria-pressed="false">
+                  <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg>
+                </button>
+                <button type="button" class="admin-button" id="admin-notice-insert-image">
+                  <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m21 15-5-5L6 20"/></svg>
+                  <span>Chèn ảnh</span>
+                </button>
+                <input type="file" id="admin-notice-image-file" accept="image/jpeg,image/png,image/gif,image/webp,image/avif" hidden>
+              </div>
+              <div class="admin-notice-writing">
+                <div id="admin-notice-content" class="admin-notice-article" contenteditable="true" role="textbox" aria-multiline="true" aria-required="true" aria-labelledby="admin-notice-content-label"></div>
+                <span class="admin-notice-placeholder" aria-hidden="true">Nhập nội dung thông báo</span>
+              </div>
+            </div>
+          </div>
+          <div class="admin-field" role="group" aria-labelledby="admin-notice-attachment-label">
+            <span class="admin-notice-label" id="admin-notice-attachment-label">Tệp đính kèm (tùy chọn)</span>
+            <div class="admin-notice-attachment-picker">
+              <button type="button" class="admin-button" id="admin-notice-choose-file" aria-describedby="admin-notice-file-hint admin-notice-file-name">
+                <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 16V3m-6 6 6-6 6 6M5 16v5h14v-5"/></svg>
+                <span>Chọn tệp</span>
+              </button>
+              <input type="file" id="admin-notice-attachment" name="attachment" hidden>
+              <p id="admin-notice-file-name" role="status" translate="no"></p>
+            </div>
+            <p class="admin-demo" id="admin-notice-file-hint">Dung lượng tối đa 10 MB.</p>
+            <div id="admin-notice-existing-file" class="admin-notice-chips" hidden></div>
+          </div>
+        </div>
+        <div id="admin-notice-system-fields" class="admin-notice-field-group" hidden>
+          <div class="admin-field">
+            <label for="admin-notice-body">Nội dung<span class="admin-notice-required" aria-hidden="true"> *</span></label>
+            <textarea id="admin-notice-body" name="body" rows="3" maxlength="5000" placeholder="Nhập nội dung thông báo" required></textarea>
+          </div>
+          <fieldset class="admin-notice-choice">
+            <legend>Đối tượng nhận<span class="admin-notice-required" aria-hidden="true"> *</span></legend>
+            <div>
+              <label><input type="radio" class="visually-hidden" name="audience" value="student" checked required><span>Sinh viên</span></label>
+              <label><input type="radio" class="visually-hidden" name="audience" value="lecturer" required><span>Giảng viên</span></label>
+              <label><input type="radio" class="visually-hidden" name="audience" value="both" required><span>Sinh viên và giảng viên</span></label>
+            </div>
+          </fieldset>
+          <fieldset class="admin-notice-choice">
+            <legend>Phạm vi gửi<span class="admin-notice-required" aria-hidden="true"> *</span></legend>
+            <div>
+              <label><input type="radio" class="visually-hidden" name="scope" value="all" required><span>Gửi cho tất cả</span></label>
+              <label><input type="radio" class="visually-hidden" name="scope" value="specific" checked required><span>Chọn người nhận cụ thể</span></label>
+            </div>
+          </fieldset>
+          <div id="admin-notice-picker" class="admin-field admin-notice-picker">
+            <label for="admin-notice-recipient-search">Người nhận<span class="admin-notice-required" aria-hidden="true"> *</span></label>
+            <div class="admin-notice-picker-control admin-round-search">
+              <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24">
+                <circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 4.5 4.5"/>
+              </svg>
+              <input id="admin-notice-recipient-search" name="recipientSearch" type="search" autocomplete="off" aria-controls="admin-notice-picker-results">
+              <button type="button" class="admin-notice-picker-toggle" aria-label="Danh sách người nhận" aria-expanded="false" aria-controls="admin-notice-picker-results">
+                <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"/></svg>
+              </button>
+            </div>
+            <div id="admin-notice-picker-results" class="admin-notice-picker-results" hidden></div>
+            <ul id="admin-notice-selected" class="admin-notice-chips" aria-label="Người nhận đã chọn"></ul>
+          </div>
+          <p class="admin-demo" id="admin-notice-audience-summary" hidden></p>
+          <p class="admin-demo">Sinh viên và giảng viên xem thử thông báo qua chuông trên cùng trình duyệt.</p>
+        </div>
+        <p class="admin-notice-error" id="admin-notice-editor-error" role="alert" hidden></p>
+      </div>
+      <div class="admin-notice-dialog-footer">
+        <button type="button" class="admin-button" id="admin-notice-preview">Xem trước</button>
+        <button type="button" class="admin-button admin-button--primary" id="admin-notice-submit">Đăng thông báo</button>
+      </div>
+    </form>
+  </dialog>
+  <dialog class="admin-dialog admin-notice-dialog" id="admin-notice-detail" aria-labelledby="admin-notice-detail-title">
+    <header class="admin-dialog__header">
+      <h2 id="admin-notice-detail-title">Xem trước thông báo</h2>
+      <button type="button" class="admin-dialog-close" aria-label="Đóng" autofocus>
+        <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </header>
+    <div class="admin-notice-dialog-body" id="admin-notice-detail-body"></div>
+    <p class="admin-notice-error admin-notice-detail-error" id="admin-notice-detail-error" role="alert" hidden></p>
+    <div class="admin-notice-dialog-footer" id="admin-notice-confirm-footer" hidden>
+      <button type="button" class="admin-button" id="admin-notice-edit-back" hidden>Quay lại chỉnh sửa</button>
+      <button type="button" class="admin-button admin-button--primary" id="admin-notice-confirm"></button>
+    </div>
+  </dialog>
+</body>
+</html>
