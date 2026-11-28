@@ -27,7 +27,8 @@
       const below = viewport.clientHeight - rect.bottom - gap - edge;
       const naturalHeight = panel.offsetHeight + scrollArea.scrollHeight - scrollArea.clientHeight;
       const flip = preferAbove || (naturalHeight > below && above > below);
-      panel.style.maxHeight = `${Math.max(0, flip ? above : below)}px`;
+      const availableHeight = `${Math.max(0, flip ? above : below)}px`;
+      panel.style.maxHeight = `min(${availableHeight}, var(--proposal-popup-max-height, ${availableHeight}))`;
       panel.style.left = `${Math.max(edge, Math.min(rect.left, viewport.clientWidth - edge - panel.offsetWidth))}px`;
       panel.style.top = `${flip ? rect.top - gap - panel.offsetHeight : rect.bottom + gap}px`;
     }
