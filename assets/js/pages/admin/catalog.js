@@ -160,8 +160,10 @@
 
   function topCard(item, fields) {
     return `<section class="admin-panel admin-catalog-detail-top${isRequest ? " admin-catalog-detail-top--request" : ""}">
-      <h1 translate="no">${escapeHtml(item.name)}</h1>
-      ${badge(labels[item.status], item.status)}
+      <div class="admin-title-row">
+        <h1 translate="no">${escapeHtml(item.name)}</h1>
+        ${badge(labels[item.status], item.status)}
+      </div>
       <dl class="admin-catalog-detail-fields">${fields}</dl>
     </section>`;
   }
@@ -237,7 +239,7 @@
     view.innerHTML = `<a href="${backUrl}" class="admin-button admin-catalog-back">${arrow}<span>${backLabel}</span></a>
       ${item ? (isRequest ? showRequest(item) : showTopic(item)) :
         `<h1>${detailTitle}</h1><p class="admin-panel admin-empty">Không tìm thấy dữ liệu này.</p>`}`;
-    view.querySelector(".admin-catalog-detail-top > .admin-status")?.after(document.querySelector("#admin-demo"));
+    view.querySelector(".admin-catalog-detail-top > .admin-title-row")?.after(document.querySelector("#admin-demo"));
   }
 
   if (params.has("id")) showDetail(params.get("id"));

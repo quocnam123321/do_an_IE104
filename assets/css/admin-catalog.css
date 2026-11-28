@@ -133,12 +133,13 @@
 }
 
 .admin-catalog-detail-top h1 {
+  min-inline-size: 0;
   font-size: var(--font-size-page-title);
   line-height: 1.25;
 }
 
-.admin-catalog-detail-top > .admin-status {
-  margin-block-start: var(--space-2);
+.admin-catalog-detail-top .admin-title-row > .admin-status {
+  flex: none;
 }
 
 .admin-catalog-detail-top .admin-demo {
@@ -246,6 +247,10 @@
 }
 
 @media (min-width: 36rem) {
+  .admin-catalog-detail-top .admin-title-row {
+    flex-wrap: nowrap;
+  }
+
   .admin-catalog-detail-fields {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
