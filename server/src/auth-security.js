@@ -93,6 +93,7 @@ export async function activeAccount(request, role) {
     JOIN accounts ON accounts.id = sessions.account_id
     LEFT JOIN google_identities ON google_identities.account_id = accounts.id
     WHERE sessions.token_hash = ANY($1::text[]) AND sessions.expires_at > now() AND accounts.status = 'active'
+      AND NOT accounts.is_locked
       AND (NOT accounts.is_demo OR $2) AND ($3::text IS NULL OR accounts.role = $3)
     ORDER BY array_position($1::text[], sessions.token_hash)
     LIMIT 1
@@ -118,9 +119,10 @@ export async function startSession(request, response, account, expectedPasswordH
     INSERT INTO sessions (token_hash, account_id, expires_at)
     SELECT $1, id, now() + interval '12 hours'
     FROM accounts
-    WHERE id = $2 AND status = 'active' AND ($3::text IS NULL OR password_hash = $3)
+    WHERE id = $2 AND status = 'active' AND NOT is_locked
+      AND ($3::text IS NULL OR (password_hash = $3 AND username = $4))
     FOR SHARE
-  `, [fingerprint(token), account.id, expectedPasswordHash]);
+  `, [fingerprint(token), account.id, expectedPasswordHash, account.username]);
   if (!result.rowCount) throw new AuthError(409, "Thông tin tài khoản đã thay đổi. Vui lòng đăng nhập lại.");
   if (previous.length) {
     await pool.query(`

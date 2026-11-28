@@ -1,106 +1,128 @@
-import { authRequest, notifyAccountChange } from "./auth-api.js";
+import { authRequest } from "./auth-api.js";
 
-const list = document.getElementById("admin-accounts");
-const error = document.getElementById("admin-error");
-const status = document.getElementById("admin-status");
-const codePanel = document.getElementById("reset-code-panel");
-const codeField = document.getElementById("reset-code");
-const filter = document.getElementById("admin-filter");
-const refresh = document.getElementById("admin-refresh");
-const labels = { student: "Sinh viên", lecturer: "Giảng viên" };
-const states = { active: "Đang hoạt động", pending_approval: "Chờ duyệt", rejected: "Đã từ chối" };
-const dateFormatter = new Intl.DateTimeFormat("vi-VN", {
-  dateStyle: "short", timeStyle: "short", timeZone: "Asia/Ho_Chi_Minh",
-});
-let accounts = [];
-let busy = false;
+const dialog = document.querySelector("#admin-account-reset-dialog");
+const form = document.querySelector("#admin-account-reset-form");
+const submit = form.querySelector('button[type="submit"]');
+const actions = form.querySelector(".admin-account-dialog__footer");
+const close = dialog.querySelector(".admin-dialog-close");
+const name = document.querySelector("#admin-account-reset-name");
+const title = document.querySelector("#admin-account-reset-title");
+const help = document.querySelector("#admin-account-reset-help");
+const demoHelp = document.querySelector("#admin-account-reset-demo-help");
+const result = document.querySelector("#admin-account-reset-result");
+const code = document.querySelector("#admin-account-reset-code");
+const codeLabel = document.querySelector("#admin-account-reset-code-label");
+const validity = document.querySelector("#admin-account-reset-validity");
+const expires = document.querySelector("#admin-account-reset-expiry");
+const feedback = document.querySelector("#admin-account-reset-error");
+const statuses = { active: "enabled", pending_approval: "pending", rejected: "rejected" };
+let accountId;
 
-function button(text, handler) {
-  const control = document.createElement("button");
-  control.type = "button";
-  control.textContent = text;
-  control.addEventListener("click", handler);
-  return control;
+function accountView(account) {
+  return {
+    id: account.id,
+    name: account.display_name ?? "",
+    code: account.account_code ?? "",
+    username: account.username ?? "",
+    email: account.email ?? "",
+    type: account.role,
+    status: account.is_locked ? "locked" : statuses[account.status],
+    revision: account.admin_revision,
+    profileRevision: account.profile_revision,
+    googleLinked: account.google_linked,
+    methods: [account.is_demo && "demo", account.can_reset && "password", account.google_linked && "google"].filter(Boolean),
+    canManage: account.status === "active" && !account.is_demo,
+    canReset: account.status === "active" && !account.is_locked && account.can_reset,
+  };
 }
 
-function label(account) {
-  return account.display_name || account.username || account.email;
+export async function loadAccounts() {
+  const { accounts } = await authRequest("admin/accounts");
+  return accounts.map(accountView);
 }
 
-async function manage(control, work) {
-  if (busy) return;
-  busy = true;
-  control.disabled = true;
-  error.textContent = "";
-  try {
-    await work();
-  } catch (failure) {
-    error.textContent = failure.message;
-    if (failure.status === 401) location.replace("../chung/dang-nhap.html");
-  } finally {
-    control.disabled = false;
-    busy = false;
-  }
+export async function saveAccount(fields, original, password) {
+  const { account } = original ? await authRequest(`admin/accounts/${encodeURIComponent(original.id)}`, {
+    method: "PATCH",
+    body: { ...fields, revision: original.revision, profileRevision: original.profileRevision },
+  }) : await authRequest("admin/accounts", { method: "POST", body: { ...fields, password } });
+  return accountView(account);
 }
 
-async function issueCode(account, control) {
-  await manage(control, async () => {
-    const result = await authRequest("admin/accounts/" + account.id + "/reset-codes", { method: "POST" });
-    codeField.value = result.code;
-    document.getElementById("reset-code-help").textContent =
-      "Mã cho " + label(account) + " có hiệu lực đến " + dateFormatter.format(new Date(result.expiresAt))
-      + ". Chỉ cung cấp mã sau khi xác minh danh tính người yêu cầu.";
-    codePanel.hidden = false;
-    codeField.focus();
-    codeField.select();
+export async function setAccountLock(original, locked) {
+  const { account } = await authRequest(`admin/accounts/${encodeURIComponent(original.id)}/lock`, {
+    method: "PATCH", body: { locked, revision: original.revision },
   });
+  return accountView(account);
 }
 
-function render() {
-  list.replaceChildren();
-  const visible = filter.value === "all" ? accounts : accounts.filter((account) => account.role === filter.value);
-  if (!visible.length) status.textContent = "Không có tài khoản trong danh sách này.";
-  for (const account of visible) {
-    const row = document.createElement("li");
-    row.className = "account-admin__row";
-    const details = document.createElement("div");
-    const name = document.createElement("strong");
-    name.textContent = label(account);
-    const meta = document.createElement("p");
-    meta.textContent = labels[account.role] + " · " + states[account.status]
-      + " · " + dateFormatter.format(new Date(account.created_at));
-    details.append(name, meta);
-    row.append(details);
-    const actions = document.createElement("div");
-    actions.className = "account-admin__actions";
-    if (account.status === "active" && account.can_reset) {
-      actions.append(button("Cấp mã đặt lại", (event) => issueCode(account, event.currentTarget)));
-    }
-    row.append(actions);
-    list.append(row);
+function clearResult() {
+  form.reset();
+  code.value = "";
+  expires.textContent = "";
+  expires.removeAttribute("datetime");
+  result.hidden = true;
+  feedback.textContent = "";
+  feedback.hidden = true;
+  actions.hidden = false;
+  submit.textContent = "Cấp mã";
+}
+
+function showCode(value) {
+  code.value = value;
+  result.hidden = false;
+  actions.hidden = true;
+  code.focus();
+  code.select();
+}
+
+export function openResetDialog(account, simulation) {
+  clearResult();
+  accountId = simulation ? undefined : account.id;
+  title.textContent = simulation ? "Mã minh họa" : "Cấp mã đặt lại mật khẩu";
+  codeLabel.textContent = simulation ? "Mã minh họa đặt lại mật khẩu" : "Mã đặt lại mật khẩu";
+  help.hidden = validity.hidden = simulation;
+  demoHelp.hidden = !simulation;
+  dialog.setAttribute("aria-describedby", simulation ? demoHelp.id : help.id);
+  name.textContent = account.name || account.username || account.email;
+  dialog.showModal();
+  if (simulation) showCode("IE104-DEMO");
+}
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  if (!accountId || submit.disabled || actions.hidden) return;
+  submit.disabled = true;
+  submit.textContent = "Đang cấp mã…";
+  feedback.hidden = true;
+  try {
+    const issued = await authRequest(`admin/accounts/${encodeURIComponent(accountId)}/reset-codes`, { method: "POST" });
+    expires.dateTime = issued.expiresAt;
+    expires.textContent = new Intl.DateTimeFormat(document.documentElement.lang, {
+      dateStyle: "short", timeStyle: "short", timeZone: "Asia/Ho_Chi_Minh",
+    }).format(new Date(issued.expiresAt));
+    showCode(issued.code);
+  } catch (error) {
+    if (error.status === 401) location.replace("../chung/dang-nhap.html");
+    feedback.textContent = error.status === 409 ? "Tài khoản này chưa thể đặt lại mật khẩu." :
+      "Không thể cấp mã đặt lại mật khẩu. Vui lòng thử lại.";
+    feedback.hidden = false;
+    submit.textContent = "Cấp mã";
+  } finally {
+    submit.disabled = false;
+    if (!feedback.hidden) submit.focus();
   }
-}
-
-async function load() {
-  status.textContent = "Đang tải tài khoản…";
-  ({ accounts } = await authRequest("admin/accounts"));
-  status.textContent = "";
-  render();
-}
-
-filter.addEventListener("change", () => {
-  status.textContent = "";
-  render();
 });
-refresh.addEventListener("click", () => manage(refresh, load));
-document.getElementById("admin-logout").addEventListener("click", (event) => manage(event.currentTarget, async () => {
-  await authRequest("logout", { method: "POST" });
-  notifyAccountChange();
-  location.replace("../chung/dang-nhap.html");
-}));
-document.getElementById("reset-code-close").addEventListener("click", () => {
-  codePanel.hidden = true;
-  codeField.value = "";
-  filter.focus();
+
+close.addEventListener("click", () => {
+  if (!submit.disabled) dialog.close();
 });
-void manage(refresh, load);
+dialog.addEventListener("cancel", (event) => {
+  if (submit.disabled) event.preventDefault();
+});
+dialog.addEventListener("close", () => {
+  if (!dialog.open) {
+    accountId = undefined;
+    clearResult();
+  }
+});

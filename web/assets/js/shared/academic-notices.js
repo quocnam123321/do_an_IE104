@@ -3,6 +3,7 @@
   const storeName = "notifications";
   const readStoreName = "systemNotificationReads";
   const eventName = "ie104.academic-notices";
+  const connected = Boolean(document.querySelector('meta[name="ie104-website-db"]'));
   const categories = { plan: "ke-hoach-hoc-vu", submissions: "bao-cao-nop-bai", defense: "lich-bao-ve" };
   const vietnamTime = new Intl.DateTimeFormat("en-GB", {
     timeZone: "Asia/Ho_Chi_Minh",
@@ -38,6 +39,11 @@
   }
 
   async function readPublished(id) {
+    if (connected) {
+      const { websiteData } = await import("../services/website-data-api.js");
+      const { records } = await websiteData("notices/published" + (id ? "/" + encodeURIComponent(id) : ""));
+      return publicRecords(records, id);
+    }
     const database = await openDatabase();
     try {
       const records = await new Promise((resolve, reject) => {
@@ -46,7 +52,14 @@
         request.onsuccess = () => resolve(id ? [request.result] : request.result);
         request.onerror = () => reject(request.error);
       });
-      return records.flatMap((record) => {
+      return publicRecords(records, id);
+    } finally {
+      database.close();
+    }
+  }
+
+  function publicRecords(records, id) {
+    return records.flatMap((record) => {
         if (record?.kind !== "academic" || record.status !== "published" ||
             !isPublishedId(record.id) || !Object.hasOwn(categories, record.type)) return [];
 
@@ -61,10 +74,7 @@
           summary: excerpt.length > 220 ? excerpt.slice(0, 220).trimEnd() + "…" : excerpt,
           ...(id ? { body, html: record.html, images: record.images, attachment: record.attachment } : {}),
         }];
-      });
-    } finally {
-      database.close();
-    }
+    });
   }
 
   function isPublishedId(id) {
@@ -86,6 +96,7 @@
     window.addEventListener("pageshow", (event) => {
       if (event.persisted) update();
     });
+    if (connected) document.addEventListener("visibilitychange", () => { if (!document.hidden) update(); });
   }
 
   function notifyPublicationChange() {

@@ -35,11 +35,11 @@
       session += 1;
       busy = false;
       caret = undefined;
-      for (const { url } of files.values()) URL.revokeObjectURL(url);
+      for (const { url } of files.values()) if (url.startsWith("blob:")) URL.revokeObjectURL(url);
       files.clear();
       for (const button of format) button.setAttribute("aria-pressed", "false");
       renderArticle(element, item, (id, file) => {
-        if (!files.has(id)) files.set(id, { file, url: URL.createObjectURL(file) });
+        if (!files.has(id)) files.set(id, { file, url: file.url || URL.createObjectURL(file) });
         return articleImage(id, file, files.get(id).url);
       });
     }
@@ -97,7 +97,9 @@
       }
       const opened = session;
       const url = URL.createObjectURL(file);
-      const id = "image-" + (files.size + 1);
+      let number = files.size + 1;
+      while (files.has("image-" + number)) number += 1;
+      const id = "image-" + number;
       const image = articleImage(id, file, url);
       busy = true;
       try {

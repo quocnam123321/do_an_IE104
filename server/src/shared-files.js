@@ -73,6 +73,9 @@ export async function readImage(file, max, accepted = coverTypes) {
   const valid = {
     "image/png": content.length >= 24 && content.subarray(0, 8).equals(pngSignature) && content.toString("ascii", 12, 16) === "IHDR",
     "image/jpeg": content.length >= 4 && content[0] === 255 && content[1] === 216 && content[2] === 255,
+    "image/gif": content.length >= 13 && ["GIF87a", "GIF89a"].includes(content.toString("ascii", 0, 6)),
+    "image/avif": content.length >= 16 && content.toString("ascii", 4, 8) === "ftyp" &&
+      ["avif", "avis"].includes(content.toString("ascii", 8, 12)),
     "image/webp": content.length >= 20 && content.toString("ascii", 0, 4) === "RIFF" && content.toString("ascii", 8, 12) === "WEBP" &&
       ["VP8 ", "VP8L", "VP8X"].includes(content.toString("ascii", 12, 16)),
   };
@@ -103,7 +106,7 @@ export async function readFileContent(id) {
 
 export function sendFile(response, file, { inline = false } = {}) {
   response.set("X-Content-Type-Options", "nosniff");
-  if (inline && ["image/png", "image/jpeg", "image/webp"].includes(file.content_type)) response.type(file.content_type);
+  if (inline && ["image/png", "image/jpeg", "image/gif", "image/webp", "image/avif"].includes(file.content_type)) response.type(file.content_type);
   else response.attachment(file.file_name).type("application/octet-stream");
   response.send(file.content);
 }

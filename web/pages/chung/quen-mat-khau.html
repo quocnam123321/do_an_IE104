@@ -30,8 +30,9 @@
       <p class="form-error" id="database-page-error" role="alert"></p>
       <section class="database-auth-panel database-auth-page" id="database-recovery" aria-labelledby="database-recovery-title" hidden>
         <h1 id="database-recovery-title">Đặt lại mật khẩu</h1>
-        <p>Liên hệ quản trị viên để được xác minh và nhận mã đặt lại dùng một lần.</p>
-        <form class="database-auth-form" id="database-reset-form" method="post" aria-describedby="database-form-error">
+        <p id="database-reset-help">Liên hệ quản trị viên để được xác minh và nhận mã đặt lại dùng một lần.</p>
+        <p id="database-reset-demo-help" hidden>Dùng mật khẩu mẫu để thử. Mật khẩu tài khoản của bạn vẫn giữ nguyên.</p>
+        <form class="database-auth-form" id="database-reset-form" method="post" aria-describedby="database-reset-help database-form-error">
           <div class="form-field">
             <label for="reset-username">Tên đăng nhập</label>
             <input id="reset-username" name="username" autocomplete="username" required />
@@ -58,7 +59,7 @@
           <div class="form-field">
               <label for="reset-confirm">Xác nhận mật khẩu mới</label>
               <div class="password-field">
-                <input type="password" id="reset-confirm" name="confirmPassword" autocomplete="new-password" minlength="6" maxlength="128" required />
+                <input type="password" id="reset-confirm" name="confirmPassword" autocomplete="new-password" minlength="6" maxlength="128" aria-describedby="database-form-error" required />
                 <button class="password-field__toggle" type="button" aria-label="Hiện mật khẩu" aria-controls="reset-confirm" aria-pressed="false" hidden>
                   <svg data-password-icon="show" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
                     <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" />
@@ -73,6 +74,7 @@
           <button class="button--primary" type="submit" disabled>Đặt lại mật khẩu</button>
         </form>
         <p id="database-reset-status" role="status" hidden>Đã đổi mật khẩu. Hãy đăng nhập bằng mật khẩu mới.</p>
+        <p id="database-reset-demo-status" role="status" hidden>Đã hoàn tất mô phỏng. Bạn có thể quay lại trang đăng nhập.</p>
         <a id="database-reset-back" href="dang-nhap.html">Quay lại đăng nhập</a>
       </section>
       <section class="recovery-panel" id="legacy-recovery" aria-labelledby="recovery-title">

@@ -1,13 +1,15 @@
 (() => {
-  const { accounts, sampleMembers, requests, topics } = globalThis.IE104AdminSampleData;
+  const { accounts, sampleMembers } = globalThis.IE104AdminSampleData;
   const {
-    academic, arrow, badge, dataTable, displayDate, displayDateTime, escapeHtml,
+    academic, arrow, badge, dataTable, displayDate, displayDateTime, escapeHtml, liveCatalog,
     forTerm, labels, normalizeSearch, pageUrl, params, populateTerms, rememberTerm, term, view,
   } = globalThis.IE104Admin;
+  const { requests, topics } = liveCatalog || globalThis.IE104AdminSampleData;
 
   const catalogFile = "de-tai-va-ho-so.html";
-  const topicStatuses = ["active", "completed"];
+  const topicStatuses = liveCatalog ? ["active", "completed", "open", "upcoming", "closed"] : ["active", "completed"];
   const requestStatuses = ["pending", "approved", "rejected", "withdrawn"];
+  if (liveCatalog) requestStatuses.push("registered");
   const topicTypes = ["course", "graduation", "thesis"];
   const requestTypes = { registration: "Đăng ký đề tài", proposal: "Đề xuất đề tài" };
   const catalogTopics = topics.filter(({ status }) => topicStatuses.includes(status));
@@ -27,7 +29,7 @@
   }
 
   function membersOf(topic) {
-    return (topic.members ?? []).map((id) => students.get(id)).filter(Boolean);
+    return topic.memberDetails ?? (topic.members ?? []).map((id) => students.get(id)).filter(Boolean);
   }
 
   function performerCell(topic) {
@@ -35,7 +37,7 @@
     const [member] = membersOf(topic);
     if (!member) return '<span class="admin-code">Chưa ghi nhận</span>';
     return `<span class="admin-catalog-person" translate="no">${escapeHtml(member.name)}
-      <span class="admin-code">${escapeHtml(member.code ?? member.id)}</span></span>`;
+      <span class="admin-code">${escapeHtml(member.code ?? member.id ?? "Chưa có thông tin")}</span></span>`;
   }
 
   function dateMarkup(value) {
@@ -97,7 +99,7 @@
         status: isRequest ? extra.value || null : topicStatus,
       };
       const matches = forTerm(items).filter((item) => {
-        const searchable = [item.id, item.name];
+        const searchable = [item.id, item.name, item.code ?? ""];
         if (isRequest) searchable.push(item.sender, item.senderCode ?? "");
         return (!type.value || item.type === type.value) &&
           (!extra.value || (isRequest ? item.status : item.lecturer) === extra.value) &&
@@ -174,10 +176,10 @@
     const participants = panel("admin-catalog-performers", item.group ? "Nhóm thực hiện" : "Người thực hiện",
       `${groupName ? `<p class="admin-catalog-group-name" translate="no">${escapeHtml(groupName)}</p>` : ""}
       ${members.length ? `<ul>${members.map((member, index) => person(member.name,
-        item.group ? (index === 0 ? "Nhóm trưởng" : "Thành viên") : "Sinh viên thực hiện", "", member.code ?? member.id)).join("")}</ul>` :
+        item.group ? ((member.role ? member.role === "nhom-truong" : index === 0) ? "Nhóm trưởng" : "Thành viên") : "Sinh viên thực hiện", "", member.code ?? member.id)).join("")}</ul>` :
         "<p>Chưa ghi nhận</p>"}`);
     const supervisor = panel("admin-catalog-supervisor", "Giảng viên hướng dẫn",
-      `<ul>${person(item.lecturer, "Khoa Khoa học và Kỹ thuật Thông tin",
+      `<ul>${person(item.lecturer, liveCatalog ? "" : "Khoa Khoa học và Kỹ thuật Thông tin",
         '<span class="admin-status admin-status--info">Hướng dẫn chính</span>')}</ul>`);
     const timeline = ["Ngày bắt đầu", "Hạn nộp báo cáo tiến độ", "Hạn nộp báo cáo cuối cùng"];
     const milestones = panel("admin-catalog-dates", "Mốc thời gian chính", `<dl class="admin-catalog-milestones">
@@ -190,9 +192,9 @@
 
     return topCard(item,
       field("Mã đề tài", identity(item.id)) +
-      field("Loại đề tài", labels[item.type]) +
+      field("Loại đề tài", labels[item.type] ?? "Chưa có thông tin") +
       (item.course ? field("Môn học", identity(item.course)) : "") +
-      field("Học kỳ", academic.termLabel(item.term))
+      field("Học kỳ", item.term ? academic.termLabel(item.term) : "Chưa có thông tin")
     ) + `<div class="admin-catalog-detail-grid">
       <div>${participants}${supervisor}</div>
       <div>${milestones}${completion}</div>
@@ -206,17 +208,20 @@
       panel("admin-catalog-rejection", "Lý do từ chối", `<p>${item.reason ? identity(item.reason) : "Chưa ghi nhận"}</p>`) : "";
     const content = `<dl class="admin-catalog-completion">
       ${topic ? field("Đề tài đăng ký", identity(topic.name, topic.id)) : ""}
-      ${field(registration ? "Lời nhắn của người gửi" : "Nội dung đề xuất", identity(item.message))}
+      ${field(registration ? "Lời nhắn của người gửi" : "Nội dung đề xuất", item.message ? identity(item.message) : "Chưa có thông tin")}
     </dl>`;
-    const attachment = item.hasSampleOutline ? `<div class="admin-catalog-attachment">
+    const attachment = item.attachment ? `<div class="admin-catalog-attachment">
+      <span translate="no">${escapeHtml(item.attachment.name)}</span>
+      <a class="admin-button" href="/api/auth/admin/catalog/proposals/${encodeURIComponent(item.id.slice(3))}/file" download>Tải xuống</a>
+    </div>` : item.hasSampleOutline ? `<div class="admin-catalog-attachment">
       <span>Đề cương đề xuất mẫu (PDF)</span>
       <a class="admin-button" href="../../assets/documents/de-cuong-de-xuat-mau.pdf" download>Tải xuống</a>
     </div>` : "<p>Chưa có tệp đính kèm.</p>";
 
     return topCard(item,
-      field("Mã hồ sơ", identity(item.id)) +
+      field("Mã hồ sơ", identity(item.code ?? item.id)) +
       field("Loại hồ sơ", requestTypes[item.type]) +
-      field("Học kỳ", academic.termLabel(item.term)) +
+      field("Học kỳ", item.term ? academic.termLabel(item.term) : "Chưa có thông tin") +
       field("Người gửi", identity(item.sender, item.senderCode)) +
       field("Giảng viên tiếp nhận", identity(item.lecturer)) +
       field("Ngày gửi", `<span class="admin-round-datetime">${calendar}${dateMarkup(item.date)}</span>`)

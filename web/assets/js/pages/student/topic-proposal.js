@@ -180,7 +180,7 @@
 
   function readInput() {
     const values = Object.entries(fields)
-      .filter(([key]) => !['supervisorId', 'attachment'].includes(key) && (key !== 'roundId' || !database))
+      .filter(([key, field]) => !['supervisorId', 'attachment'].includes(key) && (key !== 'roundId' || !field.disabled))
       .map(([key, field]) => [key, field.value]);
     return { ...Object.fromEntries(values), supervisorId: supervisorId.value, attachment: fields.attachment.files[0] || retainedAttachment, ...(outline ? { outline: outline.read() } : {}) };
   }
@@ -269,12 +269,12 @@
       return;
     }
   }
-  if (database) {
+  if (database && !globalThis.IE104AdminAcademic?.connected) {
     fields.roundId.disabled = true;
     fields.roundId.closest('.registration-round-grid').hidden = true;
   } else {
     globalThis.IE104.ui.registrationRound?.bind(form, {
-      previous: original?.roundId, legacy: editing && !original?.roundId,
+      previous: original?.roundId, legacy: (database || editing) && !original?.roundId,
       onChange(round) {
         currentRound = round;
         syncRoundButtons();

@@ -8,6 +8,10 @@
   const roundTypes = ["course", "graduation", "thesis"];
   const updateEvent = "ie104:registration-rounds-updated";
   const changedEvent = "ie104:registration-rounds-changed";
+  const remoteEvent = "ie104.academic.changed";
+  const bootstrap = globalThis.document?.getElementById?.("ie104-academic-data");
+  let remote = bootstrap ? JSON.parse(bootstrap.textContent) : null;
+  let readVersion = 0;
   const topicTypes = {
     "do-an-mon-hoc": "course", "do-an-tot-nghiep": "graduation", "khoa-luan": "thesis",
   };
@@ -65,7 +69,7 @@
   }
 
   function statusOf(round, now) {
-    if (round.term < currentTerm || now >= closeInstant(round)) return "closed";
+    if ((!remote && round.term < currentTerm) || now >= closeInstant(round)) return "closed";
     return now < instant(round.start) ? "upcoming" : "open";
   }
 
@@ -80,6 +84,7 @@
   }
 
   function snapshot(now = Date.now()) {
+    if (remote) return { terms: remote.terms, rounds: remote.rounds.map(round => ({ ...round, status: statusOf(round, now) })) };
     try {
       const state = read();
       return {
@@ -154,12 +159,44 @@
       }
     }
     window.addEventListener("storage", (event) => {
-      if (event.key === storageKey || event.key === null) schedule();
+      if (remote && event.key === remoteEvent) void refresh();
+      else if (!remote && (event.key === storageKey || event.key === null)) schedule();
     });
-    window.addEventListener("pageshow", () => schedule());
+    window.addEventListener("pageshow", (event) => { if (remote && event.persisted) void refresh(); else schedule(); });
     window.addEventListener(changedEvent, () => schedule());
-    document.addEventListener("visibilitychange", () => { if (!document.hidden) schedule(); });
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) { if (remote) void refresh(); else schedule(); }
+    });
     schedule(false);
+  }
+
+  async function refresh() {
+    const version = ++readVersion;
+    try {
+      const response = await fetch("/api/academic", { cache: "no-store" });
+      if (!response.ok) return;
+      const current = await response.json();
+      if (version !== readVersion) return;
+      remote = current;
+      globalThis.dispatchEvent(new Event(changedEvent));
+    } catch {
+      // The server checks the schedule again before accepting a change.
+    }
+  }
+
+  async function saveRemote(route, method, body) {
+    try {
+      const { authRequest } = await import("../../auth-api.js");
+      const result = await authRequest("admin/academic/" + route, { method, body });
+      readVersion += 1;
+      if (result.round) remote.rounds = [result.round, ...remote.rounds.filter(round => round.id !== result.id)];
+      else remote.terms = [...new Set([...remote.terms, result.id])].sort().reverse();
+      globalThis.dispatchEvent(new Event(changedEvent));
+      try { localStorage.setItem(remoteEvent, String(Date.now())); } catch { /* Readers can reload the schedule. */ }
+      return result;
+    } catch (failure) {
+      return { error: failure.message, field: failure.field };
+    }
   }
 
   async function save(update) {
@@ -180,6 +217,7 @@
   }
 
   function addTerm(year, number) {
+    if (remote) return saveRemote("terms", "POST", { year, number });
     const id = `${year}-${number}`;
     return save((data) => {
       if (!/^20\d{2}$/.test(year)) return { error: "Hãy nhập năm bắt đầu từ 2000 đến 2099." };
@@ -194,6 +232,8 @@
   }
 
   function saveRound(values, original) {
+    if (remote) return original ? saveRemote("rounds/" + encodeURIComponent(original.id), "PATCH", { ...values, revision: original.revision }) :
+      saveRemote("rounds", "POST", values);
     return save((data) => {
       if (!values.name.trim() || values.name.length > 120) {
         return { error: "Hãy nhập tên đợt đăng ký." };
@@ -222,5 +262,5 @@
   }
 
   globalThis.IE104AdminAcademic = { currentTerm, roundTypes, availableStartYears, minimumDateTime, snapshot, termLabel, addTerm, saveRound,
-    academicYears, matches, selection, forTopic, withRegistration, displayTime, watch, updateEvent, statusLabels };
+    academicYears, matches, selection, forTopic, withRegistration, displayTime, watch, updateEvent, statusLabels, connected: Boolean(bootstrap) };
 })();

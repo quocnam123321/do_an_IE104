@@ -1,9 +1,9 @@
 (() => {
-  const { requests, topics } = globalThis.IE104AdminSampleData;
   const {
     academic, arrow, badge, displayDate, escapeHtml, forTerm, initializeTerm, labels,
-    pageUrl, populateTerms, roundUrl, term, view,
+    pageUrl, populateTerms, roundUrl, term, view, liveCatalog,
   } = globalThis.IE104Admin;
+  const { requests, topics } = liveCatalog || globalThis.IE104AdminSampleData;
 
   const roundsUrl = () => pageUrl("hoc-ky-va-dot-dang-ky.html", { status: "open", term: term.value });
   const requestsUrl = (status) => pageUrl("de-tai-va-ho-so.html", { tab: "ho-so", status, term: term.value });
@@ -20,7 +20,8 @@
     const center = { x: 130, y: 108 };
     const radius = 78;
     let offset = 0;
-    const slices = ["active", "open", "completed"].map((status) => {
+    const statuses = liveCatalog ? ["active", "open", "completed", "upcoming", "closed"] : ["active", "open", "completed"];
+    const slices = statuses.map((status) => {
       const count = items.filter((topic) => topic.status === status).length;
       const share = items.length ? count / items.length : 0;
       const angle = (offset + share / 2) * 2 * Math.PI;
@@ -94,22 +95,27 @@
         </header>
         ${recent ? `<ul class="admin-overview-list">
           <li class="admin-overview-row admin-overview-row--request">
-            <h3 id="recent-title" translate="no">${recent.name}</h3>
-            <p class="admin-row-date" translate="no">${recent.lecturer} · <time datetime="${recent.date}">${displayDate(recent.date)}</time></p>
+            <h3 id="recent-title" translate="no">${escapeHtml(recent.name)}</h3>
+            <p class="admin-row-date" translate="no">${escapeHtml(recent.lecturer)} · <time datetime="${escapeHtml(recent.date)}">${displayDate(recent.date)}</time></p>
             ${badge(labels[recent.status], recent.status)}
-            <button type="button" class="admin-button admin-row-action" data-record="${recent.id}" aria-labelledby="recent-action recent-title">
+            <a class="admin-button admin-row-action" href="${escapeHtml(pageUrl("de-tai-va-ho-so.html", { tab: "ho-so", id: recent.id, term: term.value }))}" aria-labelledby="recent-action recent-title">
               <span id="recent-action">Xem hồ sơ</span>${arrow}
-            </button>
+            </a>
           </li>
         </ul>` : '<p class="admin-empty">Học kỳ này chưa có hồ sơ.</p>'}
       </section>`;
   }
 
-  initializeTerm();
+  initializeTerm(Boolean(liveCatalog));
   term.addEventListener("change", renderOverview);
+  academic.watch();
+  window.addEventListener(academic.updateEvent, () => {
+    populateTerms(term, term.value, Boolean(liveCatalog));
+    renderOverview();
+  });
   window.addEventListener("pageshow", (event) => {
     if (!event.persisted) return;
-    populateTerms(term, term.value);
+    populateTerms(term, term.value, Boolean(liveCatalog));
     renderOverview();
   });
   renderOverview();

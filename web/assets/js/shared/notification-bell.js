@@ -1,4 +1,5 @@
 import { roleSessionPrefix, websitePageRole } from "../website-session.js";
+import { authConfig, databaseAccount, databaseSessionEvent } from "../auth-api.js";
 import "../pages/admin/sample-data.js";
 import "../pages/admin/account-store.js";
 import "./academic-notices.js";
@@ -98,6 +99,7 @@ function installBell() {
   let status = "";
   let messages = [];
   let refreshNumber = 0;
+  let accountRefresh = 0;
 
   function savedAccountId() {
     try {
@@ -183,7 +185,7 @@ function installBell() {
   }
 
   function render() {
-    const notices = usingSamples ? [...messages, ...demoNotices[role]] : [];
+    const notices = usingSamples ? [...messages, ...demoNotices[role]] : messages;
     const unread = notices.filter((notice) => !hasRead(notice)).length;
     const focusedId = list.contains(document.activeElement) ? document.activeElement.dataset.noticeId : "";
     count.textContent = String(unread);
@@ -233,7 +235,35 @@ function installBell() {
     }
   }
 
-  function refreshAccounts() {
+  async function refreshAccounts() {
+    const version = ++accountRefresh;
+    try {
+      if (await authConfig()) {
+        const viewer = await databaseAccount(role);
+        if (version !== accountRefresh) return;
+        usingSamples = false;
+        accounts = [];
+        if (message.open && account?.id !== viewer?.id) message.close();
+        account = viewer && viewer.role === role ? { id: viewer.id, type: role, database: true } : null;
+        accountField.hidden = true;
+        messages = [];
+        status = "";
+        render();
+        await refreshInbox();
+        return;
+      }
+    } catch {
+      if (version !== accountRefresh) return;
+      usingSamples = false;
+      if (message.open) message.close();
+      account = null;
+      refreshNumber += 1;
+      messages = [];
+      status = "Không thể tải thông báo đã gửi. Hãy mở lại để thử lại.";
+      render();
+      return;
+    }
+    if (version !== accountRefresh) return;
     const session = getSaved(sessionKey);
     usingSamples = session === null || session === "demo";
     const snapshot = usingSamples ? directory.snapshot() : null;
@@ -274,7 +304,7 @@ function installBell() {
   inbox.addEventListener("beforetoggle", (event) => {
     if (event.newState === "open") {
       placeInbox();
-      void refreshInbox();
+      void (account ? refreshInbox() : refreshAccounts());
     }
   });
   window.addEventListener("resize", () => {
@@ -287,20 +317,21 @@ function installBell() {
   }, { passive: true });
   accountSelect.addEventListener("change", () => selectAccount(accountSelect.value));
   markAll.addEventListener("click", () => {
-    if (markAll.getAttribute("aria-disabled") === "false") void markRead([...messages, ...demoNotices[role]]);
+    if (markAll.getAttribute("aria-disabled") === "false") void markRead(usingSamples ? [...messages, ...demoNotices[role]] : messages);
   });
   close.addEventListener("click", () => message.close());
   message.addEventListener("close", () => bell.focus());
   document.addEventListener("ie104:languagechange", render);
   window.addEventListener("storage", (event) => {
     if (event.storageArea !== localStorage) return;
-    if (event.key === null || event.key === sessionKey || event.key === directory.storageKey) refreshAccounts();
+    if (event.key === null || event.key === sessionKey || event.key === databaseSessionEvent || event.key === directory.storageKey) refreshAccounts();
     else if (event.key.startsWith(readKey)) render();
   });
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) refreshAccounts();
   });
   system.onChange(refreshInbox);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && account?.database) void refreshInbox(); });
   refreshAccounts();
 }
 

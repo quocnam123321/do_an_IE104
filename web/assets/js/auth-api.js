@@ -60,7 +60,7 @@ export async function authRequest(route, { method = "GET", body = {}, role = pre
   if (response.status === 204) return null;
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw Object.assign(new Error(data.error ?? "Không thể thực hiện yêu cầu. Vui lòng thử lại."), { status: response.status });
+    throw Object.assign(new Error(data.error ?? "Không thể thực hiện yêu cầu. Vui lòng thử lại."), { status: response.status, field: data.field });
   }
   return data;
 }

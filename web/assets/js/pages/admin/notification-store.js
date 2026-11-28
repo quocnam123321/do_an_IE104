@@ -6,6 +6,9 @@
   const audiences = ["student", "lecturer", "both"];
   const fileLimit = 10 * 1024 * 1024;
   const imageTypes = ["image/jpeg", "image/png", "image/gif", "image/webp", "image/avif"];
+  const connected = Boolean(document.querySelector('meta[name="ie104-website-db"]'));
+  const remote = async (path = "", options) => (await import("../../services/website-data-api.js")).websiteData("notices/manage" + path, options);
+  let recipientsFromServer;
   const failure = "Không thể lưu thông báo trên trình duyệt. Hãy thử lại.";
   const seeds = [
     ...notices.map((notice) => ({ ...notice, kind: "academic", revision: 0 })),
@@ -60,6 +63,8 @@
   }
 
   function eligibleRecipients(audience) {
+    if (connected) return { unavailable: !recipientsFromServer, recipients: (recipientsFromServer || [])
+      .filter(({ type }) => audience === "both" || type === audience) };
     const snapshot = accounts.snapshot();
     return {
       unavailable: snapshot.unavailable,
@@ -96,6 +101,7 @@
   function publishAcademic(fields, original) {
     const invalid = validateAcademic(fields);
     if (invalid) return invalid;
+    if (connected) return saveRemoteAcademic(fields, original, "published");
 
     return transaction("readwrite", (entries) => {
       const current = original && entries.get(original.id);
@@ -113,7 +119,30 @@
     });
   }
 
+  async function writeRemote(path, method, body) {
+    try {
+      const result = await remote(path, { method, body });
+      if (result.record.id.startsWith("HT-")) globalThis.IE104SystemNotices.notifyChange();
+      if (result.record.status === "published" || result.record.status === "withdrawn") notifyPublicationChange();
+      return result;
+    } catch (failure) {
+      return { error: failure.message, field: failure.field };
+    }
+  }
+
+  function saveRemoteAcademic(fields, original, status) {
+    const invalid = validateAcademic(fields);
+    if (invalid) return invalid;
+    const form = new FormData();
+    form.append("payload", JSON.stringify({ title: fields.title, body: fields.body, html: fields.html, category: fields.category,
+      images: fields.images.map(image => image.id), attachment: Boolean(fields.attachment), status, revision: original?.revision }));
+    for (const { id, file } of fields.images) if (file instanceof Blob) form.append(id, file, file.name);
+    if (fields.attachment instanceof Blob) form.append("attachment", fields.attachment, fields.attachment.name);
+    return writeRemote("/academic" + (original ? "/" + encodeURIComponent(original.id) : ""), original ? "PATCH" : "POST", form);
+  }
+
   function deleteDraft(original) {
+    if (connected) return writeRemote("/academic/" + encodeURIComponent(original.id), "DELETE", { revision: original.revision });
     return transaction("readwrite", (entries) => {
       const current = entries.get(original.id);
       if (current?.kind !== "academic" || current.status !== "draft" || current.revision !== original.revision) {
@@ -125,6 +154,7 @@
   }
 
   function withdrawAcademic(original) {
+    if (connected) return writeRemote("/academic/" + encodeURIComponent(original.id) + "/withdraw", "PATCH", { revision: original.revision });
     return transaction("readwrite", (entries) => {
       const current = entries.get(original.id);
       if (current?.kind !== "academic" || current.status !== "published" || current.revision !== original.revision) {
@@ -144,6 +174,7 @@
     if (!audiences.includes(fields.audience) || !["all", "specific"].includes(fields.scope)) {
       return { error: "Hãy chọn đối tượng và phạm vi gửi." };
     }
+    if (connected) return writeRemote("/system", "POST", fields);
 
     return transaction("readwrite", (entries) => {
       const { recipients, unavailable } = eligibleRecipients(fields.audience);
@@ -165,14 +196,24 @@
 
   async function snapshot() {
     try {
+      if (connected) {
+        const data = await remote();
+        recipientsFromServer = data.recipients;
+        return { records: data.records };
+      }
       return { records: await transaction("readonly") };
     } catch {
+      if (connected) {
+        recipientsFromServer = undefined;
+        return { records: [], unavailable: true };
+      }
       return { records: seeds, unavailable: true };
     }
   }
 
   globalThis.IE104AdminNotices = {
-    categories, audiences, eligibleRecipients, snapshot, publishAcademic, deleteDraft, validateAcademic, validateImage,
+    categories, audiences, eligibleRecipients, snapshot, publishAcademic, deleteDraft, validateAcademic, validateImage, connected,
+    saveDraft: (fields, original) => saveRemoteAcademic(fields, original, "draft"),
     withdrawAcademic, createSystem,
   };
 })();

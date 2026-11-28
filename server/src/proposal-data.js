@@ -1,4 +1,5 @@
 import { pool } from "./db.js";
+import { academicTermId, selectAcademicRound } from "./academic-data.js";
 import { AuthError, demoStudentName, fingerprint, isUuid, systemDemoEnabled, transaction } from "./auth-security.js";
 import validators from "../../web/assets/js/shared/validation.js";
 import configuration from "../../web/assets/js/services/proposal-service.js";
@@ -58,6 +59,7 @@ function browserRecord(row) {
     typeLabel: catalog.types[row.type].label,
     courseId: row.course_id,
     courseLabel: catalog.types[row.type].courses[row.course_id],
+    roundId: row.registration_round_id,
     title: row.title,
     semester: row.semester,
     academicYear: row.academic_year,
@@ -181,14 +183,24 @@ async function checkedProposal(input, account, connection, previous = null) {
           : members,
     },
   };
-  const checked = validateProposal(reviewInput, { ...catalog, supervisors: { [input.supervisorId]: profile.name } }, student);
+  const term = academicTermId(input.academicYear, input.semester);
+  const foundTerm = term && (await connection.query("SELECT 1 FROM academic_terms WHERE id=$1", [term])).rowCount;
+  const academicYears = foundTerm ? [...catalog.academicYears, input.academicYear] : catalog.academicYears;
+  const checked = validateProposal(reviewInput, { ...catalog, academicYears, supervisors: { [input.supervisorId]: profile.name } }, student);
   if (checked.errors.length) throw new AuthError(400, checked.errors[0].message);
 
   const { title, type, courseId, semester, academicYear, description, objectives, outcomes, outline } = checked.value;
+  const roundId = input.roundId ?? previous?.roundId ?? "";
+  if (typeof roundId !== "string" || (previous?.roundId && !roundId)) {
+    throw new AuthError(400, "Chọn đợt đăng ký phù hợp với học kỳ và loại đề tài.");
+  }
+  if (roundId) await selectAcademicRound(connection, roundId, { academicYear, semester,
+    topicType: ({ "do-an-mon-hoc": "course", "do-an-tot-nghiep": "graduation", "khoa-luan": "thesis" })[type],
+  }, { keep: roundId === previous?.roundId });
   const titleKey = fingerprint(title.normalize("NFC").toLocaleLowerCase("vi").replace(/\s+/g, " "));
   const content = JSON.stringify({ description, objectives, outcomes, outline, supervisorProfile });
   if (content.includes("\\u0000")) throw new AuthError(400, "Nội dung đề xuất có ký tự không hợp lệ.");
-  return [lecturer.id, type, courseId, semester, academicYear, title, titleKey, content, demoDirectoryId];
+  return [lecturer.id, type, courseId, semester, academicYear, title, titleKey, content, demoDirectoryId, roundId || null];
 }
 
 function checkRevision(value) {
@@ -216,8 +228,8 @@ export async function createProposal(account, input, files = {}) {
       const cover = await nextFileId(client, files.cover);
       const result = await client.query(`
         INSERT INTO proposals (student_account_id, topic_code, lecturer_account_id, type, course_id,
-          semester, academic_year, title, title_key, content, demo_directory_id, attachment_file_id, cover_file_id)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+          semester, academic_year, title, title_key, content, demo_directory_id, registration_round_id, attachment_file_id, cover_file_id)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
         RETURNING id
       `, [account.id, topicCode, ...validated, attachment, cover]);
       return readProposal(account, "DX-" + result.rows[0].id, client);
@@ -241,10 +253,10 @@ export async function updateProposal(account, id, revision, input, files = {}) {
       const result = await client.query(`
         UPDATE proposals SET lecturer_account_id = $3, type = $4, course_id = $5, semester = $6,
           academic_year = $7, title = $8, title_key = $9, content = $10, demo_directory_id = $11,
-          attachment_file_id = $12, cover_file_id = $13,
+          registration_round_id = $12, attachment_file_id = $13, cover_file_id = $14,
           reviewer_account_id = CASE WHEN $11::text IS NULL THEN NULL ELSE reviewer_account_id END,
           revision = revision + 1, updated_at = now()
-        WHERE id = $1 AND revision = $2 AND status = 'cho-duyet' AND ${proposalAccess(account, "$14")}
+        WHERE id = $1 AND revision = $2 AND status = 'cho-duyet' AND ${proposalAccess(account, "$15")}
       `, [databaseId(id), revision, ...validated, attachment, cover, ...(systemDemoEnabled ? [] : [account.id])]);
       if (!result.rowCount) throw conflict();
       const replaced = [row.attachment_file_id !== attachment && row.attachment_file_id, row.cover_file_id !== cover && row.cover_file_id].filter(Boolean);

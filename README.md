@@ -83,6 +83,31 @@ try {
 }
 ```
 
+Để kiểm thử đặt lại mật khẩu thật trong các bước dưới đây, chạy Express với
+`IE104_DEMO_MODE=0`. Khi chạy bản demo bằng `start:demo`, trang **Quên mật
+khẩu** nhận mật khẩu mẫu và chỉ báo hoàn tất mô phỏng. Màn **Tài khoản** của
+quản trị viên hiển thị mã minh họa. Hai thao tác này không gửi email hay đổi
+mật khẩu đã lưu.
+
+Ở **Quản trị viên → Tài khoản**, có thể tạo tài khoản sinh viên hoặc giảng
+viên, sửa thông tin, khóa và mở khóa sau khi áp dụng migration
+`026-admin-account-management.sql`. Tài khoản cũ chưa có mã vẫn được hiển
+thị và có thể bổ sung mã sau. Khi khóa, các phiên đăng nhập và mã đặt lại
+đang có hiệu lực của tài khoản sẽ bị thu hồi. Mở khóa cho phép đăng nhập lại.
+
+Các migration `027-academic-registration-rounds.js` và
+`028-admin-messages-and-notices.sql` nối các màn quản trị còn lại với PostgreSQL.
+**Tổng quan** và **Đề tài và hồ sơ** đọc dữ liệu từ các luồng sinh viên, giảng
+viên. **Học kỳ và đợt đăng ký** lưu lịch dùng chung và áp dụng thời gian đăng
+ký ở máy chủ khi đề tài hoặc đề xuất gắn với một đợt. **Thông báo học vụ** có
+thể lưu bản nháp, đăng và gỡ trên trang công khai. **Thông báo hệ thống** đến
+chuông của các tài khoản được chọn và lưu trạng thái đã đọc. Lời nhắn từ trang
+**Liên hệ** xuất hiện trong **Yêu cầu liên hệ** để quản trị viên xử lý.
+
+Chạy `npm.cmd run db:migrate` trong `server/` trước khi khởi động bản cập nhật.
+Dữ liệu được tạo ở chế độ xem tĩnh trước đây vẫn nằm trong trình duyệt đã tạo
+dữ liệu đó. Bản Express dùng PostgreSQL và hỗ trợ kiểm thử giữa các thiết bị.
+
 1. Từ **Đăng nhập**, chọn **Tạo tài khoản**. Đăng ký một sinh viên và một giảng
    viên với hai tên khác nhau, để trống email. Cả hai có thể đăng nhập ngay
    và được đưa đến tổng quan tương ứng. Thử mở trang quản trị bằng tài khoản

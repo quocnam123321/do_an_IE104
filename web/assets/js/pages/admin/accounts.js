@@ -1,7 +1,11 @@
 (() => {
   const { badge, escapeHtml, labels, normalizeSearch, params, view } = globalThis.IE104Admin;
   const store = globalThis.IE104AdminAccounts;
+  const accountMode = document.querySelector('meta[name="ie104-admin-accounts"]')?.content;
+  const databaseMode = accountMode === "database" || accountMode === "demo";
+  const simulateReset = accountMode === "demo";
   const addButton = document.querySelector("#admin-account-add");
+  const reloadButton = document.querySelector("#admin-account-reload");
   const rows = document.querySelector("#admin-account-rows");
   const count = document.querySelector("#admin-account-count");
   const search = document.querySelector("#admin-account-search");
@@ -32,35 +36,50 @@
   </svg>`;
   let editing;
   let changingStatus;
+  let database;
+  let databaseAccounts = [];
+  let loading = false;
+  let loadError = false;
+
+  function canShowReset(account) {
+    return databaseMode && (simulateReset ? account.status === "enabled" : account.canReset);
+  }
 
   function accountRow(account) {
     const locked = account.status === "locked";
     const id = escapeHtml(account.id);
     const name = escapeHtml(account.name);
     const email = escapeHtml(account.email);
-    const identity = account.provider === "google" ?
+    const identity = databaseMode ? [account.username, account.email].filter(Boolean)
+      .map((value) => `<span translate="no">${escapeHtml(value)}</span>`).join("") : account.provider === "google" ?
       `<span class="admin-account-email" translate="no">${email}</span>` :
       `<span translate="no">${escapeHtml(account.username)}</span>${email ?
         `<span translate="no">${email}</span>` : "<span>Chưa có email</span>"}`;
     const button = (action, style, label) =>
       `<button class="admin-button ${style}" type="button" data-account-id="${id}" data-account-action="${action}">
-        <span>${label}</span><span class="visually-hidden" translate="no"> ${name} · ${escapeHtml(account.code)}</span>
+        <span>${label}</span><span class="visually-hidden" translate="no"> ${escapeHtml([account.name || account.username || account.email, account.code].filter(Boolean).join(" · "))}</span>
       </button>`;
+    const methods = databaseMode ? account.methods : [account.provider];
+    const methodLabels = { google: `${googleMark}Google`, password: "Mật khẩu", demo: "Tài khoản minh họa" };
+    const method = methods.map((value) => `<span class="admin-account-method">${methodLabels[value]}</span>`).join("<br>");
+    const resetLabel = simulateReset ? "Xem mã minh họa" : "Cấp mã đặt lại";
+    const management = databaseMode && !account.canManage ? "" : locked ?
+      button("unlock", "admin-account-unlock", "Mở khóa") :
+      button("edit", "", "Sửa thông tin") + button("lock", "admin-account-lock", "Khóa");
+    const actions = management + (canShowReset(account) ? button("reset", "", resetLabel) : "");
     return `<tr>
-      <th scope="row" translate="no">${name}</th>
-      <td class="admin-code" translate="no">${escapeHtml(account.code)}</td>
-      <td class="admin-account-identity">${identity}</td>
-      <td><span class="admin-account-method">${account.provider === "google" ? `${googleMark}Google` : "Mật khẩu"}</span></td>
+      <th scope="row"${name ? ' translate="no"' : ""}>${name || "Chưa có thông tin"}</th>
+      <td class="admin-code" translate="no">${escapeHtml(account.code || "—")}</td>
+      <td class="admin-account-identity">${identity || "—"}</td>
+      <td>${method || "—"}</td>
       <td>${labels[account.type]}</td>
       <td>${badge(labels[account.status], account.status)}</td>
-      <td><div class="admin-account-actions">${locked ?
-        button("unlock", "admin-account-unlock", "Mở khóa") :
-        button("edit", "", "Sửa thông tin") + button("lock", "admin-account-lock", "Khóa")}</div></td>
+      <td><div class="admin-account-actions">${actions || "—"}</div></td>
     </tr>`;
   }
 
   function render() {
-    const { accounts, unavailable } = store.snapshot();
+    const { accounts, unavailable } = databaseMode ? { accounts: databaseAccounts, unavailable: loadError } : store.snapshot();
     const query = normalizeSearch(search.value);
     const matches = accounts.filter((account) =>
       (!roleFilter.value || account.type === roleFilter.value) &&
@@ -68,9 +87,44 @@
       [account.name, account.code, account.username, account.email].some((value) => normalizeSearch(value).includes(query))
     );
     dataError.hidden = !unavailable;
-    count.textContent = matches.length;
+    count.textContent = loading || loadError ? "—" : matches.length;
+    const emptyText = loading ? "Đang tải tài khoản…" : loadError ? "Danh sách tài khoản chưa tải được." : "Không có tài khoản phù hợp.";
     rows.innerHTML = matches.length ? matches.map(accountRow).join("") :
-      '<tr><td class="admin-empty" colspan="7">Không có tài khoản phù hợp.</td></tr>';
+      `<tr><td class="admin-empty" colspan="7">${emptyText}</td></tr>`;
+  }
+
+  async function loadDatabase() {
+    if (loading) return;
+    loading = reloadButton.disabled = addButton.disabled = true;
+    loadError = false;
+    databaseAccounts = [];
+    render();
+    try {
+      database ??= await import("../../admin-accounts.js");
+      databaseAccounts = await database.loadAccounts();
+    } catch (error) {
+      if (error.status === 401) location.replace("../chung/dang-nhap.html");
+      loadError = true;
+      dataError.textContent = error.status === 403 ? "Bạn không có quyền xem danh sách tài khoản." :
+        "Không thể tải danh sách tài khoản. Vui lòng thử lại.";
+    } finally {
+      loading = reloadButton.disabled = false;
+      addButton.disabled = !database;
+      render();
+    }
+  }
+
+  async function applyDatabaseChange(work) {
+    try {
+      const account = await work();
+      const exists = databaseAccounts.some(({ id }) => id === account.id);
+      databaseAccounts = exists ? databaseAccounts.map((row) => row.id === account.id ? account : row) :
+        [account, ...databaseAccounts];
+      return { id: account.id };
+    } catch (error) {
+      if (error.status === 401) location.replace("../chung/dang-nhap.html");
+      return { error: error.message, field: error.field };
+    }
   }
 
   function setError(output, message, control) {
@@ -99,14 +153,19 @@
     form.reset();
     clearEditorError();
     editing = account;
-    const google = account?.provider === "google";
+    const google = databaseMode ? account?.googleLinked : account?.provider === "google";
+    const googleOnly = google && (!databaseMode || !account.username);
     fields.fullName.value = account?.name ?? "";
     fields.role.value = account?.type ?? "student";
     fields.code.value = account?.code ?? "";
     fields.username.value = account?.username ?? "";
     fields.email.value = account?.email ?? "";
-    fields.username.disabled = google;
-    document.querySelector("#admin-account-username-field").hidden = google;
+    fields.role.disabled = databaseMode && Boolean(account);
+    fields.code.required = !databaseMode || !account;
+    fields.role.labels[0].querySelector(".admin-account-required").hidden = fields.role.disabled;
+    fields.code.labels[0].querySelector(".admin-account-required").hidden = !fields.code.required;
+    fields.username.disabled = googleOnly;
+    document.querySelector("#admin-account-username-field").hidden = googleOnly;
     fields.email.readOnly = google;
     document.querySelector("#admin-account-email-label").textContent = google ? "Email Google" : "Email (tùy chọn)";
     passwordFields.hidden = passwordFields.disabled = Boolean(account);
@@ -121,7 +180,7 @@
     const locked = account.status === "locked";
     confirmTitle.textContent = locked ? "Mở khóa tài khoản" : "Khóa tài khoản";
     confirmPrompt.textContent = locked ? "Bạn muốn mở khóa tài khoản" : "Bạn muốn khóa tài khoản";
-    confirmName.textContent = `${account.name} · ${account.code}`;
+    confirmName.textContent = [account.name || account.username || account.email, account.code].filter(Boolean).join(" · ");
     confirmSubmit.textContent = locked ? "Xác nhận mở khóa" : "Xác nhận khóa";
     confirmSubmit.classList.toggle("admin-account-confirm-lock", !locked);
     confirmSubmit.classList.toggle("admin-account-confirm-unlock", locked);
@@ -144,8 +203,11 @@
     const button = event.target.closest("[data-account-action]");
     if (!button) return;
     const { accountId, accountAction } = button.dataset;
-    const account = store.snapshot().accounts.find(({ id }) => id === accountId);
+    const accounts = databaseMode ? databaseAccounts : store.snapshot().accounts;
+    const account = accounts.find(({ id }) => id === accountId);
     if (!account) return;
+    if (accountAction === "reset" && canShowReset(account)) return database.openResetDialog(account, simulateReset);
+    if (databaseMode && !account.canManage) return;
     if (accountAction === "edit") {
       if (account.status !== "locked") openEditor(account);
       else render();
@@ -181,16 +243,18 @@
       return;
     }
     editorSubmit.disabled = true;
-    const result = await store.saveAccount({
+    const input = {
       fullName: fields.fullName.value,
       code: fields.code.value,
       role: fields.role.value,
       username: fields.username.value,
       email: fields.email.value,
-    }, editing);
+    };
+    const result = databaseMode ? await applyDatabaseChange(() => database.saveAccount(input, editing,
+      editing ? undefined : fields.password.value)) : await store.saveAccount(input, editing);
     editorSubmit.disabled = false;
     if (result.error) {
-      setError(editorError, result.error, fields[result.field]);
+      setError(editorError, result.error, fields.namedItem(result.field ?? ""));
       return;
     }
     editor.close();
@@ -202,7 +266,8 @@
     if (confirmSubmit.disabled) return;
     const locking = changingStatus.status === "enabled";
     confirmSubmit.disabled = true;
-    const result = await store.toggleStatus(changingStatus);
+    const result = databaseMode ? await applyDatabaseChange(() => database.setAccountLock(changingStatus, locking)) :
+      await store.toggleStatus(changingStatus);
     confirmSubmit.disabled = false;
     if (result.error) {
       setError(confirmError, result.error);
@@ -213,14 +278,34 @@
   });
 
   window.addEventListener("storage", (event) => {
-    if (event.key === store.storageKey || event.key === null) render();
+    if (!databaseMode && (event.key === store.storageKey || event.key === null)) render();
   });
   window.addEventListener("pageshow", (event) => {
-    if (event.persisted) render();
+    if (!event.persisted) return;
+    if (databaseMode) void loadDatabase();
+    else render();
   });
   const initialStatus = params.get("status");
-  if (["enabled", "locked"].includes(initialStatus)) statusFilter.value = initialStatus;
-  render();
+  if (databaseMode) {
+    document.querySelector(".admin-accounts-sample").hidden = true;
+    document.querySelector("#admin-account-sample-identity").hidden = true;
+    document.querySelector("#admin-account-lock-note").textContent = "Khóa tài khoản sẽ thu hồi phiên đăng nhập và giữ lịch sử đề tài, bài nộp, đánh giá.";
+    document.querySelector("#admin-account-logout").hidden = false;
+    rows.closest("table").classList.add("admin-accounts-table--database");
+    fields.fullName.maxLength = 100;
+    statusFilter.add(new Option(labels.pending, "pending"));
+    statusFilter.add(new Option(labels.rejected, "rejected"));
+    reloadButton.hidden = false;
+    reloadButton.addEventListener("click", loadDatabase);
+  }
+  if (Array.from(statusFilter.options).some(({ value }) => value === initialStatus)) statusFilter.value = initialStatus;
   view.hidden = false;
-  addButton.hidden = false;
+  if (databaseMode) {
+    addButton.hidden = false;
+    void loadDatabase();
+  }
+  else {
+    render();
+    addButton.hidden = false;
+  }
 })();

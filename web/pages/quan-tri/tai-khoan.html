@@ -19,6 +19,7 @@
   <script defer src="../../assets/js/pages/admin/sample-data.js"></script>
   <script defer src="../../assets/js/pages/admin/common.js"></script>
   <script defer src="../../assets/js/password-toggle.js"></script>
+  <script defer src="../../assets/js/shared/logout.js"></script>
   <script defer src="../../assets/js/pages/admin/account-store.js"></script>
   <script defer src="../../assets/js/pages/admin/accounts.js"></script>
 </head>
@@ -60,7 +61,8 @@
           </summary>
           <div class="account-menu__list admin-account-card">
             <strong>Quản trị viên</strong>
-            <p><span translate="no">QT001</span> · <span>Dữ liệu mẫu</span></p>
+            <p id="admin-account-sample-identity"><span translate="no">QT001</span> · <span>Dữ liệu mẫu</span></p>
+            <button id="admin-account-logout" class="account-menu__logout" type="button" aria-controls="logout-dialog" hidden>Đăng xuất</button>
           </div>
         </details>
       </div>
@@ -95,7 +97,7 @@
         </button>
       </header>
       <div class="page-content">
-        <noscript><p>Bật JavaScript để xem dữ liệu mẫu và sử dụng bộ lọc.</p></noscript>
+        <noscript><p>Bật JavaScript để xem danh sách tài khoản và sử dụng bộ lọc.</p></noscript>
         <div id="admin-view" class="page-content" hidden>
           <div class="admin-account-filters" role="group" aria-label="Bộ lọc">
             <div class="admin-account-search admin-field">
@@ -125,7 +127,10 @@
           <section class="admin-account-list" aria-labelledby="admin-account-list-title">
             <div class="admin-account-list__heading">
               <h2 id="admin-account-list-title">Danh sách tài khoản</h2>
-              <p role="status"><span id="admin-account-count">0</span> <span>tài khoản</span></p>
+              <div class="admin-account-list__tools">
+                <p role="status"><span id="admin-account-count">0</span> <span>tài khoản</span></p>
+                <button class="admin-button" id="admin-account-reload" type="button" hidden>Tải lại danh sách</button>
+              </div>
             </div>
             <p class="admin-account-error" id="admin-account-data-error" role="alert" hidden>Không thể đọc tài khoản đã lưu. Đang hiển thị dữ liệu mẫu.</p>
             <div class="admin-panel admin-table-scroll" tabindex="0" role="region" aria-labelledby="admin-account-list-title">
@@ -133,7 +138,7 @@
                 <thead>
                   <tr>
                     <th scope="col">Họ và tên</th>
-                    <th scope="col">MSSV / Mã GV</th>
+                    <th id="admin-account-code-column" scope="col">MSSV / Mã GV</th>
                     <th scope="col">Thông tin đăng nhập</th>
                     <th scope="col">Cách đăng nhập</th>
                     <th scope="col">Vai trò</th>
@@ -144,7 +149,7 @@
                 <tbody id="admin-account-rows"></tbody>
               </table>
             </div>
-            <p class="admin-account-note">Khóa tài khoản vẫn giữ lịch sử đề tài, bài nộp và đánh giá.</p>
+            <p class="admin-account-note" id="admin-account-lock-note">Khóa tài khoản vẫn giữ lịch sử đề tài, bài nộp và đánh giá.</p>
           </section>
         </div>
       </div>
@@ -267,6 +272,30 @@
       </div>
       <div class="admin-account-dialog__footer">
         <button type="submit" class="admin-button"></button>
+      </div>
+    </form>
+  </dialog>
+  <dialog class="admin-dialog admin-account-dialog admin-account-confirm-dialog" id="admin-account-reset-dialog" aria-labelledby="admin-account-reset-title">
+    <div class="admin-dialog__header">
+      <h2 id="admin-account-reset-title">Cấp mã đặt lại mật khẩu</h2>
+      <button type="button" class="admin-dialog-close" aria-label="Đóng" autofocus>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <form method="dialog" id="admin-account-reset-form">
+      <div class="admin-account-confirm-body">
+        <p><strong id="admin-account-reset-name" translate="no"></strong></p>
+        <p id="admin-account-reset-help">Cấp mã mới sẽ thay thế mã trước đó. Chỉ gửi mã sau khi xác minh người yêu cầu.</p>
+        <p id="admin-account-reset-demo-help" hidden>Mã này chỉ để minh họa. Người dùng tự thử ở trang Quên mật khẩu.</p>
+        <div class="admin-field" id="admin-account-reset-result" hidden>
+          <label for="admin-account-reset-code" id="admin-account-reset-code-label">Mã đặt lại mật khẩu</label>
+          <input id="admin-account-reset-code" type="text" autocomplete="off" spellcheck="false" readonly translate="no">
+          <p class="admin-account-note" id="admin-account-reset-validity"><span>Có hiệu lực đến</span> <time id="admin-account-reset-expiry" translate="no"></time></p>
+        </div>
+        <p class="admin-account-error" id="admin-account-reset-error" role="alert" hidden></p>
+      </div>
+      <div class="admin-account-dialog__footer">
+        <button type="submit" class="admin-button admin-button--primary">Cấp mã</button>
       </div>
     </form>
   </dialog>

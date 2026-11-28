@@ -199,20 +199,47 @@ function signup(config) {
   }, "signup_with");
 }
 
-function reset() {
+function reset(config) {
   byId("legacy-recovery").hidden = true;
-  byId("database-recovery").hidden = false;
   const form = byId("database-reset-form");
-  bindForm(form, byId("database-form-error"), async ({ confirmPassword, ...fields }) => {
+  const confirmation = form.elements.confirmPassword;
+  const formError = byId("database-form-error");
+  const simulation = config.systemDemo;
+  if (simulation) {
+    byId("database-recovery-title").textContent = "Mô phỏng đặt lại mật khẩu";
+    byId("database-reset-help").hidden = true;
+    byId("database-reset-demo-help").hidden = false;
+    form.setAttribute("aria-describedby", "database-reset-demo-help database-form-error");
+    for (const field of [form.elements.username, form.elements.code]) {
+      field.disabled = true;
+      field.closest(".form-field").hidden = true;
+    }
+    form.autocomplete = "off";
+    form.elements.password.autocomplete = "off";
+    confirmation.autocomplete = "off";
+    form.querySelector('button[type="submit"]').textContent = "Hoàn tất mô phỏng";
+  }
+  byId("database-recovery").hidden = false;
+  for (const field of [form.elements.password, confirmation]) {
+    field.addEventListener("input", () => {
+      if (confirmation.getAttribute("aria-invalid") !== "true") return;
+      confirmation.removeAttribute("aria-invalid");
+      formError.textContent = "";
+    });
+  }
+  bindForm(form, formError, async ({ confirmPassword, ...fields }) => {
     if (confirmPassword !== fields.password) {
-      form.elements.confirmPassword.focus();
+      confirmation.setAttribute("aria-invalid", "true");
+      confirmation.focus();
       throw new Error("Mật khẩu xác nhận chưa khớp.");
     }
-    await authRequest("password/reset", { method: "POST", body: fields });
-    notifyAccountChange();
+    if (!simulation) {
+      await authRequest("password/reset", { method: "POST", body: fields });
+      notifyAccountChange();
+    }
     form.reset();
     form.hidden = true;
-    byId("database-reset-status").hidden = false;
+    byId(simulation ? "database-reset-demo-status" : "database-reset-status").hidden = false;
     byId("database-reset-back").focus();
   });
 }
@@ -268,7 +295,7 @@ async function init() {
 
   if (type === "login") login(config);
   if (type === "signup") signup(config);
-  if (type === "reset") reset();
+  if (type === "reset") reset(config);
   if (type === "settings") await settings(config);
 }
 

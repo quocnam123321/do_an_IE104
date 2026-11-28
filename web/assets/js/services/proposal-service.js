@@ -81,7 +81,7 @@
     const academic = globalThis.IE104AdminAcademic;
     if (!academic || checked.errors.length) return checked;
     const id = String(input.roundId || '').trim();
-    if (record && !id && !record.roundId && !resubmit) return checked;
+    if (!id && !record?.roundId && !resubmit && (database || record)) return checked;
     const keep = Boolean(id && id === record?.roundId && !resubmit);
     const { error } = academic.selection(id, checked.value, { keep });
     if (error) checked.errors.push({ field: 'roundId', message: error });
@@ -91,7 +91,7 @@
 
   function validate(input, record, student = record ? record.student || defaultStudent() : submittingStudent()) {
     const checked = validateForStudent(input, student, catalogFor(record), record?.outline);
-    return database ? checked : validateRound(checked, input, record);
+    return database && !globalThis.IE104AdminAcademic?.connected ? checked : validateRound(checked, input, record);
   }
 
   function nextTopicCode(type, proposals = readProposals()) {

@@ -4,6 +4,7 @@ import { useTopicCode } from "./topic-code-data.js";
 import editor from "../../web/assets/js/services/lecturer-topic-editor-service.js";
 import configuration from "../../web/assets/js/services/proposal-service.js";
 import { fileMetadata, nextFileId, readFileContent } from "./shared-files.js";
+import { academicTermId, lockRound, roundEnd, selectAcademicRound, vietnamMinute } from "./academic-data.js";
 
 const types = { course: "do-an-mon-hoc", graduation: "do-an-tot-nghiep", thesis: "khoa-luan" };
 const courseIds = { web: "IE104", database: "IT004", "phan-tich-thiet-ke-phan-mem": "IE108", IE101: "IE101", IE103: "IE103", IE105: "IE105" };
@@ -11,9 +12,11 @@ const courses = Object.fromEntries(Object.entries(courseIds).map(([key, id]) =>
   [key, configuration.catalog.types["do-an-mon-hoc"].courses[id].replace(/^\w+ - /, "")]));
 const selectTopic = `
   SELECT topic.*, registration.id AS registration_id, registration.student_account_id,
+    round.starts_at AS round_start, round.ends_at + CASE WHEN round.source IS NULL THEN interval '0 seconds' ELSE interval '1 minute' END AS round_deadline,
     ${fileMetadata("attachment")} AS attachment, ${fileMetadata("cover")} AS cover
   FROM lecturer_topics AS topic
   LEFT JOIN registrations AS registration ON registration.topic_code = topic.code
+  LEFT JOIN registration_rounds AS round ON round.id = topic.registration_round_id
   LEFT JOIN files AS attachment ON attachment.id = topic.attachment_file_id
   LEFT JOIN files AS cover ON cover.id = topic.cover_file_id
 `;
@@ -29,7 +32,8 @@ function topicRecord(row, account) {
     attachmentName: row.attachment?.name || "",
     imageRef: row.cover ? { ...row.cover, key: row.cover_file_id } : null,
     registrationId: registered && showRegistration ? "DK-" + row.registration_id : null,
-    registration: { ...row.content.registration, deadline: row.deadline.toISOString() },
+    registration: { ...row.content.registration, deadline: (row.round_deadline || row.deadline).toISOString(),
+      ...(row.registration_round_id && { roundId: row.registration_round_id, opensAt: row.round_start.toISOString() }) },
     status: row.status, statusLabel: row.status === "open" ? "Đang mở đăng ký" : "Đã đóng đăng ký",
     revision: row.revision, createdAt: row.created_at.toISOString(), updatedAt: row.updated_at.toISOString(),
   };
@@ -67,6 +71,7 @@ export async function lockLecturerTopic(client, account, code) {
   if (!row || (account.role === "lecturer" && !systemDemoEnabled && row.owner_account_id !== account.id)) {
     throw new AuthError(404, "Không tìm thấy đề tài.");
   }
+  if (row.registration_round_id) await lockRound(client, row.registration_round_id);
   // Đọc lượt đăng ký sau khi khóa để thấy giao dịch đăng ký vừa hoàn tất.
   return topicRecord(await readTopic(account, code, client), account);
 }
@@ -86,7 +91,17 @@ export async function saveLecturerTopic(account, input, { code, revision, topicC
     return await transaction(async client => {
       const previous = code ? await lockLecturerTopic(client, account, code) : null;
       if (previous) assertTopicRevision(previous, revision);
-      const { value, errors } = editor.validate(input, previous, new Date(), { assignCode: !previous, courses });
+      const previousRound = previous?.registration.roundId || "";
+      const roundId = String(input.roundId ?? previousRound).trim();
+      if (previousRound && !roundId) throw new AuthError(400, "Chọn đợt đăng ký phù hợp với học kỳ và loại đề tài.");
+      const round = roundId ? await selectAcademicRound(client, roundId, input, { keep: roundId === previousRound, allowUpcoming: true }) : null;
+      const term = academicTermId(input.academicYear, input.semester);
+      const savedTerm = term && (await client.query("SELECT 1 FROM academic_terms WHERE id=$1", [term])).rowCount;
+      const rounds = {
+        academicYears: () => savedTerm ? [input.academicYear] : [],
+        selection: () => ({ round: round && { start: vietnamMinute(round.starts_at), end: vietnamMinute(roundEnd(round)) } }),
+      };
+      const { value, errors } = editor.validate({ ...input, roundId }, previous, new Date(), { assignCode: !previous, courses, rounds, requireRound: false });
       if (errors.length) throw new AuthError(400, errors[0].message);
       const { title, topicType, course, deadline, minMembers, maxMembers, opensAt } = value;
       const courseId = courseIds[course] || ({ graduation: "IE501", thesis: "IE505" })[topicType];
@@ -102,19 +117,19 @@ export async function saveLecturerTopic(account, input, { code, revision, topicC
         ...Object.fromEntries(["objectives", "outcomes", "requirements"].map(field =>
           [field, value[field].split(/\r?\n/u).map(editor.text).filter(Boolean)])),
       };
-      for (const key of ["title", "deadline", "minMembers", "maxMembers", "opensAt"]) delete content[key];
+      for (const key of ["title", "deadline", "minMembers", "maxMembers", "opensAt", "roundId"]) delete content[key];
       const titleKey = fingerprint(title.toLocaleLowerCase("vi").replace(/\s+/gu, " "));
       const previousAttachment = previous?.attachmentRef?.key ?? null;
       const previousCover = previous?.imageRef?.key ?? null;
       const attachment = await nextFileId(client, files.attachment, previousAttachment);
       const cover = await nextFileId(client, files.cover, previousCover);
-      const shared = [title, titleKey, JSON.stringify(content), deadline, attachment, cover];
+      const shared = [title, titleKey, JSON.stringify(content), deadline, attachment, cover, round?.id ?? null];
       if (previous) {
         await client.query(`
           UPDATE lecturer_topics SET title = $1, title_key = $2, content = $3, deadline = $4,
-            attachment_file_id = $5, cover_file_id = $6,
+            attachment_file_id = $5, cover_file_id = $6, registration_round_id = $7,
             revision = revision + 1, updated_at = now()
-          WHERE code = $7
+          WHERE code = $8
         `, [...shared, code]);
         const replaced = [previousAttachment !== attachment && previousAttachment, previousCover !== cover && previousCover].filter(Boolean);
         if (replaced.length) await client.query("DELETE FROM files WHERE id = ANY($1::uuid[])", [replaced]);
@@ -122,8 +137,9 @@ export async function saveLecturerTopic(account, input, { code, revision, topicC
       }
       const topicCode = await useTopicCode(client, account, types[topicType], topicCodeFormId);
       await client.query(`
-        INSERT INTO lecturer_topics (title, title_key, content, deadline, attachment_file_id, cover_file_id, code, owner_account_id, is_demo)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        INSERT INTO lecturer_topics (title, title_key, content, deadline, attachment_file_id, cover_file_id,
+          registration_round_id, code, owner_account_id, is_demo)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
       `, [...shared, topicCode, account.id, systemDemoEnabled]);
       return topicRecord(await readTopic(account, topicCode, client), account);
     });
@@ -141,7 +157,11 @@ export async function setLecturerTopicRegistration(account, code, { open, deadli
     const topic = await lockLecturerTopic(client, account, code);
     if (topic.registered) throw new AuthError(409, "Đề tài đã có nhóm đăng ký.");
     assertTopicRevision(topic, revision);
-    const closesAt = open ? editor.date(deadline) : topic.registration.deadline;
+    const bound = Boolean(topic.registration.roundId);
+    if (open && bound && (Date.parse(topic.registration.opensAt) > Date.now() || Date.parse(topic.registration.deadline) <= Date.now())) {
+      throw new AuthError(409, "Đợt đăng ký hiện chưa mở.");
+    }
+    const closesAt = open && !bound ? editor.date(deadline) : topic.registration.deadline;
     if (open && (!closesAt || Date.parse(closesAt) <= Date.now() || Date.parse(closesAt) <= Date.parse(topic.registration.opensAt))) {
       throw new AuthError(400, "Hạn đăng ký mới phải là ngày giờ hợp lệ trong tương lai và sau thời điểm mở.");
     }

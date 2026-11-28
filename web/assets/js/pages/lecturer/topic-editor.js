@@ -128,9 +128,11 @@
   try {
     if (editing) original = app.services.lecturerTopics.get('created', new URLSearchParams(location.search).get('topic') ?? app.data.lecturerRealDefaultTopicId ?? 'DA001');
     const database = usesDatabase();
-    validationOptions.useRounds = !database;
-    fields.roundId.disabled = database;
-    fields.roundId.closest('.registration-round-grid').hidden = database;
+    const rounds = !database || globalThis.IE104AdminAcademic?.connected;
+    validationOptions.useRounds = rounds;
+    validationOptions.requireRound = !database;
+    fields.roundId.disabled = !rounds;
+    fields.roundId.closest('.registration-round-grid').hidden = !rounds;
     if (fields.deadline) {
       fields.deadline.disabled = !database;
       fields.deadline.closest('[data-database-deadline]').hidden = !database;
@@ -268,11 +270,15 @@
         if (!invalidFields.has(field)) clearFieldError(field);
       }
     });
-    if (!database) app.ui.registrationRound.bind(form, {
+    if (rounds) app.ui.registrationRound.bind(form, {
       lecturer: true,
       previous: original?.registration?.roundId,
-      legacy: editing && !original?.registration?.roundId,
+      legacy: (database || editing) && !original?.registration?.roundId,
       onChange(round) {
+        if (database && fields.deadline) {
+          fields.deadline.disabled = Boolean(round);
+          fields.deadline.closest('[data-database-deadline]').hidden = Boolean(round);
+        }
         roundClosed = !editing && round?.status === 'closed';
         syncSubmit();
       },

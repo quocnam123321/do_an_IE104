@@ -63,12 +63,23 @@
   font-size: var(--font-size-secondary);
 }
 
+.admin-account-list__tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+}
+
 .admin-account-list .admin-table-scroll {
   position: relative;
 }
 
 .admin-accounts-table {
   min-inline-size: 64rem;
+}
+
+.admin-accounts-table--database .admin-account-actions {
+  flex-wrap: wrap;
 }
 
 .admin-accounts-table :is(th, td) {

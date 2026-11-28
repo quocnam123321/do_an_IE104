@@ -41,8 +41,8 @@
     return type === 'thesis' && !isMasterThesis;
   }
 
-  function validate(input, previous = null, now = new Date(), { assignCode = false, courses = catalog.courses, useRounds = true } = {}) {
-    const rounds = useRounds ? globalThis.IE104AdminAcademic : null;
+  function validate(input, previous = null, now = new Date(), { assignCode = false, courses = catalog.courses, useRounds = true,
+    requireRound = true, rounds = useRounds ? globalThis.IE104AdminAcademic : null } = {}) {
     const value = Object.fromEntries(['roundId', 'id', 'title', 'topicType', 'course', 'semester', 'academicYear', 'description', 'objectives', 'outcomes', 'requirements', 'domain', 'technologies', 'opensAt', 'deadline', 'startsAt', 'completesAt'].map(field => [field, text(input[field])]));
     value.domain = text(input.domain ?? previous?.domain);
     value.technologies = text(input.technologies ?? previous?.technologies);
@@ -70,7 +70,7 @@
     const reportFields = ['progressReportDate', 'finalReportDate'];
     const reportDates = Object.fromEntries(reportFields.map(field => [field, text(input[field] ?? previous?.[field])]));
     const hasReportDates = !previous || reportFields.some(field => reportDates[field] || previous[field]);
-    const boundToRound = Boolean(rounds && (value.roundId || previous?.registration?.roundId || !previous));
+    const boundToRound = Boolean(rounds && (value.roundId || previous?.registration?.roundId || (requireRound && !previous)));
     if (boundToRound) {
       const keep = Boolean(previous && previous.registration?.roundId === value.roundId);
       const choice = rounds.selection(value.roundId, value, { now: now.getTime(), allowUpcoming: true, keep });

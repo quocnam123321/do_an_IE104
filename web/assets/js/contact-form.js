@@ -8,6 +8,13 @@
   }
 
   const requiredFields = [...form.querySelectorAll("[required]")];
+  const store = globalThis.IE104ContactRequests;
+  if (store.connected) {
+    document.getElementById("contact-demo-hint").hidden = true;
+    form.setAttribute("aria-describedby", "contact-required-hint");
+    document.getElementById("contact-result-title").textContent = "Đã gửi lời nhắn";
+    document.getElementById("contact-result-description").textContent = "Lời nhắn đã được gửi vào mục Yêu cầu liên hệ của quản trị viên.";
+  }
   const submitButton = form.querySelector('button[type="submit"]');
   const error = document.getElementById("contact-submit-error");
   const closeButton = result.querySelector(".contact-result__close");
@@ -43,13 +50,17 @@
     submitButton.disabled = true;
     form.setAttribute("aria-busy", "true");
     try {
-      const { getWebsiteSession } = await import("./website-session.js");
-      const session = await getWebsiteSession().catch(() => null);
-      await globalThis.IE104ContactRequests.submit({ ...request, role: session?.role ?? "guest" });
+      if (store.connected) await store.submit(request);
+      else {
+        const { getWebsiteSession } = await import("./website-session.js");
+        const session = await getWebsiteSession().catch(() => null);
+        await store.submit({ ...request, role: session?.role ?? "guest" });
+      }
       form.reset();
       result.showModal();
-    } catch {
-      error.textContent = "Không thể lưu lời nhắn thử nghiệm. Vui lòng thử lại.";
+    } catch (failure) {
+      error.textContent = store.connected ? (failure.status === 429 ? failure.message : "Không thể gửi lời nhắn. Vui lòng thử lại.") :
+        "Không thể lưu lời nhắn thử nghiệm. Vui lòng thử lại.";
       error.hidden = false;
     } finally {
       form.removeAttribute("aria-busy");

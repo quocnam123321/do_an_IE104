@@ -265,6 +265,14 @@
   transition: none;
 }
 
+.admin-preview .admin-donut circle:nth-of-type(5) {
+  stroke: var(--color-danger-fg);
+}
+
+.admin-preview .topic-status__legend > div:nth-child(5)::before {
+  background: var(--color-danger-fg);
+}
+
 .admin-preview .admin-donut text.topic-status__percent {
   fill: var(--color-on-primary);
 }

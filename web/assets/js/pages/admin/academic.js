@@ -3,6 +3,7 @@
   const {
     academic, badge, dataTable, definitions, displayDate, displayDateTime, escapeHtml, forTerm, initializeTerm, labels,
     normalizeSearch, pageUrl, params, populateTerms, rememberTerm, roundLabels, term, view,
+    liveCatalog,
   } = globalThis.IE104Admin;
   const title = document.querySelector("#admin-title");
   const academicActions = document.querySelector("#admin-academic-actions");
@@ -20,6 +21,7 @@
   const datePicker = globalThis.IE104?.ui?.proposalDatePicker;
   const timeZone = "Asia/Ho_Chi_Minh";
   let currentRound;
+  let editingRound;
   let formAction;
   let data = academic.snapshot();
 
@@ -56,6 +58,8 @@
   }
 
   function topicsInRound(round) {
+    if (liveCatalog) return liveCatalog.roundTopics.filter(topic => topic.roundId === round.id)
+      .map(topic => ({ ...topic, status: topic.manuallyClosed === false ? round.status : topic.status }));
     const samples = topics.filter((topic) => topic.roundId === round.id);
     try {
       const created = globalThis.IE104.services.lecturerTopicRepository.read()
@@ -129,6 +133,7 @@
     const button = event.target.closest("[data-academic-action]");
     if (!button) return;
     formAction = button.dataset.academicAction;
+    editingRound = formAction === "edit" ? currentRound : null;
     const isTerm = formAction === "term";
     if (isTerm) {
       const template = document.querySelector("#admin-term-form-fields");
@@ -149,7 +154,7 @@
       const selectedYear = years.includes(filterYear) ? filterYear : years.at(-1);
       controls.year.replaceChildren(...years.map((year) => new Option(year, year, false, year === selectedYear)));
     } else {
-      const record = formAction === "edit" ? currentRound : null;
+      const record = editingRound;
       populateTerms(controls.term, record?.term ?? term?.value);
       controls.name.value = record?.name ?? "";
       controls.type.value = record?.type ?? "course";
@@ -192,7 +197,7 @@
     if (academicSubmit.disabled) return;
     const controls = academicForm.elements;
     const isTerm = formAction === "term";
-    const original = formAction === "edit" ? currentRound : null;
+    const original = editingRound;
     let values;
     if (!isTerm) {
       values = {

@@ -3,6 +3,10 @@
   const eventName = "ie104.system-notices.changed";
 
   async function readInbox(account) {
+    if (account.database) {
+      const { websiteData } = await import("../services/website-data-api.js");
+      return (await websiteData("notices/inbox", { role: account.type })).notices;
+    }
     const database = await openDatabase();
     const recipient = account.type + ":" + account.id;
     try {
@@ -35,6 +39,14 @@
   }
 
   async function markRead(account, ids) {
+    if (account.database) {
+      const { websiteData } = await import("../services/website-data-api.js");
+      for (let index = 0; index < ids.length; index += 1000) {
+        await websiteData("notices/inbox", { method: "PATCH", role: account.type, body: { ids: ids.slice(index, index + 1000) } });
+      }
+      notifyChange();
+      return;
+    }
     const database = await openDatabase();
     try {
       await new Promise((resolve, reject) => {

@@ -3,6 +3,8 @@
   const storeName = "requests";
   const changeEvent = "ie104.contact-requests.changed";
   const statuses = ["new", "processing", "resolved"];
+  const connected = Boolean(document.querySelector('meta[name="ie104-website-db"]'));
+  const remote = async (path, options) => (await import("../services/website-data-api.js")).websiteData(path, options);
   const samples = [
     { subject: "Không đăng nhập được", name: "Nguyễn Minh Anh", role: "guest",
       email: "minh.anh@example.com", phone: "", sentAt: "2026-11-28T10:40:00+07:00", status: "new",
@@ -50,6 +52,7 @@
   }
 
   function list() {
+    if (connected) return remote("auth/admin/contacts").then(result => result.requests);
     return transact("readonly", (store, result) => {
       const request = store.getAll();
       request.onsuccess = () => result(request.result);
@@ -65,6 +68,11 @@
   }
 
   async function submit({ name, email, phone, subject, message, role }) {
+    if (connected) {
+      await remote("contact-requests", { method: "POST", body: { name, email, phone, subject, message } });
+      notifyChange();
+      return;
+    }
     await transact("readwrite", (store) => {
       store.add({ name, email, phone, subject, message, role, sentAt: new Date().toISOString(),
         status: "new", revision: 0 });
@@ -74,6 +82,16 @@
 
   async function saveStatus(id, revision, status) {
     if (!statuses.includes(status)) return false;
+    if (connected) {
+      try {
+        await remote("auth/admin/contacts/" + encodeURIComponent(id), { method: "PATCH", body: { revision, status } });
+      } catch (failure) {
+        if (failure.status === 409) return false;
+        throw failure;
+      }
+      notifyChange();
+      return true;
+    }
     const saved = await transact("readwrite", (store, result) => {
       const request = store.get(id);
       request.onsuccess = () => {
@@ -94,7 +112,10 @@
     window.addEventListener("storage", (event) => {
       if (event.key === changeEvent) refresh();
     });
+    if (connected) {
+      document.addEventListener("visibilitychange", () => { if (!document.hidden) refresh(); });
+    }
   }
 
-  globalThis.IE104ContactRequests = { list, submit, saveStatus, onChange };
+  globalThis.IE104ContactRequests = { list, submit, saveStatus, onChange, connected };
 })();

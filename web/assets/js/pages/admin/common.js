@@ -1,9 +1,16 @@
 (() => {
-  const { requests, topics } = globalThis.IE104AdminSampleData;
+  const source = globalThis.document?.getElementById?.("ie104-admin-catalog-data");
+  const liveCatalog = source ? JSON.parse(source.textContent) : null;
+  const { requests, topics } = liveCatalog || globalThis.IE104AdminSampleData;
+  const connected = Boolean(document.querySelector('meta[name="ie104-website-db"]'));
+  if (connected) {
+    document.querySelector(".admin-account-card p")?.setAttribute("hidden", "");
+    for (const note of document.querySelectorAll(".admin-heading .admin-demo:not([role]), #admin-demo")) note.hidden = true;
+  }
   const academic = globalThis.IE104AdminAcademic;
 
   const labels = {
-    active: "Đang thực hiện", completed: "Hoàn thành", approved: "Đã duyệt",
+    active: "Đang thực hiện", completed: "Hoàn thành", approved: "Đã duyệt", registered: "Đã đăng ký",
     pending: "Chờ duyệt", rejected: "Từ chối", withdrawn: "Đã rút",
     open: "Đang mở đăng ký", upcoming: "Sắp mở",
     closed: "Đã đóng đăng ký", enabled: "Đang hoạt động", locked: "Đã khóa",
@@ -16,7 +23,7 @@
 
   const roundLabels = { open: "Đang mở", upcoming: "Sắp mở", closed: "Đã đóng" };
   const statusColors = {
-    active: "info", completed: "success", approved: "success", open: "info",
+    active: "info", completed: "success", approved: "success", registered: "success", open: "info",
     pending: "warning", rejected: "danger", upcoming: "warning", enabled: "success", published: "success",
   };
 
@@ -55,7 +62,7 @@
   compactMenu.addEventListener("change", syncMenu);
 
   function forTerm(items) {
-    return items.filter((item) => !term?.value || !item.term || item.term === term.value);
+    return items.filter((item) => !term?.value || (!liveCatalog && !item.term) || item.term === term.value);
   }
 
   function displayDate(value) {
@@ -73,12 +80,14 @@
   }
 
   function populateTerms(select, selected, includeAll = false) {
-    const terms = academic.snapshot().terms;
+    const academicTerms = academic.snapshot().terms;
+    const terms = liveCatalog && !["dot-dang-ky", "chi-tiet-dot"].includes(document.body.dataset.adminPage)
+      ? [...new Set([...academicTerms, ...[...topics, ...requests].map(item => item.term).filter(Boolean)])].sort().reverse() : academicTerms;
     const hasSelection = terms.includes(selected) || (includeAll && selected === "");
     const options = terms.map((id) => new Option(academic.termLabel(id), id));
     if (includeAll) options.unshift(new Option("Tất cả học kỳ", ""));
     select.replaceChildren(...options);
-    select.value = hasSelection ? selected : academic.currentTerm;
+    select.value = hasSelection ? selected : liveCatalog ? (includeAll ? "" : terms[0] ?? "") : academic.currentTerm;
   }
 
   function rememberTerm() {
@@ -140,7 +149,7 @@
               <th scope="row">
                 ${recordCell(definition, item)}
               </th>
-              ${definition.hideType ? "" : `<td>${definition.typeLabels?.[item.type] ?? labels[item.type]}</td>`}
+              ${definition.hideType ? "" : `<td>${definition.typeLabels?.[item.type] ?? labels[item.type] ?? "Chưa có thông tin"}</td>`}
               ${definition.extra.map(([key, , render]) => render ? `<td>${render(item)}</td>` : `<td translate="no">${escapeHtml(cellValue(item, key))}</td>`).join("")}
               <td>${badge(statusLabel(definition, item.status), item.status)}</td>
               ${detailUrl ? `<td>
@@ -203,7 +212,7 @@
   });
 
   globalThis.IE104Admin = {
-    academic, arrow, badge, dataTable, definitions, displayDate, displayDateTime, escapeHtml, forTerm,
+    academic, arrow, badge, connected, liveCatalog, dataTable, definitions, displayDate, displayDateTime, escapeHtml, forTerm,
     initializeTerm, labels, normalizeSearch, pageUrl, params, populateTerms,
     rememberTerm, roundLabels, roundUrl, term, view,
   };

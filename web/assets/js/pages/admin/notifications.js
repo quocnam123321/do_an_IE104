@@ -1,6 +1,8 @@
 (() => {
   const { badge, displayDateTime, escapeHtml, labels, normalizeSearch, params, view } = globalThis.IE104Admin;
   const store = globalThis.IE104AdminNotices;
+  const saveDraft = document.querySelector("#admin-notice-save-draft");
+  let saving = false;
   const { setup } = globalThis.IE104NoticeContent;
   const { renderArticle, articleImage } = globalThis.IE104NoticeArticle;
   const byId = (id) => document.getElementById(id);
@@ -153,7 +155,7 @@
     ready = true;
     create.disabled = Boolean(snapshot.unavailable);
     message(feedback, snapshot.unavailable ?
-      "Không thể đọc thông báo đã lưu. Đang hiển thị dữ liệu mẫu." : notice);
+      (store.connected ? "Không thể tải thông báo đã lưu. Hãy tải lại trang." : "Không thể đọc thông báo đã lưu. Đang hiển thị dữ liệu mẫu.") : notice);
     if (showSavedDrafts) renderDrafts();
     render();
   }
@@ -229,6 +231,8 @@
     byId("admin-notice-editor-title").textContent = system ? "Tạo thông báo" : item ? "Chỉnh sửa thông báo" : "Soạn thông báo";
     byId("admin-notice-academic-fields").hidden = system;
     byId("admin-notice-system-fields").hidden = !system;
+    saveDraft.hidden = system || !store.connected;
+    if (store.connected) byId("admin-notice-system-help").textContent = "Người nhận xem thông báo khi đăng nhập vào tài khoản của mình.";
     fields.title.value = item?.name ?? "";
     fields.body.value = item?.body ?? "";
     fields.category.value = item?.type ?? "";
@@ -268,15 +272,15 @@
 
     if (preview) {
       renderArticle(detailBody.querySelector(".admin-notice-article"), item, (id, file) => {
-        const url = URL.createObjectURL(file);
-        detailUrls.add(url);
+        const url = file.url || URL.createObjectURL(file);
+        if (!file.url) detailUrls.add(url);
         return articleImage(id, file, url);
       });
     }
     if (preview && item.attachment) {
-      const fileUrl = URL.createObjectURL(item.attachment);
-      detailUrls.add(fileUrl);
-      detailBody.insertAdjacentHTML("beforeend", `<a class="admin-button" href="${fileUrl}" download="${escapeHtml(item.attachment.name)}">
+      const fileUrl = item.attachment.url || URL.createObjectURL(item.attachment);
+      if (!item.attachment.url) detailUrls.add(fileUrl);
+      detailBody.insertAdjacentHTML("beforeend", `<a class="admin-button" href="${escapeHtml(fileUrl)}" download="${escapeHtml(item.attachment.name)}">
         <span>Tải xuống</span> ${localText(item.attachment.name)}</a>`);
     }
     detail.showModal();
@@ -310,15 +314,17 @@
   }
 
   async function commit(dialog, button, operation, notice, closeEditor = false) {
-    if (button.disabled) return;
+    if (saving || button.disabled) return;
+    saving = true;
     button.disabled = true;
     if (dialog === editor) previewDraft.disabled = true;
     let result;
     try {
       result = await operation();
     } catch {
-      result = { error: "Không thể lưu thông báo trên trình duyệt. Hãy thử lại." };
+      result = { error: store.connected ? "Không thể lưu thông báo. Hãy thử lại." : "Không thể lưu thông báo trên trình duyệt. Hãy thử lại." };
     } finally {
+      saving = false;
       button.disabled = false;
       if (dialog === editor) previewDraft.disabled = false;
     }
@@ -336,11 +342,11 @@
 
   function publish(draft, dialog, button) {
     return commit(dialog, button, () => store.publishAcademic(draft, editing),
-      "Đã đăng thông báo trong bản mẫu.", dialog === detail);
+      store.connected ? "Đã đăng thông báo." : "Đã đăng thông báo trong bản mẫu.", dialog === detail);
   }
 
   function canClose(dialog, button) {
-    if (button.disabled) return false;
+    if (saving || button.disabled) return false;
     if (dialog !== editor || !editorDirty) return true;
     const question = "Đóng hộp thoại và bỏ các thay đổi chưa đăng?";
     return window.confirm(document.documentElement.lang === "en" ? globalThis.ie104English[question] : question);
@@ -391,7 +397,7 @@
       commit(detail, confirm, () => store.deleteDraft(item), "Đã xóa bản nháp.");
       return;
     }
-    commit(detail, confirm, () => store.withdrawAcademic(item), "Đã gỡ thông báo trong bản mẫu.");
+    commit(detail, confirm, () => store.withdrawAcademic(item), store.connected ? "Đã gỡ thông báo." : "Đã gỡ thông báo trong bản mẫu.");
   });
 
   form.addEventListener("input", (event) => {
@@ -408,6 +414,10 @@
     }
   });
   chooseFile.addEventListener("click", () => fields.attachment.click());
+  saveDraft.addEventListener("click", () => {
+    const draft = readDraft();
+    if (draft) commit(editor, saveDraft, () => store.saveDraft(draft, editing), "Đã lưu bản nháp.");
+  });
   attachment.addEventListener("click", (event) => {
     if (!event.target.closest("button")) return;
     retainedFile = undefined;
@@ -427,7 +437,7 @@
     const audience = fields.audience.value;
     const scope = fields.scope.value;
     commit(editor, submit, () => store.createSystem({ ...text, audience, scope, ids: [...selected] }),
-      "Đã gửi thông báo hệ thống trong bản mẫu.");
+      store.connected ? "Đã gửi thông báo hệ thống." : "Đã gửi thông báo hệ thống trong bản mẫu.");
   });
 
   fields.recipientSearch.addEventListener("input", () => {

@@ -45,6 +45,7 @@ function roleForSignup(role) {
 }
 
 function rejectInactive(account) {
+  if (account.is_locked) throw new AuthError(403, "Tài khoản đã bị khóa.");
   if (account.status !== "active") throw new AuthError(403, "Tài khoản hiện chưa hoạt động.");
 }
 
@@ -123,6 +124,7 @@ authRouter.post("/logout", async (request, response) => {
 });
 
 authRouter.post("/password/reset", authRateLimit(15), async (request, response) => {
+  if (systemDemoEnabled) throw new AuthError(404, "Bản demo chỉ mô phỏng đặt lại mật khẩu.");
   const { username: rawUsername, code, password } = request.body ?? {};
   const username = normalizeUsername(rawUsername);
   if (!validUsername(username) || !isToken(code)) throw new AuthError(400, "Mã đặt lại không hợp lệ hoặc đã hết hạn.");
@@ -130,16 +132,16 @@ authRouter.post("/password/reset", authRateLimit(15), async (request, response) 
 
   const passwordHash = await hashPassword(password);
   await transaction(async (client) => {
+    const { rows: [account] } = await client.query(`
+      SELECT id FROM accounts WHERE username = $1 AND status = 'active' AND NOT is_locked FOR UPDATE
+    `, [username]);
+    if (!account) throw new AuthError(400, "Mã đặt lại không hợp lệ hoặc đã hết hạn.");
     const result = await client.query(`
-      DELETE FROM password_reset_codes AS codes USING accounts
-      WHERE codes.account_id = accounts.id AND accounts.username = $1 AND accounts.status = 'active'
-        AND codes.code_hash = $2 AND codes.expires_at > now()
-      RETURNING codes.account_id
-    `, [username, fingerprint(code)]);
+      DELETE FROM password_reset_codes WHERE account_id = $1 AND code_hash = $2 AND expires_at > now()
+    `, [account.id, fingerprint(code)]);
     if (!result.rowCount) throw new AuthError(400, "Mã đặt lại không hợp lệ hoặc đã hết hạn.");
-    const accountId = result.rows[0].account_id;
-    await client.query("UPDATE accounts SET password_hash = $1 WHERE id = $2", [passwordHash, accountId]);
-    await client.query("DELETE FROM sessions WHERE account_id = $1", [accountId]);
+    await client.query("UPDATE accounts SET password_hash = $1 WHERE id = $2", [passwordHash, account.id]);
+    await client.query("DELETE FROM sessions WHERE account_id = $1", [account.id]);
   });
   response.status(204).end();
 });

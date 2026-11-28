@@ -6,6 +6,7 @@ import { listDemoEvaluations } from "./project-evaluation-data.js";
 import { listLecturerTopics } from "./lecturer-topic-data.js";
 import { demoDisplayName } from "./auth-security.js";
 import { listSupervisionInvitations } from "./supervision-data.js";
+import { readAcademic } from "./academic-data.js";
 
 const studentPages = new Set([
   "tao-de-xuat.html", "loi-moi-huong-dan.html", "chi-tiet-de-tai-cho-duyet-sinh-vien.html", "de-tai-cua-toi-sinh-vien.html",
@@ -79,7 +80,9 @@ export function proposalPage(folder, role) {
       topicCodeFormId: page === "tao-de-xuat.html" || page === "tao-de-tai-giang-vien.html" ? randomUUID() : undefined,
     }).replaceAll("<", "\\u003c");
     // Các trang hiện có dùng defer và cần dữ liệu ngay khi khởi tạo danh sách.
-    const bootstrap = meta + '<script type="application/json" id="ie104-proposal-data">' + data + '</script>'
+    const academic = html.includes("/academic-store.js") ?
+      '<script type="application/json" id="ie104-academic-data">' + JSON.stringify(await readAcademic()).replaceAll("<", "\\u003c") + '</script>' : "";
+    const bootstrap = meta + academic + '<script type="application/json" id="ie104-proposal-data">' + data + '</script>'
       + '<script src="/assets/js/services/proposal-database.js?v=20261128-demo-workspaces"></script>';
     return response.type("html").send(html.replace("<head>", () => "<head>" + bootstrap));
   };

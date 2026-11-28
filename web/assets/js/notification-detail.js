@@ -31,6 +31,7 @@
   if (!isPublishedId(id)) return;
 
   function objectUrl(file) {
+    if (file.url) return file.url;
     const url = URL.createObjectURL(file);
     urls.push(url);
     return url;
