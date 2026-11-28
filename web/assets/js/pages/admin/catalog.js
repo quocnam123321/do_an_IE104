@@ -56,6 +56,9 @@
     const topicTab = document.querySelector("#admin-catalog-topic-tab");
     const requestTab = document.querySelector("#admin-catalog-request-tab");
     const statusFilter = document.querySelector("#admin-catalog-status-filter");
+    const filterControls = [term, type, extra];
+    const fallbackPickers = CSS.supports("(appearance: base-select) and selector(select::picker(select))") ?
+      null : globalThis.IE104?.ui?.proposalPickers;
 
     document.querySelector("#admin-catalog-list-title").textContent = title;
     document.querySelector("#admin-catalog-count-label").textContent = isRequest ? "hồ sơ" : "đề tài";
@@ -92,6 +95,7 @@
     };
 
     function render() {
+      filterPickers.forEach((picker) => picker.sync());
       const query = normalizeSearch(search.value);
       const filters = {
         term: term.value, type: type.value || null, q: search.value.trim() || null,
@@ -126,9 +130,10 @@
     }
 
     populateTerms(term, params.get("term") ?? "", true);
+    const filterPickers = filterControls.map((control) => fallbackPickers?.enhanceSelect(control)).filter(Boolean);
     rememberTerm();
     term.addEventListener("change", rememberTerm);
-    [term, type, extra].forEach((control) => control.addEventListener("change", render));
+    filterControls.forEach((control) => control.addEventListener("change", render));
     search.addEventListener("input", render);
     render();
   }

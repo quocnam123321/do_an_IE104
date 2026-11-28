@@ -19,6 +19,10 @@
   font-weight: var(--font-weight-semibold);
 }
 
+.admin-catalog-page .admin-round-search input:placeholder-shown:not(:focus) {
+  text-overflow: ellipsis;
+}
+
 .admin-catalog-filters {
   --admin-select-accent: var(--color-foreground);
 }
