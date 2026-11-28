@@ -157,6 +157,7 @@
   if (mode === 'detail') {
     window.addEventListener('pageshow',render);
     window.addEventListener('ie104:registrations-updated', render);
+    window.addEventListener('ie104:lecturer-topics-updated', render);
     document.addEventListener('ie104:lecturer-topic-state-changed',render);
     window.addEventListener('storage', event => {
       const app = globalThis.IE104;

@@ -45,6 +45,11 @@
   }
 
   async function read(ref) {
+    if (ref.proposalId || ref.projectId) {
+      const blob = ref.proposalId ? await app.proposalDatabase.readProposalFile(ref.proposalId, ref.fileKey)
+        : await app.proposalDatabase.readProjectCover(ref.projectId, ref.fileKey);
+      return { blob, fileName: ref.name };
+    }
     const record = await transaction('readonly', store => store.get(ref.fileKey));
     if (!record || !(record.blob instanceof Blob) || !record.blob.size ||
       record.name !== ref.name || record.blob.size !== ref.size) {
@@ -59,7 +64,7 @@
     }
   }
 
-  async function stageImage(file) {
+  async function validateImageContent(file) {
     validateImage(file);
     const url = URL.createObjectURL(file);
     try {
@@ -71,9 +76,13 @@
     } finally {
       URL.revokeObjectURL(url);
     }
+  }
+
+  async function stageImage(file) {
+    await validateImageContent(file);
     return stage(file);
   }
 
   const discard = fileKey => transaction('readwrite', store => store.delete(fileKey));
-  app.services.proposalFiles = { stage, stageImage, validateImage, read, discard };
+  app.services.proposalFiles = { stage, stageImage, validateImage, validateImageContent, read, discard };
 })();

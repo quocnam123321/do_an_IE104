@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Quản lý tài khoản | Quản lý đồ án và khóa luận</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png?v=2" />
+    <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
+    <link rel="stylesheet" href="../../assets/css/tokens.css" />
+    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../assets/css/components.css" />
+    <link rel="stylesheet" href="../../assets/css/common.css" />
+    <link rel="stylesheet" href="../../assets/css/auth.css" />
+    <link rel="stylesheet" href="../../assets/css/database-auth.css" />
+    <link rel="stylesheet" href="../../assets/css/project-footer.css" />
+    <script type="module" src="../../assets/js/admin-accounts.js"></script>
+  </head>
+  <body id="page-top" class="common-page">
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+    <header class="site-header account-admin-header">
+      <div class="site-header__inner">
+        <a class="site-header__brand" href="../chung/gioi-thieu.html">Quản lý đồ án và khóa luận</a>
+        <nav aria-label="Menu quản trị">
+          <a href="tai-khoan.html" aria-current="page">Quản lý tài khoản</a>
+        </nav>
+        <button id="admin-logout" type="button">Đăng xuất</button>
+      </div>
+    </header>
+    <main class="account-admin" id="main-content" tabindex="-1">
+      <nav class="breadcrumb" aria-label="Đường dẫn">
+        <ol class="breadcrumb__list">
+          <li class="breadcrumb__item"><a href="../chung/gioi-thieu.html">Trang chủ</a></li>
+          <li class="breadcrumb__item"><span aria-current="page">Quản lý tài khoản</span></li>
+        </ol>
+      </nav>
+      <h1>Quản lý tài khoản</h1>
+      <div class="account-admin__controls">
+        <label for="admin-filter">Danh sách tài khoản
+          <select id="admin-filter">
+            <option value="all">Tất cả sinh viên và giảng viên</option>
+            <option value="student">Sinh viên</option>
+            <option value="lecturer">Giảng viên</option>
+          </select>
+        </label>
+        <button id="admin-refresh" type="button">Tải lại</button>
+      </div>
+      <p class="form-error" id="admin-error" role="alert"></p>
+      <p id="admin-status" role="status"></p>
+      <section class="account-admin__code" id="reset-code-panel" aria-labelledby="reset-code-heading" hidden>
+        <h2 id="reset-code-heading">Mã đặt lại mật khẩu</h2>
+        <p id="reset-code-help"></p>
+        <label for="reset-code">Mã dùng một lần</label>
+        <input id="reset-code" readonly aria-describedby="reset-code-help" />
+        <button id="reset-code-close" type="button">Đóng</button>
+      </section>
+      <ul class="account-admin__list" id="admin-accounts" aria-label="Danh sách tài khoản"></ul>
+    </main>
+    <footer class="project-footer">
+      <div class="project-footer__columns">
+        <div class="project-footer__identity">
+          <img class="project-footer__logo" src="../../assets/images/uit-footer-logo.png"
+            alt="UIT – Trường Đại học Công nghệ Thông tin" width="480" height="180" loading="lazy" />
+          <p class="project-footer__name">Quản lý đồ án và khóa luận tốt nghiệp</p>
+          <a href="../chung/gioi-thieu.html#team-title">Đồ án IE104 — Nhóm 7</a>
+        </div>
+        <nav aria-labelledby="project-footer-navigation">
+          <h2 id="project-footer-navigation">Truy cập nhanh</h2>
+          <ul>
+            <li><a href="../../index.html">Trang chủ</a></li>
+            <li><a href="../chung/gioi-thieu.html">Giới thiệu</a></li>
+            <li><a href="../chung/thong-bao.html">Thông báo</a></li>
+            <li><a href="../chung/lien-he.html">Liên hệ</a></li>
+          </ul>
+        </nav>
+        <nav aria-labelledby="project-footer-policy">
+          <h2 id="project-footer-policy">Điều khoản và quy chế</h2>
+          <ul>
+            <li><a href="../../assets/documents/dieu-khoan-va-chinh-sach-ie104.pdf#page=1" target="_blank" rel="noopener">Điều khoản sử dụng<span class="visually-hidden"> (PDF, mở trong thẻ mới)</span></a></li>
+            <li><a href="../../assets/documents/dieu-khoan-va-chinh-sach-ie104.pdf#page=2" target="_blank" rel="noopener">Quy chế, chính sách bảo mật<span class="visually-hidden"> (PDF, mở trong thẻ mới)</span></a></li>
+          </ul>
+        </nav>
+        <nav aria-labelledby="project-footer-resources">
+          <h2 id="project-footer-resources">Tài nguyên UIT</h2>
+          <ul>
+            <li><a href="https://ise.uit.edu.vn/vi" target="_blank" rel="noopener">Khoa Khoa học và Kỹ thuật Thông tin<span class="visually-hidden"> (mở trong thẻ mới)</span></a></li>
+            <li><a href="https://portal.uit.edu.vn/" target="_blank" rel="noopener">Cổng thông tin UIT<span class="visually-hidden"> (mở trong thẻ mới)</span></a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="project-footer__bottom">
+        <p>&copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
+        <a class="project-footer__top" href="#page-top" aria-label="Về đầu trang">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 19V5m-6 6 6-6 6 6" />
+          </svg>
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>

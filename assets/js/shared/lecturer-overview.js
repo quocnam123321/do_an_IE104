@@ -65,7 +65,7 @@
       avatar.textContent = member.name.trim().split(/\s+/).slice(-2).map(part => part[0]).join('').toUpperCase();
       item.querySelector('.team-member__name').textContent = member.name;
       const code = item.querySelector('.team-member__id');
-      code.textContent = (isGroup ? member.code : participants.code) || '';
+      code.textContent = (isGroup ? member.code : participants.code) || (project.isDatabaseProject || project.isDatabaseProposal ? 'Chưa có thông tin' : '');
       code.previousElementSibling.hidden = !code.textContent;
       const role = item.querySelector('.team-member__role');
       role.textContent = member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';

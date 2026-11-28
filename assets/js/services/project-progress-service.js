@@ -1,5 +1,6 @@
 (() => {
-  const app = globalThis.IE104 = globalThis.IE104 || {};
+  const commonJS = typeof module !== 'undefined' && module.exports;
+  const app = commonJS ? {} : (globalThis.IE104 = globalThis.IE104 || {});
   app.services = app.services || {};
   const clone = value => JSON.parse(JSON.stringify(value));
   const newId = prefix => `${prefix}-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`}`;
@@ -31,13 +32,34 @@
   }
 
   function getState(projectId, { preview = false } = {}) {
-    const team = app.services.projectTeams.getState(projectId, { preview });
+    const team = teamForProgress(projectId, { preview });
+    if (!preview && usesDatabase(projectId)) {
+      const demo = app.proposalDatabase?.demoTeam?.(projectId)?.progress;
+      if (demo) return { ...demo, team };
+      const record = app.services.approvedProjects.get(projectId);
+      if (!record.progress) throw new Error('Máy chủ đang chạy phiên bản chưa hỗ trợ lưu tiến độ. Mở bản Express mới rồi tải lại trang.');
+      return { ...record.progress, team: { ...team, project: record.project } };
+    }
     return { ...stateFrom(projectId, preview ? [] : app.storage.readProjectProgress(), team, preview), team };
+  }
+
+  const usesDatabase = projectId => Boolean(app.proposalDatabase?.demoTeam?.(projectId)?.progress ||
+    app.proposalDatabase?.projects?.().some(item => item.project.id === projectId));
+  const memberKey = member => member.assignmentKey ?? member.code;
+  function teamForProgress(projectId, options) {
+    const team = app.services.projectTeams.getState(projectId, options);
+    if (!team.demoTeam || usesDatabase(projectId)) return team;
+    // Tiến độ mẫu đã lưu theo MSSV và vẫn dùng cùng khóa khi đọc danh sách nhóm.
+    return { ...team, members: team.members.map(({ assignmentKey, ...member }) => member) };
+  }
+  function currentMember(state) {
+    if (usesDatabase(state.team.project.id)) return state.team.members.find(item => memberKey(item) === state.viewerMemberKey);
+    return state.team.members.find(item => item.code === app.data.currentStudent?.code);
   }
 
   function getPermissions(state) {
     if (state.team.preview) return { manage: false, update: false, reason: 'Đang xem tiến độ mẫu. Mở website qua localhost để xem dữ liệu đã lưu và cập nhật công việc.' };
-    const member = state.team.members.find(item => item.code === app.data.currentStudent?.code);
+    const member = currentMember(state);
     const active = state.team.project.status === 'dang-thuc-hien';
     return {
       manage: active && member?.role === 'nhom-truong',
@@ -48,7 +70,7 @@
 
   function canUpdateTask(state, task) {
     const permission = getPermissions(state);
-    return permission.update && (permission.manage || (task.assigneeCodes || [task.assigneeCode]).includes(app.data.currentStudent.code));
+    return permission.update && (permission.manage || (task.assigneeCodes || [task.assigneeCode]).includes(memberKey(currentMember(state))));
   }
 
   function validateTask(input, team, { editing = false } = {}) {
@@ -67,7 +89,7 @@
 
     const errors = [];
     if (!value.title || value.title.length > 200) errors.push({ field: 'title', message: 'Nhập tên công việc từ 1 đến 200 ký tự.' });
-    const memberCodes = new Set(team.members.map(member => member.code));
+    const memberCodes = new Set(team.members.map(memberKey));
     if (!assigneeCodes.length || assigneeCodes.some(code => !memberCodes.has(code))) {
       errors.push({ field: 'assigneeCode', message: 'Chọn ít nhất một người phụ trách trong nhóm hiện tại.' });
     }
@@ -78,7 +100,7 @@
       errors.push({ field: 'status', message: editing ? 'Chọn trạng thái hợp lệ.' : 'Chọn trạng thái Chưa bắt đầu hoặc Đang thực hiện.' });
     }
     const date = new Date(`${value.deadline}T00:00:00.000Z`);
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(value.deadline) || !Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== value.deadline) errors.push({ field: 'deadline', message: 'Chọn hạn hoàn thành là ngày hợp lệ.' });
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(value.deadline) || value.deadline.startsWith('0000') || !Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== value.deadline) errors.push({ field: 'deadline', message: 'Chọn hạn hoàn thành là ngày hợp lệ.' });
     return { errors, value };
   }
 
@@ -93,8 +115,13 @@
     return { errors, value };
   }
 
+  if (commonJS) {
+    module.exports = { validateTask, validateUpdate, defaultPercent };
+    return;
+  }
+
   function mutate(projectId, revision, change) {
-    const team = app.services.projectTeams.getState(projectId);
+    const team = teamForProgress(projectId);
     const records = app.storage.readProjectProgress();
     const state = stateFrom(projectId, records, team);
     const permission = getPermissions({ ...state, team });
@@ -108,6 +135,7 @@
   }
 
   function saveTask(projectId, taskId, input, revision) {
+    if (usesDatabase(projectId)) return app.proposalDatabase.saveTask(projectId, taskId, input, revision);
     return mutate(projectId, revision, (state, team, permission) => {
       if (!permission.manage) throw new Error('Chỉ nhóm trưởng được thêm hoặc sửa công việc.');
       const checked = validateTask(input, team, { editing: Boolean(taskId) });
@@ -134,6 +162,7 @@
   }
 
   function deleteTasks(projectId, taskIds, revision) {
+    if (usesDatabase(projectId)) return app.proposalDatabase.deleteTasks(projectId, taskIds, revision);
     return mutate(projectId, revision, (state, team, permission) => {
       if (!permission.manage) throw new Error('Chỉ nhóm trưởng được xóa công việc.');
       if (!Array.isArray(taskIds) || !taskIds.length || new Set(taskIds).size !== taskIds.length) throw new Error('Chọn ít nhất một công việc hợp lệ để xóa.');
@@ -143,6 +172,7 @@
   }
 
   function updateProgress(projectId, input, revision) {
+    if (usesDatabase(projectId)) return app.proposalDatabase.updateProgress(projectId, input, revision);
     return mutate(projectId, revision, (state, team) => {
       const checked = validateUpdate(input);
       if (checked.errors.length) throw new Error(checked.errors[0].message);
@@ -163,5 +193,5 @@
     return { total, completed, remaining: total - completed, percent: total ? Math.round(partialsKnown ? state.tasks.reduce((sum, task) => sum + task.percent, 0) / total : completed / total * 100) : 0, method: partialsKnown ? 'task-average' : 'completed-ratio' };
   }
 
-  app.services.projectProgress = { getState, getPermissions, canUpdateTask, validateTask, validateUpdate, saveTask, deleteTask, deleteTasks, updateProgress, summarize };
+  app.services.projectProgress = { getState, getPermissions, canUpdateTask, validateTask, validateUpdate, saveTask, deleteTask, deleteTasks, updateProgress, summarize, usesDatabase, memberKey };
 })();

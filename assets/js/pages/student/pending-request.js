@@ -3,7 +3,7 @@
   const { proposals, requests, approvedProjects } = app.services;
   const query = new URLSearchParams(location.search);
   const id = query.has('proposal') ? query.get('proposal') : query.get('ma') ?? 'DX001';
-  const isLegacy = app.data.initialRequests.some(item => item.id === id && item.kind === 'de-xuat');
+  const isLegacy = !app.proposalDatabase && app.data.initialRequests.some(item => item.id === id && item.kind === 'de-xuat');
   const dateFormat = new Intl.DateTimeFormat('vi-VN', {
     dateStyle: 'short', timeStyle: 'short', timeZone: 'Asia/Ho_Chi_Minh',
   });
@@ -13,6 +13,9 @@
   const recipientName = article.querySelector('[data-recipient-name]');
   const recipientAvatar = article.querySelector('.proposal-recipient__avatar');
   const recipientDepartment = article.querySelector('[data-recipient-department]');
+  const recipientDemo = article.querySelector('[data-recipient-demo]');
+  const recipientReviewer = article.querySelector('[data-recipient-reviewer]');
+  const recipientDecision = article.querySelector('[data-recipient-decision]');
   const recipientEmail = article.querySelector('[data-recipient-email]');
   const recipientNoEmail = article.querySelector('[data-recipient-no-email]');
   const badge = article.querySelector('.request-topic__heading .status-badge');
@@ -107,7 +110,18 @@
     const supervisorTitle = record.recipientRole === 'Đồng hướng dẫn'
       ? 'Giảng viên đồng hướng dẫn'
       : 'Giảng viên hướng dẫn chính';
-    recipientTitle.textContent = ['tu-choi', 'da-rut'].includes(record.status) ? 'Giảng viên nhận đề xuất' : supervisorTitle;
+    recipientTitle.textContent = record.demoReceiver ? 'Giảng viên đã chọn'
+      : ['tu-choi', 'da-rut'].includes(record.status) ? 'Giảng viên nhận đề xuất' : supervisorTitle;
+    recipientDemo.hidden = !record.demoReceiver;
+    recipientDemo.textContent = record.isSharedDemo ? 'Hàng chờ minh họa của trình duyệt này'
+      : record.demoReceiver ? `Tài khoản tiếp nhận demo ${record.demoReceiver}` : '';
+    const reviewer = record.reviewer?.login;
+    recipientReviewer.hidden = !reviewer;
+    recipientReviewer.textContent = reviewer ? `Tài khoản có thể duyệt ${reviewer}` : '';
+    const decidedBy = record.decision?.lecturerName;
+    recipientDecision.hidden = !decidedBy;
+    const decisionLabel = record.status === 'tu-choi' ? 'Đã từ chối bởi' : 'Đã duyệt bởi';
+    recipientDecision.textContent = decidedBy ? `${decisionLabel} ${decidedBy}` : '';
     renderRecipientName(record.recipient);
     recipientDepartment.textContent = 'Chưa cập nhật bộ môn';
     recipientDepartment.hidden = !record.recipient;
@@ -118,10 +132,13 @@
 
     const supervisorId = record.supervisorId || record.lecturerId;
     const entry = globalThis.IE104SupervisionEntry;
-    if (!entry || !/^giang-vien-\d+$/.test(supervisorId)) return;
-    const teachers = await entry.getTeachers().catch(() => []);
-    if (displayed !== record) return;
-    const teacher = teachers.find(person => person.id === supervisorId);
+    if (!entry) return;
+    let teacher = record.supervisorProfile;
+    if (!teacher && /^giang-vien-\d+$/.test(supervisorId)) {
+      const teachers = await entry.getTeachers().catch(() => []);
+      if (displayed !== record) return;
+      teacher = teachers.find(person => person.id === supervisorId);
+    }
     if (!teacher) return;
 
     renderRecipientName(teacher.name);
@@ -224,7 +241,8 @@
       }
       dialog.close();
       render();
-      result.textContent = action === 'withdraw' ? 'Đã rút đề xuất trên bản demo.' : 'Đã xóa đề xuất khỏi danh sách trên bản demo.';
+      result.textContent = app.proposalDatabase ? 'Đã rút đề xuất.'
+        : action === 'withdraw' ? 'Đã rút đề xuất trên bản demo.' : 'Đã xóa đề xuất khỏi danh sách trên bản demo.';
       result.hidden = false;
       result.focus();
     } catch (failure) {

@@ -65,7 +65,8 @@
       catch { return null; }
       const base = project.detailUrl?.split('#')[0];
       if (!state.canUpload || !base) return null;
-      const uploads = state.requirements.length ? await service.readUploads(project.id).catch(() => []) : [];
+      const uploads = !state.isDatabaseProject && state.requirements.length
+        ? await service.readUploads(project.id).catch(() => []) : [];
       const byRequirement = new Map(uploads.map(upload => [upload.requirementId, upload]));
       const events = [];
       const milestones = app.data.projectMilestones?.find(item => item.projectId === project.id)?.dates ?? [];
@@ -100,6 +101,7 @@
         events.push({
           id: `${project.id}--${requirement.id}`, topicId: project.id, date: due.slice(0, 10),
           due, name: requirement.title, kind: 'submission', status, submitted: dateTime(latest?.submittedAt),
+          isDatabaseRequirement: Boolean(state.isDatabaseProject),
           requirementId: requirement.id, submissionId: latest?.id ?? (useUpload ? `upload:${requirement.id}` : undefined),
           detailUrl: `${base}#bai-nop`,
         });

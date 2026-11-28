@@ -1,0 +1,174 @@
+.database-demo-login__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin-top: .625rem;
+}
+
+.database-demo-login__actions button {
+  flex: 1 1 9.5rem;
+  min-height: var(--control-min-height);
+  white-space: normal;
+}
+
+.database-demo-login__actions span {
+  display: block;
+  font-size: var(--font-size-secondary);
+}
+
+.database-auth-page {
+  width: min(calc(100% - 2 * var(--page-gutter, 1rem)), 35rem);
+  margin: 0 auto;
+  padding-block: clamp(2rem, 7vw, 5rem);
+}
+
+.database-auth-panel {
+  display: grid;
+  gap: 1rem;
+  padding: clamp(1.25rem, 5vw, 2.25rem);
+  border: 1px solid var(--color-border, currentColor);
+  border-radius: 1rem;
+}
+
+.database-auth-panel h1,
+.account-admin h1 {
+  margin: 0;
+}
+
+.database-auth-panel p,
+.account-admin p {
+  margin-block: 0;
+}
+
+.database-auth-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.database-auth-form .form-field {
+  display: grid;
+  gap: .375rem;
+}
+
+.database-auth-form input,
+.database-auth-form select,
+.account-admin select,
+.account-admin input {
+  width: 100%;
+  min-height: 2.75rem;
+}
+
+.database-auth-form small,
+.database-google__hint,
+.account-admin__row p {
+  color: var(--color-muted-foreground);
+}
+
+.database-auth-links {
+  margin-block: .875rem 0;
+  text-align: center;
+}
+
+.database-google {
+  display: grid;
+  justify-items: center;
+  gap: .5rem;
+  margin-top: .75rem;
+}
+
+.database-google__button {
+  width: min(100%, 20rem);
+  display: grid;
+  justify-items: center;
+}
+
+.database-google__hint:empty,
+#admin-status:empty {
+  display: none;
+}
+
+.database-demo-login .form-error:empty,
+.database-auth-form .form-error:empty,
+.database-auth-panel .form-error:empty,
+.database-google .form-error:empty,
+#database-page-error:empty,
+#admin-error:empty {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.account-admin-header .site-header__inner {
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.account-admin-header a.site-header__brand,
+.account-admin-header nav a {
+  color: var(--color-primary-foreground, #fff);
+}
+
+.account-admin-header a.site-header__brand {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.account-admin-header nav a[aria-current="page"] {
+  text-decoration-color: var(--blue-300, currentColor);
+  text-underline-offset: .35em;
+}
+
+.account-admin {
+  width: min(calc(100% - 2 * var(--page-gutter, 1rem)), 56rem);
+  margin: 0 auto;
+  padding-block: 2rem 4rem;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.account-admin__controls,
+.account-admin__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: .625rem;
+}
+
+.account-admin__controls label {
+  display: grid;
+  gap: .375rem;
+}
+
+.account-admin__list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  border-block-start: 1px solid var(--color-border, currentColor);
+}
+
+.account-admin__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: .875rem;
+  padding-block: .875rem;
+  border-block-end: 1px solid var(--color-border, currentColor);
+  overflow-wrap: anywhere;
+}
+
+.account-admin__code {
+  display: grid;
+  gap: .625rem;
+  padding: 1rem;
+  border: 1px solid var(--color-border, currentColor);
+  border-radius: .75rem;
+}
+
+@media (max-width: 32rem) {
+  .account-admin__row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -5,6 +5,7 @@
   const files = globalThis.IE104?.services?.proposalFiles;
   const dialog = document.getElementById('proposal-confirm-dialog');
   if (!form || !service || !dialog) return;
+  const database = globalThis.IE104.proposalDatabase;
   const fields = Object.fromEntries(Object.entries({ title: 'topic-name', type: 'topic-type', courseId: 'course', semester: 'semester', academicYear: 'academic-year', description: 'topic-description', objectives: 'topic-objectives', outcomes: 'expected-results', supervisorId: 'add-supervisor', attachment: 'proposal-attachment' }).map(([key, id]) => [key, document.getElementById(id)]));
   const outline = globalThis.IE104.ui?.proposalOutline;
   const pickers = globalThis.IE104.ui?.proposalPickers;
@@ -55,6 +56,7 @@
   const coverError = document.getElementById('proposal-cover-error');
   const removeCover = coverSelection.querySelector('[data-remove-proposal-cover]');
   let retainedCover = null;
+  if (database) attachmentHint.textContent = 'Đính kèm tối đa 1 tệp, dung lượng tối đa 20 MiB.';
 
   const currentCover = () => coverInput.files[0] || retainedCover;
 
@@ -126,13 +128,28 @@
     updateTopicCode();
   }
 
-  function updateTopicCode() {
+  async function updateTopicCode() {
     if (editing) {
       topicCode.value = original?.topicCode || original?.id || '';
       topicCodeNote.hidden = true;
       return;
     }
     const type = fields.type.value;
+    if (database) {
+      topicCode.value = type ? 'Đang cấp mã…' : topicCode.defaultValue;
+      topicCodeNote.textContent = type ? '' : 'Mã được cấp tự động theo loại đề tài.';
+      if (!type) return;
+      try {
+        const code = await database.reserveTopicCode(type);
+        if (fields.type.value !== type || saved) return;
+        topicCode.value = code;
+      } catch (failure) {
+        if (fields.type.value !== type || saved) return;
+        topicCode.value = 'Chưa có mã';
+        topicCodeNote.textContent = failure.message;
+      }
+      return;
+    }
     try {
       topicCode.value = type ? service.nextTopicCode(type) : topicCode.defaultValue;
       topicCodeNote.textContent = 'Mã dự kiến được chốt khi lưu đề xuất.';
@@ -164,7 +181,8 @@
     error.hidden = false;
     errors.forEach(({ field: key, message }) => {
       const field = fieldFor(key);
-      if (!field) {
+      const wrapper = field?.closest('.proposal-form__field');
+      if (!wrapper) {
         summary.push(message);
         return;
       }
@@ -174,7 +192,7 @@
       note.dataset.proposalFieldError = '';
       note.className = 'proposal-field-error';
       note.textContent = message;
-      field.closest('.proposal-form__field').append(note);
+      wrapper.append(note);
       field.setAttribute('aria-invalid', 'true');
       field.setAttribute('aria-describedby', `${field.getAttribute('aria-describedby') || ''} ${note.id}`.trim());
     });
@@ -218,6 +236,7 @@
     try {
       original = service.findById(editId);
       if (!original) {
+        if (database) throw new Error('Không tìm thấy đề xuất của tài khoản hiện tại.');
         legacy = requests?.findStudentProposal(editId);
         if (!legacy) throw new Error('Không tìm thấy đề xuất đã lưu trên trình duyệt này.');
         if (!requests.permissions(legacy).edit) throw new Error('Trạng thái hiện tại chỉ cho phép xem lại đề xuất.');
@@ -228,7 +247,9 @@
       document.getElementById('proposal-title').textContent = 'Chỉnh sửa đề xuất';
       document.title = 'Chỉnh sửa đề xuất | Quản lý đồ án';
       document.querySelector('.breadcrumb [aria-current="page"]')?.replaceChildren(document.createTextNode('Chỉnh sửa đề xuất'));
-      document.querySelector('.page-header__description').textContent = 'Cập nhật thông tin đề xuất trong bản demo trên trình duyệt này.';
+      document.querySelector('.page-header__description').textContent = database
+        ? 'Cập nhật thông tin khi đề xuất còn chờ duyệt.'
+        : 'Cập nhật thông tin đề xuất trong bản demo trên trình duyệt này.';
       submit.textContent = 'Lưu thay đổi';
       fillOriginal();
     } catch (failure) {
@@ -249,6 +270,11 @@
     if (!form.querySelector('[data-proposal-field-error]')) error.hidden = true;
   });
   fields.attachment.addEventListener('change', () => {
+    const file = fields.attachment.files[0];
+    if (database && file && (!file.size || file.size > 20 * 1024 * 1024)) {
+      fields.attachment.value = '';
+      showErrors([{ field: 'attachment', message: 'Chọn tệp có nội dung, dung lượng tối đa 20 MiB.' }]);
+    } else clearFieldError(fields.attachment);
     showAttachment();
     if (!attachmentSelection.hidden) removeAttachment.focus();
   });
@@ -354,31 +380,53 @@
     if (sendingAgain) confirm.disabled = closeReview.disabled = true;
     const staged = [];
     try {
-      if (coverImage instanceof Blob) {
-        coverImage = await files.stageImage(coverImage);
-        staged.push(coverImage);
+      const uploads = {};
+      if (database && !editing) {
+        const code = await database.reserveTopicCode(value.type);
+        if (fields.type.value === value.type) {
+          topicCode.value = code;
+          topicCodeNote.textContent = '';
+        }
       }
-      if (attachment instanceof Blob) {
-        attachment = await files.stage(attachment);
-        staged.push(attachment);
+      if (database) {
+        if (attachment instanceof Blob) uploads.attachment = attachment;
+        else if (!attachment && original?.attachment) uploads.attachment = null;
+        if (coverImage instanceof Blob) {
+          await files.validateImageContent(coverImage);
+          uploads.cover = coverImage;
+        } else if (!coverImage && original?.coverImage) uploads.cover = null;
+        attachment = coverImage = undefined;
+      } else {
+        if (coverImage instanceof Blob) {
+          coverImage = await files.stageImage(coverImage);
+          staged.push(coverImage);
+        }
+        if (attachment instanceof Blob) {
+          attachment = await files.stage(attachment);
+          staged.push(attachment);
+        }
       }
       const input = { ...value, attachment, coverImage, keepAttachmentName: Boolean(retainedAttachmentName) };
       const record = legacy
         ? await requests.updateProposal(editId, input, original.revision, sendingAgain)
-        : await service.withWriteLock(() => editing ? service.update(editId, input, original.revision || 0) : service.create(input), { reservesTopicCode: !editing });
+        : await service.withWriteLock(() => editing ? service.update(editId, input, original.revision || 0, uploads) : service.create(input, uploads), { reservesTopicCode: !editing });
       saved = true;
       topicCode.value = record.topicCode || record.id;
       topicCodeNote.hidden = true;
       for (const field of ['attachment', 'coverImage']) {
         const key = original?.[field]?.fileKey;
-        if (key && key !== record[field]?.fileKey) void files.discard(key).catch(() => {});
+        if (!database && key && key !== record[field]?.fileKey) void files.discard(key).catch(() => {});
       }
       if (sendingAgain) dialog.close();
       form.querySelectorAll('fieldset').forEach(fieldset => { fieldset.disabled = true; });
       submit.textContent = editing ? 'Đã lưu thay đổi' : 'Đã lưu đề xuất';
-      result.replaceChildren(document.createTextNode(sendingAgain ? 'Đã lưu thay đổi và chuyển đề xuất về Chờ duyệt trong bản demo trên trình duyệt này. '
-        : editing ? 'Đã lưu thay đổi trên trình duyệt này. '
-          : 'Đã lưu đề xuất và thông tin giảng viên đã chọn trên trình duyệt này. '));
+      const recipient = record.isSharedDemo ? 'hàng chờ minh họa chung' : record.demoReceiver || record.supervisorName;
+      const message = database
+        ? (editing ? 'Đã cập nhật đề xuất. ' : `Đã gửi đề xuất đến ${recipient}. `)
+        : sendingAgain ? 'Đã lưu thay đổi và chuyển đề xuất về Chờ duyệt trong bản demo trên trình duyệt này. '
+          : editing ? 'Đã lưu thay đổi trên trình duyệt này. '
+            : 'Đã lưu đề xuất và thông tin giảng viên đã chọn trên trình duyệt này. ';
+      result.replaceChildren(document.createTextNode(message));
       const link = document.createElement('a');
       link.href = service.detailUrl(record.id);
       link.textContent = editing ? 'Xem chi tiết' : 'Xem đề xuất';

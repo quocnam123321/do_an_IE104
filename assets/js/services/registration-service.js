@@ -3,7 +3,7 @@
   app.services = app.services || {};
   const defaultRules = { minMembers: 1, maxMembers: 3 };
   const labels = { 'cho-duyet': 'Chờ duyệt', 'da-dang-ky': 'Đã đăng ký', 'da-duyet': 'Đã duyệt', 'tu-choi': 'Từ chối' };
-  const owns = record => record.members.some(member => member.code === app.data.currentStudent?.code);
+  const owns = record => record.isDatabaseRegistration || record.members.some(member => member.code === app.data.currentStudent?.code);
   const isActive = record => record.status === 'da-dang-ky' || record.status === 'da-duyet';
   const projectUrl = record => isActive(record) && owns(record)
     ? `chi-tiet-de-tai-sinh-vien.html?project=${encodeURIComponent(`DT-${record.id}`)}`
@@ -22,6 +22,10 @@
   }
 
   function findByTopic(id) {
+    const topic = app.services.publishedTopics?.get(id);
+    if (topic?.isDatabaseTopic) {
+      return topic.registrationId ? { id: topic.registrationId, status: 'da-dang-ky', isDatabaseRegistration: true } : undefined;
+    }
     const records = app.storage.readRegistrations();
     const exact = records.find(record => record.topic.id === id);
     if (exact) return exact;
@@ -37,6 +41,13 @@
     const checked = app.validation.validateRegistration(payload, { ...rules, groupNameRequired: false });
     if (!owns(checked.value)) checked.errors.push({ field: 'members.0.code', message: 'Nhóm đăng ký cần có MSSV của bạn.' });
     return checked;
+  }
+
+  function validateDatabaseEnrollment(payload, rules) {
+    const student = app.proposalDatabase.student;
+    const members = payload.members.map((member, index) => index === 0
+      ? { name: student.name, code: student.code, role: 'nhom-truong' } : member);
+    return app.validation.validateRegistration({ ...payload, members }, { ...rules, groupNameRequired: false, leaderCodeOptional: true });
   }
 
   function create(id, payload, expectedRevision) {
@@ -71,10 +82,11 @@
   }
 
   async function submit(id,payload,revision) {
+    const topic = getTopic(id);
+    if (topic?.isDatabaseTopic) return app.proposalDatabase.registerTopic(topic.catalogId, payload, revision);
     const commit = () => create(id,payload,revision);
     if (!globalThis.navigator?.locks?.request) return commit();
     const lockRegistration = () => navigator.locks.request(app.storage.registrationKey,commit);
-    const topic = getTopic(id);
     return topic?.source === 'lecturer-created' ? navigator.locks.request(app.services.lecturerTopicRepository.key,lockRegistration) : lockRegistration();
   }
 
@@ -151,5 +163,5 @@
     return [...otherTopics, ...(app.services.approvedProjects?.list('student') || []).filter(project => project.source === 'approved-registration')];
   }
 
-  app.services.registrations = { getTopic, getRules, findByTopic, findById, validateEnrollment, create, submit, listMyTopics, listForLecturer, decide, labels, owns, projectUrl };
+  app.services.registrations = { getTopic, getRules, findByTopic, findById, validateEnrollment, validateDatabaseEnrollment, create, submit, listMyTopics, listForLecturer, decide, labels, owns, projectUrl };
 })();

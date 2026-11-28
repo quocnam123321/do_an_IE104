@@ -77,6 +77,9 @@
   }
 
   async function read(context) {
+    if (app.services.projectProgress.usesDatabase(context.projectId)) {
+      return app.proposalDatabase.readTaskComments(context.projectId, context.taskId);
+    }
     const author = authorFor(context);
     const comments = await transact('readonly', (store, complete) => {
       const request = store.index('task').getAll([context.projectId, context.taskId]);
@@ -89,6 +92,9 @@
     const text = String(content ?? '').trim();
     if (!text || text.length > maxLength) throw new Error('Nhập bình luận từ 1 đến 2000 ký tự.');
     const { projectId, taskId } = context;
+    if (app.services.projectProgress.usesDatabase(projectId)) {
+      return app.proposalDatabase.addTaskComment(projectId, taskId, text, parentId);
+    }
     const comment = {
       projectId, taskId, parentId,
       id: globalThis.crypto?.randomUUID?.() || `BL-${Date.now()}-${Math.random().toString(36).slice(2)}`,

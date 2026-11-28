@@ -90,12 +90,14 @@
       currentUrl = URL.createObjectURL(file);
       image.src = currentUrl;
       dialog.close();
-      status.textContent = 'Đã lưu ảnh đại diện thử trên trình duyệt này. Chưa tải lên hệ thống.';
+      status.textContent = globalThis.IE104.services.databaseAvatar
+        ? 'Đã lưu ảnh đại diện.' : 'Đã lưu ảnh đại diện thử trên trình duyệt này. Chưa tải lên hệ thống.';
     } catch (failure) { error.textContent = failure.message; }
     finally { saving = false; save.disabled = !pending; input.disabled = false; dialog.querySelectorAll('[command="close"]').forEach(button => { button.disabled = false; }); }
   });
   dialog.addEventListener('cancel', event => { if (saving) event.preventDefault(); });
   dialog.addEventListener('close', () => { sequence += 1; clearPreview(); });
   window.addEventListener('pageshow', load);
+  if (globalThis.IE104.services.databaseAvatar) window.addEventListener('focus', () => { if (!saving) void load(); });
   load();
 })();

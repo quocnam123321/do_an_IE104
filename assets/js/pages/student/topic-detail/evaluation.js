@@ -101,6 +101,7 @@
   }
 
   window.addEventListener('pageshow', () => render());
+  window.addEventListener('ie104:proposals-updated', () => render());
   window.addEventListener('storage', event => { if ([globalThis.IE104.storage.teachingKey, null].includes(event.key)) render(); });
   render();
 })();

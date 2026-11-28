@@ -52,3 +52,10 @@
   .supervisor-dialog { padding: var(--space-4); }
   .supervisor-dialog h2 { font-size: 1.125rem; }
 }
+
+.supervisor-dialog__option:has(input:disabled) {
+  cursor: not-allowed;
+}
+.supervisor-dialog__option:has(input:disabled):hover {
+  background: transparent;
+}

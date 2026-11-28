@@ -71,6 +71,13 @@
     content.classList.toggle('request-detail--proposal', !registration);
     for (const field of proposalOnly) field.hidden = registration;
     for (const field of registrationOnly) field.hidden = !registration;
+    const demoSupervisor = content.querySelector('[data-demo-supervisor]');
+    demoSupervisor.hidden = !record.demoReceiver;
+    text('[data-demo-supervisor-name]', record.demoReceiver ? record.supervisorName : '');
+    content.querySelector('[data-additional-reviewer]').hidden = !record.reviewerLogin;
+    text('[data-additional-reviewer-login]', record.reviewerLogin);
+    content.querySelector('[data-proposal-decider]').hidden = !record.decidedByName;
+    text('[data-proposal-decider-name]', record.decidedByName);
     const badgeParent = registration ? pageHeading : titleHeading;
     if (badge.parentElement !== badgeParent) badgeParent.append(badge);
     studentNameLabel.classList.toggle('visually-hidden', !registration);
@@ -129,7 +136,7 @@
     });
     const studentFields = content.querySelectorAll('.request-student__meta dd');
     studentFields[0].textContent = record.studentName;
-    studentFields[1].textContent = record.studentId;
+    studentFields[1].textContent = record.studentId || 'Chưa có thông tin';
     const sent = document.createElement('time');
     if (record.submittedAt) {
       sent.dateTime = record.submittedAt;

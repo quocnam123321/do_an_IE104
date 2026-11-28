@@ -14,10 +14,12 @@
   const list = document.getElementById('supervisor-list');
   const template = document.getElementById('proposal-supervisor-option');
   const empty = dialog.querySelector('.supervisor-dialog__empty');
-  const getSelection = () => list.querySelector('label:not([hidden]) input:checked');
+  const demoNote = document.getElementById('supervisor-demo-note');
+  const getSelection = () => list.querySelector('label:not([hidden]) input:checked:not(:disabled)');
   const entry = globalThis.IE104SupervisionEntry;
   const { normalizeSearch, selectionDepartment } = entry;
   const service = globalThis.IE104.services.proposals;
+  const database = globalThis.IE104.proposalDatabase;
   let directoryRequest;
   let teachersById = new Map();
   let savedName = '';
@@ -27,7 +29,9 @@
   function renderSavedSelection() {
     const teacher = teachersById.get(savedId.value);
     const name = teacher?.name || savedName;
-    const specialty = teacher ? selectionDepartment(teacher) : '';
+    const department = teacher ? selectionDepartment(teacher) : '';
+    const receiver = teacher?.demoReceiver ? (database ? 'Hàng chờ minh họa chung' : 'Hàng chờ minh họa của trình duyệt') : '';
+    const specialty = [department, receiver].filter(Boolean).join(' · ');
     const selected = Boolean(savedId.value && name);
     person.hidden = !selected;
     personName.textContent = name;
@@ -112,6 +116,7 @@
     options = [];
     list.replaceChildren();
     list.hidden = true;
+    demoNote.hidden = true;
     empty.hidden = false;
     empty.textContent = 'Đang tải danh sách giảng viên…';
     updateSelection();
@@ -119,13 +124,27 @@
     search.focus();
 
     try {
+      if (database) directoryRequest = undefined;
       const teachers = await loadDirectory();
       if (!dialog.open || attempt !== openAttempt) return;
+      if (!teachers.length) {
+        empty.textContent = 'Chưa có giảng viên có thể nhận đề xuất.';
+        return;
+      }
+      const demoReceiver = teachers.find(teacher => teacher.demoReceiver)?.demoReceiver;
+      if (demoReceiver) {
+        demoNote.textContent = database
+          ? 'Đề xuất xuất hiện trong hàng chờ minh họa chung. Bạn có thể đăng nhập giảng viên từ trình duyệt khác để duyệt.'
+          : 'Đề xuất được lưu vào bộ dữ liệu của hồ sơ trình duyệt này. Đăng nhập giảng viên trong cùng hồ sơ để duyệt.';
+        demoNote.hidden = false;
+      }
       options = teachers.map(teacher => {
         const row = template.content.firstElementChild.cloneNode(true);
         const radio = row.querySelector('input');
         radio.value = teacher.id;
-        radio.checked = teacher.id === savedId.value;
+        radio.disabled = teacher.canReceive === false;
+        radio.checked = !radio.disabled && teacher.id === savedId.value;
+        row.querySelector('[data-supervisor-availability]').hidden = !radio.disabled;
         const specialty = selectionDepartment(teacher);
         row.querySelector('.supervisor-dialog__name').textContent = teacher.name;
         row.querySelector('.supervisor-dialog__specialty').textContent = specialty;

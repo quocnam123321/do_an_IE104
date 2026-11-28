@@ -29,9 +29,11 @@
       input.maxLength = key === 'code' ? 20 : 100;
       input.value = value?.[key] || '';
       input.readOnly = leader;
-      input.required = true;
+      const databaseLeader = leader && app.proposalDatabase;
+      input.required = !(databaseLeader && key === 'code');
+      if (databaseLeader && key === 'code') input.placeholder = 'Chưa có thông tin';
       caption.htmlFor = input.id;
-      caption.textContent = label;
+      caption.textContent = databaseLeader && key === 'name' ? 'Tài khoản sinh viên' : label;
       field.append(caption, input);
       row.append(field);
     }

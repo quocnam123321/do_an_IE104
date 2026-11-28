@@ -107,4 +107,5 @@
   window.addEventListener('storage', event => { if ([app.storage.proposalKey, app.storage.registrationKey, app.storage.teamKey, app.storage.teachingKey, null].includes(event.key)) refresh(); });
   document.addEventListener('ie104:project-team-updated', refresh);
   window.addEventListener('pageshow', refresh);
+  window.addEventListener('ie104:proposals-updated', refresh);
 })();

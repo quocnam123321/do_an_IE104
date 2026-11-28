@@ -16,6 +16,12 @@
   };
   const filePreview = window.location?.protocol === 'file:';
   const select = selector => document.querySelector(selector);
+  const demoName = select('meta[name="ie104-demo-lecturer"]')?.content;
+  if (demoName) {
+    select('#lecturer-welcome-name').textContent = demoName;
+    select('.lecturer-welcome__avatar').setAttribute('aria-label', `Xem hồ sơ cá nhân của ${demoName}`);
+    select('#lecturer-welcome-demo').textContent = 'Thông tin giảng viên dùng chung trong chế độ minh họa.';
+  }
   const chart = select('.topic-status__chart');
   const circles = [...chart.querySelectorAll('circle')];
   const chartLabels = chart.querySelector('g');

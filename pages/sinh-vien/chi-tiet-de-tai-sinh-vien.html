@@ -49,7 +49,7 @@
 
 
 <link rel="stylesheet" href="../../assets/css/supervisor-dialog.css">
-<link rel="stylesheet" href="../../assets/css/project-team.css?v=20261124-invitation-actions">
+<link rel="stylesheet" href="../../assets/css/project-team.css?v=20261128-team-action-layout">
 
 
 
@@ -78,14 +78,14 @@
 <script src="../../assets/js/data/student-progress.js" defer></script>
 <script src="../../assets/js/data/student-evaluations.js?v=20261124-da005-evaluation" defer></script>
 <script src="../../assets/js/data/proposal-actors.js" defer></script>
-<script src="../../assets/js/services/storage.js?v=20261124-demo-invitation-polish" defer></script>
+<script src="../../assets/js/services/storage.js?v=20261128-shared-demo-evaluations" defer></script>
 <script src="../../assets/js/services/approved-project-service.js?v=20261125-approved-overview" defer></script>
 <script src="../../assets/js/supervision-entry.js?v=20261125-department-names" defer></script>
 <script src="../../assets/js/supervision-store.js?v=20261124-conversation" defer></script>
 <script src="../../assets/js/services/project-team-service.js?v=20261125-solo-team-leader" defer></script>
-<script src="../../assets/js/services/project-progress-service.js?v=20261125-sample-progress" defer></script>
+<script src="../../assets/js/services/project-progress-service.js?v=20261128-demo-workspaces" defer></script>
 <script src="../../assets/js/services/task-comments-service.js" defer></script>
-<script src="../../assets/js/services/evaluation-service.js?v=20261124-evaluation-attachment" defer></script>
+<script src="../../assets/js/services/evaluation-service.js?v=20261128-shared-demo-evaluations" defer></script>
 <script src="../../assets/js/uit-lecturer-catalog.js?v=20261125-proposal-outline" defer></script>
 <script src="../../assets/js/shared/topic-identity.js" defer></script>
 <script src="../../assets/js/data/lecturer-topics.js" defer></script>
@@ -99,7 +99,7 @@
 <script src="../../assets/js/services/lecturer-topic-service.js?v=20261125-topic-participants" defer></script>
 <script src="../../assets/js/pages/student/topic-detail/workspace.js?v=20261125-approved-overview" defer></script>
 <script src="../../assets/js/shared/detail-tabs.js" defer></script>
-<script src="../../assets/js/pages/student/topic-detail/team.js?v=20261126-member-success" defer></script>
+<script src="../../assets/js/pages/student/topic-detail/team.js?v=20261128-demo-teams" defer></script>
 <script src="../../assets/js/shared/task-comments.js?v=20261123-comment-composer" defer></script>
 <link rel="stylesheet" href="../../assets/css/proposal-pickers.css?v=20261126-calendar-year">
 <script src="../../assets/js/pages/student/proposal-pickers.js?v=20261126-picker-parity" defer></script>
@@ -579,8 +579,43 @@
                 </section>
               </div>
               <footer hidden>
+                <button type="button" class="workflow-dialog__primary" data-task-detail-action="update" aria-haspopup="dialog" aria-controls="task-update-dialog" hidden>Cập nhật tiến độ</button>
                 <button type="button" class="workflow-dialog__primary" data-task-detail-action="edit" aria-haspopup="dialog" aria-controls="task-edit-cv-01">Sửa công việc</button>
               </footer>
+            </dialog>
+
+            <dialog id="task-update-dialog" aria-labelledby="task-update-title" class="task-popover task-editor">
+              <header class="popover-header">
+                <h3 id="task-update-title">Cập nhật tiến độ</h3>
+                <button type="button" class="btn-close-popover" commandfor="task-update-dialog" command="close" aria-label="Đóng hộp thoại">×</button>
+              </header>
+              <form class="popover-form">
+                <div class="task-editor__body">
+                  <p id="task-update-error" class="progress-form-error" role="alert" tabindex="-1" hidden></p>
+                  <div class="task-editor__row">
+                    <div class="form-group">
+                      <label for="task-update-status">Trạng thái</label>
+                      <select id="task-update-status" name="trang-thai">
+                        <option value="chua-thuc-hien">Chưa bắt đầu</option>
+                        <option value="dang-thuc-hien">Đang thực hiện</option>
+                        <option value="da-hoan-thanh">Đã hoàn thành</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="task-update-percent">Mức hoàn thành (%)</label>
+                      <input type="number" id="task-update-percent" name="phan-tram" min="0" max="100" step="1" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="task-update-content">Nội dung đã làm</label>
+                    <textarea id="task-update-content" name="noi-dung" rows="3" maxlength="2000" required autofocus></textarea>
+                  </div>
+                </div>
+                <div class="popover-actions">
+                  <button type="button" commandfor="task-update-dialog" command="close">Hủy</button>
+                  <button type="submit">Lưu cập nhật</button>
+                </div>
+              </form>
             </dialog>
 
             <dialog id="task-add-popover" aria-labelledby="add-task-title" class="task-popover task-editor">
@@ -985,6 +1020,16 @@
           <button type="submit" disabled>Thêm thành viên</button>
         </footer>
       </form>
+    </dialog>
+    <dialog id="remove-team-member-dialog" class="confirmation-dialog student-destructive-confirm"
+      aria-labelledby="remove-team-member-title" aria-describedby="remove-team-member-message">
+      <h2 id="remove-team-member-title">Xóa thành viên?</h2>
+      <p id="remove-team-member-message"><strong data-remove-member-name></strong> sẽ được xóa khỏi nhóm và danh sách người được giao công việc.</p>
+      <p data-remove-member-error class="team-error" role="alert" tabindex="-1" hidden></p>
+      <footer class="team-member-dialog__actions">
+        <button type="button" data-close-remove-member autofocus>Quay lại</button>
+        <button type="button" class="student-destructive-confirm__submit" data-confirm-remove-member>Xóa thành viên</button>
+      </footer>
     </dialog>
     <dialog id="add-team-member-success" class="confirmation-dialog success-dialog" aria-labelledby="add-team-member-success-title">
       <button class="success-dialog__close" type="button" command="close" commandfor="add-team-member-success" aria-label="Đóng thông báo" autofocus>
@@ -4364,7 +4409,7 @@
       </li>
     </template>
     <script src="../../assets/js/shared/download-file.js" defer></script>
-    <script src="../../assets/js/services/student-submissions-service.js?v=20261125-approved-overview" defer></script>
+    <script src="../../assets/js/services/student-submissions-service.js?v=20261128-demo-workspaces" defer></script>
     <script src="../../assets/js/pages/student/topic-detail/submission-upload.js?v=20261124-upload-dialog" defer></script>
     <script src="../../assets/js/shared/submission-file-list.js" defer></script>
     <script src="../../assets/js/pages/student/topic-detail/submission-zip.js" defer></script>

@@ -1,7 +1,15 @@
 (() => {
+  const fileLimits = { maxFiles: 10, maxBytes: 20 * 1024 * 1024 };
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = fileLimits;
+    return;
+  }
   const app = globalThis.IE104;
   if (!app?.services?.projectTeams || !app.storage?.readTeachingRecords) return;
   const databaseName = 'ie104.student.submission-uploads';
+  const inDatabase = project => project.isDatabaseProject || project.isDatabaseProposal;
+  const usesDatabase = projectId => Boolean(app.proposalDatabase?.demoTeam?.(projectId)?.submissionBoard ||
+    app.proposalDatabase?.projects?.().some(item => item.project.id === projectId));
   let channel;
   try {
     if (typeof BroadcastChannel === 'function') channel = new BroadcastChannel(databaseName);
@@ -12,16 +20,27 @@
   function forStudent(projectId, now = new Date()) {
     const team = app.services.projectTeams.getState(projectId);
     const studentCode = app.data.currentStudent?.code;
-    const isMember = Boolean(studentCode && team.members.some(member => member.code === studentCode));
+    const demo = app.proposalDatabase?.demoTeam?.(projectId);
+    const isDatabaseProject = inDatabase(team.project) || Boolean(demo?.submissionBoard);
+    const isMember = demo?.submissionBoard ? Boolean(team.viewerMemberKey) : isDatabaseProject
+      ? Boolean(app.services.approvedProjects.forStudent(projectId))
+      : Boolean(studentCode && team.members.some(member => member.code === studentCode));
     if (!isMember && !team.project.isSharedProposalSample) {
       throw new Error('Sinh viên hiện tại không thuộc nhóm thực hiện đề tài này.');
     }
 
-    const saved = app.storage.readTeachingRecords().find(item => item.projectId === projectId);
-    const record = app.data.studentWebSubmissions?.forProject(projectId, saved) ?? saved ??
-      app.data.teachingSeeds?.find(item => item.projectId === projectId);
-    const completed = team.project.status === 'hoan-thanh';
-    const canUpload = isMember && team.project.status === 'dang-thuc-hien';
+    let record;
+    if (isDatabaseProject) {
+      record = app.proposalDatabase.submissionBoard(projectId);
+      if (!record) throw new Error('Máy chủ hiện chưa hỗ trợ bài nộp dùng chung. Hãy tải lại bản Express mới.');
+    } else {
+      const saved = app.storage.readTeachingRecords().find(item => item.projectId === projectId);
+      record = app.data.studentWebSubmissions?.forProject(projectId, saved) ?? saved ??
+        app.data.teachingSeeds?.find(item => item.projectId === projectId);
+    }
+    const status = record?.projectStatus || team.project.status;
+    const completed = status === 'hoan-thanh';
+    const canUpload = isMember && status === 'dang-thuc-hien';
     const submissionsLocked = Boolean(record?.submissionsLocked);
     const activeRequirements = (record?.requirements || []).filter(item => !item.deletedAt);
     const demoReference = item => app.data.studentUITCatalog?.submissionReferenceTime(item);
@@ -50,7 +69,7 @@
       overdue: !completed && Date.parse(item.deadline) < (demoReference(item) ?? now.getTime()),
     }));
     requirements.sort((first, second) => Date.parse(first.deadline) - Date.parse(second.deadline));
-    return { hasRecord: Boolean(record), completed, canUpload, submissionsLocked, requirements, submissions };
+    return { hasRecord: Boolean(record), isDatabaseProject, completed, canUpload, submissionsLocked, requirements, submissions };
   }
 
   function localUploads(mode, request) {
@@ -87,6 +106,7 @@
   }
 
   function readUploads(projectId, role = 'student') {
+    if (usesDatabase(projectId)) return Promise.resolve([]);
     if (role === 'lecturer') app.services.teaching.getState(projectId);
     else forStudent(projectId);
     return localUploads('readonly', store => store.index('projectId').getAll(projectId));
@@ -136,6 +156,13 @@
     if (!files.length || files.some(file => !(file instanceof File) || !file.size)) {
       throw new Error('Hãy chọn ít nhất một tệp có nội dung.');
     }
+    if (usesDatabase(projectId)) {
+      if (files.length > fileLimits.maxFiles) throw new Error('Mỗi lần nộp tối đa 10 tệp.');
+      if (files.reduce((total, file) => total + file.size, 0) > fileLimits.maxBytes) {
+        throw new Error('Tổng dung lượng tệp của một lần nộp tối đa 20 MiB.');
+      }
+      return app.proposalDatabase.submitFiles(projectId, requirement.id, files, note.trim(), expectedSavedAt);
+    }
 
     const record = {
       projectId,
@@ -176,6 +203,7 @@
 
   function deleteUnsubmittedRequirement(projectId, requirementId, revision) {
     const teaching = app.services.teaching;
+    if (usesDatabase(projectId)) return teaching.deleteRequirement(projectId, requirementId, revision);
     teaching.getState(projectId);
     return localUploads('readwrite', (store, abort) => {
       const request = store.get([projectId, requirementId]);
@@ -195,6 +223,9 @@
   }
 
   async function reviewUpload(projectId, upload, feedback) {
+    if (upload.isDatabaseSubmission) {
+      return app.proposalDatabase.saveSubmissionFeedback(projectId, upload.id, feedback, upload.feedbackRevision);
+    }
     const teaching = app.services.teaching;
     const state = teaching.getState(projectId);
     teaching.assertFeedbackAllowed(state.project);
@@ -232,7 +263,18 @@
     channel?.postMessage({ projectId });
   }
 
+  async function readFiles(projectId, submission, fileIndex, signal) {
+    const files = fileIndex === undefined ? submission.files : [submission.files?.[fileIndex]];
+    if (!files?.length || files.some(file => !file)) throw new Error('Không tìm thấy tệp bài nộp.');
+    if (!submission.isDatabaseSubmission) return files;
+    return Promise.all(files.map(async file => {
+      const blob = await app.proposalDatabase.readSubmissionFile(projectId, submission.id, file.id, signal);
+      return new File([blob], file.name, { type: blob.type });
+    }));
+  }
+
   app.services.studentSubmissions = {
     forStudent, readUploads, saveUpload, onUploadsChanged, reviewUpload, visibleSubmissions, deleteUnsubmittedRequirement,
+    readFiles, usesDatabase, fileLimits,
   };
 })();

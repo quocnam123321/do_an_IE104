@@ -1,6 +1,4 @@
 (() => {
-  const app = globalThis.IE104 = globalThis.IE104 || {};
-  app.services = app.services || {};
   const catalog = {
     types: {
       'do-an-mon-hoc': {
@@ -24,17 +22,27 @@
   const labels = { 'cho-duyet': 'Chờ duyệt', 'da-rut': 'Đã rút', 'da-duyet': 'Đã duyệt', 'tu-choi': 'Từ chối' };
   const sampleStatuses = { pending: 'cho-duyet', approved: 'da-duyet', rejected: 'tu-choi', withdrawn: 'da-rut' };
   const topicCodePrefixes = { 'do-an-mon-hoc': 'ISEDAMH', 'do-an-tot-nghiep': 'ISEDATN', 'khoa-luan': 'ISEKLTN' };
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { catalog, topicCodePrefixes };
+    return;
+  }
+  const app = globalThis.IE104 = globalThis.IE104 || {};
+  app.services = app.services || {};
+  const database = app.proposalDatabase;
+  const readProposals = () => database ? database.records() : app.storage.readProposals();
   const detailUrl = id => `chi-tiet-de-tai-cho-duyet-sinh-vien.html?proposal=${encodeURIComponent(id)}`;
   const clone = value => JSON.parse(JSON.stringify(value));
   const defaultStudent = () => app.data.currentStudent;
   const lecturerIdFor = supervisorId =>
     app.data.proposalLecturers?.find(person => person.choiceId === supervisorId)?.id || supervisorId;
   const assignedLecturer = record => record.lecturerId || lecturerIdFor(record.supervisorId);
-  const studentOwns = record => (record.student || app.data.legacyProposalStudent)?.code === defaultStudent()?.code;
+  const studentOwns = record => database
+    ? database.account.role === 'student' && (record.isSharedDemo || database.account.id === record.student?.accountId)
+    : (record.student || app.data.legacyProposalStudent)?.code === defaultStudent()?.code;
 
   async function listSupervisors() {
-    const teachers = await globalThis.IE104SupervisionEntry.getTeachers();
-    catalog.supervisors = Object.fromEntries(teachers.map(teacher => [teacher.id, teacher.name]));
+    const teachers = database ? await database.listSupervisors() : await globalThis.IE104SupervisionEntry.getTeachers();
+    catalog.supervisors = Object.fromEntries(teachers.filter(teacher => teacher.canReceive !== false).map(teacher => [teacher.id, teacher.name]));
     return teachers;
   }
 
@@ -54,6 +62,7 @@
   }
 
   function submittingStudent() {
+    if (database) return database.student;
     const profile = app.services.profile?.getState() || defaultStudent();
     return profile ? { code: profile.code, name: profile.name } : null;
   }
@@ -70,7 +79,7 @@
     return validateForStudent(input, record ? record.student || defaultStudent() : submittingStudent(), catalogFor(record));
   }
 
-  function nextTopicCode(type, proposals = app.storage.readProposals()) {
+  function nextTopicCode(type, proposals = readProposals()) {
     if (!Object.hasOwn(topicCodePrefixes, type)) return '';
     const prefix = topicCodePrefixes[type];
     const uit = globalThis.UITLecturerCatalog;
@@ -99,7 +108,8 @@
     return `${prefix}-${String(highest + 1).padStart(3, '0')}`;
   }
 
-  function create(input) {
+  function create(input, files) {
+    if (database) return database.create(input, files);
     const student = submittingStudent();
     const checked = validateForStudent(input, student);
     if (checked.errors.length) throw new Error(checked.errors[0].message);
@@ -125,7 +135,7 @@
   }
 
   function findById(id) {
-    return findStudentSample(id) || app.storage.readProposals().find(record => record.id === id && studentOwns(record)) || null;
+    return findStudentSample(id) || readProposals().find(record => record.id === id && studentOwns(record)) || null;
   }
 
   function sampleCourseId(record) {
@@ -151,6 +161,7 @@
   }
 
   function findStudentSample(id) {
+    if (database) return null;
     const record = globalThis.IE104Proposals?.getStudentSeed?.(id);
     return record ? studentSample(record) : null;
   }
@@ -189,7 +200,8 @@
     return record;
   }
 
-  function update(id, input, revision) {
+  function update(id, input, revision, files) {
+    if (database) return database.update(id, input, revision, files);
     if (findStudentSample(id)) return updateSample(id, input, revision);
     const records = app.storage.readProposals();
     const previous = getEditable(records, id, revision);
@@ -204,6 +216,7 @@
   }
 
   function withdraw(id, revision) {
+    if (database) return database.withdraw(id, revision);
     if (findStudentSample(id)) return globalThis.IE104Proposals.changeStudentSeed(id, revision).then(studentSample);
     const records = app.storage.readProposals();
     const previous = getEditable(records, id, revision);
@@ -214,8 +227,9 @@
 
   function listMyTopics() {
     const approved = app.services.approvedProjects;
-    const pending = app.storage.readProposals().filter(record => studentOwns(record) && !(record.status === 'da-duyet' && approved)).map(record => ({
+    const pending = readProposals().filter(record => studentOwns(record) && !(record.status === 'da-duyet' && approved)).map(record => ({
       id: record.id, requestId: record.id, displayId: record.topicCode, title: record.title, coverImage: record.coverImage,
+      isDatabaseProposal: record.isDatabaseProposal,
       type: record.type === 'khoa-luan' ? 'khoa-luan' : 'do-an', typeLabel: record.typeLabel,
       courseId: record.courseId, courseLabel: record.courseLabel, semester: record.semester,
       academicYear: record.academicYear, lecturer: record.supervisorName,
@@ -224,10 +238,11 @@
       detailUrl: detailUrl(record.id),
     }));
     const uit = globalThis.UITLecturerCatalog;
-    const sharedSamples = [...(uit?.pending || []), ...(uit?.rejected || [])]
+    const sharedSamples = (database ? [] : [...(uit?.pending || []), ...(uit?.rejected || [])])
       .filter(seed => seed.studentVisible)
       .map(seed => globalThis.IE104Proposals?.get(seed.id)).filter(Boolean).map(record => ({
         id: record.id, requestId: record.id, displayId: record.topicCode, title: record.title, coverImage: record.coverImage,
+      isDatabaseProposal: record.isDatabaseProposal,
         type: record.topicType, typeLabel: record.topicTypeLabel,
         courseId: sampleCourseId(record),
         courseLabel: record.courseLabel, semester: record.semester, academicYear: record.academicYear.replace('–', '-'),
@@ -242,22 +257,24 @@
           ? `chi-tiet-de-tai-sinh-vien.html?project=${encodeURIComponent(record.topicId)}`
           : `chi-tiet-de-tai-cho-duyet-sinh-vien.html?ma=${encodeURIComponent(record.id)}`,
       }));
-    return [...sharedSamples, ...pending, ...(approved?.list('student') || []).filter(project => project.source === 'approved-proposal').map(project => ({ ...project, requestStatusLabel: 'Đã duyệt', feedback: '' }))];
+    return [...sharedSamples, ...pending, ...(approved?.list('student', { proposalsOnly: Boolean(database) }) || []).filter(project => project.source === 'approved-proposal').map(project => ({ ...project, requestStatusLabel: 'Đã duyệt', feedback: '' }))];
   }
 
-  function canReview(lecturerId) {
+  function canReview(lecturerId, reviewerId, isSharedDemo) {
+    if (database) return database.account.role === 'lecturer' && (isSharedDemo || [lecturerId, reviewerId].includes(database.account.id));
     const actor = app.data.currentLecturer?.id;
     return Boolean(actor && lecturerId && (actor === lecturerId ||
       (actor === app.data.proposalDemoReviewerId && /^giang-vien-\d+$/.test(lecturerId))));
   }
 
   function listForLecturer() {
-    return app.storage.readProposals().filter(record => canReview(assignedLecturer(record))).map(record => {
+    return readProposals().filter(record => canReview(assignedLecturer(record), record.reviewer?.id, record.isSharedDemo)).map(record => {
       const student = record.student || app.data.legacyProposalStudent;
       return {
         id: record.id, topicId: `DT-${record.id}`, topicCode: record.topicCode, title: record.title, source: 'student', revision: record.revision || 0,
         status: ({ 'cho-duyet': 'pending', 'da-duyet': 'approved', 'tu-choi': 'rejected', 'da-rut': 'withdrawn' })[record.status],
         topicStatus: record.status === 'da-duyet' ? 'in-progress' : record.status,
+        isDatabaseProposal: record.isDatabaseProposal,
         topicType: record.type, topicTypeLabel: record.typeLabel, courseId: record.courseId,
         course: ({ IE104: 'internet-va-cong-nghe-web', IT004: 'co-so-du-lieu', IE501: 'do-an-tot-nghiep', IE505: 'khoa-luan' })[record.courseId] || record.courseId,
         courseLabel: record.courseLabel, semester: record.semester, academicYear: record.academicYear,
@@ -265,14 +282,17 @@
         studentName: student.name, studentId: student.code, submittedAt: record.createdAt,
         description: record.description, objectives: record.objectives, outcomes: record.outcomes, outline: record.outline ? clone(record.outline) : null,
         attachment: record.attachment?.name || '', attachmentSize: record.attachment?.size, attachmentFileKey: record.attachment?.fileKey,
+        attachmentProposalId: record.attachment?.proposalId,
         coverImage: record.coverImage,
-        lecturerId: assignedLecturer(record), supervisorName: record.supervisorName,
+        lecturerId: assignedLecturer(record), supervisorName: record.supervisorName, demoReceiver: record.demoReceiver,
+        reviewerLogin: record.reviewer?.login, decidedByName: record.decision?.lecturerName,
         reason: record.decision?.reason || '', decidedAt: record.decision?.decidedAt || '',
       };
     });
   }
 
   function withWriteLock(operation, { reservesTopicCode = false } = {}) {
+    if (database) return operation();
     const locks = globalThis.navigator?.locks;
     if (!locks?.request) return operation();
     const lecturerKey = app.services.lecturerTopicRepository?.key;
@@ -281,6 +301,10 @@
   }
 
   async function decide(id, status, reason, revision) {
+    if (database) {
+      await database.decide(id, status, reason, revision);
+      return listForLecturer().find(item => item.id === id);
+    }
     const apply = () => {
       const records = app.storage.readProposals();
       const previous = records.find(record => record.id === id);

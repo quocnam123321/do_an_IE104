@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tạo tài khoản | Quản lý đồ án và khóa luận</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png?v=2" />
+    <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
+    <link rel="stylesheet" href="../../assets/css/tokens.css" />
+    <link rel="stylesheet" href="../../assets/css/base.css" />
+    <link rel="stylesheet" href="../../assets/css/components.css" />
+    <link rel="stylesheet" href="../../assets/css/common.css" />
+    <link rel="stylesheet" href="../../assets/css/auth.css" />
+    <link rel="stylesheet" href="../../assets/css/database-auth.css" />
+    <link rel="stylesheet" href="../../assets/css/project-footer.css" />
+    <script defer src="../../assets/js/password-toggle.js"></script>
+    <script type="module" src="../../assets/js/auth-pages.js"></script>
+  </head>
+  <body id="page-top" class="common-page">
+    <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
+    <main class="database-auth-page" id="main-content" tabindex="-1" data-auth-page="signup">
+      <section class="database-auth-panel" aria-labelledby="register-title">
+        <h1 id="register-title">Tạo tài khoản</h1>
+        <form class="database-auth-form" id="database-register-form" method="post" aria-describedby="database-form-error">
+          <div class="form-field">
+            <label for="register-role">Vai trò</label>
+            <select id="register-role" name="role" required>
+              <option value="" selected disabled>Chọn vai trò</option>
+              <option value="student">Sinh viên</option>
+              <option value="lecturer">Giảng viên</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label for="register-username">Tên đăng nhập</label>
+            <input id="register-username" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" minlength="3" maxlength="32" aria-describedby="register-username-hint" required />
+            <small id="register-username-hint">3–32 ký tự. Có thể dùng chữ không dấu, số, dấu chấm, gạch dưới và gạch ngang.</small>
+          </div>
+          <div class="form-field">
+            <label for="register-email">Email (tùy chọn)</label>
+            <input id="register-email" name="email" autocomplete="email" type="email" maxlength="254" />
+          </div>
+          <div class="form-field">
+              <label for="register-password">Mật khẩu</label>
+              <div class="password-field">
+                <input type="password" id="register-password" name="password" autocomplete="new-password" minlength="6" maxlength="128" aria-describedby="password-rules" required />
+                <button class="password-field__toggle" type="button" aria-label="Hiện mật khẩu" aria-controls="register-password" aria-pressed="false" hidden>
+                  <svg data-password-icon="show" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" />
+                  </svg>
+                  <svg data-password-icon="hide" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true" hidden>
+                    <path d="m3 3 18 18M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                  </svg>
+                </button>
+              </div>
+              <small id="password-rules">Từ 6 đến 128 ký tự.</small>
+            </div>
+          <div class="form-field">
+              <label for="register-confirm">Xác nhận mật khẩu</label>
+              <div class="password-field">
+                <input type="password" id="register-confirm" name="confirmPassword" autocomplete="new-password" minlength="6" maxlength="128" required />
+                <button class="password-field__toggle" type="button" aria-label="Hiện mật khẩu" aria-controls="register-confirm" aria-pressed="false" hidden>
+                  <svg data-password-icon="show" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
+                    <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" />
+                  </svg>
+                  <svg data-password-icon="hide" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true" hidden>
+                    <path d="m3 3 18 18M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          <p class="form-error" id="database-form-error" role="alert"></p>
+          <button class="button--primary" type="submit" disabled>Tạo tài khoản</button>
+        </form>
+        <p id="database-register-status" role="status" hidden></p>
+        <div class="database-google" id="database-google" hidden>
+            <div class="database-google__button" id="database-google-button"></div>
+            <p class="database-google__hint" id="database-google-hint" role="status"></p>
+            <p class="form-error" id="database-google-error" role="alert"></p>
+            <button id="database-google-retry" type="button" hidden>Thử lại với Google</button>
+          </div>
+        <p><a id="database-signin-link" href="dang-nhap.html">Quay lại đăng nhập</a></p>
+        <noscript><p>Bật JavaScript để tạo tài khoản.</p></noscript>
+      </section>
+    </main>
+    <footer class="project-footer">
+      <div class="project-footer__columns">
+        <div class="project-footer__identity">
+          <img class="project-footer__logo" src="../../assets/images/uit-footer-logo.png"
+            alt="UIT – Trường Đại học Công nghệ Thông tin" width="480" height="180" loading="lazy" />
+          <p class="project-footer__name">Quản lý đồ án và khóa luận tốt nghiệp</p>
+          <a href="gioi-thieu.html#team-title">Đồ án IE104 — Nhóm 7</a>
+        </div>
+        <nav aria-labelledby="project-footer-navigation">
+          <h2 id="project-footer-navigation">Truy cập nhanh</h2>
+          <ul>
+            <li><a href="../../index.html">Trang chủ</a></li>
+            <li><a href="gioi-thieu.html">Giới thiệu</a></li>
+            <li><a href="thong-bao.html">Thông báo</a></li>
+            <li><a href="lien-he.html">Liên hệ</a></li>
+          </ul>
+        </nav>
+        <nav aria-labelledby="project-footer-policy">
+          <h2 id="project-footer-policy">Điều khoản và quy chế</h2>
+          <ul>
+            <li><a href="../../assets/documents/dieu-khoan-va-chinh-sach-ie104.pdf#page=1" target="_blank" rel="noopener">Điều khoản sử dụng<span class="visually-hidden"> (PDF, mở trong thẻ mới)</span></a></li>
+            <li><a href="../../assets/documents/dieu-khoan-va-chinh-sach-ie104.pdf#page=2" target="_blank" rel="noopener">Quy chế, chính sách bảo mật<span class="visually-hidden"> (PDF, mở trong thẻ mới)</span></a></li>
+          </ul>
+        </nav>
+        <nav aria-labelledby="project-footer-resources">
+          <h2 id="project-footer-resources">Tài nguyên UIT</h2>
+          <ul>
+            <li><a href="https://ise.uit.edu.vn/vi" target="_blank" rel="noopener">Khoa Khoa học và Kỹ thuật Thông tin<span class="visually-hidden"> (mở trong thẻ mới)</span></a></li>
+            <li><a href="https://portal.uit.edu.vn/" target="_blank" rel="noopener">Cổng thông tin UIT<span class="visually-hidden"> (mở trong thẻ mới)</span></a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="project-footer__bottom">
+        <p>&copy; 2026 · Quản lý đồ án và khóa luận tốt nghiệp</p>
+        <a class="project-footer__top" href="#page-top" aria-label="Về đầu trang">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 19V5m-6 6 6-6 6 6" />
+          </svg>
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>

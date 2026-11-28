@@ -1,4 +1,13 @@
 (() => {
+  const teachingCriteria = [
+    { id: "TC001", title: "Nội dung", weight: 40, description: "Mức độ đáp ứng yêu cầu đề tài" },
+    { id: "TC002", title: "Sản phẩm", weight: 40, description: "Chất lượng và tính hoàn thiện" },
+    { id: "TC003", title: "Báo cáo", weight: 20, description: "Trình bày và bảo vệ kết quả" },
+  ];
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = teachingCriteria;
+    return;
+  }
   const app = globalThis.IE104 = globalThis.IE104 || {};
   app.data = app.data || {};
   app.data.lecturerProjects = [{ id: 'GV-DT001-N01', topicId: 'DT001', title: 'Website quản lý thư viện', groupName: 'Nhóm 01', status: 'dang-thuc-hien', typeLabel: 'Đồ án môn học', courseId: 'IE104', courseLabel: 'IE104 - Internet và Công nghệ Web', semester: 1, academicYear: '2026-2027' }];
@@ -653,5 +662,5 @@
     "audit": []
   }
 ];
-  app.data.teachingCriteria = [{ id: "TC001", title: "Nội dung", weight: 40, description: "Mức độ đáp ứng yêu cầu đề tài" }, { id: "TC002", title: "Sản phẩm", weight: 40, description: "Chất lượng và tính hoàn thiện" }, { id: "TC003", title: "Báo cáo", weight: 20, description: "Trình bày và bảo vệ kết quả" }];
+  app.data.teachingCriteria = teachingCriteria;
 })();

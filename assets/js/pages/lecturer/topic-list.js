@@ -89,7 +89,7 @@
         if (tabKind === 'supervised') {
           try {
             entries = [...entries, ...(globalThis.IE104.services.teaching?.listSupervisedProjects() || []).map(entry => entry.project),
-              ...(window.IE104Proposals?.getAll() || []).filter(entry => entry.status === 'approved')];
+              ...(window.IE104Proposals?.getAll() || []).filter(entry => entry.status === 'approved' && !entry.isDatabaseProposal)];
           } catch { /* Vẫn đếm được danh mục mẫu khi không đọc được dữ liệu đã lưu. */ }
         }
         entries = entries.filter(listFilters[tabKind]);

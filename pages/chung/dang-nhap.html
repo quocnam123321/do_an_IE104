@@ -21,13 +21,14 @@
     <script src="../../assets/js/password-toggle.js" defer></script>
     <script src="../../assets/js/supervision-entry.js?v=20261123-language" defer></script>
     <script src="../../assets/js/supervision-login.js?v=20261122-shared-login" defer></script>
-    <script src="../../assets/js/demo-login.js?v=20261122-shared-login" defer></script>
-    <script src="../../assets/js/google-login.js?v=20261122-shared-login" defer></script>
+    <link rel="stylesheet" href="../../assets/css/database-auth.css" />
+    <script defer src="../../assets/js/auth-file-fallback.js" data-scripts="demo-login.js google-login.js"></script>
+    <script type="module" src="../../assets/js/auth-pages.js"></script>
   </head>
   <body id="page-top" tabindex="-1" class="common-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
 
-    <main id="main-content" class="login-page login-page--portal" tabindex="-1">
+    <main id="main-content" class="login-page login-page--portal" tabindex="-1" data-auth-page="login">
       <div class="login-page__inner">
         <section class="login-introduction" aria-labelledby="login-introduction-title">
           <!-- Dải sóng lụa nền trang trí (tôn trọng prefers-reduced-motion) -->
@@ -346,8 +347,20 @@
               </div>
             </div>
 
+            <section class="demo-notice database-demo-login" id="database-demo-login" aria-label="Tài khoản minh họa" hidden>
+              <div class="login-demo__details">
+                <strong class="login-demo__title">Tài khoản minh họa</strong>
+                <p>Dữ liệu minh họa được dùng chung.</p>
+                <div class="database-demo-login__actions">
+                  <button type="button" data-demo-role="student">Nguyễn Minh Anh <span>Sinh viên</span></button>
+                  <button type="button" data-demo-role="lecturer">ThS. Nguyễn Văn An <span>Giảng viên</span></button>
+                </div>
+                <p class="form-error" id="database-demo-error" role="alert"></p>
+              </div>
+            </section>
+
             <noscript>
-              <p class="form-error">Bật JavaScript để đăng nhập bằng tài khoản mẫu.</p>
+              <p class="form-error">Bật JavaScript để đăng nhập.</p>
             </noscript>
 
             <form class="login-form" id="demo-login-form" method="post" aria-labelledby="login-title" aria-describedby="login-demo">
@@ -434,6 +447,15 @@
               <p class="login-alternative__hint" id="login-google-hint" role="status">Đăng nhập Google chưa khả dụng.</p>
               <p id="login-google-error" class="form-error login-error" role="alert"></p>
             </div>
+            <div class="database-google" id="database-google" hidden>
+            <div class="database-google__button" id="database-google-button"></div>
+            <p class="database-google__hint" id="database-google-hint" role="status"></p>
+            <p class="form-error" id="database-google-error" role="alert"></p>
+            <button id="database-google-retry" type="button" hidden>Thử lại với Google</button>
+          </div>
+            <p class="database-auth-links" id="database-login-links" hidden>
+              Chưa có tài khoản? <a href="dang-ky.html" id="database-signup-link">Tạo tài khoản</a>
+            </p>
           </div>
 
           <p id="invitation-login-back" class="login-panel__support" hidden>

@@ -60,7 +60,7 @@
       });
       renderAttachment(topic, () => app.services.lecturerTopicFiles.readPublished(topic.id, 'attachment'));
       if (!ready) {
-        const student = app.data.currentStudent;
+        const student = topic.isDatabaseTopic ? app.proposalDatabase.student : app.data.currentStudent;
         root.querySelector('#student-code').value = student?.code || '';
         root.querySelector('#student-name').value = student?.name || '';
       }
