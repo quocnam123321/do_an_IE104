@@ -23,6 +23,7 @@
   const definitions = {
     "dot-dang-ky": {
       name: "Học kỳ và đợt đăng ký", hasRoundActions: true, nameLabel: "Đợt đăng ký",
+      recordClass: "admin-round-record",
       extra: [["start", "Mở đăng ký"], ["end", "Đóng đăng ký"]],
       statusLabels: roundLabels,
     },
@@ -162,11 +163,7 @@
 
   function recordCell(definition, item) {
     const label = `<span translate="no">${escapeHtml(item.name)}</span><span class="admin-code" translate="no">${escapeHtml(item.id)}</span>`;
-    if (definition.hasRoundActions) {
-      return `<span class="admin-round-record">${label}</span>`;
-    }
-    if (definition.detailUrl) return `<span class="admin-catalog-record">${label}</span>`;
-    return `<button class="admin-record" type="button" data-record="${item.id}">${label}</button>`;
+    return `<span class="${definition.recordClass ?? "admin-catalog-record"}">${label}</span>`;
   }
 
   function normalizeSearch(value) {

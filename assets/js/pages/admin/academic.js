@@ -64,7 +64,7 @@
     }
 
     const roundTopics = topics.filter((topic) => topic.roundId === item.id);
-    const topicColumns = { ...definitions["de-tai"], hideType: true };
+    const topicColumns = { ...definitions["de-tai"], hideType: true, recordClass: "admin-round-record" };
     const datetime = (value) =>
       `<time class="admin-round-datetime" datetime="${value}+07:00">${calendar}${displayDateTime(value)}</time>`;
     const field = (label, value) => `<div><dt>${label}</dt><dd>${value}</dd></div>`;

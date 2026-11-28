@@ -474,22 +474,6 @@
   border-block-end: 0;
 }
 
-.admin-record {
-  display: grid;
-  min-height: var(--control-min-height);
-  padding: var(--space-1) 0;
-  border: 0;
-  background: transparent;
-  color: var(--color-primary);
-  font-weight: var(--font-weight-semibold);
-  text-align: start;
-  text-decoration: none;
-}
-
-.admin-record:hover {
-  text-decoration: underline;
-}
-
 .admin-code {
   color: var(--color-muted-foreground);
   font-size: var(--font-size-secondary);
@@ -868,10 +852,6 @@
 .admin-round-detail .admin-title-row [data-status="open"] {
   background: var(--admin-round-open-bg);
   color: var(--admin-round-open-fg);
-}
-
-.admin-round-topics .admin-record {
-  color: var(--color-heading);
 }
 
 .admin-round-topics .admin-status {
