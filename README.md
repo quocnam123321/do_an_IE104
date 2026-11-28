@@ -6,9 +6,9 @@ Dự án dùng **HTML5, CSS3, JavaScript thuần**; hiện là bản demo với 
 
 ## Chạy dự án
 
-Mở [index.html](index.html) để xem danh mục màn hình, hoặc dùng **Live Server**
-từ gốc repo. Không cần cài thư viện hay build. Nên dùng HTTP và cùng trình duyệt
-để kiểm tra dữ liệu demo giữa các trang/tab.
+Mở [web/index.html](web/index.html) để xem danh mục màn hình, hoặc phục vụ
+thư mục `web/` bằng **Live Server**. Bản tĩnh chạy trực tiếp bằng HTML, CSS và
+JavaScript. Dùng cùng địa chỉ HTTP và trình duyệt để kiểm tra dữ liệu demo giữa các tab.
 
 ## Backend & PostgreSQL
 
@@ -552,10 +552,9 @@ ORDER BY f.created_at DESC, l.luong;
 
 ## Triển khai bản demo Express
 
-Bản demo online dùng Express để phục vụ cả website và API trên cùng một địa
-chỉ. Triển khai từ toàn bộ repo vì Express dùng các thư mục `server/`,
-`pages/`, `assets/` và tệp `index.html`. Trên dịch vụ Node.js, dùng các lệnh
-sau từ gốc repo.
+Bản demo online dùng Express để phục vụ cả website trong `web/` và API từ
+`server/` trên cùng một địa chỉ. Tạo **Web Service** trên Render và để trống
+**Root Directory** để Render dùng cả hai thư mục. Các lệnh sau chạy từ gốc repo.
 
 ```sh
 npm --prefix server ci
@@ -574,23 +573,24 @@ Bản Express dùng chung dữ liệu đề xuất và đề tài minh họa tro
 cho mọi tài khoản sinh viên, giảng viên đăng nhập cùng website. Các trình
 duyệt và thiết bị có thể mở danh sách để đọc kết quả đã lưu.
 
-Workflow Firebase Hosting trong repo hiện xuất bản các tệp tĩnh. Lệnh
-`start:demo` dùng cho dịch vụ chạy Express cùng PostgreSQL để kiểm thử luồng
-tài khoản và đề xuất trên bản online.
+Render phục vụ các URL `/pages/`, `/assets/` và `/api/` qua Express.
+Mã đồng bộ Google Calendar và cấu hình Firebase liên quan nằm trong repo để
+tiếp tục chuyển xác thực. Luồng Calendar hiện vẫn cần Firebase.
 
 ## Cấu trúc và luồng chính
 
-- [pages/chung/](pages/chung/): đăng nhập, quên mật khẩu, giới thiệu, hướng nghiên cứu, thông báo và liên hệ.
-- [pages/sinh-vien/](pages/sinh-vien/): tổng quan, đăng ký đề tài, đề tài của tôi, tạo đề xuất, lịch hạn nộp và hồ sơ.
-- [pages/giang-vien/](pages/giang-vien/): tổng quan, đề tài đang hướng dẫn/đã tạo, yêu cầu chờ duyệt và hồ sơ.
-- `assets/`: CSS, JavaScript, font Be Vietnam Pro và hình ảnh; `tests/`: kiểm thử tự động.
+- [web/pages/chung/](web/pages/chung/) có đăng nhập, quên mật khẩu, giới thiệu, hướng nghiên cứu, thông báo và liên hệ.
+- [web/pages/sinh-vien/](web/pages/sinh-vien/) có tổng quan, đăng ký đề tài, đề tài của tôi, tạo đề xuất, lịch hạn nộp và hồ sơ.
+- [web/pages/giang-vien/](web/pages/giang-vien/) có tổng quan, quản lý đề tài và yêu cầu chờ duyệt.
+- [web/pages/quan-tri/](web/pages/quan-tri/) chứa các màn hình quản trị.
+- `web/assets/` chứa CSS, JavaScript, font Be Vietnam Pro và hình ảnh. `tests/` chứa bộ kiểm thử tự động.
 
 
 ## Chức năng demo và giới hạn
 
 - Có điều hướng, tab, hộp thoại, hiện/ẩn mật khẩu; tìm kiếm/lọc/sắp xếp các danh sách đề tài; chọn giảng viên, môn học và lịch hạn nộp mẫu.
 - Yêu cầu chờ duyệt có tìm kiếm, lọc, sắp xếp, phân trang và mở đúng hồ sơ. Trên bản tĩnh, quyết định duyệt hoặc từ chối lưu bằng `localStorage` và cập nhật giữa các tab cùng nguồn URL.
-- Thông báo có lọc theo loại, phân trang và giữ trạng thái khi tải lại hoặc Back/Forward. Khi sửa bài, cập nhật cả `assets/js/notifications-data.js` và HTML dự phòng.
+- Thông báo có lọc theo loại, phân trang và giữ trạng thái khi tải lại hoặc Back/Forward. Khi sửa bài, cập nhật cả `web/assets/js/notifications-data.js` và HTML dự phòng.
 
 Backend Express xác thực tài khoản, phân quyền và lưu đề xuất, đề tài giảng
 viên mở đăng ký, lượt đăng ký, đề tài đang thực hiện, thành viên, tiến độ,
@@ -602,9 +602,9 @@ Chưa triển khai chuyển Việt/Anh. Lịch mẫu cố định “hôm nay”
 
 ### Liên hệ xin hướng dẫn trên bản tĩnh
 
-1. Mở [Hướng nghiên cứu](pages/chung/huong-nghien-cuu.html) qua Live Server. Chọn **Liên hệ xin hướng dẫn**. Nếu chưa đăng nhập bằng tài khoản sinh viên, dùng biểu mẫu đăng nhập chung để tiếp tục đến đúng giảng viên. Điền và gửi lời mời.
-2. Trên tab thứ hai cùng địa chỉ máy chủ, mở [Yêu cầu chờ duyệt → Lời mời hướng dẫn](pages/giang-vien/yeu-cau-cho-duyet.html#loi-moi-huong-dan). Chọn giảng viên đã nhận lời mời và trả lời.
-3. Trên tab sinh viên, xem và trả lời trong [Đề tài của tôi → Lời mời hướng dẫn](pages/sinh-vien/de-tai-cua-toi-sinh-vien.html#loi-moi-huong-dan). Giảng viên có thể **Đồng ý hướng dẫn** hoặc **Từ chối** và kèm lời nhắn. Sau khi đồng ý, sinh viên có thể mở **Tạo đề xuất**. Nếu giảng viên chưa có trong danh mục nhận đề xuất thử, biểu mẫu hiển thị thông tin lời mời để đối chiếu.
+1. Mở [Hướng nghiên cứu](web/pages/chung/huong-nghien-cuu.html) qua Live Server. Chọn **Liên hệ xin hướng dẫn**. Nếu chưa đăng nhập bằng tài khoản sinh viên, dùng biểu mẫu đăng nhập chung để tiếp tục đến đúng giảng viên. Điền và gửi lời mời.
+2. Trên tab thứ hai cùng địa chỉ máy chủ, mở [Yêu cầu chờ duyệt → Lời mời hướng dẫn](web/pages/giang-vien/yeu-cau-cho-duyet.html#loi-moi-huong-dan). Chọn giảng viên đã nhận lời mời và trả lời.
+3. Trên tab sinh viên, xem và trả lời trong [Đề tài của tôi → Lời mời hướng dẫn](web/pages/sinh-vien/de-tai-cua-toi-sinh-vien.html#loi-moi-huong-dan). Giảng viên có thể **Đồng ý hướng dẫn** hoặc **Từ chối** và kèm lời nhắn. Sau khi đồng ý, sinh viên có thể mở **Tạo đề xuất**. Nếu giảng viên chưa có trong danh mục nhận đề xuất thử, biểu mẫu hiển thị thông tin lời mời để đối chiếu.
 
 Luồng này dùng chung phiên đăng nhập trong tab. Lời mời và phản hồi lưu bằng `localStorage` và cập nhật giữa các tab cùng nguồn URL. Sinh viên xem lời mời theo tài khoản đang đăng nhập. Quyết định kết thúc trao đổi trên lời mời. Việc đồng ý hướng dẫn ghi nhận trong lời mời, còn việc gửi đề xuất chính thức vẫn theo luồng riêng.
 

@@ -17,8 +17,8 @@ import { profileRouter } from "./profile-routes.js";
 
 const host = process.env.HOST?.trim() || "127.0.0.1";
 const port = Number(process.env.PORT || 3000);
-const project = new URL("../../", import.meta.url);
-const projectPath = (relative) => fileURLToPath(new URL(relative, project));
+const webRoot = new URL("../../web/", import.meta.url);
+const webPath = (relative) => fileURLToPath(new URL(relative, webRoot));
 
 if (!Number.isInteger(port) || port < 1 || port > 65535) {
   throw new Error("PORT phải là số nguyên từ 1 đến 65535.");
@@ -73,13 +73,13 @@ for (const [folder, role] of roleFolders) {
     if (account.role !== role) return response.status(403).type("text/plain").send("Tài khoản không có quyền mở trang này.");
     response.locals.account = account;
     next();
-  }, proposalPage(folder, role), express.static(projectPath("pages/" + folder)));
+  }, proposalPage(folder, role), express.static(webPath("pages/" + folder)));
 }
 
 app.get("/", (_request, response) => response.redirect(302, "/pages/chung/gioi-thieu.html"));
-app.get("/index.html", (_request, response) => response.sendFile(projectPath("index.html")));
-app.use("/assets", express.static(projectPath("assets"), { index: false }));
-app.use("/pages/chung", express.static(projectPath("pages/chung")));
+app.get("/index.html", (_request, response) => response.sendFile(webPath("index.html")));
+app.use("/assets", express.static(webPath("assets"), { index: false }));
+app.use("/pages/chung", express.static(webPath("pages/chung")));
 
 app.use((error, request, response, next) => {
   if (response.headersSent) return next(error);

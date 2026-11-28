@@ -1,5 +1,5 @@
 import { AuthError, isUuid, transaction } from "./auth-security.js";
-import configuration from "../../assets/js/services/proposal-service.js";
+import configuration from "../../web/assets/js/services/proposal-service.js";
 
 const { topicCodePrefixes } = configuration;
 

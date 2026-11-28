@@ -5,7 +5,7 @@ import { readProject } from "./project-data.js";
 import { sendFile } from "./shared-files.js";
 import { assertSubmissionRole, deleteRequirement, parseSubmissionUpload, readSubmissionFile,
   saveRequirement, saveSubmissionFeedback, setSubmissionsLocked, submitAssignment } from "./project-submission-data.js";
-import fileLimits from "../../assets/js/services/student-submissions-service.js";
+import fileLimits from "../../web/assets/js/services/student-submissions-service.js";
 
 export const projectSubmissionRouter = express.Router({ mergeParams: true });
 projectSubmissionRouter.use((_request, response, next) => {

@@ -11,7 +11,7 @@ function setup(path='/pages/sinh-vien/example.html') {
   close(){this.open=false;this.handlers.close?.();}
  }
  const context={location:{pathname:path},document:{createElement:()=>node=new Dialog(),body:{append:()=>{}}}};
- vm.createContext(context);vm.runInContext(fs.readFileSync('assets/js/shared/student-operation-feedback.js','utf8'),context);
+ vm.createContext(context);vm.runInContext(fs.readFileSync('web/assets/js/shared/student-operation-feedback.js','utf8'),context);
  return {app:context.IE104,dialog:node};
 }
 test('student feedback stays closed until an operation explicitly reports success',()=>{

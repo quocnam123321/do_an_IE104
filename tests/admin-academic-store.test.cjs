@@ -4,7 +4,7 @@ const path = require("node:path");
 const test = require("node:test");
 const vm = require("node:vm");
 
-const adminScripts = path.join(__dirname, "../assets/js/pages/admin");
+const adminScripts = path.join(__dirname, "../web/assets/js/pages/admin");
 const source = ["sample-data.js", "academic-store.js"]
   .map((file) => fs.readFileSync(path.join(adminScripts, file), "utf8"))
   .join("\n");

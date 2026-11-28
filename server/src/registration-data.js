@@ -2,7 +2,7 @@ import { AuthError, transaction } from "./auth-security.js";
 import { assertTopicRevision, lockLecturerTopic } from "./lecturer-topic-data.js";
 import { proposalStudent } from "./proposal-data.js";
 import { readProject } from "./project-data.js";
-import validation from "../../assets/js/shared/validation.js";
+import validation from "../../web/assets/js/shared/validation.js";
 
 export async function registerForTopic(account, code, { revision, enrollment } = {}) {
   if (!enrollment || typeof enrollment !== "object" || !Array.isArray(enrollment.members)) {

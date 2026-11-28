@@ -1,7 +1,7 @@
 import { pool } from "./db.js";
 import { AuthError, demoDisplayName, isUuid, transaction } from "./auth-security.js";
 import { lockProject, readProject } from "./project-data.js";
-import validation from "../../assets/js/services/project-progress-service.js";
+import validation from "../../web/assets/js/services/project-progress-service.js";
 
 const { validateTask, validateUpdate, defaultPercent } = validation;
 

@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { test } from "node:test";
 import { runInNewContext } from "node:vm";
-import { firebaseConfig } from "../assets/js/firebase-config.js";
+import { firebaseConfig } from "../web/assets/js/firebase-config.js";
 import { createCalendarWorker } from "./index.mjs";
 
 const site = "https://web.example/ie104/";
@@ -255,8 +255,8 @@ test("the lecturer editor updates the original Google event through the calendar
     [{ id: key, status: "added" }]);
   const [[eventId, before]] = remote;
   const requests = [];
-  const source = readFileSync(new URL("../assets/js/calendar-client.js", import.meta.url), "utf8")
-    .replace(/^import .+;\n/gm, "").replace(/^export /gm, "");
+  const source = readFileSync(new URL("../web/assets/js/calendar-client.js", import.meta.url), "utf8")
+    .replace(/^import .+;\r?\n/gm, "").replace(/^export /gm, "");
   const loadRequirement = runInNewContext(source + "\nloadCalendarRequirement", {
     location: new URL("https://ie104-nhom7.web.app/"),
     useRecoveryEmulator: false,

@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { createContext, runInContext } from "node:vm";
 
-const assets = new URL("../../assets/", import.meta.url);
+const assets = new URL("../../web/assets/", import.meta.url);
 const scripts = [
   "data/mock-data", "data/student-projects", "data/student-progress", "data/student-evaluations",
   "data/teaching-data", "uit-lecturer-catalog", "data/lecturer-topics", "data/lecturer-merge-catalog",

@@ -3,8 +3,8 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
-const source = fs.readFileSync(path.join(__dirname, '../assets/js/uit-lecturer-catalog.js'), 'utf8');
-const storeSource = fs.readFileSync(path.join(__dirname, '../assets/js/proposal-store.js'), 'utf8');
+const source = fs.readFileSync(path.join(__dirname, '../web/assets/js/uit-lecturer-catalog.js'), 'utf8');
+const storeSource = fs.readFileSync(path.join(__dirname, '../web/assets/js/proposal-store.js'), 'utf8');
 const marker = '// Hồ sơ chờ duyệt bổ sung ngày 25/11/2026.';
 function setup(storage = new Map(), baseline = false) {
   const ctx = vm.createContext({ navigator: {}, URL });
@@ -91,7 +91,7 @@ test('duyệt hồ sơ mới của cả ba loại và tải lại vẫn đọc �
 
 function loadStudentServices(ctx) {
   for (const file of ['data/proposal-actors.js', 'services/storage.js', 'shared/validation.js', 'services/proposal-service.js']) {
-    vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js', file), 'utf8'), ctx, { filename: file });
+    vm.runInContext(fs.readFileSync(path.join(__dirname, '../web/assets/js', file), 'utf8'), ctx, { filename: file });
   }
   return ctx.IE104.services.proposals;
 }
@@ -172,7 +172,7 @@ test('đề xuất SV giữ nội dung, ba ngày và tham chiếu tệp khi GV �
   const storage = new Map(), ctx = setup(storage), service = loadStudentServices(ctx);
   ctx.IE104SupervisionEntry = { getTeachers: async () => [{ id: 'placeholder-1', name: 'Nguyễn Văn An' }] };
   await service.listSupervisors();
-  const pdf = fs.readFileSync(path.join(__dirname, '../assets/documents/de-cuong-de-xuat-mau.pdf'));
+  const pdf = fs.readFileSync(path.join(__dirname, '../web/assets/documents/de-cuong-de-xuat-mau.pdf'));
   assert.equal(pdf.subarray(0, 5).toString(), '%PDF-');
   const input = {
     title: 'Kiểm thử đồng bộ đề cương và tài liệu đính kèm', type: 'khoa-luan', courseId: 'IE505',
@@ -197,7 +197,7 @@ test('đề xuất SV giữ nội dung, ba ngày và tham chiếu tệp khi GV �
 
 function loadApprovedView(ctx) {
   for (const file of ['services/approved-project-service.js', 'shared/proposal-outline.js']) {
-    vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js', file), 'utf8'), ctx, { filename: file });
+    vm.runInContext(fs.readFileSync(path.join(__dirname, '../web/assets/js', file), 'utf8'), ctx, { filename: file });
   }
   return ctx.IE104.services.approvedProjects;
 }
@@ -246,7 +246,7 @@ test('SV gửi → GV duyệt → hai bên đọc đúng ba ngày, phương phá
 test('hồ sơ mẫu SV chuyển đúng trang đang thực hiện khi GV duyệt, không mất đề cương', async () => {
   const ctx = setup(), proposals = loadStudentServices(ctx), approved = loadApprovedView(ctx);
   ctx.IE104.services.projectTeams = { getState: id => { const value = approved.get(id); return { ...value.team, project: value.project }; } };
-  vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js/services/student-submissions-service.js'), 'utf8'), ctx);
+  vm.runInContext(fs.readFileSync(path.join(__dirname, '../web/assets/js/services/student-submissions-service.js'), 'utf8'), ctx);
   for (const seed of ctx.UITLecturerCatalog.pending.filter(item => item.studentVisible)) {
     await ctx.IE104Proposals.decide(seed.id, 'approved');
     const card = proposals.listMyTopics().find(item => item.requestId === seed.id);

@@ -1,8 +1,8 @@
 import { pool } from "./db.js";
 import { AuthError, demoDisplayName, isUuid, transaction } from "./auth-security.js";
 import { isDemoTeamId, lockProject, readProject } from "./project-data.js";
-import editor from "../../assets/js/services/teaching-service.js";
-import fileLimits from "../../assets/js/services/student-submissions-service.js";
+import editor from "../../web/assets/js/services/teaching-service.js";
+import fileLimits from "../../web/assets/js/services/student-submissions-service.js";
 import { readMultipartForm, uploadedAttachment } from "./multipart-upload.js";
 import { insertFile } from "./shared-files.js";
 

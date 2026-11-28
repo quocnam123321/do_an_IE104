@@ -1,8 +1,8 @@
 import { pool } from "./db.js";
 import { AuthError, demoDisplayName, fingerprint, systemDemoEnabled, transaction } from "./auth-security.js";
 import { useTopicCode } from "./topic-code-data.js";
-import editor from "../../assets/js/services/lecturer-topic-editor-service.js";
-import configuration from "../../assets/js/services/proposal-service.js";
+import editor from "../../web/assets/js/services/lecturer-topic-editor-service.js";
+import configuration from "../../web/assets/js/services/proposal-service.js";
 import { fileMetadata, nextFileId, readFileContent } from "./shared-files.js";
 
 const types = { course: "do-an-mon-hoc", graduation: "do-an-tot-nghiep", thesis: "khoa-luan" };

@@ -11,7 +11,7 @@ function loadStudentServices(context) {
     'services/project-progress-service.js', 'services/evaluation-service.js',
   ];
   for (const file of files) {
-    runInContext(readFileSync(join(__dirname, '../assets/js', file), 'utf8'), context);
+    runInContext(readFileSync(join(__dirname, '../web/assets/js', file), 'utf8'), context);
   }
 }
 

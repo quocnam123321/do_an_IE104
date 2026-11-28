@@ -1,6 +1,6 @@
 import { actor } from "../functions/calendar-policy.cjs";
 import { CalendarError } from "../functions/google-calendar.cjs";
-import { firebaseConfig } from "../assets/js/firebase-config.js";
+import { firebaseConfig } from "../web/assets/js/firebase-config.js";
 import { Buffer } from "node:buffer";
 
 const denied = () => new CalendarError(401, "calendar-login-required");

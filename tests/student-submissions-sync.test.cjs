@@ -24,7 +24,7 @@ function createTab(storage, globals = {}, withUITCatalog = false) {
     modules.push('uit-lecturer-catalog.js', 'data/lecturer-topics.js', 'data/lecturer-merge-catalog.js', 'data/student-uit-catalog.js');
   }
   for (const module of modules) {
-    vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js', module), 'utf8'), tab, { filename: module });
+    vm.runInContext(fs.readFileSync(path.join(__dirname, '../web/assets/js', module), 'utf8'), tab, { filename: module });
   }
   return tab.IE104;
 }
@@ -158,7 +158,7 @@ test('bài nộp mẫu của đề tài đang thực hiện có thể tải tệ
   assert.ok(singleFile);
   const archive = attachment(project.id, withArchive);
   assert.match(archive.path, /\.zip$/);
-  assert.ok(fs.existsSync(path.join(__dirname, '../assets/files', archive.path)));
+  assert.ok(fs.existsSync(path.join(__dirname, '../web/assets/files', archive.path)));
   assert.equal(attachment(project.id, { ...withArchive, submittedAt: '2026-10-02T08:00:00Z' }).path, archive.path);
   assert.equal(attachment(project.id, singleFile).path, 'bai-nop-minh-hoa.pdf');
   assert.equal(attachment(project.id, { ...singleFile, id: 'upload:' + singleFile.requirementId }), null);

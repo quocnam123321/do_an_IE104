@@ -34,7 +34,7 @@ export function proposalPage(folder, role) {
 
     const meta = name && (profile || page === "tong-quan-giang-vien.html")
       ? '<meta name="ie104-demo-lecturer" content="' + name + '">' : "";
-    const htmlSource = readFile(new URL("../../pages/" + folder + "/" + page, import.meta.url), "utf8");
+    const htmlSource = readFile(new URL("../../web/pages/" + folder + "/" + page, import.meta.url), "utf8");
     const account = response.locals.account;
     if (profile) {
       const html = await htmlSource;

@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
 const vm = require('node:vm');
-const source = fs.readFileSync(path.join(__dirname, '../assets/js/proposal-store.js'), 'utf8');
+const source = fs.readFileSync(path.join(__dirname, '../web/assets/js/proposal-store.js'), 'utf8');
 
 function setup({ storage = new Map(), blocked = false, locks, data } = {}) {
   const events = new Map();
@@ -122,7 +122,7 @@ test('đề xuất gửi giảng viên trong danh mục hiện trong hộp chờ
     'data/proposal-actors.js', 'services/storage.js', 'shared/validation.js',
     'services/proposal-service.js', 'services/approved-project-service.js',
   ]) {
-    vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js', file), 'utf8'), context, { filename: file });
+    vm.runInContext(fs.readFileSync(path.join(__dirname, '../web/assets/js', file), 'utf8'), context, { filename: file });
   }
   const { data, storage, services: { proposals, approvedProjects } } = context.IE104;
   const reviewer = data.currentLecturer;

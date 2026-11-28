@@ -3,7 +3,7 @@ import { assertWebsiteOrigin } from "./auth-routes.js";
 import { AuthError, requiredRole, requireSameAccount } from "./auth-security.js";
 import { sendFile } from "./shared-files.js";
 import { assertEvaluator, parseEvaluationForm, publishProjectEvaluation, readEvaluationAttachment, readProjectEvaluation } from "./project-evaluation-data.js";
-import fileLimits from "../../assets/js/services/student-submissions-service.js";
+import fileLimits from "../../web/assets/js/services/student-submissions-service.js";
 
 export const projectEvaluationRouter = express.Router({ mergeParams: true });
 projectEvaluationRouter.use((_request, response, next) => {

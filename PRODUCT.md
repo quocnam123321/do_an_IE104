@@ -10,7 +10,7 @@ web
 
 - HTML5, CSS3 và JavaScript thuần, theo yêu cầu đã được người dùng xác nhận.
 - Không tự thêm React, Vue, Angular, Tailwind, Bootstrap, jQuery hoặc framework/thư viện thay thế công nghệ thuần.
-- Mã nguồn website hiện nằm trong `do_an_IE104/`; điểm vào là `do_an_IE104/index.html`.
+- Mã nguồn website hiện nằm trong `do_an_IE104/`; điểm vào là `do_an_IE104/web/index.html`.
 - Đây là website tĩnh ở giai đoạn hiện tại, mở bằng trình duyệt hoặc phục vụ qua HTTP khi phát triển; chưa cần bước build.
 - Tài liệu sản phẩm này đặt tại thư mục làm việc chứa các skill. Không tạo bản PRODUCT.md cạnh tranh trong thư mục mã nguồn khi chưa có yêu cầu tách phạm vi.
 
@@ -39,7 +39,7 @@ Mục tiêu sản phẩm là giúp người dùng biết đề tài nào có th�
 ### Trạng thái hiện tại đã kiểm tra
 
 - Website đã có các trang HTML và dữ liệu minh họa cho sinh viên, giảng viên và các trang chung.
-- Các thư mục `do_an_IE104/assets/css/` và `do_an_IE104/assets/js/` hiện chỉ có `.gitkeep`; chưa có CSS hoặc JavaScript dùng chung trong hai thư mục này.
+- Các thư mục `do_an_IE104/web/assets/css/` và `do_an_IE104/web/assets/js/` hiện chỉ có `.gitkeep`; chưa có CSS hoặc JavaScript dùng chung trong hai thư mục này.
 - Theo README và nội dung demo trong mã nguồn, đăng ký, lưu, duyệt, đăng xuất và các thao tác nghiệp vụ chưa được triển khai đầy đủ. Không mô tả chúng như chức năng đã hoàn thành.
 - Chưa có bằng chứng về backend, cơ sở dữ liệu hoặc xác thực/phân quyền thực tế trong phần mã nguồn đã kiểm tra. Không tự bổ sung các hệ thống này chỉ vì có vai trò người dùng hoặc màn hình đăng nhập.
 
@@ -83,10 +83,10 @@ Hai giai đoạn là thứ tự và ranh giới công việc đã thống nhất
 ## Evidence on Hand
 
 - `do_an_IE104/README.md`: giới thiệu dự án, công nghệ thuần, cấu trúc mã nguồn và giới hạn bản demo. Một số mô tả về số lượng hoặc sự hiện diện của trang đã cũ; kiểm tra mã nguồn thực tế trước khi dùng làm hiện trạng.
-- `do_an_IE104/index.html`: điểm vào website và các liên kết tới các nhóm trang.
-- `do_an_IE104/pages/sinh-vien/`: các màn hình sinh viên đã có mã HTML.
-- `do_an_IE104/pages/giang-vien/`: các màn hình giảng viên đã có mã HTML.
-- `do_an_IE104/pages/chung/`: đăng nhập, giới thiệu, thông báo và liên hệ.
+- `do_an_IE104/web/index.html`: điểm vào website và các liên kết tới các nhóm trang.
+- `do_an_IE104/web/pages/sinh-vien/`: các màn hình sinh viên đã có mã HTML.
+- `do_an_IE104/web/pages/giang-vien/`: các màn hình giảng viên đã có mã HTML.
+- `do_an_IE104/web/pages/chung/`: đăng nhập, giới thiệu, thông báo và liên hệ.
 - `do_an_IE104/docs/Huong_dan_su_dung_khung_trang.md`: hướng dẫn khung trang, đường dẫn và dữ liệu minh họa.
 - Các tên người, mã đề tài, số liệu và mốc thời gian trong bản demo là nội dung minh họa; không dùng làm bằng chứng sử dụng thực tế hoặc kết quả sản phẩm.
 

@@ -1,6 +1,6 @@
 import { pool } from "./db.js";
 import { AuthError, demoStudentName, isUuid, systemDemoEnabled } from "./auth-security.js";
-import configuration from "../../assets/js/services/proposal-service.js";
+import configuration from "../../web/assets/js/services/proposal-service.js";
 import { submissionBoardJoins } from "./submission-board-query.js";
 import { evaluationColumns, evaluationJoins, formatEvaluation } from "./evaluation-query.js";
 import { fileMetadata, readFileContent } from "./shared-files.js";

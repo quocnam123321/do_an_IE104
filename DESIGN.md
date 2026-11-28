@@ -2,7 +2,7 @@
 
 Trạng thái: **v0.8 — đã chốt màu, họ font, vị trí bộ lọc trên máy tính, bản danh sách điện thoại và quy trình CSS trước, JavaScript sau tại mục 11.1; bộ kích thước tại mục 4.1 đã được phép dùng để dựng thử ngày 28/10/2026. Các thông số dùng thử được tinh chỉnh sau khi xem bản chạy; những phần chưa xác nhận vẫn là đề xuất**.
 
-Tài liệu này dùng chung cho website tại thư mục gốc mã nguồn, đặt cùng cấp với `AGENTS.md`, `PRODUCT.md` và `index.html`. Người dùng đã chọn phương án B “Trắng – xanh cân bằng”, yêu cầu mục đang chọn trên header chỉ có gạch xanh bên dưới và các tiêu đề/nhãn in đậm trong nội dung dùng đen thuần. Người dùng cũng đã chốt Be Vietnam Pro làm họ font chung, chuyển bộ lọc trên máy tính lên trên hàng tìm kiếm/sắp xếp và duyệt bản danh sách đề xuất trên điện thoại tại mục 6.1. Đây là các quyết định thiết kế, chưa phải yêu cầu triển khai HTML/CSS/JavaScript.
+Tài liệu này nằm ở gốc repo cùng với `AGENTS.md` và `PRODUCT.md`. Các đường dẫn giao diện trong tài liệu tính từ `web/`. Người dùng đã chọn phương án B “Trắng – xanh cân bằng”, yêu cầu mục đang chọn trên header chỉ có gạch xanh bên dưới và các tiêu đề/nhãn in đậm trong nội dung dùng đen thuần. Người dùng cũng đã chốt Be Vietnam Pro làm họ font chung, chuyển bộ lọc trên máy tính lên trên hàng tìm kiếm/sắp xếp và duyệt bản danh sách đề xuất trên điện thoại tại mục 6.1. Đây là các quyết định thiết kế, chưa phải yêu cầu triển khai HTML/CSS/JavaScript.
 
 ### Những điểm màu đã chốt
 

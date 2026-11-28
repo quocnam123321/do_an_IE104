@@ -5,7 +5,7 @@ const vm=require('node:vm');
 const path=require('node:path');
 function catalog(){
  const context=vm.createContext({URL,location:{protocol:'http:'}});context.window=context;
- for(const file of ['uit-lecturer-catalog.js','shared/student-course-label.js'])vm.runInContext(fs.readFileSync(path.join(__dirname,'../assets/js',file),'utf8'),context);
+ for(const file of ['uit-lecturer-catalog.js','shared/student-course-label.js'])vm.runInContext(fs.readFileSync(path.join(__dirname,'../web/assets/js',file),'utf8'),context);
  return context;
 }
 test('thesis and graduation course codes appear only in details for both roles',()=>{

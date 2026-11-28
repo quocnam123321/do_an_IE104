@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { load } from "cheerio/slim";
 
-const source = new URL("../../pages/chung/huong-nghien-cuu.html", import.meta.url);
+const source = new URL("../../web/pages/chung/huong-nghien-cuu.html", import.meta.url);
 let directoryRequest;
 const keyFor = (email) => email?.trim().toLowerCase() || "";
 

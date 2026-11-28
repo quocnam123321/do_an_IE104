@@ -21,7 +21,7 @@ function setup(saved = new Map(), withLecturerCatalog = false) {
   const catalogScripts = withLecturerCatalog
     ? ['uit-lecturer-catalog.js', 'data/lecturer-topics.js', 'data/lecturer-merge-catalog.js'] : [];
   for (const script of [...scripts, ...catalogScripts]) {
-    const source = fs.readFileSync(path.join(__dirname, '../assets/js', script), 'utf8');
+    const source = fs.readFileSync(path.join(__dirname, '../web/assets/js', script), 'utf8');
     vm.runInContext(source, context, { filename: script });
   }
   return context.IE104;

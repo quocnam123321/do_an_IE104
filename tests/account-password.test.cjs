@@ -8,7 +8,7 @@ function setup() {
  let blocked = false;
  const context = {crypto:webcrypto,TextEncoder,Uint8Array,localStorage:{getItem:k=>records.get(k)??null,setItem:(k,v)=>{if(blocked)throw new Error('quota');records.set(k,v);}},console};
  vm.createContext(context);
- vm.runInContext(fs.readFileSync('assets/js/services/account-password.js','utf8'),context);
+ vm.runInContext(fs.readFileSync('web/assets/js/services/account-password.js','utf8'),context);
  return {service:context.IE104.services.accountPassword,records,block:()=>blocked=true};
 }
 test('demo password change verifies old password, stores only hash and survives service reload', async()=>{

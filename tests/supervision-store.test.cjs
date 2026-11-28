@@ -5,7 +5,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
 const vm = require('node:vm');
-const source = fs.readFileSync(path.join(__dirname, '../assets/js/supervision-store.js'), 'utf8');
+const source = fs.readFileSync(path.join(__dirname, '../web/assets/js/supervision-store.js'), 'utf8');
 
 const teacher = { id: 'giang-vien-1', name: 'TS. Nguyễn Văn Kiệt' };
 const draft = { teacher, subject: ' Xin hướng dẫn khóa luận ', message: ' Em muốn trao đổi về ý tưởng. ' };

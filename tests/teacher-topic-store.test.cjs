@@ -8,7 +8,7 @@ function setup() {
   const localStorage = { getItem: key => data.get(key) ?? null, setItem: (key, value) => data.set(key, value) };
   const context = { window: { localStorage, navigator: {} } };
   vm.createContext(context);
-  vm.runInContext(fs.readFileSync('assets/js/teacher-topic-store.js', 'utf8'), context);
+  vm.runInContext(fs.readFileSync('web/assets/js/teacher-topic-store.js', 'utf8'), context);
   const store = context.window.TeacherTopicStore;
   const valid = { ...store.read()[0], id: 'new', code: 'NEW001', name: 'Đề tài mới', description: 'Mô tả',
     objectives: 'Mục tiêu', outcomes: 'Kết quả', requirements: 'Yêu cầu', closes: '2026-12-01T10:00',
@@ -97,7 +97,7 @@ test('legacy codes continue the sequence and a failed save does not consume a nu
 });
 
 test('creation form presents the generated code as output with an associated hint', () => {
-  const html = fs.readFileSync('pages/giang-vien/tao-de-tai-giang-vien.html', 'utf8');
+  const html = fs.readFileSync('web/pages/giang-vien/tao-de-tai-giang-vien.html', 'utf8');
   const field = html.match(/<output\b[^>]*\bid="topic-code"[^>]*>/)?.[0] || '';
   assert.match(field, /aria-describedby="topic-code-hint"/);
   assert.doesNotMatch(field, /\brequired\b/);

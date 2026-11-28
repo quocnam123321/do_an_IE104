@@ -13,7 +13,7 @@ function setup() {
   const scripts = ['uit-lecturer-catalog.js', 'shared/topic-identity.js', 'data/mock-data.js', 'data/proposal-actors.js',
     'data/lecturer-topics.js', 'data/lecturer-merge-catalog.js', 'services/lecturer-topic-repository.js',
     'services/lecturer-topic-service.js', 'services/lecturer-topic-editor-service.js'];
-  scripts.forEach(file => vm.runInContext(fs.readFileSync('assets/js/' + file, 'utf8'), context, { filename: file }));
+  scripts.forEach(file => vm.runInContext(fs.readFileSync('web/assets/js/' + file, 'utf8'), context, { filename: file }));
   return { context, codes: context.UITLecturerCatalog, service: context.IE104.services.lecturerTopics, editor: context.IE104.services.lecturerTopicEditor };
 }
 

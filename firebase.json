@@ -32,7 +32,7 @@
   },
   "hosting": {
     "target": "site-moi",
-    "public": "hosting-public",
+    "public": "web",
     "ignore": [
       "firebase.json",
       "**/.*",

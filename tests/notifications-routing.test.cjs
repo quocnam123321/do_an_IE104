@@ -6,8 +6,8 @@ const path = require('node:path');
 const root = path.join(__dirname, '..');
 function setup() {
   const ctx = vm.createContext({URL}); ctx.window = ctx;
-  vm.runInContext(fs.readFileSync(path.join(root,'assets/js/notifications-data.js'),'utf8'),ctx);
-  vm.runInContext(fs.readFileSync(path.join(root,'assets/js/data/notification-details.js'),'utf8'),ctx);
+  vm.runInContext(fs.readFileSync(path.join(root,'web/assets/js/notifications-data.js'),'utf8'),ctx);
+  vm.runInContext(fs.readFileSync(path.join(root,'web/assets/js/data/notification-details.js'),'utf8'),ctx);
   return ctx;
 }
 test('one list route preserves category and page across reload, links and history', () => {
@@ -38,10 +38,10 @@ test('five removed duplicate pages have redirects; UIT source and detail stay se
   const names=['ke-hoach-hoc-vu','bao-cao-nop-bai','lich-bao-ve','tong-ket-vinh-danh','trang-2'];
   for(const name of names) {
     const file=`thong-bao-${name}.html`;
-    assert.equal(fs.existsSync(path.join(root,'pages/chung',file)),false);
+    assert.equal(fs.existsSync(path.join(root,'web/pages/chung',file)),false);
     const redirect=config.hosting.redirects.find(item=>item.source===`/pages/chung/${file}`);
     assert.equal(redirect.type,301);
     assert.equal(redirect.destination,`/pages/chung/thong-bao.html?${name==='trang-2'?'trang=2':`loai=${name}`}`);
   }
-  for(const file of ['thong-bao.html','thong-bao-uit.html','chi-tiet-thong-bao.html']) assert.ok(fs.existsSync(path.join(root,'pages/chung',file)));
+  for(const file of ['thong-bao.html','thong-bao-uit.html','chi-tiet-thong-bao.html']) assert.ok(fs.existsSync(path.join(root,'web/pages/chung',file)));
 });

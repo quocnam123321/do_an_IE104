@@ -101,11 +101,11 @@ function setup(protocol = 'http:') {
     },
   });
   context.window = context;
-  const page = fs.readFileSync(path.join(__dirname, '../pages/giang-vien/tong-quan-giang-vien.html'), 'utf8');
+  const page = fs.readFileSync(path.join(__dirname, '../web/pages/giang-vien/tong-quan-giang-vien.html'), 'utf8');
   const files = Array.from(page.matchAll(/<script\s+src="\.\.\/\.\.\/assets\/js\/([^?"]+\.js)(?:\?[^"]*)?"/g), match => match[1])
     .filter(file => /^(uit-lecturer-catalog|shared\/(topic-identity|validation)|teacher-topic-store|data\/|services\/|proposal-store|pages\/lecturer\/overview)/.test(file));
   for (const file of files) {
-    vm.runInContext(fs.readFileSync(path.join(__dirname, '../assets/js', file), 'utf8'), context, { filename: file });
+    vm.runInContext(fs.readFileSync(path.join(__dirname, '../web/assets/js', file), 'utf8'), context, { filename: file });
   }
   return {
     data, context, counts, chartContent, chartLabels, segments, legend, progress, pending, empty, warning,

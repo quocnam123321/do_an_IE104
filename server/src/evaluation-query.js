@@ -1,4 +1,4 @@
-import defaultCriteria from "../../assets/js/data/teaching-data.js";
+import defaultCriteria from "../../web/assets/js/data/teaching-data.js";
 
 export const evaluationColumns = `
   evaluation.revision AS evaluation_revision,

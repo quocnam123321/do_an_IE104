@@ -10,7 +10,7 @@ Trước khi thực hiện nhiệm vụ giao diện:
 
 ## Công nghệ và mã nguồn
 
-- Thư mục chứa AGENTS.md, PRODUCT.md và DESIGN.md là thư mục gốc mã nguồn website (`index.html`, `pages/`, `assets/`, `templates/`).
+- Thư mục chứa AGENTS.md, PRODUCT.md và DESIGN.md là gốc repo. Mã nguồn giao diện nằm trong `web/`, gồm `index.html`, `pages/` và `assets/`.
 - Chỉ dùng HTML5, CSS3 và JavaScript thuần.
 - Không tự thêm framework hoặc thư viện CSS.
 - Giao diện hỗ trợ tiếng Việt và tiếng Anh. Giữ nhất quán typography/component giữa hai ngôn ngữ; nội dung trao đổi với người dùng mặc định bằng tiếng Việt.

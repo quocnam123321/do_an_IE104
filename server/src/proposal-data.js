@@ -1,7 +1,7 @@
 import { pool } from "./db.js";
 import { AuthError, demoStudentName, fingerprint, isUuid, systemDemoEnabled, transaction } from "./auth-security.js";
-import validators from "../../assets/js/shared/validation.js";
-import configuration from "../../assets/js/services/proposal-service.js";
+import validators from "../../web/assets/js/shared/validation.js";
+import configuration from "../../web/assets/js/services/proposal-service.js";
 import { combineLecturerDirectory } from "./lecturer-directory.js";
 import { readProject } from "./project-data.js";
 import { useTopicCode } from "./topic-code-data.js";
