@@ -492,14 +492,14 @@
   overflow-x: auto;
   overflow-y: visible;
   -webkit-overflow-scrolling: touch;
-  padding: var(--space-3) var(--space-4) var(--space-4);
+  padding: var(--space-4);
   scrollbar-width: thin;
   scrollbar-color: var(--color-secondary-btn-border) var(--color-neutral-bg);
 }
 
 @media (min-width: 48rem) {
   .student-deadline-page .calendar-scroll {
-    padding: var(--space-3) var(--space-5) var(--space-5);
+    padding: var(--space-5);
   }
 }
 
@@ -512,13 +512,17 @@
   font-variant-numeric: tabular-nums;
 }
 
+/* Keep the current month available to assistive technology without a duplicate visible heading. */
 .student-deadline-page .calendar-table caption {
-  caption-side: top;
-  text-align: left;
-  padding-bottom: var(--space-2);
-  color: var(--color-muted-foreground);
-  font-size: var(--font-size-secondary);
-  font-weight: var(--font-weight-medium);
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }
 
 .student-deadline-page .calendar-table th,
