@@ -33,6 +33,10 @@
   const type = view.querySelector("#admin-filter-type");
   const status = view.querySelector("#admin-filter-status");
   const results = view.querySelector("#admin-results");
+  const fallbackPickers = !isDetail && !CSS.supports("(appearance: base-select) and selector(select::picker(select))") ?
+    globalThis.IE104?.ui?.proposalPickers : null;
+  const termPicker = fallbackPickers?.enhanceSelect(term);
+  const roundFilterPickers = [termPicker, fallbackPickers?.enhanceSelect(type), fallbackPickers?.enhanceSelect(status)].filter(Boolean);
 
   function updateListUrl() {
     if (location.protocol === "file:") return;
@@ -44,6 +48,7 @@
   }
 
   function renderRounds() {
+    roundFilterPickers.forEach((picker) => picker.sync());
     const definition = definitions["dot-dang-ky"];
     const caption = "Danh sách đợt đăng ký";
     const query = normalizeSearch(search.value);
@@ -289,6 +294,7 @@
     if (isDetail) {
       refreshDetail();
     } else {
+      termPicker?.close();
       populateTerms(term, term.value, true);
       renderRounds();
     }
