@@ -65,28 +65,37 @@
   overflow-wrap: anywhere;
 }
 
-.admin-catalog-table .admin-status {
+.admin-catalog-page .admin-status {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  inline-size: 8rem;
   min-block-size: 2rem;
+  padding-inline: var(--space-3);
   border: 0;
+  font-weight: var(--font-weight-semibold);
   text-align: center;
   white-space: normal;
 }
 
-.admin-catalog-table .admin-status--info {
+.admin-catalog-table .admin-status {
+  inline-size: 8rem;
+  padding-inline: var(--space-2);
+}
+
+.admin-catalog-page .admin-status--info {
   background: var(--blue-100);
 }
 
-.admin-catalog-table .admin-status--success {
+.admin-catalog-page .admin-status--success {
   background: var(--green-100);
 }
 
+.admin-catalog-page .admin-status--warning {
+  background: var(--amber-100);
+}
+
 .admin-catalog-page .admin-status--danger {
-  border-color: var(--color-danger-border);
-  background: var(--color-danger-bg);
+  background: var(--red-100);
   color: var(--color-danger-fg);
 }
 
@@ -204,10 +213,6 @@
 
 .admin-catalog-detail-person p {
   font-size: var(--font-size-secondary);
-}
-
-.admin-catalog-detail-person .admin-status {
-  text-align: center;
 }
 
 .admin-catalog-avatar,
