@@ -30,7 +30,7 @@
           const entries = new Map(seeds.map((notice) => [notice.id, notice]));
           request.result.forEach((notice) => entries.set(notice.id, notice));
           if (!update) {
-            result = [...entries.values()];
+            result = [...entries.values()].filter((notice) => !notice.deleted);
             return;
           }
           try {
@@ -98,7 +98,7 @@
 
     return transaction("readwrite", (entries) => {
       const current = original && entries.get(original.id);
-      if (original && (!current || current.status !== "draft" || current.revision !== original.revision)) {
+      if (original && (current?.kind !== "academic" || current.status !== "draft" || current.revision !== original.revision)) {
         return { error: "Thông báo đã thay đổi. Hãy mở lại và thử lại." };
       }
       const now = new Date();
@@ -109,6 +109,17 @@
         attachment: fields.attachment, date: currentDateTime(now), revision: (current?.revision ?? 0) + 1,
         publishedAt: now.toISOString(),
       } };
+    });
+  }
+
+  function deleteDraft(original) {
+    return transaction("readwrite", (entries) => {
+      const current = entries.get(original.id);
+      if (current?.kind !== "academic" || current.status !== "draft" || current.revision !== original.revision) {
+        return { error: "Thông báo đã thay đổi. Hãy mở lại và thử lại." };
+      }
+      // Reserve the ID and prevent a removed sample draft from reappearing.
+      return { record: { id: current.id, deleted: true } };
     });
   }
 
@@ -159,6 +170,7 @@
   }
 
   globalThis.IE104AdminNotices = {
-    categories, audiences, eligibleRecipients, snapshot, publishAcademic, validateAcademic, validateImage, withdrawAcademic, createSystem,
+    categories, audiences, eligibleRecipients, snapshot, publishAcademic, deleteDraft, validateAcademic, validateImage,
+    withdrawAcademic, createSystem,
   };
 })();

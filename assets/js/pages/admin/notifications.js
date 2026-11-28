@@ -11,7 +11,7 @@
   };
   const roles = { student: "Sinh viên", lecturer: "Giảng viên", both: "Sinh viên và giảng viên" };
   const allByRole = { student: "Tất cả sinh viên", lecturer: "Tất cả giảng viên", both: "Tất cả sinh viên và giảng viên" };
-  const states = { draft: "Bản nháp", published: "Đã đăng", withdrawn: "Đã gỡ" };
+  const states = { published: "Đã đăng", withdrawn: "Đã gỡ" };
   const heading = system ? "Lịch sử thông báo hệ thống" : "Danh sách thông báo";
   const create = byId("admin-notice-create");
   const search = byId("admin-search");
@@ -20,6 +20,10 @@
   const count = byId("admin-notice-count");
   const results = byId("admin-results");
   const feedback = byId("admin-notice-feedback");
+  const draftsPanel = byId("admin-notice-drafts");
+  const draftSummary = draftsPanel.querySelector("summary");
+  const draftCount = byId("admin-notice-draft-count");
+  const draftList = byId("admin-notice-draft-list");
   const editor = byId("admin-notice-editor");
   const form = byId("admin-notice-form");
   const fields = form.elements;
@@ -73,15 +77,32 @@
     return item.recipients.map(({ name }) => localText(name)).join(", ");
   }
 
-  function academicActions(item) {
-    const button = (operation, label, style = "") =>
-      `<button type="button" class="admin-button ${style}" data-notice-action="${operation}" data-notice-id="${item.id}">
+  function noticeButton(item, operation, label, style = "") {
+    return `<button type="button" class="admin-button ${style}" data-notice-action="${operation}" data-notice-id="${escapeHtml(item.id)}">
         <span>${label}</span><span class="visually-hidden" translate="no"> ${escapeHtml(item.name)}</span></button>`;
-    const preview = button("preview", "Xem trước");
-    if (item.status === "draft") {
-      return preview + button("edit", "Chỉnh sửa");
-    }
-    return preview + (item.status === "published" ? button("withdrawn", "Gỡ", "admin-notice-danger") : "");
+  }
+
+  function academicActions(item) {
+    const preview = noticeButton(item, "preview", "Xem trước");
+    return preview + (item.status === "published" ? noticeButton(item, "withdrawn", "Gỡ", "admin-notice-danger") : "");
+  }
+
+  function newestFirst(a, b) {
+    return b.date.localeCompare(a.date) || b.id.localeCompare(a.id, undefined, { numeric: true });
+  }
+
+  function renderDrafts() {
+    const drafts = records.filter(({ kind, status }) => kind === "academic" && status === "draft").sort(newestFirst);
+    draftsPanel.hidden = drafts.length === 0;
+    draftCount.textContent = `(${drafts.length})`;
+    draftList.innerHTML = drafts.map((item) => `<li>
+      <div class="admin-notice-record"><strong>${localText(item.name)}</strong>
+        <span class="admin-code" translate="no">${escapeHtml(item.id)}</span></div>
+      <div class="admin-notice-actions">
+        ${noticeButton(item, "edit", "Mở lại")}
+        ${noticeButton(item, "delete-draft", "Xóa nháp", "admin-notice-danger")}
+      </div>
+    </li>`).join("");
   }
 
   function render() {
@@ -95,11 +116,11 @@
         if (state.value && state.value !== audience && audience !== "both") return false;
         values.push(...item.recipients.flatMap(({ name, code }) => [name, code ?? ""]));
         if (item.scope === "all") values.push(allByRole[item.audience]);
-      } else if (state.value && state.value !== item.status) {
+      } else if (!Object.hasOwn(states, item.status) || (state.value && state.value !== item.status)) {
         return false;
       }
       return values.some((value) => normalizeSearch(value).includes(query));
-    }).sort((a, b) => b.date.localeCompare(a.date) || b.id.localeCompare(a.id, undefined, { numeric: true }));
+    }).sort(newestFirst);
 
     count.textContent = matches.length;
     if (!matches.length) {
@@ -132,6 +153,7 @@
     create.disabled = Boolean(snapshot.unavailable);
     message(feedback, snapshot.unavailable ?
       "Không thể đọc thông báo đã lưu. Đang hiển thị dữ liệu mẫu." : notice);
+    if (!system) renderDrafts();
     render();
   }
 
@@ -219,20 +241,22 @@
   }
 
   function openDetail(item, operation, draft) {
-    action = { item, draft };
+    action = { item, operation, draft };
     message(detailError, "");
     const preview = operation === "preview";
-    byId("admin-notice-detail-title").textContent = preview ? "Xem trước thông báo" : "Gỡ thông báo?";
+    const deleting = operation === "delete-draft";
+    byId("admin-notice-detail-title").textContent = preview ? "Xem trước thông báo" : deleting ? "Xóa bản nháp?" : "Gỡ thông báo?";
     byId("admin-notice-confirm-footer").hidden = preview && !draft;
     backToEditor.hidden = !draft;
-    confirm.textContent = draft ? "Đăng thông báo" : "Xác nhận gỡ";
+    confirm.textContent = draft ? "Đăng thông báo" : deleting ? "Xóa bản nháp" : "Xác nhận gỡ";
     confirm.classList.toggle("admin-button--primary", Boolean(draft));
     confirm.classList.toggle("admin-notice-danger", !draft);
     detailBody.classList.toggle("admin-notice-preview", preview);
     detailBody.innerHTML = `<h3 translate="no">${escapeHtml(item.name)}</h3>
-      <p class="admin-demo"><span>${labels[item.type]}</span>${draft ? "" : ` · <span>${states[item.status]}</span>`}</p>
+      <p class="admin-demo"><span>${labels[item.type]}</span>${draft || deleting ? "" : ` · <span>${states[item.status]}</span>`}</p>
       ${preview ? '<div class="admin-notice-article admin-notice-preview-text" translate="no"></div>' :
-        '<p>Thông báo sẽ được gỡ khỏi trang Thông báo chung của trình duyệt này.</p>'}`;
+        `<p>${deleting ? "Nội dung và tệp đính kèm của bản nháp sẽ bị xóa." :
+          "Thông báo sẽ được gỡ khỏi trang Thông báo chung của trình duyệt này."}</p>`}`;
 
     if (preview) {
       renderArticle(detailBody.querySelector(".admin-notice-article"), item, (id, file) => {
@@ -298,7 +322,8 @@
     dialog.close();
     if (closeEditor) editor.close();
     await refresh(notice);
-    (results.querySelector(`[data-notice-id="${result.record.id}"]`) ?? create).focus();
+    const rowAction = results.querySelector(`[data-notice-id="${result.record.id}"]`);
+    (rowAction ?? (draftsPanel.open && !draftsPanel.hidden ? draftSummary : create)).focus();
   }
 
   function publish(draft, dialog, button) {
@@ -314,7 +339,7 @@
   }
 
   create.addEventListener("click", () => openEditor());
-  results.addEventListener("click", (event) => {
+  view.addEventListener("click", (event) => {
     const button = event.target.closest("[data-notice-action]");
     if (!button) return;
     const item = records.find(({ id }) => id === button.dataset.noticeId);
@@ -349,9 +374,13 @@
     openDetail({ ...draft, name: draft.title.trim(), type: draft.category }, "preview", draft);
   });
   confirm.addEventListener("click", () => {
-    const { item, draft } = action;
+    const { item, operation, draft } = action;
     if (draft) {
       publish(draft, detail, confirm);
+      return;
+    }
+    if (operation === "delete-draft") {
+      commit(detail, confirm, () => store.deleteDraft(item), "Đã xóa bản nháp.");
       return;
     }
     commit(detail, confirm, () => store.withdrawAcademic(item), "Đã gỡ thông báo trong bản mẫu.");
@@ -455,6 +484,7 @@
   fillSelect(state, system ? "Tất cả đối tượng" : "Tất cả trạng thái",
     system ? { student: roles.student, lecturer: roles.lecturer } : states);
   if (!system && Object.hasOwn(states, params.get("status"))) state.value = params.get("status");
+  if (!system && params.get("status") === "draft") draftsPanel.open = true;
   [search, type, state].forEach((control) => control.addEventListener("input", render));
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) refresh();
