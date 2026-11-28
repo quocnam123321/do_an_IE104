@@ -1,6 +1,6 @@
 :is(.research-select-wrap, .deadline-calendar__field, .supervision__selector, .topic-search__lecturer) > .proposal-picker-trigger,
 :where(.admin-account-filters, .admin-account-fields) .admin-field > .proposal-picker-trigger,
-:where(.admin-round-filters) :is(.admin-term, .admin-field) > .proposal-picker-trigger,
+:where(.admin-round-filters, .admin-academic-form) :is(.admin-term, .admin-field) > .proposal-picker-trigger,
 .proposal-month-trigger {
   display: flex;
   align-items: center;

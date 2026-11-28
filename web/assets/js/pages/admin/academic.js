@@ -17,12 +17,14 @@
   const academicFields = document.querySelector("#admin-academic-fields");
   const academicError = document.querySelector("#admin-academic-error");
   const academicSubmit = academicForm.querySelector('[type="submit"]');
+  const termFields = isDetail ? [] : [...document.querySelector("#admin-term-form-fields").content.cloneNode(true).children];
   const roundFields = [...document.querySelector("#admin-round-form-fields").content.cloneNode(true).children];
   const datePicker = globalThis.IE104?.ui?.proposalDatePicker;
   const timeZone = "Asia/Ho_Chi_Minh";
   let currentRound;
   let editingRound;
   let formAction;
+  let formPickers = [];
   let data = academic.snapshot();
 
   const calendar = `<svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24">
@@ -134,23 +136,25 @@
     academicError.hidden = !message;
   }
 
+  function clearFormError() {
+    showFormError("");
+    academicFields.querySelectorAll("input[aria-invalid], select[aria-invalid]").forEach((control) => {
+      control.removeAttribute("aria-invalid");
+    });
+    formPickers.forEach((picker) => picker.sync());
+  }
+
   academicActions.addEventListener("click", (event) => {
     const button = event.target.closest("[data-academic-action]");
     if (!button) return;
     formAction = button.dataset.academicAction;
     editingRound = formAction === "edit" ? currentRound : null;
     const isTerm = formAction === "term";
-    if (isTerm) {
-      const template = document.querySelector("#admin-term-form-fields");
-      academicFields.replaceChildren(template.content.cloneNode(true));
-    } else {
-      academicFields.replaceChildren(...roundFields);
-    }
+    academicFields.replaceChildren(...(isTerm ? termFields : roundFields));
     const { title: dialogTitle, submit: submitLabel, success } = formCopy[formAction];
     document.querySelector("#admin-academic-title").textContent = dialogTitle;
     academicSubmit.textContent = submitLabel;
     saveSuccessTitle.textContent = success;
-    showFormError("");
 
     const controls = academicForm.elements;
     if (isTerm) {
@@ -158,6 +162,7 @@
       const filterYear = (term.value || data.terms[0]).split("-")[0];
       const selectedYear = years.includes(filterYear) ? filterYear : years.at(-1);
       controls.year.replaceChildren(...years.map((year) => new Option(year, year, false, year === selectedYear)));
+      controls.number.selectedIndex = 0;
     } else {
       const record = editingRound;
       populateTerms(controls.term, record?.term ?? term?.value);
@@ -171,7 +176,6 @@
       // Biểu mẫu vẫn kiểm tra bằng JavaScript khi ngày cũ nằm ngoài giới hạn của lịch gốc.
       academicForm.noValidate = !datePicker && dates.some(([, value]) => value && value < minimum);
       for (const [input, value, timeLabel] of dates) {
-        input.removeAttribute("aria-invalid");
         if (datePicker) {
           datePicker.enhanceDate(input, { timeZone, timeLabel, minimumDateTime: academic.minimumDateTime });
           datePicker.fill(input, value ?? "");
@@ -181,7 +185,11 @@
         }
       }
     }
+    formPickers = [...academicFields.querySelectorAll("select")]
+      .map((select) => fallbackPickers?.enhanceSelect(select)).filter(Boolean);
+    clearFormError();
     academicDialog.showModal();
+    if (isTerm) fallbackPickers?.fieldFor(controls.year).focus();
   });
 
   academicDialog.querySelectorAll("[data-academic-close]").forEach((button) => {
@@ -192,11 +200,10 @@
   academicDialog.addEventListener("cancel", (event) => {
     if (academicSubmit.disabled) event.preventDefault();
   });
-  academicForm.addEventListener("input", () => {
-    showFormError("");
-    academicForm.elements.start?.removeAttribute("aria-invalid");
-    academicForm.elements.end?.removeAttribute("aria-invalid");
+  academicDialog.addEventListener("close", () => {
+    if (!academicDialog.open) formPickers.forEach((picker) => picker.close());
   });
+  academicForm.addEventListener("input", clearFormError);
   academicForm.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (academicSubmit.disabled) return;
@@ -241,7 +248,9 @@
       if (result.field) {
         const input = controls[result.field];
         input.setAttribute("aria-invalid", "true");
-        input.focus();
+        const picker = input.matches("select") ? fallbackPickers?.enhanceSelect(input) : null;
+        picker?.sync();
+        (picker?.trigger ?? input).focus();
       }
       return;
     }
