@@ -1,4 +1,5 @@
 :is(.research-select-wrap, .deadline-calendar__field, .supervision__selector, .topic-search__lecturer) > .proposal-picker-trigger,
+:where(.admin-account-filters) .admin-field > .proposal-picker-trigger,
 .proposal-month-trigger {
   display: flex;
   align-items: center;

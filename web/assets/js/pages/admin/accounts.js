@@ -301,6 +301,11 @@
     control.addEventListener("input", render);
     control.disabled = false;
   }
+  if (!CSS.supports("(appearance: base-select) and selector(select::picker(select))")) {
+    const pickers = globalThis.IE104?.ui?.proposalPickers;
+    pickers?.enhanceSelect(roleFilter);
+    pickers?.enhanceSelect(statusFilter);
+  }
   rows.closest(".admin-account-list").hidden = false;
   if (databaseMode) {
     void loadDatabase();
