@@ -1,5 +1,8 @@
 /* English copy for the public, sign-in, recovery and announcement pages. */
 Object.assign(globalThis.ie104English ??= {}, {
+  "Quản trị viên": "Administrator",
+  "Tổng quan quản trị": "Admin overview",
+  "Yêu cầu liên hệ": "Contact requests",
   "Chi tiết thông báo": "Announcement details",
   "Không tìm thấy thông báo.": "Announcement not found.",
   "Thông báo đại học UIT": "UIT undergraduate announcements",
@@ -869,8 +872,10 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Bạn cần hỗ trợ hoặc muốn góp ý điều gì?": "What can we help with? You can also leave feedback.",
   "Gửi liên hệ": "Send message",
   "Đóng thông báo": "Close message",
-  "Gửi thử thành công": "Demo submission complete",
-  "Cảm ơn bạn đã thử biểu mẫu liên hệ. Lời nhắn chưa được gửi hoặc lưu.": "Thank you for trying the contact form. Your message was neither sent nor saved.",
+  "Bản thử nghiệm lưu lời nhắn trong trình duyệt này. Vui lòng chỉ dùng thông tin mẫu.": "This demo stores messages in this browser. Please use sample information only.",
+  "Đã lưu lời nhắn thử nghiệm": "Demo message saved",
+  "Lời nhắn đã xuất hiện trong mục Yêu cầu liên hệ khi mở trang quản trị trên cùng trình duyệt và địa chỉ web.": "Open Contact requests in the admin area using the same browser and website address to see your message.",
+  "Không thể lưu lời nhắn thử nghiệm. Vui lòng thử lại.": "Could not save the demo message. Try again.",
   "Vị trí của chúng tôi": "Our location",
   "Khu đô thị ĐHQG-HCM, Khu phố 9, Phường Linh Xuân, TP. Hồ Chí Minh (Khuôn viên UIT)": "VNU-HCM Urban Area, Quarter 9, Linh Xuân Ward, Ho Chi Minh City (UIT campus)",
   "Google Maps – Trường Đại học Công nghệ Thông tin, ĐHQG-HCM": "Google Maps – University of Information Technology, VNU-HCM",
