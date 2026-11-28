@@ -290,7 +290,6 @@
     document.querySelector(".admin-accounts-sample").hidden = true;
     document.querySelector("#admin-account-sample-identity").hidden = true;
     document.querySelector("#admin-account-lock-note").textContent = "Khóa tài khoản sẽ thu hồi phiên đăng nhập và giữ lịch sử đề tài, bài nộp, đánh giá.";
-    document.querySelector("#admin-account-logout").hidden = false;
     rows.closest("table").classList.add("admin-accounts-table--database");
     fields.fullName.maxLength = 100;
     statusFilter.add(new Option(labels.pending, "pending"));

@@ -28,6 +28,7 @@
 }
 
 .admin-preview .site-header .account-menu .admin-account-card {
+  inset-inline: auto 0;
   min-inline-size: 11rem;
   padding: var(--space-3);
   color: var(--color-foreground);
@@ -672,6 +673,7 @@
 
   .admin-preview .site-header .account-menu {
     margin-block-start: var(--space-2);
+    margin-inline-start: auto;
   }
 }
 

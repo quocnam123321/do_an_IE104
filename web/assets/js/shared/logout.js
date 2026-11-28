@@ -111,6 +111,6 @@
     const loginPage = new URL("../../../pages/chung/dang-nhap.html", document.currentScript.src);
     guardRolePage(loginPage);
     bindLogout(document.getElementById("logout-dialog"),
-      document.querySelectorAll('button[aria-controls="logout-dialog"]'), loginPage);
+      document.querySelectorAll('button[data-logout], button[aria-controls="logout-dialog"]'), loginPage);
   }
 })();

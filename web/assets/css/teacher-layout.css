@@ -499,8 +499,7 @@ body:where(.teacher-workspace-page) {
   box-shadow: var(--shadow-overlay);
 }
 
-:where(.teacher-workspace-page) .account-menu__profile,
-:where(.teacher-workspace-page) .account-menu__logout {
+:where(.teacher-workspace-page) .account-menu__profile {
   display: flex;
   align-items: center;
   width: 100%;
@@ -520,11 +519,6 @@ body:where(.teacher-workspace-page) {
 :where(.teacher-workspace-page) .account-menu__profile:hover {
   background-color: var(--color-surface-subtle);
   color: var(--color-primary);
-}
-
-:where(.teacher-workspace-page) .account-menu__logout:disabled {
-  color: var(--color-disabled-fg);
-  cursor: not-allowed;
 }
 
 /* Menu thu gọn cho điện thoại (mục 6.1 DESIGN.md — dùng details/summary thuần) */

@@ -306,6 +306,22 @@
 }
 .account-menu__profile { font-weight: 600; }
 .account-menu__logout { background: transparent; border: 0; color: var(--color-muted-foreground); }
+
+:where(.admin-preview, .teacher-workspace-page, .lecturer-profile-page, [data-lecturer-topic-editor]) .account-menu__logout {
+  display: flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-control);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-foreground);
+  cursor: pointer;
+}
+
+:where(.admin-preview, .teacher-workspace-page, .lecturer-profile-page, [data-lecturer-topic-editor]) .account-menu__logout:disabled {
+  color: var(--color-disabled-fg);
+  cursor: not-allowed;
+}
+
 #logout-notice {
   position: absolute;
   right: var(--space-4);
