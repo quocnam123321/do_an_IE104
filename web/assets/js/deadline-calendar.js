@@ -301,7 +301,7 @@
     if (candidates.length <= submissionLimit) return [...reports, ...candidates];
 
     const shared = candidates.filter(event => event.isDatabaseRequirement);
-    if (shared.length >= submissionLimit) return [...reports, ...shared];
+    if (shared.length >= submissionLimit) return [...reports, ...shared.slice(0, submissionLimit)];
     const byStatus = new Map();
     for (const event of candidates) {
       if (!byStatus.has(event.status)) byStatus.set(event.status, event);
