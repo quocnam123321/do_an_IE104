@@ -1,7 +1,10 @@
 (() => {
-  const seedRounds = globalThis.IE104AdminSampleData.rounds;
+  const { rounds: seedRounds, currentTerm } = globalThis.IE104AdminSampleData;
   const storageKey = "ie104.admin.academic-demo.v1";
-  const initialTerms = ["2026-1", "2025-2"];
+  const initialTerms = [...new Set(seedRounds.map(({ term }) => term))].sort().reverse();
+  const seedRoundIds = new Set(seedRounds.map(({ id }) => id));
+  const localRoundId = /^DOT-\d{2,}$/;
+  const scheduleFields = ["term", "type", "start", "end"];
   const roundTypes = ["course", "graduation", "thesis"];
   const updateEvent = "ie104:registration-rounds-updated";
   const changedEvent = "ie104:registration-rounds-changed";
@@ -12,6 +15,7 @@
   const instant = (value) => Date.parse(value + "+07:00");
   const vietnamOffsetMs = 7 * 60 * 60 * 1000;
   const minuteMs = 60 * 1000;
+  const closeInstant = ({ end, source }) => instant(end) + (source ? minuteMs : 0);
 
   // Học kỳ 4 vẫn đọc được từ dữ liệu của các phiên bản trước.
   const storedTermPattern = /^20\d{2}-[1-4]$/;
@@ -42,11 +46,11 @@
     const data = JSON.parse(raw);
     if (!Array.isArray(data?.terms) || !Array.isArray(data.rounds)) throw new Error();
     const validTerms = new Set([...initialTerms, ...data.terms]);
-    const valid = validTerms.size === initialTerms.length + data.terms.length &&
+    const valid = new Set(data.terms).size === data.terms.length &&
       data.terms.every((id) => typeof id === "string" && storedTermPattern.test(id)) &&
       new Set(data.rounds.map((round) => round?.id)).size === data.rounds.length &&
       data.rounds.every((round) =>
-        typeof round?.id === "string" && /^DOT-\d{2,}$/.test(round.id) &&
+        typeof round?.id === "string" && (localRoundId.test(round.id) || seedRoundIds.has(round.id)) &&
         typeof round.name === "string" && round.name.trim() && round.name.length <= 120 &&
         validTerms.has(round.term) && roundTypes.includes(round.type) &&
         Number.isSafeInteger(round.revision) && round.revision > 0 && validWindow(round.start, round.end)
@@ -60,13 +64,18 @@
     return `HK ${number} · ${year}–${Number(year) + 1}`;
   }
 
-  function statusOf({ start, end }, now = Date.now()) {
-    if (now < instant(start)) return "upcoming";
-    return now >= instant(end) ? "closed" : "open";
+  function statusOf(round, now) {
+    if (round.term < currentTerm || now >= closeInstant(round)) return "closed";
+    return now < instant(round.start) ? "upcoming" : "open";
   }
 
   function records(data, now = Date.now()) {
-    const result = new Map([...seedRounds, ...data.rounds].map((round) => [round.id, round]));
+    const result = new Map(seedRounds.map((round) => [round.id, round]));
+    for (const round of data.rounds) {
+      const seed = result.get(round.id);
+      const source = seed?.source && scheduleFields.every((field) => round[field] === seed[field]) ? seed.source : undefined;
+      result.set(round.id, { ...round, source, sample: seed?.sample });
+    }
     return [...result.values()].map((round) => ({ ...round, status: statusOf(round, now) }));
   }
 
@@ -74,7 +83,7 @@
     try {
       const state = read();
       return {
-        terms: [...initialTerms, ...state.terms].sort((a, b) => b.localeCompare(a)),
+        terms: [...new Set([...initialTerms, ...state.terms])].sort((a, b) => b.localeCompare(a)),
         rounds: records(state, now),
       };
     } catch {
@@ -117,13 +126,14 @@
     return { ...topic, registration: {
       ...topic.registration,
       opensAt: new Date(instant(round.start)).toISOString(),
-      deadline: new Date(instant(round.end)).toISOString(),
+      deadline: new Date(closeInstant(round)).toISOString(),
     } };
   }
 
-  function displayTime(value) {
+  function displayTime(value, dateOnly = false) {
     const [day, time] = value.split("T");
-    return `${time} · ${day.split("-").reverse().join("/")}`;
+    const date = day.split("-").reverse().join("/");
+    return dateOnly ? date : `${time} · ${date}`;
   }
 
   let watching = false;
@@ -134,7 +144,8 @@
     function schedule(notify = true) {
       clearTimeout(timer);
       const now = Date.now();
-      const next = Math.min(...snapshot(now).rounds.flatMap(({ start, end }) => [instant(start), instant(end)])
+      const next = Math.min(...snapshot(now).rounds.filter(({ status }) => status !== "closed")
+        .flatMap((round) => [instant(round.start), closeInstant(round)])
         .filter((timestamp) => timestamp > now));
       if (Number.isFinite(next)) timer = setTimeout(schedule, Math.min(2147483647, next - now));
       if (notify) {
@@ -201,7 +212,7 @@
       if (![...initialTerms, ...data.terms].includes(values.term) || !roundTypes.includes(values.type)) {
         return { error: "Hãy chọn học kỳ và loại đề tài hợp lệ." };
       }
-      const nextNumber = Math.max(...all.map(({ id }) => Number(id.slice(4)))) + 1;
+      const nextNumber = Math.max(0, ...all.filter(({ id }) => localRoundId.test(id)).map(({ id }) => Number(id.slice(4)))) + 1;
       const id = existing?.id ?? `DOT-${String(nextNumber).padStart(2, "0")}`;
       const entry = { ...values, id, revision: (existing?.revision ?? 0) + 1 };
       data.rounds = data.rounds.filter((item) => item.id !== id);
@@ -210,6 +221,6 @@
     });
   }
 
-  globalThis.IE104AdminAcademic = { roundTypes, availableStartYears, minimumDateTime, snapshot, termLabel, addTerm, saveRound,
+  globalThis.IE104AdminAcademic = { currentTerm, roundTypes, availableStartYears, minimumDateTime, snapshot, termLabel, addTerm, saveRound,
     academicYears, matches, selection, forTopic, withRegistration, displayTime, watch, updateEvent, statusLabels };
 })();

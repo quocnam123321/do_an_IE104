@@ -1,9 +1,34 @@
 (() => {
   const storageKey = "ie104.admin.accounts-demo.v1";
   const { accounts: sampleAccounts } = globalThis.IE104AdminSampleData;
-  const initialAccounts = sampleAccounts.map((account) => ({ ...account, code: account.id, revision: 0 }));
+  const initialAccounts = sampleAccounts.map((account) => ({ code: account.id, ...account, revision: 0 }));
+  const previousSampleIdentity = {
+    "SV-042": { email: "nhat.minh@example.com" },
+    "SV-043": { email: "ngoc.linh@example.com" },
+    "SV-044": { email: "gia.han@example.com" },
+    "SV-045": { email: "hoai.nam@example.com" },
+    "GV-021": { email: "minh.khang@example.com" },
+    "GV-022": { email: "thao.nguyen@example.com" },
+    "GV-023": { email: "hoang.nam@example.com" },
+    "SV-046": { username: "ie104.demo.sv046" },
+    "GV-024": { username: "ie104.demo.gv024", email: "ie104.demo.gv024@example.com" },
+    "SV-047": { email: "ie104.demo.sv047@gmail.com" },
+    "GV-025": { email: "ie104.demo.gv025@gmail.com" },
+    "SV-048": { code: "SV-048", email: "ie104-demo-sv048@gm.uit.edu.vn" },
+    "SV-049": { code: "SV-049", email: "ie104-demo-sv049@gm.uit.edu.vn" },
+  };
   const usernamePattern = /^[a-z0-9._-]{3,32}$/i;
   const emailPattern = /^[^\s@]+@[^\s@]+$/;
+  const uniqueFields = [
+    ["code", "Mã này đã được sử dụng."],
+    ["username", "Tên đăng nhập này đã được sử dụng."],
+    ["email", "Email này đã được sử dụng."],
+  ];
+
+  function fieldInUse(accounts, account, field) {
+    const value = account[field].toLowerCase();
+    return Boolean(value) && accounts.some((other) => other.id !== account.id && other[field].toLowerCase() === value);
+  }
 
   function validateProfile(account) {
     if (!account.name.trim() || account.name.length > 120) {
@@ -38,6 +63,17 @@
       ) &&
       new Set(accounts.map(({ id }) => id)).size === accounts.length;
     if (!valid) throw new Error("Invalid account data");
+
+    for (const sample of initialAccounts) {
+      const saved = accounts.find(({ id }) => id === sample.id);
+      if (!saved) {
+        if (!uniqueFields.some(([field]) => fieldInUse(accounts, sample, field))) accounts.push(sample);
+        continue;
+      }
+      for (const [field, oldValue] of Object.entries(previousSampleIdentity[sample.id] ?? {})) {
+        if (saved[field] === oldValue && !fieldInUse(accounts, sample, field)) saved[field] = sample[field];
+      }
+    }
     return accounts;
   }
 
@@ -86,16 +122,8 @@
       const invalid = validateProfile(account);
       if (invalid) return invalid;
 
-      const conflicts = [
-        ["code", "Mã này đã được sử dụng."],
-        ["username", "Tên đăng nhập này đã được sử dụng."],
-        ["email", "Email này đã được sử dụng."],
-      ];
-      for (const [field, error] of conflicts) {
-        const value = account[field].toLowerCase();
-        if (value && accounts.some((other) => other.id !== account.id && other[field].toLowerCase() === value)) {
-          return { error, field };
-        }
+      for (const [field, error] of uniqueFields) {
+        if (fieldInUse(accounts, account, field)) return { error, field };
       }
 
       if (existing) accounts[index] = account;

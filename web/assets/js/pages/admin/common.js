@@ -78,7 +78,7 @@
     const options = terms.map((id) => new Option(academic.termLabel(id), id));
     if (includeAll) options.unshift(new Option("Tất cả học kỳ", ""));
     select.replaceChildren(...options);
-    select.value = hasSelection ? selected : terms[0];
+    select.value = hasSelection ? selected : academic.currentTerm;
   }
 
   function rememberTerm() {
@@ -153,7 +153,7 @@
   }
 
   function cellValue(item, key) {
-    if (key === "start" || key === "end") return displayDateTime(item[key]);
+    if (key === "start" || key === "end") return item.source ? displayDate(item[key]) : displayDateTime(item[key]);
     return key === "date" ? displayDate(item[key]) : item[key];
   }
 
@@ -162,7 +162,7 @@
   }
 
   function recordCell(definition, item) {
-    const label = `<span translate="no">${escapeHtml(item.name)}</span><span class="admin-code" translate="no">${escapeHtml(item.id)}</span>`;
+    const label = `<span${item.source ? '' : ' translate="no"'}>${escapeHtml(item.name)}</span><span class="admin-code" translate="no">${escapeHtml(item.id)}</span>`;
     return `<span class="${definition.recordClass ?? "admin-catalog-record"}">${label}</span>`;
   }
 

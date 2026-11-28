@@ -2,13 +2,44 @@
   const term = "2026-1";
   const previousTerm = "2025-2";
 
-  const rounds = [
-    { id: "DOT-01", term, name: "Đăng ký đồ án môn học", type: "course", start: "2026-11-16T08:00", end: "2026-11-30T23:59", status: "open" },
-    { id: "DOT-02", term, name: "Đăng ký khóa luận tốt nghiệp", type: "thesis", start: "2026-11-23T08:00", end: "2026-12-07T23:59", status: "open" },
-    { id: "DOT-03", term, name: "Đăng ký bổ sung đồ án", type: "course", start: "2026-12-08T08:00", end: "2026-12-14T23:59", status: "upcoming" },
-    { id: "DOT-04", term, name: "Đăng ký đồ án đợt 1", type: "course", start: "2026-09-07T08:00", end: "2026-09-21T23:59", status: "closed" },
-    { id: "DOT-05", term: previousTerm, name: "Đăng ký đồ án môn học", type: "course", start: "2026-02-23T08:00", end: "2026-03-09T23:59", status: "closed" },
-  ];
+  const sampleRounds = [
+    { id: "DOT-01", term, name: "Đăng ký đồ án môn học", type: "course", start: "2026-11-16T08:00", end: "2026-11-30T23:59" },
+    { id: "DOT-02", term, name: "Đăng ký khóa luận tốt nghiệp", type: "thesis", start: "2026-11-23T08:00", end: "2026-12-07T23:59" },
+    { id: "DOT-03", term, name: "Đăng ký bổ sung đồ án", type: "course", start: "2026-12-08T08:00", end: "2026-12-14T23:59" },
+    { id: "DOT-04", term, name: "Đăng ký đồ án đợt 1", type: "course", start: "2026-09-07T08:00", end: "2026-09-21T23:59" },
+    { id: "DOT-05", term: previousTerm, name: "Đăng ký đồ án môn học", type: "course", start: "2026-02-23T08:00", end: "2026-03-09T23:59" },
+    { id: "DOT-2026-1-01", term, name: "Đăng ký đề tài đồ án IE207", type: "course", start: "2026-09-14T08:00", end: "2026-09-20T23:59" },
+    { id: "DOT-2026-1-02", term, name: "Đăng ký đề tài đồ án DS207", type: "course", start: "2026-09-21T08:00", end: "2026-09-27T23:59" },
+    { id: "DOT-2026-1-03", term, name: "Đăng ký bổ sung đồ án tốt nghiệp", type: "graduation", start: "2026-09-22T08:00", end: "2026-09-28T23:59" },
+    { id: "DOT-2026-1-04", term, name: "Đăng ký bổ sung khóa luận tốt nghiệp", type: "thesis", start: "2026-09-22T08:00", end: "2026-09-28T23:59" },
+    { id: "DOT-2026-1-05", term, name: "Đăng ký đồ án môn học đợt 2", type: "course", start: "2026-10-05T08:00", end: "2026-10-11T23:59" },
+    { id: "DOT-2026-1-06", term, name: "Đăng ký đề tài đồ án môn học đợt bổ sung", type: "course", start: "2026-10-19T08:00", end: "2026-10-25T23:59" },
+  ].map((round) => ({ ...round, sample: true }));
+
+  const thesisOutline = "Nộp đề cương khóa luận tốt nghiệp";
+  const courseRegistration = "Đăng ký đề tài đồ án IE207 và DS207";
+  const currentFacultyPlan = "https://ise.uit.edu.vn/vi/bai-viet/thong-bao-ke-hoach-hoc-vu-kltn-datn-ttdn";
+  const facultyRounds = [
+    { id: "UIT-2026-1-DA", term, name: "Nộp đề cương đồ án tốt nghiệp", type: "graduation",
+      start: "2026-08-31", end: "2026-09-05", source: currentFacultyPlan },
+    { id: "UIT-2026-1-KL", term, name: thesisOutline, type: "thesis",
+      start: "2026-08-31", end: "2026-09-06", source: currentFacultyPlan },
+    { id: "UIT-2025-2-KL", term: previousTerm, name: thesisOutline, type: "thesis",
+      start: "2026-01-12", end: "2026-01-18",
+      source: "https://ise.uit.edu.vn/vi/bai-viet/khoa-kh-kttt-thong-bao-ti-n-trinh-th-c-hi-n-kltn-hkii-nam-h-c-2025-2026" },
+    { id: "UIT-2025-1-DA", term: "2025-1", name: courseRegistration, type: "course",
+      start: "2025-09-17", end: "2025-09-21", source: "../chung/chi-tiet-thong-bao.html?id=03" },
+    { id: "UIT-2025-1-KL", term: "2025-1", name: thesisOutline, type: "thesis",
+      start: "2025-09-03", end: "2025-09-07",
+      source: "https://www.uit.edu.vn/bai-viet/khkttt-ke-hoach-thuc-hien-khoa-luan-tot-nghiep-hoc-ky-i-nam-hoc-2025-2026" },
+    { id: "UIT-2024-2-DA", term: "2024-2", name: courseRegistration, type: "course",
+      start: "2025-02-25", end: "2025-02-28", source: "../chung/chi-tiet-thong-bao.html?id=09" },
+    { id: "UIT-2024-2-KL", term: "2024-2", name: thesisOutline, type: "thesis",
+      start: "2025-02-17", end: "2025-02-24", source: "../chung/chi-tiet-thong-bao.html?id=10" },
+    { id: "UIT-2024-1-KL", term: "2024-1", name: thesisOutline, type: "thesis",
+      start: "2024-09-04", end: "2024-09-09", source: "../chung/chi-tiet-thong-bao.html?id=12" },
+  ].map((round) => ({ ...round, start: `${round.start}T00:00`, end: `${round.end}T23:59` }));
+  const rounds = [...sampleRounds, ...facultyRounds];
 
   const projects = {
     "ISEDATN-001": { group: "Nhóm 11", groupName: "Thiết bị phòng thí nghiệm", members: ["SV-061", "SV-062"], course: "IE501 – Đồ án tốt nghiệp", dates: ["2026-09-21", "2026-11-10", "2026-12-14"] },
@@ -63,13 +94,20 @@
 
   const accounts = [
     { id: "SV-041", name: "Lê Minh Anh", username: "minh.anh", email: "", provider: "password", type: "student", status: "enabled" },
-    { id: "SV-042", name: "Trần Nhật Minh", username: "", email: "nhat.minh@example.com", provider: "google", type: "student", status: "enabled" },
-    { id: "SV-043", name: "Phạm Ngọc Linh", username: "ngoc.linh", email: "ngoc.linh@example.com", provider: "password", type: "student", status: "enabled" },
-    { id: "SV-044", name: "Vũ Gia Hân", username: "", email: "gia.han@example.com", provider: "google", type: "student", status: "enabled" },
-    { id: "SV-045", name: "Đỗ Hoài Nam", username: "hoai.nam", email: "hoai.nam@example.com", provider: "password", type: "student", status: "locked" },
-    { id: "GV-021", name: "Nguyễn Minh Khang", username: "", email: "minh.khang@example.com", provider: "google", type: "lecturer", status: "enabled" },
-    { id: "GV-022", name: "Trần Thảo Nguyên", username: "", email: "thao.nguyen@example.com", provider: "google", type: "lecturer", status: "enabled" },
-    { id: "GV-023", name: "Võ Hoàng Nam", username: "hoang.nam", email: "hoang.nam@example.com", provider: "password", type: "lecturer", status: "enabled" },
+    { id: "SV-042", name: "Trần Nhật Minh", username: "", email: "trannhatminh.52042@gmail.com", provider: "google", type: "student", status: "enabled" },
+    { id: "SV-043", name: "Phạm Ngọc Linh", username: "ngoc.linh", email: "phamngoclinh.52043@gmail.com", provider: "password", type: "student", status: "enabled" },
+    { id: "SV-044", name: "Vũ Gia Hân", username: "", email: "vugiahan.52044@gmail.com", provider: "google", type: "student", status: "enabled" },
+    { id: "SV-045", name: "Đỗ Hoài Nam", username: "hoai.nam", email: "dohoainam.52045@gmail.com", provider: "password", type: "student", status: "locked" },
+    { id: "GV-021", name: "Nguyễn Minh Khang", username: "", email: "nguyenminhkhang.52021@gmail.com", provider: "google", type: "lecturer", status: "enabled" },
+    { id: "GV-022", name: "Trần Thảo Nguyên", username: "", email: "tranthaonguyen.52022@gmail.com", provider: "google", type: "lecturer", status: "enabled" },
+    { id: "GV-023", name: "Võ Hoàng Nam", username: "hoang.nam", email: "vohoangnam.52023@gmail.com", provider: "password", type: "lecturer", status: "enabled" },
+    { id: "SV-046", name: "Bùi Thanh An", username: "bui.thanh.an", email: "", provider: "password", type: "student", status: "enabled" },
+    { id: "GV-024", name: "Lê Thu Hằng", username: "le.thu.hang", email: "lethuhang.52024@gmail.com", provider: "password", type: "lecturer", status: "enabled" },
+    { id: "SV-047", name: "Ngô Tuấn Kiệt", username: "", email: "ngotuankiet.52047@gmail.com", provider: "google", type: "student", status: "enabled" },
+    { id: "GV-025", name: "Phan Bảo Trâm", username: "", email: "phanbaotram.52025@gmail.com", provider: "google", type: "lecturer", status: "enabled" },
+    { id: "SV-048", code: "23529841", name: "Hồ Gia Bảo", username: "", email: "23529841@gm.uit.edu.vn", provider: "google", type: "student", status: "enabled" },
+    { id: "SV-049", code: "24529627", name: "Võ Khánh Vy", username: "", email: "24529627@gm.uit.edu.vn", provider: "google", type: "student", status: "enabled" },
+    { id: "SV-050", code: "25529753", name: "Mai Đức Huy", username: "", email: "25529753@gm.uit.edu.vn", provider: "google", type: "student", status: "enabled" },
   ];
 
   const notices = [
@@ -85,5 +123,5 @@
       body: "Lịch dự kiến đã được thay thế bằng hướng dẫn nộp báo cáo mới." },
   ];
 
-  globalThis.IE104AdminSampleData = { accounts, sampleMembers, notices, requests, rounds, topics };
+  globalThis.IE104AdminSampleData = { accounts, sampleMembers, notices, requests, rounds, topics, currentTerm: term };
 })();

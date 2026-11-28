@@ -93,8 +93,8 @@
             const round = academic?.forTopic(topic);
             if (round?.status !== 'open') throw new Error('Đợt đăng ký hiện chưa mở.');
             const time = roundDeadline.querySelector('time');
-            time.dateTime = round.end + '+07:00';
-            time.textContent = academic.displayTime(round.end);
+            time.dateTime = round.source ? round.end.slice(0, 10) : round.end + '+07:00';
+            time.textContent = academic.displayTime(round.end, Boolean(round.source));
           } else {
             const timestamp = Date.parse(topic.registration?.deadline);
             const value = Number.isFinite(timestamp) ? new Date(timestamp + 7 * 3600000).toISOString().slice(0, 16) : '';

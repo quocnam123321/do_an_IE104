@@ -40,8 +40,8 @@
         select.replaceChildren(...nextOptions);
       }
       select.value = chosen = selected?.id || "";
-      deadline.textContent = selected ? academic.displayTime(selected.end) : "—";
-      deadline.dateTime = selected ? selected.end + "+07:00" : "";
+      deadline.textContent = selected ? academic.displayTime(selected.end, Boolean(selected.source)) : "—";
+      deadline.dateTime = selected ? (selected.source ? selected.end.slice(0, 10) : selected.end + "+07:00") : "";
       note.textContent = data.unavailable ? "Không đọc được lịch đợt đăng ký. Hãy thử lại." :
         selected && selected.status !== "open" ? academic.statusLabels[selected.status] :
         !available.length && year.value && semester.value && type.value ? "Chưa có đợt đăng ký phù hợp." : "";
@@ -73,7 +73,7 @@
         picker?.close();
         return;
       }
-      const latest = [...rounds].sort((a, b) => b.id.localeCompare(a.id, undefined, { numeric: true }));
+      const latest = [...rounds].sort((a, b) => b.term.localeCompare(a.term) || b.start.localeCompare(a.start));
       const active = latest.find((round) => round.status === "open");
       const current = latest.find((round) => round.id === select.value) || active || latest[0];
       const ids = JSON.stringify(latest.map(({ id, name }) => [id, name]));
@@ -90,8 +90,8 @@
       status.dataset.state = current.status;
       status.textContent = academic.statusLabels[current.status];
       for (const [time, value] of [[start, current.start], [end, current.end]]) {
-        time.dateTime = value + "+07:00";
-        time.textContent = academic.displayTime(value);
+        time.dateTime = current.source ? value.slice(0, 10) : value + "+07:00";
+        time.textContent = academic.displayTime(value, Boolean(current.source));
       }
     }
     select.addEventListener("change", paint);

@@ -22,7 +22,7 @@
     const material = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
     return hex(await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: unhex(salt), iterations }, material, 256));
   }
-  async function verifyDemo(role, password, initial = 'Demo1234') {
+  async function verifyDemo(role, password, initial = 'IE104@2026') {
     const record = read(role);
     return record ? (await hash(password, record.salt)) === record.hash : password === initial;
   }

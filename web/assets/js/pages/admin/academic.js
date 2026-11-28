@@ -1,7 +1,7 @@
 (() => {
   const { topics } = globalThis.IE104AdminSampleData;
   const {
-    academic, badge, dataTable, definitions, displayDateTime, forTerm, initializeTerm, labels,
+    academic, badge, dataTable, definitions, displayDate, displayDateTime, escapeHtml, forTerm, initializeTerm, labels,
     normalizeSearch, pageUrl, params, populateTerms, rememberTerm, roundLabels, term, view,
   } = globalThis.IE104Admin;
   const title = document.querySelector("#admin-title");
@@ -30,7 +30,6 @@
   const search = view.querySelector("#admin-search");
   const type = view.querySelector("#admin-filter-type");
   const status = view.querySelector("#admin-filter-status");
-  const count = view.querySelector("#admin-result-count span");
   const results = view.querySelector("#admin-results");
 
   function updateListUrl() {
@@ -51,7 +50,6 @@
       (!status.value || status.value === round.status) &&
       [round.id, round.name].some((value) => normalizeSearch(value).includes(query))
     );
-    count.textContent = matches.length;
     const empty = query || type.value || status.value ?
       "Không có kết quả phù hợp. Hãy đổi từ khóa hoặc bộ lọc." : "Học kỳ này chưa có đợt đăng ký.";
     results.innerHTML = matches.length ? dataTable(definition, matches, caption) : `<p class="admin-empty">${empty}</p>`;
@@ -80,8 +78,11 @@
 
     const roundTopics = topicsInRound(item);
     const topicColumns = { ...definitions["de-tai"], hideType: true, recordClass: "admin-round-record" };
-    const datetime = (value) =>
-      `<time class="admin-round-datetime" datetime="${value}+07:00">${calendar}${displayDateTime(value)}</time>`;
+    const datetime = (value) => {
+      const date = item.source ? value.slice(0, 10) : `${value}+07:00`;
+      const label = item.source ? displayDate(value) : displayDateTime(value);
+      return `<time class="admin-round-datetime" datetime="${date}">${calendar}${label}</time>`;
+    };
     const field = (label, value) => `<div><dt>${label}</dt><dd>${value}</dd></div>`;
     view.innerHTML = `
       <section class="pending-requests" aria-labelledby="round-detail-heading">
@@ -92,6 +93,7 @@
           ${field("Loại đề tài", labels[item.type])}
           ${field("Mở đăng ký", datetime(item.start))}
           ${field("Đóng đăng ký", datetime(item.end))}
+          ${item.source ? field("Nguồn lịch", `<a href="${escapeHtml(item.source)}">Xem thông báo của Khoa</a>`) : ""}
         </dl>
       </section>
       <section class="pending-requests admin-round-topics" aria-labelledby="round-topics-heading">
@@ -104,7 +106,8 @@
   function refreshDetail() {
     currentRound = data.rounds.find((round) => round.id === params.get("id"));
     title.textContent = currentRound?.name ?? "Chi tiết đợt đăng ký";
-    title.translate = !currentRound;
+    title.translate = !currentRound || Boolean(currentRound.source);
+    document.querySelector("#admin-demo").hidden = !currentRound?.sample;
     roundStatus.hidden = !currentRound;
     roundStatus.innerHTML = currentRound ? badge(roundLabels[currentRound.status], currentRound.status) : "";
     academicActions.hidden = !currentRound;
@@ -254,7 +257,7 @@
 
   if (data.unavailable) {
     academicMessage.hidden = false;
-    academicMessage.textContent = "Không thể đọc thay đổi đã lưu. Đang hiển thị dữ liệu mẫu.";
+    academicMessage.textContent = "Không thể đọc thay đổi đã lưu. Đang hiển thị dữ liệu có sẵn.";
   }
 
   if (isDetail) {

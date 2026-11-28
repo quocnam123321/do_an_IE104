@@ -759,21 +759,8 @@
   margin-block-start: var(--space-4);
 }
 
-.admin-round-list__heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: var(--space-2) var(--space-4);
-}
-
-.admin-round-list__heading h2 {
+.admin-round-list > h2 {
   font-size: var(--font-size-section-title);
-}
-
-.admin-round-list__heading p {
-  color: var(--color-muted-foreground);
-  font-size: var(--font-size-secondary);
 }
 
 .admin-round-list .admin-table-scroll {
