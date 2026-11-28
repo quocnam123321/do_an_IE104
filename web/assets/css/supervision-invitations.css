@@ -230,10 +230,38 @@
 
 .supervision__decision-form .supervision__actions { justify-content: flex-end; }
 
+.supervision-section--student-inbox .supervision__workspace:not(:first-child) {
+  margin-block-start: var(--space-2);
+}
+.supervision-section--student-inbox .supervision__workspace { gap: var(--space-4); }
+.supervision-section--student-inbox .supervision__list { margin-block-start: var(--space-2); }
+.supervision-section--student-inbox .supervision__panel { padding: var(--space-4); }
+.supervision-section--student-inbox .supervision__panel > .supervision__topline {
+  row-gap: var(--space-1);
+}
+.supervision-section--student-inbox :is(.supervision__thread, .supervision__decision) {
+  margin-block-start: var(--space-3);
+  padding-block-start: var(--space-3);
+}
+.supervision-section--student-inbox .supervision__messages { padding-block-start: 0; }
+.supervision-section--student-inbox .supervision__message { padding-block: var(--space-2); }
+.supervision-section--student-inbox .supervision__message p { margin-block-start: var(--space-1); }
+.supervision-section--student-inbox .supervision__form { gap: var(--space-3); }
+
 @media (max-width: 32rem) {
   .supervision__decision-form .supervision__actions > button { flex: 1 1 auto; }
 }
 
 @media (min-width: 50rem) {
   .supervision__workspace { grid-template-columns: minmax(12rem, 1fr) minmax(0, 2.4fr); }
+  .supervision-section--student-inbox .supervision__workspace {
+    grid-template-columns: clamp(13rem, 25%, 18rem) minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-5);
+  }
+  .supervision-section--student-inbox .supervision__panel > .supervision__topline {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+  }
 }
