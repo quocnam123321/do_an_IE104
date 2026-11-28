@@ -3,7 +3,7 @@ import { authConfig, authRequest, databaseAccount, notifyAccountChange, remember
 const destinations = {
   student: "../sinh-vien/tong-quan-sinh-vien.html",
   lecturer: "../giang-vien/tong-quan-giang-vien.html",
-  admin: "../quan-tri/tai-khoan.html",
+  admin: "../quan-tri/tong-quan-quan-tri.html",
 };
 const type = document.querySelector("[data-auth-page]")?.dataset.authPage;
 const byId = (id) => document.getElementById(id);
@@ -118,7 +118,8 @@ async function showGoogle(config, onCredential, text = "continue_with") {
 function bindDemoLogin(config) {
   if (!config.systemDemo) return;
   const demo = byId("database-demo-login");
-  const controls = [...demo.querySelectorAll("[data-demo-role]")];
+  demo.querySelector('[data-demo-role="admin"]').hidden = !config.adminDemo;
+  const controls = [...demo.querySelectorAll("[data-demo-role]:not([hidden])")];
   const error = byId("database-demo-error");
   demo.hidden = false;
 
@@ -133,10 +134,10 @@ function bindDemoLogin(config) {
         openAccount(result.account);
       } catch (failure) {
         error.textContent = failure.message;
-        button.focus();
       } finally {
         controls.forEach(control => { control.disabled = false; });
         demo.removeAttribute("aria-busy");
+        if (error.textContent) button.focus();
       }
     });
   }

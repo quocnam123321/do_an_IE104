@@ -52,6 +52,8 @@ npm.cmd run start:demo
 
 Mở [website trên máy](http://localhost:3000). Có thể kiểm tra kết nối DB ở `/api/health`.
 
+Để thử vai trò quản trị viên trong bản demo local, đặt `IE104_DEMO_ADMIN=1` trong `server/.env`, chạy migration và khởi động lại bằng `npm.cmd run start:demo`. Dùng tùy chọn này với cơ sở dữ liệu minh họa dành riêng cho thử nghiệm.
+
 Trên Render, để trống **Root Directory** và cấu hình `DATABASE_URL`, `APP_ORIGIN` cho Web Service. Dùng `npm --prefix server ci && npm --prefix server run db:migrate` khi build và `npm --prefix server run start:demo` khi khởi động.
 
 [Tài liệu hệ thống](docs/tai-lieu-he-thong/README.md)

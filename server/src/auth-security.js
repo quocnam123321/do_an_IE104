@@ -3,6 +3,7 @@ import argon2 from "argon2";
 import { pool } from "./db.js";
 
 export const systemDemoEnabled = process.env.IE104_DEMO_MODE === "1";
+export const adminDemoEnabled = systemDemoEnabled && process.env.IE104_DEMO_ADMIN === "1";
 export const demoStudentName = "Nguyễn Minh Anh";
 const demoNames = { student: demoStudentName, lecturer: "ThS. Nguyễn Văn An" };
 
@@ -95,9 +96,10 @@ export async function activeAccount(request, role) {
     WHERE sessions.token_hash = ANY($1::text[]) AND sessions.expires_at > now() AND accounts.status = 'active'
       AND NOT accounts.is_locked
       AND (NOT accounts.is_demo OR $2) AND ($3::text IS NULL OR accounts.role = $3)
+      AND (NOT accounts.is_demo OR accounts.role <> 'admin' OR $4)
     ORDER BY array_position($1::text[], sessions.token_hash)
     LIMIT 1
-  `, [tokens, systemDemoEnabled, selectedRole]);
+  `, [tokens, systemDemoEnabled, selectedRole, adminDemoEnabled]);
   return result.rows[0] ?? null;
 }
 

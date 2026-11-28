@@ -1,6 +1,10 @@
 /* English copy for the public, sign-in, recovery and announcement pages. */
 Object.assign(globalThis.ie104English ??= {}, {
   "Quản trị viên": "Administrator",
+  "Tài khoản minh họa": "Demo accounts",
+  "Dữ liệu minh họa được dùng chung.": "Demo data is shared.",
+  "Tài khoản quản trị minh họa chưa được bật.": "The demo administrator account is disabled.",
+  "Tài khoản minh họa chưa khả dụng.": "The demo account is currently unavailable.",
   "Tổng quan quản trị": "Admin overview",
   "Yêu cầu liên hệ": "Contact requests",
   "Chi tiết thông báo": "Announcement details",

@@ -3,7 +3,7 @@ import { rateLimit } from "express-rate-limit";
 import { OAuth2Client } from "google-auth-library";
 import { pool } from "./db.js";
 import {
-  AuthError, cookieOptions, createToken, endSession, fingerprint, hashPassword, isToken,
+  AuthError, adminDemoEnabled, cookieOptions, createToken, endSession, fingerprint, hashPassword, isToken,
   normalizeUsername, publicAccount, readCookie, requiredRole, requireValidPassword,
   startSession, systemDemoEnabled, transaction, validUsername, verifyPassword,
 } from "./auth-security.js";
@@ -56,12 +56,16 @@ authRouter.use((_request, response, next) => {
 authRouter.use(sameOrigin, express.json({ limit: "16kb" }));
 
 authRouter.get("/config", (_request, response) => response.json({
-  mode: "database", googleClientId: googleClientId || null, systemDemo: systemDemoEnabled,
+  mode: "database", googleClientId: googleClientId || null, systemDemo: systemDemoEnabled, adminDemo: adminDemoEnabled,
 }));
 
 authRouter.post("/demo/login", authRateLimit(30), async (request, response) => {
   if (!systemDemoEnabled) throw new AuthError(404, "Bản này chưa bật tài khoản minh họa.");
-  const role = roleForSignup(request.body?.role);
+  const role = request.body?.role;
+  if (role === "admin" && !adminDemoEnabled) throw new AuthError(404, "Tài khoản quản trị minh họa chưa được bật.");
+  if (role !== "admin" && role !== "student" && role !== "lecturer") {
+    throw new AuthError(400, "Chọn vai trò minh họa hợp lệ.");
+  }
   const { rows: [account] } = await pool.query(
     "SELECT * FROM accounts WHERE role = $1 AND is_demo AND status = 'active'", [role],
   );
