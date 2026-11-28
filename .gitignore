@@ -4,6 +4,11 @@
 /.impeccable/
 /backup-css-*/
 
+# Local project notes
+/AGENTS.md
+/DESIGN.md
+/PRODUCT.md
+
 # Chromium debug log
 /debug.log
 
