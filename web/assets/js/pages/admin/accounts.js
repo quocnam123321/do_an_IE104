@@ -12,6 +12,10 @@
   const editor = document.querySelector("#admin-account-dialog");
   const form = document.querySelector("#admin-account-form");
   const fields = form.elements;
+  const roleRequired = fields.role.labels[0].querySelector(".admin-account-required");
+  const fallbackPickers = CSS.supports("(appearance: base-select) and selector(select::picker(select))") ?
+    null : globalThis.IE104?.ui?.proposalPickers;
+  const rolePicker = fallbackPickers?.enhanceSelect(fields.role);
   const passwordFields = document.querySelector("#admin-account-password-fields");
   const editorTitle = document.querySelector("#admin-account-dialog-title");
   const editorError = document.querySelector("#admin-account-form-error");
@@ -131,7 +135,9 @@
     if (control) {
       control.setAttribute("aria-invalid", "true");
       control.setAttribute("aria-describedby", output.id);
-      control.focus();
+      const picker = control === fields.role ? rolePicker : null;
+      picker?.sync();
+      (picker?.trigger ?? control).focus();
     }
   }
 
@@ -139,6 +145,7 @@
     const invalid = form.querySelector('[aria-invalid="true"]');
     invalid?.removeAttribute("aria-invalid");
     invalid?.removeAttribute("aria-describedby");
+    if (invalid === fields.role) rolePicker?.sync();
     setError(editorError, "");
   }
 
@@ -160,7 +167,8 @@
     fields.email.value = account?.email ?? "";
     fields.role.disabled = databaseMode && Boolean(account);
     fields.code.required = !databaseMode || !account;
-    fields.role.labels[0].querySelector(".admin-account-required").hidden = fields.role.disabled;
+    roleRequired.hidden = fields.role.disabled;
+    rolePicker?.sync();
     fields.code.labels[0].querySelector(".admin-account-required").hidden = !fields.code.required;
     fields.username.disabled = googleOnly;
     document.querySelector("#admin-account-username-field").hidden = googleOnly;
@@ -216,7 +224,9 @@
   fields.role.addEventListener("input", updateCodeLabel);
   form.addEventListener("input", clearEditorError);
   editor.addEventListener("close", () => {
-    if (!editor.open) form.reset();
+    if (editor.open) return;
+    rolePicker?.close();
+    form.reset();
   });
 
   for (const [dialog, submit] of [[editor, editorSubmit], [confirm, confirmSubmit]]) {
@@ -296,11 +306,8 @@
     control.addEventListener("input", render);
     control.disabled = false;
   }
-  if (!CSS.supports("(appearance: base-select) and selector(select::picker(select))")) {
-    const pickers = globalThis.IE104?.ui?.proposalPickers;
-    pickers?.enhanceSelect(roleFilter);
-    pickers?.enhanceSelect(statusFilter);
-  }
+  fallbackPickers?.enhanceSelect(roleFilter);
+  fallbackPickers?.enhanceSelect(statusFilter);
   rows.closest(".admin-account-list").hidden = false;
   if (databaseMode) {
     void loadDatabase();
