@@ -5,6 +5,8 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Chưa gắn đợt đăng ký": "No registration round assigned",
   "Lịch đợt đăng ký": "Registration round schedule",
   "Xem lịch đợt đăng ký": "View registration round schedule",
+  "Giờ mở": "Opens at",
+  "Giờ đóng": "Closes at",
   "Hạn đóng": "Closes at",
   "Chưa có đợt đăng ký phù hợp.": "No matching registration round.",
   "Sắp mở": "Upcoming",

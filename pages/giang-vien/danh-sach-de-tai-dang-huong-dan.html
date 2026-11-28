@@ -8,12 +8,11 @@
     <title>Quản lý đề tài | Quản lý đồ án</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
     <script defer src="../../assets/js/i18n/en-lecturer.js?v=20261125-filter-selection"></script>
-    <script defer src="../../assets/js/i18n/en-shared.js"></script>
+    <script defer src="../../assets/js/i18n/en-shared.js?v=20261128-round-lookup"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <script defer src="../../assets/js/pages/admin/sample-data.js"></script>
     <script defer src="../../assets/js/pages/admin/academic-store.js"></script>
-    <script defer src="../../assets/js/shared/registration-round-ui.js"></script>
-    <link rel="stylesheet" href="../../assets/css/registration-round.css">
+    <script defer src="../../assets/js/shared/registration-round-ui.js?v=20261128-round-lookup"></script>
     <script type="module" src="../../assets/js/shared/notification-bell.js"></script>
     <link
       rel="stylesheet"
@@ -96,6 +95,7 @@
     <script src="../../assets/js/uit-topic-list.js?v=20261125-filter-selection" defer></script>
     <script src="../../assets/js/pages/lecturer/topic-sort.js?v=20261123-language" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
+    <link rel="stylesheet" href="../../assets/css/registration-round.css?v=20261128-round-lookup">
   <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
   <script src="../../assets/js/supervision-entry.js" defer></script>
   <script src="../../assets/js/services/project-invitation-identity.js?v=20261124-demo-invitation-polish" defer></script>
@@ -391,20 +391,32 @@
           </a>
         </header>
         <section class="registration-round-summary" data-round-summary aria-label="Lịch đợt đăng ký" hidden>
-          <div>
-            <div class="registration-round-summary__heading">
-              <h2 data-round-title translate="no"></h2>
-              <span data-round-status></span>
-            </div>
-            <p class="registration-round-note" data-round-term translate="no"></p>
-            <label class="registration-round-summary__choice">
-              <span class="visually-hidden">Xem lịch đợt đăng ký</span>
-              <select translate="no"></select>
-            </label>
+          <div class="registration-round-field registration-round-summary__choice">
+            <label for="round-schedule-choice"><span class="registration-round-label">Đợt đăng ký</span></label>
+            <select id="round-schedule-choice" translate="no"></select>
           </div>
-          <div class="registration-round-summary__deadline">
-            <span class="registration-round-label">Hạn đóng</span>
-            <time translate="no"></time>
+          <div class="registration-round-field">
+            <span id="round-schedule-term" class="registration-round-label">Học kỳ</span>
+            <div class="registration-round-summary__value" role="group" aria-labelledby="round-schedule-term">
+              <span data-round-term translate="no"></span>
+            </div>
+          </div>
+          <div class="registration-round-field">
+            <span id="round-schedule-start" class="registration-round-label">Giờ mở</span>
+            <div class="registration-round-deadline registration-round-summary__value" role="group" aria-labelledby="round-schedule-start">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></svg>
+              <time data-round-start translate="no"></time>
+            </div>
+          </div>
+          <div class="registration-round-field">
+            <span id="round-schedule-end" class="registration-round-label">Giờ đóng</span>
+            <div class="registration-round-deadline registration-round-summary__value" role="group" aria-labelledby="round-schedule-end">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18"/></svg>
+              <time data-round-end translate="no"></time>
+            </div>
+          </div>
+          <div class="registration-round-summary__state">
+            <span data-round-status role="status"></span>
           </div>
         </section>
 

@@ -61,10 +61,10 @@
   const summary = document.querySelector("[data-round-summary]");
   if (summary) {
     const select = summary.querySelector("select");
-    const title = summary.querySelector("[data-round-title]");
     const term = summary.querySelector("[data-round-term]");
     const status = summary.querySelector("[data-round-status]");
-    const time = summary.querySelector("time");
+    const start = summary.querySelector("[data-round-start]");
+    const end = summary.querySelector("[data-round-end]");
     function paint() {
       const { rounds, unavailable } = academic.snapshot();
       summary.hidden = unavailable || !rounds.length;
@@ -77,14 +77,15 @@
         select.replaceChildren(...latest.map(option));
         select.dataset.rounds = ids;
       }
-      select.closest("label").hidden = latest.length < 2;
       select.value = current.id;
-      title.textContent = current.name;
+      select.title = select.selectedOptions[0].text;
       term.textContent = academic.termLabel(current.term);
       status.dataset.state = current.status;
       status.textContent = academic.statusLabels[current.status];
-      time.dateTime = current.end + "+07:00";
-      time.textContent = academic.displayTime(current.end);
+      for (const [time, value] of [[start, current.start], [end, current.end]]) {
+        time.dateTime = value + "+07:00";
+        time.textContent = academic.displayTime(value);
+      }
     }
     select.addEventListener("change", paint);
     window.addEventListener(academic.updateEvent, paint);
