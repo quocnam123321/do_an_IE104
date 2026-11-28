@@ -94,7 +94,8 @@
     showCancel = true, className, closeIcon, beforeSubmit, submitVariant = 'primary', descriptionId, submitDisabled = false, onSuccess,
   } = {}) {
     if (!state || document.querySelector('.teaching-dialog[open]')) return;
-    const snapshot = { projectId, revision: state.revision, progressRevision: state.progress?.revision };
+    const snapshot = { projectId, revision: state.revision, progressRevision: state.progress?.revision,
+      submissionsRevision: state.submissionsRevision };
     const dialog = el('dialog', '', 'topic-dialog teaching-dialog workflow-dialog');
     if (className) dialog.classList.add(className);
     const heading = el('h2', title);
@@ -160,6 +161,7 @@
   app.ui.lecturerWorkspace = { el, button, field, date, region, modal, commit, notify, refresh, service, get state() { return state; }, subscribe(render) { subscribers.push(render); if (state) render(state); }, dirty: false };
   window.addEventListener('storage', event => { if ([app.storage.teachingKey, app.storage.progressKey, app.storage.teamKey, app.storage.proposalKey, app.storage.registrationKey, null].includes(event.key)) refresh(); });
   window.addEventListener('pageshow', refresh);
+  window.addEventListener('ie104:proposals-updated', refresh);
   window.addEventListener('beforeunload', event => { if (app.ui.lecturerWorkspace.dirty) { event.preventDefault(); event.returnValue = ''; } });
   document.addEventListener('DOMContentLoaded', () => globalThis.IE104.services.invitationIdentity?.ready.then(refresh));
   refresh();

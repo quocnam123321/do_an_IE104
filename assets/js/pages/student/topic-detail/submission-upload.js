@@ -25,6 +25,9 @@
     const notes = form.elements['ghi-chu'];
     const isFile = location.protocol === 'file:';
     const scopeText = isFile ? 'Mở website qua localhost để lưu bài nộp.' : scope.textContent;
+    const projectId = () => document.body.dataset.projectId;
+    const databaseScope = 'Tối đa 10 tệp, tổng dung lượng 20 MiB. Giảng viên có thể tải tệp từ thiết bị khác.';
+    const currentScope = () => service.usesDatabase(projectId()) ? databaseScope : scopeText;
     let files = [];
     let requirement;
     let savedAt;
@@ -75,12 +78,21 @@
     input.addEventListener('change', () => {
       const selected = [...input.files];
       input.value = '';
+      const combined = [...files];
       for (const file of selected) {
-        if (file.size && !files.some(previous => previous.name === file.name &&
+        if (file.size && !combined.some(previous => previous.name === file.name &&
           previous.size === file.size && previous.lastModified === file.lastModified && previous.type === file.type)) {
-          files.push(file);
+          combined.push(file);
         }
       }
+      if (service.usesDatabase(projectId())) {
+        const { maxFiles, maxBytes } = service.fileLimits;
+        if (combined.length > maxFiles || combined.reduce((sum, file) => sum + file.size, 0) > maxBytes) {
+          showError('Mỗi lần nộp tối đa 10 tệp với tổng dung lượng 20 MiB.');
+          return;
+        }
+      }
+      files = combined;
       showError(selected.some(file => !file.size) ? 'Tệp rỗng không được thêm vào bài nộp.' : '');
       renderFiles();
     });
@@ -123,17 +135,19 @@
       close.setAttribute('aria-label', editing ? 'Đóng hộp thoại cập nhật bài nộp' : 'Đóng hộp thoại nộp bài');
       form.reset();
       const previous = item.latestSubmission;
-      files = [...(previous?.files || [])];
+      const fromServer = previous?.isDatabaseSubmission && previous.files.length;
+      files = fromServer ? [] : [...(previous?.files || [])];
+      if (service.usesDatabase(projectId())) notes.maxLength = 2000;
       notes.value = previous?.notes ?? '';
       loadFailed = false;
       showError();
-      loading = !isFile && !files.length && sampleFiles.length ? new AbortController() : null;
+      loading = !isFile && !files.length && (fromServer || sampleFiles.length) ? new AbortController() : null;
       if (loading) {
         scope.textContent = 'Đang tải tệp đã nộp…';
       } else if (!isFile && editing && !files.length) {
         scope.textContent = 'Tệp cũ chưa có trên trình duyệt này. Chọn tệp để cập nhật bài nộp.';
       } else {
-        scope.textContent = scopeText;
+        scope.textContent = currentScope();
       }
       renderFiles();
       trigger?.closest('dialog')?.close();
@@ -142,7 +156,8 @@
 
       const controller = loading;
       try {
-        const loaded = await Promise.all(sampleFiles.map(async ({ url, name }) => {
+        const loaded = fromServer ? await service.readFiles(projectId(), previous, undefined, controller.signal)
+          : await Promise.all(sampleFiles.map(async ({ url, name }) => {
           const response = await fetch(url, { signal: controller.signal });
           if (!response.ok) throw new Error('Không tải được tệp mẫu.');
           const blob = await response.blob();
@@ -158,7 +173,7 @@
       } finally {
         if (loading === controller) {
           loading = null;
-          scope.textContent = scopeText;
+          scope.textContent = currentScope();
           renderFiles();
         }
       }

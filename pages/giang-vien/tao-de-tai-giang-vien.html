@@ -63,7 +63,7 @@
     <link rel="stylesheet" href="../../assets/css/number-stepper.css?v=20261126-number-stepper" />
     <script src="../../assets/js/shared/number-stepper.js?v=20261126-number-stepper" defer></script>
     <script src="../../assets/js/pages/student/proposal-date-picker.js?v=20261127-future-dates" defer></script>
-    <script src="../../assets/js/pages/lecturer/topic-editor.js?v=20261126-number-stepper" defer></script>
+    <script src="../../assets/js/pages/lecturer/topic-editor.js?v=20261128-db-merge" defer></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
 </head>
@@ -269,7 +269,7 @@
                   <div>
                     <label for="topic-code">Mã đề tài</label>
                     <output id="topic-code" class="topic-code-preview" for="topic-type course" aria-describedby="topic-code-hint">Chọn loại đề tài</output>
-                    <p id="topic-code-hint" class="topic-form__hint">Mã dự kiến được chốt khi lưu đề tài.</p>
+                    <p id="topic-code-hint" class="topic-form__hint" role="status">Mã dự kiến được chốt khi lưu đề tài.</p>
                   </div>
                   <div>
                     <label for="topic-start-date">Ngày bắt đầu thực hiện <span class="topic-required" aria-hidden="true">*</span></label>
@@ -282,6 +282,10 @@
                   <div>
                     <label for="topic-final-report-date">Ngày nộp báo cáo cuối cùng <span class="topic-required" aria-hidden="true">*</span></label>
                     <input id="topic-final-report-date" name="topic-final-report-date" type="date" data-proposal-picker required />
+                  </div>
+                  <div data-database-deadline hidden>
+                    <label for="registration-closes">Hạn đăng ký <span class="topic-required" aria-hidden="true">*</span></label>
+                    <input id="registration-closes" name="registration-closes" type="datetime-local" data-proposal-picker required disabled />
                   </div>
                 </div>
 

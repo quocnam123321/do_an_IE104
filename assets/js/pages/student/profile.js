@@ -7,18 +7,26 @@
   const status = document.getElementById('profile-save-status');
   const error = document.getElementById('profile-edit-error');
   const submit = form.querySelector('[type="submit"]');
+  const databaseProfile = globalThis.IE104.services.databaseProfile;
   const fields = Object.fromEntries(['name', 'email', 'phone'].map(key => [key, document.getElementById(`profile-edit-${key}`)]));
+  const identity = { code: 'code', faculty: 'faculty', major: 'major', class: 'className', cohort: 'cohort' };
+  const sampleIdentity = databaseProfile?.sampleIdentity ? globalThis.IE104.data.studentProfile : {};
   let revision = 0;
   let saving = false;
 
-  function refresh() {
+  function render(state) {
+    Object.entries({ name: 'name', email: 'email', phone: 'phone', ...identity }).forEach(([id, key]) => {
+      const node = document.getElementById(`profile-${id}`);
+      node.textContent = state[key] || 'Chưa có thông tin';
+      node.classList.toggle('profile-value--empty', !state[key]);
+    });
+  }
+
+  async function refresh() {
+    open.disabled = true;
     try {
-      const state = service.getState();
-      Object.entries({ name: 'name', code: 'code', email: 'email', phone: 'phone', faculty: 'faculty', major: 'major', class: 'className', cohort: 'cohort' }).forEach(([id, key]) => {
-        const node = document.getElementById(`profile-${id}`);
-        node.textContent = state[key] || 'Chưa có thông tin';
-        node.classList.toggle('profile-value--empty', !state[key]);
-      });
+      const state = databaseProfile ? { ...sampleIdentity, ...await databaseProfile.read() } : service.getState();
+      render(state);
       if (status.classList.contains('profile-feedback-error')) {
         status.textContent = '';
         status.classList.remove('profile-feedback-error');
@@ -28,7 +36,7 @@
     } catch (failure) {
       status.textContent = failure.message;
       status.classList.add('profile-feedback-error');
-      open.disabled = true;
+      open.disabled = !databaseProfile;
       submit.disabled = true;
       return null;
     }
@@ -42,13 +50,18 @@
     error.hidden = true;
   }
 
-  open.addEventListener('click', () => {
-    const state = refresh();
+  if (databaseProfile) {
+    document.getElementById('profile-edit-notice').textContent = 'Thông tin hồ sơ được lưu theo tài khoản trên hệ thống.';
+    render({});
+  }
+
+  open.addEventListener('click', async () => {
+    const state = await refresh();
     if (!state) return;
     revision = state.revision;
     status.textContent = '';
     Object.entries(fields).forEach(([key, field]) => { field.defaultValue = state[key]; });
-    Object.entries({ code: 'code', faculty: 'faculty', major: 'major', class: 'className', cohort: 'cohort' }).forEach(([id, key]) => {
+    Object.entries(identity).forEach(([id, key]) => {
       document.getElementById(`profile-edit-${id}`).defaultValue = state[key] || 'Chưa có thông tin';
     });
     form.reset();
@@ -58,7 +71,7 @@
     fields.name.focus();
   });
   form.addEventListener('reset', clearEditErrors);
-  form.addEventListener('submit', event => {
+  form.addEventListener('submit', async event => {
     event.preventDefault();
     if (saving) return;
     clearEditErrors();
@@ -71,23 +84,31 @@
       return;
     }
     saving = true;
+    form.setAttribute('aria-busy', 'true');
     submit.disabled = true;
     try {
-      service.update(checked.value, revision);
+      const state = databaseProfile ? { ...sampleIdentity, ...await databaseProfile.save(checked.value, revision) }
+        : service.update(checked.value, revision);
       dialog.close();
-      refresh();
+      render(state);
       status.classList.remove('profile-feedback-error');
       status.textContent = '';
-      globalThis.IE104.ui.profileSuccess('Lưu thông tin thành công', 'Thông tin cá nhân đã được cập nhật trên trình duyệt này.', open);
+      globalThis.IE104.ui.profileSuccess('Lưu thông tin thành công', databaseProfile
+        ? 'Thông tin cá nhân đã được cập nhật trên hệ thống.'
+        : 'Thông tin cá nhân đã được cập nhật trên trình duyệt này.', open);
     } catch (failure) {
       error.textContent = failure.message;
       error.hidden = false;
       error.tabIndex = -1;
       error.focus();
-    } finally { saving = false; submit.disabled = false; }
+    } finally { saving = false; submit.disabled = false; form.removeAttribute('aria-busy'); }
   });
-  window.addEventListener('storage', event => { if (event.key === globalThis.IE104.storage.profileKey || event.key === null) refresh(); });
-  window.addEventListener('pageshow', refresh);
+  dialog.addEventListener('cancel', event => { if (saving) event.preventDefault(); });
+  dialog.addEventListener('click', event => { if (saving && event.target.closest('[command="close"]')) event.preventDefault(); });
+  if (!databaseProfile) {
+    window.addEventListener('storage', event => { if (event.key === globalThis.IE104.storage.profileKey || event.key === null) void refresh(); });
+  }
+  window.addEventListener('pageshow', event => { if (event.persisted) void refresh(); });
 
   refresh();
   document.body.dataset.profileReady = 'true';

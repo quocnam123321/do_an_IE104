@@ -71,7 +71,7 @@
     if (loadingRequirement || !ui.state?.canManageRequirements) return;
     const { projectId, revision } = ui.state;
     let calendarRequirement;
-    if (item && location.protocol !== 'file:') {
+    if (item && location.protocol !== 'file:' && ui.state.submissionsRevision === undefined) {
       loadingRequirement = true;
       try {
         const { loadCalendarRequirement } = await import('../../calendar-client.js?v=20261125-deadline-sync');
@@ -105,7 +105,7 @@
       const deadlineChanged = input.deadline !== initialDeadline;
       const saveLocal = () => service.saveRequirement(snapshot.projectId, item?.id || null, {
         ...input, deadline: item && !deadlineChanged ? localDate(item.deadline) : input.deadline,
-      }, snapshot.revision);
+      }, snapshot.submissionsRevision ?? snapshot.revision);
       if (!calendarRequirement || !deadlineChanged) return saveLocal();
 
       const checked = service.validateRequirement(input);
@@ -119,7 +119,8 @@
       } catch {
         throw new Error('Đã lưu hạn nộp trên dịch vụ lịch. Chưa lưu yêu cầu trên trình duyệt này. Hãy mở lại để thử lưu yêu cầu.');
       }
-    }, calendarRequirement ? 'Đã lưu. Sự kiện đã thêm sẽ tự cập nhật trên Google Calendar.' : undefined, {
+    }, calendarRequirement ? 'Đã lưu. Sự kiện đã thêm sẽ tự cập nhật trên Google Calendar.'
+      : ui.state.submissionsRevision === undefined ? undefined : 'Đã lưu yêu cầu bài nộp.', {
       className: 'requirement-form-dialog',
       closeIcon: createSymbolIcon('submission-feedback-close-icon'),
       beforeSubmit() {
@@ -135,7 +136,9 @@
       question.id = descriptionId;
       question.append(el('strong', item.title), '?');
       body.append(question);
-    }, (_, snapshot) => uploadsService.deleteUnsubmittedRequirement(snapshot.projectId, item.id, snapshot.revision), undefined, {
+    }, (_, snapshot) => uploadsService.deleteUnsubmittedRequirement(snapshot.projectId, item.id,
+      snapshot.submissionsRevision ?? snapshot.revision),
+    ui.state.submissionsRevision === undefined ? undefined : 'Đã xóa yêu cầu.', {
       showCancel: false,
       className: 'requirement-delete-dialog',
       submitVariant: 'danger',
@@ -144,10 +147,13 @@
     });
   }
 
-  function reopenSubmissions(item) {
-    modal('Mở nhận bài', 'Xác nhận', body => {
-      body.append(el('p', item ? `Mở nhận bài cho yêu cầu “${item.title}”?` : 'Mở nhận bài cho toàn bộ đề tài?'));
-    }, (_, snapshot) => service.setLocked(snapshot.projectId, item?.id || null, false, snapshot.revision));
+  function setAcceptance(item, locked) {
+    const action = locked ? 'Khóa nhận bài' : 'Mở nhận bài';
+    modal(action, 'Xác nhận', body => {
+      body.append(el('p', item ? `${action} cho yêu cầu “${item.title}”?` : `${action} cho toàn bộ đề tài?`));
+    }, (_, snapshot) => service.setLocked(snapshot.projectId, item?.id || null, locked,
+      snapshot.submissionsRevision ?? snapshot.revision),
+    ui.state.submissionsRevision === undefined ? undefined : (locked ? 'Đã khóa nhận bài.' : 'Đã mở nhận bài.'));
   }
   function submissionTime(value) {
     const time = el('time', ui.date(value).replace(' - ', ' · '));
@@ -247,10 +253,10 @@
     }
 
     const footer = el('footer', '', 'topic-dialog__actions');
-    if (item.locked) {
-      footer.append(button('Mở nhận bài', () => {
+    if (item.locked || state.submissionsRevision !== undefined) {
+      footer.append(button(item.locked ? 'Mở nhận bài' : 'Khóa nhận bài', () => {
         dialog.close();
-        reopenSubmissions(item);
+        setAcceptance(item, !item.locked);
       }, !state.canManageRequirements));
     }
     const edit = button('Sửa yêu cầu', () => {
@@ -322,6 +328,15 @@
   }
 
   async function readUploadFile(projectId, upload, fileIndex) {
+    if (upload.isDatabaseSubmission) {
+      const files = await uploadsService.readFiles(projectId, upload, fileIndex);
+      if (fileIndex !== undefined) {
+        const names = app.ui.submissionZipNames(upload.files);
+        return { blob: files[0], fileName: names[fileIndex] };
+      }
+      if (files.length === 1) return { blob: files[0], fileName: files[0].name };
+      return { blob: await app.ui.createSubmissionZip(files), fileName: 'bai-nop-' + upload.requirementId + '.zip' };
+    }
     const records = await uploadsService.readUploads(projectId, 'lecturer');
     const current = records.find(item => item.requirementId === upload.requirementId);
     if (!current || current.submittedAt !== upload.submittedAt) throw new Error('Bài nộp đã thay đổi. Hãy tải lại danh sách trước khi tải tệp.');
@@ -358,7 +373,7 @@
     create.classList.add('workflow-primary-action');
     toolbar.append(mode, create);
     if (state.submissionsLocked && state.canManageRequirements && !state.readOnly) {
-      toolbar.append(button('Mở nhận bài toàn đề tài', () => reopenSubmissions(null)));
+      toolbar.append(button('Mở nhận bài toàn đề tài', () => setAcceptance(null, false)));
     }
     const requirements = state.requirements.filter(item => !item.deletedAt);
     const activeRequirements = new Map(requirements.map(item => [item.id, item]));
@@ -384,7 +399,7 @@
       card.dataset.requirementId = item.id;
       const hasSubmissions = stage(item) !== 'pending';
       const deadline = Date.parse(item.deadline);
-      const overdue = !hasSubmissions && state.project.status !== 'hoan-thanh' &&
+      const overdue = !hasSubmissions && (state.submissionProjectStatus || state.project.status) !== 'hoan-thanh' &&
         !state.submissionsLocked && !item.locked && (demoReference(item) ?? now) > deadline;
       const latest = latestSubmissions.get(item.id);
       const late = latest && Date.parse(latest.submittedAt) > deadline;
@@ -424,7 +439,7 @@
     panel.append(requirementsBoard);
     if (restoreModeFocus) mode.focus({ preventScroll: true });
     if (uploadError) panel.append(el('p', uploadError, 'submission-board-demo-note'));
-    const feedbackLocked = state.project.status === 'hoan-thanh';
+    const feedbackLocked = (state.submissionProjectStatus || state.project.status) === 'hoan-thanh';
     const submissionsBoard = board('Bài đã nộp', [false, true].map(reviewed => ({ title: reviewed ? 'Đã phản hồi' : 'Chờ phản hồi', items: submissions.filter(item => Boolean(item.feedback) === reviewed) })), item => {
       const sample = app.data.studentWebSubmissions?.attachment(state.projectId, item);
       const names = sample?.names ?? (item.files?.length > 1
@@ -535,7 +550,7 @@
         const feedback = values.get('submission-feedback');
         return item.files ? uploadsService.reviewUpload(snapshot.projectId, item, feedback)
           : service.saveFeedback(snapshot.projectId, item.id, feedback, snapshot.revision);
-      }, undefined, {
+      }, item.isDatabaseSubmission ? 'Đã lưu phản hồi.' : undefined, {
         showCancel: false,
         submitDisabled: feedbackLocked,
         className: 'submission-feedback-dialog',

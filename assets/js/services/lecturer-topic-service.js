@@ -46,8 +46,8 @@
     'ISE-004', 'ISE-006', 'ISE-007',
     'ISEDAMH-007', 'ISEDAMH-008', 'ISEDAMH-012',
   ]);
-  const isListedInCreatedTab = ({ id, title }) =>
-    !excludedCreatedTopicIds.has(id) && app.topicIdentity?.titleKey(title) !== 'web bán quần áo';
+  const isListedInCreatedTab = ({ id, legacyCatalogId, title }) =>
+    !excludedCreatedTopicIds.has(legacyCatalogId || id) && app.topicIdentity?.titleKey(title) !== 'web bán quần áo';
   const excludedSupervisedTopicIds = new Set(['DA005', 'ISE-011', 'ISE-004', 'ISE-006', 'ISE-007', 'DT001']);
   const isListedInSupervisedTab = ({ id, topicId }) =>
     !excludedSupervisedTopicIds.has(id) && !excludedSupervisedTopicIds.has(topicId);
@@ -58,7 +58,7 @@
       record: {
         id: project.id, topicId: project.topicId || project.id, projectId: project.id,
         title: project.title,
-        topicType: project.type || ({ 'Đồ án môn học': 'do-an-mon-hoc', 'Đồ án tốt nghiệp': 'do-an-tot-nghiep', 'Khóa luận tốt nghiệp': 'khoa-luan' })[project.typeLabel],
+        topicType: project.topicType || project.type || ({ 'Đồ án môn học': 'do-an-mon-hoc', 'Đồ án tốt nghiệp': 'do-an-tot-nghiep', 'Khóa luận tốt nghiệp': 'khoa-luan' })[project.typeLabel],
         course: project.courseId, courseLabel: project.courseLabel,
         sortDate: project.startsAt || project.createdAt,
         semester: project.semester, academicYear: project.academicYear,
@@ -68,7 +68,7 @@
       },
     }]));
     for (const record of proposals) {
-      if (record.status === 'approved' && !byId.has(record.topicId)) {
+      if (record.status === 'approved' && !record.isDatabaseProposal && !byId.has(record.topicId)) {
         byId.set(record.topicId, { record });
       }
     }
@@ -91,8 +91,15 @@
       if (topic.patchOnly) throw new Error('Không tìm thấy nguồn của trạng thái đăng ký đã lưu.');
       merged.push(topic);
     }
+    const database = app.proposalDatabase?.topics?.() || [];
+    const databaseCodes = new Set(database.flatMap(topic => [topic.id, topic.legacyCatalogId].filter(Boolean)));
+    const sources = new Map(initial.filter(topic => topic.kind === 'created' && topic.sourceRecord)
+      .map(topic => [topic.id, topic.sourceRecord]));
+    const published = database.map(topic => sources.has(topic.legacyCatalogId)
+      ? { ...topic, sourceRecord: sources.get(topic.legacyCatalogId) } : topic);
     const rounds = globalThis.IE104AdminAcademic;
-    return decorate(merged).map(topic => rounds?.withRegistration(topic) || topic);
+    const localTopics = decorate(merged.filter(topic => topic.kind !== 'created' || !databaseCodes.has(topic.id)));
+    return [...published, ...localTopics.map(topic => rounds?.withRegistration(topic) || topic)];
   };
 
   function registeredTopicIds() {
@@ -111,6 +118,9 @@
   }
 
   function createdStatus(topic, registeredIds = registeredTopicIds()) {
+    if (topic.isDatabaseTopic) return topic.registered
+      ? { status: 'registered', statusLabel: 'Đã có nhóm đăng ký' }
+      : { status: topic.status, statusLabel: topic.statusLabel };
     const publicId = app.services.publishedTopics?.publicId;
     const matches = publicId && [topic.id, topic.displayId].some(id =>
       id && registeredIds.has(publicId({ ...topic, id })));
@@ -137,14 +147,17 @@
           course: project.courseId || project.course, semester: project.semester, academicYear: project.academicYear });
       }
     }
-    const owned = available.filter(record => record.kind === kind && record.ownerId === actorId() && record.sourceRecord?.type !== 'Luận văn thạc sĩ' && record.topicType !== 'master');
+    const owned = available.filter(record => record.kind === kind && (record.isDatabaseTopic
+      ? app.proposalDatabase?.account.role === 'lecturer' : record.ownerId === actorId())
+      && record.sourceRecord?.type !== 'Luận văn thạc sĩ' && record.topicType !== 'master');
     const registeredIds = kind === 'created' && !catalogOnly ? registeredTopicIds() : new Set();
     const visible = kind === 'created' ? owned.map(topic => ({ ...topic, ...createdStatus(topic, registeredIds) })) : owned;
     return clone(app.topicIdentity?.uniqueTitles(visible) || visible);
   }
 
   function get(kind, id, { onSourceError } = {}) {
-    const matches = item => item.kind === kind && (item.id === id || item.displayId === id);
+    const matches = item => item.kind === kind && (item.id === id || item.displayId === id ||
+      (item.legacyCatalogId && item.legacyCatalogId === id));
     let record;
     try {
       record = records(kind).find(matches);
@@ -155,7 +168,9 @@
       onSourceError(failure);
     }
     if (!record) throw new Error('Không tìm thấy đề tài theo mã đã chọn.');
-    if (record.ownerId !== actorId()) throw new Error('Giảng viên hiện tại không được xem đề tài này.');
+    if (record.isDatabaseTopic ? app.proposalDatabase?.account.role !== 'lecturer' : record.ownerId !== actorId()) {
+      throw new Error('Giảng viên hiện tại không được xem đề tài này.');
+    }
     return clone(record);
   }
 
@@ -214,7 +229,7 @@
     const codes = window.UITLecturerCatalog;
     if (!codes) return project;
     const adapt = item => ({ ...item,
-      topicType: ({ 'do-an-mon-hoc': 'course', 'do-an': 'course', 'do-an-tot-nghiep': 'graduation', 'khoa-luan': 'thesis' })[item.type] || item.topicType ||
+      topicType: ({ 'do-an-mon-hoc': 'course', 'do-an': 'course', 'do-an-tot-nghiep': 'graduation', 'khoa-luan': 'thesis' })[item.topicType || item.type] || item.topicType ||
         ({ 'Đồ án môn học': 'course', 'Đồ án tốt nghiệp': 'graduation', 'Khóa luận tốt nghiệp': 'thesis' })[item.typeLabel] || item.type,
       course: item.course || item.courseId,
       displayId: item.displayId || item.topicId || item.id,

@@ -274,9 +274,12 @@
   }
 
   function withPublishedStatus(project, records) {
-    if (project.status !== 'dang-thuc-hien' || globalThis.location?.protocol === 'file:') return project;
-    const saved = records ?? readTeachingRecords();
-    return saved.some(record => record.projectId === project.id && record.publishedEvaluation?.published === true)
+    if (project.isDatabaseProject || project.isDatabaseProposal
+      || project.status !== 'dang-thuc-hien' || globalThis.location?.protocol === 'file:') return project;
+    const shared = app.proposalDatabase?.demoEvaluation?.(project.id);
+    const isPublished = shared ? Boolean(shared.publication)
+      : (records ?? readTeachingRecords()).some(record => record.projectId === project.id && record.publishedEvaluation?.published === true);
+    return isPublished
       ? { ...project, status: 'hoan-thanh', statusLabel: 'Hoàn thành' }
       : project;
   }

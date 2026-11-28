@@ -77,7 +77,7 @@
 
   function memberIndex(members) {
     return new Map(members.map((member, index) => [
-      member.code, { member, index, popoverId: 'progress-task-member-' + index },
+      member.assignmentKey ?? member.code, { member, index, popoverId: 'progress-task-member-' + index },
     ]));
   }
 
@@ -131,7 +131,20 @@
     return item;
   }
 
-  function fillDetails(dialog, task, assignees) {
+  function fillDetails(dialog, task, assignees, latestUpdate) {
+    const summary = dialog.querySelector('.task-detail-dialog__summary');
+    let amount = summary.querySelector('[data-task-detail-percent]');
+    if (!amount && Number.isFinite(task.percent)) {
+      const row = element('div');
+      amount = element('dd');
+      amount.dataset.taskDetailPercent = '';
+      row.append(element('dt', '', 'Mức hoàn thành'), amount);
+      summary.append(row);
+    }
+    if (amount) {
+      amount.parentElement.hidden = !Number.isFinite(task.percent);
+      amount.textContent = Number.isFinite(task.percent) ? task.percent + '%' : '';
+    }
     const badge = dialog.querySelector('[data-task-detail-status]');
     badge.dataset.status = task.status;
     badge.textContent = labels[task.status];
@@ -141,6 +154,17 @@
     dialog.querySelector('[data-task-detail-deadline]').replaceChildren(
       calendar('task-detail-dialog__calendar'), deadlineDate(task.deadline),
     );
+    let update = dialog.querySelector('[data-task-detail-update]');
+    if (!update && latestUpdate) {
+      update = element('section', 'task-detail-dialog__description');
+      update.dataset.taskDetailUpdate = '';
+      update.append(element('h3', '', 'Cập nhật gần nhất'), element('p'));
+      dialog.querySelector('.task-comments').before(update);
+    }
+    if (update) {
+      update.hidden = !latestUpdate;
+      update.querySelector('p').textContent = latestUpdate?.content || '';
+    }
   }
 
   ui.progressTaskView = { labels, today, memberIndex, renderMemberPopover, renderCard, fillDetails, fillStats };

@@ -97,7 +97,7 @@
     } catch (failure) { warnings.push(failure.message); }
     const candidates = [...samples, ...published];
     const openTopics = (app.topicIdentity?.uniqueTitles(candidates) || candidates)
-      .filter(topic => topic.status !== 'closed' && !registeredIds.has(topic.id) && !registeredNames.has(key?.(topic.title)));
+      .filter(topic => topic.isDatabaseTopic || (topic.status !== 'closed' && !registeredIds.has(topic.id) && !registeredNames.has(key?.(topic.title))));
     return { ...listTopics(openTopics, filters, pagination), warning: warnings.join(' ') };
   }
 
@@ -120,14 +120,21 @@
     let initial = app.data?.myTopics || [];
     try { if (app.services.requests) initial = app.services.requests.applyToTopics(initial); }
     catch (error) { warnings.push(error.message); }
+    if (app.proposalDatabase) {
+      initial = initial.filter(topic => !/^(?:DT-)?DX/.test(topic.requestId || topic.id));
+      const error = app.proposalDatabase.error();
+      if (error) warnings.push(error);
+    }
     let all = [...saved, ...initial];
     try {
       if (location.protocol !== 'file:') {
         const records = app.storage.readTeachingRecords();
-        all = all.map(topic => app.storage.withPublishedStatus(topic, records));
+        all = all.map(topic => topic.isDatabaseProposal || topic.isDatabaseProject ? topic : app.storage.withPublishedStatus(topic, records));
       }
     } catch (error) { warnings.push(error.message); }
-    const topics = (app.topicIdentity?.uniqueTitles(all) || all).map(normalizeMyTopic);
+    const real = all.filter(topic => topic.isDatabaseProposal || topic.isDatabaseProject);
+    const demo = all.filter(topic => !topic.isDatabaseProposal && !topic.isDatabaseProject);
+    const topics = [...real, ...(app.topicIdentity?.uniqueTitles(demo) || demo)].map(normalizeMyTopic);
     return { ...listTopics(topics, filters, pagination), warning: warnings.join(' ') };
   }
 

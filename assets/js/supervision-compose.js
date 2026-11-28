@@ -10,6 +10,9 @@
   const submit = document.getElementById('invitation-send');
   const error = document.getElementById('invitation-error');
   const loading = document.getElementById('invitation-load');
+  if (window.IE104?.proposalDatabase) {
+    document.getElementById('invitation-note').textContent = 'Tiêu đề và lời nhắn đều bắt buộc. Có thể đính kèm một tệp tối đa 10 MB.';
+  }
   const teacherId = new URLSearchParams(location.search).get('giang-vien');
   let teacher;
   let saving = false;
@@ -42,7 +45,7 @@
       }
       teacher = await entry.getTeacher(teacherId);
       document.getElementById('invitation-recipient').textContent = teacher.name;
-      document.getElementById('invitation-back').hash = teacher.id;
+      document.getElementById('invitation-back').hash = teacher.directoryId || teacher.id;
       form.hidden = false;
     } catch (problem) {
       error.textContent = problem.message;

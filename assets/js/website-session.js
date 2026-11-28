@@ -1,15 +1,12 @@
 import { getFirebaseAuth, useRecoveryEmulator } from "./firebase-client.js?v=20261119-otp";
+import { authConfig, authRequest, databaseAccount, notifyAccountChange, rememberDatabaseRole, websitePageRole } from "./auth-api.js";
+
+export { websitePageRole };
 
 const tabRoleKey = "ie104.website.role.v2";
 export const roleSessionPrefix = "ie104.website.session.v2.";
 const roles = ["student", "lecturer"];
 const uitRoles = new Map([["gm.uit.edu.vn", "student"], ["uit.edu.vn", "lecturer"]]);
-
-export function websitePageRole() {
-  if (/\/pages\/sinh-vien\//.test(location.pathname)) return "student";
-  if (/\/pages\/giang-vien\//.test(location.pathname)) return "lecturer";
-  return undefined;
-}
 
 function remember(role, mode) {
   localStorage.setItem(roleSessionPrefix + role, mode);
@@ -53,6 +50,12 @@ async function readRole(role) {
 
 export async function getWebsiteSession(role = websitePageRole()) {
   if (location.protocol === "file:") return null;
+  if (await authConfig()) {
+    const account = await databaseAccount(role);
+    if (!account || (role && account.role !== role)) return null;
+    rememberDatabaseRole(account.role);
+    return { role: account.role, account, user: null, mode: "database" };
+  }
   if (roles.includes(role)) {
     const session = await readRole(role);
     if (session) sessionStorage.setItem(tabRoleKey, role);
@@ -68,6 +71,12 @@ export async function getWebsiteSession(role = websitePageRole()) {
 }
 
 export async function signOutWebsite() {
+  if (await authConfig()) {
+    await authRequest("logout", { method: "POST" });
+    rememberDatabaseRole(null);
+    notifyAccountChange();
+    return;
+  }
   const role = websitePageRole() ?? (await getWebsiteSession())?.role;
   const mode = role && localStorage.getItem(roleSessionPrefix + role);
   if (mode === "firebase" || mode === "emulator") {

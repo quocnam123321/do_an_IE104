@@ -28,6 +28,7 @@
 <script src="../../assets/js/pages/lecturer/profile.js?v=20261128-profile" defer></script>
   <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script src="../../assets/js/shared/logout.js?v=20261125-direct-logout" defer></script>
+    <script type="module" src="../../assets/js/auth-pages.js"></script>
   </head>
   <body id="page-top" tabindex="-1" class="lecturer-profile-page">
     <a class="skip-link" href="#main-content">
@@ -116,7 +117,7 @@
          command/commandfor dùng tính năng HTML có sẵn trên trình duyệt hỗ trợ.
          Các thao tác hồ sơ lưu trong bản demo trên trình duyệt. -->
     <!-- NỘI DUNG RIÊNG CỦA TỪNG TRANG -->
-    <main class="main-content" id="main-content" tabindex="-1">
+    <main class="main-content" id="main-content" tabindex="-1" data-auth-page="profile">
       <div class="page-container">
         <nav aria-label="Đường dẫn" class="breadcrumb">
           <ol class="breadcrumb__list">
@@ -136,6 +137,7 @@
           <h1 class="page-header__title">
             Hồ sơ cá nhân
           </h1>
+          <a class="button" id="database-profile-link" href="../chung/tai-khoan.html" hidden>Liên kết tài khoản</a>
         </header>
         <div class="page-content">
 <p id="lecturer-profile-status" role="status" tabindex="-1"></p>

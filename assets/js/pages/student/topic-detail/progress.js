@@ -16,7 +16,8 @@
   const mode = panel.querySelector('.student-task-mode');
   const modeIcon = mode.querySelector('svg');
   const modeText = mode.querySelector('span');
-  panel.querySelector('.update-history-section').hidden = true;
+  const databaseProject = service.usesDatabase(projectId);
+  panel.querySelector('.update-history-section').hidden = !databaseProject;
   const notice = panel.querySelector('[data-progress-notice]');
   const completionNotice = panel.querySelector('#progress-completion-notice');
   const result = panel.querySelector('[data-progress-result]');
@@ -25,6 +26,10 @@
   const savedDialog = panel.querySelector('#task-saved-dialog');
   const detailActions = detailDialog.querySelector('footer');
   const editDetailButton = detailActions.querySelector('[data-task-detail-action="edit"]');
+  const updateButton = detailActions.querySelector('[data-task-detail-action="update"]');
+  const updateDialog = panel.querySelector('#task-update-dialog');
+  const updateForm = updateDialog.querySelector('form');
+  const updateError = updateForm.querySelector('#task-update-error');
   const dialogs = { add: document.getElementById('task-add-popover'), edit: document.getElementById('task-edit-cv-01'), remove: document.getElementById('task-delete-cv-01') };
   const datePicker = ui.proposalDatePicker;
   for (const dialog of [dialogs.add, dialogs.edit]) {
@@ -49,6 +54,7 @@
   let pending = null;
   let saving = false;
   let committed = false;
+  let updateSnapshot;
   const errors = {};
   let deleteMode = false;
   mode.hidden = false;
@@ -61,13 +67,15 @@
   }
   function renderDetail(task) {
     const codes = new Set(task.assigneeCodes || [task.assigneeCode]);
-    const assignees = state.team.members.filter(member => codes.has(member.code));
-    fillDetails(detailDialog, task, assignees.map(member => member.name).join(', '));
+    const assignees = state.team.members.filter(member => codes.has(service.memberKey(member)));
+    const latestUpdate = databaseProject && state.history.find(entry => entry.taskId === task.id);
+    fillDetails(detailDialog, task, assignees.map(member => member.name).join(', '), latestUpdate);
 
     const { manage } = service.getPermissions(state);
     editDetailButton.disabled = !manage;
     editDetailButton.hidden = !manage && state.team.project.status !== 'hoan-thanh';
-    detailActions.hidden = editDetailButton.hidden;
+    updateButton.hidden = !databaseProject || !service.canUpdateTask(state, task);
+    detailActions.hidden = editDetailButton.hidden && updateButton.hidden;
   }
 
   function showDetail(taskId) {
@@ -82,6 +90,59 @@
   }
 
   editDetailButton.addEventListener('click', () => open('edit', detailDialog.dataset.taskId));
+  const updateStatus = updateForm.elements['trang-thai'];
+  const updatePercent = updateForm.elements['phan-tram'];
+  function syncPercent() {
+    const fixed = updateStatus.value !== 'dang-thuc-hien';
+    if (fixed) updatePercent.value = updateStatus.value === 'da-hoan-thanh' ? 100 : 0;
+    else if (['0', '100'].includes(updatePercent.value)) updatePercent.value = '';
+    updatePercent.readOnly = fixed;
+  }
+  updateStatus.addEventListener('change', syncPercent);
+  updateButton.addEventListener('click', () => {
+    if (!refresh()) return;
+    const task = state.tasks.find(item => item.id === detailDialog.dataset.taskId);
+    if (!task || !service.canUpdateTask(state, task)) return;
+    updateForm.reset();
+    updateError.hidden = true;
+    updateSnapshot = { taskId: task.id, revision: state.revision };
+    updateStatus.value = task.status;
+    updatePercent.value = task.percent ?? '';
+    syncPercent();
+    updateDialog.showModal();
+  });
+  updateDialog.addEventListener('close', () => {
+    if (detailDialog.open) updateButton.focus();
+  });
+  updateForm.addEventListener('submit', async event => {
+    event.preventDefault();
+    if (saving || !updateSnapshot) return;
+    const { taskId, revision } = updateSnapshot;
+    const checked = service.validateUpdate({ taskId, content: updateForm.elements['noi-dung'].value,
+      status: updateStatus.value, percent: updatePercent.value });
+    if (checked.errors.length) {
+      updateError.textContent = checked.errors.map(item => item.message).join(' ');
+      updateError.hidden = false;
+      updateError.focus();
+      return;
+    }
+    const button = updateForm.querySelector('[type="submit"]');
+    saving = button.disabled = true;
+    updateError.hidden = true;
+    try {
+      await service.updateProgress(projectId, checked.value, revision);
+      updateDialog.close();
+      detailDialog.close();
+      refresh();
+      result.textContent = 'Đã lưu cập nhật tiến độ.';
+      result.hidden = false;
+      result.focus();
+    } catch (failure) {
+      updateError.textContent = failure.message;
+      updateError.hidden = false;
+      updateError.focus();
+    } finally { saving = button.disabled = false; }
+  });
   detailDialog.addEventListener('close', () => {
     if (!dialogs.edit.open && !savedDialog.open) focusTask(detailDialog.dataset.taskId);
   });
@@ -162,8 +223,8 @@
       const checkbox = element('input');
       checkbox.type = 'checkbox';
       checkbox.name = 'nguoi-phu-trach';
-      checkbox.value = member.code;
-      checkbox.checked = selected.has(member.code);
+      checkbox.value = service.memberKey(member);
+      checkbox.checked = selected.has(checkbox.value);
       label.append(checkbox, element('span', '', member.name));
       return label;
     }));
@@ -228,7 +289,7 @@
       notice.hidden = !notice.textContent;
       completionNotice.hidden = !completed;
       overview.hidden = Boolean(archivedProject);
-      addButton.disabled = completed;
+      addButton.disabled = completed || (databaseProject && !permissions.manage);
       previewNote.hidden = Boolean(permissions.manage);
       previewNote.textContent = preview ? 'Mở đề tài qua localhost để lưu công việc.' : 'Chỉ nhóm trưởng được lưu công việc mới.';
       const date = today();
@@ -255,7 +316,7 @@
         title.textContent = entry.taskTitle;
         item.querySelector('article').setAttribute('aria-labelledby', title.id);
         const paragraphs = item.querySelectorAll('.progress-update-card__content p');
-        paragraphs[0].textContent = `Ngày cập nhật: ${new Date(entry.createdAt).toLocaleString('vi-VN')} - ${entry.actorName}`;
+        paragraphs[0].textContent = `Ngày cập nhật: ${new Date(entry.createdAt).toLocaleString('vi-VN', { timeZone: 'Asia/Ho_Chi_Minh' })} - ${entry.actorName}`;
         paragraphs[1].textContent = `Nội dung đã làm: ${entry.content}`;
         item.querySelector('.progress-update-card__status').textContent = labels[entry.status];
         item.querySelector('.progress-update-card__summary p:last-child').textContent = `Mức hoàn thành: ${entry.percent}%`;
@@ -350,7 +411,7 @@
     else open(button.dataset.progressAction, taskId);
   });
   Object.entries(dialogs).forEach(([key, dialog]) => {
-    dialog.querySelector('form').addEventListener('submit', event => {
+    dialog.querySelector('form').addEventListener('submit', async event => {
       event.preventDefault();
       if (!pending || pending.key !== key || saving || !state) return;
       if (dialog.querySelector('[type="submit"]').disabled) return;
@@ -361,8 +422,8 @@
       const { taskId, revision } = pending;
       saving = true;
       try {
-        if (key === 'remove') service.deleteTask(projectId, taskId, revision);
-        else service.saveTask(projectId, taskId, checked.value, revision);
+        if (key === 'remove') await service.deleteTask(projectId, taskId, revision);
+        else await service.saveTask(projectId, taskId, checked.value, revision);
         committed = true;
         dialog.close();
         refresh();
@@ -378,6 +439,7 @@
     });
   });
   window.addEventListener('pageshow', refresh);
+  window.addEventListener('ie104:proposals-updated', refresh);
   window.addEventListener('storage', event => { if ([globalThis.IE104.storage.progressKey, globalThis.IE104.storage.teamKey, globalThis.IE104.storage.teachingKey, null].includes(event.key)) refresh(); });
   refresh();
   panel.dataset.progressReady = 'true';

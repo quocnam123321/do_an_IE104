@@ -1,5 +1,6 @@
 (() => {
-  const app = globalThis.IE104 = globalThis.IE104 || {};
+  const commonJS = typeof module !== 'undefined' && module.exports;
+  const app = commonJS ? {} : (globalThis.IE104 = globalThis.IE104 || {});
   app.services = app.services || {};
   const clone = value => JSON.parse(JSON.stringify(value));
   const newId = prefix => `${prefix}-${globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`}`;
@@ -26,9 +27,11 @@
       const position = app.services.projectTeams.getState(project.id).supervisorIds.indexOf(lecturerId);
       return position >= 0 ? [{ project, role: position === 0 ? 'primary' : 'secondary' }] : [];
     });
-    const dynamic = (app.services.approvedProjects?.list('lecturer') || []).map(project => ({ project, role: 'primary' }));
+    const dynamic = (app.services.approvedProjects?.list('lecturer') || []).map(project => ({ project, role: project.role || 'primary' }));
     const projects = [...dynamic, ...initial].filter(entry => !window.UITLecturerCatalog || window.UITLecturerCatalog.isAvailableTopic(entry.project)).map(entry => entry.project.id === 'DA005' ? { ...entry, project: { ...entry.project, semester: 1 } } : entry);
-    return app.topicIdentity?.uniqueTitles(projects, entry => entry.project.title) || projects;
+    const databaseProjects = projects.filter(entry => entry.project.isDatabaseProject || entry.project.isDatabaseProposal);
+    const demoProjects = projects.filter(entry => !entry.project.isDatabaseProject && !entry.project.isDatabaseProposal);
+    return [...databaseProjects, ...(app.topicIdentity?.uniqueTitles(demoProjects, entry => entry.project.title) || demoProjects)];
   }
 
   function listProjects() {
@@ -77,7 +80,27 @@
 
   function getState(projectId) {
     const meta = context(projectId);
-    return decorate(stateFrom(projectId, app.storage.readTeachingRecords()), meta);
+    const database = meta.project.isDatabaseProject || meta.project.isDatabaseProposal;
+    const board = app.proposalDatabase?.submissionBoard?.(projectId);
+    let state = decorate(stateFrom(projectId, database || board ? [] : app.storage.readTeachingRecords()), meta);
+    if (!database) {
+      const shared = app.proposalDatabase?.demoEvaluation?.(projectId);
+      if (shared) state = { ...state, publication: shared.publication, evaluationRevision: shared.revision, criteria: shared.criteria,
+        draft: shared.publication ? null : state.publishedEvaluation || state.draft,
+        hasLocalEvaluation: !shared.publication && state.publishedEvaluation?.published === true };
+    } else {
+      const evaluation = app.proposalDatabase?.evaluation?.(projectId);
+      state.publication = evaluation?.publication ?? null;
+      state.evaluationRevision = evaluation?.revision;
+      state.criteria = evaluation?.criteria ?? [];
+      state.draft = null;
+    }
+    if (!board && !database) return state;
+    if (!board) return { ...state, requirements: [], submissions: [], canManageRequirements: false,
+      warning: 'Máy chủ hiện chưa hỗ trợ bài nộp dùng chung. Hãy tải lại bản Express mới.' };
+    const { revision: submissionsRevision, projectStatus: submissionProjectStatus, ...documents } = board;
+    return { ...state, ...documents, submissionsRevision, submissionProjectStatus,
+      canManageRequirements: submissionProjectStatus === 'dang-thuc-hien' };
   }
 
   function getSubmission(projectId, submissionId) {
@@ -132,7 +155,13 @@
     return { value, errors };
   }
 
+  if (commonJS) {
+    module.exports = { validateRequirement, validateEvaluation };
+    return;
+  }
+
   function saveRequirement(projectId, id, input, revision) {
+    if (app.proposalDatabase?.submissionBoard?.(projectId)) return app.proposalDatabase.saveRequirement(projectId, id, input, revision);
     return mutate(projectId, revision, id ? 'edit-requirement' : 'create-requirement', id, (record, meta) => {
       active(meta);
       const requirement = id ? record.requirements.find(item => item.id === id && !item.deletedAt) : null;
@@ -146,6 +175,7 @@
   }
 
   function deleteRequirement(projectId, id, revision) {
+    if (app.proposalDatabase?.submissionBoard?.(projectId)) return app.proposalDatabase.deleteRequirement(projectId, id, revision);
     return mutate(projectId, revision, 'delete-requirement', id, (record, meta) => {
       active(meta);
       const requirement = record.requirements.find(item => item.id === id && !item.deletedAt);
@@ -156,6 +186,7 @@
   }
 
   function setLocked(projectId, id, locked, revision) {
+    if (app.proposalDatabase?.submissionBoard?.(projectId)) return app.proposalDatabase.lockRequirements(projectId, id, locked, revision);
     return mutate(projectId, revision, locked ? 'lock-submissions' : 'unlock-submissions', id, (record, meta) => {
       if (typeof locked !== 'boolean') throw new Error('Trạng thái khóa không hợp lệ.');
       if (!locked) active(meta);
@@ -213,10 +244,14 @@
     if (feedback.length > 2000 || rows.some(item => item.comment.length > 2000)) errors.push('Nhận xét tối đa 2000 ký tự.');
     if (resultLabel.length > 100) errors.push('Kết quả đánh giá tối đa 100 ký tự.');
     if (publishing && !feedback) errors.push('Nhập nhận xét cho nhóm trước khi công bố.');
-    return { errors, value: { criteria: rows, feedback, resultLabel, score: Math.round(rows.reduce((sum, item) => sum + item.score * item.weight / 100, 0) * 10) / 10 } };
+    const weightedTenths = rows.reduce((sum, item) => sum + Math.round(item.score * 10) * item.weight, 0);
+    return { errors, value: { criteria: rows, feedback, resultLabel, score: Math.round(weightedTenths / 100) / 10 } };
   }
 
   function publish(projectId, input, revision) {
+    if (app.proposalDatabase?.demoEvaluation?.(projectId) || app.proposalDatabase?.projects?.().some(item => item.project.id === projectId)) {
+      return app.proposalDatabase.publishEvaluation(projectId, input, revision);
+    }
     return mutate(projectId, revision, 'publish-evaluation', null, (record, meta) => {
       const checked = validateEvaluation(input, evaluationCriteria(record, meta), true);
       if (checked.errors.length) throw new Error(checked.errors.join(' '));

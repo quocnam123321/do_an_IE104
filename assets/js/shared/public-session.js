@@ -18,6 +18,11 @@ const roles = {
     overview: "giang-vien/tong-quan-giang-vien.html",
     profile: "giang-vien/ho-so-ca-nhan-giang-vien.html",
   },
+  admin: {
+    label: "Tài khoản quản trị",
+    avatar: "QT",
+    overview: "quan-tri/tai-khoan.html",
+  },
 };
 
 function createAccountMenu() {
@@ -33,6 +38,7 @@ function createAccountMenu() {
         <ul class="account-menu__list">
           <li><a class="account-menu__profile" data-account-overview>Tổng quan</a></li>
           <li><a class="account-menu__profile" data-account-profile>Hồ sơ cá nhân</a></li>
+          <li data-account-settings hidden><a class="account-menu__profile" href="${new URL("chung/tai-khoan.html", pages)}">Liên kết tài khoản</a></li>
           <li><button type="button" class="account-menu__logout" aria-controls="logout-dialog" aria-haspopup="dialog" disabled>Đăng xuất</button></li>
         </ul>
       </div>
@@ -95,9 +101,12 @@ if (login) {
         account.querySelector(".account-menu__avatar").textContent = role.avatar;
         account.querySelector(".account-menu__label").textContent = role.label;
         account.querySelector("[data-account-overview]").href = new URL(role.overview, pages);
-        account.querySelector("[data-account-profile]").href = new URL(role.profile, pages);
+        const profile = account.querySelector("[data-account-profile]");
+        profile.parentElement.hidden = !role.profile;
+        if (role.profile) profile.href = new URL(role.profile, pages);
         currentRole = role;
       }
+      account.querySelector("[data-account-settings]").hidden = session.mode !== "database" || session.role === "admin" || session.account?.isDemo;
       account.hidden = false;
       const restoreFocus = document.activeElement === login
         || (focusedAction === login && document.activeElement === document.body);

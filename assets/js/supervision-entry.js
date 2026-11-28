@@ -36,7 +36,7 @@
 
   function selectionDepartment(teacher) {
     const department = departmentLabel(teacher.department);
-    return department === unavailableDepartment ? sampleDepartments.get(teacher.id) ?? department : department;
+    return department === unavailableDepartment ? sampleDepartments.get(teacher.directoryId || teacher.id) ?? department : department;
   }
 
   function validateTeacherId(id) {
@@ -69,6 +69,9 @@
     const { getWebsiteSession } = await import('./website-session.js');
     const session = await getWebsiteSession('student');
     if (session?.role !== 'student') return null;
+    if (session.mode === 'database') {
+      return { id: session.account.id, name: session.account.displayName || 'Sinh viên' };
+    }
     if (!session.user) return window.IE104Supervision.student;
     const { uid, displayName, email } = session.user;
     return {
@@ -121,6 +124,7 @@
     const { getWebsiteSession } = await import('./website-session.js');
     const session = await getWebsiteSession('lecturer');
     if (session?.role !== 'lecturer') return null;
+    if (session.mode === 'database') return { database: true };
     if (!session.user) return { demo: true };
     const email = session.user.email?.trim().toLowerCase();
     const teachers = email ? await getTeachers() : [];
@@ -129,6 +133,12 @@
 
   async function getTeacher(id) {
     validateTeacherId(id);
+    const database = window.IE104?.proposalDatabase;
+    if (database) {
+      const teacher = (await database.listSupervisors()).find(item => item.canReceive && (item.id === id || item.directoryId === id));
+      if (!teacher) throw new Error('Giảng viên chưa có tài khoản nhận lời mời.');
+      return teacher;
+    }
     const source = await getDirectory();
     const card = source.getElementById(id);
     const name = card?.matches('.research-card') && card.querySelector('h2')?.textContent.trim();

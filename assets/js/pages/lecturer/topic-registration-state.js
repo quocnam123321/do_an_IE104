@@ -58,7 +58,7 @@
       try {
         const snapshot = pending;
         const commit = () => app.services.lecturerTopicEditor.setRegistration(snapshot.id,action === 'open',value,snapshot.revision,snapshot.ownerId);
-        if (navigator.locks?.request) await navigator.locks.request(app.services.lecturerTopicRepository.key,commit); else commit();
+        if (navigator.locks?.request) await navigator.locks.request(app.services.lecturerTopicRepository.key,commit); else await commit();
       } catch (failure) {
         error.textContent = failure.message;
         error.hidden = false;

@@ -23,6 +23,12 @@
   const form = document.getElementById(student ? 'profile-password-form' : 'change-password-form');
   const service = app.services?.accountPassword;
   if (!form || !service) return;
+  const opener = document.querySelector(`[commandfor="${passwordDialog.id}"][command="show-modal"]`);
+  if (app.services.databaseProfile) {
+    opener.disabled = true;
+    opener.title = 'Tài khoản hệ thống dùng chức năng Quên mật khẩu để đặt lại mật khẩu.';
+    return;
+  }
   const role = student ? 'student' : 'lecturer';
   const fields = student
     ? { current: document.getElementById('profile-password-current'), next: document.getElementById('profile-password-new'), confirm: document.getElementById('profile-password-confirm') }
@@ -32,7 +38,6 @@
   if (!error) { error = document.createElement('p'); error.id = 'change-password-error'; error.setAttribute('role', 'alert'); form.querySelector('.change-password-dialog__actions').before(error); }
   const notice = document.getElementById(student ? 'profile-password-notice' : 'change-password-notice');
   notice.textContent = 'Mật khẩu mới cần từ 8 đến 128 ký tự.';
-  const opener = document.querySelector(`[commandfor="${passwordDialog.id}"][command="show-modal"]`);
   submit.disabled = false;
   submit.type = 'submit';
   submit.removeAttribute('title');

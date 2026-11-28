@@ -8,6 +8,7 @@
   const fieldIds = {
     id: 'topic-code', title: 'topic-name', topicType: 'topic-type', course: 'course',
     semester: 'semester', academicYear: 'academic-year', roundId: 'registration-round',
+    deadline: 'registration-closes',
     startsAt: 'topic-start-date', progressReportDate: 'topic-progress-report-date',
     finalReportDate: 'topic-final-report-date', description: 'topic-description',
     objectives: 'topic-objectives', outcomes: 'topic-outcomes', requirements: 'topic-requirements',
@@ -21,6 +22,8 @@
     Object.keys(service.catalog.courses).map(course => [course, window.UITLecturerCatalog.subjectLabel({ topicType: 'course', course }, true)])
   );
   const fixedCourseTypes = { graduation: 'do-an-tot-nghiep', thesis: 'khoa-luan' };
+  const databaseCodeType = type => type === 'course' ? 'do-an-mon-hoc' : fixedCourseTypes[type];
+  const topicCodeHint = document.getElementById('topic-code-hint');
   const submit = form.querySelector('button[type="submit"]');
   const submitLabel = submit.textContent.trim();
   const successDialog = document.getElementById(editing ? 'topic-updated-dialog' : 'topic-created-dialog');
@@ -34,6 +37,8 @@
   form.prepend(status);
   form.querySelector('.topic-form__actions').before(error);
   let original = null; let saving = false; let dirty = false; let committed = false;
+  const usesDatabase = () => Boolean(app.proposalDatabase && (!editing || original?.isDatabaseTopic));
+  const validationOptions = { assignCode: Boolean(app.proposalDatabase && !editing) };
   const files = {};
   const removed = {};
   const pendingFiles = new Map();
@@ -54,7 +59,7 @@
     field.value = String(value ?? '');
   }
   function read() {
-    return Object.fromEntries(Object.entries(fields).map(([key, field]) => {
+    return Object.fromEntries(Object.entries(fields).filter(([, field]) => field && !field.disabled).map(([key, field]) => {
       if (key === 'id' && original) return [key, original.id];
       const value = datePicker && field?.matches('input[data-proposal-picker]') ? datePicker.read(field) : field?.value;
       return [key, value || ''];
@@ -64,6 +69,21 @@
     const code = service.nextCode(fields.topicType.value, fields.course.value);
     fields.id.value = code || (fields.topicType.value === 'course' ? 'Chọn môn học' : fields.id.defaultValue);
     return code;
+  }
+  async function showDatabaseCode() {
+    const type = fields.topicType.value;
+    fields.id.value = type ? 'Đang cấp mã…' : fields.id.defaultValue;
+    topicCodeHint.textContent = type ? '' : 'Mã được cấp tự động theo loại đề tài.';
+    if (!type) return;
+    try {
+      const code = await app.proposalDatabase.reserveTopicCode(databaseCodeType(type));
+      if (fields.topicType.value !== type || committed) return;
+      fields.id.value = code;
+    } catch (failure) {
+      if (fields.topicType.value !== type || committed) return;
+      fields.id.value = 'Chưa có mã';
+      topicCodeHint.textContent = failure.message;
+    }
   }
   function showErrors(errors) {
     for (const field of inlineErrors.keys()) clearFieldError(field);
@@ -107,6 +127,14 @@
   }
   try {
     if (editing) original = app.services.lecturerTopics.get('created', new URLSearchParams(location.search).get('topic') ?? app.data.lecturerRealDefaultTopicId ?? 'DA001');
+    const database = usesDatabase();
+    validationOptions.useRounds = !database;
+    fields.roundId.disabled = database;
+    fields.roundId.closest('.registration-round-grid').hidden = database;
+    if (fields.deadline) {
+      fields.deadline.disabled = !database;
+      fields.deadline.closest('[data-database-deadline]').hidden = !database;
+    }
     const types = { ...service.catalog.types };
     if (original?.topicType === 'thesis' && original.sourceRecord?.type === 'Luận văn thạc sĩ') {
       types.thesis = original.sourceRecord.type;
@@ -131,6 +159,7 @@
         finalReportDate: localDate(original.finalReportDate).slice(0, 10),
       };
       for (const [key, field] of Object.entries(fields)) {
+        if (!field) continue;
         const value = values[key] ?? '';
         if (datePicker && field.matches('input[data-proposal-picker]')) datePicker.fill(field, value);
         else field.value = value;
@@ -225,18 +254,21 @@
         select(fields.course, courseOptions, Object.hasOwn(courseOptions, selectedCourse) ? selectedCourse : '', 'Chọn môn học');
       }
       pickers?.syncSelects();
-      if (!editing) refreshCode();
+      if (!editing) {
+        if (usesDatabase()) void showDatabaseCode();
+        else refreshCode();
+      }
     };
     fields.topicType.addEventListener('change', courseState); courseState();
-    if (!editing) fields.course.addEventListener('change', refreshCode);
+    if (!editing && !usesDatabase()) fields.course.addEventListener('change', refreshCode);
     form.addEventListener('change', () => {
       if (!inlineErrors.size) return;
-      const invalidFields = new Set(service.validate(read(), original).errors.map(item => errorField(item.field)));
+      const invalidFields = new Set(service.validate(read(), original, new Date(), validationOptions).errors.map(item => errorField(item.field)));
       for (const field of inlineErrors.keys()) {
         if (!invalidFields.has(field)) clearFieldError(field);
       }
     });
-    app.ui.registrationRound.bind(form, {
+    if (!database) app.ui.registrationRound.bind(form, {
       lecturer: true,
       previous: original?.registration?.roundId,
       legacy: editing && !original?.registration?.roundId,
@@ -245,6 +277,7 @@
         syncSubmit();
       },
     });
+    syncSubmit();
     form.noValidate = true; submit.removeAttribute('title');
     status.textContent = '';
     form.dataset.topicEditorReady = 'true';
@@ -253,9 +286,9 @@
   form.addEventListener('submit', async event => {
     event.preventDefault(); if (saving || committed || pendingFiles.size) return;
     const input = read();
-    try { if (!editing) input.id = refreshCode(); }
+    try { if (!editing && !usesDatabase()) input.id = refreshCode(); }
     catch (failure) { showErrors([{ message: failure.message }]); return; }
-    const checked = service.validate(input, original);
+    const checked = service.validate(input, original, new Date(), validationOptions);
     if (checked.errors.length) { showErrors(checked.errors); return; }
     for (const field of inlineErrors.keys()) clearFieldError(field);
     error.hidden = true; saving = true; submit.disabled = true; form.setAttribute('aria-busy','true'); status.textContent = 'Đang lưu đề tài…';
@@ -266,15 +299,24 @@
     pickers?.syncSelects();
     let topic;
     try {
+      if (!editing && usesDatabase()) {
+        input.id = await app.proposalDatabase.reserveTopicCode(databaseCodeType(input.topicType));
+        fields.id.value = input.id;
+        topicCodeHint.textContent = '';
+      }
       for (const purpose of ['image','attachment']) {
         if (removed[purpose]) updates[purpose] = null;
+        else if (files[purpose] && usesDatabase()) updates[purpose] = files[purpose];
         else if (files[purpose]) { const ref = await fileService.stage(checked.value.id,purpose,files[purpose],owner); staged.push(ref); updates[purpose] = ref; }
       }
       const commit = () => editing ? service.update(original.id,input,original.revision || 0,updates,owner) : service.create(input,updates,owner);
-      topic = navigator.locks?.request ? await navigator.locks.request(app.services.lecturerTopicRepository.key,commit) : commit();
-      committed = true; dirty = false; status.textContent = editing ? '' : 'Đã lưu đề tài trên trình duyệt này.';
+      topic = !usesDatabase() && navigator.locks?.request
+        ? await navigator.locks.request(app.services.lecturerTopicRepository.key, commit) : await commit();
+      committed = true; dirty = false;
+      fields.id.value = topic.id;
+      status.textContent = usesDatabase() ? 'Đã lưu đề tài.' : editing ? '' : 'Đã lưu đề tài trên trình duyệt này.';
       const old = Object.keys(updates).map(purpose => original?.[`${purpose}Ref`]).filter(Boolean);
-      fileService.discard(old).catch(() => {});
+      if (!usesDatabase()) fileService.discard(old).catch(() => {});
     } catch (failure) { status.textContent = 'Chưa lưu thay đổi.'; showErrors([{ message: failure.message }]); }
     finally {
       if (!committed) {

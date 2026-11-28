@@ -25,8 +25,9 @@
       name.textContent = fileName;
       row.hidden = !fileName;
       empty.hidden = Boolean(fileName);
-      button.disabled = !sample;
+      button.disabled = !sample && !(topic.isDatabaseTopic && key);
       if (!attachmentName) return;
+      if (topic.isDatabaseTopic && key) return;
 
       try {
         const file = await readAttachment();

@@ -9,8 +9,16 @@
       || (!preview && app.services.approvedProjects?.forStudent(projectId)?.project);
     if (!project) throw new Error('Không tìm thấy đề tài cần xem đánh giá.');
     const groupName = project.groupName;
-    const saved = preview ? null : app.storage?.readTeachingRecords?.().find(item => item.projectId === projectId);
-    const record = saved?.publishedEvaluation || app.data.projectEvaluations.find(item => item.projectId === projectId);
+    let record;
+    const shared = !preview && app.proposalDatabase?.demoEvaluation?.(projectId);
+    if (shared || project.isDatabaseProject || project.isDatabaseProposal) {
+      const evaluation = shared || app.proposalDatabase?.evaluation?.(projectId);
+      if (!evaluation) throw new Error('Máy chủ hiện chưa hỗ trợ đánh giá dùng chung. Hãy mở bản Express mới.');
+      record = evaluation.publication;
+    } else {
+      const saved = preview ? null : app.storage?.readTeachingRecords?.().find(item => item.projectId === projectId);
+      record = saved?.publishedEvaluation || app.data.projectEvaluations.find(item => item.projectId === projectId);
+    }
     if (!record || record.published === false) {
       return {
         projectId, groupName, status: 'unpublished', projectStatus: project.status,
@@ -32,6 +40,9 @@
     if (attachment && hasText(file.fileKey) && Number.isSafeInteger(file.size) && file.size > 0) {
       attachment.fileKey = file.fileKey;
       attachment.size = file.size;
+    }
+    if (attachment && hasText(file.id) && Number.isSafeInteger(file.size) && file.size > 0 && file.projectId === projectId) {
+      Object.assign(attachment, { id: file.id, size: file.size, projectId });
     }
     return {
       projectId, groupName, status: 'published', score: record.score, resultLabel: record.resultLabel,

@@ -115,5 +115,6 @@
     const { progressKey, teamKey, teachingKey, proposalKey, registrationKey } = globalThis.IE104.storage;
     if ([progressKey, teamKey, teachingKey, proposalKey, registrationKey, null].includes(event.key)) render();
   });
+  window.addEventListener('ie104:proposals-updated', render);
   render();
 })();

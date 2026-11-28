@@ -55,7 +55,8 @@
   const realSeeds = window.IE104?.data?.lecturerRealProposalSeeds;
   const activeSeedIds = uitSeeds ? new Set(uitSeeds.map(record => record.id)) : null;
   const seeds = uitSeeds ? [...uitSeeds, ...rejectedSeeds, ...(window.UITLecturerCatalog.archivedPending || []), ...legacySeeds] : realSeeds || legacySeeds;
-  const canViewSeed = () => !window.IE104?.data?.currentLecturer || window.IE104.data.currentLecturer.id === 'GV001';
+  const canViewSeed = () => !window.IE104?.proposalDatabase &&
+    (!window.IE104?.data?.currentLecturer || window.IE104.data.currentLecturer.id === 'GV001');
   const listeners = new Set();
   const submissionDateFormat = new Intl.DateTimeFormat('vi-VN', {
     day: '2-digit', month: '2-digit', year: 'numeric',
@@ -96,7 +97,7 @@
     const data = window.IE104?.data;
     const demoStudentCode = data?.legacyProposalStudent?.code;
     // Các hồ sơ được đưa vào Đề tài của tôi dành cho tài khoản sinh viên demo.
-    if (!demoStudentCode || data.currentStudent?.code !== demoStudentCode) return null;
+    if (window.IE104?.proposalDatabase || !demoStudentCode || data.currentStudent?.code !== demoStudentCode) return null;
     return uitSeeds?.find(record => record.id === id && record.studentVisible) || null;
   }
 
@@ -151,7 +152,7 @@
   }
 
   function getAll() {
-    readError = '';
+    readError = window.IE104?.proposalDatabase?.error() || '';
     const initial = canViewSeed() ? seeds.map(seed => seedRecord(seed))
       .filter(record => !activeSeedIds || activeSeedIds.has(record.id) || record.status !== 'pending') : [];
     // Giữ các quyết định đã duyệt từ bộ dữ liệu cũ khi dùng danh mục UIT.
@@ -211,11 +212,15 @@
   }
 
   async function decide(id, status, reason = '', revision) {
+    if (window.IE104?.proposalDatabase && /^DX-[a-f0-9-]{36}$/i.test(id)) {
+      return window.IE104.services.proposals.decide(id, status, reason, revision);
+    }
     if (!seeds.some(record => record.id === id)) {
       const service = window.IE104?.services?.registrations?.listForLecturer().some(record => record.id === id) ? window.IE104.services.registrations : window.IE104?.services?.proposals;
       if (!service) throw new Error('Không tìm thấy đề xuất.');
       return service.decide(id, status, reason, revision);
     }
+    if (window.IE104?.proposalDatabase) throw new Error('Không tìm thấy đề xuất.');
     const save = () => {
       if (window.IE104?.data?.currentLecturer && window.IE104.data.currentLecturer.id !== 'GV001') throw new Error('Giảng viên hiện tại không được xử lý đề xuất này.');
       const seed = seeds.find(record => record.id === id);

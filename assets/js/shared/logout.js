@@ -39,7 +39,7 @@
       if (event.persisted) checkSession();
     });
     window.addEventListener("storage", (event) => {
-      if (event.storageArea === localStorage && (event.key === roleSessionPrefix + expectedRole || event.key === null)) {
+      if (event.storageArea === localStorage && (event.key === roleSessionPrefix + expectedRole || event.key === roleSessionPrefix + "database" || event.key === null)) {
         checkSession();
       }
     });

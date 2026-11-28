@@ -22,8 +22,20 @@
     };
   }
 
-  function definitions() {
-    const proposals = app.storage.readProposals().filter(record => record.status === 'da-duyet').map(record => {
+  function databaseDefinition({ project, team, progress }) {
+    const { id, requestId } = project;
+    return {
+      project: { ...project, detailUrl: studentUrl(id), ...(project.source === 'approved-proposal' && {
+        requestDetailUrl: `chi-tiet-de-tai-cho-duyet-sinh-vien.html?proposal=${encodeURIComponent(requestId)}`,
+      }) },
+      team,
+      progress,
+    };
+  }
+
+  function proposalDefinitions() {
+    if (app.proposalDatabase) return app.proposalDatabase.projects().map(databaseDefinition);
+    return app.storage.readProposals().filter(record => record.status === 'da-duyet').map(record => {
       const student = record.student || app.data.legacyProposalStudent;
       const id = projectIdFor(record.id);
       const project = {
@@ -43,7 +55,10 @@
         progress: { projectId: id, revision: 0, tasks: [], history: [] },
       };
     });
-    const registrations = app.storage.readRegistrations().filter(record => ['da-dang-ky', 'da-duyet'].includes(record.status)).map(record => {
+  }
+
+  function definitions(includeRegistrations = true) {
+    const registrations = (includeRegistrations ? app.storage.readRegistrations() : []).filter(record => ['da-dang-ky', 'da-duyet'].includes(record.status)).map(record => {
       const id = projectIdFor(record.id);
       const topic = record.topic;
       const lecturerId = record.lecturerId || record.decision?.lecturerId;
@@ -68,10 +83,12 @@
         progress: { projectId: id, revision: 0, tasks: [], history: [] },
       };
     });
-    return [...proposals, ...registrations];
+    return [...proposalDefinitions(), ...registrations];
   }
 
   function get(projectId) {
+    const databaseProject = app.proposalDatabase?.projects().find(item => item.project.id === projectId);
+    if (databaseProject) return clone(databaseDefinition(databaseProject));
     const existing = definitions().find(item => item.project.id === projectId);
     if (existing) return clone(existing);
     const lecturerId = app.data.currentLecturer?.id;
@@ -101,6 +118,9 @@
   }
 
   function studentCanView(definition, savedTeams) {
+    if (definition.project.isDatabaseProject || definition.project.isDatabaseProposal) {
+      return app.proposalDatabase?.account.role === 'student';
+    }
     const members = savedTeams.find(team => team.projectId === definition.project.id)?.members || definition.team.members;
     return members.some(member => member.code === app.data.currentStudent?.code);
   }
@@ -108,22 +128,27 @@
   function forStudent(projectId) {
     const definition = get(projectId);
     if (!definition) throw new Error('Không tìm thấy đề tài đang thực hiện.');
-    if (!definition.project.isSharedProposalSample && !studentCanView(definition, app.storage.readProjectTeams())) throw new Error('Sinh viên hiện tại không thuộc nhóm thực hiện đề tài này.');
+    const savedTeams = definition.project.isDatabaseProject || definition.project.isDatabaseProposal || definition.project.isSharedProposalSample ? [] : app.storage.readProjectTeams();
+    if (!definition.project.isSharedProposalSample && !studentCanView(definition, savedTeams)) throw new Error('Sinh viên hiện tại không thuộc nhóm thực hiện đề tài này.');
     return definition;
   }
 
   function canSupervise(project, supervisorIds) {
+    if (project.isDatabaseProject || project.isDatabaseProposal) {
+      const account = app.proposalDatabase?.account;
+      return account?.role === 'lecturer' && (project.isSharedDemo || account.id === project.lecturerId || project.role === 'secondary');
+    }
     if (supervisorIds.includes(app.data.currentLecturer?.id)) return true;
     return project.source === 'approved-proposal' && supervisorIds.includes(project.lecturerId) &&
       Boolean(app.services.proposals?.canReview(project.lecturerId));
   }
 
-  function list(role) {
-    const all = definitions();
+  function list(role, { proposalsOnly = false } = {}) {
+    const all = definitions(!proposalsOnly);
     if (role === 'lecturer') return clone(all.filter(({ project, team }) => canSupervise(project, team.supervisorIds)).map(item => item.project));
     if (role !== 'student') throw new Error('Chọn vai trò hợp lệ để xem đề tài.');
-    const savedTeams = app.storage.readProjectTeams();
-    return clone(all.filter(item => studentCanView(item, savedTeams)).map(item => item.project));
+    const savedTeams = all.some(({ project }) => !project.isDatabaseProject && !project.isDatabaseProposal) ? app.storage.readProjectTeams() : [];
+    return clone(all.filter(item => (!proposalsOnly || item.project.source === 'approved-proposal') && studentCanView(item, savedTeams)).map(item => item.project));
   }
 
   app.services.approvedProjects = { get, forStudent, list, canSupervise, projectIdFor, studentUrl, lecturerUrl };

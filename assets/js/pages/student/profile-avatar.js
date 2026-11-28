@@ -91,12 +91,15 @@
       image.src = currentUrl;
       dialog.close();
       status.textContent = '';
-      globalThis.IE104.ui.profileSuccess('Cập nhật ảnh thành công', 'Ảnh đại diện đã được cập nhật trên trình duyệt này.', open);
+      globalThis.IE104.ui.profileSuccess('Cập nhật ảnh thành công', globalThis.IE104.services.databaseAvatar
+        ? 'Ảnh đại diện đã được cập nhật trên hệ thống.'
+        : 'Ảnh đại diện đã được cập nhật trên trình duyệt này.', open);
     } catch (failure) { error.textContent = failure.message; }
     finally { saving = false; save.disabled = !pending; input.disabled = false; dialog.querySelectorAll('[command="close"]').forEach(button => { button.disabled = false; }); }
   });
   dialog.addEventListener('cancel', event => { if (saving) event.preventDefault(); });
   dialog.addEventListener('close', () => { sequence += 1; clearPreview(); });
   window.addEventListener('pageshow', load);
+  if (globalThis.IE104.services.databaseAvatar) window.addEventListener('focus', () => { if (!saving) void load(); });
   load();
 })();

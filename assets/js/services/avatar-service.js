@@ -38,7 +38,7 @@
   }
 
   async function read() {
-    const file = await transact('readonly');
+    const file = app.services.databaseAvatar ? await app.services.databaseAvatar.read() : await transact('readonly');
     if (file) validate(file);
     return file;
   }
@@ -52,7 +52,7 @@
       await image.decode();
     } catch { throw new Error('Không đọc được nội dung ảnh. Vui lòng chọn ảnh khác.'); }
     finally { URL.revokeObjectURL(url); }
-    return transact('readwrite', file);
+    return app.services.databaseAvatar ? app.services.databaseAvatar.save(file) : transact('readwrite', file);
   }
 
   app.services.avatar = { read, save, validate, maxBytes };

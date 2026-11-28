@@ -11,6 +11,7 @@
   const attachmentDatabase = 'ie104.supervision-attachments.v1';
   const finalStatuses = ['accepted', 'rejected'];
   const changes = new EventTarget();
+  const database = window.IE104?.proposalDatabase;
   const demoTeacher = { id: 'giang-vien-0', name: 'ThS. Nguyễn Hoàng An' };
   const demoInvitations = new Map([
     ['inv-demo-01', 'Nguyễn Minh Anh', '24520001', '2026-11-25T14:20:00+07:00',
@@ -129,9 +130,10 @@
       .sort((a, b) => Date.parse(b.updatedAt) - Date.parse(a.updatedAt));
   }
 
-  const getAll = () => readAll();
+  const getAll = () => database ? database.supervisionInvitations() : readAll();
 
   function listForTeacher(session) {
+    if (database) return getAll();
     if (session.demo) return readAll(true);
     return getAll().filter(({ teacher }) => session.teacherIds.includes(teacher.id));
   }
@@ -141,6 +143,7 @@
   }
 
   function listForStudent(sender) {
+    if (database) return getAll();
     return readAll(sender.id === student.id).filter(record => isInvitationStudent(record, sender.id));
   }
 
@@ -209,6 +212,7 @@
   }
 
   async function getAttachment(metadata) {
+    if (database && metadata?.invitationId) return database.readSupervisionAttachment(metadata.invitationId, metadata.id);
     if (!isAttachment(metadata)) throw new Error('Thông tin tệp đính kèm không hợp lệ.');
     let file;
     try {
@@ -240,6 +244,7 @@
   }
 
   function getUnreadResponses(record) {
+    if (database) return Math.max(0, responseCount(record) - record.readCount);
     return Math.max(0, responseCount(record) - readReceipt(receiptKey(record)));
   }
 
@@ -247,6 +252,11 @@
     // Chỉ đánh dấu các phản hồi trong bản lời mời mà sinh viên đang xem.
     const count = responseCount(record);
     if (count === 0) return false;
+    if (database) {
+      if (count <= record.readCount) return false;
+      await database.markSupervisionRead(record.id, count);
+      return true;
+    }
     const key = receiptKey(record);
     const advance = () => {
       if (count <= readReceipt(key)) return false;
@@ -273,7 +283,8 @@
         (record.decision.messageCount !== undefined || Date.parse(last.sentAt) > Date.parse(record.decision.at)));
   }
 
-  async function create({ student: sender = student, teacher, subject, message, attachment, projectId }) {
+  async function create({ student: sender = student, teacher, subject, message, attachment, projectId, revision }) {
+    if (database) return database.sendSupervision({ teacher, subject, message, attachment, projectId, revision });
     if (!isStudent(sender)) throw new Error('Tài khoản sinh viên gửi lời mời không hợp lệ.');
     if (!isTeacher(teacher)) throw new Error('Giảng viên nhận lời mời không hợp lệ.');
     const title = validateText(subject, 'Tiêu đề', subjectLimit);
@@ -325,6 +336,7 @@
   }
 
   async function reply(id, actor, message, attachment) {
+    if (database) return database.replySupervision(id, message, attachment);
     const text = validateText(message, 'Phản hồi', messageLimit);
     return withAttachment(attachment, (metadata) => update(id, (record, now) => {
       const fromStudent = actor?.role === 'student' && isInvitationStudent(record, actor.id);
@@ -337,6 +349,7 @@
   }
 
   async function decide(id, teacherId, status, note = '') {
+    if (database) return database.decideSupervision(id, status, note);
     if (!finalStatuses.includes(status)) throw new Error('Quyết định không hợp lệ.');
     const text = validateText(note, 'Lời nhắn kèm theo', messageLimit, true);
     return update(id, (record, now) => {
@@ -359,6 +372,7 @@
     if (event.key === null || event.key.startsWith(prefix) || event.key.startsWith(receiptPrefix)) notify();
   });
   window.addEventListener('pageshow', notify);
+  window.addEventListener('ie104:proposals-updated', notify);
   window.IE104Supervision = Object.freeze({
     student, getAll, listForTeacher, listForStudent, studentCode, create, reply, decide, cancelProjectInvitation, getUnreadResponses, markResponsesRead, needsTeacherReply, canReply,
     attachmentLimit, getAttachment,

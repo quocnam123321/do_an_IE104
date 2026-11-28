@@ -1,9 +1,10 @@
 (() => {
-  const app = globalThis.IE104 = globalThis.IE104 || {};
+  const commonJS = typeof module !== 'undefined' && module.exports;
+  const app = commonJS ? {} : (globalThis.IE104 = globalThis.IE104 || {});
   app.services ||= {};
   const catalog = {
     types: { course: 'Đồ án môn học', graduation: 'Đồ án tốt nghiệp', thesis: 'Khóa luận tốt nghiệp' },
-    courses: Object.fromEntries(Object.entries(window.UITLecturerCatalog.courseCatalog).map(([key, course]) => [key, course.label])),
+    courses: commonJS ? {} : Object.fromEntries(Object.entries(window.UITLecturerCatalog.courseCatalog).map(([key, course]) => [key, course.label])),
     semesters: { '1': 'Học kỳ 1', '2': 'Học kỳ 2', summer: 'Học kỳ hè' },
     years: ['2026-2027', '2025-2026'],
   };
@@ -40,8 +41,8 @@
     return type === 'thesis' && !isMasterThesis;
   }
 
-  function validate(input, previous = null, now = new Date()) {
-    const rounds = globalThis.IE104AdminAcademic;
+  function validate(input, previous = null, now = new Date(), { assignCode = false, courses = catalog.courses, useRounds = true } = {}) {
+    const rounds = useRounds ? globalThis.IE104AdminAcademic : null;
     const value = Object.fromEntries(['roundId', 'id', 'title', 'topicType', 'course', 'semester', 'academicYear', 'description', 'objectives', 'outcomes', 'requirements', 'domain', 'technologies', 'opensAt', 'deadline', 'startsAt', 'completesAt'].map(field => [field, text(input[field])]));
     value.domain = text(input.domain ?? previous?.domain);
     value.technologies = text(input.technologies ?? previous?.technologies);
@@ -50,7 +51,7 @@
     value.maxMembers = text(input.maxMembers) ? Number(input.maxMembers) : NaN;
     const errors = [];
     const error = (field, message) => errors.push({ field, message });
-    if (!/^[A-ZĐ0-9][A-ZĐ0-9_-]{0,29}$/.test(value.id)) error('id', 'Mã đề tài gồm 1–30 chữ cái, chữ số, dấu gạch ngang hoặc gạch dưới.');
+    if (!assignCode && !/^[A-ZĐ0-9][A-ZĐ0-9_-]{0,29}$/.test(value.id)) error('id', 'Mã đề tài gồm 1–30 chữ cái, chữ số, dấu gạch ngang hoặc gạch dưới.');
     if (previous && value.id !== previous.id) error('id', 'Không được đổi mã của đề tài đã tạo.');
     for (const [field, limit] of [['title', 200], ['description', 10000], ['objectives', 5000], ['outcomes', 5000], ['requirements', 5000]]) if (!value[field] || value[field].length > limit) error(field, `Nhập nội dung từ 1 đến ${limit} ký tự.`);
     for (const [field, limit] of [['methodAndScope', 20002], ['plan', 10000]]) {
@@ -59,7 +60,7 @@
       else if (value[field].length > limit) error(field, `Nội dung tối đa ${limit} ký tự.`);
     }
     if (!Object.hasOwn(catalog.types, value.topicType)) error('topicType', 'Chọn loại đề tài trong danh sách.');
-    if (value.topicType === 'course' && !Object.hasOwn(catalog.courses, value.course)) error('course', 'Chọn môn học trong danh sách.');
+    if (value.topicType === 'course' && !Object.hasOwn(courses, value.course)) error('course', 'Chọn môn học trong danh sách.');
     if (value.topicType !== 'course') value.course = '';
     if (!Object.hasOwn(catalog.semesters, value.semester)) error('semester', 'Chọn học kỳ trong danh sách.');
     if (!catalog.years.includes(value.academicYear) && !rounds?.academicYears().includes(value.academicYear)) error('academicYear', 'Chọn năm học trong danh sách.');
@@ -132,13 +133,22 @@
     }
     return { value, errors };
   }
+  if (commonJS) {
+    module.exports = { catalog, validate, date, text };
+    return;
+  }
+
   function save(id, input, revision, files = {}, expectedOwner) {
     const actor = app.data.currentLecturer;
     if (!actor?.id || !actor.name || actor.id !== expectedOwner) throw new Error('Giảng viên hiện tại đã thay đổi. Hãy tải lại trang.');
+    const previous = id ? app.services.lecturerTopics.get('created', id) : null;
+    if (app.proposalDatabase && (!previous || previous.isDatabaseTopic)) {
+      const uploads = Object.fromEntries(Object.entries(files).map(([purpose, file]) => [purpose === 'image' ? 'cover' : purpose, file]));
+      return app.proposalDatabase.saveTopic(input, previous?.id, revision, uploads);
+    }
     const repository = app.services.lecturerTopicRepository;
     const saved = repository.read();
     const all = app.services.lecturerTopics.list('created');
-    const previous = id ? app.services.lecturerTopics.get('created', id) : null;
     if (previous && (!Number.isInteger(revision) || revision !== (previous.revision || 0))) throw new Error('Đề tài đã thay đổi ở tab khác. Hãy tải lại sau khi sao chép nội dung đang nhập.');
     const checked = validate(input, previous);
     if (checked.errors.length) throw new Error(checked.errors[0].message);
@@ -179,7 +189,9 @@
     if (!actor?.id || actor.id !== expectedOwner) throw new Error('Giảng viên hiện tại đã thay đổi.');
     if (typeof open !== 'boolean') throw new Error('Trạng thái đăng ký không hợp lệ.');
     const repository = app.services.lecturerTopicRepository;
-    const saved = repository.read(); const topic = app.services.lecturerTopics.get('created',id);
+    const topic = app.services.lecturerTopics.get('created',id);
+    if (topic.isDatabaseTopic) return app.proposalDatabase.setTopicRegistration(topic.id, open, deadline, revision);
+    const saved = repository.read();
     if (!Number.isInteger(revision) || revision !== (topic.revision || 0)) throw new Error('Đề tài đã đổi ở tab khác. Hãy mở lại hộp xác nhận.');
     let registration;
     if (open) {

@@ -1,5 +1,6 @@
 (() => {
-  const app = globalThis.IE104 = globalThis.IE104 || {};
+  const commonJS = typeof module !== 'undefined' && module.exports;
+  const app = commonJS ? {} : (globalThis.IE104 = globalThis.IE104 || {});
 
   function validateRegistration(value, rules = { minMembers: 2, maxMembers: 3 }) {
     const errors = [];
@@ -18,7 +19,8 @@
     if (members.length < rules.minMembers || members.length > rules.maxMembers) errors.push({ field: 'members', message: `Nhóm cần từ ${rules.minMembers} đến ${rules.maxMembers} thành viên.` });
     const seen = new Set();
     members.forEach((member, index) => {
-      if (!member.code || member.code.length > 20 || /\s/.test(member.code)) errors.push({ field: `members.${index}.code`, message: 'Nhập MSSV tối đa 20 ký tự, không có khoảng trắng.' });
+      const codeOptional = rules.leaderCodeOptional && member.role === 'nhom-truong';
+      if ((!member.code && !codeOptional) || member.code.length > 20 || /\s/.test(member.code)) errors.push({ field: `members.${index}.code`, message: 'Nhập MSSV tối đa 20 ký tự, không có khoảng trắng.' });
       if (member.code && seen.has(member.code)) errors.push({ field: `members.${index}.code`, message: 'MSSV này đã có trong nhóm.' });
       seen.add(member.code);
       if (!member.name || member.name.length > 100) errors.push({ field: `members.${index}.name`, message: 'Nhập họ tên từ 1 đến 100 ký tự.' });
@@ -80,14 +82,14 @@
       }
     }
     if (!value.secondarySupervisor.name && (value.secondarySupervisor.degree || value.secondarySupervisor.workplace)) errors.push({ field: 'outline.secondarySupervisor.name', message: 'Nhập tên người hướng dẫn phụ hoặc xóa học vị và đơn vị công tác tương ứng.' });
-    const members = validateRegistration({ groupName: 'Đề cương', members: input.members }, { minMembers: 1, maxMembers: 4 });
+    const members = validateRegistration({ groupName: 'Đề cương', members: input.members }, { minMembers: 1, maxMembers: 4, leaderCodeOptional: Boolean(student?.accountId) });
     errors.push(...members.errors.map(error => ({ ...error, field: `outline.${error.field}` })));
     value.members = members.value.members;
     if (student && !value.members.some(member => member.code === student.code && member.name === student.name && member.role === 'nhom-truong')) errors.push({ field: 'outline.members', message: 'Sinh viên gửi đề xuất phải là nhóm trưởng trong danh sách thực hiện.' });
     return { errors, value };
   }
 
-  function validateProposal(input, catalog, student = app.data.currentStudent, previousOutline) {
+  function validateProposal(input, catalog, student = app.data?.currentStudent, previousOutline) {
     const errors = [];
     const value = {};
     const labels = { title: 'tên đề tài', description: 'mô tả đề tài', objectives: 'mục tiêu', outcomes: 'kết quả dự kiến' };
@@ -130,5 +132,7 @@
     return { errors, value };
   }
 
-  app.validation = { ...app.validation, validateRegistration, validateProposal, validateProposalOutline };
+  const validators = { validateRegistration, validateProposal, validateProposalOutline };
+  if (commonJS) module.exports = validators;
+  else app.validation = { ...app.validation, ...validators };
 })();

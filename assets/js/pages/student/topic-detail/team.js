@@ -14,6 +14,9 @@
   }
   const preview = location.protocol === 'file:';
   const memberDialog = document.getElementById('add-team-member-dialog');
+  const removeMemberDialog = document.getElementById('remove-team-member-dialog');
+  const removeMemberError = removeMemberDialog.querySelector('[data-remove-member-error]');
+  removeMemberDialog.querySelector('[data-close-remove-member]').addEventListener('click', () => removeMemberDialog.close());
   const inviteDialog = document.getElementById('invite-supervisor-dialog');
   const inviteSuccess = document.getElementById('invite-supervisor-success');
   const memberForm = document.getElementById('add-team-member-form');
@@ -41,6 +44,8 @@
   const teamTitle = document.getElementById('team-title');
   let state = null;
   let memberRevision = 0;
+  let editingMemberKey = '';
+  let pendingRemoveMember;
   let inviteRevision = 0;
   let selectedLecturer = '';
   let inviteOptions = [];
@@ -62,12 +67,13 @@
       groupName.hidden = !participants.isGroup;
       teamTitle.textContent = participants.isGroup ? 'Nhóm thực hiện' : 'Sinh viên thực hiện';
       const permission = service.getPermission(state);
-      notice.textContent = permission.reason;
-      notice.hidden = !permission.reason;
+      const reason = state.project.status === 'hoan-thanh' ? '' : permission.reason;
+      notice.textContent = reason;
+      notice.hidden = !reason;
       const full = state.members.length >= state.maxMembers;
       addButton.disabled = !permission.allowed || full;
       inviteButton.disabled = !permission.allowed;
-      memberForm.querySelector('button[type="submit"]').disabled = !permission.allowed || full;
+      memberForm.querySelector('button[type="submit"]').disabled = !permission.allowed || (full && !editingMemberKey);
       inviteSubmit.disabled = !permission.allowed || !selectedLecturer || saving;
       capacityLimit.textContent = `tối đa ${state.maxMembers} thành viên`;
       fullMessage.hidden = !full;
@@ -76,9 +82,32 @@
         const initials = member.name.trim().split(/\s+/).slice(-2).map(part => part[0]).join('').toUpperCase();
         item.querySelector('.team-member__avatar').textContent = initials;
         item.querySelector('.team-member__name').textContent = member.name;
-        item.querySelector('.team-member__id').textContent = participants.isGroup ? member.code : participants.code || member.code;
+        item.querySelector('.team-member__id').textContent = (participants.isGroup ? member.code : participants.code || member.code) || 'Chưa có thông tin';
         const role = item.querySelector('.team-member__role');
         role.textContent = member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
+        if (permission.allowed && state.databaseTeam && member.role === 'thanh-vien') {
+          const actions = document.createElement('div');
+          actions.className = 'team-member__actions';
+          for (const [label, action] of [
+            ['Sửa', () => openMemberEditor(member)],
+            ['Xóa', () => {
+              pendingRemoveMember = { key: member.assignmentKey, revision: state.revision };
+              removeMemberDialog.querySelector('[data-remove-member-name]').textContent = member.name;
+              removeMemberError.hidden = true;
+              removeMemberDialog.showModal();
+            }],
+          ]) {
+            const control = document.createElement('button');
+            control.type = 'button';
+            control.className = 'project-team__add';
+            control.textContent = label;
+            control.setAttribute('aria-label', label + ' thành viên ' + member.name);
+            control.setAttribute('aria-haspopup', 'dialog');
+            control.addEventListener('click', action);
+            actions.append(control);
+          }
+          item.querySelector('.team-member__body').append(actions);
+        }
         return item;
       }));
       renderInvitations(state.invitations, permission.allowed);
@@ -86,6 +115,7 @@
     } catch (failure) {
       state = null;
       notice.textContent = failure.message;
+      notice.hidden = false;
       addButton.disabled = true;
       inviteButton.disabled = true;
       memberForm.querySelector('button[type="submit"]').disabled = true;
@@ -151,7 +181,7 @@
       }
       const actions = document.createElement('div');
       actions.className = 'pending-invitation__actions';
-      if (invitation.thread) {
+      if (invitation.thread && (!state.databaseTeam || globalThis.IE104Supervision.getAll().some(record => record.id === invitation.id))) {
         const thread = document.createElement('a');
         thread.className = 'pending-invitation__thread';
         thread.href = `de-tai-cua-toi-sinh-vien.html?loi-moi=${encodeURIComponent(invitation.id)}#loi-moi-huong-dan`;
@@ -237,14 +267,22 @@
   });
   memberForm.noValidate = true;
   memberDialog.querySelector('.team-member-dialog__close').addEventListener('click', () => memberDialog.close());
-  addButton.addEventListener('click', () => {
-    if (!refresh() || !service.getPermission(state).allowed || state.members.length >= state.maxMembers) return;
+  function openMemberEditor(member) {
+    if (!state || !service.getPermission(state).allowed || (!member && state.members.length >= state.maxMembers)) return;
     memberRevision = state.revision;
+    editingMemberKey = member?.assignmentKey || '';
     memberForm.reset();
+    memberDialog.querySelector('h2').textContent = member ? 'Sửa thành viên' : 'Thêm thành viên';
+    const save = memberForm.querySelector('button[type="submit"]');
+    save.textContent = member ? 'Lưu thay đổi' : 'Thêm thành viên';
+    save.disabled = false;
+    document.getElementById('new-team-member-name').value = member?.name ?? '';
+    document.getElementById('new-team-member-code').value = member?.code ?? '';
     memberError.hidden = true;
     memberForm.querySelectorAll('[aria-invalid]').forEach(field => field.removeAttribute('aria-invalid'));
     memberDialog.showModal();
-  });
+  }
+  addButton.addEventListener('click', () => { if (refresh()) openMemberEditor(); });
   inviteButton.addEventListener('click', async () => {
     if (!refresh() || !service.getPermission(state).allowed) return;
     const load = ++inviteLoad;
@@ -279,7 +317,7 @@
     inviteSubmit.disabled = saving || !state || !service.getPermission(state).allowed;
     inviteError.hidden = true;
   });
-  memberForm.addEventListener('submit', event => {
+  memberForm.addEventListener('submit', async event => {
     event.preventDefault();
     if (saving || !state) return;
     const fields = {
@@ -289,7 +327,7 @@
     Object.values(fields).forEach(field => field.removeAttribute('aria-invalid'));
     memberError.hidden = true;
     const input = { name: fields.name.value, code: fields.code.value, role: 'thanh-vien' };
-    const checked = service.validateMember(input, state);
+    const checked = service.validateMember(input, state, editingMemberKey);
     if (checked.errors.length) {
       showError(memberError, new Error(checked.errors.map(error => error.message).join(' ')));
       checked.errors.forEach(error => fields[error.field]?.setAttribute('aria-invalid', 'true'));
@@ -298,11 +336,30 @@
     }
     saving = true;
     try {
-      service.addMember(projectId, checked.value, memberRevision);
+      if (editingMemberKey) await service.updateMember(projectId, editingMemberKey, checked.value, memberRevision);
+      else await service.addMember(projectId, checked.value, memberRevision);
       memberDialog.close();
       refresh();
-      (addButton.disabled ? teamTitle : addButton).focus({ preventScroll: true });
+      const returnTo = addButton.disabled ? teamTitle : addButton;
+      if (state.databaseTeam) {
+        const title = editingMemberKey ? 'Đã cập nhật thành viên' : 'Đã thêm thành viên';
+        app.ui.studentSuccess(title, 'Danh sách thành viên đã được cập nhật.', { returnTo });
+      } else {
+        returnTo.focus({ preventScroll: true });
+      }
     } catch (failure) { showError(memberError, failure); }
+    finally { saving = false; }
+  });
+  removeMemberDialog.querySelector('[data-confirm-remove-member]').addEventListener('click', async () => {
+    if (saving || !pendingRemoveMember) return;
+    saving = true;
+    removeMemberError.hidden = true;
+    try {
+      await service.removeMember(projectId, pendingRemoveMember.key, pendingRemoveMember.revision);
+      removeMemberDialog.close();
+      refresh();
+      app.ui.studentSuccess('Đã xóa thành viên', 'Danh sách thành viên đã được cập nhật.', { returnTo: teamTitle });
+    } catch (failure) { showError(removeMemberError, failure); }
     finally { saving = false; }
   });
   inviteForm.addEventListener('submit', async event => {
@@ -345,6 +402,7 @@
   document.addEventListener('ie104:project-team-updated', refresh);
   globalThis.IE104Supervision?.subscribe(refresh);
   window.addEventListener('pageshow', refresh);
+  window.addEventListener('ie104:proposals-updated', refresh);
   refresh();
   document.body.dataset.teamReady = 'true';
 })();

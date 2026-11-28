@@ -63,6 +63,7 @@
       name: attachment,
       size: attachmentSize,
       fileKey: record.attachmentFileKey ?? record.attachment?.fileKey,
+      proposalId: record.attachmentProposalId ?? record.attachment?.proposalId,
       sample: record.id === 'DX001' && attachment === sampleName ? sampleName :
         globalThis.UITLecturerCatalog?.pending?.some(seed => seed.id === record.id &&
           seed.attachmentSample === 'proposal-outline' && seed.attachment === attachment) ? samplePdfName : null,

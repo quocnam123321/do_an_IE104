@@ -314,6 +314,41 @@ test('yêu cầu lưu phía giảng viên cập nhật ở bài nộp và lịch
   assert.equal(await activeCalendar(), undefined);
 });
 
+test('lịch lấy hạn và phản hồi mới nhất cùng nguồn với bài nộp PostgreSQL', async () => {
+  const app = createTab(new Map());
+  app.data.myTopics = [];
+  const project = { id: 'DT-DK-test', title: 'Đề tài kiểm thử', source: 'approved-registration',
+    status: 'dang-thuc-hien', isDatabaseProject: true };
+  const team = { projectId: project.id, maxMembers: 3, members: [app.data.currentStudent], supervisorIds: [], invitations: [] };
+  const requirement = { id: 'REQ-1', title: 'Báo cáo', deadline: '2099-04-01T17:05:00Z', locked: false };
+  const board = { projectStatus: project.status, requirements: [requirement], submissions: [] };
+  app.proposalDatabase = {
+    account: { role: 'student' },
+    projects: () => [{ project, team }],
+    submissionBoard: () => board,
+  };
+  app.services.studentSubmissions.readUploads = () => assert.fail('Lịch PostgreSQL không cần tra tệp cục bộ');
+
+  const event = async () => (await app.services.deadlines.getActiveDeadlines())[0].events[0];
+  assert.equal((await event()).status, 'pending');
+  assert.equal((await event()).due, '2099-04-02T00:05:00+07:00');
+
+  requirement.deadline = '2099-04-07T03:15:00Z';
+  requirement.locked = true;
+  const locked = await event();
+  assert.equal(locked.status, 'locked');
+  assert.equal(locked.due, '2099-04-07T10:15:00+07:00');
+  assert.equal(app.services.studentSubmissions.forStudent(project.id).requirements[0].locked, true);
+
+  board.submissions.push({ id: 'SUB-2', requirementId: requirement.id, submittedAt: '2099-04-06T08:00:00Z' });
+  assert.equal((await event()).status, 'awaiting');
+  board.submissions[0].feedback = 'Đã xem báo cáo';
+  const responded = await event();
+  assert.equal(responded.status, 'responded');
+  assert.equal(responded.submissionId, 'SUB-2');
+  assert.equal(app.services.studentSubmissions.forStudent(project.id).requirements[0].latestSubmission.feedback, 'Đã xem báo cáo');
+});
+
 test('nhãn thời hạn dùng giờ gửi của từng bài và lần gửi gần nhất cho yêu cầu', () => {
   const student = createTab(new Map());
   const projectId = 'DA005';

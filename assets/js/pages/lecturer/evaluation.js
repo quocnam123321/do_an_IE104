@@ -27,7 +27,7 @@
     control.append(icon, el('span', label));
   }
 
-  function attachmentPicker(section, initial, readOnly) {
+  function attachmentPicker(section, initial, readOnly, database) {
     const trigger = section.querySelector('.topic-file-picker__trigger');
     const input = trigger.querySelector('input');
     const hint = section.querySelector('.topic-file-picker__hint');
@@ -36,6 +36,8 @@
     const remove = selection.querySelector('.topic-file-picker__remove');
     const error = section.querySelector('.topic-file-picker__error');
     let selected = initial;
+    const maxBytes = app.services.studentSubmissions?.fileLimits?.maxBytes;
+    if (database) hint.textContent = 'Đính kèm tối đa 1 tệp, dung lượng 20 MiB.';
 
     function showSelection(message = '') {
       name.textContent = selected?.name || '';
@@ -68,6 +70,12 @@
         input.focus();
         return;
       }
+      if (database && file.size > maxBytes) {
+        input.value = '';
+        showSelection('Tệp đánh giá tối đa 20 MiB.');
+        input.focus();
+        return;
+      }
       selected = file;
       ui.dirty = true;
       showSelection();
@@ -93,6 +101,11 @@
       return;
     }
     loadedProject = state.projectId;
+    const database = state.evaluationRevision !== undefined || state.project.isDatabaseProject || state.project.isDatabaseProposal;
+    if (database && state.evaluationRevision === undefined) {
+      form.replaceWith(el('p', 'Máy chủ hiện chưa hỗ trợ đánh giá dùng chung. Hãy mở bản Express mới.'));
+      return;
+    }
     const completed = state.project.status === 'hoan-thanh';
     const published = state.publication;
     const readOnly = completed && published && !editingPublished;
@@ -138,8 +151,8 @@
 
     const comment = form.querySelector('.evaluation-comment');
     const feedback = comment.querySelector('textarea');
-    const originalAttachment = published?.attachment ?? null;
-    const selectedAttachment = attachmentPicker(form.querySelector('.lecturer-evaluation__attachment'), originalAttachment, readOnly);
+    const originalAttachment = published?.attachment ?? (state.hasLocalEvaluation ? source?.attachment ?? null : null);
+    const selectedAttachment = attachmentPicker(form.querySelector('.lecturer-evaluation__attachment'), originalAttachment, readOnly, database);
     const actions = form.querySelector('.evaluation-form__actions');
     if (readOnly) {
       updateTotal(published.score);
@@ -169,9 +182,10 @@
     publishButton.type = 'submit';
     publishButton.setAttribute('aria-haspopup', 'dialog');
     actions.replaceChildren(publishButton);
-    if (completed && !published) {
+    if (state.hasLocalEvaluation || (completed && !published)) {
       const status = el('p', null, 'evaluation-form__status');
       status.append(el('span', 'Chưa công bố', 'lecturer-evaluation__status'));
+      if (state.hasLocalEvaluation) status.append(el('span', 'Điểm và nhận xét cũ đã được điền lại. Hãy công bố để sinh viên xem được.'));
       actions.prepend(status);
     }
     if (revising) {
@@ -236,6 +250,20 @@
         if (!completed) body.append(el('p', 'Sau khi công bố, đề tài sẽ chuyển sang trạng thái Hoàn thành.', 'publish-evaluation__note'));
       }, async (_, snapshot) => {
         const changed = attachment !== originalAttachment;
+        if (database) {
+          if (attachment?.fileKey) {
+            try {
+              const saved = await app.services.proposalFiles.read(attachment);
+              values.attachment = new File([saved.blob], saved.fileName, { type: saved.blob.type });
+            } catch {
+              throw new Error('Không đọc được tệp đánh giá đã lưu. Hãy chọn lại tệp hoặc bỏ tệp khỏi đánh giá.');
+            }
+          } else if (changed) values.attachment = attachment ?? null;
+          await service.publish(snapshot.projectId, values, state.evaluationRevision);
+          editingPublished = false;
+          ui.dirty = false;
+          return;
+        }
         const files = app.services.proposalFiles;
         let staged;
         try {
@@ -245,7 +273,7 @@
             if (!confirmation.open) throw new Error('Đã hủy công bố đánh giá.');
           }
           if (changed) values.attachment = staged ?? null;
-          service.publish(snapshot.projectId, values, snapshot.revision);
+          await service.publish(snapshot.projectId, values, snapshot.revision);
         } catch (failure) {
           if (staged) await files.discard(staged.fileKey).catch(() => {});
           throw failure;

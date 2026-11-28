@@ -49,6 +49,10 @@
     const topic = resolve();
     const ref = topic[`${purpose}Ref`];
     if (!ref) return null;
+    if (topic.isDatabaseTopic) {
+      const blob = await app.proposalDatabase.readLecturerTopicFile(topicId, ref.key);
+      return { blob, fileName: ref.name };
+    }
     const record = await transaction('readonly',store => store.get(ref.key));
     const current = resolve();
     if (current.ownerId !== topic.ownerId || current[`${purpose}Ref`]?.key !== ref.key) throw new Error('Tệp đã thay đổi ở tab khác. Hãy tải lại trang.');

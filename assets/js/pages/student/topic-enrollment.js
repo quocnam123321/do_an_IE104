@@ -6,10 +6,12 @@
   const store = globalThis.TeacherTopicStore;
   const topicId = form.dataset.topicId;
   if (!topicId) return;
+  const databaseTopic = Boolean(service.getTopic(topicId)?.isDatabaseTopic);
+  const validate = databaseTopic ? service.validateDatabaseEnrollment : service.validateEnrollment;
   try {
     const profile = app.services.profile?.getState();
     const name = form.querySelector('#student-name');
-    if (name && profile?.code === app.data.currentStudent?.code && profile.name) name.value = profile.name;
+    if (!databaseTopic && name && profile?.code === app.data.currentStudent?.code && profile.name) name.value = profile.name;
   } catch {
     // The registration form keeps its editable initial value if the profile cannot be loaded.
   }
@@ -101,14 +103,17 @@
     const card = first?.closest('.member-card');
     if (card && first.closest('.member-fields')) openMember(card, card.querySelector('.registration-member-edit'));
     else if (first) first.focus();
-    else openMember(cards()[0], cards()[0].querySelector('.registration-member-edit'));
+    else if (databaseTopic) {
+      errorBox.tabIndex = -1;
+      errorBox.focus();
+    } else openMember(cards()[0], cards()[0].querySelector('.registration-member-edit'));
   }
 
   function refreshMembers() {
     const all = cards();
     const solo = all.length === 1;
-    if (solo) studentRole.value = 'nhom-truong';
-    studentRole.querySelector('option[value="thanh-vien"]').disabled = solo;
+    if (solo || databaseTopic) studentRole.value = 'nhom-truong';
+    studentRole.querySelector('option[value="thanh-vien"]').disabled = solo || databaseTopic;
     all.slice(1).forEach((card, index) => {
       const label = `Thành viên ${index + 2}`;
       card.querySelector('.member-heading strong').textContent = label;
@@ -147,7 +152,8 @@
       return;
     }
     const projectUrl = service.projectUrl(record);
-    resultBox.textContent = record.status === 'da-dang-ky'
+    resultBox.textContent = record.isDatabaseRegistration ? 'Đã đăng ký thành công. Đề tài đã chuyển sang Đang thực hiện.'
+      : record.status === 'da-dang-ky'
       ? 'Đã đăng ký thành công. Đề tài đã chuyển sang Đang thực hiện trong bản demo.'
       : `Đăng ký đã lưu trên trình duyệt này (${service.labels[record.status]}).`;
     if (projectUrl) {
@@ -198,7 +204,7 @@
         pendingRevision = current.revision;
       }
     } catch (failure) { errorBox.textContent = failure.message; errorBox.hidden = false; return; }
-    const checked = service.validateEnrollment(readValue(), rules);
+    const checked = validate(readValue(), rules);
     if (checked.errors.length) return showErrors(checked.errors);
     clearErrors();
     pending = checked.value;
@@ -210,7 +216,7 @@
     const lines = [`Hình thức: ${pending.members.length === 1 ? 'Cá nhân' : 'Theo nhóm'}`];
     if (pending.groupName) lines.push(`Tên nhóm: ${pending.groupName}`);
     for (const member of pending.members) {
-      lines.push(`${member.code} - ${member.name}${pending.members.length > 1 ? ` - ${member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên'}` : ''}`);
+      lines.push(`${member.code ? member.code + ' - ' : ''}${member.name}${pending.members.length > 1 ? ` - ${member.role === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên'}` : ''}`);
     }
     if (pending.message) lines.push(`Lời nhắn: ${pending.message}`);
     for (const text of lines) {
@@ -248,6 +254,7 @@
       edit.setAttribute('aria-haspopup', 'dialog');
       edit.setAttribute('aria-controls', memberDialog.id);
       edit.addEventListener('click', () => openMember(card, edit));
+      edit.hidden = databaseTopic && card === cards()[0];
       actions.append(edit);
       const remove = card.querySelector('.remove-member');
       if (remove) actions.append(remove);
@@ -266,7 +273,7 @@
     summary.querySelector('.registration-member-avatar').textContent = parts.slice(-2).map(part => part[0]).join('').toLocaleUpperCase('vi');
     summary.querySelector('strong').textContent = name.value;
     summary.querySelector('.registration-member-role-text').textContent = card.querySelector('select').value === 'nhom-truong' ? 'Nhóm trưởng' : 'Thành viên';
-    summary.querySelector('.registration-member-identity > span').textContent = ` · ${code.value}`;
+    summary.querySelector('.registration-member-identity > span').textContent = code.value ? ` · ${code.value}` : '';
     summary.querySelector('.registration-member-edit').setAttribute('aria-label', `Sửa thành viên ${name.value}`);
     const remove = summary.querySelector('.remove-member');
     if (remove) { remove.disabled = false; remove.setAttribute('aria-label', `Xóa thành viên ${name.value}`); }
@@ -277,6 +284,7 @@
     editingCard = card;
     memberOpener = opener;
     memberForm.reset();
+    memberRole.querySelector('option[value="nhom-truong"]').disabled = databaseTopic;
     memberRole.value = card ? card.querySelector('select').value : 'thanh-vien';
     memberError.hidden = true;
     memberName.removeAttribute('aria-invalid');
@@ -304,7 +312,7 @@
     if (editingCard) value.members[index] = candidate;
     else value.members.push(candidate);
     if (candidate.role === 'nhom-truong') value.members.forEach((member, other) => { if (other !== index) member.role = 'thanh-vien'; });
-    const checked = service.validateEnrollment(value, rules);
+    const checked = validate(value, rules);
     const errors = checked.errors.filter(error => error.field.startsWith(`members.${index}.`) || (!editingCard && error.field === 'members' && value.members.length > rules.maxMembers));
     if (value.members.some((member, other) => other !== index && member.code.trim().toUpperCase() === candidate.code.trim().toUpperCase()) && !errors.some(error => error.message === 'MSSV này đã có trong nhóm.')) errors.push({ field: `members.${index}.code`, message: 'MSSV này đã có trong nhóm.' });
     if (!value.members.some(member => member.role === 'nhom-truong')) errors.push({ field: `members.${index}.role`, message: 'Nhóm cần một nhóm trưởng. Hãy chọn một thành viên khác làm nhóm trưởng trước.' });
@@ -353,7 +361,7 @@
     button.closest('.member-card').remove();
     clearErrors();
     refreshMembers();
-    app.ui.studentSuccess('Xóa thành viên thành công', 'Thành viên đã được xóa khỏi biểu mẫu đăng ký.', { returnTo: add.disabled ? studentRole : add });
+    app.ui.studentSuccess('Xóa thành viên thành công', 'Thành viên đã được xóa khỏi biểu mẫu đăng ký.', { returnTo: add.disabled ? form.querySelector('.submit-registration') : add });
   });
   submit.addEventListener('click', showReview);
   form.addEventListener('submit', event => { event.preventDefault(); if (!submit.disabled) showReview(); });

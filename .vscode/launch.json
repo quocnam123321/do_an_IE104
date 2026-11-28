@@ -1,0 +1,28 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "IE104: Chạy Express (cổng 5000)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/server/src/server.js",
+      "cwd": "${workspaceFolder}/server",
+      "runtimeArgs": [
+        "--env-file-if-exists=.env"
+      ],
+      "env": {
+        "PORT": "5000"
+      },
+      "console": "internalConsole",
+      "outputCapture": "std",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "API IE104 đang lắng nghe trên .* cổng (5000)",
+        "uriFormat": "http://localhost:%s/pages/chung/dang-nhap.html"
+      }
+    }
+  ]
+}

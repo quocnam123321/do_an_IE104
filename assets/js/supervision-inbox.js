@@ -4,6 +4,7 @@
   const section = document.querySelector('[data-supervision-role]');
   const role = section.dataset.supervisionRole;
   const isTeacher = role === 'teacher';
+  const database = window.IE104?.proposalDatabase;
   const store = window.IE104Supervision;
   const entry = window.IE104SupervisionEntry;
   const attachments = window.IE104SupervisionAttachments;
@@ -204,11 +205,14 @@
     person.textContent = isTeacher
       ? `Sinh viên ${record.student.name}${studentCode ? ` · ${studentCode}` : ''}` : `Giảng viên ${record.teacher.name}`;
     if (isTeacher) person.append(' · ', textElement('span', `Người nhận: ${record.teacher.name}`));
-    if (!isTeacher && record.projectId) {
+    if (record.projectId) {
       person.append(' · ', textElement('span', 'Lời mời đồng hướng dẫn'));
-      const topic = textElement('a', 'Xem đề tài');
-      topic.href = `chi-tiet-de-tai-sinh-vien.html?project=${encodeURIComponent(record.projectId)}#tong-quan`;
-      person.append(' · ', topic);
+      if (!isTeacher || (database && record.status === 'accepted')) {
+        const topic = textElement('a', 'Xem đề tài');
+        const page = isTeacher ? 'chi-tiet-de-tai-dang-huong-dan-giang-vien.html' : 'chi-tiet-de-tai-sinh-vien.html';
+        topic.href = `${page}?project=${encodeURIComponent(record.projectId)}#tong-quan`;
+        person.append(' · ', topic);
+      }
     }
     messages.replaceChildren(...record.messages.map((message) => {
       const item = document.createElement('li');
@@ -229,7 +233,7 @@
     }));
 
     replyForm.hidden = !canReply;
-    if (decisionForm) decisionForm.hidden = !open;
+    if (decisionForm) decisionForm.hidden = !open || record.projectStatus === 'hoan-thanh';
     result.hidden = open;
     if (!open) {
       setTime(result.querySelector('time'), record.decision.at);
@@ -254,7 +258,8 @@
   function render() {
     inboxError.textContent = '';
     empty.textContent = '';
-    if (isTeacher) inboxHint.textContent = teacherSession?.demo
+    if (database) inboxHint.textContent = '';
+    else if (isTeacher) inboxHint.textContent = teacherSession?.demo
       ? 'Bản demo có lời mời mẫu. Phản hồi và quyết định được lưu trên trình duyệt này.'
       : 'Lời mời được lưu trong trình duyệt này.';
     if (isTeacher && !teacherSession) {
@@ -375,7 +380,7 @@
         throw new Error('Phiên đăng nhập đã thay đổi. Hãy tải lại trang để tiếp tục.');
       }
       return store.reply(invitation.id, actor, value, file);
-    }, replyForm, 'Đã lưu phản hồi trong bản demo.');
+    }, replyForm, database ? 'Đã gửi phản hồi.' : 'Đã lưu phản hồi trong bản demo.');
   });
   decisionForm?.addEventListener('submit', (event) => {
     event.preventDefault();
@@ -385,7 +390,7 @@
     save(
       () => store.decide(invitation.id, invitation.teacher.id, status),
       decisionForm,
-      'Đã lưu quyết định trong bản demo.'
+      database ? 'Đã lưu quyết định.' : 'Đã lưu quyết định trong bản demo.'
     );
   });
   list.addEventListener('click', (event) => {

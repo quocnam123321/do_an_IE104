@@ -7,15 +7,20 @@
     const existingProject = app.data.myTopics.find(item => item.id === projectId) || app.data.lecturerProjects?.find(item => item.id === projectId);
     const existingTeam = app.data.projectTeams.find(item => item.projectId === projectId);
     const approved = !preview && (!existingProject || !existingTeam) ? app.services.approvedProjects?.get(projectId) : null;
-    const project = existingProject || approved?.project;
-    const team = existingTeam || approved?.team;
+    const demo = preview ? null : app.proposalDatabase?.demoTeam?.(projectId);
+    let project = existingProject || approved?.project;
+    const team = demo ? { ...demo.team, supervisorIds: existingTeam?.supervisorIds ?? demo.team.supervisorIds }
+      : existingTeam || approved?.team;
     if (!project || !team) throw new Error('Không tìm thấy thông tin nhóm của đề tài.');
-    return { project: preview ? project : app.storage.withPublishedStatus(project), team };
+    if (demo?.project.status === 'hoan-thanh') project = { ...project, status: 'hoan-thanh', statusLabel: 'Hoàn thành' };
+    return { project: preview ? project : app.storage.withPublishedStatus(project), team, demoTeam: Boolean(demo) };
   }
 
   function stateFrom(team, records) {
     const saved = records.find(item => item.projectId === team.projectId);
-    const state = clone(saved || { projectId: team.projectId, revision: 0, members: team.members, invitations: team.invitations });
+    const state = clone(saved || { projectId: team.projectId, revision: team.revision ?? 0, members: team.members,
+      invitations: team.invitations, viewerMemberKey: team.viewerMemberKey, primaryTeacherKey: team.primaryTeacherKey,
+      primaryTeacherName: team.primaryTeacherName });
     if (state.members.length === 1) state.members[0].role = 'nhom-truong';
     return state;
   }
@@ -25,9 +30,10 @@
   }
 
   function getState(projectId, { preview = false } = {}) {
-    const { project, team } = getDefinition(projectId, preview);
-    const state = stateFrom(team, preview ? [] : app.storage.readProjectTeams());
-    if (!preview && globalThis.IE104Supervision) {
+    const { project, team, demoTeam } = getDefinition(projectId, preview);
+    const savedInDatabase = demoTeam || project.isDatabaseProject || project.isDatabaseProposal;
+    const state = stateFrom(team, preview || savedInDatabase ? [] : app.storage.readProjectTeams());
+    if (!preview && !savedInDatabase && globalThis.IE104Supervision) {
       const threads = globalThis.IE104Supervision.getAll().filter(record => record.projectId === projectId);
       state.invitations.push(...threads.map(record => ({
         id: record.id, lecturerId: record.teacher.id, lecturerName: record.teacher.name,
@@ -35,23 +41,30 @@
         decidedAt: record.decision?.at, decisionNote: record.decision?.note,
       })));
     }
-    return { ...state, project: clone(project), maxMembers: team.maxMembers, supervisorIds: supervisorIds(team, state), ...(preview ? { preview } : {}) };
+    return { ...state, project: clone(project), maxMembers: team.maxMembers, supervisorIds: supervisorIds(team, state),
+      databaseTeam: Boolean(savedInDatabase), demoTeam, ...(preview ? { preview } : {}) };
   }
 
   function getPermission(state) {
     if (state.preview) return { allowed: false, reason: 'Đang xem thông tin nhóm mẫu. Mở website qua localhost để xem dữ liệu đã lưu và thay đổi thành viên hoặc lời mời.' };
     if (state.project.status !== 'dang-thuc-hien') return { allowed: false, reason: 'Đề tài hiện không ở trạng thái Đang thực hiện nên chỉ được xem thông tin nhóm và lời mời.' };
-    if (!state.members.some(member => member.code === app.data.currentStudent?.code && member.role === 'nhom-truong')) return { allowed: false, reason: 'Chỉ nhóm trưởng được thêm thành viên, mời hoặc hủy lời mời giảng viên.' };
+    const database = state.databaseTeam;
+    if (app.proposalDatabase && !database) return { allowed: false, reason: 'Mở một đề tài đã đăng ký hoặc đề xuất đã duyệt để cập nhật nhóm trên máy chủ.' };
+    const leader = state.members.find(member => member.role === 'nhom-truong');
+    const canManage = database
+      ? app.proposalDatabase?.account.role === 'student' && Boolean(state.viewerMemberKey) && leader?.assignmentKey === state.viewerMemberKey
+      : Boolean(leader && leader.code === app.data.currentStudent?.code);
+    if (!canManage) return { allowed: false, reason: 'Chỉ nhóm trưởng được thay đổi thành viên, mời hoặc hủy lời mời giảng viên.' };
     return { allowed: true, reason: '' };
   }
 
-  function validateMember(input, state) {
+  function validateMember(input, state, memberKey) {
     const value = { code: String(input.code || '').trim().toUpperCase(), name: String(input.name || '').trim(), role: String(input.role || '') };
     const errors = [];
     if (!value.name || value.name.length > 100) errors.push({ field: 'name', message: 'Nhập họ tên từ 1 đến 100 ký tự.' });
     if (!value.code || value.code.length > 20 || /\s/.test(value.code)) errors.push({ field: 'code', message: 'Nhập MSSV tối đa 20 ký tự, không có khoảng trắng.' });
-    if (state.members.some(member => member.code.toUpperCase() === value.code)) errors.push({ field: 'code', message: 'MSSV này đã có trong nhóm.' });
-    if (state.members.length >= state.maxMembers) errors.push({ field: 'members', message: `Nhóm đã đủ ${state.maxMembers} thành viên.` });
+    if (state.members.some(member => (!memberKey || member.assignmentKey !== memberKey) && member.code.toUpperCase() === value.code)) errors.push({ field: 'code', message: 'MSSV này đã có trong nhóm.' });
+    if (!memberKey && state.members.length >= state.maxMembers) errors.push({ field: 'members', message: `Nhóm đã đủ ${state.maxMembers} thành viên.` });
     if (value.role !== 'thanh-vien') errors.push({ field: 'role', message: 'Nhóm đã có nhóm trưởng. Thành viên mới phải có vai trò Thành viên.' });
     return { errors, value };
   }
@@ -59,20 +72,24 @@
   function canInvite(lecturer, state) {
     const pending = state.invitations.filter(invitation => ['pending', 'accepted'].includes(invitation.status));
     const excluded = [...state.supervisorIds, ...pending.map(invitation => invitation.lecturerId)];
-    if (excluded.includes(lecturer.id)) return false;
+    if (excluded.includes(lecturer.id) || (state.primaryTeacherKey && [lecturer.id, lecturer.directoryId].includes(state.primaryTeacherKey))) return false;
+    const primaryName = state.primaryTeacherName?.toLocaleLowerCase('vi');
+    if (primaryName && (' ' + lecturer.name.toLocaleLowerCase('vi')).endsWith(' ' + primaryName)) return false;
     return !lecturer.email || !app.data.projectLecturers.some(existing =>
       excluded.includes(existing.id) && existing.email?.toLowerCase() === lecturer.email.toLowerCase());
   }
 
   async function getLecturers(projectId) {
-    const lecturers = await globalThis.IE104SupervisionEntry.getTeachers();
     const state = getState(projectId);
+    const lecturers = state.databaseTeam
+      ? (await app.proposalDatabase.listSupervisors()).filter(lecturer => lecturer.canReceive)
+      : await globalThis.IE104SupervisionEntry.getTeachers();
     return lecturers.filter(lecturer => canInvite(lecturer, state));
   }
 
   function mutate(projectId, revision, change) {
     const { project, team } = getDefinition(projectId);
-    const records = app.storage.readProjectTeams();
+    const records = project.isDatabaseProject || project.isDatabaseProposal ? [] : app.storage.readProjectTeams();
     const state = stateFrom(team, records);
     checkChange({ ...state, project }, revision);
     change(state, team);
@@ -85,6 +102,7 @@
   }
 
   function addMember(projectId, input, revision) {
+    if (getState(projectId).databaseTeam) return app.proposalDatabase.saveProjectMember(projectId, null, input, revision);
     return mutate(projectId, revision, (state, team) => {
       const checked = validateMember(input, { ...state, maxMembers: team.maxMembers });
       if (checked.errors.length) throw new Error(checked.errors[0].message);
@@ -93,6 +111,11 @@
   }
 
   async function inviteSupervisor(projectId, lecturerId, message, revision) {
+    const state = getState(projectId);
+    if (state.databaseTeam) {
+      return app.proposalDatabase.sendSupervision({ projectId, revision, teacher: { id: lecturerId },
+        message: String(message || '').trim() || 'Nhóm em trân trọng mời thầy/cô đồng hướng dẫn đề tài này.' });
+    }
     const entry = globalThis.IE104SupervisionEntry;
     const store = globalThis.IE104Supervision;
     const [lecturers, student] = await Promise.all([entry.getTeachers(), store ? entry.getStudent() : null]);
@@ -110,7 +133,6 @@
     }
     if (!student) throw new Error('Đăng nhập bằng tài khoản sinh viên để tiếp tục gửi lời mời hướng dẫn.');
 
-    const state = getState(projectId);
     checkChange(state, revision);
     if (!canInvite(lecturer, state)) throw new Error('Giảng viên đã tham gia đề tài hoặc đã có lời mời đang chờ.');
     return store.create({
@@ -128,6 +150,7 @@
   function cancelInvitation(projectId, invitationId, revision) {
     const state = getState(projectId);
     checkChange(state, revision);
+    if (state.databaseTeam) return app.proposalDatabase.cancelSupervision(invitationId, projectId, revision);
     const invitation = state.invitations.find(item => item.id === invitationId);
     if (invitation?.thread) {
       return globalThis.IE104SupervisionEntry.getStudent().then(student =>
@@ -176,6 +199,7 @@
     const recipient = await app.services.invitationIdentity.resolve();
     if (!recipient) throw new Error('Đăng nhập bằng tài khoản giảng viên để phản hồi lời mời.');
     const { project, team } = getDefinition(projectId);
+    if (project.isDatabaseProject || project.isDatabaseProposal) throw new Error('Lời mời đồng hướng dẫn chưa có trên máy chủ.');
     const records = app.storage.readProjectTeams();
     const state = stateFrom(team, records);
     if (state.revision !== revision) throw new Error('Lời mời đã thay đổi. Đóng hộp thoại và mở lại để xem thông tin mới.');
@@ -196,5 +220,8 @@
     return getState(projectId);
   }
 
-  app.services.projectTeams = { listInvitations, invitationDetail, respondInvitation, getState, getPermission, validateMember, getLecturers, addMember, inviteSupervisor, cancelInvitation };
+  app.services.projectTeams = { listInvitations, invitationDetail, respondInvitation, getState, getPermission, validateMember, getLecturers, addMember, inviteSupervisor, cancelInvitation,
+    updateMember: (id, key, member, revision) => app.proposalDatabase.saveProjectMember(id, key, member, revision),
+    removeMember: (id, key, revision) => app.proposalDatabase.removeProjectMember(id, key, revision),
+  };
 })();

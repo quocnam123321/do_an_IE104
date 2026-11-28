@@ -6,7 +6,6 @@
 #overview-section :is(.project-team__add, .project-supervisors__invite) {
   min-height: var(--control-min-height);
   max-width: 100%;
-  margin-inline-start: auto;
   padding: var(--space-2) var(--space-3);
   border: 1px solid var(--button-outline-primary-border);
   border-radius: var(--control-radius);
@@ -14,6 +13,10 @@
   color: var(--button-outline-primary-fg);
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
+}
+
+#overview-section :is(.project-team__header > .project-team__add, .project-supervisors__header > .project-supervisors__invite) {
+  margin-inline-start: auto;
 }
 
 #overview-section :is(.project-team__add, .project-supervisors__invite):enabled:hover {
@@ -68,11 +71,20 @@
   font-size: var(--font-size-secondary);
 }
 
-.pending-invitation__actions {
+.pending-invitation__actions,
+.team-member__actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-2);
+}
+
+.team-member__actions {
+  margin-top: var(--space-2);
+}
+
+.project-team .team-member:has(.team-member__actions) {
+  align-items: start;
 }
 
 .pending-invitation__thread {

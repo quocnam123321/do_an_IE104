@@ -16,14 +16,18 @@
   const popovers = document.createElement('div');
   board.after(popovers);
 
-  function taskCard(task, people, date, projectId) {
-    tasksById.set(task.id, { task, people, projectId });
+  function taskCard(task, people, date, projectId, latestUpdate) {
+    tasksById.set(task.id, { task, people, projectId, latestUpdate });
     return renderCard(task, people, date, dialog.id);
   }
 
   function renderWorkspaceTasks(state, date) {
-    const { tasks, team, projectId } = state;
-    const members = new Map(team.members.map(member => [member.code, member]));
+    const { tasks, team, projectId, history } = state;
+    const latestUpdates = new Map();
+    if (progress.usesDatabase(projectId)) {
+      for (const update of history) if (!latestUpdates.has(update.taskId)) latestUpdates.set(update.taskId, update);
+    }
+    const members = new Map(team.members.map(member => [progress.memberKey(member), member]));
     for (const task of tasks) {
       for (const member of task.assignees || []) {
         if (member.name && member.code && !members.has(member.code)) members.set(member.code, member);
@@ -37,7 +41,7 @@
       list.replaceChildren(...entries.map(task => {
         const codes = task.assignees?.map(member => member.code) ?? task.assigneeCodes ?? [task.assigneeCode];
         const assignees = [...new Set(codes)].map(code => people.get(code)).filter(Boolean);
-        return taskCard(task, assignees, date, projectId);
+        return taskCard(task, assignees, date, projectId, latestUpdates.get(task.id));
       }));
       if (!entries.length) {
         list.append(Object.assign(document.createElement('li'), { className: 'task-column__empty', textContent: 'Chưa có công việc.' }));
@@ -62,8 +66,8 @@
     if (!trigger || dialog.open) return;
     const entry = tasksById.get(trigger.closest('[data-task-id]').dataset.taskId);
     if (!entry) return;
-    const { task, people, projectId } = entry;
-    fillDetails(dialog, task, people.map(({ member }) => member.name).join(', ') || task.assigneeCode);
+    const { task, people, projectId, latestUpdate } = entry;
+    fillDetails(dialog, task, people.map(({ member }) => member.name).join(', ') || task.assigneeCode, latestUpdate);
     dialog.dataset.taskId = task.id;
     showComments({ projectId, taskId: task.id });
     dialog.showModal();

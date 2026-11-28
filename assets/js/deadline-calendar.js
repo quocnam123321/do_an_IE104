@@ -300,11 +300,17 @@
       topics.get(event.topicId)?.hasAttribute('data-active-deadline-topic'));
     if (candidates.length <= submissionLimit) return [...reports, ...candidates];
 
+    const shared = candidates.filter(event => event.isDatabaseRequirement);
+    if (shared.length >= submissionLimit) return [...reports, ...shared];
     const byStatus = new Map();
     for (const event of candidates) {
       if (!byStatus.has(event.status)) byStatus.set(event.status, event);
     }
-    const selected = new Set([...byStatus.values()].slice(0, submissionLimit));
+    const selected = new Set(shared);
+    for (const event of byStatus.values()) {
+      if (selected.size === submissionLimit) break;
+      selected.add(event);
+    }
     const titles = new Set([...selected].map(event => event.name));
     for (const event of candidates) {
       if (selected.size === submissionLimit) break;
@@ -765,11 +771,16 @@
   topic?.addEventListener('change', renderCalendar);
   renderCalendar();
   if (deadlineService && topic && globalThis.IE104.services.studentSubmissions) {
-    const { storage, services } = globalThis.IE104;
+    const { storage, services, proposalDatabase } = globalThis.IE104;
     const dataKeys = [storage.teachingKey, storage.teamKey, storage.proposalKey, storage.registrationKey, null];
+    async function refreshOnFocus() {
+      await proposalDatabase?.refresh?.();
+      await refreshActiveDeadlines();
+    }
     services.studentSubmissions.onUploadsChanged(refreshActiveDeadlines);
     window.addEventListener('pageshow', refreshActiveDeadlines);
-    window.addEventListener('focus', refreshActiveDeadlines);
+    window.addEventListener('focus', refreshOnFocus);
+    window.addEventListener('ie104:proposals-updated', refreshActiveDeadlines);
     window.addEventListener('storage', event => {
       if (dataKeys.includes(event.key)) void refreshActiveDeadlines();
     });

@@ -90,11 +90,12 @@
     return 'bai-nop-' + requirementId.replace(/[^\w-]/g, '-') + '.zip';
   }
 
-  function bindUploadDownload(button, error, files, fileName) {
+  function bindUploadDownload(button, error, record, fileName, fileIndex) {
     button.addEventListener('click', async () => {
       button.disabled = true;
       error.hidden = true;
       try {
+        const files = await service.readFiles(document.body.dataset.projectId, record, fileIndex);
         const blob = files.length === 1 ? files[0] : await app.ui.createSubmissionZip(files);
         app.ui.downloadFile({ blob, fileName });
       } catch (failure) {
@@ -126,18 +127,17 @@
     } else if (record?.files?.length) {
       const { files, requirementId } = record;
       const names = files.length > 1 ? app.ui.submissionZipNames(files) : [files[0].name];
-      files.forEach((file, index) => {
-        const name = names[index];
+      names.forEach((name, index) => {
         const row = downloadRow(name);
         const link = row.querySelector('a');
         const button = downloadButton(link);
-        bindUploadDownload(button, error, [file], name);
+        bindUploadDownload(button, error, record, name, index);
         link.replaceWith(button);
         list.append(row);
       });
       if (files.length > 1) {
         downloadAll = downloadButton(fileTemplate.content.querySelector('a').cloneNode(true));
-        bindUploadDownload(downloadAll, error, files, archiveName(requirementId));
+        bindUploadDownload(downloadAll, error, record, archiveName(requirementId));
       }
     } else if (fileName) {
       const row = downloadRow(fileName);
@@ -194,7 +194,8 @@
           ? sample.download.href.replace(/\.zip$/, '/') + encodeURIComponent(name)
           : new URL('../../assets/files/bai-nop-minh-hoa.pdf', location.href).href,
       }));
-      sharedUpload.open(item, { expectedSavedAt: item.localUpload?.submittedAt, sampleFiles, trigger: button });
+      const expectedSavedAt = item.latestSubmission?.isDatabaseSubmission ? item.latestSubmission.id : item.localUpload?.submittedAt;
+      sharedUpload.open(item, { expectedSavedAt, sampleFiles, trigger: button });
     });
     return button;
   }
@@ -321,7 +322,7 @@
     error.setAttribute('role', 'alert');
     error.hidden = true;
     if (!sample && files?.length) {
-      bindUploadDownload(download, error, files, files.length === 1 ? names[0] : archiveName(record.requirementId));
+      bindUploadDownload(download, error, record, files.length === 1 ? names[0] : archiveName(record.requirementId));
     } else if (!sample) {
       download.disabled = true;
       download.title = 'Chưa có nội dung tệp của lần nộp này.';
@@ -444,7 +445,7 @@
 
   function uploadSaved(record, editing) {
     readVersion += 1;
-    uploads.set(record.requirementId, record);
+    if (!record.isDatabaseSubmission) uploads.set(record.requirementId, record);
     lastSavedId = record.requirementId;
     render();
     successDialog.querySelector('h2').textContent = editing ? 'Đã lưu thay đổi' : 'Nộp bài thành công';
@@ -617,9 +618,10 @@
   function renderLiveBoards(state, deadlines, requirementsWithUploads, allSubmissions) {
     const notice = element('p', state.submissionsLocked
       ? 'Giảng viên đã khóa nhận bài cho đề tài này.'
-      : 'Yêu cầu được cập nhật theo dữ liệu giảng viên lưu trên trình duyệt.', 'student-submission-notice');
+      : state.isDatabaseProject ? '' : 'Yêu cầu được cập nhật theo dữ liệu giảng viên lưu trên trình duyệt.', 'student-submission-notice');
     notice.hidden = !state.submissionsLocked && Boolean(app.data.studentUITCatalog?.myIds
       .some(id => app.data.studentUITCatalog.projectId(id) === document.body.dataset.projectId));
+    if (state.isDatabaseProject && !state.submissionsLocked) notice.hidden = true;
     const requirements = board('Yêu cầu bài nộp', 'requirements', [
       { label: 'Chưa nộp', variant: 'neutral', items: requirementsWithUploads.filter(item => !item.submitted) },
       { label: 'Đã nộp', variant: 'info', items: requirementsWithUploads.filter(item => item.submitted) },
@@ -641,6 +643,9 @@
 
   if (!isLivePage) prepareSampleRequirements();
   if (!isLivePage && location.protocol === 'file:') return;
+  window.addEventListener('ie104:proposals-updated', () => {
+    if (service.usesDatabase(document.body.dataset.projectId)) render();
+  });
   const sharedSeed = isSharedSample ? sampleData.forProject(sampleData.projectId) : null;
   const sharedRequirements = new Map(sharedSeed?.requirements.map(item => [item.id, item]));
   const sharedSubmissions = new Map(sharedSeed?.submissions.map(item => [item.id, item]));
