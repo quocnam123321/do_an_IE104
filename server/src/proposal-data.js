@@ -37,10 +37,17 @@ function browserRecord(row) {
   const { outline } = row.content;
   const isSharedDemo = Boolean(row.demo_directory_id);
   const student = proposalStudent({ id: isSharedDemo ? undefined : row.student_account_id, username: row.student_name });
+  // Dữ liệu mẫu có người gửi riêng được gắn khi seed từ SQL.
+  const sample = systemDemoEnabled && isSharedDemo ? row.content.sampleStudent : null;
+  if (typeof sample?.name === "string" && typeof sample.code === "string") {
+    student.name = sample.name;
+    student.code = sample.code;
+  }
   return {
     ...row.content,
     outline: systemDemoEnabled && Array.isArray(outline?.members)
-      ? { ...outline, members: outline.members.map(member => member.role === "nhom-truong" ? { ...member, name: student.name } : member) }
+      ? { ...outline, members: outline.members.map(member => member.role === "nhom-truong"
+        ? { ...member, name: student.name, code: student.code || member.code } : member) }
       : outline,
     id,
     topicId: "DT-" + id,
@@ -198,7 +205,8 @@ async function checkedProposal(input, account, connection, previous = null) {
     topicType: ({ "do-an-mon-hoc": "course", "do-an-tot-nghiep": "graduation", "khoa-luan": "thesis" })[type],
   }, { keep: roundId === previous?.roundId });
   const titleKey = fingerprint(title.normalize("NFC").toLocaleLowerCase("vi").replace(/\s+/g, " "));
-  const content = JSON.stringify({ description, objectives, outcomes, outline, supervisorProfile });
+  const sampleStudent = usesDemoDirectory ? previous?.sampleStudent : undefined;
+  const content = JSON.stringify({ description, objectives, outcomes, outline, supervisorProfile, sampleStudent });
   if (content.includes("\\u0000")) throw new AuthError(400, "Nội dung đề xuất có ký tự không hợp lệ.");
   return [lecturer.id, type, courseId, semester, academicYear, title, titleKey, content, demoDirectoryId, roundId || null];
 }
