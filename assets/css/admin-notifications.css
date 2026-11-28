@@ -210,21 +210,62 @@
 }
 
 .admin-notice-choice > div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-1) var(--space-4);
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
 }
 
 .admin-notice-choice label {
-  display: inline-flex;
-  align-items: center;
-  min-block-size: var(--control-min-height);
-  gap: var(--space-2);
+  position: relative;
+  display: grid;
   cursor: pointer;
 }
 
-.admin-notice-choice input {
-  accent-color: var(--color-primary);
+.admin-notice-choice label > span {
+  display: grid;
+  place-items: center;
+  min-block-size: var(--control-min-height);
+  padding: var(--space-2);
+  border: 1px solid var(--color-control-border);
+  background: var(--color-surface);
+  color: var(--color-heading);
+  font-size: var(--font-size-secondary);
+  font-weight: var(--font-weight-semibold);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.admin-notice-choice label:first-child > span {
+  border-start-start-radius: var(--radius-control);
+  border-end-start-radius: var(--radius-control);
+}
+
+.admin-notice-choice label:last-child > span {
+  border-start-end-radius: var(--radius-control);
+  border-end-end-radius: var(--radius-control);
+}
+
+.admin-notice-choice label + label > span {
+  margin-inline-start: -1px;
+}
+
+.admin-notice-choice label:hover > span {
+  background: var(--color-neutral-bg);
+}
+
+.admin-notice-choice input:checked + span {
+  position: relative;
+  z-index: 1;
+  border-color: var(--color-primary);
+  background: var(--color-info-bg);
+  color: var(--color-info-fg);
+}
+
+.admin-notice-choice input:focus-visible + span {
+  position: relative;
+  z-index: 2;
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
 }
 
 .admin-notice-picker-control input {
