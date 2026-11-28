@@ -26,6 +26,8 @@
   const submit = byId("admin-notice-save");
   const previewDraft = byId("admin-notice-preview");
   const editorError = byId("admin-notice-editor-error");
+  const chooseFile = byId("admin-notice-choose-file");
+  const fileName = byId("admin-notice-file-name");
   const attachment = byId("admin-notice-existing-file");
   const picker = byId("admin-notice-picker");
   const pickerToggle = picker.querySelector(".admin-notice-picker-toggle");
@@ -186,7 +188,9 @@
   }
 
   function renderAttachment() {
-    attachment.hidden = !retainedFile || Boolean(fields.attachment.files.length);
+    const file = fields.attachment.files[0];
+    fileName.textContent = file?.name ?? "";
+    attachment.hidden = !retainedFile || Boolean(file);
     attachment.innerHTML = retainedFile ?
       `<button type="button">${localText(retainedFile.name)} <span aria-hidden="true">×</span><span class="visually-hidden">Bỏ tệp đính kèm</span></button>` : "";
   }
@@ -246,7 +250,9 @@
   }
 
   function showDraftError(result) {
-    const control = result.field === "body" && !system ? composer.element : fields[result.field];
+    let control = fields[result.field];
+    if (result.field === "body" && !system) control = composer.element;
+    if (result.field === "attachment") control = chooseFile;
     editorMessage(result.error, control);
   }
 
@@ -350,11 +356,12 @@
       renderAttachment();
     }
   });
+  chooseFile.addEventListener("click", () => fields.attachment.click());
   attachment.addEventListener("click", (event) => {
     if (!event.target.closest("button")) return;
     retainedFile = undefined;
     renderAttachment();
-    fields.attachment.focus();
+    chooseFile.focus();
   });
   form.addEventListener("submit", (event) => {
     event.preventDefault();

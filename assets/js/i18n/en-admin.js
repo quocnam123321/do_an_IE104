@@ -31,6 +31,7 @@ Object.assign(globalThis.ie104English ??= {}, {
   "Xem trước": "Preview",
   "Xem trước thông báo": "Preview announcement",
   "Chèn ảnh": "Insert image",
+  "Chọn tệp": "Choose file",
   "In đậm": "Bold",
   "Danh sách dấu đầu dòng": "Bulleted list",
   "Quay lại chỉnh sửa": "Back to editing",

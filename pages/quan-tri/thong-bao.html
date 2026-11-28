@@ -215,9 +215,16 @@
               </div>
             </div>
           </div>
-          <div class="admin-field">
-            <label for="admin-notice-attachment">Tệp đính kèm (tùy chọn)</label>
-            <input type="file" id="admin-notice-attachment" name="attachment" aria-describedby="admin-notice-file-hint">
+          <div class="admin-field" role="group" aria-labelledby="admin-notice-attachment-label">
+            <span class="admin-notice-label" id="admin-notice-attachment-label">Tệp đính kèm (tùy chọn)</span>
+            <div class="admin-notice-attachment-picker">
+              <button type="button" class="admin-button" id="admin-notice-choose-file" aria-describedby="admin-notice-file-hint admin-notice-file-name">
+                <svg class="admin-action-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 16V3m-6 6 6-6 6 6M5 16v5h14v-5"/></svg>
+                <span>Chọn tệp</span>
+              </button>
+              <input type="file" id="admin-notice-attachment" name="attachment" hidden>
+              <p id="admin-notice-file-name" role="status" translate="no"></p>
+            </div>
             <p class="admin-demo" id="admin-notice-file-hint">Dung lượng tối đa 10 MB.</p>
             <div id="admin-notice-existing-file" class="admin-notice-chips" hidden></div>
           </div>

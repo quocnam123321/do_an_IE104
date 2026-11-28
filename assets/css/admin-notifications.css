@@ -279,6 +279,20 @@
   font-weight: var(--font-weight-semibold);
 }
 
+.admin-notice-attachment-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.admin-notice-attachment-picker p {
+  min-inline-size: 0;
+  color: var(--color-muted-foreground);
+  font-size: var(--font-size-secondary);
+  overflow-wrap: anywhere;
+}
+
 .admin-notice-composer {
   min-inline-size: 0;
   border: 1px solid var(--color-control-border);
