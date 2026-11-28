@@ -1057,14 +1057,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.admin-academic-form .proposal-date-control--with-time:has(> input:first-child:placeholder-shown):has(> .proposal-date-time:placeholder-shown):not(:focus-within) > .proposal-date-separator {
-  visibility: hidden;
-}
-
-.admin-academic-form .proposal-date-control--with-time:has(> input:first-child:placeholder-shown) > .proposal-date-time:not(:focus)::placeholder {
-  color: transparent;
-}
-
 .admin-academic-form .proposal-calendar {
   border-color: var(--color-border);
 }
