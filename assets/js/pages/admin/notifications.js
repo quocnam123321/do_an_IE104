@@ -5,6 +5,7 @@
   const { renderArticle, articleImage } = globalThis.IE104NoticeArticle;
   const byId = (id) => document.getElementById(id);
   const system = params.get("tab") === "he-thong";
+  const showSavedDrafts = !system && params.get("status") === "draft";
   const events = {
     registration: "Đăng ký đề tài", decision: "Kết quả xét duyệt",
     reminder: "Nhắc hạn nộp", submission: "Bài nộp mới", manual: "Gửi thủ công",
@@ -153,7 +154,7 @@
     create.disabled = Boolean(snapshot.unavailable);
     message(feedback, snapshot.unavailable ?
       "Không thể đọc thông báo đã lưu. Đang hiển thị dữ liệu mẫu." : notice);
-    if (!system) renderDrafts();
+    if (showSavedDrafts) renderDrafts();
     render();
   }
 
@@ -484,7 +485,7 @@
   fillSelect(state, system ? "Tất cả đối tượng" : "Tất cả trạng thái",
     system ? { student: roles.student, lecturer: roles.lecturer } : states);
   if (!system && Object.hasOwn(states, params.get("status"))) state.value = params.get("status");
-  if (!system && params.get("status") === "draft") draftsPanel.open = true;
+  if (showSavedDrafts) draftsPanel.open = true;
   [search, type, state].forEach((control) => control.addEventListener("input", render));
   window.addEventListener("pageshow", (event) => {
     if (event.persisted) refresh();
