@@ -1,8 +1,7 @@
 (() => {
   const { notices } = globalThis.IE104AdminSampleData;
   const accounts = globalThis.IE104AdminAccounts;
-  const databaseName = "ie104.admin.notifications-demo";
-  const storeName = "notifications";
+  const { openDatabase, storeName, vietnamDateTime, notifyPublicationChange } = globalThis.IE104AcademicNotices;
   const categories = ["plan", "submissions", "defense"];
   const audiences = ["student", "lecturer", "both"];
   const fileLimit = 10 * 1024 * 1024;
@@ -16,24 +15,11 @@
     { id: "HT-101", kind: "system", name: "Sinh viên đã nộp báo cáo tiến độ", type: "submission", audience: "lecturer", date: "2026-11-26T16:20", recipients: [{ name: "Nguyễn Minh Khang", type: "lecturer" }] },
   ];
 
-  function openDatabase() {
-    return new Promise((resolve, reject) => {
-      const request = indexedDB.open(databaseName, 1);
-      request.onupgradeneeded = () => request.result.createObjectStore(storeName, { keyPath: "id" });
-      request.onerror = () => reject(new Error(failure));
-      request.onsuccess = () => {
-        const database = request.result;
-        database.onversionchange = () => database.close();
-        resolve(database);
-      };
-    });
-  }
-
   // Đọc và cập nhật cùng giao dịch để hai cửa sổ không ghi đè bản mới.
   async function transaction(mode, update) {
     const database = await openDatabase();
     try {
-      return await new Promise((resolve, reject) => {
+      const result = await new Promise((resolve, reject) => {
         const tx = database.transaction(storeName, mode);
         const records = tx.objectStore(storeName);
         const request = records.getAll();
@@ -55,14 +41,16 @@
           }
         };
       });
+      if (result.record?.kind === "academic" && result.record.status !== "draft") notifyPublicationChange();
+      return result;
     } finally {
       database.close();
     }
   }
 
-  function currentDateTime() {
-    const utcPlusSeven = 7 * 60 * 60 * 1000;
-    return new Date(Date.now() + utcPlusSeven).toISOString().slice(0, 16);
+  function currentDateTime(now = Date.now()) {
+    const { date, time } = vietnamDateTime(now);
+    return `${date}T${time}`;
   }
 
   function nextId(entries, prefix) {
@@ -113,11 +101,13 @@
       if (original && (!current || current.status !== "draft" || current.revision !== original.revision)) {
         return { error: "Thông báo đã thay đổi. Hãy mở lại và thử lại." };
       }
+      const now = new Date();
       return { record: {
         id: current?.id ?? nextId(entries, "TB-"),
         kind: "academic", name: fields.title.trim(), body: fields.body.trim(), type: fields.category, status,
         html: fields.html, images: fields.images,
-        attachment: fields.attachment, date: currentDateTime(), revision: (current?.revision ?? 0) + 1,
+        attachment: fields.attachment, date: currentDateTime(now), revision: (current?.revision ?? 0) + 1,
+        ...(status === "published" ? { publishedAt: now.toISOString() } : {}),
       } };
     });
   }
@@ -129,7 +119,11 @@
       if (current?.kind !== "academic" || current.status !== expected || current.revision !== original.revision) {
         return { error: "Thông báo đã thay đổi. Hãy mở lại và thử lại." };
       }
-      return { record: { ...current, status: next, date: currentDateTime(), revision: current.revision + 1 } };
+      const now = new Date();
+      return { record: {
+        ...current, status: next, date: currentDateTime(now), revision: current.revision + 1,
+        ...(next === "published" ? { publishedAt: now.toISOString() } : {}),
+      } };
     });
   }
 

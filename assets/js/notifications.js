@@ -1,7 +1,9 @@
 (() => {
   const page = document.querySelector('.notifications-page');
-  const notifications = window.IE104_NOTIFICATIONS;
-  if (!page || !Array.isArray(notifications)) return;
+  const archive = window.IE104_NOTIFICATIONS;
+  if (!page || !Array.isArray(archive)) return;
+  const { readPublished, sortByPublication, onPublicationChange } = globalThis.IE104AcademicNotices;
+  let notifications = archive;
 
   const title = page.querySelector('#notification-list-title');
   const tools = page.querySelector('.notification-tools');
@@ -73,9 +75,15 @@
     link.href = `chi-tiet-thong-bao.html?id=${notification.id}${filtered ? '#tu-bo-loc' : ''}`;
     heading.id = headingId;
     heading.textContent = notification.title;
-    date.dateTime = notification.date;
+    date.dateTime = notification.publishedAt ?? notification.date;
     date.textContent = notification.date.split('-').reverse().join('-');
-    item.querySelector('.notification-card__summary').textContent = notification.summary;
+    const summary = item.querySelector('.notification-card__summary');
+    summary.textContent = notification.summary;
+    summary.hidden = !notification.summary;
+    if (notification.publishedAt) {
+      heading.translate = false;
+      summary.translate = false;
+    }
     return item;
   }
 
@@ -172,5 +180,16 @@
   });
 
   window.addEventListener('popstate', render);
-  render();
+
+  async function refreshPublications() {
+    try {
+      notifications = sortByPublication([...await readPublished(), ...archive]);
+    } catch {
+      // The static archive remains available when browser storage is disabled.
+    }
+    render();
+  }
+
+  onPublicationChange(refreshPublications);
+  refreshPublications();
 })();

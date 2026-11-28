@@ -1,7 +1,8 @@
 (() => {
   const { badge, displayDateTime, escapeHtml, labels, normalizeSearch, params, view } = globalThis.IE104Admin;
   const store = globalThis.IE104AdminNotices;
-  const { setup, renderArticle, articleImage } = globalThis.IE104NoticeContent;
+  const { setup } = globalThis.IE104NoticeContent;
+  const { renderArticle, articleImage } = globalThis.IE104NoticeArticle;
   const byId = (id) => document.getElementById(id);
   const system = params.get("tab") === "he-thong";
   const events = {
@@ -226,7 +227,7 @@
     detailBody.innerHTML = `<h3 translate="no">${escapeHtml(item.name)}</h3>
       <p class="admin-demo"><span>${labels[item.type]}</span>${draft ? "" : ` · <span>${states[item.status]}</span>`}</p>
       ${preview ? '<div class="admin-notice-article admin-notice-preview-text" translate="no"></div>' :
-        `<p>${publish ? "Thông báo sẽ chuyển sang trạng thái Đã đăng trong bản mẫu." : "Thông báo sẽ chuyển sang trạng thái Đã gỡ trong bản mẫu."}</p>`}`;
+        `<p>${publish ? "Thông báo sẽ xuất hiện trên trang Thông báo chung của trình duyệt này." : "Thông báo sẽ được gỡ khỏi trang Thông báo chung của trình duyệt này."}</p>`}`;
 
     if (preview) {
       renderArticle(detailBody.querySelector(".admin-notice-article"), item, (id, file) => {
