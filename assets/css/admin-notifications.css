@@ -83,8 +83,9 @@
 }
 
 .admin-notice-actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(6.5rem, 1fr));
+  max-inline-size: 14rem;
   gap: var(--space-2);
 }
 
