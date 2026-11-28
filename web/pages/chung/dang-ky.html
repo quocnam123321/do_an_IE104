@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Tạo tài khoản | Quản lý đồ án và khóa luận</title>
     <link rel="icon" type="image/png" sizes="32x32" href="../../assets/images/favicon.png?v=2" />
-    <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
+    <script src="../../assets/js/shared/theme.js?v=20261128-signup-layout"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css" />
     <link rel="stylesheet" href="../../assets/css/base.css" />
     <link rel="stylesheet" href="../../assets/css/components.css" />
     <link rel="stylesheet" href="../../assets/css/common.css" />
-    <link rel="stylesheet" href="../../assets/css/auth.css" />
+    <link rel="stylesheet" href="../../assets/css/auth.css?v=20261128-signup-layout" />
     <link rel="stylesheet" href="../../assets/css/database-auth.css" />
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
     <script defer src="../../assets/js/password-toggle.js"></script>
@@ -18,17 +18,28 @@
   </head>
   <body id="page-top" class="common-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
-    <main class="database-auth-page" id="main-content" tabindex="-1" data-auth-page="signup">
-      <section class="database-auth-panel" aria-labelledby="register-title">
-        <h1 id="register-title">Tạo tài khoản</h1>
-        <form class="database-auth-form" id="database-register-form" method="post" aria-describedby="database-form-error">
+    <main class="recovery-page signup-page" id="main-content" tabindex="-1" data-auth-page="signup">
+      <section class="recovery-panel signup-panel" aria-labelledby="register-title">
+        <header class="recovery-panel__intro">
+          <div>
+            <h1 id="register-title">Tạo tài khoản</h1>
+            <p>Đăng ký tài khoản IE104.</p>
+          </div>
+          <img src="../../assets/images/signup-account.png" width="448" height="448" alt="" />
+        </header>
+        <form class="database-auth-form recovery-form" id="database-register-form" method="post" aria-describedby="database-form-error">
           <div class="form-field">
             <label for="register-role">Vai trò</label>
-            <select id="register-role" name="role" required>
-              <option value="" selected disabled>Chọn vai trò</option>
-              <option value="student">Sinh viên</option>
-              <option value="lecturer">Giảng viên</option>
-            </select>
+            <div class="signup-panel__select">
+              <select id="register-role" name="role" required>
+                <option value="" selected disabled>Chọn vai trò</option>
+                <option value="student">Sinh viên</option>
+                <option value="lecturer">Giảng viên</option>
+              </select>
+              <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </div>
           </div>
           <div class="form-field">
             <label for="register-username">Tên đăng nhập</label>
@@ -58,7 +69,7 @@
               <label for="register-confirm">Xác nhận mật khẩu</label>
               <div class="password-field">
                 <input type="password" id="register-confirm" name="confirmPassword" autocomplete="new-password" minlength="6" maxlength="128" required />
-                <button class="password-field__toggle" type="button" aria-label="Hiện mật khẩu" aria-controls="register-confirm" aria-pressed="false" hidden>
+                <button class="password-field__toggle" type="button" aria-label="Hiện mật khẩu xác nhận" aria-controls="register-confirm" data-password-label="xác nhận" aria-pressed="false" hidden>
                   <svg data-password-icon="show" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true">
                     <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" /><circle cx="12" cy="12" r="3" />
                   </svg>
@@ -71,14 +82,19 @@
           <p class="form-error" id="database-form-error" role="alert"></p>
           <button class="button--primary" type="submit" disabled>Tạo tài khoản</button>
         </form>
-        <p id="database-register-status" role="status" hidden></p>
+        <p class="form-result" id="database-register-status" role="status" hidden></p>
         <div class="database-google" id="database-google" hidden>
-            <div class="database-google__button" id="database-google-button"></div>
-            <p class="database-google__hint" id="database-google-hint" role="status"></p>
-            <p class="form-error" id="database-google-error" role="alert"></p>
-            <button id="database-google-retry" type="button" hidden>Thử lại với Google</button>
-          </div>
-        <p><a id="database-signin-link" href="dang-nhap.html">Quay lại đăng nhập</a></p>
+          <div class="database-google__button" id="database-google-button"></div>
+          <p class="database-google__hint" id="database-google-hint" role="status"></p>
+          <p class="form-error" id="database-google-error" role="alert"></p>
+          <button id="database-google-retry" type="button" hidden>Thử lại với Google</button>
+        </div>
+        <a class="button recovery-form__back" id="database-signin-link" href="dang-nhap.html">
+          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5m7 7-7-7 7-7" />
+          </svg>
+          Quay lại đăng nhập
+        </a>
         <noscript><p>Bật JavaScript để tạo tài khoản.</p></noscript>
       </section>
     </main>
@@ -89,6 +105,7 @@
             alt="UIT – Trường Đại học Công nghệ Thông tin" width="480" height="180" loading="lazy" />
           <p class="project-footer__name">Quản lý đồ án và khóa luận tốt nghiệp</p>
           <a href="gioi-thieu.html#team-title">Đồ án IE104 — Nhóm 7</a>
+          <div class="signup-footer__preferences" data-theme-controls></div>
         </div>
         <nav aria-labelledby="project-footer-navigation">
           <h2 id="project-footer-navigation">Truy cập nhanh</h2>

@@ -59,6 +59,12 @@
       if (event.persisted) applyTheme(readTheme() ?? theme);
     });
 
+    const themeControls = document.querySelector("[data-theme-controls]");
+    if (themeControls) {
+      themeControls.append(button);
+      return;
+    }
+
     const header = document.querySelector(".site-header .site-header__inner");
     if (header) {
       const action = header.querySelector(":scope > :is(.site-header__login, .account-menu, .mobile-nav)");

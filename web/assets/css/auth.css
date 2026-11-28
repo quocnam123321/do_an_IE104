@@ -1,4 +1,4 @@
-/* Layout for the shared sign-in and account-recovery pages.
+/* Layout for the shared sign-in, signup and account-recovery pages.
    Colors, controls and typography inherit the shared design tokens. */
 
 .theme-toolbar:has(+ :is(.login-page--portal, .recovery-page)) {
@@ -304,6 +304,112 @@
 
 .recovery-form__back svg {
   flex-shrink: 0;
+}
+
+.signup-page {
+  padding-block: clamp(1rem, 4.5vh, 3rem);
+}
+
+.signup-panel {
+  --recovery-control-height: 2.875rem;
+  display: grid;
+  gap: clamp(0.75rem, 1.1vw, 1rem);
+  width: min(100%, 48.5rem);
+  padding: clamp(1rem, 2.6vw, 2.5rem) clamp(1rem, 3vw, 2.875rem);
+}
+
+.signup-panel .recovery-panel__intro {
+  --recovery-illustration-size: clamp(5rem, 13.5vw, 13rem);
+  margin: 0;
+}
+
+.common-page .signup-panel h1 {
+  margin-block-end: 0.5rem;
+  font-size: clamp(1.625rem, 3.15vw, 3rem);
+}
+
+.signup-panel .recovery-panel__intro img {
+  justify-self: end;
+  margin-block: calc(var(--recovery-illustration-size) * -0.24)
+    calc(var(--recovery-illustration-size) * -0.26);
+  margin-inline-end: calc(var(--recovery-illustration-size) * -0.12);
+}
+
+.signup-panel .database-auth-form {
+  gap: clamp(0.75rem, 1.15vw, 1.125rem);
+}
+
+.signup-panel .database-auth-form .form-field {
+  gap: 0.25rem;
+  margin: 0;
+}
+
+.common-page .signup-panel .form-field :is(input, select) {
+  min-height: var(--recovery-control-height);
+  padding-block: 0.4375rem;
+}
+
+.signup-panel__select {
+  position: relative;
+}
+
+.common-page .signup-panel__select select {
+  appearance: none;
+  padding-inline-end: 2.75rem;
+}
+
+.signup-panel__select svg {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 0.875rem;
+  translate: 0 -50%;
+  color: var(--color-muted-foreground);
+  pointer-events: none;
+}
+
+.signup-panel .database-auth-form small,
+.signup-panel .database-google__hint {
+  font-size: var(--font-size-secondary);
+}
+
+.common-page .signup-panel :is(button[type="submit"], .recovery-form__back) {
+  min-height: 3.25rem;
+}
+
+.common-page .signup-panel button[type="submit"] {
+  margin-block-start: var(--space-2);
+  padding-block: 0.625rem;
+}
+
+.signup-panel :is(.database-google, .database-google p, .form-result) {
+  margin: 0;
+}
+
+.signup-panel :is(.database-google, .database-google__button) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.signup-panel .database-google__button > *,
+.signup-panel .database-google__button iframe {
+  max-inline-size: 100%;
+}
+
+.signup-panel .form-result {
+  color: var(--color-success-fg);
+  background: var(--color-success-bg);
+}
+
+.common-page .signup-footer__preferences .theme-toggle {
+  border-color: var(--project-footer-border);
+  color: var(--project-footer-text);
+}
+
+.common-page .signup-footer__preferences .theme-toggle:hover {
+  background: color-mix(in srgb, var(--project-footer-text) 14%, transparent);
+}
+
+.signup-footer__preferences .theme-toggle:focus-visible {
+  outline-color: var(--project-footer-text);
 }
 
 .recovery-otp {
