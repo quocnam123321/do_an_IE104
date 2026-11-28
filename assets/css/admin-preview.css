@@ -813,8 +813,6 @@
 }
 
 .admin-round-detail {
-  --admin-round-open-bg: #ede0fa;
-  --admin-round-open-fg: #6b21a8;
   --admin-topic-registration-bg: #ffebd2;
   padding-block-end: var(--space-6);
 }
@@ -828,8 +826,6 @@
 }
 
 :root[data-theme="dark"] .admin-round-detail {
-  --admin-round-open-bg: #38264e;
-  --admin-round-open-fg: #e9d5ff;
   --admin-topic-registration-bg: var(--amber-100);
 }
 
@@ -844,14 +840,10 @@
   text-align: center;
 }
 
-.admin-round-table .admin-status {
+.admin-round-table .admin-status,
+.admin-round-detail .admin-title-row [data-status="open"] {
   inline-size: 8rem;
   min-block-size: 2.25rem;
-}
-
-.admin-round-detail .admin-title-row [data-status="open"] {
-  background: var(--admin-round-open-bg);
-  color: var(--admin-round-open-fg);
 }
 
 .admin-round-topics .admin-status {
