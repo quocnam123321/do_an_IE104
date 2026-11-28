@@ -27,15 +27,25 @@
   content: none;
 }
 
+.admin-preview .account-menu__chevron {
+  flex: none;
+  inline-size: 1rem;
+  block-size: 1rem;
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.admin-preview .account-menu__disclosure[open] .account-menu__chevron {
+  transform: rotate(180deg);
+}
+
 .admin-preview .site-header .account-menu .admin-account-card {
   inset-inline: auto 0;
-  min-inline-size: 11rem;
-  padding: var(--space-3);
   color: var(--color-foreground);
 }
 
 .admin-account-card p {
-  margin-block-start: var(--space-1);
+  margin: 0;
+  padding: var(--space-1) var(--space-3);
   color: var(--color-muted-foreground);
   font-size: var(--font-size-secondary);
 }
@@ -661,7 +671,7 @@
   }
 }
 
-@media (width < 24rem) {
+@media (width < 26rem) {
   .admin-preview .site-header .site-brand {
     flex-basis: 100%;
   }
