@@ -6,32 +6,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Khôi phục quyền truy cập tài khoản IE104."
+      content="Thử luồng quên mật khẩu IE104."
     />
     <title>Quên mật khẩu | Quản lý đồ án và khóa luận</title>
     <script src="../../assets/js/shared/theme.js?v=20261123-language"></script>
-    <script defer src="../../assets/js/i18n/en-public.js"></script>
+    <script defer src="../../assets/js/i18n/en-public.js?v=20261128-demo-password"></script>
     <script defer src="../../assets/js/i18n/en-shared.js"></script>
     <script defer src="../../assets/js/shared/language.js"></script>
     <link rel="stylesheet" href="../../assets/css/tokens.css?v=20261123-theme" />
     <link rel="stylesheet" href="../../assets/css/base.css?v=20261123-language" />
     <link rel="stylesheet" href="../../assets/css/common.css?v=20261111-heading-sync-1" />
-    <link rel="stylesheet" href="../../assets/css/auth.css?v=20261125-recovery-layout" />
+    <link rel="stylesheet" href="../../assets/css/auth.css?v=20261128-recovery" />
     <script src="../../assets/js/password-toggle.js?v=20261119-recovery-reset" defer></script>
     <link rel="stylesheet" href="../../assets/css/database-auth.css" />
-    <script defer src="../../assets/js/auth-file-fallback.js" data-scripts="recovery-otp.js"></script>
-    <script type="module" src="../../assets/js/auth-pages.js"></script>
+    <script defer src="../../assets/js/recovery-otp.js?v=20261128-demo-password"></script>
+    <script type="module" src="../../assets/js/auth-pages.js?v=20261128-demo-password"></script>
     <link rel="stylesheet" href="../../assets/css/project-footer.css" />
   </head>
   <body id="page-top" tabindex="-1" class="common-page">
     <a class="skip-link" href="#main-content">Chuyển đến nội dung chính</a>
 
     <main id="main-content" class="recovery-page" tabindex="-1" data-auth-page="reset">
-      <p class="form-error" id="database-page-error" role="alert"></p>
-      <section class="database-auth-panel database-auth-page" id="database-recovery" aria-labelledby="database-recovery-title" hidden>
+      <section class="database-auth-panel recovery-panel" id="database-recovery" aria-labelledby="database-recovery-title" hidden>
         <h1 id="database-recovery-title">Đặt lại mật khẩu</h1>
         <p id="database-reset-help">Liên hệ quản trị viên để được xác minh và nhận mã đặt lại dùng một lần.</p>
-        <p id="database-reset-demo-help" hidden>Dùng mật khẩu mẫu để thử. Mật khẩu tài khoản của bạn vẫn giữ nguyên.</p>
         <form class="database-auth-form" id="database-reset-form" method="post" aria-describedby="database-reset-help database-form-error">
           <div class="form-field">
             <label for="reset-username">Tên đăng nhập</label>
@@ -74,32 +72,29 @@
           <button class="button--primary" type="submit" disabled>Đặt lại mật khẩu</button>
         </form>
         <p id="database-reset-status" role="status" hidden>Đã đổi mật khẩu. Hãy đăng nhập bằng mật khẩu mới.</p>
-        <p id="database-reset-demo-status" role="status" hidden>Đã hoàn tất mô phỏng. Bạn có thể quay lại trang đăng nhập.</p>
         <a id="database-reset-back" href="dang-nhap.html">Quay lại đăng nhập</a>
       </section>
-      <section class="recovery-panel" id="legacy-recovery" aria-labelledby="recovery-title">
+      <section class="recovery-panel" id="demo-recovery" aria-labelledby="recovery-title">
         <div class="recovery-panel__intro">
           <div>
             <h1 id="recovery-title">
               <span data-recovery-step="email">Quên mật khẩu</span>
               <span data-recovery-step="otp" hidden>Nhập mã OTP</span>
               <span data-recovery-step="reset" hidden>Đặt lại mật khẩu</span>
-              <span data-recovery-step="done" hidden>Đã hoàn tất mô phỏng</span>
+              <span id="recovery-result-title" data-recovery-step="done" hidden>Đã hoàn tất mô phỏng</span>
             </h1>
-            <p id="recovery-help" data-recovery-step="email">Nhập Gmail của bạn để nhận mã và trải nghiệm luồng quên mật khẩu.</p>
-            <p id="recovery-otp-help" data-recovery-step="otp" hidden>
-              Nhập mã gồm 6 chữ số cho địa chỉ
-              <strong id="recovery-masked-email"></strong>
-            </p>
-            <p id="recovery-reset-help" data-recovery-step="reset" hidden>Dùng mật khẩu mẫu để thử bước đặt lại.</p>
-            <p id="recovery-reset-result" data-recovery-step="done" hidden>Mã OTP đã được xác minh. Biểu mẫu đã xóa mật khẩu mẫu bạn vừa nhập.</p>
+            <p id="recovery-help" data-recovery-step="email">Nhập địa chỉ email để trải nghiệm luồng quên mật khẩu.</p>
+            <p id="recovery-otp-help" data-recovery-step="otp" hidden>Nhập 6 chữ số bất kỳ để tiếp tục.</p>
+            <p id="recovery-reset-help" data-recovery-step="reset" hidden>Nhập và xác nhận mật khẩu mới để hoàn tất bản demo.</p>
+            <p id="recovery-reset-result" data-recovery-step="done" hidden>Bạn đã hoàn tất các bước đặt lại mật khẩu trong bản demo.</p>
           </div>
           <img src="../../assets/images/recovery-lock.png" width="384" height="384" alt="" />
         </div>
 
         <form id="recovery-email-form" class="recovery-form" method="post" aria-describedby="recovery-help" data-recovery-step="email">
+          <p class="form-error recovery-form__error" id="database-page-error" role="alert"></p>
           <div class="form-field">
-            <label for="recovery-email">Địa chỉ Gmail</label>
+            <label for="recovery-email">Địa chỉ email</label>
             <div class="login-input-wrap">
               <svg class="login-input-wrap__icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="3" y="5" width="18" height="14" rx="2" />
@@ -108,16 +103,13 @@
               <input
                 id="recovery-email"
                 type="email"
-                placeholder="Nhập địa chỉ Gmail"
+                placeholder="Nhập địa chỉ email"
                 autocomplete="email"
                 maxlength="254"
-                aria-describedby="recovery-email-error"
                 required
               />
             </div>
           </div>
-          <p id="recovery-email-error" class="form-error recovery-form__error" role="alert"></p>
-
           <button type="submit" disabled>Gửi mã OTP</button>
           <a class="button recovery-form__back" href="dang-nhap.html">
             <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
@@ -139,13 +131,7 @@
               <input aria-label="Chữ số 6" type="text" inputmode="numeric" autocomplete="off" pattern="[0-9]" required />
             </div>
           </fieldset>
-          <p id="recovery-otp-error" class="form-error recovery-form__error" role="alert"></p>
-          <p id="recovery-otp-status" class="recovery-otp__status" role="status"></p>
           <button type="submit">Xác nhận mã</button>
-          <div class="recovery-otp__resend">
-            <span>Chưa nhận được mã?</span>
-            <button id="recovery-resend" type="button" disabled>Gửi lại sau 60 giây</button>
-          </div>
           <button id="recovery-change-email" class="recovery-form__back" type="button">
             <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
               <path d="M19 12H5m7 7-7-7 7-7" />
@@ -155,18 +141,18 @@
         </form>
 
         <form id="recovery-reset-form" class="recovery-form" method="post" autocomplete="off"
-          aria-describedby="recovery-reset-help" data-recovery-step="reset" hidden>
+          aria-describedby="recovery-reset-help recovery-save-error" data-recovery-step="reset" hidden>
           <div class="form-field">
-            <label for="recovery-new-password">Mật khẩu mẫu</label>
+            <label for="recovery-new-password">Mật khẩu mới</label>
             <div class="password-field login-input-wrap">
               <svg class="login-input-wrap__icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
                 <rect x="4" y="11" width="16" height="10" rx="2" />
                 <path d="M8 11V7a4 4 0 0 1 8 0v4" />
               </svg>
               <input id="recovery-new-password" type="password" autocomplete="off"
-                placeholder="Nhập mật khẩu mẫu" aria-describedby="recovery-password-rules recovery-strength-label" required minlength="8" maxlength="128" />
-              <button class="password-field__toggle" type="button" aria-label="Hiện mật khẩu mẫu"
-                aria-controls="recovery-new-password" data-password-label="mẫu" aria-pressed="false" hidden>
+                placeholder="Nhập mật khẩu mới" aria-describedby="recovery-password-rules recovery-strength-label" required minlength="8" maxlength="128" />
+              <button class="password-field__toggle" type="button" aria-label="Hiện mật khẩu"
+                aria-controls="recovery-new-password" aria-pressed="false" hidden>
                 <svg data-password-icon="show" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z" />
                   <circle cx="12" cy="12" r="3" />
@@ -183,14 +169,14 @@
             <p id="recovery-password-rules" class="recovery-reset__hint">Tối thiểu 8 ký tự, có cả chữ và số.</p>
           </div>
           <div class="form-field">
-            <label for="recovery-confirm-password">Xác nhận mật khẩu mẫu</label>
+            <label for="recovery-confirm-password">Xác nhận mật khẩu mới</label>
             <div class="password-field login-input-wrap">
               <svg class="login-input-wrap__icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round">
                 <rect x="4" y="11" width="16" height="10" rx="2" />
                 <path d="M8 11V7a4 4 0 0 1 8 0v4" />
               </svg>
               <input id="recovery-confirm-password" type="password" autocomplete="off"
-                placeholder="Nhập lại mật khẩu mẫu" aria-describedby="recovery-match-text" required maxlength="128" />
+                placeholder="Nhập lại mật khẩu mới" aria-describedby="recovery-match-text" required maxlength="128" />
               <button class="password-field__toggle" type="button" aria-label="Hiện mật khẩu xác nhận"
                 aria-controls="recovery-confirm-password" data-password-label="xác nhận" aria-pressed="false" hidden>
                 <svg data-password-icon="show" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
@@ -210,12 +196,16 @@
               <span id="recovery-match-text"></span>
             </div>
           </div>
-          <button id="recovery-save-password" type="submit" disabled>Hoàn tất mô phỏng</button>
+          <p id="recovery-save-error" class="form-error recovery-form__error" role="alert"></p>
+          <button id="recovery-save-password" type="submit" disabled>Đặt lại mật khẩu</button>
         </form>
         <div class="recovery-form" data-recovery-step="done" hidden>
           <a id="recovery-reset-return" class="button recovery-form__back" href="dang-nhap.html" aria-describedby="recovery-reset-result">Quay lại Đăng nhập</a>
         </div>
-        <p class="demo-notice" data-recovery-step="email">Bạn có thể thử bằng Gmail của mình mà không cần tài khoản IE104.</p>
+        <p class="demo-notice" data-recovery-step="email">
+          Bạn có thể dùng email bất kỳ. Ở bước tiếp theo, hãy tự nhập 6 chữ số làm mã OTP.
+          <a class="recovery-panel__account-link" id="database-reset-link" href="?mode=account" hidden>Dùng mã do quản trị viên cấp</a>
+        </p>
         <noscript><p>Bật JavaScript để thử luồng Quên mật khẩu.</p></noscript>
       </section>
     </main>

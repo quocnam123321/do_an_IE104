@@ -151,8 +151,8 @@ function login(config) {
   byId("database-login-links").hidden = false;
   preserveInvitation(byId("database-signup-link"));
   const username = byId("username");
-  username.labels[0].textContent = "Tên đăng nhập";
-  username.placeholder = "Nhập tên đăng nhập";
+  username.labels[0].textContent = config.systemDemo ? "Tên đăng nhập hoặc email demo" : "Tên đăng nhập";
+  username.placeholder = config.systemDemo ? "Nhập tên đăng nhập hoặc email demo" : "Nhập tên đăng nhập";
   form.setAttribute("aria-describedby", "invitation-login-context login-error");
   bindForm(form, byId("login-error"), async (fields) => {
     const result = await authRequest("login", {
@@ -200,27 +200,26 @@ function signup(config) {
   }, "signup_with");
 }
 
-function reset(config) {
-  byId("legacy-recovery").hidden = true;
+async function reset() {
+  const useAccountCode = new URLSearchParams(location.search).get("mode") === "account";
+  const config = await authConfig().catch((failure) => {
+    if (useAccountCode) throw failure;
+    return null;
+  });
+  if (!config || config.systemDemo) {
+    if (useAccountCode) byId("database-page-error").textContent = "Đặt lại mật khẩu bằng mã quản trị hiện không khả dụng.";
+    return;
+  }
+  if (!useAccountCode) {
+    byId("database-reset-link").hidden = false;
+    return;
+  }
+
+  byId("demo-recovery").hidden = true;
+  byId("database-recovery").hidden = false;
   const form = byId("database-reset-form");
   const confirmation = form.elements.confirmPassword;
   const formError = byId("database-form-error");
-  const simulation = config.systemDemo;
-  if (simulation) {
-    byId("database-recovery-title").textContent = "Mô phỏng đặt lại mật khẩu";
-    byId("database-reset-help").hidden = true;
-    byId("database-reset-demo-help").hidden = false;
-    form.setAttribute("aria-describedby", "database-reset-demo-help database-form-error");
-    for (const field of [form.elements.username, form.elements.code]) {
-      field.disabled = true;
-      field.closest(".form-field").hidden = true;
-    }
-    form.autocomplete = "off";
-    form.elements.password.autocomplete = "off";
-    confirmation.autocomplete = "off";
-    form.querySelector('button[type="submit"]').textContent = "Hoàn tất mô phỏng";
-  }
-  byId("database-recovery").hidden = false;
   for (const field of [form.elements.password, confirmation]) {
     field.addEventListener("input", () => {
       if (confirmation.getAttribute("aria-invalid") !== "true") return;
@@ -234,13 +233,11 @@ function reset(config) {
       confirmation.focus();
       throw new Error("Mật khẩu xác nhận chưa khớp.");
     }
-    if (!simulation) {
-      await authRequest("password/reset", { method: "POST", body: fields });
-      notifyAccountChange();
-    }
+    await authRequest("password/reset", { method: "POST", body: fields });
+    notifyAccountChange();
     form.reset();
     form.hidden = true;
-    byId(simulation ? "database-reset-demo-status" : "database-reset-status").hidden = false;
+    byId("database-reset-status").hidden = false;
     byId("database-reset-back").focus();
   });
 }
@@ -275,6 +272,7 @@ async function settings(config) {
 
 async function init() {
   if (location.protocol === "file:") return;
+  if (type === "reset") return reset();
   const config = await authConfig();
   if (type === "profile") {
     if (config && !(await databaseAccount())?.isDemo) byId("database-profile-link").hidden = false;
@@ -286,8 +284,6 @@ async function init() {
         loadScript(new URL("./demo-login.js", import.meta.url)),
         loadScript(new URL("./google-login.js", import.meta.url)),
       ]);
-    } else if (type === "reset") {
-      await loadScript(new URL("./recovery-otp.js", import.meta.url));
     } else {
       byId("database-form-error").textContent = "Mở trang này từ địa chỉ website chạy bằng Express.";
     }
@@ -296,7 +292,6 @@ async function init() {
 
   if (type === "login") login(config);
   if (type === "signup") signup(config);
-  if (type === "reset") reset(config);
   if (type === "settings") await settings(config);
 }
 

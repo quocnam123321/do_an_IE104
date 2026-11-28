@@ -11,6 +11,9 @@ import {
 const googleClientId = process.env.GOOGLE_CLIENT_ID?.trim() || "";
 const google = new OAuth2Client(googleClientId);
 const googleCookie = "ie104_google_nonce";
+const demoRecoveryCookie = "ie104_demo_recovery";
+const demoRecoveryCookieAge = 30 * 24 * 60 * 60 * 1000;
+
 
 export const authRouter = express.Router();
 
@@ -49,6 +52,23 @@ function rejectInactive(account) {
   if (account.status !== "active") throw new AuthError(403, "Tài khoản hiện chưa hoạt động.");
 }
 
+function validDemoEmail(email) {
+  return email.length <= 254 && /^[^\s@]+@[^\s@]+$/.test(email);
+}
+
+function demoRecoveryKey(browser, email) {
+  return [fingerprint(browser), fingerprint(`${browser}:${email}`)];
+}
+
+async function startDemoSession(request, response, role) {
+  const { rows: [account] } = await pool.query(
+    "SELECT * FROM accounts WHERE role = $1 AND is_demo AND status = 'active'", [role],
+  );
+  if (!account) throw new AuthError(503, "Tài khoản minh họa chưa khả dụng.");
+  await startSession(request, response, account);
+  response.json({ account: publicAccount(account) });
+}
+
 authRouter.use((_request, response, next) => {
   response.set("Cache-Control", "no-store");
   next();
@@ -66,12 +86,31 @@ authRouter.post("/demo/login", authRateLimit(30), async (request, response) => {
   if (role !== "admin" && role !== "student" && role !== "lecturer") {
     throw new AuthError(400, "Chọn vai trò minh họa hợp lệ.");
   }
-  const { rows: [account] } = await pool.query(
-    "SELECT * FROM accounts WHERE role = $1 AND is_demo AND status = 'active'", [role],
-  );
-  if (!account) throw new AuthError(503, "Tài khoản minh họa chưa khả dụng.");
-  await startSession(request, response, account);
-  response.json({ account: publicAccount(account) });
+  await startDemoSession(request, response, role);
+});
+
+authRouter.post("/demo/password/reset", authRateLimit(15), async (request, response) => {
+  if (!systemDemoEnabled) throw new AuthError(404, "Bản này chưa bật tài khoản minh họa.");
+  const { email: rawEmail, password } = request.body ?? {};
+  const email = normalizeUsername(rawEmail);
+  if (!validDemoEmail(email)) throw new AuthError(400, "Email không hợp lệ.");
+  requireValidPassword(password);
+  if (Array.from(password).length < 8 || !/\p{L}/u.test(password) || !/\p{Nd}/u.test(password)) {
+    throw new AuthError(400, "Tối thiểu 8 ký tự, có cả chữ và số.");
+  }
+
+  const cookie = readCookie(request, demoRecoveryCookie);
+  const browser = isToken(cookie) ? cookie : createToken();
+  const passwordHash = await hashPassword(password);
+  await pool.query(`
+    INSERT INTO demo_recovery_passwords (browser_hash, email_hash, password_hash)
+    VALUES ($1, $2, $3)
+    ON CONFLICT (browser_hash, email_hash) DO UPDATE SET password_hash = EXCLUDED.password_hash
+  `, [...demoRecoveryKey(browser, email), passwordHash]);
+  response.cookie(demoRecoveryCookie, browser, {
+    ...cookieOptions(request), path: "/api/auth", maxAge: demoRecoveryCookieAge,
+  });
+  response.status(204).end();
 });
 
 authRouter.post("/register", authRateLimit(12), async (request, response) => {
@@ -103,8 +142,23 @@ authRouter.post("/register", authRateLimit(12), async (request, response) => {
 authRouter.post("/login", authRateLimit(20), async (request, response) => {
   const { username: rawUsername, password } = request.body ?? {};
   const username = normalizeUsername(rawUsername);
-  if (!validUsername(username) || typeof password !== "string" || !password || password.length > 128) {
+  const demoEmail = systemDemoEnabled && validDemoEmail(username);
+  if ((!demoEmail && !validUsername(username)) || typeof password !== "string" || !password || password.length > 128) {
     throw new AuthError(401, "Tên đăng nhập hoặc mật khẩu không đúng.");
+  }
+
+  if (demoEmail) {
+    const browser = readCookie(request, demoRecoveryCookie);
+    let passwordHash;
+    if (isToken(browser)) {
+      const { rows: [credential] } = await pool.query(`
+        SELECT password_hash FROM demo_recovery_passwords WHERE browser_hash = $1 AND email_hash = $2
+      `, demoRecoveryKey(browser, username));
+      passwordHash = credential?.password_hash;
+    }
+    const matches = await verifyPassword(password, passwordHash);
+    if (!matches || !passwordHash) throw new AuthError(401, "Email demo hoặc mật khẩu không đúng.");
+    return startDemoSession(request, response, "student");
   }
 
   const result = await pool.query("SELECT * FROM accounts WHERE username = $1", [username]);

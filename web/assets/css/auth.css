@@ -240,11 +240,6 @@
   text-wrap: pretty;
 }
 
-#recovery-masked-email {
-  display: block;
-  overflow-wrap: anywhere;
-}
-
 .recovery-panel__intro img {
   width: 100%;
   /* Let the PNG's transparent margins overlap the surrounding space. */
@@ -450,42 +445,6 @@
   outline-offset: 0;
 }
 
-.recovery-otp__resend {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: baseline;
-  column-gap: 0.375rem;
-  color: var(--color-muted-foreground);
-  font-size: clamp(0.875rem, 1.25vw, 1.125rem);
-  text-align: center;
-}
-
-.common-page .recovery-otp__resend button {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--color-primary);
-  font-weight: 600;
-}
-
-.common-page .recovery-otp__resend button:disabled {
-  color: inherit;
-  cursor: default;
-}
-
-.common-page .recovery-otp__resend button:hover:not(:disabled) {
-  background: transparent;
-  text-decoration: underline;
-}
-
-.common-page .recovery-otp__status {
-  margin: 0;
-  color: var(--color-muted-foreground);
-  font-size: var(--font-small);
-}
-
-.recovery-otp__status:empty,
 .recovery-form__error:empty {
   position: absolute;
   width: 1px;
@@ -564,6 +523,12 @@
   background: var(--recovery-muted-bg);
   color: var(--color-foreground);
   font-size: clamp(0.875rem, 1.25vw, 1.125rem);
+}
+
+.recovery-panel__account-link {
+  display: block;
+  width: fit-content;
+  margin-block-start: 0.5rem;
 }
 
 @media (max-width: 56rem) {
