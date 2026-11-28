@@ -870,6 +870,10 @@
   color: var(--admin-round-open-fg);
 }
 
+.admin-round-topics .admin-record {
+  color: var(--color-heading);
+}
+
 .admin-round-topics .admin-status {
   inline-size: 12.5rem;
   min-block-size: 2.25rem;
