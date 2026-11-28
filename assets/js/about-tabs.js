@@ -69,7 +69,7 @@
       target: Number(node.textContent.trim())
     }));
 
-    const circles = [...panel.querySelectorAll(".audience-dashboard__chart circle")].map(
+    const circles = [...panel.querySelectorAll(".audience-dashboard__chart [pathLength]")].map(
       (circle) => {
         const finalDash = circle.getAttribute("stroke-dasharray") || "";
         const [segStr] = finalDash.trim().split(/\s+/);
