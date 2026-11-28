@@ -82,12 +82,12 @@
   color: var(--color-foreground);
 }
 
-/* Viền focus của bộ lọc và biểu mẫu học vụ nằm trong ô chọn. */
-.admin-preview :is(.admin-academic-page, .admin-academic-dialog) {
+/* Viền focus của ô chọn học vụ và yêu cầu liên hệ nằm trong ô. */
+.admin-preview :is(.admin-academic-page, .admin-academic-dialog, .admin-contact-toolbar, .admin-contact-status) {
   --admin-select-accent: var(--color-foreground);
 }
 
-.admin-preview :is(.admin-academic-page, .admin-academic-dialog) select:focus-visible {
+.admin-preview :is(.admin-academic-page, .admin-academic-dialog, .admin-contact-toolbar, .admin-contact-status) select:focus-visible {
   outline-color: var(--admin-select-accent);
   outline-offset: -2px;
 }
@@ -182,19 +182,26 @@
     display: none;
   }
 
-  .admin-preview :where(.admin-academic-page, .admin-academic-dialog, .admin-account-filters, .admin-account-dialog, .admin-catalog-filters, .admin-notice-filters, .admin-notice-dialog) select::picker-icon {
-    align-self: center;
-    inline-size: .375rem;
-    block-size: .375rem;
-  }
+  .admin-preview :where(
+    .admin-academic-page, .admin-academic-dialog,
+    .admin-account-filters, .admin-account-dialog, .admin-catalog-filters,
+    .admin-notice-filters, .admin-notice-dialog,
+    .admin-contact-toolbar, .admin-contact-status
+  ) {
+    & select::picker-icon {
+      align-self: center;
+      inline-size: .375rem;
+      block-size: .375rem;
+    }
 
-  .admin-preview :where(.admin-academic-page, .admin-academic-dialog, .admin-account-filters, .admin-account-dialog, .admin-catalog-filters, .admin-notice-filters, .admin-notice-dialog) select::picker(select) {
-    border: 0;
-  }
+    & select::picker(select) {
+      border: 0;
+    }
 
-  .admin-preview :where(.admin-academic-page, .admin-academic-dialog, .admin-account-filters, .admin-account-dialog, .admin-catalog-filters, .admin-notice-filters, .admin-notice-dialog) option:focus-visible {
-    outline-color: transparent;
-    text-decoration: underline;
+    & option:focus-visible {
+      outline-color: transparent;
+      text-decoration: underline;
+    }
   }
 
   @media (forced-colors: active) {
